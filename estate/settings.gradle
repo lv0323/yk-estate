@@ -1,0 +1,7 @@
+include 'estate-biz'
+include 'estate-core'
+include 'estate-job'
+include 'estate-mgt'
+include 'estate-rest'
+
+rootProject.name = 'estate'

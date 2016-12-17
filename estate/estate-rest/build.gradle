@@ -1,0 +1,36 @@
+buildscript {
+    repositories {
+//        mavenLocal()
+        maven {
+            credentials {
+                username "albus"
+                password "YouCantHitMe"
+            }
+            url "http://139.196.34.70:8081/content/groups/public/"
+        }
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath lib.spring_boot_gradle_plugin
+        classpath lib.dependency_management_plugin
+    }
+}
+
+apply plugin: 'war'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+configurations {
+    providedCompile
+}
+
+dependencies {
+    providedCompile lib.servlet_api
+    compile libGroup.swagger
+}
+
+tasks.withType(AbstractCompile) {
+    options.encoding = "UTF-8"
+}

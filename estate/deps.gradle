@@ -1,0 +1,26 @@
+project(':estate-biz') {
+    dependencies {
+        compile project(':estate-core')
+    }
+}
+
+project(':estate-job') {
+    dependencies {
+        compile project(':estate-core')
+        compile project(':estate-biz')
+    }
+}
+
+project(':estate-mgt') {
+    dependencies {
+        compile project(':estate-core')
+        compile project(':estate-biz')
+    }
+}
+
+project(':estate-rest') {
+    dependencies {
+        compile project(':estate-core')
+        compile project(':estate-biz')
+    }
+}

@@ -1,0 +1,41 @@
+dependencies {
+    // spring
+    compile lib.spring_boot_starter
+    compile(lib.spring_boot_starter_web) {
+        exclude module: 'spring-boot-starter-tomcat'
+    }
+    compile lib.spring_context
+    compile(lib.spring_context_support) {
+        exclude module: 'quartz'
+    }
+    compile lib.spring_webmvc
+    compile lib.spring_boot_starter_undertow
+    compile lib.freemarker
+
+    // aspectj
+    compile libGroup.aspectj
+
+    // repository
+    compile lib.spring_jdbc
+    compile lib.mybatis
+    compile lib.mybatis_spring
+    compile lib.mybatis_paginator
+    compile lib.hikaricp
+    compile lib.postgresql
+
+    // util
+    compile lib.guava
+    compile lib.javax_inject
+    compile lib.okhttp
+    compile lib.jbcrypt
+    compile lib.groovy
+    compile lib.simplecaptcha
+}
+
+tasks.withType(AbstractCompile) {
+    options.encoding = "UTF-8"
+}
+
+sourceSets.main.java.srcDirs = []
+sourceSets.main.groovy.srcDirs = ['src/main/java']
+
