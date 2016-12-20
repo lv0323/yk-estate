@@ -12,6 +12,9 @@ subprojects {
     repositories {
         mavenLocal()
         maven {
+            url "http://maven.aliyun.com/nexus/content/groups/public/"
+        }
+        maven {
             credentials {
                 username "albus"
                 password "YouCantHitMe"
