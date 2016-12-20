@@ -68,12 +68,12 @@ for arg in $@; do
   fi
 done;
 
-for arg in $@; do
-  if [ "$arg" = "clean" ] && [ "$hasConf" != "0" ] ; then
-    echo "Error: clean is disabled"
-    exit 1
-  fi
-done;
+#for arg in $@; do
+#  if [ "$arg" = "clean" ] && [ "$hasConf" != "0" ] ; then
+#    echo "Error: clean is disabled"
+#    exit 1
+#  fi
+#done;
 
 "$JAVA_CMD" $JAVA_ARGS -cp "$CP" org.flywaydb.commandline.Main "$@"
 
