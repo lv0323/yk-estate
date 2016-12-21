@@ -29,7 +29,8 @@ CREATE TABLE t_plate (--地区
 CREATE TABLE t_district_plate_rel (
   id          BIGSERIAL PRIMARY KEY, --id
   district_id BIGINT NOT NULL, --地区id
-  plate_id    BIGINT NOT NULL -- 板块id
+  plate_id    BIGINT NOT NULL, -- 板块id
+  UNIQUE (district_id, plate_id)
 );
 
 
@@ -49,7 +50,8 @@ CREATE TABLE t_station (--地铁站点
 CREATE TABLE t_line_station_rel (
   id         BIGSERIAL PRIMARY KEY, --id
   line_id    BIGINT NOT NULL, --线路id
-  station_id BIGINT NOT NULL -- 站点id
+  station_id BIGINT NOT NULL, -- 站点id
+  UNIQUE (line_id, station_id)
 );
 
 CREATE TABLE t_community (
@@ -89,7 +91,8 @@ CREATE TABLE t_community_station_rel (
   id           BIGSERIAL PRIMARY KEY, --id
   community_id BIGINT NOT NULL, --小区id
   station_id   BIGINT NOT NULL, -- 站点信息
-  distance     INT --距离
+  distance     INT, --距离
+  UNIQUE (community_id, station_id)
 );
 
 CREATE TABLE t_building (
