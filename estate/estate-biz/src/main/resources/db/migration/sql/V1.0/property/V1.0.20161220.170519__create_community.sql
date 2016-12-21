@@ -7,17 +7,31 @@ CREATE TABLE t_city (-- 城市
   view_region VARCHAR(64) --地图显示区域
 );
 
-CREATE TABLE t_region (--地区
+CREATE TABLE t_district (--地区
+  id            BIGSERIAL PRIMARY KEY, --id
+  city_id       BIGINT      NOT NULL, -- 城市id
+  district_abbr VARCHAR(30) NOT NULL UNIQUE, -- 拼音简称
+  district_name VARCHAR(20) NOT NULL, -- 中文名
+  longitude     NUMERIC(12, 9), -- 经度
+  latitude      NUMERIC(12, 9), -- 纬度
+  view_region   VARCHAR(64) --地图显示区域
+);
+
+CREATE TABLE t_plate (--地区
   id          BIGSERIAL PRIMARY KEY, --id
-  city_id     BIGINT      NOT NULL, -- 城市id
-  parrent_id  BIGINT      NOT NULL DEFAULT 0, -- 父区域
-  region_abbr VARCHAR(30) NOT NULL UNIQUE, -- 拼音简称
-  region_name VARCHAR(20) NOT NULL, -- 中文名
-  region_type VARCHAR(20) NOT NULL, -- 区域类型
+  plate_abbr  VARCHAR(30) NOT NULL UNIQUE, -- 拼音简称
+  plate_name  VARCHAR(20) NOT NULL, -- 中文名
   longitude   NUMERIC(12, 9), -- 经度
   latitude    NUMERIC(12, 9), -- 纬度
   view_region VARCHAR(64) --地图显示区域
 );
+
+CREATE TABLE t_district_plate_rel (
+  id          BIGSERIAL PRIMARY KEY, --id
+  district_id BIGINT NOT NULL, --地区id
+  plate_id    BIGINT NOT NULL -- 板块id
+);
+
 
 CREATE TABLE t_line (--地铁线路
   id        BIGSERIAL PRIMARY KEY, --id
@@ -28,9 +42,14 @@ CREATE TABLE t_line (--地铁线路
 
 CREATE TABLE t_station (--地铁站点
   id           BIGSERIAL PRIMARY KEY, --id
-  line_id      BIGINT      NOT NULL, --站点id
   station_abbr VARCHAR(30) NOT NULL UNIQUE, --站点简称
   station_name VARCHAR(20) NOT NULL --中文名
+);
+
+CREATE TABLE t_line_station_rel (
+  id         BIGSERIAL PRIMARY KEY, --id
+  line_id    BIGINT NOT NULL, --线路id
+  station_id BIGINT NOT NULL -- 站点id
 );
 
 CREATE TABLE t_community (
@@ -38,7 +57,6 @@ CREATE TABLE t_community (
   name                   VARCHAR(64) NOT NULL, -- 小区名
   name_alies             VARCHAR(64), -- 别名
   city_id                BIGINT      NOT NULL, --城市id
-  district_id            BIGINT      NOT NULL, --区域id
   plate_id               BIGINT      NOT NULL, --板块id
   near_line              CHAR(1) DEFAULT 'N', --靠近地铁
   longitude              NUMERIC(12, 9), -- 经度
@@ -71,11 +89,7 @@ CREATE TABLE t_community_station_rel (
   id           BIGSERIAL PRIMARY KEY, --id
   community_id BIGINT NOT NULL, --小区id
   station_id   BIGINT NOT NULL, -- 站点信息
-  create_by_id BIGINT, --创建者id
-  create_time  TIMESTAMP, --创建时间
-  update_by_id BIGINT, --更新者id
-  update_time  TIMESTAMP, --更新时间
-  is_deleted   CHAR(1) DEFAULT 'N'
+  distance     INT --距离
 );
 
 CREATE TABLE t_building (
