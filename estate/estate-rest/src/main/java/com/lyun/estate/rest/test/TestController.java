@@ -1,5 +1,13 @@
 package com.lyun.estate.rest.test;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.lyun.estate.core.exception.EstateException;
+import com.lyun.estate.core.exception.ExCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import com.lyun.estate.biz.Oss;
 import com.lyun.estate.biz.filesystem.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +21,8 @@ import java.io.FileNotFoundException;
 @RequestMapping("/test")
 public class TestController {
 
+    private static final Logger logger = LoggerFactory.getLogger(TestController.class);
+
     private final Oss oss;
     private final FsRepository fsRepository;
     private final AliyunFileSystem fileSystem;
@@ -25,9 +35,18 @@ public class TestController {
     }
 
     @GetMapping(value = "/string")
-    @ResponseBody
     public String string() {
         return "string";
+    }
+
+    @GetMapping(value = "/error")
+    public String error() {
+        throw new EstateException(ExCode.PARAM_ILLEGAL, "用户名", "1234");
+    }
+
+    @GetMapping(value = "/paginator")
+    public PageBounds page(PageBounds pageBounds) {
+        return pageBounds;
     }
 
     @RequestMapping("oss/{file}")

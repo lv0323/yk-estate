@@ -22,9 +22,7 @@ ext {
 
             guava: '20.0',
             okhttp: '3.5.0',
-            inject: '1',
             jbcrypt: '0.4.1',
-            ehcache: '2.10.2.2.21',
             simplecaptcha: '1.2.2',
 
             oss: "2.4.0"
@@ -71,10 +69,8 @@ ext {
             groovy: "org.codehaus.groovy:groovy:$ver.groovy",
             guava: "com.google.guava:guava:$ver.guava",
             okhttp: "com.squareup.okhttp3:okhttp:$ver.okhttp",
-            javax_inject: "javax.inject:javax.inject:$ver.inject",
             jbcrypt: "de.svenkubiak:jBCrypt:$ver.jbcrypt",
-            ehcache: "net.sf.ehcache:ehcache:$ver.ehcache",
-            simplecaptcha:"cn.apiclub.tool:simplecaptcha:$ver.simplecaptcha",
+            simplecaptcha:"cn.apiclub.tool:simplecaptcha:$ver.simplecaptcha"
 
             oss: "com.aliyun.oss:aliyun-sdk-oss:$ver.oss"
     ]
