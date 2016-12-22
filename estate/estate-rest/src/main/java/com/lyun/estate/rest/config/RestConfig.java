@@ -11,13 +11,9 @@ import org.springframework.context.annotation.*;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.List;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @ComponentScan({"com.lyun.estate.rest"})
@@ -44,5 +40,6 @@ public class RestConfig extends WebMvcConfigurerAdapter {
         module.addSerializer(new PageListSerializer());
         return new MappingJackson2HttpMessageConverter(objectMapper.registerModule(module));
     }
+
 
 }

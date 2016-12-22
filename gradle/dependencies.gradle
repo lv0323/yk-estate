@@ -73,6 +73,7 @@ ext {
             simplecaptcha:"cn.apiclub.tool:simplecaptcha:$ver.simplecaptcha",
             user_agent_utils: "eu.bitwalker:UserAgentUtils:$ver.user_agent_utils",
             caffeine:"com.github.ben-manes.caffeine:caffeine:$ver.caffeine"
+
     ]
 
 
