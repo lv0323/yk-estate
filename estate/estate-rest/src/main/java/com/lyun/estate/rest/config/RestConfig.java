@@ -1,16 +1,42 @@
 package com.lyun.estate.rest.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.lyun.estate.biz.config.BizConfig;
 import com.lyun.estate.core.config.CoreConfig;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
+import com.lyun.estate.core.rest.PageBoundsArgumentResolver;
+import com.lyun.estate.core.rest.PageListSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.*;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import java.util.List;
 
 @Configuration
 @ComponentScan({"com.lyun.estate.rest"})
 @Import({CoreConfig.class, BizConfig.class})
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
-public class RestConfig {
+public class RestConfig extends WebMvcConfigurerAdapter {
+
+    @Autowired
+    private PageBoundsArgumentResolver pageBoundsArgumentResolver;
+
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        if (this.pageBoundsArgumentResolver != null) {
+            argumentResolvers.add(this.pageBoundsArgumentResolver);
+        }
+    }
+
+    @Bean
+    MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(new PageListSerializer());
+        return new MappingJackson2HttpMessageConverter(objectMapper.registerModule(module));
+    }
 
 }

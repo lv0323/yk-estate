@@ -1,13 +1,15 @@
 package com.lyun.estate.core.config;
 
+import com.github.miemiedev.mybatis.paginator.dialect.PostgreSQLDialect;
+import com.lyun.estate.core.repo.OffsetLimitInterceptor;
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -42,9 +44,9 @@ public class RepoConfig {
         SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(dataSource);
 
-        // OffsetLimitInterceptor offsetLimitInterceptor = new OffsetLimitInterceptor();
-        // offsetLimitInterceptor.setDialectClass(PostgreSQLDialect.class.getName());
-        // sqlSessionFactory.setPlugins(new Interceptor[]{offsetLimitInterceptor});
+        OffsetLimitInterceptor offsetLimitInterceptor = new OffsetLimitInterceptor();
+        offsetLimitInterceptor.setDialectClass(PostgreSQLDialect.class.getName());
+        sqlSessionFactory.setPlugins(new Interceptor[]{offsetLimitInterceptor});
 
         return sqlSessionFactory;
     }
