@@ -25,11 +25,11 @@ dependencies {
 
     // util
     compile lib.guava
-    compile lib.javax_inject
     compile lib.okhttp
     compile lib.jbcrypt
     compile lib.groovy
     compile lib.simplecaptcha
+    compile lib.caffeine
 }
 
 tasks.withType(AbstractCompile) {
