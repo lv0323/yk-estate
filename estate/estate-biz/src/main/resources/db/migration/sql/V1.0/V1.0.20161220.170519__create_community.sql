@@ -43,7 +43,7 @@ CREATE TABLE t_line (--地铁线路
 
 CREATE TABLE t_station (--地铁站点
   id           BIGSERIAL PRIMARY KEY, --id
-  station_abbr VARCHAR(30) NOT NULL UNIQUE, --站点简称
+  station_abbr VARCHAR(50) NOT NULL UNIQUE, --站点简称
   station_name VARCHAR(20) NOT NULL --中文名
 );
 
