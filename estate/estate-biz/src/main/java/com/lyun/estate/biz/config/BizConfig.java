@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan({"com.lyun.estate.biz"})
-@MapperScan({"com.lyun.estate.biz"})
+@MapperScan({"com.lyun.estate.biz.*.repository"})
 public class BizConfig {
 
 }

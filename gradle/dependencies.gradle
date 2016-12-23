@@ -70,7 +70,7 @@ ext {
             guava: "com.google.guava:guava:$ver.guava",
             okhttp: "com.squareup.okhttp3:okhttp:$ver.okhttp",
             jbcrypt: "de.svenkubiak:jBCrypt:$ver.jbcrypt",
-            simplecaptcha:"cn.apiclub.tool:simplecaptcha:$ver.simplecaptcha"
+            simplecaptcha:"cn.apiclub.tool:simplecaptcha:$ver.simplecaptcha",
 
             oss: "com.aliyun.oss:aliyun-sdk-oss:$ver.oss"
     ]

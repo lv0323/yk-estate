@@ -4,6 +4,7 @@ package com.lyun.estate.core.exception;
  * Created by Jeffrey on 16/5/6.
  */
 public enum ExCode {
+    OSS_EXCEPTION("OSS错误"),
     DEFAULT_EXCEPTION("服务器错误"),
     PARAM_ILLEGAL("参数{}值为{}，不合法"),;
 

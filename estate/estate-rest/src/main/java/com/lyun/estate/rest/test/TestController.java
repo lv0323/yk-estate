@@ -1,17 +1,20 @@
 package com.lyun.estate.rest.test;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.lyun.estate.biz.file.def.*;
+import com.lyun.estate.biz.file.entity.FileEntity;
+import com.lyun.estate.biz.file.repository.FileRepository;
+import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.core.exception.EstateException;
 import com.lyun.estate.core.exception.ExCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.lyun.estate.biz.Oss;
-import com.lyun.estate.biz.filesystem.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,15 +26,15 @@ public class TestController {
 
     private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
-    private final Oss oss;
-    private final FsRepository fsRepository;
-    private final AliyunFileSystem fileSystem;
+    private final FileRepository fileRepository;
+    private final FileService fileService;
+    private final ApplicationContext applicationContext;
 
     @Autowired
-    public TestController(Oss oss, FsRepository fsRepository, AliyunFileSystem fileSystem) {
-        this.oss = oss;
-        this.fsRepository = fsRepository;
-        this.fileSystem = fileSystem;
+    public TestController(FileRepository fileRepository, FileService fileService, ApplicationContext applicationContext) {
+        this.fileRepository = fileRepository;
+        this.fileService = fileService;
+        this.applicationContext = applicationContext;
     }
 
     @GetMapping(value = "/string")
@@ -53,22 +56,36 @@ public class TestController {
     public void oss(@PathVariable String file) {
         file = "D:/" + file + ".jpg";
         try {
-            FsEntity entity = fileSystem.create(OwnerType.TEST, 0, "Ori", FileType.IMAGE, new FileInputStream(new File(file)));
-            fileSystem.watermark("WaterMark", entity.getPath());
+            FileEntity entity = new FileEntity();
+            entity.setOwnerType(OwnerType.VILLAGE);
+            entity.setOwnerId(123L);
+            entity.setCustomType(CustomType.SHIJING);
+            entity.setFileType(FileType.IMAGE);
+            entity = fileService.save(entity, new FileInputStream(new File(file)), ".jpg", FileProcess.WATERMARK);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
+    @RequestMapping("context")
+    public String context() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String name : applicationContext.getBeanDefinitionNames()) {
+            stringBuilder.append(name).append("\n");
+            System.out.println(name);
+        }
+        return stringBuilder.toString();
+    }
+
     @RequestMapping("fs")
     public void fs() {
-        FsEntity entity = new FsEntity();
-        entity.setOwnerType(OwnerType.TEST);
+        FileEntity entity = new FileEntity();
+        entity.setOwnerType(OwnerType.VILLAGE);
         entity.setOwnerId(123L);
-        entity.setCustomType("BBB");
+        entity.setCustomType(CustomType.SHIJING);
         entity.setFileType(FileType.IMAGE);
-        entity.setTarget("Aliyun");
+        entity.setTarget(Target.OSS);
         entity.setPath("XXXXXXXXXXXX");
-        fsRepository.insert(entity);
+        fileRepository.insert(entity);
     }
 }
