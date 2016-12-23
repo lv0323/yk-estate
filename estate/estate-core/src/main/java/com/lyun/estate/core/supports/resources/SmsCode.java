@@ -1,9 +1,19 @@
 package com.lyun.estate.core.supports.resources;
 
 public class SmsCode {
+    private String smsId;
     private String mobile;
     private String code;
     private String serial;
+
+    public String getSmsId() {
+        return smsId;
+    }
+
+    public SmsCode setSmsId(String smsId) {
+        this.smsId = smsId;
+        return this;
+    }
 
     public String getMobile() {
         return mobile;

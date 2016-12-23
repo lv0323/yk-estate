@@ -1,4 +1,4 @@
-package com.lyun.estate.core.exception;
+package com.lyun.estate.core.supports.exceptions;
 
 /**
  * Created by Jeffrey on 16/5/6.

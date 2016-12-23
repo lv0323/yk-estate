@@ -1,4 +1,4 @@
-package com.lyun.estate.core.exception;
+package com.lyun.estate.core.supports.exceptions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

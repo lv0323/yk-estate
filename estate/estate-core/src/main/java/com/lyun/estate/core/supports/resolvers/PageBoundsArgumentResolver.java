@@ -1,4 +1,4 @@
-package com.lyun.estate.core.rest;
+package com.lyun.estate.core.supports.resolvers;
 
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
