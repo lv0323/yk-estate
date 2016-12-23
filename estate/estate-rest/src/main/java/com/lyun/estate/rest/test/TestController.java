@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 @RestController
 @RequestMapping("/test")
 public class TestController {
@@ -41,14 +43,17 @@ public class TestController {
 
     @GetMapping(value = "/token")
     public JWTToken token() {
-        String token = tokenProvider.generate("timbo");
+        String token = tokenProvider.generate("timbo", "body", new HashMap<String, String>() {{
+            put("a", "123");
+            put("b", "456");
+        }});
         return new JWTToken(token);
     }
 
     @PostMapping(value = "/validate")
     @CheckToken
-    public String validate(@RequestHeader("auth") JWTToken token) {
-        return tokenProvider.getUsername(token.getToken());
+    public HashMap validate(@RequestHeader("auth") JWTToken token) {
+        return tokenProvider.getClaims(token.getToken(), "body", HashMap.class);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.auth;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
@@ -17,17 +18,32 @@ public class TokenProvider {
 
     private static final String secretKey = "123456";
 
-    private static final long tokenValidityInMills = 7 * 24 * 60 * 1000;
+    private static final long hourInMills = 60 * 1000;
 
-    public String generate(String username) {
+    public String generate(String subject) {
+        return generate(subject, null, null, 2);
+    }
+
+    public String generate(String subject, long hour) {
+        return generate(subject, null, null, hour);
+    }
+
+    public String generate(String subject, String claimKey, Object claimValue) {
+        return generate(subject, claimKey, claimValue, 2);
+    }
+
+    public String generate(String subject, String claimKey, Object claimValue, long hour) {
         long now = (new Date()).getTime();
-        Date validity = new Date(now + tokenValidityInMills);
-        return Jwts.builder()
-                .setSubject(username)
+        Date validity = new Date(now + hour * hourInMills);
+
+        JwtBuilder builder = Jwts.builder()
+                .setSubject(subject)
                 .signWith(SignatureAlgorithm.HS512, secretKey)
-                .setExpiration(validity)
-                .claim("username", username)
-                .compact();
+                .setExpiration(validity);
+        if (claimKey != null && claimValue != null) {
+            builder.claim(claimKey, claimValue);
+        }
+        return builder.compact();
     }
 
     public boolean validate(String token) {
@@ -40,9 +56,14 @@ public class TokenProvider {
         }
     }
 
-    public String getUsername(String token) {
+    public String getSubject(String token) {
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
         return claims.getSubject();
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getClaims(String token, String claimName, Class<T> c) {
+        return (T) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get(claimName);
     }
 
 }
