@@ -30,6 +30,7 @@ dependencies {
     compile lib.groovy
     compile lib.simplecaptcha
     compile lib.caffeine
+    compile lib.jjwt
 }
 
 tasks.withType(AbstractCompile) {

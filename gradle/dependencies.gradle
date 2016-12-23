@@ -25,7 +25,8 @@ ext {
             jbcrypt: '0.4.1',
             simplecaptcha: '1.2.2',
             user_agent_utils: '1.20',
-            caffeine: '2.3.5'
+            caffeine: '2.3.5',
+            jjwt: '0.7.0'
     ]
 
     lib = [
@@ -70,9 +71,10 @@ ext {
             guava: "com.google.guava:guava:$ver.guava",
             okhttp: "com.squareup.okhttp3:okhttp:$ver.okhttp",
             jbcrypt: "de.svenkubiak:jBCrypt:$ver.jbcrypt",
-            simplecaptcha:"cn.apiclub.tool:simplecaptcha:$ver.simplecaptcha",
+            simplecaptcha: "cn.apiclub.tool:simplecaptcha:$ver.simplecaptcha",
             user_agent_utils: "eu.bitwalker:UserAgentUtils:$ver.user_agent_utils",
-            caffeine:"com.github.ben-manes.caffeine:caffeine:$ver.caffeine"
+            caffeine: "com.github.ben-manes.caffeine:caffeine:$ver.caffeine",
+            jjwt: "io.jsonwebtoken:jjwt:$ver.jjwt"
 
     ]
 
