@@ -17,7 +17,7 @@ public class TokenAuthorizer {
     @Autowired
     private TokenProvider tokenProvider;
 
-    @Before(value = "@annotation(checkToken)", argNames = "checkToken")
+    @Before(value = "@annotation(checkToken)", argNames = "joinPoint,checkToken")
     public void check(JoinPoint joinPoint, CheckToken checkToken) {
         Optional<Object> token = Arrays.stream(joinPoint.getArgs()).filter(o -> o != null && JWTToken.class.isAssignableFrom(o.getClass())).findAny();
         token.ifPresent(o -> authorize((JWTToken) o));
@@ -25,7 +25,7 @@ public class TokenAuthorizer {
 
     public void authorize(JWTToken token) {
         if (!tokenProvider.validate(token.getToken())) {
-            throw new ValidateException("token invalid");
+            throw new ValidateException("token.invalid", "token无效");
         }
     }
 
