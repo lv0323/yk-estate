@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.user.service;
 
 import com.lyun.estate.biz.auth.TokenProvider;
-import com.lyun.estate.biz.demo.repository.DemoMapper;
+import com.lyun.estate.biz.clock.service.ClockService;
 import com.lyun.estate.biz.user.domain.Token;
 import com.lyun.estate.biz.user.domain.User;
 import com.lyun.estate.biz.user.repository.TokenMapper;
@@ -38,13 +38,13 @@ public class UserService {
     Environment environment;
     @Autowired
     CacheManager cacheManager;
-    @Autowired
+    @Autowired(required = false)
     ExecutionContext executionContext;
     @Autowired
     TokenProvider tokenProvider;
 
     @Autowired
-    DemoMapper demoMapper;
+    ClockService clockService;
 
     @Transactional
     public RegisterResponse register(RegisterResource registerResource) {
@@ -94,7 +94,10 @@ public class UserService {
         if (loginUser != null &&
                 CommonUtil.isSha256Equal(loginUser.getSalt() + loginResource.getPassword(), loginUser.getHash())) {
             Token token = new Token().setHash(tokenProvider.generate(String.valueOf(loginUser.getId())))
-                    .setExpireTime(new Date(demoMapper.currentTime().toInstant().plus(loginResource.getValidDays(), ChronoUnit.DAYS).toEpochMilli()));
+                    .setExpireTime(new Date(clockService.currentTime()
+                            .toInstant()
+                            .plus(loginResource.getValidDays(), ChronoUnit.DAYS)
+                            .toEpochMilli()));
             if (tokenMapper.create(token) != 1) {
                 throw new EstateBizException("login.error", "登陆服务异常");
             }
