@@ -7,6 +7,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.format.Formatter;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.Locale;
 
+@ControllerAdvice
 public class SmsCodeArgumentResolver implements HandlerMethodArgumentResolver, Formatter<SmsCode> {
     public final static String SMS_CODE_HEADER = "X-SMS-CODE";
     private final static String CODE = "code";

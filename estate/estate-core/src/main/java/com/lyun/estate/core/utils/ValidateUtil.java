@@ -24,18 +24,25 @@ public class ValidateUtil {
         return lengthMax(str, maxLength) && lengthMin(str, minLength);
     }
 
-
     public static boolean isMobile(String mobile) {
-        if (StringUtils.isEmpty(mobile)) {
-            return false;
+        if (!StringUtils.isEmpty(mobile)) {
+            return mobile.matches("[0-9]{11}");
         }
-        return mobile.matches("[0-9]{11}");
+        return false;
     }
 
     public static boolean isPassword(String password) {
-        if (StringUtils.isEmpty(password)) {
-            return false;
+        if (!StringUtils.isEmpty(password)) {
+            return password.matches("[0-9a-zA-Z.<>?!@#$%^&*_=\\-+()]{8,32}");
         }
-        return password.matches("[0-9a-zA-Z.<>?!@#$^&*_=+]{8,32}");
+        return false;
     }
+
+    public static boolean isEmail(String email) {
+        if (!StringUtils.isEmpty(email)) {
+            return email.matches("(.)*@(.)*(\\.)(.)*");
+        }
+        return false;
+    }
+
 }

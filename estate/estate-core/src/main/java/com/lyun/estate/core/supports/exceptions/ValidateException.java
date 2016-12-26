@@ -18,7 +18,7 @@ public class ValidateException extends EstateException {
         this.objectErrors = objectErrors;
     }
 
-    public ValidateException(String message, String code, List<ObjectError> objectErrors) {
+    public ValidateException(String code, String message, List<ObjectError> objectErrors) {
         super(message);
         this.code = code;
         this.objectErrors = objectErrors;

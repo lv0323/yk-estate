@@ -3,6 +3,7 @@ package com.lyun.estate.rest.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lyun.estate.core.supports.ExecutionContext;
 import com.lyun.estate.core.supports.exceptions.ErrorResource;
+import com.lyun.estate.core.supports.exceptions.EstateBizException;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
@@ -54,16 +55,44 @@ public class ExceptionAdvice {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             writeResponse(response, handleValidateExceptionResult((ValidateException) t));
         } else if (t instanceof ServletRequestBindingException) {
+            logger.warn("Spring参数校验失败", t);
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             writeResponse(response, handleRequireParamMissException((ServletRequestBindingException) t));
-            logger.warn("Spring参数校验失败", t);
+        } else if (t instanceof EstateBizException) {
+            logger.error("业务异常", t);
+            writeResponse(response, handleBizException((EstateBizException) t));
         } else {
             EstateException baseException = writeExceptionLog(t);
-            ErrorResource errorResource = new ErrorResource(baseException.getId(),
+            ErrorResource errorResource = new ErrorResource(executionContext.getCorrelationId(),
                     baseException.getExCode().name(),
                     baseException.getLocalizedMessage());
             writeResponse(response, errorResource);
         }
+    }
+
+
+    private EstateException translate(Throwable t) {
+        if (t instanceof EstateException) {
+            return (EstateException) t;
+        }
+        return new EstateException(t, ExCode.DEFAULT_EXCEPTION);
+    }
+
+    private Map<String, Object> handleValidateExceptionResult(ValidateException ex) {
+        Map<String, Object> responseBody = new HashMap<>();
+        String code = ex.getCode();
+        responseBody.put("logRef", executionContext.getCorrelationId());
+        responseBody.put("exCode", code);
+        responseBody.put("message", getMessage(code, null, ex.getMessage()));
+        if (!StringUtils.isEmpty(ex.getObjectErrors())) {
+            responseBody.put("messages", ex.getObjectErrors().stream().map(objectError -> {
+                String errorCode = objectError.getCodes()[0];
+                return new ErrorResource()
+                        .setExCode(errorCode)
+                        .setMessage(getMessage(errorCode, objectError.getArguments(), objectError.getDefaultMessage()));
+            }).collect(Collectors.toList()));
+        }
+        return responseBody;
     }
 
     private ErrorResource handleRequireParamMissException(ServletRequestBindingException t) {
@@ -84,34 +113,12 @@ public class ExceptionAdvice {
         throw new RuntimeException(t);
     }
 
-    private EstateException translate(Throwable t) {
-        if (t instanceof EstateException) {
-            return (EstateException) t;
-        }
-        return new EstateException(t, ExCode.DEFAULT_EXCEPTION);
+    private ErrorResource handleBizException(EstateBizException t) {
+        return new ErrorResource()
+                .setExCode(t.getCode())
+                .setLogRef(executionContext.getCorrelationId())
+                .setMessage(getMessage(t.getCode(), null, t.getMessage()));
     }
-
-    private Map<String, Object> handleValidateExceptionResult(ValidateException ex) {
-        Map<String, Object> responseBody = new HashMap<>();
-        String code = ex.getCode();
-        responseBody.put("logRef", executionContext.getCorrelationId());
-        responseBody.put("exCode", code);
-        responseBody.put("message", getMessage(code, null, ex.getMessage()));
-        if (!StringUtils.isEmpty(ex.getObjectErrors())) {
-            responseBody.put("messages", ex.getObjectErrors().stream().map(objectError -> {
-                String errorCode = code + objectError.getCodes()[0];
-                return new ErrorResource()
-                        .setExCode(errorCode)
-                        .setMessage(getMessage(errorCode, objectError.getArguments(), objectError.getDefaultMessage()));
-            }).collect(Collectors.toList()));
-        }
-        return responseBody;
-    }
-
-    private String getMessage(String code, Object[] args, String defaultMessage) {
-        return messageSource.getMessage(code, args, defaultMessage, new Locale(executionContext.getRequestLocal()));
-    }
-
 
     private void writeResponse(HttpServletResponse response, Object result) {
         try (OutputStream out = response.getOutputStream()) {
@@ -119,6 +126,10 @@ public class ExceptionAdvice {
         } catch (IOException e) {
             logger.error("write error resource error", e);
         }
+    }
+
+    private String getMessage(String code, Object[] args, String defaultMessage) {
+        return messageSource.getMessage(code, args, defaultMessage, new Locale(executionContext.getRequestLocal()));
     }
 
 }

@@ -1,17 +1,17 @@
 package com.lyun.estate.biz.user.resources;
 
-public class RegisterResource {
+public class LoginResource {
     private String userName;
     private String email;
     private String mobile;
     private String password;
-    private boolean login;
+    private int validDays;
 
     public String getUserName() {
         return userName;
     }
 
-    public RegisterResource setUserName(String userName) {
+    public LoginResource setUserName(String userName) {
         this.userName = userName;
         return this;
     }
@@ -20,7 +20,7 @@ public class RegisterResource {
         return email;
     }
 
-    public RegisterResource setEmail(String email) {
+    public LoginResource setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -29,7 +29,7 @@ public class RegisterResource {
         return mobile;
     }
 
-    public RegisterResource setMobile(String mobile) {
+    public LoginResource setMobile(String mobile) {
         this.mobile = mobile;
         return this;
     }
@@ -38,17 +38,17 @@ public class RegisterResource {
         return password;
     }
 
-    public RegisterResource setPassword(String password) {
+    public LoginResource setPassword(String password) {
         this.password = password;
         return this;
     }
 
-    public boolean isLogin() {
-        return login;
+    public int getValidDays() {
+        return validDays;
     }
 
-    public RegisterResource setLogin(boolean login) {
-        this.login = login;
+    public LoginResource setValidDays(int validDays) {
+        this.validDays = validDays;
         return this;
     }
 }

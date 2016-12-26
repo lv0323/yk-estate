@@ -4,6 +4,7 @@ import com.lyun.estate.biz.message.resources.SmsResponse;
 import com.lyun.estate.biz.message.service.SmsService;
 import com.lyun.estate.core.supports.annotations.CheckSmsCode;
 import com.lyun.estate.core.supports.annotations.CheckVerifyCode;
+import com.lyun.estate.core.supports.resolvers.SmsCodeArgumentResolver;
 import com.lyun.estate.core.supports.resolvers.VerifyCodeArgumentResolver;
 import com.lyun.estate.core.supports.resources.SmsCode;
 import com.lyun.estate.core.supports.resources.VerifyCode;
@@ -28,7 +29,7 @@ public class SmsController {
 
     @CheckSmsCode
     @PostMapping("/correct")
-    public boolean isCorrect(SmsCode smsCode) {
+    public boolean isCorrect(@RequestHeader(SmsCodeArgumentResolver.SMS_CODE_HEADER) SmsCode smsCode) {
         return true;
     }
 }

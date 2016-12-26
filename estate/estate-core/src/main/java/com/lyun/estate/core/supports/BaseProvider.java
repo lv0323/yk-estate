@@ -31,9 +31,9 @@ public abstract class BaseProvider<T extends BaseEntity> {
         SQL_EX SQL_EX = new SQL_EX()
                 .INSERT_INTO(getEntityTable())
                 .VALUES("create_by_id", "#{createById}")
-                .VALUES("create_time", "current_timestamp()")
+                .VALUES("create_time", "current_timestamp")
                 .VALUES("update_by_id", "#{createById}")
-                .VALUES("update_time", "current_timestamp()")
+                .VALUES("update_time", "current_timestamp")
                 .VALUES("owner_id", "#{ownerId}");
         return onCreate(SQL_EX, entity).toString();
     }
@@ -42,7 +42,7 @@ public abstract class BaseProvider<T extends BaseEntity> {
         SQL_EX SQL_EX = new SQL_EX()
                 .UPDATE(getEntityTable())
                 .SET("update_by_id=#{updateById}")
-                .SET("update_time=current_timestamp()")
+                .SET("update_time=current_timestamp")
                 .SET_IF("version=#{version}", StringUtils.isEmpty(entity.getVersion()))
                 .WHERE("id=#{id}")
                 .WHERE("is_deleted='N'");
@@ -69,8 +69,8 @@ public abstract class BaseProvider<T extends BaseEntity> {
 
     protected abstract String getEntityTable();
 
-    protected abstract SQL_EX onCreate(SQL_EX SQL_EX, T entity);
+    protected abstract SQL_EX onCreate(SQL_EX sqlEx, T entity);
 
-    protected abstract SQL_EX onUpdate(SQL_EX SQL_EX, T entity);
+    protected abstract SQL_EX onUpdate(SQL_EX sqlEx, T entity);
 
 }

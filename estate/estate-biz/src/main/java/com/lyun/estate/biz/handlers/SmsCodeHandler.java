@@ -21,8 +21,8 @@ public class SmsCodeHandler {
     SmsService smsService;
 
     public void verify(SmsCode smsCode) {
-        if (smsService.isSmsCodeCorrect(smsCode)) {
-            throw new ValidateException("verifyCode.illegal", "短信验证码错误");
+        if (!smsService.isSmsCodeCorrect(smsCode)) {
+            throw new ValidateException("smsCode.illegal", "短信验证码错误");
         }
     }
 

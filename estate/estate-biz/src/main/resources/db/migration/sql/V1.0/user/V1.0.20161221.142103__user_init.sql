@@ -10,8 +10,8 @@ CREATE TABLE t_user (
   user_name    VARCHAR(24),
   real_name    VARCHAR(24),
   card_id      VARCHAR(18),
-  salt         VARCHAR(32),
-  hash         VARCHAR(32),
+  salt         VARCHAR(64),
+  hash         VARCHAR(64),
   email        VARCHAR(32),
   mobile       VARCHAR(16),
   description  VARCHAR(64)
@@ -26,7 +26,7 @@ CREATE TABLE t_token (
   version      INT,
   owner_id     BIGINT,
   is_deleted   CHAR(1) DEFAULT 'N',
-  hash         VARCHAR(64),
+  hash         VARCHAR(256),
   expire_time  TIMESTAMP
 );
 
