@@ -38,11 +38,8 @@ public class UserService {
     Environment environment;
     @Autowired
     CacheManager cacheManager;
-    @Autowired(required = false)
-    ExecutionContext executionContext;
     @Autowired
     TokenProvider tokenProvider;
-
     @Autowired
     ClockService clockService;
 
@@ -73,7 +70,7 @@ public class UserService {
                     .setMobile(registerResource.getMobile())
                     .setUserName(registerResource.getUserName())
                     .setPassword(registerResource.getPassword())
-                    .setValidDays(Integer.valueOf(environment.getRequiredProperty("register.login.default.valid.days"))));
+                    .setValidDays(getDefaultValidDays()));
             registerResponse
                     .setJwt(tokenResponse.getJwt())
                     .setJwtExpireTime(tokenResponse.getJwtExpireTime());
@@ -94,9 +91,8 @@ public class UserService {
         if (loginUser != null &&
                 CommonUtil.isSha256Equal(loginUser.getSalt() + loginResource.getPassword(), loginUser.getHash())) {
             Token token = new Token().setHash(tokenProvider.generate(String.valueOf(loginUser.getId())))
-                    .setExpireTime(new Date(clockService.currentTime()
-                            .toInstant()
-                            .plus(loginResource.getValidDays(), ChronoUnit.DAYS)
+                    .setExpireTime(new Date(clockService.now()
+                            .plus(loginResource.getValidDays() > 0 ? loginResource.getValidDays() : getDefaultValidDays(), ChronoUnit.DAYS)
                             .toEpochMilli()));
             if (tokenMapper.create(token) != 1) {
                 throw new EstateBizException("login.error", "登陆服务异常");
@@ -107,6 +103,10 @@ public class UserService {
         } else {
             throw new ValidateException("user.login.error", "用户名或密码错误");
         }
+    }
+
+    private int getDefaultValidDays() {
+        return Integer.valueOf(environment.getRequiredProperty("register.login.default.valid.days"));
     }
 
 }

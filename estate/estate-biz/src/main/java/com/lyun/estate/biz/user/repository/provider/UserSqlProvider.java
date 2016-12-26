@@ -2,6 +2,7 @@ package com.lyun.estate.biz.user.repository.provider;
 
 import com.lyun.estate.biz.user.domain.User;
 import com.lyun.estate.biz.user.resources.LoginResource;
+import com.lyun.estate.biz.user.resources.RegisterResource;
 import com.lyun.estate.core.supports.BaseProvider;
 import com.lyun.estate.core.supports.SQL_EX;
 import org.springframework.util.StringUtils;
@@ -37,6 +38,16 @@ public class UserSqlProvider extends BaseProvider<User> {
                 .SET_IF("mobile=#{mobile}", !StringUtils.isEmpty(entity.getMobile()));
     }
 
+    public String findUser(RegisterResource registerResource) {
+        return new SQL_EX() {{
+            SELECT("*");
+            FROM(getEntityTable());
+            WHERE_IF("user_name=#{userName}", !StringUtils.isEmpty(registerResource.getUserName()));
+            WHERE_IF("mobile=#{mobile}", !StringUtils.isEmpty(registerResource.getMobile()));
+            WHERE_IF("email=#{email}", !StringUtils.isEmpty(registerResource.getEmail()));
+            WHERE("IS_DELETED='N'");
+        }}.toString();
+    }
 
     public String loginUser(LoginResource loginResource) {
         return new SQL_EX() {{
