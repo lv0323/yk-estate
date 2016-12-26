@@ -1,4 +1,4 @@
-package com.lyun.estate.core.exception;
+package com.lyun.estate.core.supports.exceptions;
 
 import java.util.UUID;
 
@@ -9,10 +9,16 @@ public class EstateException extends RuntimeException {
 
     private ExCode exCode = ExCode.DEFAULT_EXCEPTION;
 
-    private String id = UUID.randomUUID().toString();
+    private String id;
 
     public EstateException() {
         super(ExCode.DEFAULT_EXCEPTION.getMessageTemplate());
+        id = UUID.randomUUID().toString();
+    }
+
+    public EstateException(String message) {
+        super(message);
+        id = UUID.randomUUID().toString();
     }
 
     public EstateException(ExCode exCode, Object... args) {
@@ -33,6 +39,11 @@ public class EstateException extends RuntimeException {
         return id;
     }
 
+    public EstateException setId(String id) {
+        this.id = id;
+        return this;
+    }
+
     public ExCode getExCode() {
         return exCode;
     }
@@ -41,4 +52,5 @@ public class EstateException extends RuntimeException {
         this.exCode = exCode;
         return this;
     }
+
 }

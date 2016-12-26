@@ -1,65 +1,109 @@
 package com.lyun.estate.biz.user.service;
 
-import cn.apiclub.captcha.Captcha;
-import cn.apiclub.captcha.noise.CurvedLineNoiseProducer;
-import cn.apiclub.captcha.text.producer.DefaultTextProducer;
+import com.lyun.estate.biz.auth.TokenProvider;
+import com.lyun.estate.biz.demo.repository.DemoMapper;
+import com.lyun.estate.biz.user.domain.Token;
+import com.lyun.estate.biz.user.domain.User;
+import com.lyun.estate.biz.user.repository.TokenMapper;
 import com.lyun.estate.biz.user.repository.UserMapper;
+import com.lyun.estate.biz.user.resources.LoginResource;
 import com.lyun.estate.biz.user.resources.RegisterResource;
-import com.lyun.estate.core.supports.LJSWordRenderer;
+import com.lyun.estate.biz.user.resources.RegisterResponse;
+import com.lyun.estate.biz.user.resources.TokenResponse;
+import com.lyun.estate.biz.user.service.validator.LoginResourceValidator;
+import com.lyun.estate.biz.user.service.validator.RegisterResourceValidator;
+import com.lyun.estate.core.supports.ExecutionContext;
+import com.lyun.estate.core.supports.exceptions.EstateBizException;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
+import com.lyun.estate.core.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.CacheManager;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 @Service
 public class UserService {
-    private static final int maxWidth = 320;
-    private static final int maxHeight = 320;
 
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    TokenMapper tokenMapper;
+    @Autowired
+    Environment environment;
+    @Autowired
+    CacheManager cacheManager;
+    @Autowired
+    ExecutionContext executionContext;
+    @Autowired
+    TokenProvider tokenProvider;
 
     @Autowired
-    @Qualifier("evictAfterAccessCacheManager")
-    CacheManager cacheManager;
+    DemoMapper demoMapper;
 
-    void register(RegisterResource registerResource) {
-
+    @Transactional
+    public RegisterResponse register(RegisterResource registerResource) {
+        DataBinder dataBinder = new DataBinder(registerResource, "userRegister");
+        dataBinder.setValidator(new RegisterResourceValidator(userMapper));
+        dataBinder.validate();
+        BindingResult bindingResult = dataBinder.getBindingResult();
+        if (bindingResult.hasErrors()) {
+            throw new ValidateException("warn.user.register", "注册校验未通过", bindingResult.getAllErrors());
+        }
+        RegisterResponse registerResponse = new RegisterResponse();
+        String salt = CommonUtil.getUuid();
+        if (userMapper.createUser(new User().setMobile(registerResource.getMobile())
+                .setEmail(registerResource.getEmail())
+                .setUserName(registerResource.getUserName())
+                .setHash(CommonUtil.encryptBySha256(salt + registerResource.getPassword()))
+                .setSalt(salt)) == 1
+                ) {
+            registerResponse.setRegistered(true);
+        } else {
+            throw new EstateBizException("error.user.register", "用户注册失败");
+        }
+        if (registerResource.isLogin()) {
+            TokenResponse tokenResponse = login(new LoginResource()
+                    .setEmail(registerResource.getEmail())
+                    .setMobile(registerResource.getMobile())
+                    .setUserName(registerResource.getUserName())
+                    .setPassword(registerResource.getPassword())
+                    .setValidDays(Integer.valueOf(environment.getRequiredProperty("register.login.default.valid.days"))));
+            registerResponse
+                    .setJwt(tokenResponse.getJwt())
+                    .setJwtExpireTime(tokenResponse.getJwtExpireTime());
+        }
+        return registerResponse;
     }
 
-    public BufferedImage getVerifyCodeImage(long clientId, String verifyId, int width, int height) {
-        if (width < 60 || width > maxWidth || height < 20 || height > maxHeight || width < height * 3) {
-            throw new ValidateException("getVerifyCodeImage.illegal", "宽高非法");
+    @Transactional
+    public TokenResponse login(LoginResource loginResource) {
+        DataBinder dataBinder = new DataBinder(loginResource, "userLogin");
+        dataBinder.setValidator(new LoginResourceValidator());
+        dataBinder.validate();
+        BindingResult bindingResult = dataBinder.getBindingResult();
+        if (bindingResult.hasErrors()) {
+            throw new ValidateException("warn.user.login", bindingResult.getAllErrors());
         }
-        int fontSize = (int) (height < width ? height * 0.8 : width * 0.8);
-        if (fontSize < 20) {
-            fontSize = 20;
+        User loginUser = userMapper.loginUser(loginResource);
+        if (loginUser != null &&
+                CommonUtil.isSha256Equal(loginUser.getSalt() + loginResource.getPassword(), loginUser.getHash())) {
+            Token token = new Token().setHash(tokenProvider.generate(String.valueOf(loginUser.getId())))
+                    .setExpireTime(new Date(demoMapper.currentTime().toInstant().plus(loginResource.getValidDays(), ChronoUnit.DAYS).toEpochMilli()));
+            if (tokenMapper.create(token) != 1) {
+                throw new EstateBizException("login.error", "登陆服务异常");
+            }
+            return new TokenResponse()
+                    .setJwt(token.getHash())
+                    .setJwtExpireTime(token.getExpireTime());
+        } else {
+            throw new ValidateException("user.login.error", "用户名或密码错误");
         }
-        java.util.List<Color> colors = new ArrayList<>();
-        colors.add(Color.BLACK);
-        java.util.List<Font> fonts = new ArrayList<>();
-        fonts.add(new Font("Arial", Font.PLAIN, fontSize));
-        fonts.add(new Font("Courier", Font.PLAIN, fontSize));
-        final String chars = "abcdefghijkmnpqrstuvwxzABCDEFGHJKMNPQRSTUVWXYZ23456789";
-        Captcha captcha = new Captcha.Builder(width, height)
-                .addText(new DefaultTextProducer(4, chars.toCharArray()), new LJSWordRenderer(colors, fonts))
-                .addBackground()
-                .addNoise(new CurvedLineNoiseProducer(Color.ORANGE, 1.0f))
-                .addNoise(new CurvedLineNoiseProducer(Color.BLACK, 2.0f))
-                .gimp()
-                .build();
-        String captchaStr = clientId + ":" + verifyId + ":" + captcha.getAnswer().toLowerCase();
-        cacheManager.getCache("default").put(captchaStr, captchaStr);
-        return captcha.getImage();
-    }
-
-    public boolean isVerifyCodeCorrect(long clientId, String imageId, String code) {
-        return cacheManager.getCache("default").get(clientId + ":" + imageId + ":" + code.toLowerCase()) != null;
     }
 
 }

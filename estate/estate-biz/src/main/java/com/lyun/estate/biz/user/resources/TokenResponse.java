@@ -5,26 +5,16 @@ import com.lyun.estate.core.utils.Constant;
 
 import java.util.Date;
 
-public class RegisterResponse {
-    private boolean registered;
+public class TokenResponse {
     private String jwt;
     @JsonFormat(pattern = Constant.JSON_DATE_FORMAT)
     private Date jwtExpireTime;
-
-    public boolean isRegistered() {
-        return registered;
-    }
-
-    public RegisterResponse setRegistered(boolean registered) {
-        this.registered = registered;
-        return this;
-    }
 
     public String getJwt() {
         return jwt;
     }
 
-    public RegisterResponse setJwt(String jwt) {
+    public TokenResponse setJwt(String jwt) {
         this.jwt = jwt;
         return this;
     }
@@ -33,7 +23,7 @@ public class RegisterResponse {
         return jwtExpireTime;
     }
 
-    public RegisterResponse setJwtExpireTime(Date jwtExpireTime) {
+    public TokenResponse setJwtExpireTime(Date jwtExpireTime) {
         this.jwtExpireTime = jwtExpireTime;
         return this;
     }
