@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.demo.repository;
+package com.lyun.estate.biz.clock.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Select;
 import java.util.Date;
 
 @Mapper
-public interface DemoMapper {
+public interface ClockMapper {
     @Select("select now()")
     Date currentTime();
 }

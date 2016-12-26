@@ -1,6 +1,6 @@
 package com.lyun.estate.mgt.test;
 
-import com.lyun.estate.biz.demo.service.DemoService;
+import com.lyun.estate.biz.clock.service.ClockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +13,11 @@ import java.util.HashMap;
 public class TestController {
 
     @Autowired
-    DemoService demoService;
+    ClockService clockService;
     @GetMapping("/index")
     public ModelAndView index() {
         HashMap<String, String> params = new HashMap<>();
-        params.put("message", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(demoService.currentTime()));
+        params.put("message", new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(clockService.currentTime()));
         return new ModelAndView("index", params);
     }
 
