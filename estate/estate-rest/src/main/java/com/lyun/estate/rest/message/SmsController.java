@@ -8,10 +8,9 @@ import com.lyun.estate.core.supports.resolvers.SmsCodeArgumentResolver;
 import com.lyun.estate.core.supports.resolvers.VerifyCodeArgumentResolver;
 import com.lyun.estate.core.supports.resources.SmsCode;
 import com.lyun.estate.core.supports.resources.VerifyCode;
+import com.lyun.estate.core.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RequestMapping("/sms")
 @RestController
@@ -23,7 +22,7 @@ public class SmsController {
     @PostMapping
     public SmsResponse sendMessage(@RequestParam(value = "mobile") String mobile,
                                    @RequestHeader(value = VerifyCodeArgumentResolver.VERIFY_CODE_HEADER) VerifyCode verifyCode) {
-        String smsId = UUID.randomUUID().toString();
+        String smsId = CommonUtil.getUuid();
         return smsService.sendMessage(smsId, mobile);
     }
 

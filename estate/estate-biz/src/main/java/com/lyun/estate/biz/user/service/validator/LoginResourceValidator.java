@@ -19,21 +19,17 @@ public class LoginResourceValidator implements Validator {
         if (StringUtils.isEmpty(loginResource.getPassword())) {
             errors.reject("password.isNull", "登陆密码不能为空");
         }
-        if (StringUtils.isEmpty(loginResource.getUserName()) &&
-                StringUtils.isEmpty(loginResource.getMobile()) &&
-                StringUtils.isEmpty(loginResource.getEmail())) {
-            errors.reject("login.error", "请提供用户名/手机号/邮箱登陆");
+        if (!StringUtils.isEmpty(loginResource.getEmail())) {
+            if (!ValidateUtil.isEmail(loginResource.getEmail())) {
+                errors.rejectValue("email.illegal", "邮箱格式不正确");
+            }
+        } else if (!StringUtils.isEmpty(loginResource.getMobile())) {
+            if (!ValidateUtil.isMobile(loginResource.getMobile())) {
+                errors.rejectValue("mobile.illegal", "手机号码格式不正确");
+            }
+        } else if (!StringUtils.isEmpty(loginResource.getUserName())) {
         } else {
-            if (!StringUtils.isEmpty(loginResource.getEmail())) {
-                if (!ValidateUtil.isEmail(loginResource.getEmail())) {
-                    errors.rejectValue("email.illegal", "邮箱格式不正确");
-                }
-            }
-            if (!StringUtils.isEmpty(loginResource.getMobile())) {
-                if (!ValidateUtil.isMobile(loginResource.getMobile())) {
-                    errors.rejectValue("mobile.illegal", "手机号码格式不正确");
-                }
-            }
+            errors.reject("login.error", "请提供用户名/手机号/邮箱登陆");
         }
     }
 }
