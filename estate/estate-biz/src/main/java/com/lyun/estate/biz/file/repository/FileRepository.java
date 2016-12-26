@@ -1,9 +1,10 @@
 package com.lyun.estate.biz.file.repository;
 
 import com.lyun.estate.biz.file.def.CustomType;
-import com.lyun.estate.biz.file.repository.provider.FileSqlProvider;
+import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.OwnerType;
 import com.lyun.estate.biz.file.entity.FileEntity;
+import com.lyun.estate.biz.file.repository.provider.FileSqlProvider;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,7 @@ public interface FileRepository {
     int insert(FileEntity entity);
 
     @SelectProvider(type = FileSqlProvider.class, method = "select")
-    List<FileEntity> select(Long ownerId, OwnerType ownerType, CustomType customType);
+    List<FileEntity> select(Long ownerId, OwnerType ownerType, CustomType customType, FileProcess fileProcess);
 
     @InsertProvider(type = FileSqlProvider.class, method = "delete")
     int delete(Long id);

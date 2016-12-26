@@ -12,7 +12,9 @@ public interface FileService {
 
     FileEntity save(FileEntity entity, InputStream inputStream, String suffix, FileProcess process);
 
-    List<FileEntity> find(Long ownerId, OwnerType ownerType, CustomType customType);
+    void sort(List<FileEntity> entities);
+
+    List<FileEntity> find(Long ownerId, OwnerType ownerType, CustomType customType, FileProcess fileProcess);
 
     Boolean delete(Long id);
 }

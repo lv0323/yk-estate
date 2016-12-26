@@ -6,7 +6,6 @@ import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.PutObjectRequest;
-import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.Target;
 import com.lyun.estate.biz.file.entity.FileEntity;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -27,7 +27,7 @@ public class OssFileService extends AbstractFileService {
     private static final String ACCESS_KEY_SECRET = "u3YhcVy3OIS0wezHPetlU2esDydWd8";
     private static final String BUCKET_NAME = "yk-estate-image";
 
-    private static final String WATERMARK_STYLE = "image/watermark,image_cGFuZGEuanBn,t_50";
+    private static final String WATERMARK_STYLE = "image/watermark,image_cGFuZGEuanBn,t_50,g_center";
 
     private OSSClient client = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
 
@@ -50,7 +50,7 @@ public class OssFileService extends AbstractFileService {
                     OSSObject object = client.getObject(request);
 
                     FileEntity newEntity = entity.clone();
-                    newEntity.setCustomType(CustomType.valueOf(entity.getCustomType().toString() + "_WM"));
+                    newEntity.setFileProcess(FileProcess.WATERMARK);
                     newEntity.setPath(UUID.randomUUID().toString().toLowerCase() + suffix);
                     client.putObject(new PutObjectRequest(BUCKET_NAME, newEntity.getPath(), object.getObjectContent()));
                     repository.insert(entity);
@@ -63,6 +63,17 @@ public class OssFileService extends AbstractFileService {
             }
             repository.insert(entity);
             return entity;
+        } catch (Exception e) {
+            throw new EstateException(e, ExCode.OSS_EXCEPTION);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void sort(List<FileEntity> entities) {
+        try {
+            for (FileEntity entity : entities)
+                repository.insert(entity);
         } catch (Exception e) {
             throw new EstateException(e, ExCode.OSS_EXCEPTION);
         }

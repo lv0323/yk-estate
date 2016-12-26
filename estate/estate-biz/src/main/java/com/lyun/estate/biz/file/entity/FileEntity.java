@@ -1,9 +1,6 @@
 package com.lyun.estate.biz.file.entity;
 
-import com.lyun.estate.biz.file.def.CustomType;
-import com.lyun.estate.biz.file.def.FileType;
-import com.lyun.estate.biz.file.def.OwnerType;
-import com.lyun.estate.biz.file.def.Target;
+import com.lyun.estate.biz.file.def.*;
 
 public class FileEntity implements Cloneable {
 
@@ -12,6 +9,7 @@ public class FileEntity implements Cloneable {
     private OwnerType ownerType;
     private FileType fileType;
     private CustomType customType;
+    private FileProcess fileProcess;
     private Target target;
     private String path;
 
@@ -75,6 +73,15 @@ public class FileEntity implements Cloneable {
 
     public FileEntity setPath(String path) {
         this.path = path;
+        return this;
+    }
+
+    public int getFileProcess() {
+        return fileProcess != null ? fileProcess.getFlag() : 0;
+    }
+
+    public FileEntity setFileProcess(FileProcess fileProcess) {
+        this.fileProcess = fileProcess;
         return this;
     }
 
