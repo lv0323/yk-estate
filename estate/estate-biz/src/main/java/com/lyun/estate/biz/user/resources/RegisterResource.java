@@ -1,7 +1,5 @@
 package com.lyun.estate.biz.user.resources;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
 public class RegisterResource {
     private String mobile;
     private String password;

@@ -19,7 +19,7 @@ import java.util.Locale;
 
 @ControllerAdvice
 public class VerifyCodeArgumentResolver implements HandlerMethodArgumentResolver, Formatter<VerifyCode> {
-    private final static String VERIFY_CODE_HEADER = "X-VERIFY-CODE";
+    public final static String VERIFY_CODE_HEADER = "X-VERIFY-CODE";
     private final static String VERIFY_ID = "verifyId";
     private final static String VERIFY_CODE = "verifyCode";
     private final static String CLIENT_ID = "clientId";

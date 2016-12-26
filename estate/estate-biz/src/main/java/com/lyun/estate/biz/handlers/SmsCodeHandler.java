@@ -1,4 +1,4 @@
-package com.lyun.estate.rest.hanlder;
+package com.lyun.estate.biz.handlers;
 
 import com.lyun.estate.biz.message.service.SmsService;
 import com.lyun.estate.core.supports.annotations.CheckSmsCode;
@@ -9,6 +9,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -21,7 +22,7 @@ public class SmsCodeHandler {
 
     public void verify(SmsCode smsCode) {
         if (smsService.isSmsCodeCorrect(smsCode)) {
-            throw new ValidateException("verifyCode.illegal", "短信验证码非法");
+            throw new ValidateException("verifyCode.illegal", "短信验证码错误");
         }
     }
 

@@ -1,4 +1,4 @@
-package com.lyun.estate.rest.hanlder;
+package com.lyun.estate.biz.handlers;
 
 import com.lyun.estate.biz.user.service.CaptchaService;
 import com.lyun.estate.core.supports.annotations.CheckVerifyCode;
@@ -34,7 +34,6 @@ public class VerifyCodeHandler {
         if (!captchaService.isVerifyCodeCorrect(verifyCode.getClientId(), verifyCode.getVerifyId(), verifyCode.getVerifyCode())) {
             throw new ValidateException("verifyCode.illegal", "图片验证码不正确");
         }
-
     }
 
     @Before(value = "@annotation(checkVerifyCode)", argNames = "joinPoint,checkVerifyCode")

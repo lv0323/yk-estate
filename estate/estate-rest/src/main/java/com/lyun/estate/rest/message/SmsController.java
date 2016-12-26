@@ -2,14 +2,13 @@ package com.lyun.estate.rest.message;
 
 import com.lyun.estate.biz.message.resources.SmsResponse;
 import com.lyun.estate.biz.message.service.SmsService;
+import com.lyun.estate.core.supports.annotations.CheckSmsCode;
 import com.lyun.estate.core.supports.annotations.CheckVerifyCode;
+import com.lyun.estate.core.supports.resolvers.VerifyCodeArgumentResolver;
+import com.lyun.estate.core.supports.resources.SmsCode;
 import com.lyun.estate.core.supports.resources.VerifyCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -22,8 +21,14 @@ public class SmsController {
     @CheckVerifyCode
     @PostMapping
     public SmsResponse sendMessage(@RequestParam(value = "mobile") String mobile,
-                                   @RequestHeader(value = "X-VERIFY-CODE") VerifyCode verifyCode) {
+                                   @RequestHeader(value = VerifyCodeArgumentResolver.VERIFY_CODE_HEADER) VerifyCode verifyCode) {
         String smsId = UUID.randomUUID().toString();
         return smsService.sendMessage(smsId, mobile);
+    }
+
+    @CheckSmsCode
+    @PostMapping("/correct")
+    public boolean isCorrect(SmsCode smsCode) {
+        return true;
     }
 }
