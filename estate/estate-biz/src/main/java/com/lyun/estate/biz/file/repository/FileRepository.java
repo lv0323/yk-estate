@@ -6,6 +6,7 @@ import com.lyun.estate.biz.file.def.OwnerType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.repository.provider.FileSqlProvider;
 import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public interface FileRepository {
 
     @InsertProvider(type = FileSqlProvider.class, method = "insert")
+    @Options(useGeneratedKeys = true)
     int insert(FileDescription entity);
 
     @SelectProvider(type = FileSqlProvider.class, method = "select")

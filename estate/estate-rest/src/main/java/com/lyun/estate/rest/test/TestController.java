@@ -9,17 +9,20 @@ import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.def.OwnerType;
 import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.file.service.OssFileService;
 import com.lyun.estate.biz.file.spec.FileService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/test")
@@ -30,7 +33,9 @@ public class TestController {
     @Autowired
     private TokenProvider tokenProvider;
     @Autowired
-    private FileService fileService;
+    private OssFileService fileService;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @GetMapping(value = "/string")
     public String string() {
@@ -72,9 +77,22 @@ public class TestController {
                     .setFileType(FileType.IMAGE)
                     .setFileProcess(FileProcess.WATERMARK.getFlag());
 
-            return fileService.save(fileDescription, file.getInputStream(), file.getOriginalFilename());
+            return fileService.save(fileDescription, file.getInputStream(),
+                    file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.')));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @RequestMapping("context")
+    public String context() {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, ?> entry : applicationContext.getBeansOfType(FileService.class).entrySet()) {
+            sb.append(entry.getKey())
+                    .append(" ")
+                    .append(entry.getValue())
+                    .append("\n");
+        }
+        return sb.toString();
     }
 }

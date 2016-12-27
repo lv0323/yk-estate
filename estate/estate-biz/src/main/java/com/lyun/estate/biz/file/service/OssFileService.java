@@ -48,13 +48,15 @@ public class OssFileService extends AbstractFileService {
         if (!suffix.startsWith("."))
             suffix = '.' + suffix;
 
+        int process = entity.getFileProcess();
+        entity.setFileProcess(0);
         entity.setTarget(Target.OSS);
         entity.setPath(UUID.randomUUID().toString().toLowerCase() + suffix);
 
         client.putObject(new PutObjectRequest(BUCKET_NAME, entity.getPath(), inputStream));
         repository.insert(entity);
 
-        if (entity.getFileProcess() == FileProcess.WATERMARK.getFlag()) {
+        if (process == FileProcess.WATERMARK.getFlag()) {
             GetObjectRequest request = new GetObjectRequest(BUCKET_NAME, entity.getPath());
             request.setProcess(WATERMARK_STYLE);
             OSSObject object = client.getObject(request);
