@@ -3,8 +3,9 @@ package com.lyun.estate.biz.file.service;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.OwnerType;
-import com.lyun.estate.biz.file.entity.FileEntity;
+import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.repository.FileRepository;
+import com.lyun.estate.biz.file.spec.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public abstract class AbstractFileService implements FileService {
     }
 
     @Override
-    public List<FileEntity> find(Long ownerId, OwnerType ownerType, CustomType customType, FileProcess fileProcess) {
+    public List<FileDescription> find(Long ownerId, OwnerType ownerType, CustomType customType, FileProcess fileProcess) {
         return repository.select(ownerId, ownerType, customType, fileProcess);
     }
 

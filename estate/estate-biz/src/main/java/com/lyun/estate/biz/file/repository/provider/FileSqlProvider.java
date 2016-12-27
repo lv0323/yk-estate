@@ -3,14 +3,14 @@ package com.lyun.estate.biz.file.repository.provider;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.OwnerType;
-import com.lyun.estate.biz.file.entity.FileEntity;
+import com.lyun.estate.biz.file.entity.FileDescription;
 import org.apache.ibatis.jdbc.SQL;
 
 public class FileSqlProvider {
 
     private static final String TABLE_NAME = "t_file_description";
 
-    public String insert(FileEntity entity) {
+    public String insert(FileDescription entity) {
         return new SQL().INSERT_INTO(TABLE_NAME)
                 .VALUES("owner_id", "#{ownerId}")
                 .VALUES("owner_type", "#{ownerType}")

@@ -8,7 +8,7 @@ import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.Target;
-import com.lyun.estate.biz.file.entity.FileEntity;
+import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.repository.FileRepository;
 import com.lyun.estate.core.exception.EstateException;
 import com.lyun.estate.core.exception.ExCode;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -37,19 +36,19 @@ public class OssFileService extends AbstractFileService {
 
     @Transactional
     @Override
-    public FileEntity save(FileEntity entity, InputStream inputStream, String suffix, FileProcess process) {
+    public FileDescription save(FileDescription entity, InputStream inputStream, String suffix) {
         try {
             entity.setTarget(Target.OSS);
             entity.setPath(UUID.randomUUID().toString().toLowerCase() + suffix);
 
             client.putObject(new PutObjectRequest(BUCKET_NAME, entity.getPath(), inputStream));
-            if (process == FileProcess.WATERMARK) {
+            if (entity.getFileProcess() == FileProcess.WATERMARK) {
                 try {
                     GetObjectRequest request = new GetObjectRequest(BUCKET_NAME, entity.getPath());
                     request.setProcess(WATERMARK_STYLE);
                     OSSObject object = client.getObject(request);
 
-                    FileEntity newEntity = entity.clone();
+                    FileDescription newEntity = entity.clone();
                     newEntity.setFileProcess(FileProcess.WATERMARK);
                     newEntity.setPath(UUID.randomUUID().toString().toLowerCase() + suffix);
                     client.putObject(new PutObjectRequest(BUCKET_NAME, newEntity.getPath(), object.getObjectContent()));
@@ -63,17 +62,6 @@ public class OssFileService extends AbstractFileService {
             }
             repository.insert(entity);
             return entity;
-        } catch (Exception e) {
-            throw new EstateException(e, ExCode.OSS_EXCEPTION);
-        }
-    }
-
-    @Transactional
-    @Override
-    public void sort(List<FileEntity> entities) {
-        try {
-            for (FileEntity entity : entities)
-                repository.insert(entity);
         } catch (Exception e) {
             throw new EstateException(e, ExCode.OSS_EXCEPTION);
         }

@@ -2,7 +2,7 @@ package com.lyun.estate.biz.file.entity;
 
 import com.lyun.estate.biz.file.def.*;
 
-public class FileEntity implements Cloneable {
+public class FileDescription implements Cloneable {
 
     private Long id;
     private Long ownerId;
@@ -17,7 +17,7 @@ public class FileEntity implements Cloneable {
         return id;
     }
 
-    public FileEntity setId(Long id) {
+    public FileDescription setId(Long id) {
         this.id = id;
         return this;
     }
@@ -26,7 +26,7 @@ public class FileEntity implements Cloneable {
         return ownerType;
     }
 
-    public FileEntity setOwnerType(OwnerType ownerType) {
+    public FileDescription setOwnerType(OwnerType ownerType) {
         this.ownerType = ownerType;
         return this;
     }
@@ -35,7 +35,7 @@ public class FileEntity implements Cloneable {
         return ownerId;
     }
 
-    public FileEntity setOwnerId(Long ownerId) {
+    public FileDescription setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
         return this;
     }
@@ -44,7 +44,7 @@ public class FileEntity implements Cloneable {
         return customType;
     }
 
-    public FileEntity setCustomType(CustomType customType) {
+    public FileDescription setCustomType(CustomType customType) {
         this.customType = customType;
         return this;
     }
@@ -53,7 +53,7 @@ public class FileEntity implements Cloneable {
         return fileType;
     }
 
-    public FileEntity setFileType(FileType fileType) {
+    public FileDescription setFileType(FileType fileType) {
         this.fileType = fileType;
         return this;
     }
@@ -62,7 +62,7 @@ public class FileEntity implements Cloneable {
         return target;
     }
 
-    public FileEntity setTarget(Target target) {
+    public FileDescription setTarget(Target target) {
         this.target = target;
         return this;
     }
@@ -71,23 +71,23 @@ public class FileEntity implements Cloneable {
         return path;
     }
 
-    public FileEntity setPath(String path) {
+    public FileDescription setPath(String path) {
         this.path = path;
         return this;
     }
 
-    public int getFileProcess() {
-        return fileProcess != null ? fileProcess.getFlag() : 0;
+    public FileProcess getFileProcess() {
+        return fileProcess ;
     }
 
-    public FileEntity setFileProcess(FileProcess fileProcess) {
+    public FileDescription setFileProcess(FileProcess fileProcess) {
         this.fileProcess = fileProcess;
         return this;
     }
 
     @Override
     public String toString() {
-        return "FileEntity{" +
+        return "FileDescription{" +
                 "id=" + id +
                 ", ownerType=" + ownerType +
                 ", ownerId=" + ownerId +
@@ -99,9 +99,9 @@ public class FileEntity implements Cloneable {
     }
 
     @Override
-    public FileEntity clone() {
+    public FileDescription clone() {
         try {
-            return (FileEntity) super.clone();
+            return (FileDescription) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new InternalError(e);
         }

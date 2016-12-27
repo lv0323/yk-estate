@@ -1,10 +1,12 @@
 package com.lyun.estate.rest.test;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.lyun.estate.biz.file.def.*;
-import com.lyun.estate.biz.file.entity.FileEntity;
+import com.lyun.estate.biz.file.def.CustomType;
+import com.lyun.estate.biz.file.def.FileType;
+import com.lyun.estate.biz.file.def.OwnerType;
+import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.repository.FileRepository;
-import com.lyun.estate.biz.file.service.FileService;
+import com.lyun.estate.biz.file.spec.FileService;
 import com.lyun.estate.core.exception.EstateException;
 import com.lyun.estate.core.exception.ExCode;
 import org.slf4j.Logger;
@@ -56,12 +58,12 @@ public class TestController {
     public void oss(@PathVariable String file) {
         file = "D:/" + file + ".jpg";
         try {
-            FileEntity entity = new FileEntity();
+            FileDescription entity = new FileDescription();
             entity.setOwnerType(OwnerType.VILLAGE);
             entity.setOwnerId(123L);
             entity.setCustomType(CustomType.SHIJING);
             entity.setFileType(FileType.IMAGE);
-            entity = fileService.save(entity, new FileInputStream(new File(file)), ".jpg", FileProcess.WATERMARK);
+            entity = fileService.save(entity, new FileInputStream(new File(file)), ".jpg");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -75,17 +77,5 @@ public class TestController {
             System.out.println(name);
         }
         return stringBuilder.toString();
-    }
-
-    @RequestMapping("fs")
-    public void fs() {
-        FileEntity entity = new FileEntity();
-        entity.setOwnerType(OwnerType.VILLAGE);
-        entity.setOwnerId(123L);
-        entity.setCustomType(CustomType.SHIJING);
-        entity.setFileType(FileType.IMAGE);
-        entity.setTarget(Target.OSS);
-        entity.setPath("XXXXXXXXXXXX");
-        fileRepository.insert(entity);
     }
 }
