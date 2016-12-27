@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.auth;
+package com.lyun.estate.biz.auth.sms;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-public @interface CheckToken {
+public @interface CheckSmsCode {
 }

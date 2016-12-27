@@ -1,7 +1,6 @@
-package com.lyun.estate.biz.handlers;
+package com.lyun.estate.biz.auth.captcha;
 
 import com.lyun.estate.biz.user.service.CaptchaService;
-import com.lyun.estate.core.supports.annotations.CheckVerifyCode;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.supports.resources.VerifyCode;
 import org.aspectj.lang.JoinPoint;
@@ -16,7 +15,7 @@ import java.util.Optional;
 
 @Aspect
 @Component
-public class VerifyCodeHandler {
+public class CaptchaAspect {
 
     @Autowired
     CaptchaService captchaService;
@@ -36,8 +35,8 @@ public class VerifyCodeHandler {
         }
     }
 
-    @Before(value = "@annotation(checkVerifyCode)", argNames = "joinPoint,checkVerifyCode")
-    public void verifyPointCut(JoinPoint joinPoint, CheckVerifyCode checkVerifyCode) {
+    @Before(value = "@annotation(checkCaptcha)", argNames = "joinPoint,checkCaptcha")
+    public void verifyPointCut(JoinPoint joinPoint, CheckCaptcha checkCaptcha) {
         Optional<Object> optional = Arrays.asList(joinPoint.getArgs()).stream()
                 .filter(a -> a != null && VerifyCode.class.isAssignableFrom(a.getClass())).findAny();
         if (optional.isPresent()) {

@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.auth;
+package com.lyun.estate.biz.auth.token;
 
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import org.aspectj.lang.JoinPoint;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Aspect
 @Component
-public class TokenAuthorizer {
+public class TokenAspect {
 
     @Autowired
     private TokenProvider tokenProvider;

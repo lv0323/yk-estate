@@ -2,7 +2,7 @@ package com.lyun.estate.rest.user;
 
 import cn.apiclub.captcha.servlet.CaptchaServletUtil;
 import com.lyun.estate.biz.user.service.CaptchaService;
-import com.lyun.estate.core.supports.annotations.CheckVerifyCode;
+import com.lyun.estate.biz.auth.captcha.CheckCaptcha;
 import com.lyun.estate.core.supports.resolvers.VerifyCodeArgumentResolver;
 import com.lyun.estate.core.supports.resources.VerifyCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -38,7 +37,7 @@ public class CaptchaController {
 
 
     @PostMapping(path = "/correct", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @CheckVerifyCode
+    @CheckCaptcha
     @ResponseBody
     public boolean correct(@RequestHeader(VerifyCodeArgumentResolver.VERIFY_CODE_HEADER) VerifyCode verifyCode) {
         return true;

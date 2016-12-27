@@ -1,7 +1,6 @@
 package com.lyun.estate.biz.user.service;
 
-import com.lyun.estate.biz.auth.TokenProvider;
-import com.lyun.estate.biz.clock.service.ClockService;
+import com.lyun.estate.biz.auth.token.TokenProvider;
 import com.lyun.estate.biz.user.domain.Token;
 import com.lyun.estate.biz.user.domain.User;
 import com.lyun.estate.biz.user.repository.TokenMapper;
@@ -12,7 +11,7 @@ import com.lyun.estate.biz.user.resources.RegisterResponse;
 import com.lyun.estate.biz.user.resources.TokenResponse;
 import com.lyun.estate.biz.user.service.validator.LoginResourceValidator;
 import com.lyun.estate.biz.user.service.validator.RegisterResourceValidator;
-import com.lyun.estate.core.supports.ExecutionContext;
+import com.lyun.estate.biz.utils.clock.ClockTools;
 import com.lyun.estate.core.supports.exceptions.EstateBizException;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.utils.CommonUtil;
@@ -41,7 +40,7 @@ public class UserService {
     @Autowired
     TokenProvider tokenProvider;
     @Autowired
-    ClockService clockService;
+    ClockTools clockTools;
 
     @Transactional
     public RegisterResponse register(RegisterResource registerResource) {
@@ -88,18 +87,15 @@ public class UserService {
             throw new ValidateException("warn.user.login", bindingResult.getAllErrors());
         }
         User loginUser = userMapper.loginUser(loginResource);
-        if (loginUser != null &&
-                CommonUtil.isSha256Equal(loginUser.getSalt() + loginResource.getPassword(), loginUser.getHash())) {
+        if (loginUser != null && CommonUtil.isSha256Equal(loginUser.getSalt() + loginResource.getPassword(), loginUser.getHash())) {
             Token token = new Token().setHash(tokenProvider.generate(String.valueOf(loginUser.getId())))
-                    .setExpireTime(new Date(clockService.now()
+                    .setExpireTime(new Date(clockTools.now().toInstant()
                             .plus(loginResource.getValidDays() > 0 ? loginResource.getValidDays() : getDefaultValidDays(), ChronoUnit.DAYS)
                             .toEpochMilli()));
             if (tokenMapper.create(token) != 1) {
                 throw new EstateBizException("login.error", "登陆服务异常");
             }
-            return new TokenResponse()
-                    .setJwt(token.getHash())
-                    .setJwtExpireTime(token.getExpireTime());
+            return new TokenResponse().setJwt(token.getHash()).setJwtExpireTime(token.getExpireTime());
         } else {
             throw new ValidateException("user.login.error", "用户名或密码错误");
         }

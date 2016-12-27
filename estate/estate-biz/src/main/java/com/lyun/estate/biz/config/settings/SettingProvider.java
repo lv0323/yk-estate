@@ -1,18 +1,12 @@
-package com.lyun.estate.biz.setting.service;
+package com.lyun.estate.biz.config.settings;
 
-import com.lyun.estate.biz.setting.def.NameSpace;
-import com.lyun.estate.biz.setting.entity.Setting;
-import com.lyun.estate.biz.setting.repository.SettingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by Jeffrey on 2016-12-26.
- */
 @Service
-public class SettingService {
+public class SettingProvider {
 
     @Autowired
     private SettingRepository settingRepository;

@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.auth;
+package com.lyun.estate.biz.auth.token;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;

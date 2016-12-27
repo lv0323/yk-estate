@@ -1,7 +1,5 @@
-package com.lyun.estate.biz.setting.repository;
+package com.lyun.estate.biz.config.settings;
 
-import com.lyun.estate.biz.setting.def.NameSpace;
-import com.lyun.estate.biz.setting.entity.Setting;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 

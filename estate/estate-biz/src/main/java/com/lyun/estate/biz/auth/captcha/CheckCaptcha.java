@@ -1,4 +1,4 @@
-package com.lyun.estate.core.supports.annotations;
+package com.lyun.estate.biz.auth.captcha;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-public @interface CheckVerifyCode {
+public @interface CheckCaptcha {
 }

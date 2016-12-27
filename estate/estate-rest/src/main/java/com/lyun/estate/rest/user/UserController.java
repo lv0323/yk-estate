@@ -6,7 +6,7 @@ import com.lyun.estate.biz.user.resources.RegisterResource;
 import com.lyun.estate.biz.user.resources.RegisterResponse;
 import com.lyun.estate.biz.user.resources.TokenResponse;
 import com.lyun.estate.biz.user.service.UserService;
-import com.lyun.estate.core.supports.annotations.CheckVerifyCode;
+import com.lyun.estate.biz.auth.captcha.CheckCaptcha;
 import com.lyun.estate.core.supports.resolvers.SmsCodeArgumentResolver;
 import com.lyun.estate.core.supports.resolvers.VerifyCodeArgumentResolver;
 import com.lyun.estate.core.supports.resources.SmsCode;
@@ -31,7 +31,7 @@ public class UserController {
 
 
     @PostMapping("/login")
-    @CheckVerifyCode
+    @CheckCaptcha
     public TokenResponse login(LoginResource loginResource,
                                @RequestHeader(VerifyCodeArgumentResolver.VERIFY_CODE_HEADER) VerifyCode verifyCode) {
         return userService.login(loginResource);

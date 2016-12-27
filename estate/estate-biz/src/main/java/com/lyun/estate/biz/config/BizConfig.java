@@ -8,7 +8,8 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @ComponentScan({"com.lyun.estate.biz"})
 @MapperScan({"com.lyun.estate.biz.*.repository"})
-@PropertySource(value = "classpath:/biz/biz.properties")
+@PropertySource(value = "classpath:estate/biz/biz.properties", ignoreResourceNotFound = true)
+@PropertySource(value = "classpath:file://${LVJINSUO_HOME}/conf/estate/biz/biz.properties", ignoreResourceNotFound = true)
 public class BizConfig {
 
 }

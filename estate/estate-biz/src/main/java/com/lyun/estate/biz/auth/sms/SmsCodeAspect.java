@@ -1,7 +1,6 @@
-package com.lyun.estate.biz.handlers;
+package com.lyun.estate.biz.auth.sms;
 
 import com.lyun.estate.biz.message.service.SmsService;
-import com.lyun.estate.core.supports.annotations.CheckSmsCode;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.supports.resources.SmsCode;
 import org.aspectj.lang.JoinPoint;
@@ -9,14 +8,14 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.Optional;
 
 @Aspect
 @Component
-public class SmsCodeHandler {
+public class SmsCodeAspect {
+
     @Autowired
     SmsService smsService;
 

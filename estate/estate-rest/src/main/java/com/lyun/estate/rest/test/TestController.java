@@ -1,9 +1,9 @@
 package com.lyun.estate.rest.test;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.lyun.estate.biz.auth.CheckToken;
-import com.lyun.estate.biz.auth.JWTToken;
-import com.lyun.estate.biz.auth.TokenProvider;
+import com.lyun.estate.biz.auth.token.CheckToken;
+import com.lyun.estate.biz.auth.token.JWTToken;
+import com.lyun.estate.biz.auth.token.TokenProvider;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import org.slf4j.Logger;

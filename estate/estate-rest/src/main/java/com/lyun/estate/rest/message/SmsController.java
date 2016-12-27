@@ -1,9 +1,9 @@
 package com.lyun.estate.rest.message;
 
+import com.lyun.estate.biz.auth.captcha.CheckCaptcha;
 import com.lyun.estate.biz.message.resources.SmsResponse;
 import com.lyun.estate.biz.message.service.SmsService;
-import com.lyun.estate.core.supports.annotations.CheckSmsCode;
-import com.lyun.estate.core.supports.annotations.CheckVerifyCode;
+import com.lyun.estate.biz.auth.sms.CheckSmsCode;
 import com.lyun.estate.core.supports.resolvers.SmsCodeArgumentResolver;
 import com.lyun.estate.core.supports.resolvers.VerifyCodeArgumentResolver;
 import com.lyun.estate.core.supports.resources.SmsCode;
@@ -18,7 +18,7 @@ public class SmsController {
     @Autowired
     SmsService smsService;
 
-    @CheckVerifyCode
+    @CheckCaptcha
     @PostMapping
     public SmsResponse sendMessage(@RequestParam(value = "mobile") String mobile,
                                    @RequestHeader(value = VerifyCodeArgumentResolver.VERIFY_CODE_HEADER) VerifyCode verifyCode) {

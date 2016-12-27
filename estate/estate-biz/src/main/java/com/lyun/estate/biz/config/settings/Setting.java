@@ -1,6 +1,5 @@
-package com.lyun.estate.biz.setting.entity;
+package com.lyun.estate.biz.config.settings;
 
-import com.lyun.estate.biz.setting.def.NameSpace;
 import com.lyun.estate.core.supports.YN;
 
 /**
