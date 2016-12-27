@@ -1,13 +1,12 @@
 package com.lyun.estate.biz.config.settings;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
-/**
- * Created by Jeffrey on 2016-12-26.
- */
+@Mapper
 public interface SettingRepository {
 
     @Select("SELECT * FROM t_setting WHERE name_space = #{nameSpace} AND  key = #{key};")
