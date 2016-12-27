@@ -48,7 +48,9 @@ public class OssFileService extends AbstractFileService {
         if (!suffix.startsWith("."))
             suffix = '.' + suffix;
 
-        int process = entity.getFileProcess();
+        int process = 0;
+        if (entity.getFileProcess() != null)
+            process = entity.getFileProcess();
         entity.setFileProcess(0);
         entity.setTarget(Target.OSS);
         entity.setPath(UUID.randomUUID().toString().toLowerCase() + suffix);

@@ -55,7 +55,7 @@ public class PageBoundsArgumentResolver implements HandlerMethodArgumentResolver
 
     @Override
     public PageBounds parse(String text, Locale locale) throws ParseException {
-        logger.debug("pagebound wrap:{}", text);
+        logger.debug("pagebound resolve:{}", text);
         if (!StringUtils.hasText(text)) {
             return DEFAULT_PAGE_BOUNDS;
         }
