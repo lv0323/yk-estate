@@ -1,69 +1,109 @@
 package com.lyun.estate.biz.auth.token;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
 
 @Component
 public class TokenProvider {
 
     private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
-    private static final String secretKey = "123456";
+    @Value("${token.secret.key}")
+    private String secretKey;
 
-    private static final long hourInMills = 60 * 1000;
+    @Value("${token.refresh.key}")
+    private String refreshKey;
 
-    public String generate(String subject) {
-        return generate(subject, null, null, 2);
+    @Autowired
+    private TokenMapper tokenMapper;
+
+    private static final long defaultTokenHour = 2;
+    private static final long defaultRefreshTokenHour = 7 * 24;
+    private static final long hourInMills = 60 * 60 * 1000;
+
+    public JWTToken generate(String subject, long clientId) {
+        return generate(subject, clientId, defaultTokenHour);
     }
 
-    public String generate(String subject, long hour) {
-        return generate(subject, null, null, hour);
+    public JWTToken generate(String subject, long clientId, long hour) {
+        return generate(subject, clientId, hour, null);
     }
 
-    public String generate(String subject, String claimKey, Object claimValue) {
-        return generate(subject, claimKey, claimValue, 2);
+    public JWTToken generate(String subject, long clientId, HashMap<String, Object> claims) {
+        return generate(subject, clientId, defaultTokenHour, claims);
     }
 
-    public String generate(String subject, String claimKey, Object claimValue, long hour) {
+    public JWTToken generate(String subject, long clientId, long hour, HashMap<String, Object> claims) {
         long now = (new Date()).getTime();
+        hour = checkHour(hour);
         Date validity = new Date(now + hour * hourInMills);
+        Date refreshValidity = new Date(now + (defaultRefreshTokenHour + hour) * hourInMills);
+        String token = generateToken(subject, validity, claims);
+        String refreshToken = generateRefreshToken(subject, refreshValidity);
+        tokenMapper.createToken(new TokenEntity(subject, clientId, token, validity, refreshToken));
+        return new JWTToken(token, refreshToken);
+    }
 
+    private String generateToken(String subject, Date validity, HashMap<String, Object> claims) {
         JwtBuilder builder = Jwts.builder()
                 .setSubject(subject)
                 .signWith(SignatureAlgorithm.HS512, secretKey)
                 .setExpiration(validity);
-        if (claimKey != null && claimValue != null) {
-            builder.claim(claimKey, claimValue);
+        if (claims != null) {
+            for (String key : claims.keySet()) {
+                builder.claim(key, claims.get(key));
+            }
         }
         return builder.compact();
     }
 
+    private String generateRefreshToken(String subject, Date refreshValidity) {
+        return Jwts.builder()
+                .setSubject(subject)
+                .signWith(SignatureAlgorithm.HS512, refreshKey)
+                .setExpiration(refreshValidity).compact();
+    }
+
+    private long checkHour(long hour) {
+        if (hour <= 0) hour = 2;
+        if (hour >= 168) hour = 168;
+        return hour;
+    }
+
     public boolean validate(String token) {
         try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return true;
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+            return tokenMapper.findToken(token) != null;
         } catch (SignatureException e) {
             logger.info("invalid jwt signature: {}", e.getMessage());
             return false;
         }
     }
 
-    public String getSubject(String token) {
-        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-        return claims.getSubject();
+    public int invalidToken(String token) {
+        int rows = tokenMapper.invalidToken(token);
+        logger.info("invalid token {}, update {} row(s)", token, rows);
+        return rows;
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T getClaims(String token, String claimName, Class<T> c) {
-        return (T) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get(claimName);
+    public int invalidAllUserToken(String userId) {
+        int rows = tokenMapper.invalidAllUserTokens(userId);
+        logger.info("invalid user {}'s tokens, update {} row(s)", userId, rows);
+        return rows;
+    }
+
+    public String getSubject(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
 }

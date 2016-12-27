@@ -1,4 +1,4 @@
-DROP TABLE t_file_description;
+DROP TABLE IF EXISTS t_file_description;
 CREATE TABLE t_file_description (
   id           BIGSERIAL PRIMARY KEY,
   owner_id     BIGINT,
