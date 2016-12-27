@@ -21,7 +21,7 @@ public class SmsService {
     @Qualifier("evictCacheManager")
     CacheManager cacheManager;
 
-    public SmsResponse sendCheckSms(String smsId, String mobile, String type) {
+    public SmsResponse sendCheckSms(String smsId, String mobile) {
         if (!ValidateUtil.isMobile(mobile)) {
             throw new ValidateException("mobile.isNull", "手机号码不能为空");
         }

@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.user.resources;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lyun.estate.core.utils.Constant;
+import com.lyun.estate.core.supports.types.Constant;
 
 import java.util.Date;
 
