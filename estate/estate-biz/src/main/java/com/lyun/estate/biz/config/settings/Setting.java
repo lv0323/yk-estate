@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.config.settings;
 
-import com.lyun.estate.core.supports.YN;
+import com.lyun.estate.core.supports.types.YN;
 
 /**
  * Created by Jeffrey on 2016-12-26.

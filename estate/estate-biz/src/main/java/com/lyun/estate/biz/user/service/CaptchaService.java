@@ -26,7 +26,7 @@ public class CaptchaService {
     @Qualifier("evictCacheManager")
     CacheManager cacheManager;
 
-    public BufferedImage getVerifyCodeImage(long clientId, String verifyId, int width, int height) {
+    public BufferedImage getCaptcha(long clientId, String id, int width, int height) {
         if (width < 60 || width > maxWidth || height < 20 || height > maxHeight || width < height * 3) {
             throw new ValidateException("getVerifyCodeImage.illegal", "宽高非法");
         }
@@ -47,13 +47,13 @@ public class CaptchaService {
                 .addNoise(new CurvedLineNoiseProducer(Color.BLACK, 2.0f))
                 .gimp()
                 .build();
-        String captchaStr = clientId + ":" + verifyId + ":" + captcha.getAnswer().toLowerCase();
+        String captchaStr = clientId + ":" + id + ":" + captcha.getAnswer().toLowerCase();
         cacheManager.getCache("evictDefault").put(captchaStr, captchaStr);
         return captcha.getImage();
     }
 
-    public boolean isVerifyCodeCorrect(long clientId, String imageId, String code) {
-        String captchaStr = clientId + ":" + imageId + ":" + code.toLowerCase();
+    public boolean isCaptchaCorrect(long clientId, String id, String code) {
+        String captchaStr = clientId + ":" + id + ":" + code.toLowerCase();
         boolean result = cacheManager.getCache(CacheConfig.EVICT_CACHE_NAME).get(captchaStr) != null;
         cacheManager.getCache("evictDefault").evict(captchaStr);
         return result;

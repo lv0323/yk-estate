@@ -14,6 +14,7 @@ CREATE TABLE t_user (
   hash         VARCHAR(64),
   email        VARCHAR(32),
   mobile       VARCHAR(16),
+  type         VARCHAR(16) NOT NULL,
   description  VARCHAR(64)
 );
 

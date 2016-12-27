@@ -23,6 +23,7 @@ public class UserSqlProvider extends BaseProvider<User> {
                 .VALUES_IF("hash", "#{hash}", !StringUtils.isEmpty(entity.getHash()))
                 .VALUES_IF("email", "#{email}", !StringUtils.isEmpty(entity.getEmail()))
                 .VALUES_IF("mobile", "#{mobile}", !StringUtils.isEmpty(entity.getMobile()))
+                .VALUES_IF("type", "#{type}", !StringUtils.isEmpty(entity.getMobile()))
                 .VALUES_IF("description", "#{description}", !StringUtils.isEmpty(entity.getDescription()));
     }
 
@@ -45,7 +46,8 @@ public class UserSqlProvider extends BaseProvider<User> {
             WHERE_IF("user_name=#{userName}", !StringUtils.isEmpty(registerResource.getUserName()));
             WHERE_IF("mobile=#{mobile}", !StringUtils.isEmpty(registerResource.getMobile()));
             WHERE_IF("email=#{email}", !StringUtils.isEmpty(registerResource.getEmail()));
-            WHERE("IS_DELETED='N'");
+            WHERE("type=#{type}");
+            WHERE("is_deleted='N'");
         }}.toString();
     }
 
@@ -56,6 +58,7 @@ public class UserSqlProvider extends BaseProvider<User> {
             WHERE_IF("mobile=#{mobile}", !StringUtils.isEmpty(loginResource.getMobile()));
             WHERE_IF("user_name=#{userName}", !StringUtils.isEmpty(loginResource.getUserName()));
             WHERE_IF("email=#{email}", !StringUtils.isEmpty(loginResource.getEmail()));
+            WHERE_IF("type=#{type}", !StringUtils.isEmpty(loginResource.getType()));
         }}.toString();
     }
 }

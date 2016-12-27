@@ -2,7 +2,7 @@ package com.lyun.estate.biz.housedict.entity;
 
 import com.lyun.estate.biz.housedict.def.LicenceStatus;
 import com.lyun.estate.biz.housedict.def.LicenceType;
-import com.lyun.estate.core.supports.YN;
+import com.lyun.estate.core.supports.types.YN;
 
 import java.util.Date;
 
