@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.user.domain;
 
 import com.lyun.estate.core.domain.BaseEntity;
+import com.lyun.estate.core.supports.types.UserType;
 
 public class User extends BaseEntity {
     private String userName;
@@ -10,6 +11,7 @@ public class User extends BaseEntity {
     private String hash;
     private String email;
     private String mobile;
+    private UserType type;
     private String description;
 
     public String getUserName() {
@@ -72,6 +74,15 @@ public class User extends BaseEntity {
 
     public User setMobile(String mobile) {
         this.mobile = mobile;
+        return this;
+    }
+
+    public UserType getType() {
+        return type;
+    }
+
+    public User setType(UserType type) {
+        this.type = type;
         return this;
     }
 

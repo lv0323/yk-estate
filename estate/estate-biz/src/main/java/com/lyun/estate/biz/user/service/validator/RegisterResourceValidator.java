@@ -23,7 +23,7 @@ public class RegisterResourceValidator implements Validator {
     public void validate(Object target, Errors errors) {
         RegisterResource registerResource = (RegisterResource) target;
         if (StringUtils.isEmpty(registerResource.getPassword())) {
-            errors.reject("label.isNull", "密码不能为空");
+            errors.reject("password.isNull", "密码不能为空");
         }
         if (!ValidateUtil.isPassword(registerResource.getPassword())) {
             errors.reject("password.illegal", "密码格式应为8-32位半角非特殊字符");

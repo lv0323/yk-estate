@@ -27,7 +27,7 @@ public class SmsController {
     public SmsResponse sendMessage(@RequestParam(value = "mobile") String mobile,
                                    @RequestHeader(value = CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {
         String smsId = CommonUtil.getUuid();
-        return smsService.sendMessage(smsId, mobile);
+        return smsService.sendCheckSms(smsId, mobile);
     }
 
     @CheckSmsCode

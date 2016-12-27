@@ -1,6 +1,6 @@
 package com.lyun.estate.core.domain;
 
-import com.lyun.estate.core.supports.YN;
+import com.lyun.estate.core.supports.types.YN;
 
 import java.util.Date;
 

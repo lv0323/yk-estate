@@ -1,11 +1,15 @@
 package com.lyun.estate.biz.user.resources;
 
+import com.lyun.estate.core.supports.types.UserType;
+
 public class RegisterResource {
     private String userName;
     private String email;
     private String mobile;
     private String password;
+    private UserType type;
     private boolean login;
+
 
     public String getUserName() {
         return userName;
@@ -40,6 +44,15 @@ public class RegisterResource {
 
     public RegisterResource setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    public UserType getType() {
+        return type;
+    }
+
+    public RegisterResource setType(UserType type) {
+        this.type = type;
         return this;
     }
 

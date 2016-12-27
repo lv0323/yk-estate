@@ -1,4 +1,4 @@
-package com.lyun.estate.core.supports;
+package com.lyun.estate.core.supports.types;
 
 public enum YN {
     Y("罗辑是"), N("罗辑非");

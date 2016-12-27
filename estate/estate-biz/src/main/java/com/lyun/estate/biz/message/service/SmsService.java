@@ -2,7 +2,7 @@ package com.lyun.estate.biz.message.service;
 
 import com.lyun.estate.biz.message.resources.SmsResponse;
 import com.lyun.estate.core.config.CacheConfig;
-import com.lyun.estate.core.supports.YN;
+import com.lyun.estate.core.supports.types.YN;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.core.utils.ValidateUtil;
@@ -21,7 +21,7 @@ public class SmsService {
     @Qualifier("evictCacheManager")
     CacheManager cacheManager;
 
-    public SmsResponse sendMessage(String smsId, String mobile) {
+    public SmsResponse sendCheckSms(String smsId, String mobile, String type) {
         if (!ValidateUtil.isMobile(mobile)) {
             throw new ValidateException("mobile.isNull", "手机号码不能为空");
         }
