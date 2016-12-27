@@ -4,7 +4,7 @@ import com.lyun.estate.biz.message.resources.SmsResponse;
 import com.lyun.estate.core.config.CacheConfig;
 import com.lyun.estate.core.supports.YN;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
-import com.lyun.estate.core.supports.resources.SmsCode;
+import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.core.utils.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

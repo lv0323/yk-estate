@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.message.repository;
 
-import com.lyun.estate.core.supports.resources.SmsCode;
+import com.lyun.estate.biz.auth.sms.SmsCode;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 

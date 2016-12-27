@@ -1,4 +1,4 @@
-package com.lyun.estate.core.supports.resources;
+package com.lyun.estate.biz.auth.sms;
 
 public class SmsCode {
     private String smsId;

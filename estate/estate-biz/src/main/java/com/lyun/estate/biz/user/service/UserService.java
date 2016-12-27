@@ -88,7 +88,7 @@ public class UserService {
         }
         User loginUser = userMapper.loginUser(loginResource);
         if (loginUser != null && CommonUtil.isSha256Equal(loginUser.getSalt() + loginResource.getPassword(), loginUser.getHash())) {
-            Token token = new Token().setHash(tokenProvider.generate(String.valueOf(loginUser.getId())))
+            Token token = new Token().setHash(tokenProvider.generate(String.valueOf(loginUser.getId()), null, null, loginResource.getValidDays() > 0 ? loginResource.getValidDays() * 24 : getDefaultValidDays() * 24))
                     .setExpireTime(new Date(clockTools.now().toInstant()
                             .plus(loginResource.getValidDays() > 0 ? loginResource.getValidDays() : getDefaultValidDays(), ChronoUnit.DAYS)
                             .toEpochMilli()));
