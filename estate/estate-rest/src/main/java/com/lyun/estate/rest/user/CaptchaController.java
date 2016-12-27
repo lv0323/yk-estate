@@ -26,7 +26,7 @@ public class CaptchaController {
     CaptchaService captchaService;
 
     @GetMapping(produces = MediaType.IMAGE_PNG_VALUE)
-    public void getImage(@RequestParam("clientId") long clientId,
+    public void getImage(@RequestParam("clientId") int clientId,
                          @RequestParam("id") String id,
                          @RequestParam("width") int width,
                          @RequestParam("height") int height,
