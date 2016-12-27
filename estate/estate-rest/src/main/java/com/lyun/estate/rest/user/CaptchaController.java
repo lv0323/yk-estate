@@ -1,10 +1,10 @@
 package com.lyun.estate.rest.user;
 
 import cn.apiclub.captcha.servlet.CaptchaServletUtil;
-import com.lyun.estate.biz.user.service.CaptchaService;
+import com.lyun.estate.biz.auth.captcha.Captcha;
+import com.lyun.estate.biz.auth.captcha.CaptchaArgumentResolver;
 import com.lyun.estate.biz.auth.captcha.CheckCaptcha;
-import com.lyun.estate.core.supports.resolvers.VerifyCodeArgumentResolver;
-import com.lyun.estate.core.supports.resources.VerifyCode;
+import com.lyun.estate.biz.user.service.CaptchaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -27,11 +27,11 @@ public class CaptchaController {
 
     @GetMapping(produces = MediaType.IMAGE_PNG_VALUE)
     public void getImage(@RequestParam("clientId") long clientId,
-                         @RequestParam("verifyId") String verifyId,
+                         @RequestParam("id") String id,
                          @RequestParam("width") int width,
                          @RequestParam("height") int height,
                          HttpServletResponse response) {
-        BufferedImage image = captchaService.getVerifyCodeImage(clientId, verifyId, width, height);
+        BufferedImage image = captchaService.getCaptcha(clientId, id, width, height);
         CaptchaServletUtil.writeImage(response, image);
     }
 
@@ -39,7 +39,7 @@ public class CaptchaController {
     @PostMapping(path = "/correct", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @CheckCaptcha
     @ResponseBody
-    public boolean correct(@RequestHeader(VerifyCodeArgumentResolver.VERIFY_CODE_HEADER) VerifyCode verifyCode) {
+    public boolean correct(@RequestHeader(CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {
         return true;
     }
 

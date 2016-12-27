@@ -1,7 +1,6 @@
-package com.lyun.estate.core.supports.resolvers;
+package com.lyun.estate.biz.auth.captcha;
 
 import com.lyun.estate.core.supports.exceptions.ValidateException;
-import com.lyun.estate.core.supports.resources.VerifyCode;
 import com.lyun.estate.core.utils.QueryStringUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.format.Formatter;
@@ -18,37 +17,37 @@ import java.text.ParseException;
 import java.util.Locale;
 
 @ControllerAdvice
-public class VerifyCodeArgumentResolver implements HandlerMethodArgumentResolver, Formatter<VerifyCode> {
-    public final static String VERIFY_CODE_HEADER = "X-VERIFY-CODE";
-    private final static String VERIFY_ID = "verifyId";
-    private final static String VERIFY_CODE = "verifyCode";
+public class CaptchaArgumentResolver implements HandlerMethodArgumentResolver, Formatter<Captcha> {
+    public final static String CAPTCHA_HEADER = "X-CAPTCHA";
     private final static String CLIENT_ID = "clientId";
+    private final static String VERIFY_ID = "id";
+    private final static String VERIFY_CODE = "code";
 
     @Override
-    public VerifyCode parse(String text, Locale locale) throws ParseException {
+    public Captcha parse(String text, Locale locale) throws ParseException {
         if (StringUtils.isEmpty(text)) {
-            throw new ValidateException(VERIFY_CODE_HEADER + ".header.isNull", "图片验证码消息头缺失");
+            throw new ValidateException(CAPTCHA_HEADER + ".header.isNull", "图片验证码消息头缺失");
         }
         MultiValueMap<String, String> map = QueryStringUtil.parse(text);
-        return new VerifyCode()
+        return new Captcha()
                 .setClientId(Long.parseLong(map.getFirst(CLIENT_ID)))
-                .setVerifyCode(map.getFirst(VERIFY_CODE))
-                .setVerifyId(map.getFirst(VERIFY_ID));
+                .setCode(map.getFirst(VERIFY_CODE))
+                .setId(map.getFirst(VERIFY_ID));
     }
 
     @Override
-    public String print(VerifyCode object, Locale locale) {
+    public String print(Captcha object, Locale locale) {
         return null;
     }
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return VerifyCode.class.isAssignableFrom(parameter.getParameterType());
+        return Captcha.class.isAssignableFrom(parameter.getParameterType());
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        String text = webRequest.getHeader(VERIFY_CODE_HEADER);
+        String text = webRequest.getHeader(CAPTCHA_HEADER);
         if (!StringUtils.hasText(text)) {
             text = webRequest.getNativeRequest(HttpServletRequest.class).getQueryString();
         }
