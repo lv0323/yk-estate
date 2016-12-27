@@ -1,20 +1,21 @@
 package com.lyun.estate.biz.file.service;
 
-import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.PutObjectRequest;
+import com.google.common.base.Strings;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.Target;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.repository.FileRepository;
-import com.lyun.estate.core.exception.EstateException;
-import com.lyun.estate.core.exception.ExCode;
+import com.lyun.estate.core.supports.exceptions.EstateException;
+import com.lyun.estate.core.supports.exceptions.ExCode;
+import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
@@ -37,33 +38,40 @@ public class OssFileService extends AbstractFileService {
     @Transactional
     @Override
     public FileDescription save(FileDescription entity, InputStream inputStream, String suffix) {
-        try {
-            entity.setTarget(Target.OSS);
-            entity.setPath(UUID.randomUUID().toString().toLowerCase() + suffix);
+        ExceptionUtil.checkNotNull("entity", entity);
+        ExceptionUtil.checkNotNull("ownerId", entity.getOwnerId());
+        ExceptionUtil.checkNotNull("ownerType", entity.getOwnerType());
+        ExceptionUtil.checkNotNull("fileType", entity.getFileType());
+        ExceptionUtil.checkNotNull("customType", entity.getCustomType());
+        ExceptionUtil.checkNotNull("inputStream", inputStream);
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(suffix), "suffix", suffix);
+        if (!suffix.startsWith("."))
+            suffix = '.' + suffix;
 
-            client.putObject(new PutObjectRequest(BUCKET_NAME, entity.getPath(), inputStream));
-            if (entity.getFileProcess() == FileProcess.WATERMARK) {
-                try {
-                    GetObjectRequest request = new GetObjectRequest(BUCKET_NAME, entity.getPath());
-                    request.setProcess(WATERMARK_STYLE);
-                    OSSObject object = client.getObject(request);
+        entity.setTarget(Target.OSS);
+        entity.setPath(UUID.randomUUID().toString().toLowerCase() + suffix);
 
-                    FileDescription newEntity = entity.clone();
-                    newEntity.setFileProcess(FileProcess.WATERMARK);
-                    newEntity.setPath(UUID.randomUUID().toString().toLowerCase() + suffix);
-                    client.putObject(new PutObjectRequest(BUCKET_NAME, newEntity.getPath(), object.getObjectContent()));
-                    repository.insert(entity);
-                    repository.insert(newEntity);
-                    return newEntity;
-                } catch (OSSException | ClientException e) {
-                    client.deleteObject(BUCKET_NAME, entity.getPath());
-                    throw e;
-                }
+        client.putObject(new PutObjectRequest(BUCKET_NAME, entity.getPath(), inputStream));
+        repository.insert(entity);
+
+        if (entity.getFileProcess() == FileProcess.WATERMARK.getFlag()) {
+            GetObjectRequest request = new GetObjectRequest(BUCKET_NAME, entity.getPath());
+            request.setProcess(WATERMARK_STYLE);
+            OSSObject object = client.getObject(request);
+
+            FileDescription wmEntity = entity.clone();
+            wmEntity.setFileProcess(FileProcess.WATERMARK.getFlag());
+            wmEntity.setPath(UUID.randomUUID().toString().toLowerCase() + suffix);
+
+            try (InputStream is = object.getObjectContent()) {
+                client.putObject(new PutObjectRequest(BUCKET_NAME, wmEntity.getPath(), is));
+            } catch (IOException e) {
+                throw new EstateException(ExCode.OSS_EXCEPTION);
             }
-            repository.insert(entity);
-            return entity;
-        } catch (Exception e) {
-            throw new EstateException(e, ExCode.OSS_EXCEPTION);
+            repository.insert(wmEntity);
+            return wmEntity;
         }
+
+        return entity;
     }
 }

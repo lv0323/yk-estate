@@ -4,17 +4,21 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.lyun.estate.biz.auth.token.CheckToken;
 import com.lyun.estate.biz.auth.token.JWTToken;
 import com.lyun.estate.biz.auth.token.TokenProvider;
+import com.lyun.estate.biz.file.def.CustomType;
+import com.lyun.estate.biz.file.def.FileProcess;
+import com.lyun.estate.biz.file.def.FileType;
+import com.lyun.estate.biz.file.def.OwnerType;
+import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.file.spec.FileService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 @RestController
@@ -25,6 +29,8 @@ public class TestController {
 
     @Autowired
     private TokenProvider tokenProvider;
+    @Autowired
+    private FileService fileService;
 
     @GetMapping(value = "/string")
     public String string() {
@@ -56,4 +62,19 @@ public class TestController {
         return tokenProvider.getClaims(token.getToken(), "body", HashMap.class);
     }
 
+    @PostMapping("oss")
+    public Object oss(@RequestParam MultipartFile file) {
+        try {
+            FileDescription fileDescription = new FileDescription()
+                    .setOwnerId(0L)
+                    .setOwnerType(OwnerType.XIAOQU)
+                    .setCustomType(CustomType.HUXING)
+                    .setFileType(FileType.IMAGE)
+                    .setFileProcess(FileProcess.WATERMARK.getFlag());
+
+            return fileService.save(fileDescription, file.getInputStream(), file.getOriginalFilename());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

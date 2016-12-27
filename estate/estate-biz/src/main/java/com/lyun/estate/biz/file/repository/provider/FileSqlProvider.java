@@ -1,7 +1,6 @@
 package com.lyun.estate.biz.file.repository.provider;
 
 import com.lyun.estate.biz.file.def.CustomType;
-import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.OwnerType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import org.apache.ibatis.jdbc.SQL;
@@ -21,7 +20,7 @@ public class FileSqlProvider {
                 .VALUES("path", "#{path}").toString();
     }
 
-    public String select(Long ownerId, OwnerType ownerType, CustomType customType, FileProcess fileProcess) {
+    public String select(Long ownerId, OwnerType ownerType, CustomType customType, Integer fileProcess) {
         SQL sql = new SQL().SELECT("*").FROM(TABLE_NAME)
                 .WHERE("is_deleted = false")
                 .WHERE("owner_id = #{ownerId}")

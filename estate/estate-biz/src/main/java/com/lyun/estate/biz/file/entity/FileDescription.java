@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.file.entity;
 
 import com.lyun.estate.biz.file.def.*;
+import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 
 public class FileDescription implements Cloneable {
 
@@ -9,7 +10,7 @@ public class FileDescription implements Cloneable {
     private OwnerType ownerType;
     private FileType fileType;
     private CustomType customType;
-    private FileProcess fileProcess;
+    private Integer fileProcess;
     private Target target;
     private String path;
 
@@ -76,11 +77,11 @@ public class FileDescription implements Cloneable {
         return this;
     }
 
-    public FileProcess getFileProcess() {
-        return fileProcess ;
+    public Integer getFileProcess() {
+        return fileProcess;
     }
 
-    public FileDescription setFileProcess(FileProcess fileProcess) {
+    public FileDescription setFileProcess(Integer fileProcess) {
         this.fileProcess = fileProcess;
         return this;
     }
@@ -103,7 +104,7 @@ public class FileDescription implements Cloneable {
         try {
             return (FileDescription) super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new InternalError(e);
+            throw ExceptionUtil.wrap(e);
         }
     }
 }
