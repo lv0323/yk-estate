@@ -1,26 +1,21 @@
 package com.lyun.estate.rest.test;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.lyun.estate.biz.file.def.CustomType;
-import com.lyun.estate.biz.file.def.FileType;
-import com.lyun.estate.biz.file.def.OwnerType;
-import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.file.repository.FileRepository;
-import com.lyun.estate.biz.file.spec.FileService;
-import com.lyun.estate.core.exception.EstateException;
-import com.lyun.estate.core.exception.ExCode;
+import com.lyun.estate.biz.auth.token.CheckToken;
+import com.lyun.estate.biz.auth.token.JWTToken;
+import com.lyun.estate.biz.auth.token.TokenProvider;
+import com.lyun.estate.core.supports.exceptions.EstateException;
+import com.lyun.estate.core.supports.exceptions.ExCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/test")
@@ -28,16 +23,8 @@ public class TestController {
 
     private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
-    private final FileRepository fileRepository;
-    private final FileService fileService;
-    private final ApplicationContext applicationContext;
-
     @Autowired
-    public TestController(FileRepository fileRepository, FileService fileService, ApplicationContext applicationContext) {
-        this.fileRepository = fileRepository;
-        this.fileService = fileService;
-        this.applicationContext = applicationContext;
-    }
+    private TokenProvider tokenProvider;
 
     @GetMapping(value = "/string")
     public String string() {
@@ -54,28 +41,19 @@ public class TestController {
         return pageBounds;
     }
 
-    @RequestMapping("oss/{file}")
-    public void oss(@PathVariable String file) {
-        file = "D:/" + file + ".jpg";
-        try {
-            FileDescription entity = new FileDescription();
-            entity.setOwnerType(OwnerType.VILLAGE);
-            entity.setOwnerId(123L);
-            entity.setCustomType(CustomType.SHIJING);
-            entity.setFileType(FileType.IMAGE);
-            entity = fileService.save(entity, new FileInputStream(new File(file)), ".jpg");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+    @GetMapping(value = "/token")
+    public JWTToken token() {
+        String token = tokenProvider.generate("timbo", "body", new HashMap<String, String>() {{
+            put("a", "123");
+            put("b", "456");
+        }});
+        return new JWTToken(token);
     }
 
-    @RequestMapping("context")
-    public String context() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String name : applicationContext.getBeanDefinitionNames()) {
-            stringBuilder.append(name).append("\n");
-            System.out.println(name);
-        }
-        return stringBuilder.toString();
+    @PostMapping(value = "/validate")
+    @CheckToken
+    public HashMap validate(@RequestHeader("auth") JWTToken token) {
+        return tokenProvider.getClaims(token.getToken(), "body", HashMap.class);
     }
+
 }
