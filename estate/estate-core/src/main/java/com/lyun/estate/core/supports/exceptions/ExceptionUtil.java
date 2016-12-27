@@ -38,9 +38,22 @@ public class ExceptionUtil {
                 throwable.getLocalizedMessage()), throwable);
     }
 
+    public static EstateException wrap(Throwable throwable) {
+        logger.warn(MessageFormat.format("Wrapping exception {0} : {1}",
+                throwable.getClass(),
+                throwable.getLocalizedMessage()), throwable);
+        return new EstateException(ExCode.DEFAULT_EXCEPTION);
+    }
+
     public static void checkIllegal(boolean express, String param, Object value) {
         if (!express) {
             throw new EstateException(ExCode.PARAM_ILLEGAL, param, value);
+        }
+    }
+
+    public static void checkNotNull(String param, Object value) {
+        if (value == null) {
+            throw new EstateException(ExCode.PARAM_NULL, param);
         }
     }
 

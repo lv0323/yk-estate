@@ -26,7 +26,8 @@ ext {
             simplecaptcha: '1.2.2',
             user_agent_utils: '1.20',
             caffeine: '2.3.5',
-            jjwt: '0.7.0'
+            jjwt: '0.7.0',
+            oss: "2.4.0"
     ]
 
     lib = [
@@ -74,7 +75,8 @@ ext {
             simplecaptcha: "cn.apiclub.tool:simplecaptcha:$ver.simplecaptcha",
             user_agent_utils: "eu.bitwalker:UserAgentUtils:$ver.user_agent_utils",
             caffeine: "com.github.ben-manes.caffeine:caffeine:$ver.caffeine",
-            jjwt: "io.jsonwebtoken:jjwt:$ver.jjwt"
+            jjwt: "io.jsonwebtoken:jjwt:$ver.jjwt",
+            oss: "com.aliyun.oss:aliyun-sdk-oss:$ver.oss"
 
     ]
 
