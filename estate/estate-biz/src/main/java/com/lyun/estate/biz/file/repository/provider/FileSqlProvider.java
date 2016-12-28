@@ -37,4 +37,20 @@ public class FileSqlProvider {
                 .SET("is_deleted = true")
                 .WHERE("id = #{id}").toString();
     }
+
+    public String setPriority(FileDescription entity) {
+        SQL sql1 = new SQL().UPDATE(TABLE_NAME)
+                .SET("priority = null")
+                .WHERE("owner_id = #{ownerId}")
+                .WHERE("owner_type = #{ownerType}");
+        if (entity.getCustomType() != null)
+            sql1.WHERE("custom_type = #{customType}");
+        if (entity.getFileProcess() != null)
+            sql1.WHERE("file_process = #{fileProcess}");
+
+        SQL sql2 = new SQL().UPDATE(TABLE_NAME)
+                .SET("priority = #{priority}")
+                .WHERE("id = #{id}");
+        return sql1 + ";" + sql2;
+    }
 }
