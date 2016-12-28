@@ -30,7 +30,7 @@ public class CaptchaArgumentResolver implements HandlerMethodArgumentResolver, F
         }
         MultiValueMap<String, String> map = QueryStringUtil.parse(text);
         return new Captcha()
-                .setClientId(Long.parseLong(map.getFirst(CLIENT_ID)))
+                .setClientId(Integer.parseInt(map.getFirst(CLIENT_ID)))
                 .setCode(map.getFirst(VERIFY_CODE))
                 .setId(map.getFirst(VERIFY_ID));
     }

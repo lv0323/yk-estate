@@ -1,15 +1,15 @@
 package com.lyun.estate.biz.auth.captcha;
 
 public class Captcha {
-    private long clientId;
+    private int clientId;
     private String id;
     private String code;
 
-    public long getClientId() {
+    public int getClientId() {
         return clientId;
     }
 
-    public Captcha setClientId(long clientId) {
+    public Captcha setClientId(int clientId) {
         this.clientId = clientId;
         return this;
     }

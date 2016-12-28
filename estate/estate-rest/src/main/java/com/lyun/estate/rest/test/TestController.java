@@ -13,6 +13,7 @@ import com.lyun.estate.biz.file.service.OssFileService;
 import com.lyun.estate.biz.file.spec.FileService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
+import com.lyun.estate.core.supports.types.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,17 +55,16 @@ public class TestController {
 
     @GetMapping(value = "/token")
     public JWTToken token() {
-        String token = tokenProvider.generate("timbo", "body", new HashMap<String, String>() {{
+        return tokenProvider.generate("timbo", Constant.CLIENT_ID.WEB, new HashMap<String, Object>() {{
             put("a", "123");
             put("b", "456");
         }});
-        return new JWTToken(token);
     }
 
     @PostMapping(value = "/validate")
     @CheckToken
-    public HashMap validate(@RequestHeader("auth") JWTToken token) {
-        return tokenProvider.getClaims(token.getToken(), "body", HashMap.class);
+    public String validate(@RequestHeader("auth") JWTToken token) {
+        return tokenProvider.getSubject(token.getToken());
     }
 
     @PostMapping("oss")
