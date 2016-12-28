@@ -19,9 +19,12 @@ public interface FileRepository {
     @SelectProvider(type = FileSqlProvider.class, method = "select")
     List<FileDescription> select(@Param("ownerId") Long ownerId, @Param("ownerType") OwnerType ownerType, @Param("customType") CustomType customType, @Param("fileProcess") Integer fileProcess);
 
+    @SelectProvider(type = FileSqlProvider.class, method = "selectOne")
+    FileDescription selectOne(@Param("id") Long id);
+
     @UpdateProvider(type = FileSqlProvider.class, method = "delete")
     int delete(@Param("id") Long id);
 
-    @UpdateProvider(type = FileSqlProvider.class, method = "setPriority")
-    int setPriority(FileDescription entity);
+    @UpdateProvider(type = FileSqlProvider.class, method = "updatePriority")
+    int updatePriority(@Param("id") Long id, @Param("priority") Integer priority);
 }

@@ -12,7 +12,7 @@ public interface FileService {
 
     FileDescription save(FileDescription entity, InputStream inputStream, String suffix);
 
-    Boolean setFirst(FileDescription entity);
+    Boolean setFirst(Long id);
 
     List<FileDescription> find(Long ownerId, OwnerType ownerType, CustomType customType, FileProcess fileProcess);
 

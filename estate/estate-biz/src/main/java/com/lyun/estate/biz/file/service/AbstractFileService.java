@@ -21,8 +21,12 @@ public abstract class AbstractFileService implements FileService {
 
     @Transactional
     @Override
-    public Boolean setFirst(FileDescription entity) {
-        return repository.setPriority(entity.setPriority(0)) > 0;
+    public Boolean setFirst(Long id) {
+        FileDescription entity = repository.selectOne(id);
+        List<FileDescription> fileDescriptionList = repository.select(entity.getOwnerId(), entity.getOwnerType(), entity.getCustomType(), entity.getFileProcess());
+        for (FileDescription fd : fileDescriptionList)
+            repository.updatePriority(fd.getId(), null);
+        return repository.updatePriority(id, 0) > 0;
     }
 
     @Override

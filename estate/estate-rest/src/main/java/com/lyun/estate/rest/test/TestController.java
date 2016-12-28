@@ -86,7 +86,7 @@ public class TestController {
 
     @RequestMapping("priority")
     public void priority() {
-        fileService.setFirst(fileService.find(0L, OwnerType.XIAOQU, null, null).get(0));
+        fileService.setFirst(7L);
     }
 
     @RequestMapping("context")
