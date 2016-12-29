@@ -34,9 +34,9 @@ public class OssFileService extends AbstractFileService {
     public OssFileService(FileRepository repository, SettingProvider settingProvider,
                           @Value("${oss.access_key_id}") String accessKeyId, @Value("${oss.access_key_secret}") String accessKeySecret) {
         super(repository); //"oss-cn-hangzhou.aliyuncs.com"
-        BUCKET_NAME = settingProvider.find(NameSpace.FILE, "bucket_name").get(0).getValue();
-        WATERMARK_STYLE = settingProvider.find(NameSpace.FILE, "watermark_style").get(0).getValue();
-        client = new OSSClient(settingProvider.find(NameSpace.FILE, "endpoint").get(0).getValue(), accessKeyId, accessKeySecret);
+        BUCKET_NAME = settingProvider.find(NameSpace.FILE, "bucket_name").getValue();
+        WATERMARK_STYLE = settingProvider.find(NameSpace.FILE, "watermark_style").getValue();
+        client = new OSSClient(settingProvider.find(NameSpace.FILE, "endpoint").getValue(), accessKeyId, accessKeySecret);
     }
 
     @Transactional
