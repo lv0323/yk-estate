@@ -1,15 +1,8 @@
 package com.lyun.estate.biz.user.resources;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lyun.estate.core.supports.types.Constant;
-
-import java.util.Date;
-
 public class RegisterResponse {
     private boolean registered;
     private String jwt;
-    @JsonFormat(pattern = Constant.JSON_DATE_FORMAT)
-    private Date jwtExpireTime;
 
     public boolean isRegistered() {
         return registered;
@@ -29,12 +22,4 @@ public class RegisterResponse {
         return this;
     }
 
-    public Date getJwtExpireTime() {
-        return jwtExpireTime;
-    }
-
-    public RegisterResponse setJwtExpireTime(Date jwtExpireTime) {
-        this.jwtExpireTime = jwtExpireTime;
-        return this;
-    }
 }

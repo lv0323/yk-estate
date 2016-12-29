@@ -6,6 +6,7 @@ import com.lyun.estate.biz.auth.captcha.CheckCaptcha;
 import com.lyun.estate.biz.auth.sms.CheckSmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
+import com.lyun.estate.biz.message.resources.SmsResource;
 import com.lyun.estate.biz.message.resources.SmsResponse;
 import com.lyun.estate.biz.message.service.SmsService;
 import com.lyun.estate.core.utils.CommonUtil;
@@ -24,10 +25,9 @@ public class SmsController {
 
     @CheckCaptcha
     @PostMapping
-    public SmsResponse sendMessage(@RequestParam(value = "mobile") String mobile,
+    public SmsResponse sendMessage(SmsResource smsResource,
                                    @RequestHeader(value = CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {
-        String smsId = CommonUtil.getUuid();
-        return smsService.sendCheckSms(smsId, mobile);
+        return smsService.sendCheckSms(smsResource);
     }
 
     @CheckSmsCode

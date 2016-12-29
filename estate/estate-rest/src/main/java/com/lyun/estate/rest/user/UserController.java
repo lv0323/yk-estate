@@ -4,10 +4,12 @@ package com.lyun.estate.rest.user;
 import com.lyun.estate.biz.auth.captcha.Captcha;
 import com.lyun.estate.biz.auth.captcha.CaptchaArgumentResolver;
 import com.lyun.estate.biz.auth.captcha.CheckCaptcha;
+import com.lyun.estate.biz.auth.sms.CheckSmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
 import com.lyun.estate.biz.auth.token.CheckToken;
 import com.lyun.estate.biz.auth.token.JWTToken;
+import com.lyun.estate.biz.user.resources.ChangePasswordResource;
 import com.lyun.estate.biz.user.resources.LoginResource;
 import com.lyun.estate.biz.user.resources.RegisterResource;
 import com.lyun.estate.biz.user.resources.RegisterResponse;
@@ -39,6 +41,19 @@ public class UserController {
         return userService.login(loginResource);
     }
 
+    @PostMapping("change-password")
+    @CheckToken
+    public TokenResponse changePassword(ChangePasswordResource changePasswordResource,
+                                        @RequestHeader("auth") JWTToken token) {
+        return userService.changePassword(changePasswordResource);
+    }
+
+    @PostMapping("forget-password")
+    @CheckSmsCode
+    public TokenResponse forgetPassword(ChangePasswordResource changePasswordResource,
+                                        @RequestHeader(SmsCodeArgumentResolver.SMS_CODE_HEADER) SmsCode smsCode) {
+        return userService.changePassword(changePasswordResource);
+    }
 
     @PostMapping("/is-login")
     @CheckToken

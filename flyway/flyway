@@ -71,7 +71,7 @@ done;
 for arg in $@; do
   if [ "$arg" = "clean" ] && [ "$hasConf" != "0" ] ; then
     echo "Error: clean is disabled"
-#    exit 1
+    exit 1
   fi
 done;
 
