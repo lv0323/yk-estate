@@ -31,19 +31,19 @@ public class TokenProvider {
     private static final long defaultRefreshTokenHour = 7 * 24;
     private static final long hourInMills = 60 * 60 * 1000;
 
-    public JWTToken generate(String subject, long clientId) {
+    public JWTToken generate(String subject, int clientId) {
         return generate(subject, clientId, defaultTokenHour);
     }
 
-    public JWTToken generate(String subject, long clientId, long hour) {
+    public JWTToken generate(String subject, int clientId, long hour) {
         return generate(subject, clientId, hour, null);
     }
 
-    public JWTToken generate(String subject, long clientId, HashMap<String, Object> claims) {
+    public JWTToken generate(String subject, int clientId, HashMap<String, Object> claims) {
         return generate(subject, clientId, defaultTokenHour, claims);
     }
 
-    public JWTToken generate(String subject, long clientId, long hour, HashMap<String, Object> claims) {
+    public JWTToken generate(String subject, int clientId, long hour, HashMap<String, Object> claims) {
         long now = (new Date()).getTime();
         hour = checkHour(hour);
         Date validity = new Date(now + hour * hourInMills);
