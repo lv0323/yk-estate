@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.user.service.validator;
 
+import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.user.repository.UserMapper;
 import com.lyun.estate.biz.user.resources.RegisterResource;
 import com.lyun.estate.core.utils.ValidateUtil;
@@ -9,9 +10,11 @@ import org.springframework.validation.Validator;
 
 public class RegisterResourceValidator implements Validator {
     private UserMapper userMapper;
+    private SmsCode smsCode;
 
-    public RegisterResourceValidator(UserMapper userMapper) {
+    public RegisterResourceValidator(UserMapper userMapper, SmsCode smsCode) {
         this.userMapper = userMapper;
+        this.smsCode = smsCode;
     }
 
     @Override
@@ -32,6 +35,11 @@ public class RegisterResourceValidator implements Validator {
         if (!StringUtils.isEmpty(registerResource.getMobile())) {
             if (!ValidateUtil.isMobile(registerResource.getMobile())) {
                 errors.reject("mobile.illegal", "手机号码格式错误");
+            }
+            if (smsCode.getMobile() != null && !smsCode.getCode().equals(registerResource.getMobile())) {
+                if (!ValidateUtil.isMobile(registerResource.getMobile())) {
+                    errors.reject("mobile.not.match", "注册手机号与短信验证手机号码不一致");
+                }
             }
             if (errors.hasErrors()) {
                 return;

@@ -9,11 +9,7 @@ import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
 import com.lyun.estate.biz.auth.token.CheckToken;
 import com.lyun.estate.biz.auth.token.JWTToken;
-import com.lyun.estate.biz.user.resources.ChangePasswordResource;
-import com.lyun.estate.biz.user.resources.LoginResource;
-import com.lyun.estate.biz.user.resources.RegisterResource;
-import com.lyun.estate.biz.user.resources.RegisterResponse;
-import com.lyun.estate.biz.user.resources.TokenResponse;
+import com.lyun.estate.biz.user.resources.*;
 import com.lyun.estate.biz.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +26,7 @@ public class UserController {
     @PostMapping("/register")
     public RegisterResponse register(RegisterResource registerResource,
                                      @RequestHeader(SmsCodeArgumentResolver.SMS_CODE_HEADER) SmsCode smsCode) {
-        return userService.register(registerResource);
+        return userService.register(registerResource, smsCode);
     }
 
 
@@ -45,14 +41,14 @@ public class UserController {
     @CheckToken
     public TokenResponse changePassword(ChangePasswordResource changePasswordResource,
                                         @RequestHeader("auth") JWTToken token) {
-        return userService.changePassword(changePasswordResource);
+        return userService.changePassword(changePasswordResource, null, token);
     }
 
     @PostMapping("forget-password")
     @CheckSmsCode
     public TokenResponse forgetPassword(ChangePasswordResource changePasswordResource,
                                         @RequestHeader(SmsCodeArgumentResolver.SMS_CODE_HEADER) SmsCode smsCode) {
-        return userService.changePassword(changePasswordResource);
+        return userService.changePassword(changePasswordResource, smsCode, null);
     }
 
     @PostMapping("/is-login")

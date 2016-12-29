@@ -1,15 +1,12 @@
 package com.lyun.estate.biz.user.service;
 
+import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.token.JWTToken;
 import com.lyun.estate.biz.auth.token.TokenMapper;
 import com.lyun.estate.biz.auth.token.TokenProvider;
 import com.lyun.estate.biz.user.domain.User;
 import com.lyun.estate.biz.user.repository.UserMapper;
-import com.lyun.estate.biz.user.resources.ChangePasswordResource;
-import com.lyun.estate.biz.user.resources.LoginResource;
-import com.lyun.estate.biz.user.resources.RegisterResource;
-import com.lyun.estate.biz.user.resources.RegisterResponse;
-import com.lyun.estate.biz.user.resources.TokenResponse;
+import com.lyun.estate.biz.user.resources.*;
 import com.lyun.estate.biz.user.service.validator.ChangePasswordResourceValidator;
 import com.lyun.estate.biz.user.service.validator.LoginResourceValidator;
 import com.lyun.estate.biz.user.service.validator.RegisterResourceValidator;
@@ -17,7 +14,6 @@ import com.lyun.estate.biz.utils.clock.ClockTools;
 import com.lyun.estate.core.supports.ExecutionContext;
 import com.lyun.estate.core.supports.exceptions.EstateBizException;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
-import com.lyun.estate.core.supports.types.Constant;
 import com.lyun.estate.core.supports.types.UserType;
 import com.lyun.estate.core.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
+
+import java.util.HashMap;
 
 @Service
 public class UserService {
@@ -52,12 +50,12 @@ public class UserService {
     }
 
     @Transactional
-    public RegisterResponse register(RegisterResource registerResource) {
+    public RegisterResponse register(RegisterResource registerResource, SmsCode smsCode) {
         if (StringUtils.isEmpty(registerResource.getType())) {
             registerResource.setType(UserType.CUSTOMER);
         }
         DataBinder dataBinder = new DataBinder(registerResource, "userRegister");
-        dataBinder.setValidator(new RegisterResourceValidator(userMapper));
+        dataBinder.setValidator(new RegisterResourceValidator(userMapper, smsCode));
         dataBinder.validate();
         BindingResult bindingResult = dataBinder.getBindingResult();
         if (bindingResult.hasErrors()) {
@@ -103,29 +101,47 @@ public class UserService {
         }
         User loginUser = userMapper.loginUser(loginResource);
         if (loginUser != null && CommonUtil.isSha256Equal(loginUser.getSalt() + loginResource.getPassword(), loginUser.getHash())) {
-            JWTToken jwtToken = tokenProvider.generate(String.valueOf(loginUser.getId()), Constant.CLIENT_ID.WEB, loginResource.getValidDays() * 24);
-            return new TokenResponse().setJwt(jwtToken.getToken());
+            return getLoginToken(loginUser, loginResource.getValidDays() * 24);
         } else {
             throw new ValidateException("user.login.error", "用户名或密码错误");
         }
     }
 
+    private TokenResponse getLoginToken(User user, int defaultValidDays) {
+        JWTToken jwtToken = tokenProvider.generate(String.valueOf(user.getId()),
+                Integer.valueOf(executionContext.getClientId()),
+                defaultValidDays * 24,
+                new HashMap<String, Object>() {{
+                    put("clientId", executionContext.getClientId());
+                    put("browserName", executionContext.getBrowserName());
+                    put("osName", executionContext.getOsName());
+                    put("userAddress", executionContext.getUserAddress());
+                }});
+        return new TokenResponse().setJwt(jwtToken.getToken());
+    }
+
     @Transactional
-    public TokenResponse changePassword(ChangePasswordResource changePasswordResource) {
+    public TokenResponse changePassword(ChangePasswordResource changePasswordResource, SmsCode smsCode, JWTToken token) {
         changePasswordResource.setUserId(Long.valueOf(executionContext.getUserId()));
         DataBinder dataBinder = new DataBinder(changePasswordResource, "changePassword");
-        dataBinder.setValidator(new ChangePasswordResourceValidator(userMapper, (User user) -> {
+        final User[] loginUser = {null};
+        dataBinder.setValidator(new ChangePasswordResourceValidator(userMapper, smsCode, (User user) -> {
             String salt = CommonUtil.getUuid();
             if (userMapper.updateUser((User) user.setSalt(salt)
                     .setHash(CommonUtil.encryptBySha256(salt + changePasswordResource.getPassword()))
                     .setUpdateById(Long.parseLong(executionContext.getUserId()))) != 1) {
                 throw new ValidateException("password.change.fail", "密码修改失败");
             }
+            loginUser[0] = user;
         }));
         dataBinder.validate();
         BindingResult bindingResult = dataBinder.getBindingResult();
         if (bindingResult.hasErrors()) {
             throw new ValidateException("warn.password.change", bindingResult.getAllErrors());
+        }
+        if (changePasswordResource.isLogin()) {
+            tokenProvider.invalidAllUserToken(String.valueOf(loginUser[0].getId()));
+            return getLoginToken(loginUser[0], getDefaultValidDays());
         }
         return new TokenResponse();
     }

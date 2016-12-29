@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 @Aspect
 @Component
@@ -26,10 +25,9 @@ public class SmsCodeAspect {
 
     @Before(value = "@annotation(checkSmsCode)", argNames = "joinPoint,checkSmsCode")
     public void verifyPointCut(JoinPoint joinPoint, CheckSmsCode checkSmsCode) {
-        Optional<Object> optional = Arrays.asList(joinPoint.getArgs()).stream()
-                .filter(a -> a != null && SmsCode.class.isAssignableFrom(a.getClass())).findAny();
-        if (optional.isPresent()) {
-            check((SmsCode) optional.get());
-        }
+        Arrays.stream(joinPoint.getArgs())
+                .filter(a -> a != null && SmsCode.class.isAssignableFrom(a.getClass()))
+                .findAny()
+                .ifPresent(o -> check((SmsCode) o));
     }
 }

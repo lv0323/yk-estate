@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 @Aspect
 @Component
@@ -36,11 +35,10 @@ public class CaptchaAspect {
 
     @Before(value = "@annotation(checkCaptcha)", argNames = "joinPoint,checkCaptcha")
     public void verifyPointCut(JoinPoint joinPoint, CheckCaptcha checkCaptcha) {
-        Optional<Object> optional = Arrays.asList(joinPoint.getArgs()).stream()
-                .filter(a -> a != null && Captcha.class.isAssignableFrom(a.getClass())).findAny();
-        if (optional.isPresent()) {
-            check((Captcha) optional.get());
-        }
+        Arrays.stream(joinPoint.getArgs())
+                .filter(a -> a != null && Captcha.class.isAssignableFrom(a.getClass()))
+                .findAny()
+                .ifPresent(o -> check((Captcha) o));
     }
 
 

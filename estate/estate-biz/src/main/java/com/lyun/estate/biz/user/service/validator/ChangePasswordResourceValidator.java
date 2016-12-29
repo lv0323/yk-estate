@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.user.service.validator;
 
+import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.user.domain.User;
 import com.lyun.estate.biz.user.repository.UserMapper;
 import com.lyun.estate.biz.user.resources.ChangePasswordResource;
@@ -12,9 +13,11 @@ import org.springframework.validation.Validator;
 public class ChangePasswordResourceValidator implements Validator {
     private UserMapper userMapper;
     private ChangePasswordValidatorCallBack changePasswordValidatorCallBack;
+    private SmsCode smsCode;
 
-    public ChangePasswordResourceValidator(UserMapper userMapper, ChangePasswordValidatorCallBack changePasswordValidatorCallBack) {
+    public ChangePasswordResourceValidator(UserMapper userMapper, SmsCode smsCode, ChangePasswordValidatorCallBack changePasswordValidatorCallBack) {
         this.userMapper = userMapper;
+        this.smsCode = smsCode;
         this.changePasswordValidatorCallBack = changePasswordValidatorCallBack;
     }
 
@@ -30,7 +33,10 @@ public class ChangePasswordResourceValidator implements Validator {
         if (!ValidateUtil.isPassword(changePasswordResource.getPassword())) {
             errors.reject("password.illegal", "密码格式应为8-32位半角非特殊字符");
         }
-        if (!changePasswordResource.isForget()) {
+        if (StringUtils.isEmpty(changePasswordResource.getUserType())) {
+            errors.reject("userType.isNull", "用户类型不能为空");
+        }
+        if (smsCode == null) {
             if (StringUtils.isEmpty(changePasswordResource.getOldPassword())) {
                 errors.reject("old.password.isNull", "密码不能为空");
             }
@@ -48,12 +54,14 @@ public class ChangePasswordResourceValidator implements Validator {
                     errors.reject("old.password.error", "密码错误");
                 }
             }
-
         } else {
             if (StringUtils.isEmpty(changePasswordResource.getMobile())) {
                 errors.reject("mobile.isNull", "忘记密码手机号不能为空");
+            } else {
+                if (!changePasswordResource.getMobile().equals(smsCode.getMobile())) {
+                    errors.reject("mobile.not.match", "手机号码跟验证手机号不一致");
+                }
             }
-
             if (errors.hasErrors()) {
                 return;
             }
