@@ -6,21 +6,15 @@ public class TokenEntity {
 
     private long id;
     private String userId;
-    private long clientId;
+    private int clientId;
     private String token;
     private Date expiredTime;
     private String refreshToken;
 
-    public TokenEntity(String userId, long clientId, String token, Date expiredTime, String refreshToken) {
-        this.userId = userId;
-        this.clientId = clientId;
-        this.token = token;
-        this.expiredTime = expiredTime;
-        this.refreshToken = refreshToken;
+    public TokenEntity() {
     }
 
-    public TokenEntity(long id, String userId, long clientId, String token, Date expiredTime, String refreshToken) {
-        this.id = id;
+    public TokenEntity(String userId, int clientId, String token, Date expiredTime, String refreshToken) {
         this.userId = userId;
         this.clientId = clientId;
         this.token = token;
@@ -44,11 +38,11 @@ public class TokenEntity {
         this.userId = userId;
     }
 
-    public long getClientId() {
+    public int getClientId() {
         return clientId;
     }
 
-    public void setClientId(long clientId) {
+    public void setClientId(int clientId) {
         this.clientId = clientId;
     }
 
