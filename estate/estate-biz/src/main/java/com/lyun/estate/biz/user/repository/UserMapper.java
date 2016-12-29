@@ -2,13 +2,13 @@ package com.lyun.estate.biz.user.repository;
 
 import com.lyun.estate.biz.user.domain.User;
 import com.lyun.estate.biz.user.repository.provider.UserSqlProvider;
+import com.lyun.estate.biz.user.resources.ChangePasswordResource;
 import com.lyun.estate.biz.user.resources.LoginResource;
 import com.lyun.estate.biz.user.resources.RegisterResource;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.UpdateProvider;
 
 @Mapper
 public interface UserMapper {
@@ -19,6 +19,12 @@ public interface UserMapper {
     @SelectProvider(type = UserSqlProvider.class, method = "findUser")
     User findUser(RegisterResource registerResource);
 
+    @SelectProvider(type = UserSqlProvider.class, method = "changePasswordUser")
+    User changePasswordUser(ChangePasswordResource changePasswordResource);
+
     @SelectProvider(type = UserSqlProvider.class, method = "loginUser")
     User loginUser(LoginResource loginResource);
+
+    @UpdateProvider(type = UserSqlProvider.class, method = "update")
+    int updateUser(User user);
 }

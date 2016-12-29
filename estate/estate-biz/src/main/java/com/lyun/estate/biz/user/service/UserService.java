@@ -14,6 +14,7 @@ import com.lyun.estate.biz.user.service.validator.ChangePasswordResourceValidato
 import com.lyun.estate.biz.user.service.validator.LoginResourceValidator;
 import com.lyun.estate.biz.user.service.validator.RegisterResourceValidator;
 import com.lyun.estate.biz.utils.clock.ClockTools;
+import com.lyun.estate.core.supports.ExecutionContext;
 import com.lyun.estate.core.supports.exceptions.EstateBizException;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.supports.types.Constant;
@@ -36,13 +37,19 @@ public class UserService {
     @Autowired
     TokenMapper tokenMapper;
     @Autowired
-    Environment environment;
-    @Autowired
     CacheManager cacheManager;
     @Autowired
     TokenProvider tokenProvider;
     @Autowired
     ClockTools clockTools;
+    @Autowired
+    Environment environment;
+    @Autowired
+    ExecutionContext executionContext;
+
+    private int getDefaultValidDays() {
+        return Integer.valueOf(environment.getRequiredProperty("register.login.default.valid.days"));
+    }
 
     @Transactional
     public RegisterResponse register(RegisterResource registerResource) {
@@ -62,7 +69,8 @@ public class UserService {
                 .setEmail(registerResource.getEmail())
                 .setUserName(registerResource.getUserName())
                 .setHash(CommonUtil.encryptBySha256(salt + registerResource.getPassword()))
-                .setSalt(salt)) == 1
+                .setSalt(salt)
+                .setType(registerResource.getType())) == 1
                 ) {
             registerResponse.setRegistered(true);
         } else {
@@ -76,8 +84,7 @@ public class UserService {
                     .setPassword(registerResource.getPassword())
                     .setValidDays(getDefaultValidDays()));
             registerResponse
-                    .setJwt(tokenResponse.getJwt())
-                    .setJwtExpireTime(tokenResponse.getJwtExpireTime());
+                    .setJwt(tokenResponse.getJwt());
         }
         return registerResponse;
     }
@@ -103,18 +110,22 @@ public class UserService {
         }
     }
 
-    private int getDefaultValidDays() {
-        return Integer.valueOf(environment.getRequiredProperty("register.login.default.valid.days"));
-    }
-
-
+    @Transactional
     public TokenResponse changePassword(ChangePasswordResource changePasswordResource) {
+        changePasswordResource.setUserId(Long.valueOf(executionContext.getUserId()));
         DataBinder dataBinder = new DataBinder(changePasswordResource, "changePassword");
-        dataBinder.setValidator(new ChangePasswordResourceValidator());
+        dataBinder.setValidator(new ChangePasswordResourceValidator(userMapper, (User user) -> {
+            String salt = CommonUtil.getUuid();
+            if (userMapper.updateUser((User) user.setSalt(salt)
+                    .setHash(CommonUtil.encryptBySha256(salt + changePasswordResource.getPassword()))
+                    .setUpdateById(Long.parseLong(executionContext.getUserId()))) != 1) {
+                throw new ValidateException("password.change.fail", "密码修改失败");
+            }
+        }));
         dataBinder.validate();
         BindingResult bindingResult = dataBinder.getBindingResult();
         if (bindingResult.hasErrors()) {
-            throw new ValidateException("warn.user.login", bindingResult.getAllErrors());
+            throw new ValidateException("warn.password.change", bindingResult.getAllErrors());
         }
         return new TokenResponse();
     }

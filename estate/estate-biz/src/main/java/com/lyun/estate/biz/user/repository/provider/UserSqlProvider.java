@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.user.repository.provider;
 
 import com.lyun.estate.biz.user.domain.User;
+import com.lyun.estate.biz.user.resources.ChangePasswordResource;
 import com.lyun.estate.biz.user.resources.LoginResource;
 import com.lyun.estate.biz.user.resources.RegisterResource;
 import com.lyun.estate.core.supports.BaseProvider;
@@ -58,7 +59,19 @@ public class UserSqlProvider extends BaseProvider<User> {
             WHERE_IF("mobile=#{mobile}", !StringUtils.isEmpty(loginResource.getMobile()));
             WHERE_IF("user_name=#{userName}", !StringUtils.isEmpty(loginResource.getUserName()));
             WHERE_IF("email=#{email}", !StringUtils.isEmpty(loginResource.getEmail()));
-            WHERE_IF("type=#{type}", !StringUtils.isEmpty(loginResource.getType()));
+            WHERE("type=#{type}");
+            WHERE("is_deleted='N'");
+        }}.toString();
+    }
+
+    public String changePasswordUser(ChangePasswordResource changePasswordResource) {
+        return new SQL_EX() {{
+            SELECT("*");
+            FROM(getEntityTable());
+            WHERE_IF("mobile=#{mobile}", !StringUtils.isEmpty(changePasswordResource.getMobile()));
+            WHERE_IF("id=#{userId}", changePasswordResource.getUserId() != 0);
+            WHERE("type=#{userType}");
+            WHERE("is_deleted='N'");
         }}.toString();
     }
 }

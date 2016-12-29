@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.auth.token;
 
+import com.lyun.estate.core.supports.ExecutionContext;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,6 +17,8 @@ public class TokenAspect {
 
     @Autowired
     private TokenProvider tokenProvider;
+    @Autowired
+    ExecutionContext executionContext;
 
     @Before(value = "@annotation(checkToken)", argNames = "joinPoint,checkToken")
     public void check(JoinPoint joinPoint, CheckToken checkToken) {
@@ -27,6 +30,7 @@ public class TokenAspect {
         if (!tokenProvider.validate(token.getToken())) {
             throw new ValidateException("token.invalid", "token无效");
         }
+        executionContext.setUserId(tokenProvider.getSubject(token.getToken()));
     }
 
 }
