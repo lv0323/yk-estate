@@ -13,6 +13,7 @@ public class FileDescription implements Cloneable {
     private Integer fileProcess;
     private Target target;
     private String path;
+    private Integer priority;
 
     public Long getId() {
         return id;
@@ -106,5 +107,14 @@ public class FileDescription implements Cloneable {
         } catch (CloneNotSupportedException e) {
             throw ExceptionUtil.wrap(e);
         }
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public FileDescription setPriority(Integer priority) {
+        this.priority = priority;
+        return this;
     }
 }

@@ -32,6 +32,14 @@ public class FileSqlProvider {
         return sql.toString();
     }
 
+    public String selectOne(Long id) {
+        return new SQL().SELECT("*").FROM(TABLE_NAME).WHERE("id = #{id}").toString();
+    }
+
+    public String updatePriority(Long id, Integer priority) {
+        return new SQL().UPDATE(TABLE_NAME).SET("priority = #{priority}").WHERE("id = #{id}").toString();
+    }
+
     public String delete(Long id) {
         return new SQL().UPDATE(TABLE_NAME)
                 .SET("is_deleted = true")

@@ -84,6 +84,11 @@ public class TestController {
         }
     }
 
+    @RequestMapping("priority")
+    public void priority() {
+        fileService.setFirst(7L);
+    }
+
     @RequestMapping("context")
     public String context() {
         StringBuilder sb = new StringBuilder();

@@ -5,6 +5,8 @@ import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.google.common.base.Strings;
+import com.lyun.estate.biz.config.settings.NameSpace;
+import com.lyun.estate.biz.config.settings.SettingProvider;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.Target;
 import com.lyun.estate.biz.file.entity.FileDescription;
@@ -12,6 +14,8 @@ import com.lyun.estate.biz.file.repository.FileRepository;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,19 +24,19 @@ import java.io.InputStream;
 import java.util.UUID;
 
 @Service
+@PropertySource("estate/biz/oss.properties")
 public class OssFileService extends AbstractFileService {
 
-    private static final String ENDPOINT = "oss-cn-hangzhou.aliyuncs.com";
-    private static final String ACCESS_KEY_ID = "LTAItEanE6SnLPfj";
-    private static final String ACCESS_KEY_SECRET = "u3YhcVy3OIS0wezHPetlU2esDydWd8";
-    private static final String BUCKET_NAME = "yk-estate-image";
+    private final String BUCKET_NAME;// "yk-estate-image"
+    private final String WATERMARK_STYLE;// "image/watermark,image_cGFuZGEuanBn,t_50,g_center";
+    private final OSSClient client;
 
-    private static final String WATERMARK_STYLE = "image/watermark,image_cGFuZGEuanBn,t_50,g_center";
-
-    private OSSClient client = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
-
-    public OssFileService(FileRepository repository) {
-        super(repository);
+    public OssFileService(FileRepository repository, SettingProvider settingProvider,
+                          @Value("${oss.access_key_id}") String accessKeyId, @Value("${oss.access_key_secret}") String accessKeySecret) {
+        super(repository); //"oss-cn-hangzhou.aliyuncs.com"
+        BUCKET_NAME = settingProvider.find(NameSpace.FILE, "bucket_name").get(0).getValue();
+        WATERMARK_STYLE = settingProvider.find(NameSpace.FILE, "watermark_style").get(0).getValue();
+        client = new OSSClient(settingProvider.find(NameSpace.FILE, "endpoint").get(0).getValue(), accessKeyId, accessKeySecret);
     }
 
     @Transactional
