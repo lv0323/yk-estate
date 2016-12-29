@@ -3,7 +3,7 @@ require(['main-app', contextPath + '/js/service/identity-service.js', contextPat
         function loadCaptcha() {
             var imageId = UtilService.generateSalt(8);
             localStorage.setItem("imageId", imageId);
-            $('#captcha-image').attr('src', '/api/captcha?clientId=1000&id=100&width=120&height=30&iid=' + imageId)
+            $('#captcha-image').attr('src', contextPath + '/captcha?clientId=1000&id=100&width=120&height=30&iid=' + imageId)
         }
         $('#captcha-image').on('click', loadCaptcha);
         loadCaptcha();
