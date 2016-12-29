@@ -1,0 +1,48 @@
+body {
+    overflow: hidden;
+    background:url("../../../img/identity/login_background.png");
+    background-position: center;
+}
+.login-box-body{
+    padding: 5px;
+}
+.form-group{
+    margin: 0;
+    border-bottom: 1px solid #eee;
+}
+.form-group:last-child{
+    border-bottom: 0;
+}
+.login-logo{
+    text-indent: 40px;
+    font-size: 24px;
+    color: #fff;
+    background: url('../../../img/common/logo.png') left calc(50% - 124px) center no-repeat;
+}
+.login-box-body{
+    border-radius: 5px;
+}
+.form-control{
+    font-size: 18px;
+    letter-spacing: .1em;
+    border:none;
+    margin: 0;
+    height: 50px;
+}
+.captcha-container{
+    position: relative;
+}
+#captcha-image{
+    position: absolute;
+    right: 20px;
+    top: 0;
+    height: 100%;
+    width: 140px;
+}
+.login-btn{
+    margin-top: 20px;
+    color: #fff;
+    background: #3e7efa;
+    border-radius: 4px;
+    height: 50px;
+}
