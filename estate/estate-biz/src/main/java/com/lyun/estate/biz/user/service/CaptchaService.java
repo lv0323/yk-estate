@@ -7,6 +7,7 @@ import com.lyun.estate.biz.user.repository.UserMapper;
 import com.lyun.estate.core.config.CacheConfig;
 import com.lyun.estate.core.supports.LJSWordRenderer;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
+import com.lyun.estate.core.utils.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.CacheManager;
@@ -27,6 +28,9 @@ public class CaptchaService {
     CacheManager cacheManager;
 
     public BufferedImage getCaptcha(int clientId, String id, int width, int height) {
+        if (!ValidateUtil.isClientId(clientId)) {
+            throw new ValidateException("clientId.not.exists", "客户端编号不存在");
+        }
         if (width < 60 || width > maxWidth || height < 20 || height > maxHeight || width < height * 3) {
             throw new ValidateException("getVerifyCodeImage.illegal", "宽高非法");
         }

@@ -1,7 +1,9 @@
 package com.lyun.estate.biz.auth.captcha;
 
 import com.lyun.estate.biz.user.service.CaptchaService;
+import com.lyun.estate.core.supports.ExecutionContext;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
+import com.lyun.estate.core.utils.ValidateUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -17,20 +19,24 @@ public class CaptchaAspect {
 
     @Autowired
     CaptchaService captchaService;
+    @Autowired
+    ExecutionContext executionContext;
 
-    public void check(Captcha Captcha) {
-        if (StringUtils.isEmpty(Captcha.getClientId())) {
-            throw new ValidateException("clientId.isNull", "clientId不能为空");
+    public void check(Captcha captcha) {
+        if (!ValidateUtil.isClientId(captcha.getClientId())) {
+            throw new ValidateException("clientId.not.exists", "客户端编号不存在");
         }
-        if (StringUtils.isEmpty(Captcha.getId())) {
+        if (StringUtils.isEmpty(captcha.getId())) {
             throw new ValidateException("id.isNull", "图片验证码Id不能为空");
         }
-        if (StringUtils.isEmpty(Captcha.getCode())) {
+        if (StringUtils.isEmpty(captcha.getCode())) {
             throw new ValidateException("code.isNull", "图片验证码不能为空");
         }
-        if (!captchaService.isCaptchaCorrect(Captcha.getClientId(), Captcha.getId(), Captcha.getCode())) {
+
+        if (!captchaService.isCaptchaCorrect(captcha.getClientId(), captcha.getId(), captcha.getCode())) {
             throw new ValidateException("code.illegal", "图片验证码不正确");
         }
+        executionContext.setClientId(captcha.getClientId() + "");
     }
 
     @Before(value = "@annotation(checkCaptcha)", argNames = "joinPoint,checkCaptcha")

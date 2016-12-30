@@ -14,16 +14,16 @@ CREATE TABLE t_user (
   hash         VARCHAR(64),
   email        VARCHAR(32),
   mobile       VARCHAR(16),
-  type         VARCHAR(16) NOT NULL,
-  description  VARCHAR(64)
+  description  VARCHAR(64),
+  client_id    INT
 );
 
 CREATE TABLE T_TOKEN (
   ID            BIGSERIAL PRIMARY KEY,
   USER_ID       VARCHAR(20),
   CLIENT_ID     INT,
-  TOKEN         VARCHAR(200),
+  TOKEN         VARCHAR(400),
   EXPIRED_TIME  TIMESTAMP,
-  REFRESH_TOKEN VARCHAR(200)
+  REFRESH_TOKEN VARCHAR(400)
 );
 

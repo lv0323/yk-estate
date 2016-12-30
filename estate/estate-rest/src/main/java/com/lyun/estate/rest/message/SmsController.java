@@ -9,8 +9,10 @@ import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
 import com.lyun.estate.biz.message.resources.SmsResource;
 import com.lyun.estate.biz.message.resources.SmsResponse;
 import com.lyun.estate.biz.message.service.SmsService;
+import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +35,9 @@ public class SmsController {
     @CheckSmsCode
     @PostMapping("/correct")
     public boolean isCorrect(@RequestHeader(SmsCodeArgumentResolver.SMS_CODE_HEADER) SmsCode smsCode) {
+        if (StringUtils.isEmpty(smsCode.getType())) {
+            throw new ValidateException("X-SMS-CODE.type.isNull", "短信类型为空");
+        }
         return true;
     }
 }

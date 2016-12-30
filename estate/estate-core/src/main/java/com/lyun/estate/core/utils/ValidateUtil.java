@@ -1,5 +1,6 @@
 package com.lyun.estate.core.utils;
 
+import com.lyun.estate.core.supports.types.Constant;
 import org.springframework.util.StringUtils;
 
 public class ValidateUtil {
@@ -43,6 +44,10 @@ public class ValidateUtil {
             return email.matches("(.)*@(.)*(\\.)(.)*");
         }
         return false;
+    }
+
+    public static boolean isClientId(int clientId) {
+        return Constant.CLIENT_ID.getClients().contains(clientId);
     }
 
 }

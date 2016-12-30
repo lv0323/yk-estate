@@ -33,9 +33,6 @@ public class ChangePasswordResourceValidator implements Validator {
         if (!ValidateUtil.isPassword(changePasswordResource.getPassword())) {
             errors.reject("password.illegal", "密码格式应为8-32位半角非特殊字符");
         }
-        if (StringUtils.isEmpty(changePasswordResource.getUserType())) {
-            errors.reject("userType.isNull", "用户类型不能为空");
-        }
         if (smsCode == null) {
             if (StringUtils.isEmpty(changePasswordResource.getOldPassword())) {
                 errors.reject("old.password.isNull", "密码不能为空");
@@ -55,26 +52,17 @@ public class ChangePasswordResourceValidator implements Validator {
                 }
             }
         } else {
-            if (StringUtils.isEmpty(changePasswordResource.getMobile())) {
-                errors.reject("mobile.isNull", "忘记密码手机号不能为空");
-            } else {
-                if (!changePasswordResource.getMobile().equals(smsCode.getMobile())) {
-                    errors.reject("mobile.not.match", "手机号码跟验证手机号不一致");
-                }
-            }
             if (errors.hasErrors()) {
                 return;
             }
-            user = userMapper.changePasswordUser(changePasswordResource);
+            user = userMapper.findUserByMobile(smsCode.getMobile());
             if (user == null) {
                 errors.reject("user.not.exist", "未找到注册用户");
             }
         }
-
         if (!errors.hasErrors()) {
             changePasswordValidatorCallBack.callBack(user);
         }
-
     }
 
 }

@@ -1,6 +1,8 @@
 package com.lyun.estate.biz.auth.sms;
 
 import com.lyun.estate.core.supports.exceptions.ValidateException;
+import com.lyun.estate.core.supports.types.Constant;
+import com.lyun.estate.core.supports.types.SmsType;
 import com.lyun.estate.core.utils.QueryStringUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.format.Formatter;
@@ -19,10 +21,12 @@ import java.util.Locale;
 @ControllerAdvice
 public class SmsCodeArgumentResolver implements HandlerMethodArgumentResolver, Formatter<SmsCode> {
     public final static String SMS_CODE_HEADER = "X-SMS-CODE";
+    private final static String SMS_ID = "id";
     private final static String CODE = "code";
     private final static String SERIAL = "serial";
-    private final static String SMS_ID = "smsId";
+    private final static String TYPE = "type";
     private final static String MOBILE = "mobile";
+    private final static String CLIENT_ID = "clientId";
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -44,11 +48,16 @@ public class SmsCodeArgumentResolver implements HandlerMethodArgumentResolver, F
             throw new ValidateException(SMS_CODE_HEADER + ".header.isNull", "短信验证码消息头缺失");
         }
         MultiValueMap<String, String> map = QueryStringUtil.parse(text);
+        String type = map.getFirst(TYPE);
+        String clientId = map.getFirst(CLIENT_ID);
+        int cid = StringUtils.isEmpty(clientId) ? 0 : Integer.valueOf(clientId);
         return new SmsCode()
                 .setCode(map.getFirst(CODE))
                 .setMobile(map.getFirst(MOBILE))
                 .setSerial(map.getFirst(SERIAL))
-                .setSmsId(map.getFirst(SMS_ID));
+                .setId(map.getFirst(SMS_ID))
+                .setType(SmsType.getKeys().contains(type) ? SmsType.valueOf(type) : null)
+                .setClientId(cid);
     }
 
     @Override
