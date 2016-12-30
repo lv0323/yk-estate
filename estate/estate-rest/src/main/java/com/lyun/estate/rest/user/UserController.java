@@ -17,7 +17,9 @@ import com.lyun.estate.biz.user.resources.TokenResponse;
 import com.lyun.estate.biz.user.service.UserService;
 import com.lyun.estate.core.supports.types.SmsType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,18 +30,18 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/register")
+    @PostMapping(value = "/register", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @CheckSmsCode
-    public RegisterResponse register(RegisterResource registerResource,
+    public RegisterResponse register(@RequestBody RegisterResource registerResource,
                                      @RequestHeader(SmsCodeArgumentResolver.SMS_CODE_HEADER) SmsCode smsCode) {
         smsCode.setType(SmsType.REGISTER);
         return userService.register(registerResource, smsCode);
     }
 
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @CheckCaptcha
-    public TokenResponse login(LoginResource loginResource,
+    public TokenResponse login(@RequestBody LoginResource loginResource,
                                @RequestHeader(CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {
         return userService.login(loginResource, null);
     }
@@ -51,16 +53,16 @@ public class UserController {
         return userService.login(null, smsCode);
     }
 
-    @PostMapping("change-password")
+    @PostMapping(value = "change-password", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @CheckToken
-    public TokenResponse changePassword(ChangePasswordResource changePasswordResource,
+    public TokenResponse changePassword(@RequestBody ChangePasswordResource changePasswordResource,
                                         @RequestHeader("auth") JWTToken token) {
         return userService.changePassword(changePasswordResource, null, token);
     }
 
-    @PostMapping("forget-password")
+    @PostMapping(value = "forget-password", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @CheckSmsCode
-    public TokenResponse forgetPassword(ChangePasswordResource changePasswordResource,
+    public TokenResponse forgetPassword(@RequestBody ChangePasswordResource changePasswordResource,
                                         @RequestHeader(SmsCodeArgumentResolver.SMS_CODE_HEADER) SmsCode smsCode) {
         smsCode.setType(SmsType.FORGET_PASSWORD);
         return userService.changePassword(changePasswordResource, smsCode, null);
