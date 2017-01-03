@@ -6,13 +6,11 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
-import org.springframework.cache.interceptor.CacheOperationInvocationContext;
 import org.springframework.cache.interceptor.CacheResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -42,19 +40,16 @@ public class CacheConfig extends CachingConfigurerSupport {
 
     @Override
     public CacheResolver cacheResolver() {
-        return new CacheResolver() {
-            @Override
-            public Collection<? extends Cache> resolveCaches(CacheOperationInvocationContext<?> context) {
-                List<Cache> result = new ArrayList<>();
-                context.getOperation().getCacheNames().forEach(name -> {
-                    if (name.equals(EVICT_CACHE_NAME)) {
-                        result.add(evictCacheManager().getCache(name));
-                    } else {
-                        result.add(cacheManager().getCache(name));
-                    }
-                });
-                return result;
-            }
+        return context -> {
+            List<Cache> result = new ArrayList<>();
+            context.getOperation().getCacheNames().forEach(name -> {
+                if (name.equals(EVICT_CACHE_NAME)) {
+                    result.add(evictCacheManager().getCache(name));
+                } else {
+                    result.add(cacheManager().getCache(name));
+                }
+            });
+            return result;
         };
     }
 }

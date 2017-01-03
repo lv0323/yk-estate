@@ -11,7 +11,6 @@ buildscript {
     }
 }
 
-apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -20,11 +19,13 @@ configurations {
 }
 
 bootRun() {
-    jvmArgs = ["-Dlogback.level=DEBUG"]
+    jvmArgs = ["-Dlogback.level=INFO"]
 }
 
 dependencies {
-    providedCompile lib.servlet_api
+    compile lib.spring_boot_starter
+    compile lib.spring_rabbit
+    compile lib.groovy
 }
 
 tasks.withType(AbstractCompile) {
