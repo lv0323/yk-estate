@@ -5,7 +5,7 @@ import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.OwnerType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.repository.FileRepository;
-import com.lyun.estate.biz.file.spec.FileService;
+import com.lyun.estate.biz.spec.service.FileService;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.transaction.annotation.Transactional;
 
