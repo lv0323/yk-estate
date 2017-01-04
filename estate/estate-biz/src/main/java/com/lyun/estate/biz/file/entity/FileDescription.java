@@ -1,13 +1,14 @@
 package com.lyun.estate.biz.file.entity;
 
 import com.lyun.estate.biz.file.def.*;
+import com.lyun.estate.biz.spec.def.DomainType;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 
 public class FileDescription implements Cloneable {
 
     private Long id;
     private Long ownerId;
-    private OwnerType ownerType;
+    private DomainType ownerType;
     private FileType fileType;
     private CustomType customType;
     private Integer fileProcess;
@@ -24,11 +25,11 @@ public class FileDescription implements Cloneable {
         return this;
     }
 
-    public OwnerType getOwnerType() {
+    public DomainType getOwnerType() {
         return ownerType;
     }
 
-    public FileDescription setOwnerType(OwnerType ownerType) {
+    public FileDescription setOwnerType(DomainType ownerType) {
         this.ownerType = ownerType;
         return this;
     }
