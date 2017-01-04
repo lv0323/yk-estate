@@ -1,6 +1,7 @@
 ext {
     ver = [
             spring: '4.3.4.RELEASE',
+            spring_rabbit: '1.6.6.RELEASE',
             spring_boot: '1.4.2.RELEASE',
 
             aspectj: '1.8.9',
@@ -35,7 +36,7 @@ ext {
             spring_context: "org.springframework:spring-context:$ver.spring",
             spring_context_support: "org.springframework:spring-context-support:$ver.spring",
             spring_webmvc: "org.springframework:spring-webmvc:$ver.spring",
-
+            spring_rabbit: "org.springframework.amqp:spring-rabbit:$ver.spring_rabbit",
             // spring boot
             spring_boot_starter: "org.springframework.boot:spring-boot-starter:$ver.spring_boot",
             spring_boot_starter_web: "org.springframework.boot:spring-boot-starter-web:$ver.spring_boot",

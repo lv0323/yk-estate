@@ -5,7 +5,11 @@ import com.google.common.base.Strings;
 import com.lyun.estate.biz.config.BizConfig;
 import com.lyun.estate.core.config.CoreConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -15,7 +19,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import java.util.HashMap;
 
 @Configuration
-@ComponentScan({"com.lyun.estate.mgt"})
+@ComponentScan({"com.lyun.estate"})
 @Import({CoreConfig.class, BizConfig.class})
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
 public class MgtConfig extends WebMvcConfigurerAdapter {

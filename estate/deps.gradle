@@ -1,6 +1,7 @@
 project(':estate-biz') {
     dependencies {
         compile project(':estate-core')
+        compile project(':estate-amqp-client')
     }
 }
 
@@ -15,6 +16,7 @@ project(':estate-mgt') {
     dependencies {
         compile project(':estate-core')
         compile project(':estate-biz')
+        compile project(':estate-amqp-client')
     }
 }
 
@@ -22,5 +24,16 @@ project(':estate-rest') {
     dependencies {
         compile project(':estate-core')
         compile project(':estate-biz')
+    }
+}
+
+project(':estate-amqp') {
+    dependencies {
+        compile project(':estate-core')
+    }
+}
+project(':estate-amqp-client') {
+    dependencies {
+        compile project(':estate-core')
     }
 }
