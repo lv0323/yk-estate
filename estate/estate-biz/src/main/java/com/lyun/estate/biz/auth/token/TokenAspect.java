@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 @Aspect
 @Component
@@ -22,8 +21,10 @@ public class TokenAspect {
 
     @Before(value = "@annotation(checkToken)", argNames = "joinPoint,checkToken")
     public void check(JoinPoint joinPoint, CheckToken checkToken) {
-        Optional<Object> token = Arrays.stream(joinPoint.getArgs()).filter(o -> o != null && JWTToken.class.isAssignableFrom(o.getClass())).findAny();
-        token.ifPresent(o -> authorize((JWTToken) o));
+        Arrays.stream(joinPoint.getArgs())
+                .filter(o -> o != null && JWTToken.class.isAssignableFrom(o.getClass()))
+                .findAny()
+                .ifPresent(o -> authorize((JWTToken) o));
     }
 
     public void authorize(JWTToken token) {
@@ -31,6 +32,7 @@ public class TokenAspect {
             throw new ValidateException("token.invalid", "token无效");
         }
         executionContext.setUserId(tokenProvider.getSubject(token.getToken()));
+        executionContext.setClientId((String) tokenProvider.getClaim(token.getToken(), "clientId"));
     }
 
 }

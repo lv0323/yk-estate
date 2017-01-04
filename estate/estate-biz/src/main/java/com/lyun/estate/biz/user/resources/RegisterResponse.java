@@ -2,7 +2,7 @@ package com.lyun.estate.biz.user.resources;
 
 public class RegisterResponse {
     private boolean registered;
-    private String jwt;
+    private String token;
 
     public boolean isRegistered() {
         return registered;
@@ -13,13 +13,12 @@ public class RegisterResponse {
         return this;
     }
 
-    public String getJwt() {
-        return jwt;
+    public String getToken() {
+        return token;
     }
 
-    public RegisterResponse setJwt(String jwt) {
-        this.jwt = jwt;
+    public RegisterResponse setToken(String token) {
+        this.token = token;
         return this;
     }
-
 }

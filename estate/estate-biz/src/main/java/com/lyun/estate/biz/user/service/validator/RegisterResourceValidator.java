@@ -1,7 +1,9 @@
 package com.lyun.estate.biz.user.service.validator;
 
+import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.user.repository.UserMapper;
 import com.lyun.estate.biz.user.resources.RegisterResource;
+import com.lyun.estate.core.supports.types.SmsType;
 import com.lyun.estate.core.utils.ValidateUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
@@ -9,9 +11,11 @@ import org.springframework.validation.Validator;
 
 public class RegisterResourceValidator implements Validator {
     private UserMapper userMapper;
+    private SmsCode smsCode;
 
-    public RegisterResourceValidator(UserMapper userMapper) {
+    public RegisterResourceValidator(UserMapper userMapper, SmsCode smsCode) {
         this.userMapper = userMapper;
+        this.smsCode = smsCode;
     }
 
     @Override
@@ -29,15 +33,12 @@ public class RegisterResourceValidator implements Validator {
             errors.reject("password.illegal", "密码格式应为8-32位半角非特殊字符");
         }
 
-        if (!StringUtils.isEmpty(registerResource.getMobile())) {
-            if (!ValidateUtil.isMobile(registerResource.getMobile())) {
-                errors.reject("mobile.illegal", "手机号码格式错误");
-            }
+        if (smsCode != null) {
             if (errors.hasErrors()) {
                 return;
             }
-            if (!StringUtils.isEmpty(userMapper.findUser(registerResource))) {
-                errors.reject("mobile.registered", new String[]{registerResource.getMobile()}, "手机号码{0}已经注册");
+            if (!StringUtils.isEmpty(userMapper.findUserByMobile(smsCode.getMobile()))) {
+                errors.reject("mobile.registered", new String[]{smsCode.getMobile()}, "手机号码{0}已经注册");
             }
         } else if (!StringUtils.isEmpty(registerResource.getUserName())) {
             if (!ValidateUtil.lengthMax(registerResource.getUserName(), 24)) {

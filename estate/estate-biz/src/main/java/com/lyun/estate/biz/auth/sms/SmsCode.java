@@ -3,18 +3,19 @@ package com.lyun.estate.biz.auth.sms;
 import com.lyun.estate.core.supports.types.SmsType;
 
 public class SmsCode {
-    private String smsId;
+    private String id;
     private String mobile;
     private String code;
     private String serial;
     private SmsType type;
+    private int clientId;
 
-    public String getSmsId() {
-        return smsId;
+    public String getId() {
+        return id;
     }
 
-    public SmsCode setSmsId(String smsId) {
-        this.smsId = smsId;
+    public SmsCode setId(String id) {
+        this.id = id;
         return this;
     }
 
@@ -51,6 +52,15 @@ public class SmsCode {
 
     public SmsCode setType(SmsType type) {
         this.type = type;
+        return this;
+    }
+
+    public int getClientId() {
+        return clientId;
+    }
+
+    public SmsCode setClientId(int clientId) {
+        this.clientId = clientId;
         return this;
     }
 }

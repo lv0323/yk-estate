@@ -106,4 +106,8 @@ public class TokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
+    public Object getClaim(String token, String claim) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get(claim);
+    }
+
 }

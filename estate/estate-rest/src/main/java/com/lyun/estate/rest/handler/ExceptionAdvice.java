@@ -14,6 +14,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -58,6 +59,12 @@ public class ExceptionAdvice {
             logger.warn("Spring参数校验失败", t);
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             writeResponse(response, handleRequireParamMissException((ServletRequestBindingException) t));
+        } else if (t instanceof BindException || t instanceof IllegalArgumentException) {
+            logger.warn("请求参数不正确", t);
+            writeResponse(response, new ErrorResource()
+                    .setExCode("param.illegal")
+                    .setMessage("参数异常")
+                    .setLogRef(executionContext.getCorrelationId()));
         } else if (t instanceof EstateBizException) {
             logger.error("业务异常", t);
             writeResponse(response, handleBizException((EstateBizException) t));

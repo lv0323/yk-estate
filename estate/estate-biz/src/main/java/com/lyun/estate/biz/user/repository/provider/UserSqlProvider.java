@@ -24,8 +24,8 @@ public class UserSqlProvider extends BaseProvider<User> {
                 .VALUES_IF("hash", "#{hash}", !StringUtils.isEmpty(entity.getHash()))
                 .VALUES_IF("email", "#{email}", !StringUtils.isEmpty(entity.getEmail()))
                 .VALUES_IF("mobile", "#{mobile}", !StringUtils.isEmpty(entity.getMobile()))
-                .VALUES_IF("type", "#{type}", !StringUtils.isEmpty(entity.getMobile()))
-                .VALUES_IF("description", "#{description}", !StringUtils.isEmpty(entity.getDescription()));
+                .VALUES_IF("description", "#{description}", !StringUtils.isEmpty(entity.getDescription()))
+                .VALUES_IF("client_id", "#{clientId}", entity.getClientId() > 0);
     }
 
     @Override
@@ -37,7 +37,9 @@ public class UserSqlProvider extends BaseProvider<User> {
                 .SET_IF("salt=#{salt}", !StringUtils.isEmpty(entity.getSalt()))
                 .SET_IF("hash=#{hash}", !StringUtils.isEmpty(entity.getHash()))
                 .SET_IF("email=#{email}", !StringUtils.isEmpty(entity.getEmail()))
-                .SET_IF("mobile=#{mobile}", !StringUtils.isEmpty(entity.getMobile()));
+                .SET_IF("mobile=#{mobile}", !StringUtils.isEmpty(entity.getMobile()))
+                .SET_IF("description=#{description}", !StringUtils.isEmpty(entity.getDescription()))
+                .SET_IF("client_id=#{clientId}", entity.getClientId() > 0);
     }
 
     public String findUser(RegisterResource registerResource) {
@@ -45,9 +47,7 @@ public class UserSqlProvider extends BaseProvider<User> {
             SELECT("*");
             FROM(getEntityTable());
             WHERE_IF("user_name=#{userName}", !StringUtils.isEmpty(registerResource.getUserName()));
-            WHERE_IF("mobile=#{mobile}", !StringUtils.isEmpty(registerResource.getMobile()));
             WHERE_IF("email=#{email}", !StringUtils.isEmpty(registerResource.getEmail()));
-            WHERE("type=#{type}");
             WHERE("is_deleted='N'");
         }}.toString();
     }
@@ -59,7 +59,6 @@ public class UserSqlProvider extends BaseProvider<User> {
             WHERE_IF("mobile=#{mobile}", !StringUtils.isEmpty(loginResource.getMobile()));
             WHERE_IF("user_name=#{userName}", !StringUtils.isEmpty(loginResource.getUserName()));
             WHERE_IF("email=#{email}", !StringUtils.isEmpty(loginResource.getEmail()));
-            WHERE("type=#{type}");
             WHERE("is_deleted='N'");
         }}.toString();
     }
@@ -68,9 +67,7 @@ public class UserSqlProvider extends BaseProvider<User> {
         return new SQL_EX() {{
             SELECT("*");
             FROM(getEntityTable());
-            WHERE_IF("mobile=#{mobile}", !StringUtils.isEmpty(changePasswordResource.getMobile()));
             WHERE_IF("id=#{userId}", changePasswordResource.getUserId() != 0);
-            WHERE("type=#{userType}");
             WHERE("is_deleted='N'");
         }}.toString();
     }
