@@ -10,7 +10,7 @@ import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.def.OwnerType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.OssFileService;
-import com.lyun.estate.biz.file.spec.FileService;
+import com.lyun.estate.biz.spec.service.FileService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.types.Constant;

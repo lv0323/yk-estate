@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.file.spec;
+package com.lyun.estate.biz.spec.service;
 
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;

@@ -10,3 +10,5 @@ CREATE TABLE t_house_licence (
   update_time      TIMESTAMP,
   is_deleted       VARCHAR(1)
 );
+
+ALTER SEQUENCE t_house_licence_id_seq RESTART WITH 100000;
