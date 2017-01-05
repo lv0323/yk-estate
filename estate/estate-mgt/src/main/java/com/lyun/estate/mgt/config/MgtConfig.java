@@ -1,27 +1,32 @@
 package com.lyun.estate.mgt.config;
 
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.config.BizConfig;
 import com.lyun.estate.core.config.CoreConfig;
+import io.swagger.annotations.Api;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.HashMap;
 
 @Configuration
 @ComponentScan({"com.lyun.estate"})
+@MapperScan("com.lyun.estate.mgt.*.repo")
 @Import({CoreConfig.class, BizConfig.class})
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
+@EnableSwagger2
+@Api(basePath = "")
 public class MgtConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
@@ -62,4 +67,11 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
                 .setCachePeriod(60 * 60 * 24 * 7);
     }
 
+    @Bean
+    public HttpMessageConverter jacksonConverter() {
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.getObjectMapper().setPropertyNamingStrategy(
+                PropertyNamingStrategy.SNAKE_CASE);
+        return converter;
+    }
 }

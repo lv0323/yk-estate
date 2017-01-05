@@ -25,6 +25,7 @@ bootRun() {
 
 dependencies {
     providedCompile lib.servlet_api
+    compile libGroup.swagger
 }
 
 tasks.withType(AbstractCompile) {
