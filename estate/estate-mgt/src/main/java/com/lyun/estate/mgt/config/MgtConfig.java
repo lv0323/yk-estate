@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.config.BizConfig;
 import com.lyun.estate.core.config.CoreConfig;
-import io.swagger.annotations.Api;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -26,8 +25,6 @@ import java.util.HashMap;
 @MapperScan("com.lyun.estate.mgt.*.repo")
 @Import({CoreConfig.class, BizConfig.class})
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
-@EnableSwagger2
-@Api(basePath = "")
 public class MgtConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
