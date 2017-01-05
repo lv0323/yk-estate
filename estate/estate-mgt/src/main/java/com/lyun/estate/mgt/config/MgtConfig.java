@@ -21,6 +21,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.HashMap;
 
 @Configuration
+@EnableSwagger2
 @ComponentScan({"com.lyun.estate"})
 @MapperScan("com.lyun.estate.mgt.*.repo")
 @Import({CoreConfig.class, BizConfig.class})
