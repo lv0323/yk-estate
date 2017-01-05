@@ -20,11 +20,12 @@ configurations {
 }
 
 bootRun() {
-    jvmArgs = ["-Dlogback.level=DEBUG"]
+    jvmArgs = ["-Dlogback.level=INFO"]
 }
 
 dependencies {
     providedCompile lib.servlet_api
+    compile libGroup.swagger
 }
 
 tasks.withType(AbstractCompile) {

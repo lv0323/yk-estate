@@ -15,10 +15,12 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.HashMap;
 
 @Configuration
+@EnableSwagger2
 @ComponentScan({"com.lyun.estate"})
 @Import({CoreConfig.class, BizConfig.class})
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
