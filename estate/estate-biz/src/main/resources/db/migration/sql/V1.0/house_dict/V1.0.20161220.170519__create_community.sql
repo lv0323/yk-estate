@@ -63,9 +63,9 @@ CREATE TABLE t_line_station_rel (
 CREATE TABLE t_community (
   id                     BIGSERIAL PRIMARY KEY, --id
   name                   VARCHAR(50) NOT NULL, -- 小区名
-  name_alies             VARCHAR(50), -- 别名
+  alias                  VARCHAR(50), -- 别名
   city_id                BIGINT      NOT NULL, --城市id
-  plate_id               BIGINT      NOT NULL, --板块id
+  sub_district_id        BIGINT      NOT NULL, --板块id
   near_line              CHAR(1) DEFAULT 'N', --靠近地铁
   longitude              NUMERIC(12, 9), -- 经度
   latitude               NUMERIC(12, 9), -- 纬度
@@ -76,16 +76,15 @@ CREATE TABLE t_community (
   develop_year           VARCHAR(50), --建筑年代
   property_company       VARCHAR(150), --物业公司
   property_company_phone VARCHAR(50), -- 物业公司电话
-  property_fee_desc      VARCHAR(100), -- 物业费描述
-  parking_space_desc     VARCHAR(100), -- 车位描述
-  parking_fee_desc       VARCHAR(100), -- 停车费用描述
+  property_fee           VARCHAR(100), -- 物业费描述
+  parking_space          VARCHAR(100), -- 车位描述
+  parking_fee            VARCHAR(100), -- 停车费用描述
   parking_rate           VARCHAR(16), -- 车位配比
   buildings              INT, -- 楼栋数
   houses                 INT, -- 房屋数
-  house_park_rate        VARCHAR(100), --车位配比
   container_rate         VARCHAR(16), --　容积率
   green_rate             VARCHAR(16), -- 绿化率
-  lianjia_id             VARCHAR(50), -- 链家Id
+  lj_id                  VARCHAR(50), -- 链家Id
   create_by_id           BIGINT, --创建者id
   create_time            TIMESTAMP, --创建时间
   update_by_id           BIGINT, --更新者id
