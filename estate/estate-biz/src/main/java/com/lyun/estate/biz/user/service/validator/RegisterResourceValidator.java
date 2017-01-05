@@ -3,7 +3,6 @@ package com.lyun.estate.biz.user.service.validator;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.user.repository.UserMapper;
 import com.lyun.estate.biz.user.resources.RegisterResource;
-import com.lyun.estate.core.supports.types.SmsType;
 import com.lyun.estate.core.utils.ValidateUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
@@ -27,12 +26,22 @@ public class RegisterResourceValidator implements Validator {
     public void validate(Object target, Errors errors) {
         RegisterResource registerResource = (RegisterResource) target;
         if (StringUtils.isEmpty(registerResource.getPassword())) {
-            errors.reject("password.isNull", "密码不能为空");
+            if (StringUtils.isEmpty(registerResource.getSalt()) ||
+                    StringUtils.isEmpty(registerResource.getHash())) {
+                errors.reject("password.isNull", "密码不能为空");
+            } else {
+                if (!ValidateUtil.lengthMin(registerResource.getSalt(), 30)) {
+                    errors.reject("salt.illegal", "salt不合法");
+                }
+                if (!ValidateUtil.lengthMin(registerResource.getHash(), 40)) {
+                    errors.reject("hash.illegal", "hash不合法");
+                }
+            }
+        } else {
+            if (!ValidateUtil.isPassword(registerResource.getPassword())) {
+                errors.reject("password.illegal", "密码格式应为8-32位半角非特殊字符");
+            }
         }
-        if (!ValidateUtil.isPassword(registerResource.getPassword())) {
-            errors.reject("password.illegal", "密码格式应为8-32位半角非特殊字符");
-        }
-
         if (smsCode != null) {
             if (errors.hasErrors()) {
                 return;

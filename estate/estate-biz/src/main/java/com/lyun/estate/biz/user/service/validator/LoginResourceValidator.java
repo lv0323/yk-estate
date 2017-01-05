@@ -17,7 +17,9 @@ public class LoginResourceValidator implements Validator {
     public void validate(Object target, Errors errors) {
         LoginResource loginResource = (LoginResource) target;
         if (StringUtils.isEmpty(loginResource.getPassword())) {
-            errors.reject("password.isNull", "登陆密码不能为空");
+            if (StringUtils.isEmpty(loginResource.getSignature())) {
+                errors.reject("signature.password.both.null", "签名信息和密码不能同时为空");
+            }
         }
         if (!StringUtils.isEmpty(loginResource.getEmail())) {
             if (!ValidateUtil.isEmail(loginResource.getEmail())) {

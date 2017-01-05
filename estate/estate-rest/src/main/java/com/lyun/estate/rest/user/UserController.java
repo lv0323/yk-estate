@@ -13,6 +13,8 @@ import com.lyun.estate.biz.user.resources.ChangePasswordResource;
 import com.lyun.estate.biz.user.resources.LoginResource;
 import com.lyun.estate.biz.user.resources.RegisterResource;
 import com.lyun.estate.biz.user.resources.RegisterResponse;
+import com.lyun.estate.biz.user.resources.SaltResource;
+import com.lyun.estate.biz.user.resources.SaltResponse;
 import com.lyun.estate.biz.user.resources.TokenResponse;
 import com.lyun.estate.biz.user.service.UserService;
 import com.lyun.estate.core.supports.types.SmsType;
@@ -38,6 +40,10 @@ public class UserController {
         return userService.register(registerResource, smsCode);
     }
 
+    @PostMapping(value = "salt", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public SaltResponse salt(@RequestBody SaltResource saltResource) {
+        return userService.getUserSalt(saltResource);
+    }
 
     @PostMapping(value = "/login", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @CheckCaptcha

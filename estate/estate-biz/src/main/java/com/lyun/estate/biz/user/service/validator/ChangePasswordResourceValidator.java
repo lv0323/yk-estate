@@ -30,12 +30,17 @@ public class ChangePasswordResourceValidator implements Validator {
     public void validate(Object target, Errors errors) {
         ChangePasswordResource changePasswordResource = (ChangePasswordResource) target;
         User user = null;
-        if (!ValidateUtil.isPassword(changePasswordResource.getPassword())) {
+        if (StringUtils.isEmpty(changePasswordResource.getPassword())) {
+            if (StringUtils.isEmpty(changePasswordResource.getSalt())
+                    && StringUtils.isEmpty(changePasswordResource.getHash())) {
+                errors.reject("salt.hash.isNull", "salt hash不能为空");
+            }
+        } else if (!ValidateUtil.isPassword(changePasswordResource.getPassword())) {
             errors.reject("password.illegal", "密码格式应为8-32位半角非特殊字符");
         }
         if (smsCode == null) {
-            if (StringUtils.isEmpty(changePasswordResource.getOldPassword())) {
-                errors.reject("old.password.isNull", "密码不能为空");
+            if (changePasswordResource.getSignature() == null && changePasswordResource.getOldPassword() == null) {
+                errors.reject("signature.oldPassword.isNull", "signature oldPassword 不能同时为空");
             }
             if (changePasswordResource.getUserId() == 0) {
                 errors.reject("userId.isNull", "用户Id不能为空");
@@ -47,7 +52,7 @@ public class ChangePasswordResourceValidator implements Validator {
             if (user == null) {
                 errors.reject("user.not.exist", "未找到注册用户");
             } else {
-                if (!CommonUtil.isSha256Equal(user.getSalt() + changePasswordResource.getOldPassword(), user.getHash())) {
+                if (!isOldPasswordIllegal(changePasswordResource, user)) {
                     errors.reject("old.password.error", "密码错误");
                 }
             }
@@ -62,6 +67,18 @@ public class ChangePasswordResourceValidator implements Validator {
         }
         if (!errors.hasErrors()) {
             changePasswordValidatorCallBack.callBack(user);
+        }
+    }
+
+    private boolean isOldPasswordIllegal(ChangePasswordResource changePasswordResource, User user) {
+        if (!StringUtils.isEmpty(changePasswordResource.getOldPassword())) {
+            return CommonUtil.isSha256Equal(user.getSalt() + changePasswordResource.getOldPassword(), user.getHash());
+        } else {
+            StringBuffer sb = new StringBuffer();
+            sb.append(user.getHash());
+            sb.append(changePasswordResource.getSalt());
+            sb.append(changePasswordResource.getHash());
+            return CommonUtil.isSha256Equal(sb.toString(), changePasswordResource.getSignature());
         }
     }
 
