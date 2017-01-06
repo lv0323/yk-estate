@@ -43,7 +43,7 @@ if (!levelstr) {
 
     logger("springfox.documentation.schema", Level.INFO)
     logger("org.springframework", Level.INFO)
-    root(Level.toLevel(levelstr, Level.INFO), ['CONSOLE', 'FILE'])
+    root(Level.toLevel(levelstr, Level.INFO), ['FILE'])// prod log file only
 } else {
     root(Level.toLevel(levelstr, Level.INFO), ['CONSOLE'])
 }
