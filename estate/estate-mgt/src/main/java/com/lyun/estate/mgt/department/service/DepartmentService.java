@@ -27,7 +27,7 @@ public class DepartmentService {
 
     public Department update(Department department) {
         repo.update(Objects.requireNonNull(department));
-        return department;
+        return repo.selectById(department.getId());
     }
 
     public List<Department> selectByCompanyId(Long companyId) {

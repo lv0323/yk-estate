@@ -1,16 +1,30 @@
 package com.lyun.estate.mgt.advice;
 
-import com.lyun.estate.mgt.supports.RestResponse;
+import com.lyun.estate.core.supports.exceptions.ErrorResource;
+import com.lyun.estate.core.supports.exceptions.EstateException;
+import com.lyun.estate.core.supports.exceptions.ExCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.UUID;
+
 @RestControllerAdvice
 public class ExceptionAdvice {
 
+    private static final Logger logger = LoggerFactory.getLogger(ExceptionAdvice.class);
+
     @ExceptionHandler
     public ResponseEntity<?> handleException(Throwable t) {
-        return new ResponseEntity<>(new RestResponse().add("message", t.getMessage()).get(), HttpStatus.INTERNAL_SERVER_ERROR);
+        if (!(t instanceof EstateException))
+            t = new EstateException(t, ExCode.DEFAULT_EXCEPTION).setId(UUID.randomUUID().toString());
+        EstateException exception = (EstateException) t;
+        logger.error("Throwable, id: " + exception.getId(), exception);
+        return new ResponseEntity<>(new ErrorResource(exception.getId(),
+                exception.getExCode().name(),
+                exception.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

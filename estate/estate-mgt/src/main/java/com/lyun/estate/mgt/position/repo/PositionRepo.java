@@ -15,8 +15,11 @@ public interface PositionRepo {
     @Delete("delete from t_position where id = #{id}")
     int deleteById(Long id);
 
-    @Update("update t_position set company_id=#{companyId},name=#{name},note=#{note} where id=#{id}")
+    @Update("update t_position set name=#{name},note=#{note},update_time=CURRENT_TIMESTAMP where id=#{id}")
     int update(Position position);
+
+    @Select("select * from t_position where id=#{id}")
+    Position selectById(Long id);
 
     @Select("select * from t_position where company_id=#{companyId}")
     List<Position> selectByCompanyId(Long companyId);

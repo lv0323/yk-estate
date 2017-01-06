@@ -2,6 +2,7 @@ package com.lyun.estate.mgt.department.controller;
 
 import com.lyun.estate.mgt.department.entity.Department;
 import com.lyun.estate.mgt.department.service.DepartmentService;
+import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,7 +22,7 @@ public class DepartmentController {
 
     @GetMapping("delete")
     public Object delete(@RequestParam Long id) {
-        return service.deleteById(id);
+        return new RestResponse().add("ret", service.deleteById(id)).get();
     }
 
     @PostMapping("edit")

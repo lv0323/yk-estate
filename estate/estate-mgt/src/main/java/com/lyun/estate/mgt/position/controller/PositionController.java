@@ -2,6 +2,7 @@ package com.lyun.estate.mgt.position.controller;
 
 import com.lyun.estate.mgt.position.entity.Position;
 import com.lyun.estate.mgt.position.service.PositionService;
+import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,7 +22,7 @@ public class PositionController {
 
     @GetMapping("delete")
     public Object delete(@RequestParam Long id) {
-        return service.deleteById(id);
+        return new RestResponse().add("ret", service.deleteById(id)).get();
     }
 
     @PostMapping("edit")

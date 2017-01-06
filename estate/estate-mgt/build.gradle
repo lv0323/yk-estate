@@ -26,6 +26,7 @@ bootRun() {
 dependencies {
     providedCompile lib.servlet_api
     compile libGroup.swagger
+//    compile "org.springframework.session:spring-session"
 }
 
 tasks.withType(AbstractCompile) {

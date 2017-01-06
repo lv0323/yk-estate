@@ -15,8 +15,11 @@ public interface DepartmentRepo {
     @Delete("delete from t_department where id = #{id}")
     int deleteById(Long id);
 
-    @Update("update t_department set parent_id=#{parentId},company_id=#{companyId},name=#{name},short_name=#{shortName},telephone=#{telephone},address=#{address} where id=#{id}")
+    @Update("update t_department set parent_id=#{parentId},name=#{name},short_name=#{shortName},telephone=#{telephone},address=#{address},update_time=CURRENT_TIMESTAMP where id=#{id}")
     int update(Department department);
+
+    @Select("select * from t_department where id=#{id}")
+    Department selectById(Long id);
 
     @Select("select * from t_department where company_id=#{companyId}")
     List<Department> selectByCompanyId(Long companyId);

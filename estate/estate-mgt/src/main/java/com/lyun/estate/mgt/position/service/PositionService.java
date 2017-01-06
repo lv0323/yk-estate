@@ -27,7 +27,7 @@ public class PositionService {
 
     public Position update(Position position) {
         repo.update(Objects.requireNonNull(position));
-        return position;
+        return repo.selectById(position.getId());
     }
 
     public List<Position> selectByCompanyId(Long companyId) {

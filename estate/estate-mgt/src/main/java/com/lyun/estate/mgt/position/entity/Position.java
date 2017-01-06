@@ -6,6 +6,8 @@ public class Position {
     private Long companyId;
     private String name;
     private String note;
+    private java.sql.Timestamp createTime;
+    private java.sql.Timestamp updateTime;
 
     public Long getId() {
         return id;
@@ -40,6 +42,25 @@ public class Position {
 
     public Position setNote(String note) {
         this.note = note;
+        return this;
+    }
+
+    public java.sql.Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public Position setCreateTime(java.sql.Timestamp createTime) {
+        this.createTime = createTime;
+        return this;
+    }
+
+
+    public java.sql.Timestamp getUpdateTime() {
+        return updateTime;
+    }
+
+    public Position setUpdateTime(java.sql.Timestamp updateTime) {
+        this.updateTime = updateTime;
         return this;
     }
 }
