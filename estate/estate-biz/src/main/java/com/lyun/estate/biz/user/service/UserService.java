@@ -80,9 +80,7 @@ public class UserService {
         }
         if (registerResource.isLogin()) {
             registerResponse
-                    .setToken(getLoginToken(userMapper.loginUser(new LoginResource().setMobile(smsCode == null ? null : smsCode.getMobile())
-                            .setUserName(registerResource.getUserName())
-                            .setEmail(registerResource.getEmail())), getDefaultValidDays()).getToken());
+                    .setToken(getLoginToken(userMapper.findUserByMobile(smsCode.getMobile()), getDefaultValidDays()).getToken());
         }
         return registerResponse;
     }

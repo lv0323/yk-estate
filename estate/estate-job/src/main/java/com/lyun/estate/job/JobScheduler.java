@@ -31,5 +31,6 @@ public class JobScheduler implements SchedulingConfigurer {
 
         // add your task here
         taskRegistrar.addCronTask(() -> testJob.output(), "0/5 * * * * *");
+
     }
 }

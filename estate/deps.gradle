@@ -9,6 +9,7 @@ project(':estate-job') {
     dependencies {
         compile project(':estate-core')
         compile project(':estate-biz')
+        compile project(':estate-amqp-client')
     }
 }
 
@@ -16,7 +17,6 @@ project(':estate-mgt') {
     dependencies {
         compile project(':estate-core')
         compile project(':estate-biz')
-        compile project(':estate-amqp-client')
     }
 }
 

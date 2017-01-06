@@ -1,15 +1,18 @@
 package com.lyun.estate.amqp.config;
 
+import com.lyun.estate.core.supports.ExecutionContext;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.util.StringUtils;
 
 @Configuration
 @ComponentScan("com.lyun.estate.amqp")
@@ -31,6 +34,9 @@ public class AmqpClientConfig {
     @Value("${estate.amqp.queue.attention.name}")
     private String attentionQueueName;
 
+    @Autowired
+    ExecutionContext executionContext;
+
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
@@ -48,16 +54,24 @@ public class AmqpClientConfig {
         rabbitTemplate.setQueue(smsQueueName);
         rabbitTemplate.setRoutingKey(smsQueueName);
         rabbitTemplate.setMessageConverter(jackson2JsonMessageConverter());
+        String correlationId = executionContext.getCorrelationId();
+        if (!StringUtils.isEmpty(correlationId)) {
+            rabbitTemplate.setCorrelationKey(correlationId);
+        }
         return rabbitTemplate;
     }
 
     @Bean
-    public RabbitTemplate annotationRabbitTemplate() {
+    public RabbitTemplate attentionRabbitTemplate() {
         RabbitTemplate rabbitTemplate = new RabbitTemplate();
         rabbitTemplate.setConnectionFactory(connectionFactory());
         rabbitTemplate.setQueue(attentionQueueName);
         rabbitTemplate.setRoutingKey(attentionQueueName);
         rabbitTemplate.setMessageConverter(jackson2JsonMessageConverter());
+        String correlationId = executionContext.getCorrelationId();
+        if (!StringUtils.isEmpty(correlationId)) {
+            rabbitTemplate.setCorrelationKey(correlationId);
+        }
         return rabbitTemplate;
     }
 
