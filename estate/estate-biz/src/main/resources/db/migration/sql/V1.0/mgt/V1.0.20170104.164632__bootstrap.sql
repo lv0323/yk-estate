@@ -1,4 +1,3 @@
-DROP TABLE t_company;
 CREATE TABLE t_company
 (
   id           BIGSERIAL PRIMARY KEY,
@@ -10,7 +9,6 @@ CREATE TABLE t_company
   secret_key   VARCHAR(32)
 );
 
-DROP TABLE t_department;
 CREATE TABLE t_department
 (
   id         BIGSERIAL PRIMARY KEY,
@@ -22,13 +20,20 @@ CREATE TABLE t_department
   address    VARCHAR(128)
 );
 
-DROP TABLE t_employee;
+CREATE TABLE t_position
+(
+  id         BIGSERIAL PRIMARY KEY,
+  company_id BIGINT,
+  name       VARCHAR(16),
+  note       VARCHAR(128)
+);
+
 CREATE TABLE t_employee
 (
   id            BIGSERIAL PRIMARY KEY,
   company_id    BIGINT,
   department_id BIGINT,
-  job_id        BIGINT,
+  position_id   BIGINT,
   is_boss       BOOLEAN DEFAULT FALSE,
   is_agent      BOOLEAN DEFAULT FALSE,
   mobile        CHAR(11),

@@ -16,16 +16,18 @@ public class DepartmentService {
         this.repo = repo;
     }
 
-    public int insert(Department department) {
-        return repo.insert(Objects.requireNonNull(department));
+    public Department create(Department department) {
+        repo.insert(Objects.requireNonNull(department));
+        return department;
     }
 
-    public int deleteById(Long id) {
-        return repo.deleteById(Objects.requireNonNull(id));
+    public Boolean deleteById(Long id) {
+        return repo.deleteById(Objects.requireNonNull(id)) == 1;
     }
 
-    public int update(Department department) {
-        return repo.update(Objects.requireNonNull(department));
+    public Department update(Department department) {
+        repo.update(Objects.requireNonNull(department));
+        return department;
     }
 
     public List<Department> selectByCompanyId(Long companyId) {
