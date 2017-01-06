@@ -6,9 +6,14 @@ import com.lyun.estate.biz.config.BizConfig;
 import com.lyun.estate.core.config.CoreConfig;
 import com.lyun.estate.core.supports.resolvers.PageBoundsArgumentResolver;
 import com.lyun.estate.core.supports.resolvers.PageListSerializer;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -21,7 +26,6 @@ import java.util.List;
 @Import({CoreConfig.class, BizConfig.class})
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
 @EnableSwagger2
-@Api(basePath = "")
 public class RestConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
@@ -42,6 +46,18 @@ public class RestConfig extends WebMvcConfigurerAdapter {
         module.addSerializer(new PageListSerializer());
         return new MappingJackson2HttpMessageConverter(objectMapper.registerModule(module));
     }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        super.configureMessageConverters(converters);
+        converters.add(formHttpMessageConverter());
+    }
+
+    @Bean
+    FormHttpMessageConverter formHttpMessageConverter() {
+        return new FormHttpMessageConverter();
+    }
+
 
 
 }

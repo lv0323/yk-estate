@@ -14,9 +14,10 @@ static String genLoginSignature(String... args) {
     String password = args[1]
     StringBuffer sb = new StringBuffer()
     String hash = encryptBySha256(salt + password)
-    System.out.println("hash:" + hash)
+    System.out.println("hash: " + hash)
+    System.out.println("hash2:" + base64(salt + password))
     sb.append(args[2]) // mobile/userName/email
-    sb.append(encryptBySha256(salt + password))
+    sb.append(hash)
     return encryptBySha256(sb.toString())
 }
 
@@ -24,10 +25,15 @@ static String encryptBySha256(String decryptStr) {
     try {
         String ret = null
         if (null != decryptStr && "" != decryptStr.trim()) {
+//            ret = Base64.encoder.encodeToString(MessageDigest.getInstance("SHA-256").digest(decryptStr.getBytes()))
             ret = Base64.getUrlEncoder().encodeToString(MessageDigest.getInstance("SHA-256").digest(decryptStr.getBytes()))
         }
         return ret.replaceAll("=", "")
     } catch (NoSuchAlgorithmException e) {
         throw new RuntimeException(e)
     }
+}
+
+static String base64(String decryptStr) {
+    return Base64.encoder.encodeToString(MessageDigest.getInstance("SHA-256").digest(decryptStr.getBytes()))
 }

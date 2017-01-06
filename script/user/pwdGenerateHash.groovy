@@ -37,13 +37,3 @@ static boolean isPassword(String password) {
     }
     return false
 }
-
-static String genOldSignature(String... args) {
-    String salt = args[0] // old salt
-    String password = args[1] // old password
-    StringBuffer sb = new StringBuffer()
-    sb.append(encryptBySha256(salt + password))
-    sb.append(args[2]) // salt
-    sb.append(args[3]) // hash
-    return sb.toString()
-}
