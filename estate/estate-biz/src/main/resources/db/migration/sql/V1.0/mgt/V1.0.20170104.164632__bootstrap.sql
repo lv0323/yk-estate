@@ -46,7 +46,7 @@ CREATE TABLE t_employee
   status        VARCHAR(8),
   entry_date    DATE    DEFAULT CURRENT_DATE
 );
-CREATE UNIQUE INDEX t_employee_mobile_uindex
+CREATE INDEX t_employee_mobile_index
   ON t_employee (mobile);
 CREATE INDEX t_employee_password_index
   ON t_employee (password);
