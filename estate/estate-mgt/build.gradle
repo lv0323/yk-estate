@@ -26,6 +26,8 @@ bootRun() {
 dependencies {
     providedCompile lib.servlet_api
     compile libGroup.swagger
+    compile "org.springframework.session:spring-session"
+//    compile "tk.mybatis:mapper:3.3.9"
 }
 
 tasks.withType(AbstractCompile) {
