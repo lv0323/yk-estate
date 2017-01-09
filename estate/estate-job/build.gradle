@@ -18,6 +18,11 @@ configurations {
     providedCompile
 }
 
+bootRun() {
+    jvmArgs = ["-Dlogback.level=INFO"]
+}
+
+
 tasks.withType(AbstractCompile) {
     options.encoding = "UTF-8"
 }

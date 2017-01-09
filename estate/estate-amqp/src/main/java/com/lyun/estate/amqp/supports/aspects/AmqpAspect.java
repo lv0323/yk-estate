@@ -19,15 +19,14 @@ import java.util.Arrays;
 @Component
 public class AmqpAspect {
 
-
     @Autowired
     AmqpExecutionContext executionContext;
 
     private void init(MessageProperties messageProperties) {
-        executionContext.setUserId(messageProperties.getUserId());
+        executionContext.setUserId((String) messageProperties.getHeaders().get("x-user-id"));
         executionContext.setClusterId(messageProperties.getClusterId());
         executionContext.setConsumerQueue(messageProperties.getConsumerQueue());
-        String correlationId = messageProperties.getCorrelationIdString();
+        String correlationId = (String) messageProperties.getHeaders().get("x-correlation-id");
         if (StringUtils.isEmpty(correlationId)) {
             correlationId = CommonUtil.getUuid();
         }
@@ -44,8 +43,8 @@ public class AmqpAspect {
         Arrays.stream(joinPoint.getArgs()).filter(arg -> arg instanceof Message).findAny().ifPresent(message -> init(((Message) message).getMessageProperties()));
     }
 
-    @After(value = "@annotation(rabbitListener)", argNames = "joinPoint,rabbitListener")
-    public void after(JoinPoint joinPoint, RabbitListener rabbitListener) {
+    @After(value = "@annotation(rabbitListener)", argNames = "rabbitListener")
+    public void after(RabbitListener rabbitListener) {
         clear();
     }
 

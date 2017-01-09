@@ -17,7 +17,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,9 +118,9 @@ public class PageBoundsArgumentResolver implements HandlerMethodArgumentResolver
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String text = webRequest.getHeader(DEFAULT_HEADER_NAME);
-        if (!StringUtils.hasText(text)) {
-            text = webRequest.getNativeRequest(HttpServletRequest.class).getQueryString();
-        }
+//        if (!StringUtils.hasText(text)) {
+//            text = webRequest.getNativeRequest(HttpServletRequest.class).getQueryString();
+//        }
         return parse(text, null);
     }
 }

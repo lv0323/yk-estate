@@ -20,7 +20,6 @@ public class ExecutionContext {
     private static final String REQUEST_LOCALE = "requestLocale";
 
     // request context
-    private static final String RESOURCE_PATH = "resourcePath";
     private static final String USER_ADDRESS = "userAddress";
     private static final String BROWSER_NAME = "browserName";
     private static final String OS_NAME = "osName";
@@ -59,14 +58,6 @@ public class ExecutionContext {
 
     public void setCorrelationId(String id) {
         set(CORRELATION_ID, id);
-    }
-
-    public String getResourcePath() {
-        return get(RESOURCE_PATH);
-    }
-
-    public void setResourcePath(String path) {
-        set(RESOURCE_PATH, path);
     }
 
     public String getUserAddress() {
