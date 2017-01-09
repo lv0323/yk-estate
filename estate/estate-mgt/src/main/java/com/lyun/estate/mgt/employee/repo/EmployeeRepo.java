@@ -34,4 +34,10 @@ public interface EmployeeRepo {
 
     @Select("select * from t_employee where id = #{id}")
     Employee selectById(Long id);
+
+    @Update("update t_employee set password = #{1}, salt = #{2} where mobile = #{0} and not status = 'QUIT'")
+    int active(String mobile, String password, String salt);
+
+    @Select("select * from t_employee where mobile = #{mobile} and not status = 'QUIT'")
+    Employee selectByMobile(String mobile);
 }
