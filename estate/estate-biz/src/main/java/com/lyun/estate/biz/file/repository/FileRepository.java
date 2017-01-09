@@ -1,9 +1,9 @@
 package com.lyun.estate.biz.file.repository;
 
 import com.lyun.estate.biz.file.def.CustomType;
-import com.lyun.estate.biz.file.def.OwnerType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.repository.provider.FileSqlProvider;
+import com.lyun.estate.biz.spec.def.DomainType;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +17,7 @@ public interface FileRepository {
     int insert(FileDescription entity);
 
     @SelectProvider(type = FileSqlProvider.class, method = "select")
-    List<FileDescription> select(@Param("ownerId") Long ownerId, @Param("ownerType") OwnerType ownerType, @Param("customType") CustomType customType, @Param("fileProcess") Integer fileProcess);
+    List<FileDescription> select(@Param("ownerId") Long ownerId, @Param("ownerType") DomainType ownerType, @Param("customType") CustomType customType, @Param("fileProcess") Integer fileProcess);
 
     @SelectProvider(type = FileSqlProvider.class, method = "selectOne")
     FileDescription selectOne(@Param("id") Long id);

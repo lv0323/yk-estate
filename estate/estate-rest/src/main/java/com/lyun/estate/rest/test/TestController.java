@@ -7,9 +7,9 @@ import com.lyun.estate.biz.auth.token.TokenProvider;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.FileType;
-import com.lyun.estate.biz.file.def.OwnerType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.OssFileService;
+import com.lyun.estate.biz.spec.def.DomainType;
 import com.lyun.estate.biz.spec.service.FileService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
@@ -72,7 +72,7 @@ public class TestController {
         try {
             FileDescription fileDescription = new FileDescription()
                     .setOwnerId(0L)
-                    .setOwnerType(OwnerType.XIAOQU)
+                    .setOwnerType(DomainType.XIAO_QU)
                     .setCustomType(CustomType.HUXING)
                     .setFileType(FileType.IMAGE)
                     .setFileProcess(FileProcess.WATERMARK.getFlag());
