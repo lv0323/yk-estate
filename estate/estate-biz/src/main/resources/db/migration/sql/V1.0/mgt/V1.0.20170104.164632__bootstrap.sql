@@ -54,7 +54,7 @@ CREATE TABLE t_employee
   create_time   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_time   TIMESTAMP
 );
-CREATE INDEX t_employee_mobile_index
-  ON t_employee (mobile);
+CREATE UNIQUE INDEX t_employee_company_id_mobile_uindex
+  ON public.t_employee (company_id, mobile);
 CREATE INDEX t_employee_password_index
   ON t_employee (password);
