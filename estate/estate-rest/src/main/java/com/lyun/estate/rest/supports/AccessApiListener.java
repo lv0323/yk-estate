@@ -9,7 +9,6 @@ import eu.bitwalker.useragentutils.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -34,36 +33,46 @@ public class AccessApiListener implements ApiListener {
     private static final String USER_AGENT_HEADER = "User-Agent";
 
     @Autowired
-    RestRequestContext restRequestContext;
-    @Autowired
-    ApplicationContext applicationContext;
+    ExecutionContext executionContext;
     @Autowired
     Environment environment;
 
     @Override
     public void onRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setHeader("X-TIMESTAMP", String.valueOf((new Date().toInstant().toEpochMilli() / 1000)));
-        restRequestContext.setCorrelationId(buildCorrelationId(request));
+        executionContext.setCorrelationId(buildCorrelationId(request));
+        executionContext.setRemoteHost(request.getRemoteHost());
+        executionContext.setRemoteUser(request.getRemoteUser());
+        executionContext.setxForwardedFor(request.getHeader("X-Forwarded-For"));
+        executionContext.setRequestMethod(request.getMethod());
+        executionContext.setRequestUrl(request.getRequestURL().toString());
+        String requestPath = request.getRequestURI();
+        executionContext.setRequestUri(request.getRequestURI());
+        String requestQueryString = request.getQueryString();
+        if (!StringUtils.isEmpty(requestQueryString)) {
+            executionContext.setRequestQueryString(requestQueryString);
+            requestPath += "?" + requestQueryString;
+        }
+        executionContext.setRequestPath(requestPath);
+        executionContext.setRequestReferer(request.getHeader("Referer"));
+        executionContext.setRequestUserAgent(request.getHeader("User-Agent"));
+        executionContext.setRequestLocale(request.getLocale().toString());
+
         String userAddress = StringUtils.isEmpty(request.getHeader(FORWARDED_FOR_HEADER)) ? request.getRemoteHost() : request.getHeader(FORWARDED_FOR_HEADER);
         if (StringUtils.hasText(userAddress) && userAddress.indexOf(',') > 0) {
             userAddress = userAddress.substring(0, userAddress.indexOf(','));
         }
-        restRequestContext.setUserAddress(userAddress);
-        String requestPath = request.getRequestURI();
-        String requestQueryString = request.getQueryString();
-        if (!StringUtils.isEmpty(requestQueryString)) {
-            requestPath += "?" + requestQueryString;
-        }
-        restRequestContext.setResourcePath(requestPath);
-        // parser request base url
+        executionContext.setUserAddress(userAddress);
+
+        // parse request base url
         String proto = request.getHeader(X_FORWARDED_PROTO);
         String host = request.getHeader(X_FORWARDED_HOST);
         String port = request.getHeader(X_FORWARDED_PORT);
         if (StringUtils.hasText(proto) && StringUtils.hasText(host) && StringUtils.hasText(port)) {
             String requestBaseUrl = proto + "://" + host + ":" + port;
-            restRequestContext.setRequestBaseUrl(requestBaseUrl);
+            executionContext.setRequestBaseUrl(requestBaseUrl);
         } else {
-            restRequestContext.setRequestBaseUrl(applicationContext.getEnvironment().getRequiredProperty("core.baseUrl"));
+            executionContext.setRequestBaseUrl(environment.getRequiredProperty("core.baseUrl"));
         }
         String userAgent = request.getHeader(USER_AGENT_HEADER);
         if (!Strings.isNullOrEmpty(userAgent)) {
@@ -77,15 +86,15 @@ public class AccessApiListener implements ApiListener {
                     .map(Version::getVersion)
                     .map(a -> ":" + a)
                     .orElse("");
-            restRequestContext.setBrowserName(browser);
-            restRequestContext.setOsName(Optional
+            executionContext.setBrowserName(browser);
+            executionContext.setOsName(Optional
                     .ofNullable(ua.getOperatingSystem())
                     .map(OperatingSystem::getName)
                     .orElse(null));
             Matcher matcher = Pattern.compile("ykestate\\/(\\d+(\\.\\d+){1,2})")
                     .matcher(userAgent);
             if (matcher.matches()) {
-                restRequestContext.setAppVersion("iOS/" + matcher.group(1));
+                executionContext.setAppVersion("iOS/" + matcher.group(1));
             }
         }
         logger.info(buildRequestLog(request));
@@ -98,21 +107,7 @@ public class AccessApiListener implements ApiListener {
 
     @Override
     public void onComplete() {
-        restRequestContext.clear();
-    }
-
-    private void append(StringBuilder sb, String str) {
-        sb.append(" ");
-        if (StringUtils.isEmpty(str)) {
-            sb.append("-");
-        } else if (Pattern.compile("[ \t\n\r]").matcher(str).find()) {
-            // if contains whitespaces, escape and quote
-            sb.append("\"");
-            sb.append(str.replace("\"", "\"\""));
-            sb.append("\"");
-        } else {
-            sb.append(str);
-        }
+        executionContext.clear();
     }
 
     private String buildRequestLog(HttpServletRequest request) {
@@ -121,7 +116,7 @@ public class AccessApiListener implements ApiListener {
         append(accessLog, request.getHeader(FORWARDED_FOR_HEADER));
         append(accessLog, request.getRemoteUser());
         append(accessLog, request.getMethod());
-        append(accessLog, buildRequestPath(request));
+        append(accessLog, executionContext.getRequestPath());
         append(accessLog, request.getHeader(REFERER_HEADER));
         append(accessLog, request.getHeader(USER_AGENT_HEADER));
         return accessLog.toString().substring(1);
@@ -143,12 +138,17 @@ public class AccessApiListener implements ApiListener {
         return id;
     }
 
-    private String buildRequestPath(HttpServletRequest request) {
-        String requestPath = request.getRequestURI();
-        String requestQueryString = request.getQueryString();
-        if (!StringUtils.isEmpty(requestQueryString)) {
-            requestPath += "?" + requestQueryString;
+    private void append(StringBuilder sb, String str) {
+        sb.append(" ");
+        if (StringUtils.isEmpty(str)) {
+            sb.append("-");
+        } else if (Pattern.compile("[ \t\n\r]").matcher(str).find()) {
+            // if contains whitespaces, escape and quote
+            sb.append("\"");
+            sb.append(str.replace("\"", "\"\""));
+            sb.append("\"");
+        } else {
+            sb.append(str);
         }
-        return requestPath;
     }
 }

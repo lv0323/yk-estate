@@ -1,15 +1,11 @@
 dependencies {
     // spring
     compile lib.spring_boot_starter
-    compile(lib.spring_boot_starter_web) {
-        exclude module: 'spring-boot-starter-tomcat'
-    }
     compile lib.spring_context
     compile(lib.spring_context_support) {
         exclude module: 'quartz'
     }
     compile lib.spring_webmvc
-    compile lib.spring_boot_starter_undertow
     compile lib.freemarker
 
     // aspectj

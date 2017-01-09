@@ -1,7 +1,6 @@
 package com.lyun.estate.biz.auth.sms;
 
 import com.lyun.estate.core.supports.exceptions.ValidateException;
-import com.lyun.estate.core.supports.types.Constant;
 import com.lyun.estate.core.supports.types.SmsType;
 import com.lyun.estate.core.utils.QueryStringUtil;
 import org.springframework.core.MethodParameter;
@@ -14,7 +13,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.Locale;
 
@@ -36,9 +34,6 @@ public class SmsCodeArgumentResolver implements HandlerMethodArgumentResolver, F
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String text = webRequest.getHeader(SMS_CODE_HEADER);
-        if (!StringUtils.hasText(text)) {
-            text = webRequest.getNativeRequest(HttpServletRequest.class).getQueryString();
-        }
         return parse(text, null);
     }
 

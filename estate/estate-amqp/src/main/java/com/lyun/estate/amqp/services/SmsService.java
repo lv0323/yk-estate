@@ -18,4 +18,5 @@ public class SmsService {
         logger.info("Message Received:{}", message);
         logger.info("Message Received:{}", new String(message.getBody(), StandardCharsets.UTF_8));
     }
+
 }

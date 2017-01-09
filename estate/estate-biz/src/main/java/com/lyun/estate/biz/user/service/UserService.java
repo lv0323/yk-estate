@@ -201,4 +201,34 @@ public class UserService {
             return new SaltResponse().setSalt(user.getSalt());
         }
     }
+
+    @Transactional
+    public boolean attentionCommunity(long communityId) {
+        if (isAttention(communityId)) {
+            return true;
+        }
+        long userId = Long.valueOf(executionContext.getUserId());
+        if (1 != userMapper.createAttention(communityId, userId)) {
+            throw new EstateBizException("attention.community.error", "关注小区失败");
+        } else {
+            return true;
+        }
+    }
+
+    @Transactional
+    public boolean attentionCancel(long communityId) {
+        if (!isAttention(communityId)) {
+            return true;
+        }
+        long userId = Long.valueOf(executionContext.getUserId());
+        if (1 != userMapper.deleteAttention(communityId, userId)) {
+            throw new EstateBizException("cancel.attention.community.error", "取消关注小区失败");
+        } else {
+            return true;
+        }
+    }
+
+    public boolean isAttention(long communityId) {
+        return null != userMapper.findAttention(communityId, Long.valueOf(executionContext.getUserId()));
+    }
 }

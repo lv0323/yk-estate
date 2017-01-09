@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import(AmqpConfig.class)
 public class AmqpAdminConfig {
-    public static final String smsQueueName = "ykestate.queue.sms";
-    public static final String attentionQueueName = "ykestate.queue.attention";
+    public static final String smsQueueName = "ykestate.queue.sms1";
+    public static final String attentionQueueName = "ykestate.queue.attention1";
 
     @Autowired
     private ConnectionFactory connectionFactory;

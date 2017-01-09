@@ -136,7 +136,7 @@ public class ExceptionAdvice {
     }
 
     private String getMessage(String code, Object[] args, String defaultMessage) {
-        return messageSource.getMessage(code, args, defaultMessage, new Locale(executionContext.getRequestLocal()));
+        return messageSource.getMessage(code, args, defaultMessage, new Locale(executionContext.getRequestLocale()));
     }
 
 }

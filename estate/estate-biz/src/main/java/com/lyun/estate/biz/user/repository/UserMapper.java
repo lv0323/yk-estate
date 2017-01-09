@@ -5,12 +5,16 @@ import com.lyun.estate.biz.user.repository.provider.UserSqlProvider;
 import com.lyun.estate.biz.user.resources.ChangePasswordResource;
 import com.lyun.estate.biz.user.resources.LoginResource;
 import com.lyun.estate.biz.user.resources.RegisterResource;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.UpdateProvider;
+
+import java.util.Map;
 
 @Mapper
 public interface UserMapper {
@@ -32,4 +36,14 @@ public interface UserMapper {
 
     @UpdateProvider(type = UserSqlProvider.class, method = "update")
     int updateUser(User user);
+
+    @Insert("insert into t_attention(community_id,user_id,attention_time) values(#{communityId},#{userId},current_timestamp)")
+    int createAttention(@Param("communityId") long communityId, @Param("userId") long userId);
+
+    @Delete("delete from t_attention where community_id=#{communityId} and user_id=#{userId}")
+    int deleteAttention(@Param("communityId") long communityId, @Param("userId") long userId);
+
+    @Select("select * from t_attention where community_id=#{communityId} and user_id=#{userId}")
+    Map<String, Object> findAttention(@Param("communityId") long communityId, @Param("userId") long userId);
+
 }

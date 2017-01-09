@@ -23,7 +23,6 @@ bootRun() {
 }
 
 dependencies {
-    compile lib.spring_boot_starter
     compile lib.spring_rabbit
     compile lib.groovy
 }

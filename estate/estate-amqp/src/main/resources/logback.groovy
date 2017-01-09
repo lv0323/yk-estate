@@ -43,7 +43,7 @@ if (!levelstr) {
 
     logger("springfox.documentation.schema", Level.WARN)
     logger("org.springframework", Level.WARN)
-    root(Level.toLevel(levelstr, Level.INFO), ['CONSOLE', 'FILE'])
+    root(Level.toLevel(levelstr, Level.INFO), ['FILE'])
 } else {
     root(Level.toLevel(levelstr, Level.INFO), ['CONSOLE'])
 }
