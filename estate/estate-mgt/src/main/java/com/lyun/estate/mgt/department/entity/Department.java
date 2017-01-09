@@ -1,5 +1,7 @@
 package com.lyun.estate.mgt.department.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Department {
 
     private Long id;
@@ -9,7 +11,9 @@ public class Department {
     private String shortName;
     private String telephone;
     private String address;
+    @JsonIgnore
     private java.sql.Timestamp createTime;
+    @JsonIgnore
     private java.sql.Timestamp updateTime;
 
 

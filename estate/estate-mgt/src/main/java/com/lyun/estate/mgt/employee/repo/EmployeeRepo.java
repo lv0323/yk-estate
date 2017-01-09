@@ -24,6 +24,12 @@ public interface EmployeeRepo {
     int update(Employee employee);
 
     @Select("select * from t_employee where company_id = #{companyId}")
+    @Results({
+            @Result(column = "department_id", property = "departmentId", javaType = Long.class),
+            @Result(column = "department_id", property = "department", one = @One(select = "com.lyun.estate.mgt.department.repo.DepartmentRepo.selectById")),
+            @Result(column = "position_id", property = "positionId", javaType = Long.class),
+            @Result(column = "position_id", property = "position", one = @One(select = "com.lyun.estate.mgt.position.repo.PositionRepo.selectById"))
+    })
     List<Employee> selectByCompanyId(Long companyId);
 
     @Select("select * from t_employee where id = #{id}")
