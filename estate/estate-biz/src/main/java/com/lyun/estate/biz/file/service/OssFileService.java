@@ -17,6 +17,7 @@ import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class OssFileService extends AbstractFileService {
         client = new OSSClient(settingProvider.find(NameSpace.FILE, "endpoint").getValue(), accessKeyId, accessKeySecret);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public FileDescription save(FileDescription entity, InputStream inputStream, String suffix) {
         ExceptionUtil.checkNotNull("entity", entity);

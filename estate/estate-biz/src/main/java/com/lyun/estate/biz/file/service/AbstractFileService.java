@@ -7,6 +7,7 @@ import com.lyun.estate.biz.file.repository.FileRepository;
 import com.lyun.estate.biz.spec.def.DomainType;
 import com.lyun.estate.biz.spec.service.FileService;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public abstract class AbstractFileService implements FileService {
         this.repository = repository;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public Boolean setFirst(Long id) {
         return repository.updatePriority(repository.selectOne(id)) > 0;

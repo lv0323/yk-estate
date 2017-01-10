@@ -18,7 +18,7 @@ public class FileSqlProvider {
                 .VALUES("file_process", "#{fileProcess}")
                 .VALUES("target", "#{target}")
                 .VALUES("path", "#{path}")
-                .VALUES("priority", "(" + new SQL().SELECT("count(*) + 1").FROM(TABLE_NAME)
+                .VALUES("priority", "(" + new SQL().SELECT("count(*)").FROM(TABLE_NAME)
                         .WHERE("owner_id = #{ownerId}")
                         .WHERE("owner_type = #{ownerType}")
                         .WHERE("custom_type = #{customType}")
