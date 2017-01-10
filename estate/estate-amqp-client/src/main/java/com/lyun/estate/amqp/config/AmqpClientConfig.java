@@ -1,7 +1,9 @@
 package com.lyun.estate.amqp.config;
 
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,7 +49,7 @@ public class AmqpClientConfig {
         rabbitTemplate.setConnectionFactory(connectionFactory());
         rabbitTemplate.setQueue(smsQueueName);
         rabbitTemplate.setRoutingKey(smsQueueName);
-        rabbitTemplate.setMessageConverter(jackson2JsonMessageConverter());
+        rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
         return rabbitTemplate;
     }
 
@@ -57,13 +59,15 @@ public class AmqpClientConfig {
         rabbitTemplate.setConnectionFactory(connectionFactory());
         rabbitTemplate.setQueue(attentionQueueName);
         rabbitTemplate.setRoutingKey(attentionQueueName);
-        rabbitTemplate.setMessageConverter(jackson2JsonMessageConverter());
+        rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
         return rabbitTemplate;
     }
 
     @Bean
-    public Jackson2JsonMessageConverter jackson2JsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
+    RabbitAdmin rabbitAdmin() {
+        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
+        rabbitAdmin.declareQueue(new Queue("amq.rabbitmq.reply-to", false, true, true));
+        return rabbitAdmin;
     }
 
 }

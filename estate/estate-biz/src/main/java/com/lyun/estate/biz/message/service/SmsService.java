@@ -11,6 +11,7 @@ import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.supports.types.YN;
 import com.lyun.estate.core.utils.CommonUtil;
 import com.lyun.estate.core.utils.ValidateUtil;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
@@ -82,5 +83,18 @@ public class SmsService {
         boolean result = valueWrapper != null && smsKv.equals(valueWrapper.get());
         cacheManager.getCache(CacheConfig.EVICT_CACHE_NAME).evict(smsKv);
         return result;
+    }
+
+    @Autowired
+    @Qualifier("smsRabbitTemplate")
+    private RabbitTemplate smsRabbitTemplate;
+
+    public boolean sendMessage() {
+        smsRabbitTemplate.convertAndSend(new SmsCode().setCode("1231").setMobile("15021916760"), message -> {
+            message.getMessageProperties().setCorrelationIdString(executionContext.getCorrelationId());
+            message.getMessageProperties().setReplyTo("amq.rabbitmq.reply-to");
+            return message;
+        });
+        return true;
     }
 }

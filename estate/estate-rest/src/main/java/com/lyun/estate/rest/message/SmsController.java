@@ -7,8 +7,10 @@ import com.lyun.estate.biz.message.resources.SmsResource;
 import com.lyun.estate.biz.message.resources.SmsResponse;
 import com.lyun.estate.biz.message.service.SmsService;
 import com.lyun.estate.core.supports.types.SmsType;
+import com.lyun.estate.rest.supports.resources.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,5 +30,12 @@ public class SmsController {
                                    @RequestHeader(value = CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {
         return smsService.sendCheckSms(new SmsResource().setMobile(mobile).setType(type));
     }
+
+
+    @GetMapping(value = "test")
+    public CommonResponse send() {
+        return new CommonResponse().setSuccess(smsService.sendMessage());
+    }
+
 
 }

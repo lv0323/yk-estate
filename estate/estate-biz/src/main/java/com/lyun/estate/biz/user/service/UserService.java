@@ -133,7 +133,6 @@ public class UserService {
         } else {
             return false;
         }
-
     }
 
     private String nullToEmptyStr(String str) {
