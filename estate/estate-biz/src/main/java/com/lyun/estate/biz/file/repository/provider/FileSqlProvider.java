@@ -41,7 +41,7 @@ public class FileSqlProvider {
         return new SQL().SELECT("*").FROM(TABLE_NAME).WHERE("id = #{id}").toString();
     }
 
-    public String updatePriority(FileDescription entity) {
+    public String setMinPriority(FileDescription entity) {
         return new SQL().UPDATE(TABLE_NAME).SET("priority = (" +
                 new SQL().SELECT("min(priority) - 1").FROM(TABLE_NAME)
                         .WHERE("owner_id = #{ownerId}")

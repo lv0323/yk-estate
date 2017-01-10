@@ -23,7 +23,7 @@ public abstract class AbstractFileService implements FileService {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public Boolean setFirst(Long id) {
-        return repository.updatePriority(repository.selectOne(id)) > 0;
+        return repository.setMinPriority(repository.selectOne(id)) > 0;
     }
 
     @Override
