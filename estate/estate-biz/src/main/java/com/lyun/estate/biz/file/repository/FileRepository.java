@@ -26,5 +26,5 @@ public interface FileRepository {
     int delete(@Param("id") Long id);
 
     @UpdateProvider(type = FileSqlProvider.class, method = "updatePriority")
-    int updatePriority(@Param("id") Long id, @Param("priority") Integer priority);
+    int updatePriority(FileDescription entity);
 }
