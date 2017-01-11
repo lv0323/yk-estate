@@ -68,12 +68,18 @@ public class EmployeeController {
         Employee employee = employeeService.login(mobile, password);
         if (employee == null)
             return new RestResponse().add("ret", false).get();
-        session.setAttribute("companyId", employee.getCompanyId());
+        session.setAttribute("employee", employee);
         return new RestResponse().add("ret", true).add("token", session.getId()).get();
+    }
+
+    @GetMapping("logout")
+    public Object logout(@RequestHeader("x-auth-token") String token, HttpSession session) {
+        session.invalidate();
+        return new RestResponse().add("ret", true).get();
     }
 
     @GetMapping("company-id")
     public Object companyId(@RequestHeader("x-auth-token") String token, HttpSession session) {
-        return session.getAttribute("companyId");
+        return ((Employee) session.getAttribute("employee")).getCompanyId();
     }
 }
