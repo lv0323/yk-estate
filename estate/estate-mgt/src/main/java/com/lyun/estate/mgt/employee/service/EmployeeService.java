@@ -63,9 +63,9 @@ public class EmployeeService {
         return repo.selectByMobile(mobile);
     }
 
-    public Boolean active(String mobile, String password) {
+    public Boolean active(String mobile, String password, String secretKey) {
         String salt = UUID.randomUUID().toString().replace("-", "");
-        return repo.active(mobile, hmac(salt, password), salt) == 1;
+        return repo.active(mobile, hmac(salt, password), salt, secretKey) == 1;
     }
 
     public String salt(String mobile) {

@@ -52,7 +52,7 @@ public class EmployeeController {
     public Object active(@RequestBody ActiveEntity entity) {
         if (!smsService.isSmsCodeCorrect(entity.getSmsCode()))
             throw new ValidateException("SmsCode", "SMS Code错误");
-        return new RestResponse().add("ret", employeeService.active(entity.getSmsCode().getMobile(), entity.getPassword())).get();
+        return new RestResponse().add("ret", employeeService.active(entity.getSmsCode().getMobile(), entity.getPassword(), entity.getSecretKey())).get();
     }
 
     @GetMapping("salt")
