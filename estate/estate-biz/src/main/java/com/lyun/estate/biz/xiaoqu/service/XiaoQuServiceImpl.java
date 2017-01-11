@@ -15,8 +15,9 @@ import com.lyun.estate.biz.housedict.service.HouseService;
 import com.lyun.estate.biz.houselicence.def.StructureType;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
-import com.lyun.estate.biz.spec.def.DomainType;
+import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.biz.spec.file.service.FileService;
+import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuFilter;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuSummary;
 import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
@@ -56,8 +57,14 @@ public class XiaoQuServiceImpl implements XiaoQuService {
      * @return 关键词不为空依次与区域，板块，小区名（含别名）相匹配，返回响应结果；
      */
     @Override
-    public PageList<XiaoQuSummary> findXiaoQuSummaryByKeyword(XiaoQuFilter filter, PageBounds pageBounds) {
+    public PageList<XiaoQuSummary> findXiaoQuSummaryByKeyword(XiaoQuFilter filter, XQSummaryOrder order,
+                                                              PageBounds pageBounds) {
         ExceptionUtil.checkNotNull("过滤条件", filter);
+        ExceptionUtil.checkNotNull("排序条件", order);
+        ExceptionUtil.checkNotNull("pageBounds", pageBounds);
+
+        pageBounds.getOrders().clear();
+        pageBounds.getOrders().addAll(order.getOrders());
 
         PageList<XiaoQuSummary> empty = new PageList<>(Lists.newArrayList(),
                 new Paginator(pageBounds.getPage(), pageBounds.getLimit(), 0));
@@ -142,6 +149,16 @@ public class XiaoQuServiceImpl implements XiaoQuService {
             summaries.add(summary);
         });
         return summaries;
+    }
+
+    @Override
+    public List<KeywordBean> recommend(String keyword) {
+        List<KeywordBean> result = new ArrayList<>();
+        if (Strings.isNullOrEmpty(keyword)) {
+            return result;
+        }
+        return keywordService.findContain(keyword,
+                Lists.newArrayList(DomainType.DISTRICT, DomainType.SUB_DISTRICT, DomainType.XIAO_QU), 10);
     }
 
 }

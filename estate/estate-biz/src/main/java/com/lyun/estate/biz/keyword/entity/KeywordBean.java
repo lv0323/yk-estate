@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.keyword.entity;
 
-import com.lyun.estate.biz.spec.def.DomainType;
+import com.lyun.estate.biz.spec.common.DomainType;
 
 /**
  * Created by Jeffrey on 2017-01-06.
