@@ -27,6 +27,7 @@ dependencies {
     compile lib.simplecaptcha
     compile lib.caffeine
     compile lib.jjwt
+    compile lib.hibernate_validator
 }
 
 tasks.withType(AbstractCompile) {
