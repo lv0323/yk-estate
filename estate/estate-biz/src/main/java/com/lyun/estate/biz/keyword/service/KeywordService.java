@@ -6,7 +6,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.repository.KeywordRepository;
-import com.lyun.estate.biz.spec.def.DomainType;
+import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +49,7 @@ public class KeywordService {
         this.keywordRepository = keywordRepository;
     }
 
-    public List<KeywordBean> findContain(String keyword, List<DomainType> scopes, Integer limit) {
+    public List<KeywordBean> findContain(String keyword, ArrayList<DomainType> scopes, Integer limit) {
         List<KeywordBean> results = new ArrayList<>();
         limit = Optional.ofNullable(limit).orElse(Integer.MAX_VALUE);
         if (scopes == null || Strings.isNullOrEmpty(keyword) || limit <= 0) {
@@ -78,7 +78,7 @@ public class KeywordService {
         return results;
     }
 
-    public List<KeywordBean> findNameMatch(String keyword, List<DomainType> scopes, Integer limit) {
+    public List<KeywordBean> findNameMatch(String keyword, ArrayList<DomainType> scopes, Integer limit) {
         List<KeywordBean> results = new ArrayList<>();
         limit = Optional.ofNullable(limit).orElse(Integer.MAX_VALUE);
         if (scopes == null || Strings.isNullOrEmpty(keyword) || limit <= 0) {
