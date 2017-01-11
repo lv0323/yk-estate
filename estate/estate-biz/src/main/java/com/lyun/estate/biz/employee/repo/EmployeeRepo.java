@@ -1,7 +1,7 @@
-package com.lyun.estate.mgt.employee.repo;
+package com.lyun.estate.biz.employee.repo;
 
-import com.lyun.estate.mgt.employee.entity.Employee;
-import com.lyun.estate.mgt.employee.repo.provider.EmployeeProvider;
+import com.lyun.estate.biz.employee.entity.Employee;
+import com.lyun.estate.biz.employee.repo.provider.EmployeeProvider;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -26,9 +26,9 @@ public interface EmployeeRepo {
     @Select("select * from t_employee where company_id = #{companyId}")
     @Results({
             @Result(column = "department_id", property = "departmentId", javaType = Long.class),
-            @Result(column = "department_id", property = "department", one = @One(select = "com.lyun.estate.mgt.department.repo.DepartmentRepo.selectById")),
+            @Result(column = "department_id", property = "department", one = @One(select = "com.lyun.estate.biz.department.repo.DepartmentRepo.selectById")),
             @Result(column = "position_id", property = "positionId", javaType = Long.class),
-            @Result(column = "position_id", property = "position", one = @One(select = "com.lyun.estate.mgt.position.repo.PositionRepo.selectById"))
+            @Result(column = "position_id", property = "position", one = @One(select = "com.lyun.estate.biz.position.repo.PositionRepo.selectById"))
     })
     List<Employee> selectByCompanyId(Long companyId);
 

@@ -1,4 +1,4 @@
-package com.lyun.estate.mgt.department.entity;
+package com.lyun.estate.biz.department.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

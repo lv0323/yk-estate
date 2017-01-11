@@ -1,4 +1,4 @@
-package com.lyun.estate.mgt.employee.entity;
+package com.lyun.estate.biz.employee.entity;
 
 import com.lyun.estate.biz.auth.sms.SmsCode;
 

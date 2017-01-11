@@ -1,10 +1,10 @@
-package com.lyun.estate.mgt.employee.entity;
+package com.lyun.estate.biz.employee.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lyun.estate.mgt.department.entity.Department;
-import com.lyun.estate.mgt.employee.def.Gender;
-import com.lyun.estate.mgt.employee.def.Status;
-import com.lyun.estate.mgt.position.entity.Position;
+import com.lyun.estate.biz.department.entity.Department;
+import com.lyun.estate.biz.employee.def.Gender;
+import com.lyun.estate.biz.employee.def.Status;
+import com.lyun.estate.biz.position.entity.Position;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;

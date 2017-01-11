@@ -1,7 +1,7 @@
-package com.lyun.estate.mgt.employee.repo.provider;
+package com.lyun.estate.biz.employee.repo.provider;
 
+import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.core.repo.SQL;
-import com.lyun.estate.mgt.employee.entity.Employee;
 
 public class EmployeeProvider {
 

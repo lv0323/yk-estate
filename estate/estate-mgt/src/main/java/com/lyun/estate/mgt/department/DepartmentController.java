@@ -1,7 +1,7 @@
-package com.lyun.estate.mgt.department.controller;
+package com.lyun.estate.mgt.department;
 
-import com.lyun.estate.mgt.department.entity.Department;
-import com.lyun.estate.mgt.department.service.DepartmentService;
+import com.lyun.estate.biz.department.entity.Department;
+import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.web.bind.annotation.*;
 

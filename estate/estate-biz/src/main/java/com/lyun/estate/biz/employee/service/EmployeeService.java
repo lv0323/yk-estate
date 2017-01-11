@@ -1,10 +1,10 @@
-package com.lyun.estate.mgt.employee.service;
+package com.lyun.estate.biz.employee.service;
 
+import com.lyun.estate.biz.employee.entity.Employee;
+import com.lyun.estate.biz.employee.repo.EmployeeRepo;
 import com.lyun.estate.core.config.CacheConfig;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
-import com.lyun.estate.mgt.employee.entity.Employee;
-import com.lyun.estate.mgt.employee.repo.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;

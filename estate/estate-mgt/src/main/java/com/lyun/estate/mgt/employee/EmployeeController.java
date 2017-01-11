@@ -1,10 +1,10 @@
-package com.lyun.estate.mgt.employee.controller;
+package com.lyun.estate.mgt.employee;
 
+import com.lyun.estate.biz.employee.entity.ActiveEntity;
+import com.lyun.estate.biz.employee.entity.Employee;
+import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.message.service.SmsService;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
-import com.lyun.estate.mgt.employee.entity.ActiveEntity;
-import com.lyun.estate.mgt.employee.entity.Employee;
-import com.lyun.estate.mgt.employee.service.EmployeeService;
 import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;

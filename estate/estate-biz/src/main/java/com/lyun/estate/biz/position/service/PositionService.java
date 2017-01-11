@@ -1,7 +1,7 @@
-package com.lyun.estate.mgt.position.service;
+package com.lyun.estate.biz.position.service;
 
-import com.lyun.estate.mgt.position.entity.Position;
-import com.lyun.estate.mgt.position.repo.PositionRepo;
+import com.lyun.estate.biz.position.entity.Position;
+import com.lyun.estate.biz.position.repo.PositionRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

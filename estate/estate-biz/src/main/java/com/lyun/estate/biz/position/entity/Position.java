@@ -1,4 +1,4 @@
-package com.lyun.estate.mgt.position.entity;
+package com.lyun.estate.biz.position.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

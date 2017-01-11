@@ -1,6 +1,6 @@
-package com.lyun.estate.mgt.position.repo;
+package com.lyun.estate.biz.position.repo;
 
-import com.lyun.estate.mgt.position.entity.Position;
+import com.lyun.estate.biz.position.entity.Position;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

@@ -1,7 +1,7 @@
-package com.lyun.estate.mgt.position.controller;
+package com.lyun.estate.mgt.position;
 
-import com.lyun.estate.mgt.position.entity.Position;
-import com.lyun.estate.mgt.position.service.PositionService;
+import com.lyun.estate.biz.position.entity.Position;
+import com.lyun.estate.biz.position.service.PositionService;
 import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.web.bind.annotation.*;
 
