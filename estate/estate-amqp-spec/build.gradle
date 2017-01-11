@@ -1,5 +1,7 @@
 dependencies {
     compile lib.spring_context
+    compile lib.spring_rabbit
+    compile lib.groovy
 }
 tasks.withType(AbstractCompile) {
     options.encoding = "UTF-8"

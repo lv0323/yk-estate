@@ -29,10 +29,17 @@ project(':estate-rest') {
 }
 
 project(':estate-amqp') {
+    dependencies {
+        compile project(':estate-amqp-spec')
+    }
 }
 
 project(':estate-amqp-client') {
     dependencies {
         compile project(':estate-core')
+        compile project(':estate-amqp-spec')
     }
+}
+
+project(':estate-amqp-spec') {
 }

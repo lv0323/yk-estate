@@ -1,4 +1,4 @@
-package com.lyun.estate.amqp.pojos;
+package com.lyun.estate.amqp.spec.pojos;
 
 public class Attention {
     private String dest;
