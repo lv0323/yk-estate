@@ -1,4 +1,4 @@
-package com.lyun.estate.mgt.employee.def;
+package com.lyun.estate.biz.employee.def;
 
 public enum Gender {
     M("男"),

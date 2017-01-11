@@ -1,24 +1,39 @@
-package com.lyun.estate.mgt.employee.entity;
+package com.lyun.estate.biz.employee.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lyun.estate.mgt.employee.def.Gender;
-import com.lyun.estate.mgt.employee.def.Status;
+import com.lyun.estate.biz.department.entity.Department;
+import com.lyun.estate.biz.employee.def.Gender;
+import com.lyun.estate.biz.employee.def.Status;
+import com.lyun.estate.biz.position.entity.Position;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 public class Employee {
 
     private Long id;
     private Long companyId;
+    @NotNull
     private Long departmentId;
+    private Department department;
+    @NotNull
     private Long positionId;
+    private Position position;
     private Boolean isBoss;
     private Boolean isAgent;
+    @Pattern(regexp = "^1\\d{10}$")
     private String mobile;
     private String password;
     private String salt;
+    @NotEmpty
     private String name;
+    @NotNull
     private Gender gender;
+    @Pattern(regexp = "(\\d{14}[0-9a-zA-Z])|(\\d{17}[0-9a-zA-Z])")
     private String idcardNumber;
     private String wechat;
+    @NotNull
     private Status status;
     private java.sql.Date entryDate;
     @JsonIgnore
@@ -176,6 +191,24 @@ public class Employee {
 
     public Employee setUpdateTime(java.sql.Timestamp updateTime) {
         this.updateTime = updateTime;
+        return this;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public Employee setDepartment(Department department) {
+        this.department = department;
+        return this;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public Employee setPosition(Position position) {
+        this.position = position;
         return this;
     }
 }

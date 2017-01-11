@@ -1,4 +1,6 @@
-package com.lyun.estate.mgt.position.entity;
+package com.lyun.estate.biz.position.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Position {
 
@@ -6,7 +8,9 @@ public class Position {
     private Long companyId;
     private String name;
     private String note;
+    @JsonIgnore
     private java.sql.Timestamp createTime;
+    @JsonIgnore
     private java.sql.Timestamp updateTime;
 
     public Long getId() {

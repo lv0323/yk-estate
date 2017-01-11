@@ -1,6 +1,6 @@
-package com.lyun.estate.mgt.department.repo;
+package com.lyun.estate.biz.department.repo;
 
-import com.lyun.estate.mgt.department.entity.Department;
+import com.lyun.estate.biz.department.entity.Department;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

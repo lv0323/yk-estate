@@ -1,7 +1,7 @@
-package com.lyun.estate.mgt.department.service;
+package com.lyun.estate.biz.department.service;
 
-import com.lyun.estate.mgt.department.entity.Department;
-import com.lyun.estate.mgt.department.repo.DepartmentRepo;
+import com.lyun.estate.biz.department.entity.Department;
+import com.lyun.estate.biz.department.repo.DepartmentRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
