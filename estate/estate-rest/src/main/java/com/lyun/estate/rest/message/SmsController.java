@@ -9,6 +9,7 @@ import com.lyun.estate.biz.message.service.SmsService;
 import com.lyun.estate.core.supports.types.SmsType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,11 @@ public class SmsController {
                                    @RequestParam SmsType type,
                                    @RequestHeader(value = CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {
         return smsService.sendCheckSms(new SmsResource().setMobile(mobile).setType(type));
+    }
+
+    @GetMapping(value = "test")
+    public SmsResponse send() {
+        return smsService.sendCheckSms(new SmsResource().setMobile("15021916760").setType(SmsType.LOGIN));
     }
 
 }

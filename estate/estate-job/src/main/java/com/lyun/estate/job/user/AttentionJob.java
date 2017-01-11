@@ -15,9 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class AttentionJob extends BaseJob {
     private Logger logger = LoggerFactory.getLogger(Attention.class);
-
     private AtomicInteger atomicInteger = new AtomicInteger();
-
     @Autowired
     @Qualifier("attentionRabbitTemplate")
     private RabbitTemplate rabbitTemplate;
@@ -37,6 +35,7 @@ public class AttentionJob extends BaseJob {
         attention.setMessage(String.format("%06d关注消息", index));
         rabbitTemplate.convertAndSend(attention, message -> {
             message.getMessageProperties().setHeader("x-correlation-id", jobExecutionContext.getCorrelationId());
+            message.getMessageProperties().setHeader("x-client", "job");
             logger.debug("attention send: {}", message);
             return message;
         });

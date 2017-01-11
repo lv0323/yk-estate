@@ -24,11 +24,10 @@ configurations {
 }
 
 dependencies {
-    compile(lib.spring_boot_starter_web)
-//            {
-//        exclude module: 'spring-boot-starter-tomcat'
-//    }
-//    compile lib.spring_boot_starter_undertow
+    compile(lib.spring_boot_starter_web){
+        exclude module: 'spring-boot-starter-tomcat'
+    }
+    compile lib.spring_boot_starter_undertow
     providedCompile lib.servlet_api
     compile libGroup.swagger
     compile lib.user_agent_utils

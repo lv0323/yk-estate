@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.message.service;
 
+import com.lyun.estate.amqp.client.biz.SmsAmqpClient;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.message.resources.SmsResource;
 import com.lyun.estate.biz.message.resources.SmsResponse;
@@ -33,6 +34,8 @@ public class SmsService {
     UserMapper userMapper;
     @Autowired
     ExecutionContext executionContext;
+    @Autowired
+    SmsAmqpClient smsAmqpClient;
 
     private boolean isDefaultSend() {
         return YN.Y == YN.valueOf(environment.getProperty("message.sms.send.enable"));
@@ -49,8 +52,10 @@ public class SmsService {
         String smsCode = "100000";
         String serial = "01";
         if (isDefaultSend()) {
-//TODO sms implements
             serial = CommonUtil.randomNumberSeq(2);
+            smsAmqpClient.sendMessage(new com.lyun.estate.amqp.spec.pojos.SmsCode()
+                            .setCode(smsCode).setMobile(smsResource.getMobile()).setSerial(serial),
+                    executionContext.getCorrelationId());
         }
         String smsId = CommonUtil.getUuid();
         String smsKv = smsId + ":" + smsResource.getMobile() + ":" + smsCode + ":" + serial + ":" + smsResource.getType() + ":" + executionContext.getClientId();
@@ -83,4 +88,5 @@ public class SmsService {
         cacheManager.getCache(CacheConfig.EVICT_CACHE_NAME).evict(smsKv);
         return result;
     }
+
 }

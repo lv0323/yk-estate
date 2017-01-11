@@ -1,8 +1,6 @@
 package com.lyun.estate.core.supports;
 
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -18,23 +16,6 @@ public class ExecutionContext {
     private static final String USER_ID = "userId";
     private static final String CORRELATION_ID = "correlationId";
     private static final String REQUEST_LOCALE = "requestLocale";
-
-    // request context
-    private static final String USER_ADDRESS = "userAddress";
-    private static final String BROWSER_NAME = "browserName";
-    private static final String OS_NAME = "osName";
-    private static final String APP_VERSION = "appVersion";
-    private static final String REMOTE_USER = "remoteUser";
-    private static final String X_FORWARDED_FOR = "xForwardedFor";
-    private static final String REMOTE_HOST = "remoteHost";
-    private static final String REQUEST_BASE_URL = "requestBaseUrl";
-    private static final String REQUEST_METHOD = "requestMethod";
-    private static final String REQUEST_URL = "requestUrl";
-    private static final String REQUEST_URI = "requestUri";
-    private static final String REQUEST_PATH = "requestPath";
-    private static final String REQUEST_QUERY_STRING = "requestQueryString";
-    private static final String REQUEST_USER_AGENT = "requestUserAgent";
-    private static final String REQUEST_REFERER = "requestReferer";
 
     public String getClientId() {
         return get(CLIENT_ID);
@@ -60,6 +41,31 @@ public class ExecutionContext {
         set(CORRELATION_ID, id);
     }
 
+    public String getRequestLocale() {
+        return get(REQUEST_LOCALE);
+    }
+
+    public void setRequestLocale(String requestLocale) {
+        set(REQUEST_LOCALE, requestLocale);
+    }
+
+    // request context
+    private static final String USER_ADDRESS = "userAddress";
+    private static final String BROWSER_NAME = "browserName";
+    private static final String OS_NAME = "osName";
+    private static final String APP_VERSION = "appVersion";
+    private static final String REMOTE_USER = "remoteUser";
+    private static final String X_FORWARDED_FOR = "xForwardedFor";
+    private static final String REMOTE_HOST = "remoteHost";
+    private static final String REQUEST_BASE_URL = "requestBaseUrl";
+    private static final String REQUEST_METHOD = "requestMethod";
+    private static final String REQUEST_URL = "requestUrl";
+    private static final String REQUEST_URI = "requestUri";
+    private static final String REQUEST_PATH = "requestPath";
+    private static final String REQUEST_QUERY_STRING = "requestQueryString";
+    private static final String REQUEST_USER_AGENT = "requestUserAgent";
+    private static final String REQUEST_REFERER = "requestReferer";
+
     public String getUserAddress() {
         return get(USER_ADDRESS);
     }
@@ -84,7 +90,6 @@ public class ExecutionContext {
         set(OS_NAME, name);
     }
 
-
     public String getAppVersion() {
         return get(APP_VERSION);
     }
@@ -92,7 +97,6 @@ public class ExecutionContext {
     public void setAppVersion(String appVersion) {
         set(APP_VERSION, appVersion);
     }
-
 
     public String getRemoteUser() {
         return get(REMOTE_USER);
@@ -174,14 +178,6 @@ public class ExecutionContext {
         set(REQUEST_REFERER, requestReferer);
     }
 
-    public String getRequestLocale() {
-        return get(REQUEST_LOCALE);
-    }
-
-    public void setRequestLocale(String requestLocale) {
-        set(REQUEST_LOCALE, requestLocale);
-    }
-
     public String getRequestBaseUrl() {
         return get(REQUEST_BASE_URL);
     }
@@ -189,9 +185,6 @@ public class ExecutionContext {
     public void setRequestBaseUrl(String requestBaseUrl) {
         set(REQUEST_BASE_URL, requestBaseUrl);
     }
-
-    @Autowired
-    private ApplicationContext applicationContext;
 
     private Set<String> keys = new HashSet<>();
 
