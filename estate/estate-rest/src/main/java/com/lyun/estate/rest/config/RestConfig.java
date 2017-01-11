@@ -7,11 +7,9 @@ import com.lyun.estate.core.config.CoreConfig;
 import com.lyun.estate.core.supports.resolvers.PageBoundsArgumentResolver;
 import com.lyun.estate.core.supports.resolvers.PageListSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
+import org.springframework.context.annotation.*;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -59,5 +57,8 @@ public class RestConfig extends WebMvcConfigurerAdapter {
     }
 
 
-
+    @Bean
+    public EmbeddedServletContainerFactory servletContainerFactory() {
+        return new TomcatEmbeddedServletContainerFactory();
+    }
 }

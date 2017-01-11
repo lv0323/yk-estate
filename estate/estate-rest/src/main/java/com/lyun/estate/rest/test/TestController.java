@@ -9,8 +9,8 @@ import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.OssFileService;
-import com.lyun.estate.biz.spec.def.DomainType;
-import com.lyun.estate.biz.spec.service.FileService;
+import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.spec.file.service.FileService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.types.Constant;
@@ -85,8 +85,8 @@ public class TestController {
     }
 
     @RequestMapping("priority")
-    public void priority() {
-        fileService.setFirst(7L);
+    public void priority(@RequestParam Long id) {
+        fileService.setFirst(id);
     }
 
     @RequestMapping("context")
