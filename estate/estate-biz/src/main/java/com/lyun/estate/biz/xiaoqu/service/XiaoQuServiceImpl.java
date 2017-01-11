@@ -1,0 +1,147 @@
+package com.lyun.estate.biz.xiaoqu.service;
+
+
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.github.miemiedev.mybatis.paginator.domain.Paginator;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.lyun.estate.biz.file.def.CustomType;
+import com.lyun.estate.biz.file.def.FileProcess;
+import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.housedict.entity.District;
+import com.lyun.estate.biz.housedict.entity.SubDistrict;
+import com.lyun.estate.biz.housedict.service.HouseService;
+import com.lyun.estate.biz.houselicence.def.StructureType;
+import com.lyun.estate.biz.keyword.entity.KeywordBean;
+import com.lyun.estate.biz.keyword.service.KeywordService;
+import com.lyun.estate.biz.spec.def.DomainType;
+import com.lyun.estate.biz.spec.file.service.FileService;
+import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuFilter;
+import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuSummary;
+import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
+import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
+import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSummaryBean;
+import com.lyun.estate.biz.xiaoqu.repository.XiaoQuRepository;
+import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+/**
+ * Created by Jeffrey on 2017-01-06.
+ */
+@Service
+public class XiaoQuServiceImpl implements XiaoQuService {
+
+    @Autowired
+    private XiaoQuRepository xiaoQuRepository;
+
+    @Autowired
+    private KeywordService keywordService;
+
+    @Autowired
+    private FileService fileService;
+
+    @Autowired
+    private HouseService houseService;
+
+    /**
+     * @param filter
+     * @return 关键词不为空依次与区域，板块，小区名（含别名）相匹配，返回响应结果；
+     */
+    @Override
+    public PageList<XiaoQuSummary> findXiaoQuSummaryByKeyword(XiaoQuFilter filter, PageBounds pageBounds) {
+        ExceptionUtil.checkNotNull("过滤条件", filter);
+
+        PageList<XiaoQuSummary> empty = new PageList<>(Lists.newArrayList(),
+                new Paginator(pageBounds.getPage(), pageBounds.getLimit(), 0));
+
+        XiaoQuSelector selector = new XiaoQuSelector();
+        BeanUtils.copyProperties(filter, selector);
+
+        // district
+        if (!Strings.isNullOrEmpty(filter.getDistrict())) {
+            List<KeywordBean> districts = keywordService.findNameMatch(filter.getDistrict(),
+                    Lists.newArrayList(DomainType.DISTRICT), 1);
+            if (districts.stream().findAny().isPresent()) {
+                selector.setDistrictId(districts.stream().findAny().get().getId());
+            }
+            //ignore
+        }
+
+        // subDistrict
+        if (!Strings.isNullOrEmpty(filter.getSubDistrict())) {
+            List<KeywordBean> subDistricts = keywordService.findNameMatch(filter.getSubDistrict(),
+                    Lists.newArrayList(DomainType.SUB_DISTRICT), 1);
+            if (subDistricts.stream().findAny().isPresent()) {
+                selector.setSubDistrictId(subDistricts.stream().findAny().get().getId());
+            }
+            //ignore
+        }
+
+        //structureType
+        if (filter.getStructureType() != null) {
+            selector.setStructureTypes(StructureType.possibleIntValues(filter.getStructureType()));
+        }
+
+        // keywords
+        if (!Strings.isNullOrEmpty(filter.getKeyword())) {
+            Optional<KeywordBean> condition = keywordService.findNameMatch(filter.getKeyword(),
+                    Lists.newArrayList(DomainType.DISTRICT, DomainType.SUB_DISTRICT), 1).stream().findAny();
+            //find district or subDistrict
+            if (condition.isPresent()) {
+                if (condition.get().getDomainType() == DomainType.DISTRICT) {
+                    if (selector.getDistrictId() != null && !Objects.equals(selector.getDistrictId(),
+                            condition.get().getId())) {
+                        return empty;
+                    } else {
+                        selector.setDistrictId(condition.get().getId());
+                    }
+                } else if (condition.get().getDomainType() == DomainType.SUB_DISTRICT) {
+                    if (selector.getSubDistrictId() != null && Objects.equals(selector.getSubDistrictId(),
+                            condition.get().getId())) {
+                        return empty;
+                    } else {
+                        selector.setSubDistrictId(condition.get().getId());
+                    }
+                }
+                //ignore
+            } else {
+                List<KeywordBean> xiaoQus = keywordService.findContain(filter.getKeyword(),
+                        Lists.newArrayList(DomainType.XIAO_QU), 100);
+                if (xiaoQus.isEmpty()) {
+                    return empty;
+                } else {
+                    List<Long> xqIds = new ArrayList<>();
+                    xiaoQus.forEach(keywordBean -> xqIds.add(keywordBean.getId()));
+                    selector.setXiaoQuIds(xqIds);
+                }
+            }
+        }
+        PageList<XiaoQuSummaryBean> result = xiaoQuRepository.findSummary(selector, pageBounds);
+
+        PageList<XiaoQuSummary> summaries = new PageList<>(new ArrayList<>(), result.getPaginator());
+        result.forEach(bean -> {
+            XiaoQuSummary summary = new XiaoQuSummary();
+            BeanUtils.copyProperties(bean, summary);
+            summary.setDistrict(Optional.ofNullable(houseService.findDistrict(bean.getDistrictId()))
+                    .map(District::getName)
+                    .orElse(null));
+            summary.setSubDistrict(Optional.ofNullable(houseService.findSubDistrict(bean.getSubDistrictId())).map(
+                    SubDistrict::getName).orElse(null));
+            summary.setStructure(StructureType.getTypeStr(bean.getStructureType()));
+            FileDescription firstImg = fileService.findFirst(bean.getId(), DomainType.XIAO_QU, CustomType.SHIJING,
+                    FileProcess.WATERMARK);
+            summary.setImageURI(Optional.ofNullable(firstImg).map(FileDescription::getFileURI).orElse(null));
+            summaries.add(summary);
+        });
+        return summaries;
+    }
+
+}

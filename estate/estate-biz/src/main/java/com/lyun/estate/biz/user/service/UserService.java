@@ -2,7 +2,7 @@ package com.lyun.estate.biz.user.service;
 
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.token.JWTToken;
-import com.lyun.estate.biz.auth.token.TokenMapper;
+import com.lyun.estate.biz.auth.token.repository.TokenMapper;
 import com.lyun.estate.biz.auth.token.TokenProvider;
 import com.lyun.estate.biz.user.domain.User;
 import com.lyun.estate.biz.user.repository.UserMapper;

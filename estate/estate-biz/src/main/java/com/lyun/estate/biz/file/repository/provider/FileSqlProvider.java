@@ -37,6 +37,19 @@ public class FileSqlProvider {
         return sql.toString();
     }
 
+    public String findFirst(Long ownerId, DomainType ownerType, CustomType customType, Integer fileProcess) {
+        SQL sql = new SQL().SELECT("*").FROM(TABLE_NAME)
+                .WHERE("is_deleted = false")
+                .WHERE("owner_id = #{ownerId}")
+                .WHERE("owner_type = #{ownerType}");
+        if (customType != null)
+            sql.WHERE("custom_type = #{customType}");
+        if (fileProcess != null)
+            sql.WHERE("file_process = #{fileProcess}");
+        sql.ORDER_BY("priority asc limit 1");
+        return sql.toString();
+    }
+
     public String selectOne(Long id) {
         return new SQL().SELECT("*").FROM(TABLE_NAME).WHERE("id = #{id}").toString();
     }

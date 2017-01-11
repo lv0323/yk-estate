@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.auth.token;
 
+import com.lyun.estate.biz.auth.token.repository.TokenMapper;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
