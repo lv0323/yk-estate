@@ -40,7 +40,7 @@ public class Employee {
     private String name;
     @NotNull
     private Gender gender;
-    @Pattern(regexp = "(\\d{14}[0-9a-zA-Z])|(\\d{17}[0-9a-zA-Z])")
+    @Pattern(regexp = "(\\d{14}[0-9Xx])|(\\d{17}[0-9Xx])")
     private String idcardNumber;
     private String wechat;
     @NotNull
