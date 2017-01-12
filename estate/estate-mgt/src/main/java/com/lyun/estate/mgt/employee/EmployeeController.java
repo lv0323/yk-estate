@@ -1,16 +1,15 @@
 package com.lyun.estate.mgt.employee;
 
-import com.lyun.estate.biz.employee.entity.ActiveEntity;
+import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.message.service.SmsService;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.mgt.supports.RestResponse;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("api/employee")
@@ -25,34 +24,26 @@ public class EmployeeController {
     }
 
     @PostMapping("create")
-    public Object create(@RequestBody @Valid Employee employee, BindingResult result) {
-        if (result.hasErrors())
-            throw new ValidateException("参数不合法", result.getAllErrors());
-        return employeeService.create(employee);
+    public Object create(Employee entity, @SessionAttribute Employee employee) {
+        Objects.requireNonNull(entity).setCompanyId(employee.getCompanyId());
+        return employeeService.create(entity);
     }
 
     @GetMapping("query")
-    public Object query(@RequestParam Long companyId) {
-        return employeeService.selectByCompanyId(companyId);
-    }
-
-    @GetMapping("delete")
-    public Object delete(@RequestParam Long id) {
-        return new RestResponse().add("ret", employeeService.deleteById(id)).get();
+    public Object query(@SessionAttribute Employee employee) {
+        return employeeService.selectByCompanyId(employee.getCompanyId());
     }
 
     @PostMapping("edit")
-    public Object edit(@RequestBody @Valid Employee employee, BindingResult result) {
-        if (result.hasErrors())
-            throw new ValidateException("参数不合法", result.getAllErrors());
-        return employeeService.update(employee);
+    public Object edit(Employee entity, @SessionAttribute Employee employee) {
+        return employeeService.update(entity);
     }
 
     @PostMapping("active")
-    public Object active(@RequestBody ActiveEntity entity) {
-        if (!smsService.isSmsCodeCorrect(entity.getSmsCode()))
+    public Object active(@RequestHeader SmsCode smsCode, @RequestParam String password, @RequestParam String secretKey) {
+        if (!smsService.isSmsCodeCorrect(smsCode))
             throw new ValidateException("SmsCode", "SMS Code错误");
-        return new RestResponse().add("ret", employeeService.active(entity.getSmsCode().getMobile(), entity.getPassword(), entity.getSecretKey())).get();
+        return new RestResponse().add("ret", employeeService.active(smsCode.getMobile(), password, secretKey)).get();
     }
 
     @GetMapping("salt")
@@ -60,7 +51,7 @@ public class EmployeeController {
         Employee employee = employeeService.selectByMobile(mobile);
         if (employee == null)
             return new RestResponse().add("ret", false).get();
-        return new RestResponse().add("ret", true).add("salt", employee.getSalt()).add("r", employeeService.salt(mobile)).get();
+        return new RestResponse().add("ret", true).add("salt", employee.getSalt()).add("sugar", employeeService.salt(mobile)).get();
     }
 
     @GetMapping("login")
@@ -73,13 +64,8 @@ public class EmployeeController {
     }
 
     @GetMapping("logout")
-    public Object logout(@RequestHeader("x-auth-token") String token, HttpSession session) {
+    public Object logout(HttpSession session, @SessionAttribute Employee employee) {
         session.invalidate();
         return new RestResponse().add("ret", true).get();
-    }
-
-    @GetMapping("company-id")
-    public Object companyId(@RequestHeader("x-auth-token") String token, HttpSession session) {
-        return ((Employee) session.getAttribute("employee")).getCompanyId();
     }
 }

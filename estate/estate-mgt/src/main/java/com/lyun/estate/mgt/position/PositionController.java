@@ -1,9 +1,12 @@
 package com.lyun.estate.mgt.position;
 
+import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.position.entity.Position;
 import com.lyun.estate.biz.position.service.PositionService;
 import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("api/position")
@@ -16,22 +19,23 @@ public class PositionController {
     }
 
     @PostMapping("add")
-    public Object add(@RequestBody Position position) {
+    public Object add(Position position, @SessionAttribute Employee employee) {
+        Objects.requireNonNull(position).setCompanyId(employee.getCompanyId());
         return service.create(position);
     }
 
     @GetMapping("delete")
-    public Object delete(@RequestParam Long id) {
+    public Object delete(@RequestParam Long id, @SessionAttribute Employee employee) {
         return new RestResponse().add("ret", service.deleteById(id)).get();
     }
 
     @PostMapping("edit")
-    public Object edit(@RequestBody Position position) {
+    public Object edit(Position position, @SessionAttribute Employee employee) {
         return service.update(position);
     }
 
     @GetMapping("query")
-    public Object query(@RequestParam Long companyId) {
-        return service.selectByCompanyId(companyId);
+    public Object query(@SessionAttribute Employee employee) {
+        return service.selectByCompanyId(employee.getCompanyId());
     }
 }

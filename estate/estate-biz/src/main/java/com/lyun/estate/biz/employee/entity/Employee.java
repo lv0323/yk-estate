@@ -8,6 +8,7 @@ import com.lyun.estate.biz.position.entity.Position;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 
 public class Employee {
@@ -15,16 +16,25 @@ public class Employee {
     private Long id;
     private Long companyId;
     @NotNull
+    @JsonIgnore
     private Long departmentId;
+    @Null
     private Department department;
     @NotNull
+    @JsonIgnore
     private Long positionId;
+    @Null
     private Position position;
+    @Null
     private Boolean isBoss;
     private Boolean isAgent;
     @Pattern(regexp = "^1\\d{10}$")
     private String mobile;
+    @Null
+    @JsonIgnore
     private String password;
+    @Null
+    @JsonIgnore
     private String salt;
     @NotEmpty
     private String name;
