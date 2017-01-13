@@ -19,7 +19,7 @@ import java.util.Optional;
  * Created by Jeffrey on 2017-01-10.
  */
 @RestController
-@RequestMapping("/xiaoqu")
+@RequestMapping("/xiaoqus")
 public class XiaoQuController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class XiaoQuController {
         return xiaoQuService.keywords(keyword);
     }
 
-    @GetMapping(value = "/summary")
+    @GetMapping("/")
     public PageList<XiaoQuSummary> summary(@RequestParam(required = false) String district,
                                            @RequestParam(required = false) String subDistrict,
                                            @RequestParam(required = false) StructureType structureType,
@@ -56,8 +56,8 @@ public class XiaoQuController {
                 pageBounds);
     }
 
-    @GetMapping(value = "detail")
-    public XiaoQuDetail detail(@RequestParam Long id) {
+    @GetMapping(value = "/{id}")
+    public XiaoQuDetail detail(@PathVariable Long id) {
         return xiaoQuService.getDetail(id);
     }
 
