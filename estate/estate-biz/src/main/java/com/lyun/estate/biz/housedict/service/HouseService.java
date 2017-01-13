@@ -3,6 +3,7 @@ package com.lyun.estate.biz.housedict.service;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
 import com.lyun.estate.biz.housedict.entity.SubDistrict;
 import com.lyun.estate.biz.housedict.repository.HouseRepository;
@@ -23,8 +24,16 @@ public class HouseService {
     @Autowired
     private HouseRepository houseRepository;
 
+    private LoadingCache<Long, City> cityCache = CacheBuilder.newBuilder()
+            .expireAfterWrite(30, TimeUnit.MINUTES).build(new CacheLoader<Long, City>() {
+                @Override
+                public City load(Long key) throws Exception {
+                    return Optional.ofNullable(houseRepository.findCity(key)).orElse(new City());
+                }
+            });
+
     private LoadingCache<Long, District> districtCache = CacheBuilder.newBuilder()
-            .expireAfterWrite(10, TimeUnit.MINUTES).build(new CacheLoader<Long, District>() {
+            .expireAfterWrite(30, TimeUnit.MINUTES).build(new CacheLoader<Long, District>() {
                 @Override
                 public District load(Long key) throws Exception {
                     return Optional.ofNullable(houseRepository.findDistrict(key)).orElse(new District());
@@ -32,12 +41,21 @@ public class HouseService {
             });
 
     private LoadingCache<Long, SubDistrict> subDistrictCache = CacheBuilder.newBuilder()
-            .expireAfterWrite(10, TimeUnit.MINUTES).build(new CacheLoader<Long, SubDistrict>() {
+            .expireAfterWrite(30, TimeUnit.MINUTES).build(new CacheLoader<Long, SubDistrict>() {
                 @Override
                 public SubDistrict load(Long key) throws Exception {
                     return Optional.ofNullable(houseRepository.findSubDistrict(key)).orElse(new SubDistrict());
                 }
             });
+
+    public City findCity(Long id) {
+        try {
+            return cityCache.get(id);
+        } catch (ExecutionException e) {
+            ExceptionUtil.catching(e);
+        }
+        return new City();
+    }
 
     public District findDistrict(Long id) {
         try {

@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
 import com.lyun.estate.biz.housedict.entity.SubDistrict;
 import com.lyun.estate.biz.housedict.service.HouseService;
@@ -18,9 +19,11 @@ import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.biz.spec.file.service.FileService;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
+import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuFilter;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuSummary;
 import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
+import com.lyun.estate.biz.xiaoqu.entity.XiaoQuDetailBean;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSummaryBean;
 import com.lyun.estate.biz.xiaoqu.repository.XiaoQuRepository;
@@ -152,13 +155,34 @@ public class XiaoQuServiceImpl implements XiaoQuService {
     }
 
     @Override
-    public List<KeywordBean> recommend(String keyword) {
+    public List<KeywordBean> keywords(String keyword) {
         List<KeywordBean> result = new ArrayList<>();
         if (Strings.isNullOrEmpty(keyword)) {
             return result;
         }
         return keywordService.findContain(keyword,
                 Lists.newArrayList(DomainType.DISTRICT, DomainType.SUB_DISTRICT, DomainType.XIAO_QU), 10);
+    }
+
+    @Override
+    public XiaoQuDetail getDetail(Long id) {
+        ExceptionUtil.checkNotNull("小区编号", id);
+        XiaoQuDetailBean bean = xiaoQuRepository.findDetail(id);
+        XiaoQuDetail detail = new XiaoQuDetail();
+        BeanUtils.copyProperties(bean, detail);
+        detail.setCity(Optional.ofNullable(houseService.findCity(bean.getCityId())).map(City::getName).orElse(null));
+        detail.setDistrict(Optional.ofNullable(houseService.findDistrict(bean.getDistrictId()))
+                .map(District::getName)
+                .orElse(null));
+        detail.setSubDistrict(Optional.ofNullable(houseService.findSubDistrict(bean.getSubDistrictId()))
+                .map(SubDistrict::getName)
+                .orElse(null));
+        detail.setStructure(StructureType.getTypeStr(bean.getStructureType()));
+        FileDescription firstImg = fileService.findFirst(bean.getId(), DomainType.XIAO_QU, CustomType.SHIJING,
+                FileProcess.WATERMARK);
+        detail.setImageURI(Optional.ofNullable(firstImg).map(FileDescription::getFileURI).orElse(null));
+
+        return detail;
     }
 
 }
