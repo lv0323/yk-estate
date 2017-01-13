@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
  * Created by Jeffrey on 2017-01-03.
  */
 public enum StructureType {
-    TA("塔楼", 0),
-    BAN("板楼", 1),
-    TA_BAN("塔板结合", 2),
-    PING("平房", 3),
-    OTHER("未知类型", 4);
+    TA("塔楼", 1),
+    BAN("板楼", 2),
+    TA_BAN("塔板结合", 3),
+    PING("平房", 4),
+    OTHER("未知类型", 5);
 
     private final String label;
     private final Integer bits;
@@ -29,7 +29,7 @@ public enum StructureType {
     public static List<Integer> possibleIntValues(StructureType type) {
         List<Integer> result = Lists.newArrayList();
         for (int i = 0; i < 32; i++) {
-            if (((i >> type.bits) & 0x0001) == 1) {
+            if (((i >> (type.bits - 1)) & 0x0001) == 1) {
                 result.add(i);
             }
         }
@@ -43,7 +43,7 @@ public enum StructureType {
         List<StructureType> result = Lists.newArrayList();
         Arrays.stream(StructureType.values()).forEach(
                 type -> {
-                    if (((structureType >> type.bits) & 0x0001) == 1) {
+                    if (((structureType >> (type.bits - 1)) & 0x0001) == 1) {
                         result.add(type);
                     }
                 }
