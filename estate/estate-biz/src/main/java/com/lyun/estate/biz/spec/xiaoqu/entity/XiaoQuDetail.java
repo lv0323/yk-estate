@@ -34,6 +34,7 @@ public class XiaoQuDetail {
     private Integer houses;
     private String containerRate;
     private String greenRate;
+    private Integer follows;
     private String imageURI;
 
     public Long getId() {
@@ -276,6 +277,15 @@ public class XiaoQuDetail {
 
     public XiaoQuDetail setImageURI(String imageURI) {
         this.imageURI = imageURI;
+        return this;
+    }
+
+    public Integer getFollows() {
+        return follows;
+    }
+
+    public XiaoQuDetail setFollows(Integer follows) {
+        this.follows = follows;
         return this;
     }
 

@@ -74,4 +74,8 @@ public class HouseService {
         }
         return new SubDistrict();
     }
+
+    public District findPrimaryDistrict(Long subDistrictId) {
+        return Optional.ofNullable(houseRepository.findPrimaryDistrict(subDistrictId)).orElse(new District());
+    }
 }

@@ -19,4 +19,9 @@ public interface HouseRepository {
 
     @Select("SELECT * FROM t_city WHERE id = #{id}")
     City findCity(@Param("id") Long id);
+
+
+    @Select("SELECT d.* FROM t_district_rel dr  LEFT JOIN t_district d on dr.district_id = d.id\n" +
+            "WHERE dr.is_primary = 'Y' AND dr.sub_district_id = #{id}")
+    District findPrimaryDistrict(@Param("id") Long subDistrictId);
 }

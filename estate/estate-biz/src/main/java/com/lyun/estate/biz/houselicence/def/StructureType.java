@@ -29,7 +29,7 @@ public enum StructureType {
     public static List<Integer> possibleIntValues(StructureType type) {
         List<Integer> result = Lists.newArrayList();
         for (int i = 0; i < 32; i++) {
-            if (((i >> type.bits) & 0x0001) == 0) {
+            if (((i >> type.bits) & 0x0001) == 1) {
                 result.add(i);
             }
         }

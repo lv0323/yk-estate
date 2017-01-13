@@ -19,6 +19,7 @@ import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.biz.spec.file.service.FileService;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
+import com.lyun.estate.biz.spec.xiaoqu.entity.KeywordResp;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuFilter;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuSummary;
@@ -28,6 +29,7 @@ import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSummaryBean;
 import com.lyun.estate.biz.xiaoqu.repository.XiaoQuRepository;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -155,13 +157,36 @@ public class XiaoQuServiceImpl implements XiaoQuService {
     }
 
     @Override
-    public List<KeywordBean> keywords(String keyword) {
-        List<KeywordBean> result = new ArrayList<>();
+    public List<KeywordResp> keywords(String keyword) {
+        List<KeywordResp> result = new ArrayList<>();
         if (Strings.isNullOrEmpty(keyword)) {
             return result;
         }
-        return keywordService.findContain(keyword,
+        List<KeywordBean> keywordBeans = keywordService.findContain(keyword,
                 Lists.newArrayList(DomainType.DISTRICT, DomainType.SUB_DISTRICT, DomainType.XIAO_QU), 10);
+
+        keywordBeans.forEach(keywordBean -> {
+            KeywordResp resp = new KeywordResp();
+            resp.setType(keywordBean.getDomainType());
+            resp.setResp(keywordBean.getName());
+
+            StringBuilder noteBuilder = new StringBuilder();
+            if (!Strings.isNullOrEmpty(keywordBean.getAlias())) {
+                noteBuilder.append("(").append(keywordBean.getAlias()).append(") ");
+            }
+
+            if (keywordBean.getDomainType() == DomainType.SUB_DISTRICT) {
+                noteBuilder.append(houseService.findPrimaryDistrict(keywordBean.getId()).getName());
+            } else if (keywordBean.getDomainType() == DomainType.XIAO_QU) {
+                XiaoQuDetailBean detail = xiaoQuRepository.findDetail(keywordBean.getId());
+                noteBuilder.append(houseService.findDistrict(detail.getDistrictId()).getName()).append(" ")
+                        .append(houseService.findSubDistrict(detail.getSubDistrictId()).getName());
+                resp.setNote(noteBuilder.toString());
+            }
+            resp.setNote(noteBuilder.toString().trim());
+            result.add(resp);
+        });
+        return result;
     }
 
     @Override
@@ -181,6 +206,8 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         FileDescription firstImg = fileService.findFirst(bean.getId(), DomainType.XIAO_QU, CustomType.SHIJING,
                 FileProcess.WATERMARK);
         detail.setImageURI(Optional.ofNullable(firstImg).map(FileDescription::getFileURI).orElse(null));
+        //todo: fixthis
+        detail.setFollows(RandomUtils.nextInt(9999));
 
         return detail;
     }
