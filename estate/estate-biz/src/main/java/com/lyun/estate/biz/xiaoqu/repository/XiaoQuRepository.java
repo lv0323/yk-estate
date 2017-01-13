@@ -2,9 +2,11 @@ package com.lyun.estate.biz.xiaoqu.repository;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.xiaoqu.entity.XiaoQuDetailBean;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSummaryBean;
 import com.lyun.estate.biz.xiaoqu.repository.provider.XiaoQuSqlProvider;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +18,7 @@ public interface XiaoQuRepository {
 
     @SelectProvider(type = XiaoQuSqlProvider.class, method = "findSummary")
     PageList<XiaoQuSummaryBean> findSummary(XiaoQuSelector selector, PageBounds pageBounds);
+
+    @SelectProvider(type = XiaoQuSqlProvider.class, method = "findDetail")
+    XiaoQuDetailBean findDetail(@Param("id") Long id);
 }

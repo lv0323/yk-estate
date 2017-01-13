@@ -4,6 +4,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
+import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuFilter;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuSummary;
 
@@ -17,5 +18,7 @@ public interface XiaoQuService {
     PageList<XiaoQuSummary> findXiaoQuSummaryByKeyword(XiaoQuFilter filter, XQSummaryOrder order,
                                                        PageBounds pageBounds);
 
-    List<KeywordBean> recommend(String keyword);
+    List<KeywordBean> keywords(String keyword);
+
+    XiaoQuDetail getDetail(Long id);
 }

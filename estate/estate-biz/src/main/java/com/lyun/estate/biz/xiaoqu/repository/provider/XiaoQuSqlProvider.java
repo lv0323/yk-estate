@@ -35,4 +35,38 @@ public class XiaoQuSqlProvider {
             }
         }}.toString();
     }
+
+
+    public String findDetail() {
+        return new SQL() {{
+            SELECT("xq.id,\n" +
+                    "  xq.ranking,\n" +
+                    "  xq.avg_price,\n" +
+                    "  c.name,\n" +
+                    "  c.alias,\n" +
+                    "  c.city_id,\n" +
+                    "  c.sub_district_id,\n" +
+                    "  dr.district_id,\n" +
+                    "  c.near_line,\n" +
+                    "  c.longitude,\n" +
+                    "  c.latitude,\n" +
+                    "  c.address,\n" +
+                    "  c.developers,\n" +
+                    "  c.structure_type,\n" +
+                    "  c.builded_year,\n" +
+                    "  c.property_company,\n" +
+                    "  c.property_company_phone,\n" +
+                    "  c.property_fee,\n" +
+                    "  c.parking_space,\n" +
+                    "  c.parking_rate,\n" +
+                    "  c.buildings,\n" +
+                    "  c.houses,\n" +
+                    "  c.container_rate,\n" +
+                    "  c.green_rate");
+            FROM("t_xiao_qu xq");
+            LEFT_OUTER_JOIN("t_community c ON xq.community_id = c.id");
+            LEFT_OUTER_JOIN("t_district_rel dr ON c.sub_district_id = dr.sub_district_id AND dr.is_primary = 'Y'");
+            WHERE("xq.id = #{id}");
+        }}.toString();
+    }
 }

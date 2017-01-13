@@ -5,6 +5,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.houselicence.def.StructureType;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
+import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuFilter;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuSummary;
 import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
@@ -25,9 +26,9 @@ public class XiaoQuController {
     private XiaoQuService xiaoQuService;
 
 
-    @GetMapping("/recommend")
-    List<KeywordBean> recommend(@RequestParam String keyword) {
-        return xiaoQuService.recommend(keyword);
+    @GetMapping("/keywords")
+    List<KeywordBean> keywords(@RequestParam String keyword) {
+        return xiaoQuService.keywords(keyword);
     }
 
     @GetMapping(value = "/summary")
@@ -53,6 +54,11 @@ public class XiaoQuController {
         return xiaoQuService.findXiaoQuSummaryByKeyword(filter,
                 Optional.ofNullable(order).orElse(XQSummaryOrder.DEFAULT),
                 pageBounds);
+    }
+
+    @GetMapping(value = "detail")
+    public XiaoQuDetail detail(@RequestParam Long id) {
+        return xiaoQuService.getDetail(id);
     }
 
 }
