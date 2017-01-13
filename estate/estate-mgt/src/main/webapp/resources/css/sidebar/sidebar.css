@@ -1,0 +1,8 @@
+.user-panel > .image > .user-panelImg {
+    display: inline-block;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #d9e9f6;
+    text-align: center;
+}
