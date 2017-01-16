@@ -2,7 +2,6 @@ package com.lyun.estate.job;
 
 import com.lyun.estate.job.config.JobConfig;
 import com.lyun.estate.job.supports.context.JobExecutionContext;
-import com.lyun.estate.job.user.AttentionJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,9 +23,6 @@ public class JobScheduler implements SchedulingConfigurer {
     @Autowired
     JobExecutionContext jobExecutionContext;
 
-    @Autowired
-    private AttentionJob attentionJob;
-
     @Bean(destroyMethod = "shutdown")
     public Executor taskExecutor() {
         return Executors.newScheduledThreadPool(100);
@@ -35,7 +31,5 @@ public class JobScheduler implements SchedulingConfigurer {
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
         taskRegistrar.setScheduler(taskExecutor());
-        // add your task here
-        taskRegistrar.addCronTask(attentionJob, "0/3 * * * * *");
     }
 }

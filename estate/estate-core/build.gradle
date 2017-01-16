@@ -2,6 +2,7 @@ dependencies {
     // spring
     compile lib.spring_boot_starter
     compile lib.spring_context
+    compile lib.spring_rabbit
     compile(lib.spring_context_support) {
         exclude module: 'quartz'
     }
@@ -28,6 +29,8 @@ dependencies {
     compile lib.caffeine
     compile lib.jjwt
     compile lib.hibernate_validator
+    compile name: 'amqp-spec'
+    compile name: 'amqp-client'
 }
 
 tasks.withType(AbstractCompile) {

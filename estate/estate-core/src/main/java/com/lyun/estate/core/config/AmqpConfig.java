@@ -1,7 +1,9 @@
-package com.lyun.estate.amqp.spec.config;
+package com.lyun.estate.core.config;
 
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -9,10 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@ComponentScan("com.lyun.estate.amqp.spec")
-@PropertySource("classpath:/estate/amqp/spec.properties")
-@PropertySource(value = "file:${LVJINSUO_HOME}/conf/estate/amqp/spec.properties", ignoreResourceNotFound = true)
-public class AmqpSpecConfig {
+@PropertySource("classpath:/estate/core/amqp.properties")
+@PropertySource(value = "file:${LVJINSUO_HOME}/conf/estate/core/amqp.properties", ignoreResourceNotFound = true)
+public class AmqpConfig {
     @Value("${estate.amqp.hosts}")
     private String hosts;
     @Value("${estate.amqp.userName}")
@@ -21,11 +22,6 @@ public class AmqpSpecConfig {
     private String password;
     @Value("${estate.amqp.vhost}")
     private String vhost;
-
-    @Value("${estate.amqp.queue.sms.name}")
-    private String smsQueueName;
-    @Value("${estate.amqp.queue.attention.name}")
-    private String attentionQueueName;
 
     @Bean
     public ConnectionFactory connectionFactory() {
@@ -48,6 +44,22 @@ public class AmqpSpecConfig {
         connectionFactory.setPassword(password);
         connectionFactory.setVirtualHost(vhost);
         return connectionFactory;
+    }
+
+    @Value("${estate.amqp.queue.sms.name}")
+    private String smsQueueName;
+    @Value("${estate.amqp.queue.attention.name}")
+    private String attentionQueueName;
+
+    @Bean
+    public RabbitTemplate smsRabbitTemplate(ConnectionFactory syncConnectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate();
+        rabbitTemplate.setConnectionFactory(syncConnectionFactory);
+        rabbitTemplate.setQueue(smsQueueName);
+        rabbitTemplate.setRoutingKey(smsQueueName);
+        rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+        rabbitTemplate.setMandatory(true);
+        return rabbitTemplate;
     }
 
 }

@@ -3,8 +3,5 @@ include 'estate-core'
 include 'estate-job'
 include 'estate-mgt'
 include 'estate-rest'
-include 'estate-amqp'
-include 'estate-amqp-client'
-include 'estate-amqp-spec'
 
 rootProject.name = 'estate'

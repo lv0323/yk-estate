@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@ComponentScan({"com.lyun.estate"})
+@ComponentScan({"com.lyun"})
 @Import({CoreConfig.class, BizConfig.class})
 public class JobConfig {
 

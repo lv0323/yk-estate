@@ -1,6 +1,5 @@
 package com.lyun.estate.biz.message.service;
 
-import com.lyun.estate.amqp.client.biz.SmsAmqpClient;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.message.resources.SmsResource;
 import com.lyun.estate.biz.message.resources.SmsResponse;
@@ -12,6 +11,7 @@ import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.supports.types.YN;
 import com.lyun.estate.core.utils.CommonUtil;
 import com.lyun.estate.core.utils.ValidateUtil;
+import com.lyun.layer.amqp.client.clients.SmsAmqpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
@@ -53,7 +53,7 @@ public class SmsService {
         String serial = "01";
         if (isDefaultSend()) {
             serial = CommonUtil.randomNumberSeq(2);
-            smsAmqpClient.sendMessage(new com.lyun.estate.amqp.spec.pojos.SmsCode()
+            smsAmqpClient.sendMessage(new com.lyun.layer.amqp.spec.pojos.SmsCode()
                             .setCode(smsCode).setMobile(smsResource.getMobile()).setSerial(serial),
                     executionContext.getCorrelationId());
         }

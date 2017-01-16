@@ -20,7 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.List;
 
 @Configuration
-@ComponentScan({"com.lyun.estate"})
+@ComponentScan({"com.lyun"})
 @Import({CoreConfig.class, BizConfig.class})
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
 @EnableSwagger2
@@ -56,9 +56,4 @@ public class RestConfig extends WebMvcConfigurerAdapter {
         return new FormHttpMessageConverter();
     }
 
-
-    @Bean
-    public EmbeddedServletContainerFactory servletContainerFactory() {
-        return new TomcatEmbeddedServletContainerFactory();
-    }
 }
