@@ -11,6 +11,7 @@ import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.supports.types.YN;
 import com.lyun.estate.core.utils.CommonUtil;
 import com.lyun.estate.core.utils.ValidateUtil;
+import com.lyun.layer.amqp.client.clients.SmsAmqpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
@@ -33,6 +34,8 @@ public class SmsService {
     UserMapper userMapper;
     @Autowired
     ExecutionContext executionContext;
+    @Autowired
+    SmsAmqpClient smsAmqpClient;
 
     private boolean isDefaultSend() {
         return YN.Y == YN.valueOf(environment.getProperty("message.sms.send.enable"));
@@ -49,8 +52,10 @@ public class SmsService {
         String smsCode = "100000";
         String serial = "01";
         if (isDefaultSend()) {
-//TODO sms implements
             serial = CommonUtil.randomNumberSeq(2);
+            smsAmqpClient.sendMessage(new com.lyun.layer.amqp.spec.pojos.SmsCode()
+                            .setCode(smsCode).setMobile(smsResource.getMobile()).setSerial(serial),
+                    executionContext.getCorrelationId());
         }
         String smsId = CommonUtil.getUuid();
         String smsKv = smsId + ":" + smsResource.getMobile() + ":" + smsCode + ":" + serial + ":" + smsResource.getType() + ":" + executionContext.getClientId();
@@ -83,4 +88,5 @@ public class SmsService {
         cacheManager.getCache(CacheConfig.EVICT_CACHE_NAME).evict(smsKv);
         return result;
     }
+
 }

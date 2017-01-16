@@ -21,25 +21,22 @@ public class ApiFilter implements Filter {
     private ApiListener[] listeners;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
-            Arrays.asList(listeners).stream().forEach(listener -> {
-                listener.onRequest((HttpServletRequest) request, (HttpServletResponse) response);
-            });
+            Arrays.asList(listeners).forEach(listener ->
+                    listener.onRequest((HttpServletRequest) request, (HttpServletResponse) response));
             chain.doFilter(request, response);
-            Arrays.asList(listeners).stream().forEach(listener -> {
-                listener.onResponse((HttpServletResponse) response);
-            });
+            Arrays.asList(listeners).forEach(listener -> listener.onResponse((HttpServletResponse) response));
         } finally {
-            Arrays.asList(listeners).stream().forEach(listener -> {
-                listener.onComplete();
-            });
+            Arrays.asList(listeners).forEach(ApiListener::onComplete);
         }
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
 }

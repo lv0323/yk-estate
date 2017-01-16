@@ -6,6 +6,7 @@ public class LoginResource {
     private String mobile;
     private String password;
     private int validDays;
+    private String signature;
 
     public String getUserName() {
         return userName;
@@ -49,6 +50,15 @@ public class LoginResource {
 
     public LoginResource setValidDays(int validDays) {
         this.validDays = validDays;
+        return this;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public LoginResource setSignature(String signature) {
+        this.signature = signature;
         return this;
     }
 }

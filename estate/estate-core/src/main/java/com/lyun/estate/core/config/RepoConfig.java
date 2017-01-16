@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @PropertySource(value = "classpath:estate/core/database.properties", ignoreResourceNotFound = true)
-@PropertySource(value = "classpath:file://${LVJINSUO_HOME}/conf/estate/core/database.properties", ignoreResourceNotFound = true)
+@PropertySource(value = "file://${LVJINSUO_HOME}/conf/estate/core/database.properties", ignoreResourceNotFound = true)
 public class RepoConfig {
 
     @Resource

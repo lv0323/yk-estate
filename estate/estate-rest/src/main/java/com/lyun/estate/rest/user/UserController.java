@@ -13,15 +13,18 @@ import com.lyun.estate.biz.user.resources.ChangePasswordResource;
 import com.lyun.estate.biz.user.resources.LoginResource;
 import com.lyun.estate.biz.user.resources.RegisterResource;
 import com.lyun.estate.biz.user.resources.RegisterResponse;
+import com.lyun.estate.biz.user.resources.SaltResource;
+import com.lyun.estate.biz.user.resources.SaltResponse;
 import com.lyun.estate.biz.user.resources.TokenResponse;
 import com.lyun.estate.biz.user.service.UserService;
 import com.lyun.estate.core.supports.types.SmsType;
+import com.lyun.estate.rest.supports.resources.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,20 +33,36 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping(value = "/register", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @PostMapping(value = "/register", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     @CheckSmsCode
-    public RegisterResponse register(@RequestBody RegisterResource registerResource,
+    public RegisterResponse register(@RequestParam(required = false) String password,
+                                     @RequestParam(required = false) String salt,
+                                     @RequestParam(required = false) String hash,
+                                     @RequestParam(required = false) boolean login,
                                      @RequestHeader(SmsCodeArgumentResolver.SMS_CODE_HEADER) SmsCode smsCode) {
         smsCode.setType(SmsType.REGISTER);
-        return userService.register(registerResource, smsCode);
+        return userService.register(new RegisterResource().setPassword(password)
+                .setHash(hash).setSalt(salt).setLogin(login), smsCode);
     }
 
+    @PostMapping(value = "salt", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public SaltResponse salt(@RequestParam(required = false) String mobile,
+                             @RequestParam(required = false) String userName,
+                             @RequestParam(required = false) String email) {
+        return userService.getUserSalt(new SaltResource().setMobile(mobile).setUserName(userName).setEmail(email));
+    }
 
-    @PostMapping(value = "/login", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @PostMapping(value = "/login", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     @CheckCaptcha
-    public TokenResponse login(@RequestBody LoginResource loginResource,
+    public TokenResponse login(@RequestParam(required = false) String userName,
+                               @RequestParam(required = false) String email,
+                               @RequestParam(required = false) String mobile,
+                               @RequestParam(required = false) String password,
+                               @RequestParam(required = false, defaultValue = "7") int validDays,
+                               @RequestParam(required = false) String signature,
                                @RequestHeader(CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {
-        return userService.login(loginResource, null);
+        return userService.login(new LoginResource().setUserName(userName).setEmail(email)
+                .setMobile(mobile).setPassword(password).setValidDays(validDays).setSignature(signature), null);
     }
 
     @PostMapping("/sms-login")
@@ -53,24 +72,35 @@ public class UserController {
         return userService.login(null, smsCode);
     }
 
-    @PostMapping(value = "change-password", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @PostMapping(value = "change-password", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     @CheckToken
-    public TokenResponse changePassword(@RequestBody ChangePasswordResource changePasswordResource,
+    public TokenResponse changePassword(@RequestParam(required = false) String oldPassword,
+                                        @RequestParam(required = false) String signature,
+                                        @RequestParam(required = false) String password,
+                                        @RequestParam(required = false) String salt,
+                                        @RequestParam(required = false) String hash,
+                                        @RequestParam(required = false) boolean login,
                                         @RequestHeader("auth") JWTToken token) {
-        return userService.changePassword(changePasswordResource, null, token);
+        return userService.changePassword(new ChangePasswordResource().setOldPassword(oldPassword)
+                .setSignature(signature).setPassword(password).setSalt(salt).setHash(hash).setLogin(login), null, token);
     }
 
-    @PostMapping(value = "forget-password", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @PostMapping(value = "forget-password", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     @CheckSmsCode
-    public TokenResponse forgetPassword(@RequestBody ChangePasswordResource changePasswordResource,
+    public TokenResponse forgetPassword(@RequestParam(required = false) String signature,
+                                        @RequestParam(required = false) String password,
+                                        @RequestParam(required = false) String salt,
+                                        @RequestParam(required = false) String hash,
+                                        @RequestParam(required = false) boolean login,
                                         @RequestHeader(SmsCodeArgumentResolver.SMS_CODE_HEADER) SmsCode smsCode) {
         smsCode.setType(SmsType.FORGET_PASSWORD);
-        return userService.changePassword(changePasswordResource, smsCode, null);
+        return userService.changePassword(new ChangePasswordResource().setSignature(signature)
+                .setPassword(password).setSalt(salt).setHash(hash).setLogin(login), smsCode, null);
     }
 
     @PostMapping("/is-login")
     @CheckToken
-    public boolean isLogin(@RequestHeader("auth") JWTToken token) {
-        return true;
+    public CommonResponse isLogin(@RequestHeader("auth") JWTToken token) {
+        return new CommonResponse().setSuccess(true);
     }
 }

@@ -40,6 +40,10 @@ public class SmsResourceValidator implements Validator {
             if (userMapper.findUserByMobile(smsResource.getMobile()) == null) {
                 errors.reject("mobile.not.register", new String[]{smsResource.getMobile()}, "手机号{0}尚未注册");
             }
+        } else if (smsResource.getType() == SmsType.REGISTER) {
+            if (userMapper.findUserByMobile(smsResource.getMobile()) != null) {
+                errors.reject("mobile.register", new String[]{smsResource.getMobile()}, "手机号{0}已是注册用户");
+            }
         }
     }
 }

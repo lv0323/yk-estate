@@ -2,7 +2,7 @@ package com.lyun.estate.biz.user.service;
 
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.token.JWTToken;
-import com.lyun.estate.biz.auth.token.TokenMapper;
+import com.lyun.estate.biz.auth.token.repository.TokenMapper;
 import com.lyun.estate.biz.auth.token.TokenProvider;
 import com.lyun.estate.biz.user.domain.User;
 import com.lyun.estate.biz.user.repository.UserMapper;
@@ -10,6 +10,8 @@ import com.lyun.estate.biz.user.resources.ChangePasswordResource;
 import com.lyun.estate.biz.user.resources.LoginResource;
 import com.lyun.estate.biz.user.resources.RegisterResource;
 import com.lyun.estate.biz.user.resources.RegisterResponse;
+import com.lyun.estate.biz.user.resources.SaltResource;
+import com.lyun.estate.biz.user.resources.SaltResponse;
 import com.lyun.estate.biz.user.resources.TokenResponse;
 import com.lyun.estate.biz.user.service.validator.ChangePasswordResourceValidator;
 import com.lyun.estate.biz.user.service.validator.LoginResourceValidator;
@@ -63,12 +65,12 @@ public class UserService {
             throw new ValidateException("warn.user.register", "注册校验未通过", bindingResult.getAllErrors());
         }
         RegisterResponse registerResponse = new RegisterResponse();
-        String salt = CommonUtil.getUuid();
+        genHash(registerResource);
         if (userMapper.createUser(new User().setMobile(smsCode.getMobile())
                 .setEmail(registerResource.getEmail())
                 .setUserName(registerResource.getUserName())
-                .setHash(CommonUtil.encryptBySha256(salt + registerResource.getPassword()))
-                .setSalt(salt)
+                .setSalt(registerResource.getSalt())
+                .setHash(registerResource.getHash())
                 .setClientId(Integer.valueOf(executionContext.getClientId()))
                 .setDescription("logRef:" + executionContext.getCorrelationId())) == 1
                 ) {
@@ -77,17 +79,19 @@ public class UserService {
             throw new EstateBizException("error.user.register", "用户注册失败");
         }
         if (registerResource.isLogin()) {
-            TokenResponse tokenResponse = login(new LoginResource()
-                    .setEmail(registerResource.getEmail())
-                    .setMobile(smsCode.getMobile())
-                    .setUserName(registerResource.getUserName())
-                    .setPassword(registerResource.getPassword())
-                    .setValidDays(getDefaultValidDays()), null);
             registerResponse
-                    .setToken(tokenResponse.getToken());
-
+                    .setToken(getLoginToken(userMapper.findUserByMobile(smsCode.getMobile()), getDefaultValidDays()).getToken());
         }
         return registerResponse;
+    }
+
+    private void genHash(RegisterResource registerResource) {
+        if (!StringUtils.isEmpty(registerResource.getPassword())) {
+            String salt = CommonUtil.getUuid();
+            registerResource
+                    .setHash(CommonUtil.encryptBySha256(salt + registerResource.getPassword()))
+                    .setSalt(salt);
+        }
     }
 
     @Transactional
@@ -101,7 +105,7 @@ public class UserService {
                 throw new ValidateException("warn.user.login", bindingResult.getAllErrors());
             }
             User loginUser = userMapper.loginUser(loginResource);
-            if (loginUser != null && CommonUtil.isSha256Equal(loginUser.getSalt() + loginResource.getPassword(), loginUser.getHash())) {
+            if (isPasswordRight(loginResource, loginUser)) {
                 return getLoginToken(loginUser, loginResource.getValidDays() * 24);
             } else {
                 throw new ValidateException("user.login.error", "用户名或密码错误");
@@ -112,6 +116,27 @@ public class UserService {
             }
             return getLoginToken(userMapper.findUserByMobile(smsCode.getMobile()), getDefaultValidDays());
         }
+    }
+
+    private boolean isPasswordRight(LoginResource loginResource, User user) {
+        if (user != null) {
+            if (!StringUtils.isEmpty(loginResource.getPassword())) {
+                return CommonUtil.isSha256Equal(user.getSalt() + loginResource.getPassword(), user.getHash());
+            } else {
+                StringBuffer stringBuffer = new StringBuffer();
+                stringBuffer.append(nullToEmptyStr(loginResource.getMobile()))
+                        .append(nullToEmptyStr(loginResource.getEmail()))
+                        .append(nullToEmptyStr(loginResource.getUserName()))
+                        .append(user.getHash());
+                return CommonUtil.isSha256Equal(stringBuffer.toString(), loginResource.getSignature());
+            }
+        } else {
+            return false;
+        }
+    }
+
+    private String nullToEmptyStr(String str) {
+        return StringUtils.isEmpty(str) ? "" : str;
     }
 
     private TokenResponse getLoginToken(User user, int defaultValidDays) {
@@ -135,11 +160,14 @@ public class UserService {
         DataBinder dataBinder = new DataBinder(changePasswordResource, "changePassword");
         final User[] loginUser = {null};
         dataBinder.setValidator(new ChangePasswordResourceValidator(userMapper, smsCode, (User user) -> {
-            String salt = CommonUtil.getUuid();
-            long userId = changePasswordResource.getUserId() > 0 ? changePasswordResource.getUserId() : user.getId();
-            if (userMapper.updateUser((User) user.setSalt(salt)
-                    .setHash(CommonUtil.encryptBySha256(salt + changePasswordResource.getPassword()))
-                    .setUpdateById(userId)) != 1) {
+            user.setUpdateById(changePasswordResource.getUserId() > 0 ? changePasswordResource.getUserId() : user.getId());
+            if (!StringUtils.isEmpty(changePasswordResource.getPassword())) {
+                String salt = CommonUtil.getUuid();
+                user.setSalt(salt).setHash(CommonUtil.encryptBySha256(salt + changePasswordResource.getPassword()));
+            } else {
+                user.setSalt(changePasswordResource.getSalt()).setHash(changePasswordResource.getHash());
+            }
+            if (userMapper.updateUser(user) != 1) {
                 throw new ValidateException("password.change.fail", "密码修改失败");
             }
             loginUser[0] = user;
@@ -154,5 +182,52 @@ public class UserService {
             return getLoginToken(loginUser[0], getDefaultValidDays());
         }
         return new TokenResponse();
+    }
+
+    public SaltResponse getUserSalt(SaltResource saltResource) {
+        if (StringUtils.isEmpty(saltResource.getMobile())
+                && StringUtils.isEmpty(saltResource.getUserName())
+                && StringUtils.isEmpty(saltResource.getEmail())) {
+            throw new ValidateException("user.properties.isNull", "手机号/用户名/邮箱为空");
+        }
+        User user = userMapper.loginUser(new LoginResource()
+                .setUserName(saltResource.getUserName())
+                .setEmail(saltResource.getEmail())
+                .setMobile(saltResource.getMobile()));
+        if (user == null) {
+            throw new ValidateException("user.not.register", "用户未注册");
+        } else {
+            return new SaltResponse().setSalt(user.getSalt());
+        }
+    }
+
+    @Transactional
+    public boolean attentionCommunity(long communityId) {
+        if (isAttention(communityId)) {
+            return true;
+        }
+        long userId = Long.valueOf(executionContext.getUserId());
+        if (1 != userMapper.createAttention(communityId, userId)) {
+            throw new EstateBizException("attention.community.error", "关注小区失败");
+        } else {
+            return true;
+        }
+    }
+
+    @Transactional
+    public boolean attentionCancel(long communityId) {
+        if (!isAttention(communityId)) {
+            return true;
+        }
+        long userId = Long.valueOf(executionContext.getUserId());
+        if (1 != userMapper.deleteAttention(communityId, userId)) {
+            throw new EstateBizException("cancel.attention.community.error", "取消关注小区失败");
+        } else {
+            return true;
+        }
+    }
+
+    public boolean isAttention(long communityId) {
+        return null != userMapper.findAttention(communityId, Long.valueOf(executionContext.getUserId()));
     }
 }

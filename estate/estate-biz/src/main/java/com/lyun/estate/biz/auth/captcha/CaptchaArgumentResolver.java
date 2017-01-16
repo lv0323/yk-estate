@@ -12,7 +12,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.Locale;
 
@@ -20,8 +19,8 @@ import java.util.Locale;
 public class CaptchaArgumentResolver implements HandlerMethodArgumentResolver, Formatter<Captcha> {
     public final static String CAPTCHA_HEADER = "X-CAPTCHA";
     private final static String CLIENT_ID = "clientId";
-    private final static String VERIFY_ID = "id";
-    private final static String VERIFY_CODE = "code";
+    private final static String ID = "id";
+    private final static String CODE = "code";
 
     @Override
     public Captcha parse(String text, Locale locale) throws ParseException {
@@ -29,10 +28,15 @@ public class CaptchaArgumentResolver implements HandlerMethodArgumentResolver, F
             throw new ValidateException(CAPTCHA_HEADER + ".header.isNull", "图片验证码消息头缺失");
         }
         MultiValueMap<String, String> map = QueryStringUtil.parse(text);
+        int clientId = 0;
+        try {
+            clientId = Integer.parseInt(map.getFirst(CLIENT_ID));
+        } catch (Exception e) {
+        }
         return new Captcha()
-                .setClientId(Integer.parseInt(map.getFirst(CLIENT_ID)))
-                .setCode(map.getFirst(VERIFY_CODE))
-                .setId(map.getFirst(VERIFY_ID));
+                .setClientId(clientId)
+                .setCode(map.getFirst(CODE))
+                .setId(map.getFirst(ID));
     }
 
     @Override
@@ -48,9 +52,6 @@ public class CaptchaArgumentResolver implements HandlerMethodArgumentResolver, F
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String text = webRequest.getHeader(CAPTCHA_HEADER);
-        if (!StringUtils.hasText(text)) {
-            text = webRequest.getNativeRequest(HttpServletRequest.class).getQueryString();
-        }
         return parse(text, null);
     }
 

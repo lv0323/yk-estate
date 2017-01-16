@@ -7,7 +7,11 @@ import com.lyun.estate.core.config.CoreConfig;
 import com.lyun.estate.core.supports.resolvers.PageBoundsArgumentResolver;
 import com.lyun.estate.core.supports.resolvers.PageListSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.*;
+import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -16,7 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.List;
 
 @Configuration
-@ComponentScan({"com.lyun.estate.rest"})
+@ComponentScan({"com.lyun"})
 @Import({CoreConfig.class, BizConfig.class})
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
 @EnableSwagger2
@@ -41,5 +45,15 @@ public class RestConfig extends WebMvcConfigurerAdapter {
         return new MappingJackson2HttpMessageConverter(objectMapper.registerModule(module));
     }
 
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        super.configureMessageConverters(converters);
+        converters.add(formHttpMessageConverter());
+    }
+
+    @Bean
+    FormHttpMessageConverter formHttpMessageConverter() {
+        return new FormHttpMessageConverter();
+    }
 
 }

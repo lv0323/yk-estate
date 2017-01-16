@@ -1,9 +1,11 @@
 package com.lyun.estate.job;
 
-import com.lyun.estate.job.test.TestJob;
+import com.lyun.estate.job.config.JobConfig;
+import com.lyun.estate.job.supports.context.JobExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
@@ -15,10 +17,11 @@ import java.util.concurrent.Executors;
 @Configuration
 @EnableScheduling
 @EnableAsync
+@Import(JobConfig.class)
 public class JobScheduler implements SchedulingConfigurer {
 
     @Autowired
-    private TestJob testJob;
+    JobExecutionContext jobExecutionContext;
 
     @Bean(destroyMethod = "shutdown")
     public Executor taskExecutor() {
@@ -28,8 +31,5 @@ public class JobScheduler implements SchedulingConfigurer {
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
         taskRegistrar.setScheduler(taskExecutor());
-
-        // add your task here
-        taskRegistrar.addCronTask(() -> testJob.output(), "0/5 * * * * *");
     }
 }

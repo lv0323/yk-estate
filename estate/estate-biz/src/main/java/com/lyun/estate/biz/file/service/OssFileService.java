@@ -5,18 +5,19 @@ import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.google.common.base.Strings;
-import com.lyun.estate.biz.config.settings.NameSpace;
-import com.lyun.estate.biz.config.settings.SettingProvider;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.Target;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.repository.FileRepository;
+import com.lyun.estate.biz.utils.settings.SettingProvider;
+import com.lyun.estate.biz.utils.settings.def.NameSpace;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
@@ -32,14 +33,17 @@ public class OssFileService extends AbstractFileService {
     private final OSSClient client;
 
     public OssFileService(FileRepository repository, SettingProvider settingProvider,
-                          @Value("${oss.access_key_id}") String accessKeyId, @Value("${oss.access_key_secret}") String accessKeySecret) {
+                          @Value("${oss.access_key_id}") String accessKeyId,
+                          @Value("${oss.access_key_secret}") String accessKeySecret) {
         super(repository); //"oss-cn-hangzhou.aliyuncs.com"
         BUCKET_NAME = settingProvider.find(NameSpace.FILE, "bucket_name").getValue();
         WATERMARK_STYLE = settingProvider.find(NameSpace.FILE, "watermark_style").getValue();
-        client = new OSSClient(settingProvider.find(NameSpace.FILE, "endpoint").getValue(), accessKeyId, accessKeySecret);
+        client = new OSSClient(settingProvider.find(NameSpace.FILE, "endpoint").getValue(),
+                accessKeyId,
+                accessKeySecret);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public FileDescription save(FileDescription entity, InputStream inputStream, String suffix) {
         ExceptionUtil.checkNotNull("entity", entity);
@@ -77,9 +81,13 @@ public class OssFileService extends AbstractFileService {
                 throw new EstateException(ExCode.OSS_EXCEPTION);
             }
             repository.insert(wmEntity);
-            return wmEntity;
-        }
 
-        return entity;
+            FileDescription result = repository.findOne(wmEntity.getId());
+            result.setFileURI(getFileURI(result.getPath(), result.getTarget()));
+            return result;
+        }
+        FileDescription result = repository.findOne(entity.getId());
+        result.setFileURI(getFileURI(result.getPath(), result.getTarget()));
+        return result;
     }
 }

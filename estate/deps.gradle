@@ -2,6 +2,7 @@ project(':estate-biz') {
     dependencies {
         compile project(':estate-core')
     }
+
 }
 
 project(':estate-job') {
@@ -23,4 +24,7 @@ project(':estate-rest') {
         compile project(':estate-core')
         compile project(':estate-biz')
     }
+}
+
+project(':estate-core') {
 }

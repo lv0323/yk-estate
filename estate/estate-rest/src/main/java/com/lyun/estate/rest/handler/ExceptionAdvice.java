@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindException;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -92,12 +93,17 @@ public class ExceptionAdvice {
         responseBody.put("exCode", code);
         responseBody.put("message", getMessage(code, null, ex.getMessage()));
         if (!StringUtils.isEmpty(ex.getObjectErrors())) {
-            responseBody.put("messages", ex.getObjectErrors().stream().map(objectError -> {
-                String errorCode = objectError.getCodes()[0];
-                return new ErrorResource()
-                        .setExCode(errorCode)
-                        .setMessage(getMessage(errorCode, objectError.getArguments(), objectError.getDefaultMessage()));
-            }).collect(Collectors.toList()));
+            if (ex.getObjectErrors().size() > 1) {
+                responseBody.put("messages", ex.getObjectErrors().stream().map(objectError -> {
+                    String errorCode = objectError.getCodes()[0];
+                    return new ErrorResource()
+                            .setExCode(errorCode)
+                            .setMessage(getMessage(errorCode, objectError.getArguments(), objectError.getDefaultMessage()));
+                }).collect(Collectors.toList()));
+            } else {
+                ObjectError objectError = ex.getObjectErrors().get(0);
+                responseBody.put("message", getMessage(objectError.getCode(), objectError.getArguments(), objectError.getDefaultMessage()));
+            }
         }
         return responseBody;
     }
@@ -136,7 +142,7 @@ public class ExceptionAdvice {
     }
 
     private String getMessage(String code, Object[] args, String defaultMessage) {
-        return messageSource.getMessage(code, args, defaultMessage, new Locale(executionContext.getRequestLocal()));
+        return messageSource.getMessage(code, args, defaultMessage, new Locale(executionContext.getRequestLocale()));
     }
 
 }

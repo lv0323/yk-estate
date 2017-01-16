@@ -1,83 +1,86 @@
 ext {
     ver = [
-            spring: '4.3.4.RELEASE',
-            spring_boot: '1.4.2.RELEASE',
+            spring                      : '4.3.4.RELEASE',
+            spring_rabbit               : '1.6.6.RELEASE',
+            spring_boot                 : '1.4.2.RELEASE',
 
-            aspectj: '1.8.9',
+            aspectj                     : '1.8.9',
 
-            swagger: '2.6.1',
+            swagger                     : '2.6.1',
 
-            servlet: '3.1.0',
+            servlet                     : '3.1.0',
 
-            mybatis: '3.4.0',
-            mybatis_spring: '1.3.0',
-            mybatis_paginator: '1.2.17',
-            postgresql: '9.4.1212',
-            hikaricp: '2.4.7',
+            mybatis                     : '3.4.0',
+            mybatis_spring              : '1.3.0',
+            mybatis_paginator           : '1.2.17',
+            postgresql                  : '9.4.1212',
+            hikaricp                    : '2.4.7',
 
-            freemarker: '2.3.23',
+            freemarker                  : '2.3.23',
 
-            groovy: '2.4.7',
+            groovy                      : '2.4.7',
             dependency_management_plugin: '0.6.1.RELEASE',
 
-            guava: '20.0',
-            okhttp: '3.5.0',
-            jbcrypt: '0.4.1',
-            simplecaptcha: '1.2.2',
-            user_agent_utils: '1.20',
-            caffeine: '2.3.5',
-            jjwt: '0.7.0',
-            oss: "2.4.0"
+            guava                       : '20.0',
+            okhttp                      : '3.5.0',
+            jbcrypt                     : '0.4.1',
+            simplecaptcha               : '1.2.2',
+            user_agent_utils            : '1.20',
+            caffeine                    : '2.3.5',
+            jjwt                        : '0.7.0',
+            oss                         : "2.4.0",
+            hibernate_validator         : "5.2.4.Final"
     ]
 
     lib = [
             // spring
-            spring_context: "org.springframework:spring-context:$ver.spring",
-            spring_context_support: "org.springframework:spring-context-support:$ver.spring",
-            spring_webmvc: "org.springframework:spring-webmvc:$ver.spring",
-
+            spring_context              : "org.springframework:spring-context:$ver.spring",
+            spring_context_support      : "org.springframework:spring-context-support:$ver.spring",
+            spring_webmvc               : "org.springframework:spring-webmvc:$ver.spring",
+            spring_rabbit               : "org.springframework.amqp:spring-rabbit:$ver.spring_rabbit",
             // spring boot
-            spring_boot_starter: "org.springframework.boot:spring-boot-starter:$ver.spring_boot",
-            spring_boot_starter_web: "org.springframework.boot:spring-boot-starter-web:$ver.spring_boot",
+            spring_boot_starter         : "org.springframework.boot:spring-boot-starter:$ver.spring_boot",
+            spring_boot_starter_web     : "org.springframework.boot:spring-boot-starter-web:$ver.spring_boot",
             spring_boot_starter_undertow: "org.springframework.boot:spring-boot-starter-undertow:$ver.spring_boot",
 
             // template engine
-            freemarker: "org.freemarker:freemarker:$ver.freemarker",
+            freemarker                  : "org.freemarker:freemarker:$ver.freemarker",
 
             // gradle plugin
-            spring_boot_gradle_plugin: "org.springframework.boot:spring-boot-gradle-plugin:$ver.spring_boot",
+            spring_boot_gradle_plugin   : "org.springframework.boot:spring-boot-gradle-plugin:$ver.spring_boot",
             dependency_management_plugin: "io.spring.gradle:dependency-management-plugin:$ver.dependency_management_plugin",
 
             // aspectj
-            aspectjrt: "org.aspectj:aspectjrt:$ver.aspectj",
-            aspectjweaver: "org.aspectj:aspectjweaver:$ver.aspectj",
+            aspectjrt                   : "org.aspectj:aspectjrt:$ver.aspectj",
+            aspectjweaver               : "org.aspectj:aspectjweaver:$ver.aspectj",
 
             // swagger
-            springfox_swagger2: "io.springfox:springfox-swagger2:$ver.swagger",
-            springfox_swagger_ui: "io.springfox:springfox-swagger-ui:$ver.swagger",
+            springfox_swagger2          : "io.springfox:springfox-swagger2:$ver.swagger",
+            springfox_swagger_ui        : "io.springfox:springfox-swagger-ui:$ver.swagger",
 
             // servlet
-            servlet_api: "javax.servlet:javax.servlet-api:$ver.servlet",
+            servlet_api                 : "javax.servlet:javax.servlet-api:$ver.servlet",
 
             // orm
-            spring_jdbc: "org.springframework:spring-jdbc:$ver.spring",
-            mybatis: "org.mybatis:mybatis:$ver.mybatis",
-            mybatis_spring: "org.mybatis:mybatis-spring:$ver.mybatis_spring",
-            mybatis_paginator: "com.github.miemiedev:mybatis-paginator:$ver.mybatis_paginator",
-            hikaricp: "com.zaxxer:HikariCP:$ver.hikaricp",
-            postgresql: "org.postgresql:postgresql:$ver.postgresql",
+            spring_jdbc                 : "org.springframework:spring-jdbc:$ver.spring",
+            mybatis                     : "org.mybatis:mybatis:$ver.mybatis",
+            mybatis_spring              : "org.mybatis:mybatis-spring:$ver.mybatis_spring",
+            mybatis_paginator           : "com.github.miemiedev:mybatis-paginator:$ver.mybatis_paginator",
+            hikaricp                    : "com.zaxxer:HikariCP:$ver.hikaricp",
+            postgresql                  : "org.postgresql:postgresql:$ver.postgresql",
 
             // utils
-            groovy: "org.codehaus.groovy:groovy:$ver.groovy",
-            guava: "com.google.guava:guava:$ver.guava",
-            okhttp: "com.squareup.okhttp3:okhttp:$ver.okhttp",
-            jbcrypt: "de.svenkubiak:jBCrypt:$ver.jbcrypt",
-            simplecaptcha: "cn.apiclub.tool:simplecaptcha:$ver.simplecaptcha",
-            user_agent_utils: "eu.bitwalker:UserAgentUtils:$ver.user_agent_utils",
-            caffeine: "com.github.ben-manes.caffeine:caffeine:$ver.caffeine",
-            jjwt: "io.jsonwebtoken:jjwt:$ver.jjwt",
-            oss: "com.aliyun.oss:aliyun-sdk-oss:$ver.oss"
-
+            groovy                      : "org.codehaus.groovy:groovy:$ver.groovy",
+            guava                       : "com.google.guava:guava:$ver.guava",
+            okhttp                      : "com.squareup.okhttp3:okhttp:$ver.okhttp",
+            jbcrypt                     : "de.svenkubiak:jBCrypt:$ver.jbcrypt",
+            simplecaptcha               : "cn.apiclub.tool:simplecaptcha:$ver.simplecaptcha",
+            user_agent_utils            : "eu.bitwalker:UserAgentUtils:$ver.user_agent_utils",
+            caffeine                    : "com.github.ben-manes.caffeine:caffeine:$ver.caffeine",
+            jjwt                        : "io.jsonwebtoken:jjwt:$ver.jjwt",
+            oss                         : "com.aliyun.oss:aliyun-sdk-oss:$ver.oss",
+            hibernate_validator         : "org.hibernate:hibernate-validator:$ver.hibernate_validator",
+            spring_session              : "org.springframework.session:spring-session"
     ]
 
 
