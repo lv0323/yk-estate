@@ -47,7 +47,7 @@ public class DepartmentController {
     @GetMapping("query-sorted")
     public Object querySorted(@SessionAttribute LoginEmployee employee) {
         List<Department> departmentList = service.selectByCompanyId(employee.getCompanyId());
-        List<Map<String, Object>> sortedList = new ArrayList<>(departmentList.size());
+        List<Map<String, Object>> sortedList = new LinkedList<>();
         Map<Long, Map<String, Object>> departmentMap = new HashMap<>();
         departmentMap.put(null, null);
         Map<Long, Map<String, Object>> nextDepartmentMap = new HashMap<>();
@@ -62,6 +62,13 @@ public class DepartmentController {
                 Map<String, Object> item = new HashMap<>();
                 item.put("level", level);
                 item.put("department", depart);
+                item.put("deletable", true);
+                for (Department d : departmentList) {
+                    if (Objects.equals(d.getParentId(), depart.getId())) {
+                        item.put("deletable", false);
+                        break;
+                    }
+                }
 
                 Map<String, Object> parent = departmentMap.get(depart.getParentId());
                 if (parent == null)
