@@ -34,7 +34,7 @@ public class FileSqlProvider {
             sql.WHERE("custom_type = #{customType}");
         if (fileProcess != null)
             sql.WHERE("file_process = #{fileProcess}");
-        return sql.toString();
+        return sql.ORDER_BY("priority").toString();
     }
 
     public String findFirst(Long ownerId, DomainType ownerType, CustomType customType, Integer fileProcess) {
