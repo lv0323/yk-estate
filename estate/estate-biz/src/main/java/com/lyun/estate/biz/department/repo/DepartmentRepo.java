@@ -12,7 +12,7 @@ public interface DepartmentRepo {
     @Insert("insert into t_department (parent_id,company_id,name,short_name,telephone,address) values (#{parentId},#{companyId},#{name},#{shortName},#{telephone},#{address})")
     int insert(Department department);
 
-    @Delete("delete from t_department where id = #{id} and (select count(*) from t_department where parent_id = #{id}) = 0")
+    @Delete("delete from t_department where id = #{id} and parent_id notnull and (select count(*) from t_department where parent_id = #{id}) = 0")
     int deleteById(Long id);
 
     @Update("update t_department set parent_id=#{parentId},name=#{name},short_name=#{shortName},telephone=#{telephone},address=#{address},update_time=CURRENT_TIMESTAMP where id=#{id}")
