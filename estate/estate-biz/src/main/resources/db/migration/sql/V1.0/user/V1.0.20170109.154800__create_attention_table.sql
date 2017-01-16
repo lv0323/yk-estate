@@ -1,7 +1,8 @@
-CREATE TABLE t_attention (
+CREATE TABLE t_favorite (
   id             BIGSERIAL PRIMARY KEY,
-  community_id   BIGINT,
+  target_id      BIGINT,
+  domain_type    VARCHAR(20),
   user_id        BIGINT,
   attention_time TIMESTAMP,
-  UNIQUE (community_id, user_id)
+  UNIQUE (target_id, domain_type, user_id)
 );
