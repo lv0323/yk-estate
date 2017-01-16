@@ -10,7 +10,6 @@ import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.OssFileService;
 import com.lyun.estate.biz.spec.common.DomainType;
-import com.lyun.estate.biz.spec.file.service.FileService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.types.Constant;
@@ -92,9 +91,9 @@ public class TestController {
     @RequestMapping("context")
     public String context() {
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, ?> entry : applicationContext.getBeansOfType(FileService.class).entrySet()) {
+        for (Map.Entry<String, ?> entry : applicationContext.getBeansOfType(Object.class).entrySet()) {
             sb.append(entry.getKey())
-                    .append(" ")
+                    .append(" ====== ")
                     .append(entry.getValue())
                     .append("\n");
         }
