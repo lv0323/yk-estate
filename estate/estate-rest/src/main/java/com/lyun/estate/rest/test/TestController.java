@@ -17,12 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -100,27 +98,6 @@ public class TestController {
                     .append("\n");
         }
         return sb.toString();
-    }
-
-    @RequestMapping("fill")
-    public void fill() throws SQLException {
-        StringBuilder sql = new StringBuilder();
-        for (int c = 0; c < 10; c++) {
-            sql.setLength(0);
-            sql.append("insert into t_file_description (owner_id,owner_type,custom_type,file_type,file_process,target,path,priority) values ");
-            long t1 = System.currentTimeMillis();
-            for (int i = 0; i < 10000; i++) {
-                sql.append("(").append(i).append(",'XIAO_QU','SHIJING','IMAGE',1,'OSS','fa681942-d104-4eea-a95b-07fe4cd9a44f.jpg',0)");
-                if (i < 10000 - 1)
-                    sql.append(',');
-            }
-            long t2 = System.currentTimeMillis();
-            System.out.println(t2 - t1);
-            t1 = System.currentTimeMillis();
-            applicationContext.getBean(JdbcTemplate.class).update(sql.toString());
-            t2 = System.currentTimeMillis();
-            System.out.println(t2 - t1);
-        }
     }
 
 //    public static void main(String[] args) {
