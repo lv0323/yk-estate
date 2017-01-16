@@ -24,18 +24,18 @@ public class EmployeeController {
     }
 
     @PostMapping("create")
-    public Object create(Employee entity, @SessionAttribute Employee employee) {
+    public Object create(Employee entity, @SessionAttribute LoginEmployee employee) {
         Objects.requireNonNull(entity).setCompanyId(employee.getCompanyId());
         return employeeService.create(entity);
     }
 
     @GetMapping("query")
-    public Object query(@SessionAttribute Employee employee) {
+    public Object query(@SessionAttribute LoginEmployee employee) {
         return employeeService.selectByCompanyId(employee.getCompanyId());
     }
 
     @PostMapping("edit")
-    public Object edit(Employee entity, @SessionAttribute Employee employee) {
+    public Object edit(Employee entity, @SessionAttribute LoginEmployee employee) {
         return employeeService.update(entity);
     }
 
@@ -51,7 +51,7 @@ public class EmployeeController {
         Employee employee = employeeService.selectByMobile(mobile);
         if (employee == null)
             return new RestResponse().add("ret", false).get();
-        return new RestResponse().add("ret", true).add("salt", employee.getSalt()).add("sugar", employeeService.salt(mobile)).get();
+        return new RestResponse().add("ret", true).add("salt", employee.getSalt()).add("sugar", employeeService.sugar(mobile)).get();
     }
 
     @GetMapping("login")
@@ -59,12 +59,14 @@ public class EmployeeController {
         Employee employee = employeeService.login(mobile, password);
         if (employee == null)
             return new RestResponse().add("ret", false).get();
-        session.setAttribute("employee", employee);
+        session.setAttribute("employee", new LoginEmployee(employee.getId(), employee.getCompanyId(),
+                employee.getDepartmentId(), employee.getPositionId(), employee.getIsBoss(), employee.getIsAgent(),
+                employee.getMobile(), employee.getName(), employee.getGender()));
         return new RestResponse().add("ret", true).add("token", session.getId()).get();
     }
 
     @GetMapping("logout")
-    public Object logout(HttpSession session, @SessionAttribute Employee employee) {
+    public Object logout(HttpSession session, @SessionAttribute LoginEmployee employee) {
         session.invalidate();
         return new RestResponse().add("ret", true).get();
     }

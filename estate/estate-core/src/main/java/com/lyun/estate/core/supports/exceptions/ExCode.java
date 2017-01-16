@@ -7,7 +7,10 @@ public enum ExCode {
     DEFAULT_EXCEPTION("服务器错误"),
     PARAM_NULL("参数{}值为空"),
     PARAM_ILLEGAL("参数{}值为{}，不合法"),
-    OSS_EXCEPTION("OSS错误");
+    OSS_EXCEPTION("OSS错误"),
+    NOT_ACTIVE_EMPLOYEE("未激活"),
+    NO_SUGAR("找不到Sugar"),
+    WRONG_PASSWORD("密码错误");
 
 
     private final String messageTemplate;

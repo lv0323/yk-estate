@@ -30,6 +30,10 @@ public class DepartmentService {
         return repo.selectById(department.getId());
     }
 
+    public Department selectById(Long id) {
+        return repo.selectById(id);
+    }
+
     public List<Department> selectByCompanyId(Long companyId) {
         return repo.selectByCompanyId(Objects.requireNonNull(companyId));
     }

@@ -100,4 +100,8 @@ public class TestController {
         }
         return sb.toString();
     }
+
+//    public static void main(String[] args) {
+//        System.out.println(new String(Base64.getEncoder().encode("f45f41b9-7c4a-4f53-864b-2fd5ea64813e.png".getBytes())).replace("=", ""));
+//    }
 }
