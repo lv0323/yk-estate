@@ -20,7 +20,7 @@ public class FileController {
     }
 
     @GetMapping
-    public Object oss(@RequestParam Long ownerId, @RequestParam DomainType ownerType, @RequestParam(required = false) CustomType customType) {
+    public Object file(@RequestParam Long ownerId, @RequestParam DomainType ownerType, @RequestParam(required = false) CustomType customType) {
         FileProcess process = null;
         if (customType == CustomType.HUXING)
             process = FileProcess.WATERMARK;
