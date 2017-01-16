@@ -83,24 +83,24 @@ public class EmployeeService {
         return repo.active(mobile, hmac(salt, password), salt, secretKey) == 1;
     }
 
-    public String salt(String mobile) {
+    public String sugar(String mobile) {
         String salt = UUID.randomUUID().toString().replace("-", "");
         cache.put(LOGIN_SALT_PREFIX + Objects.requireNonNull(mobile), salt);
         return salt;
     }
 
-    public Employee login(String mobile, String password) {
+    public Employee login(String mobile, String sugaredPassword) {
         Objects.requireNonNull(mobile);
-        Objects.requireNonNull(password);
+        Objects.requireNonNull(sugaredPassword);
         Employee employee = repo.selectByMobile(mobile);
         String rawPassword = employee.getPassword();
         if (rawPassword == null)
-            return null;
-        String salt = cache.get(LOGIN_SALT_PREFIX + mobile, String.class);
-        if (salt == null)
-            return null;
-        if (!hmac(salt, rawPassword).equals(password))
-            return null;
+            throw new EstateException(ExCode.NOT_ACTIVE_EMPLOYEE);
+        String sugar = cache.get(LOGIN_SALT_PREFIX + mobile, String.class);
+        if (sugar == null)
+            throw new EstateException(ExCode.NO_SUGAR);
+        if (!hmac(sugar, rawPassword).equals(sugaredPassword))
+            throw new EstateException(ExCode.WRONG_PASSWORD);
         cache.evict(LOGIN_SALT_PREFIX + mobile);
         return employee;
     }

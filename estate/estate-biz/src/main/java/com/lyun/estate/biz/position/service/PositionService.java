@@ -33,4 +33,8 @@ public class PositionService {
     public List<Position> selectByCompanyId(Long companyId) {
         return repo.selectByCompanyId(Objects.requireNonNull(companyId));
     }
+
+    public Position selectById(Long id) {
+        return repo.selectById(id);
+    }
 }

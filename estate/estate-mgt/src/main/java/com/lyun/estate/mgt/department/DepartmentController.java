@@ -2,7 +2,7 @@ package com.lyun.estate.mgt.department;
 
 import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.service.DepartmentService;
-import com.lyun.estate.biz.employee.entity.Employee;
+import com.lyun.estate.mgt.employee.LoginEmployee;
 import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,23 +19,28 @@ public class DepartmentController {
     }
 
     @PostMapping("add")
-    public Object add(Department department, @SessionAttribute Employee employee) {
+    public Object add(Department department, @SessionAttribute LoginEmployee employee) {
         Objects.requireNonNull(department).setCompanyId(employee.getCompanyId());
         return service.create(department);
     }
 
     @GetMapping("delete")
-    public Object delete(@RequestParam Long id, @SessionAttribute Employee employee) {
+    public Object delete(@RequestParam Long id, @SessionAttribute LoginEmployee employee) {
+        Department department = service.selectById(id);
+        if (department == null)
+            return new RestResponse().add("ret", true).get();
+        if (!Objects.equals(department.getCompanyId(), employee.getCompanyId()))
+            return new RestResponse().add("ret", false).get();
         return new RestResponse().add("ret", service.deleteById(id)).get();
     }
 
     @PostMapping("edit")
-    public Object edit(Department department, @SessionAttribute Employee employee) {
+    public Object edit(Department department, @SessionAttribute LoginEmployee employee) {
         return service.update(department);
     }
 
     @GetMapping("query")
-    public Object query(@SessionAttribute Employee employee) {
+    public Object query(@SessionAttribute LoginEmployee employee) {
         return service.selectByCompanyId(employee.getCompanyId());
     }
 }
