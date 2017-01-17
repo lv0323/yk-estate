@@ -1,4 +1,4 @@
-<link href="${contextPath}/css/department/department.css" rel="stylesheet">
+<link href="${contextPath}/css/org/department.css" rel="stylesheet">
 
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
@@ -193,12 +193,14 @@
 <!-- /.content-wrapper -->
 
 <#include "/common/footer.ftl" />
+<script src="${contextPath!}/js/org/department.js"></script>
 <script type="text/javascript">
 
     $(function(){
+
+        /*
         var allData = {};
-        var url = "http://192.168.0.143:9999/api/department/";
-        var company_id = 0;
+        var url = contextPath+ "/api/department/";
 
         $.getJSON(url+"query",{companyId:company_id})
                 .done(function(data){
@@ -207,14 +209,26 @@
                     }else {
                         allData.departData = data;
                         $.each(data,function(index,depart){
-                            $('#departList>tbody').append('<tr>' +
+                            var appendHtml = '<tr>' +
                                     '<td><a class="btn" id="lookDepartBtn" data-id="'+depart["id"]+'">'+depart["name"]+'</a></td>' +
                                     '<td>'+depart["telephone"]+'</td>' +
                                     '<td>'+depart["address"]+'</td>' +
-                                    '<td class="text-right"><a class="btn" id="editDepartBtn" data-id="'+depart["id"]+'" data-toggle="modal" data-target="#editDepartDialog">编辑</a>'+
-                                    '<span class="opt-gap"></span>'+
-                                    '<a class="btn" id="delDepartBtn" data-id="'+depart["id"]+'" data-toggle="modal" data-target="#deleteDepartDialog">删除</a></td>'+
-                                    '</tr>');
+                                    '<td class="text-right"><a class="btn" id="editDepartBtn" data-index="'+index+'" data-id="'+depart["id"]+'" data-toggle="modal" data-target="#editDepartDialog">编辑</a>';
+
+                            //if parent_id is null, disable delete button
+                            if(depart["parent_id"]){
+                                appendHtml+='<span class="opt-gap"></span>'+
+                                        '<a class="btn" id="delDepartBtn" data-pid="'+depart["parent_id"]+'" data-id="'+depart["id"]+'" data-toggle="modal" data-target="#deleteDepartDialog">删除</a></td>'+
+                                        '</tr>';
+                            }else{
+                                appendHtml+='</tr>';
+                            }
+                            $('#departList>tbody').append(appendHtml);
+
+                            //initialize departments selection in add/edit dialog
+                            $('#addDepartDialog #departPid').append('<option value="'+depart["id"]+'">'+depart["name"]+'</option>');
+                            $('#editDepartDialog #departPid').append('<option value="'+depart["id"]+'">'+depart["name"]+'</option>');
+
                         });
 
                         $('#departList').DataTable({
@@ -230,27 +244,23 @@
                 .fail(function(){
                     $('#departList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
                 });
+*/
 
-        //initialize add department dialog
-        $('.fadeInRight').on('click','#addDepartBtn',function(){
-            $('#addDepartDialog #addDepartLabel').text('增加部门');
-        });
 
-        //save newly added department
-        $('#addDepartDialog').on('click','#confirmAddDepartBtn',function(){
-            var toAddDepart = {};
-            toAddDepart.address = $('#addDepartDialog #departAddress').val();
-            toAddDepart.company_id = company_id;
-            toAddDepart.name = $('#addDepartDialog #departName').val();
-            toAddDepart.parent_id = $('#addDepartDialog #departPid option.selected').val();
-            toAddDepart.short_name = $('#addDepartDialog #departSpell').val();
-            toAddDepart.telephone = $('#addDepartDialog #departTel').val();
+        //action for added department
+        /*$('#addDepartDialog').on('click','#confirmAddDepartBtn',function(){
+            var toAddDepart = {
+                address:$('#addDepartDialog #departAddress').val(),
+                name:$('#addDepartDialog #departName').val(),
+                parent_id:$('#addDepartDialog #departPid :selected').val(),
+                short_name:$('#addDepartDialog #departSpell').val(),
+                telephone:$('#addDepartDialog #departTel').val()
+            };
             $.ajax({
                 url: url+"add",
                 type: 'POST',
-                data:{
-                    toAddDepart
-                },
+                data:toAddDepart,
+                headers:{'x-auth-token':'0d3a7d8d-9274-48fa-8e09-1d26a9a56c9c'},
                 success: function(){
                     console.log("success");
                     location.reload(true);
@@ -259,25 +269,46 @@
                     console.log("error"+res);
                 }
             });
-        });
 
-        //initialize edit department dialog
+            /*
+            var address = $('#addDepartDialog #departAddress').val();
+            var name = $('#addDepartDialog #departName').val();
+            var parent_id = $('#addDepartDialog #departPid :selected').val();
+            var short_name = $('#addDepartDialog #departSpell').val();
+            var telephone = $('#addDepartDialog #departTel').val();
+
+            $.ajax({
+                url: url+"add",
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: "json",
+                data:"{'address':'" + address + "', 'company_id':'" + company_id + "','name':'"+name+"','parent_id':'"+parent_id+"','short_name':'"+short_name+"','telephone':'"+telephone+"'}",
+                success: function(){
+                    console.log("success");
+                    location.reload(true);
+                },
+                error:function(res){
+                    console.log("error"+res);
+                }
+            });
+        });*/
+
+        //initialize title and default value in edit department dialog
         $('#departList').on('click','#editDepartBtn',function(e){
-            var index = $(e.target).data('id');
+            var index = $(e.target).data('index');
             var depart = allData.departData[index];
-            var pIndex  = depart["parent_id"];
-            var pDepart = allData.departData[pIndex];
+            var pId  = depart["parent_id"];
             $('#editDepartDialog #editDepartLabel').text('编辑部门');
-            $('#editDepartDialog #departPid').html('<option value="'+pDepart["id"]+'">'+pDepart["name"]+'</option>');
+            $('#editDepartDialog #departPid').find('option[value='+pId+']').attr('selected','selected');
             $('#editDepartDialog #departName').val(depart["name"]);
             $('#editDepartDialog #departSpell').val(depart["short_name"]);
             $('#editDepartDialog #departTel').val(depart["telephone"]);
             $('#editDepartDialog #departAddress').val(depart["address"]);
         });
 
-        //save newly updated department
+        //action for updated department
         $('#editDepartDialog').on('click','#confirmEditDepartBtn',function(){
-
+            var id = $(e.target).data('id');
             $.ajax({
                 url: url+"add",
                 type: 'GET',
@@ -317,8 +348,5 @@
 
     });
 
-    saveDepart = function(){
-
-    };
 
 </script>

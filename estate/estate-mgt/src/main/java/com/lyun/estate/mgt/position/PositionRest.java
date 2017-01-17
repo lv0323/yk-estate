@@ -10,11 +10,11 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("api/position")
-public class PositionController {
+public class PositionRest {
 
     private final PositionService service;
 
-    public PositionController(PositionService service) {
+    public PositionRest(PositionService service) {
         this.service = service;
     }
 

@@ -12,7 +12,7 @@ import java.util.HashMap;
  */
 @Controller
 @RequestMapping("/org")
-public class PositionController {
+public class PositionPage {
 
     @GetMapping("/position")
     public ModelAndView index() {
