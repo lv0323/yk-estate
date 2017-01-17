@@ -61,4 +61,9 @@ public class XiaoQuController {
         return xiaoQuService.getDetail(id);
     }
 
+    @GetMapping(value = "/nearby")
+    PageList<XiaoQuSummary> nearby(@RequestParam Long id) {
+        return xiaoQuService.findNearbyXiaoQu(id);
+    }
+
 }
