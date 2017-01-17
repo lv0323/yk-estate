@@ -7,6 +7,9 @@ CREATE TABLE t_company
   address      VARCHAR(128),
   introduction VARCHAR,
   secret_key   VARCHAR(32),
+  start_date   DATE,
+  end_date     DATE,
+  locked       BOOLEAN   DEFAULT FALSE,
   create_time  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_time  TIMESTAMP
 );
