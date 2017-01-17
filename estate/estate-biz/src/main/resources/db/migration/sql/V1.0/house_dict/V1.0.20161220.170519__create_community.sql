@@ -4,7 +4,9 @@ CREATE TABLE t_city (-- 城市
   name        VARCHAR(20) NOT NULL, -- 中文名
   longitude   NUMERIC(12, 9), -- 经度
   latitude    NUMERIC(12, 9), -- 纬度
-  view_region VARCHAR(64) --地图显示区域
+  view_region VARCHAR(64), --地图显示区域
+  create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  update_time TIMESTAMP
 );
 
 CREATE TABLE t_district (--地区
@@ -14,7 +16,9 @@ CREATE TABLE t_district (--地区
   name        VARCHAR(20) NOT NULL, -- 中文名
   longitude   NUMERIC(12, 9), -- 经度
   latitude    NUMERIC(12, 9), -- 纬度
-  view_region VARCHAR(64) --地图显示区域
+  view_region VARCHAR(64), --地图显示区域
+  create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  update_time TIMESTAMP
 );
 
 CREATE TABLE t_sub_district (--地区
@@ -23,13 +27,17 @@ CREATE TABLE t_sub_district (--地区
   name        VARCHAR(20) NOT NULL, -- 中文名
   longitude   NUMERIC(12, 9), -- 经度
   latitude    NUMERIC(12, 9), -- 纬度
-  view_region VARCHAR(64) --地图显示区域
+  view_region VARCHAR(64), --地图显示区域
+  create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  update_time TIMESTAMP
 );
 
 CREATE TABLE t_district_rel (
   id              BIGSERIAL PRIMARY KEY, --id
   district_id     BIGINT NOT NULL, --地区id
   sub_district_id BIGINT NOT NULL, -- 板块id
+  create_time     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  update_time     TIMESTAMP,
   UNIQUE (district_id, sub_district_id)
 );
 
@@ -41,7 +49,9 @@ CREATE TABLE t_line (--地铁线路
   name        VARCHAR(20) NOT NULL, --中文名
   longitude   NUMERIC(12, 9), -- 经度
   latitude    NUMERIC(12, 9), -- 纬度
-  view_region VARCHAR(64) --地图显示区域
+  view_region VARCHAR(64), --地图显示区域
+  create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  update_time TIMESTAMP
 );
 
 CREATE TABLE t_station (--地铁站点
@@ -50,13 +60,17 @@ CREATE TABLE t_station (--地铁站点
   name        VARCHAR(20) NOT NULL, --中文名
   longitude   NUMERIC(12, 9), -- 经度
   latitude    NUMERIC(12, 9), -- 纬度
-  view_region VARCHAR(64) --地图显示区域
+  view_region VARCHAR(64), --地图显示区域
+  create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  update_time TIMESTAMP
 );
 
 CREATE TABLE t_line_station_rel (
-  id         BIGSERIAL PRIMARY KEY, --id
-  line_id    BIGINT NOT NULL, --线路id
-  station_id BIGINT NOT NULL, -- 站点id
+  id          BIGSERIAL PRIMARY KEY, --id
+  line_id     BIGINT NOT NULL, --线路id
+  station_id  BIGINT NOT NULL, -- 站点id
+  create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  update_time TIMESTAMP,
   UNIQUE (line_id, station_id)
 );
 
@@ -66,7 +80,7 @@ CREATE TABLE t_community (
   alias                  VARCHAR(50), -- 别名
   city_id                BIGINT      NOT NULL, --城市id
   sub_district_id        BIGINT      NOT NULL, --板块id
-  near_line              CHAR(1) DEFAULT 'N', --靠近地铁
+  near_line              CHAR(1)   DEFAULT 'N', --靠近地铁
   longitude              NUMERIC(12, 9), -- 经度
   latitude               NUMERIC(12, 9), -- 纬度
   address                VARCHAR(100), --地址
@@ -86,10 +100,10 @@ CREATE TABLE t_community (
   green_rate             VARCHAR(16), -- 绿化率
   lj_id                  VARCHAR(50), -- 链家Id
   create_by_id           BIGINT, --创建者id
-  create_time            TIMESTAMP, --创建时间
+  create_time            TIMESTAMP DEFAULT CURRENT_TIMESTAMP, --创建时间
   update_by_id           BIGINT, --更新者id
   update_time            TIMESTAMP, --更新时间
-  is_deleted             CHAR(1) DEFAULT 'N',
+  is_deleted             CHAR(1)   DEFAULT 'N',
   version                INT --版本号
 );
 
@@ -98,6 +112,8 @@ CREATE TABLE t_community_station_rel (
   community_id BIGINT NOT NULL, --小区id
   station_id   BIGINT NOT NULL, -- 站点信息
   distance     INT, --距离
+  create_time  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  update_time  TIMESTAMP,
   UNIQUE (community_id, station_id)
 );
 

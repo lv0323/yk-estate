@@ -30,8 +30,11 @@ public class XiaoQuSqlProvider {
             if (selector.getStructureTypes() != null) {
                 WHERE("c.structure_type in (" + Joiner.on(",").skipNulls().join(selector.getStructureTypes()) + ")");
             }
-            if (selector.getXiaoQuIds() != null) {
+            if (selector.getXiaoQuIds() != null && !selector.getXiaoQuIds().isEmpty()) {
                 WHERE("xq.id in (" + Joiner.on(",").skipNulls().join(selector.getXiaoQuIds()) + ")");
+            }
+            if (selector.getExcludeIds() != null && !selector.getExcludeIds().isEmpty()) {
+                WHERE("xq.id not in (" + Joiner.on(",").skipNulls().join(selector.getExcludeIds()) + ")");
             }
         }}.toString();
     }
@@ -54,11 +57,13 @@ public class XiaoQuSqlProvider {
                     "  c.developers,\n" +
                     "  c.structure_type,\n" +
                     "  c.builded_year,\n" +
+                    "  c.develop_year,\n" +
                     "  c.property_company,\n" +
                     "  c.property_company_phone,\n" +
                     "  c.property_fee,\n" +
                     "  c.parking_space,\n" +
                     "  c.parking_rate,\n" +
+                    "  c.parking_fee,\n" +
                     "  c.buildings,\n" +
                     "  c.houses,\n" +
                     "  c.container_rate,\n" +

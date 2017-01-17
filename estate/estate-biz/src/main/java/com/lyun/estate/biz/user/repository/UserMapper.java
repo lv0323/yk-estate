@@ -37,13 +37,4 @@ public interface UserMapper {
     @UpdateProvider(type = UserSqlProvider.class, method = "update")
     int updateUser(User user);
 
-    @Insert("insert into t_attention(community_id,user_id,attention_time) values(#{communityId},#{userId},current_timestamp)")
-    int createAttention(@Param("communityId") long communityId, @Param("userId") long userId);
-
-    @Delete("delete from t_attention where community_id=#{communityId} and user_id=#{userId}")
-    int deleteAttention(@Param("communityId") long communityId, @Param("userId") long userId);
-
-    @Select("select * from t_attention where community_id=#{communityId} and user_id=#{userId}")
-    Map<String, Object> findAttention(@Param("communityId") long communityId, @Param("userId") long userId);
-
 }

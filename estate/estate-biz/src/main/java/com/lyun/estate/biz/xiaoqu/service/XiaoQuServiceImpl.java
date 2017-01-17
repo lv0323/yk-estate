@@ -136,9 +136,15 @@ public class XiaoQuServiceImpl implements XiaoQuService {
                 }
             }
         }
+
+        return findXiaoQuSummaryBySelector(selector, pageBounds);
+    }
+
+    private PageList<XiaoQuSummary> findXiaoQuSummaryBySelector(XiaoQuSelector selector, PageBounds pageBounds) {
         PageList<XiaoQuSummaryBean> result = xiaoQuRepository.findSummary(selector, pageBounds);
 
         PageList<XiaoQuSummary> summaries = new PageList<>(new ArrayList<>(), result.getPaginator());
+
         result.forEach(bean -> {
             XiaoQuSummary summary = new XiaoQuSummary();
             BeanUtils.copyProperties(bean, summary);
@@ -153,6 +159,7 @@ public class XiaoQuServiceImpl implements XiaoQuService {
             summary.setImageURI(Optional.ofNullable(firstImg).map(FileDescription::getFileURI).orElse(null));
             summaries.add(summary);
         });
+
         return summaries;
     }
 
@@ -206,10 +213,28 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         FileDescription firstImg = fileService.findFirst(bean.getId(), DomainType.XIAO_QU, CustomType.SHIJING,
                 FileProcess.WATERMARK);
         detail.setImageURI(Optional.ofNullable(firstImg).map(FileDescription::getFileURI).orElse(null));
-        //todo: fixthis
+        //todo: fix this
         detail.setFollows(RandomUtils.nextInt(9999));
 
         return detail;
+    }
+
+    @Override
+    public PageList<XiaoQuSummary> findNearbyXiaoQu(Long id) {
+        PageBounds pageBounds = new PageBounds(1, 3);
+
+        XiaoQuDetailBean xiaoQuDetailBean = xiaoQuRepository.findDetail(id);
+        if (xiaoQuDetailBean != null) {
+            pageBounds.getOrders().clear();
+            pageBounds.getOrders().addAll(XQSummaryOrder.DEFAULT.getOrders());
+            XiaoQuSelector selector = new XiaoQuSelector();
+            selector.setSubDistrictId(xiaoQuDetailBean.getSubDistrictId());
+            selector.setExcludeIds(Lists.newArrayList(id));
+
+            return findXiaoQuSummaryBySelector(selector, pageBounds);
+        }
+        return new PageList<>(Lists.newArrayList(),
+                new Paginator(pageBounds.getPage(), pageBounds.getLimit(), 0));
     }
 
 }

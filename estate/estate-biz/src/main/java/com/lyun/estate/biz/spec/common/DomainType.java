@@ -4,6 +4,7 @@ package com.lyun.estate.biz.spec.common;
  * Created by Jeffrey on 2017-01-03.
  */
 public enum DomainType {
+    CITY("城市"),
     DISTRICT("区域"),
     SUB_DISTRICT("板块"),
     LINE("地铁线"),
