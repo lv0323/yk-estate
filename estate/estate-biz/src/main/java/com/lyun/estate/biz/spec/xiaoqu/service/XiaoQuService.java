@@ -21,4 +21,6 @@ public interface XiaoQuService {
     List<KeywordResp> keywords(String keyword);
 
     XiaoQuDetail getDetail(Long id);
+
+    PageList<XiaoQuSummary> findNearbyXiaoQu(Long id);
 }

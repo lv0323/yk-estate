@@ -14,6 +14,7 @@ public class XiaoQuSelector {
     private List<Integer> structureTypes;
     private Integer minYear;
     private Integer maxYear;
+    private List<Long> excludeIds;
 
     public Long getDistrictId() {
         return districtId;
@@ -88,6 +89,15 @@ public class XiaoQuSelector {
         return this;
     }
 
+    public List<Long> getExcludeIds() {
+        return excludeIds;
+    }
+
+    public XiaoQuSelector setExcludeIds(List<Long> excludeIds) {
+        this.excludeIds = excludeIds;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "XiaoQuSelector{" +
@@ -99,6 +109,7 @@ public class XiaoQuSelector {
                 ", structureTypes=" + structureTypes +
                 ", minYear=" + minYear +
                 ", maxYear=" + maxYear +
+                ", excludeIds=" + excludeIds +
                 '}';
     }
 }
