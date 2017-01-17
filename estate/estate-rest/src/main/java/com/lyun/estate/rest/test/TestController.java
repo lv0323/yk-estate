@@ -1,6 +1,7 @@
 package com.lyun.estate.rest.test;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.google.common.collect.Lists;
 import com.lyun.estate.biz.auth.token.CheckToken;
 import com.lyun.estate.biz.auth.token.JWTToken;
 import com.lyun.estate.biz.auth.token.TokenProvider;
@@ -9,6 +10,8 @@ import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.OssFileService;
+import com.lyun.estate.biz.keyword.entity.KeywordBean;
+import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
@@ -22,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -36,6 +40,8 @@ public class TestController {
     private OssFileService fileService;
     @Autowired
     private ApplicationContext applicationContext;
+    @Autowired
+    private KeywordService keywordService;
 
     @GetMapping(value = "/string")
     public String string() {
@@ -100,7 +106,14 @@ public class TestController {
         return sb.toString();
     }
 
-//    public static void main(String[] args) {
-//        System.out.println(new String(Base64.getEncoder().encode("f45f41b9-7c4a-4f53-864b-2fd5ea64813e.png".getBytes())).replace("=", ""));
-//    }
+
+    @GetMapping("/keywords/contain")
+    List<KeywordBean> findContain(@RequestParam String keyword, @RequestParam(required = false) Integer limit) {
+        return keywordService.findContain(keyword, Lists.newArrayList(DomainType.values()), limit);
+    }
+
+    @GetMapping("/keywords/name-match")
+    List<KeywordBean> findNameMatch(@RequestParam String keyword, @RequestParam(required = false) Integer limit) {
+        return keywordService.findNameMatch(keyword, Lists.newArrayList(DomainType.values()), limit);
+    }
 }

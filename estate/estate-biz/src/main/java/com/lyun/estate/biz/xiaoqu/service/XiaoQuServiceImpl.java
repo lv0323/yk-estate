@@ -222,6 +222,7 @@ public class XiaoQuServiceImpl implements XiaoQuService {
     @Override
     public PageList<XiaoQuSummary> findNearbyXiaoQu(Long id) {
         PageBounds pageBounds = new PageBounds(1, 3);
+        pageBounds.setContainsTotalCount(false);
 
         XiaoQuDetailBean xiaoQuDetailBean = xiaoQuRepository.findDetail(id);
         if (xiaoQuDetailBean != null) {
