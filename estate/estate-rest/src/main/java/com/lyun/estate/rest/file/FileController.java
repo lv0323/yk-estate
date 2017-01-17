@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("file")
+@RequestMapping("files")
 public class FileController {
 
     private final OssFileService fileService;
@@ -20,7 +20,8 @@ public class FileController {
     }
 
     @GetMapping
-    public Object file(@RequestParam Long ownerId, @RequestParam DomainType ownerType, @RequestParam(required = false) CustomType customType) {
+    public Object file(@RequestParam Long ownerId, @RequestParam DomainType ownerType,
+                       @RequestParam(required = false) CustomType customType) {
         FileProcess process = null;
         if (customType == CustomType.HUXING)
             process = FileProcess.WATERMARK;
