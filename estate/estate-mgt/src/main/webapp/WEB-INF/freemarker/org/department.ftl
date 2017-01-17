@@ -18,7 +18,9 @@
                     <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">上级部门</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <select id="departPid" class="form-control btn-group dropdown" onchange=""></select>
+                            <select id="departPid" class="form-control btn-group dropdown" onchange="">
+                                <option value="">--请选择--</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -75,6 +77,7 @@
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">上级部门</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
                             <select id="departPid" class="form-control btn-group dropdown" onchange=""></select>
+                            <input id="departId" class="hidden">
                         </div>
                     </div>
                     <div class="form-group">
@@ -294,7 +297,7 @@
         });*/
 
         //initialize title and default value in edit department dialog
-        $('#departList').on('click','#editDepartBtn',function(e){
+        /*$('#departList').on('click','#editDepartBtn',function(e){
             var index = $(e.target).data('index');
             var depart = allData.departData[index];
             var pId  = depart["parent_id"];
@@ -304,10 +307,10 @@
             $('#editDepartDialog #departSpell').val(depart["short_name"]);
             $('#editDepartDialog #departTel').val(depart["telephone"]);
             $('#editDepartDialog #departAddress').val(depart["address"]);
-        });
+        });*/
 
         //action for updated department
-        $('#editDepartDialog').on('click','#confirmEditDepartBtn',function(){
+        /*$('#editDepartDialog').on('click','#confirmEditDepartBtn',function(){
             var id = $(e.target).data('id');
             $.ajax({
                 url: url+"add",
@@ -321,17 +324,17 @@
                     console.log("error"+res);
                 }
             });
-        });
+        });*/
 
 
         //initialize index value stored in deleteDepartDialog
-        $('#departList').on('click','#delDepartBtn',function(e){
+        /*$('#departList').on('click','#delDepartBtn',function(e){
             var departId = $(e.target).data('id');
             $('#deleteDepartDialog #departId').val(departId);
-        });
+        });*/
 
         //delete data according to index value where specifies id
-        $('#deleteDepartDialog').on('click','#confirmDelDepartBtn',function(){
+        /*$('#deleteDepartDialog').on('click','#confirmDelDepartBtn',function(){
             var departId = $('#deleteDepartDialog #departId').val();
             $.ajax({
                 url: url+"delete",
@@ -344,7 +347,7 @@
                     console.log("error"+res);
                 }
             });
-        });
+        });*/
 
     });
 
