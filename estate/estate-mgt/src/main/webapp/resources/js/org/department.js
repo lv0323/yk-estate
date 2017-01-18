@@ -5,8 +5,8 @@ require(['main-app',contextPath + '/js/service/request-service.js'],
     function (mainApp,RequestService) {
 
         var BaseUrl = "/api/department/";
-        var header = {'x-auth-token':'c1caabf1-4c77-445d-9e2d-38e5b7fa0895'};
-        var departDataRaw = {};
+        var header = {'x-auth-token':'3349efa3-ce59-423d-897f-3d325b23ea82'};
+        var departAllDataRaw = {};
 
         //get data from server and display data
         RequestService.get(BaseUrl+"query-sorted",null,header)
@@ -14,7 +14,7 @@ require(['main-app',contextPath + '/js/service/request-service.js'],
                 if(data === null){
                     $('#departList>tbody').append('<tr><td colspan="4">没有数据</td></tr>');
                 }else {
-                    departDataRaw = data;
+                    departAllDataRaw = data;
                     $.each(data,function(index,departRaw){
                         var appendHtml = '<tr>' +
                             '<td><a class="btn" id="lookDepartBtn" data-id="'+departRaw.department["id"]+'">'+departRaw.department["name"]+'</a></td>' +
@@ -56,19 +56,16 @@ require(['main-app',contextPath + '/js/service/request-service.js'],
         //initialize title in add department dialog
         $('.fadeInRight').on('click','#addDepartBtn',function(){
             $('#addDepartDialog #addDepartLabel').text('增加部门');
-            var parent_id = $('#addDepartDialog #departPid :selected').val();
-            console.log("parent_id in dialog"+parent_id);
         });
 
         //action for added department
         $('#addDepartDialog').on('click','#confirmAddDepartBtn',function(){
-            var parent_id = $('#addDepartDialog #departPid :selected').val();
-            console.log("parent_id in dialog after selected"+parent_id);
+            var parent_id = $('#addDepartDialog #departPid option:selected').val();
             var toAddDepart = {
                 address: $('#addDepartDialog #departAddress').val(),
                 name: $('#addDepartDialog #departName').val(),
-                parent_id: parseInt(parent_id,10),
-                short_name: $('#addDepartDialog #departSpell').val(),
+                parentId: parseInt(parent_id,10),
+                shortName: $('#addDepartDialog #departSpell').val(),
                 telephone: $('#addDepartDialog #departTel').val()
             };
             RequestService.post(BaseUrl+"add",toAddDepart,header)
@@ -80,15 +77,13 @@ require(['main-app',contextPath + '/js/service/request-service.js'],
 
         //initialize index value stored in deleteDepartDialog
         $('#departList').on('click','#delDepartBtn',function(e){
-            var departId = $(e.target).data('id');
-            console.log("departId in row: "+departId);
+            var departId = parseInt($(e.target).data('id'),10);
             $('#deleteDepartDialog #departId').val(departId);
         });
 
         //delete data according to index value where specifies id
         $('#deleteDepartDialog').on('click','#confirmDelDepartBtn',function(){
-            var departId_request = $('#deleteDepartDialog #departId').val();
-            console.log("departId_request in Dialog to be delivered to request: "+departId_request);
+            var departId_request = parseInt($('#deleteDepartDialog #departId').val(),10);
             RequestService.get(BaseUrl+"delete",{id:departId_request},header)
                 .done(function(){
                     location.reload(true);
@@ -98,33 +93,50 @@ require(['main-app',contextPath + '/js/service/request-service.js'],
         //initialize title and default value in edit department dialog
         $('#departList').on('click','#editDepartBtn',function(e){
             var index = $(e.target).data('index');
-            var depart = departDataRaw[index].department;
+            var depart = departAllDataRaw[index].department;
             var pId  = depart["parent_id"];
             $('#editDepartDialog #editDepartLabel').text('编辑部门');
-            $('#editDepartDialog #departPid').find('option[value='+pId+']').attr('selected','selected');
+            if(pId){
+                $('#editDepartDialog #departPid').prop('disabled',false);
+                $('#editDepartDialog #departPid').find('option[value='+pId+']').attr('selected','selected');
+                $('#editDepartDialog #departPid').find('option[value!='+pId+']').removeAttr('selected');
+            }else{
+                $('#editDepartDialog #departPid').prop('disabled','disabled');
+                $('#editDepartDialog #departPid').find('option[value=""]').attr('selected','selected');
+                $('#editDepartDialog #departPid').find('option[value!='+pId+']').removeAttr('selected');
+            }
             $('#editDepartDialog #departId').val(depart["id"]);
             $('#editDepartDialog #departName').val(depart["name"]);
             $('#editDepartDialog #departSpell').val(depart["short_name"]);
             $('#editDepartDialog #departTel').val(depart["telephone"]);
             $('#editDepartDialog #departAddress').val(depart["address"]);
-
-            var id = $('#editDepartDialog #departId').val();
-            console.log("departId_request in Dialog to be delivered to request: "+id);
         });
 
         //action for updated department
         $('#editDepartDialog').on('click','#confirmEditDepartBtn',function(){
             var id = $('#editDepartDialog #departId').val();
-            console.log("departId_request in Dialog to be delivered to request: "+id);
-            var parent_id = $('#editDepartDialog #departPid :selected').val();
-            var toAddDepart = {
-                id: parseInt(id,10),
-                address: $('#editDepartDialog #departAddress').val(),
-                name: $('#editDepartDialog #departName').val(),
-                parent_id: parseInt(parent_id,10),
-                short_name: $('#editDepartDialog #departSpell').val(),
-                telephone: $('#editDepartDialog #departTel').val()
-            };
+            var parent_id = $('#editDepartDialog #departPid option:selected').val();
+            var toAddDepart = {};
+            if(parent_id){
+                toAddDepart = {
+                    id: parseInt(id,10),
+                    address: $('#editDepartDialog #departAddress').val(),
+                    name: $('#editDepartDialog #departName').val(),
+                    parentId: parseInt(parent_id,10),
+                    shortName: $('#editDepartDialog #departSpell').val(),
+                    telephone: $('#editDepartDialog #departTel').val()
+                };
+            }else{
+                parent_id = "";
+                toAddDepart = {
+                    id: parseInt(id,10),
+                    address: $('#editDepartDialog #departAddress').val(),
+                    name: $('#editDepartDialog #departName').val(),
+                    parentId: parent_id,
+                    shortName: $('#editDepartDialog #departSpell').val(),
+                    telephone: $('#editDepartDialog #departTel').val()
+                };
+            }
             RequestService.post(BaseUrl+"edit",toAddDepart,header)
                 .done(function(){
                     location.reload(true);

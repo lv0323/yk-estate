@@ -11,7 +11,7 @@
     var vn = document.getElementById('vn').value;
 </script>
 <!-- jQuery 2.2.3 -->
-<script src="${contextPath}/js/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="${contextPath}/js/libs/jquery-2.2.0.min.js"></script>
 <script src="${contextPath}/js/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="${contextPath}/js/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script src="${contextPath}/js/libs/require.min.js?vn=${bts!}"></script>
