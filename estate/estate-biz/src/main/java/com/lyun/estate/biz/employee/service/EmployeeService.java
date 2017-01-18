@@ -5,22 +5,19 @@ import com.lyun.estate.biz.employee.repo.EmployeeRepo;
 import com.lyun.estate.core.config.CacheConfig;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
-import com.lyun.estate.core.supports.exceptions.ValidateException;
+import com.lyun.estate.core.utils.Validations;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.ObjectError;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 public class EmployeeService {
@@ -45,25 +42,13 @@ public class EmployeeService {
         }
     }
 
-    private <T> T validate(T bean) {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<T>> constraintViolationSet = validator.validate(Objects.requireNonNull(bean));
-        List<ObjectError> objectErrorList = new ArrayList<>();
-        for (ConstraintViolation<T> cv : constraintViolationSet)
-            objectErrorList.add(new ObjectError(cv.getRootBeanClass().getName(), cv.getMessage()));
-        if (!constraintViolationSet.isEmpty())
-            throw new ValidateException("ConstraintViolation", objectErrorList);
-        return bean;
-    }
-
     public Employee create(Employee employee) {
-        repo.insert(validate(employee));
+        repo.insert(Validations.doValidate(employee));
         return employee;
     }
 
     public Employee createBoss(Employee employee) {
-        repo.insert(validate(employee).setIsBoss(Boolean.TRUE));
+        repo.insert(Validations.doValidate(employee).setIsBoss(Boolean.TRUE));
         return employee;
     }
 
@@ -73,7 +58,7 @@ public class EmployeeService {
 
     public Employee update(Employee employee) {
         Objects.requireNonNull(Objects.requireNonNull(employee).getId());
-        repo.update(validate(employee));
+        repo.update(Validations.doValidate(employee));
         return repo.selectById(employee.getId());
     }
 
