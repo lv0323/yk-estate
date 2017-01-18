@@ -20,7 +20,6 @@ public class Employee {
     private Long departmentId;
     @Null
     private Department department;
-    @NotNull
     @JsonIgnore
     private Long positionId;
     @Null

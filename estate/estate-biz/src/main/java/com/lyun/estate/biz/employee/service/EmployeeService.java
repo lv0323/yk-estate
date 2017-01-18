@@ -61,6 +61,11 @@ public class EmployeeService {
         return employee;
     }
 
+    public Employee createBoss(Employee employee) {
+        repo.insert(validate(employee).setIsBoss(Boolean.TRUE));
+        return employee;
+    }
+
     public List<Employee> selectByCompanyId(Long companyId) {
         return repo.selectByCompanyId(Objects.requireNonNull(companyId));
     }

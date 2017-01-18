@@ -3,13 +3,13 @@ package com.lyun.estate.biz.company;
 import com.lyun.estate.biz.company.repo.CompanyRepository;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.ObjectError;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class CompanyService {
@@ -29,13 +29,16 @@ public class CompanyService {
 
     private static <T> T validate(T bean) {
         Set<ConstraintViolation<T>> constraintViolationSet = VALIDATOR.validate(Objects.requireNonNull(bean));
+        List<ObjectError> objectErrorList = new ArrayList<>();
+        for (ConstraintViolation<T> cv : constraintViolationSet)
+            objectErrorList.add(new ObjectError(cv.getRootBeanClass().getName(), cv.getMessage()));
         if (!constraintViolationSet.isEmpty())
-            throw new ValidateException("ConstraintViolation", "参数不合法");
+            throw new ValidateException("ConstraintViolation", objectErrorList);
         return bean;
     }
 
     public Company create(Company company) {
-        repository.insert(validate(company));
+        repository.insert(validate(company).setSecretKey(String.valueOf(new Date().getTime())));
         return company;
     }
 }
