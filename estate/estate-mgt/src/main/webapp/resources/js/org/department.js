@@ -1,11 +1,11 @@
 /**
  * Created by yanghong on 1/17/17.
  */
-require(['main-app',contextPath + '/js/service/request-service.js'],
+require(['main-app',contextPath + '/js/service/request-service.js','datatables'],
     function (mainApp,RequestService) {
 
         var BaseUrl = "/api/department/";
-        var header = {'x-auth-token':'3349efa3-ce59-423d-897f-3d325b23ea82'};
+        var header = {'x-auth-token':'b271c50b-44fd-424b-a373-97cd5791393b'};
         var departAllDataRaw = {};
 
         //get data from server and display data
