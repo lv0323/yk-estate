@@ -1,20 +1,30 @@
 package com.lyun.estate.biz.company;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Null;
 import java.sql.Date;
 import java.sql.Timestamp;
 
 public class Company {
 
     private Long id;
+    @NotEmpty
     private String name;
+    @NotEmpty
     private String shortName;
+    @NotEmpty
     private String license;
+    @NotEmpty
     private String address;
     private String introduction;
+    @Null
     private String secretKey;
+    @Future
     private Date startDate;
+    @Future
     private Date endDate;
     private Boolean locked;
     @JsonIgnore
