@@ -41,4 +41,9 @@ public class CompanyService {
         repository.insert(validate(company).setSecretKey(String.valueOf(new Date().getTime())));
         return company;
     }
+
+    public Boolean lock(Long id, Boolean locked) {
+        repository.lock(id, locked);
+        return true;
+    }
 }

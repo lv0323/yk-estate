@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.ObjectError;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
@@ -19,10 +20,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.math.BigInteger;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class EmployeeService {
@@ -51,8 +49,11 @@ public class EmployeeService {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<T>> constraintViolationSet = validator.validate(Objects.requireNonNull(bean));
+        List<ObjectError> objectErrorList = new ArrayList<>();
+        for (ConstraintViolation<T> cv : constraintViolationSet)
+            objectErrorList.add(new ObjectError(cv.getRootBeanClass().getName(), cv.getMessage()));
         if (!constraintViolationSet.isEmpty())
-            throw new ValidateException("ConstraintViolation", "参数不合法");
+            throw new ValidateException("ConstraintViolation", objectErrorList);
         return bean;
     }
 

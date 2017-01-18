@@ -6,10 +6,9 @@ import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.biz.employee.def.Status;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.mgt.company.entity.CreateCompanyEntity;
+import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/company")
@@ -42,5 +41,10 @@ public class CompanyController {
                 .setDepartmentId(department.getId())
                 .setStatus(Status.WORKING));
         return entity.getCompany();
+    }
+
+    @GetMapping("lock")
+    public Object lock(@RequestParam Long id, @RequestParam Boolean locked) {
+        return new RestResponse().add("ret", companyService.lock(id, locked)).get();
     }
 }
