@@ -13,7 +13,7 @@ import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
 import com.lyun.estate.biz.housedict.entity.SubDistrict;
 import com.lyun.estate.biz.housedict.service.HouseService;
-import com.lyun.estate.biz.houselicence.def.StructureType;
+import com.lyun.estate.biz.housedict.def.StructureType;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;

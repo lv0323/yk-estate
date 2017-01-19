@@ -347,7 +347,7 @@ a:focus {
 .content-header > .breadcrumb > li + li:before {
   content: '>\00a0';
 }
-@media (max-width: 991px) {
+/*@media (max-width: 991px) {*/
   .content-header > .breadcrumb {
     position: relative;
     margin-top: 5px;
@@ -360,7 +360,7 @@ a:focus {
   .content-header > .breadcrumb li:before {
     color: #97a0b3;
   }
-}
+/*}*/
 .navbar-toggle {
   color: #fff;
   border: 0;
@@ -604,6 +604,9 @@ a:focus {
     transform: translate(0, 0);
     width: 50px !important;
     z-index: 850;
+  }
+  .sidebar-mini.sidebar-collapse .main-sidebar .user-panel{
+    padding: 10px 3px;
   }
   .sidebar-mini.sidebar-collapse .sidebar-menu > li {
     position: relative;
