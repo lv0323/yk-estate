@@ -19,10 +19,7 @@ import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.biz.spec.file.service.FileService;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
-import com.lyun.estate.biz.spec.xiaoqu.entity.KeywordResp;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuFilter;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuSummary;
+import com.lyun.estate.biz.spec.xiaoqu.entity.*;
 import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuDetailBean;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
@@ -34,6 +31,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -56,6 +54,7 @@ public class XiaoQuServiceImpl implements XiaoQuService {
 
     @Autowired
     private HouseService houseService;
+
 
     /**
      * @param filter
@@ -236,6 +235,24 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         }
         return new PageList<>(Lists.newArrayList(),
                 new Paginator(pageBounds.getPage(), pageBounds.getLimit(), 0));
+    }
+
+    @Override
+    public List<EstateMapResource> findAllDistrictListByMap(int cityId) {
+        //TODO 获取城市所有地区列表
+        return null;
+    }
+
+    @Override
+    public List<EstateMapResource> findAllSubDistrictListByMap(int cityId) {
+        //TODO 获取城市所有板块列表
+        return null;
+    }
+
+    @Override
+    public List<EstateMapResource> findCommunityListByMap(BigDecimal minLongitude, BigDecimal maxLongitude, BigDecimal minLatitude, BigDecimal maxLatitude) {
+        //TODO 缓存处理
+        return xiaoQuRepository.findCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude);
     }
 
 }
