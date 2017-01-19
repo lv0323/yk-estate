@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.position.service;
 
+import com.lyun.estate.biz.employee.repo.EmployeeRepo;
 import com.lyun.estate.biz.position.entity.Position;
 import com.lyun.estate.biz.position.repo.PositionRepo;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,11 @@ import java.util.Objects;
 public class PositionService {
 
     private final PositionRepo repo;
+    private final EmployeeRepo employeeRepo;
 
-    public PositionService(PositionRepo repo) {
+    public PositionService(PositionRepo repo, EmployeeRepo employeeRepo) {
         this.repo = repo;
+        this.employeeRepo = employeeRepo;
     }
 
     public Position create(Position position) {
@@ -22,7 +25,8 @@ public class PositionService {
     }
 
     public Boolean deleteById(Long id) {
-        return repo.deleteById(Objects.requireNonNull(id)) == 1;
+        Objects.requireNonNull(id);
+        return employeeRepo.countByPositionId(id) == 0 && repo.deleteById(id) == 1;
     }
 
     public Position update(Position position) {

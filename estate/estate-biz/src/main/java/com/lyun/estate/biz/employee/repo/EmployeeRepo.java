@@ -42,4 +42,7 @@ public interface EmployeeRepo {
 
     @Select("select * from t_employee where mobile = #{mobile} and not status = 'QUIT'")
     Employee selectByMobile(String mobile);
+
+    @Select("select count(*) from t_employee where position_id=#{id}")
+    int countByPositionId(Long id);
 }
