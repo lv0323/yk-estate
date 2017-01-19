@@ -1,6 +1,6 @@
-package com.lyun.estate.biz.company;
+package com.lyun.estate.biz.company.repo.provider;
 
-
+import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.core.repo.SQL;
 
 public class CompanyProvider {

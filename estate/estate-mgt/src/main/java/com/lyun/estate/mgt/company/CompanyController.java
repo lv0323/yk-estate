@@ -1,13 +1,10 @@
 package com.lyun.estate.mgt.company;
 
-import com.lyun.estate.biz.company.CompanyService;
-import com.lyun.estate.biz.department.entity.Department;
-import com.lyun.estate.biz.department.service.DepartmentService;
-import com.lyun.estate.biz.employee.def.Status;
-import com.lyun.estate.biz.employee.service.EmployeeService;
-import com.lyun.estate.mgt.company.entity.CreateCompanyEntity;
+import com.lyun.estate.biz.company.entity.Company;
+import com.lyun.estate.biz.company.entity.CreateCompanyEntity;
+import com.lyun.estate.biz.company.service.CompanyService;
+import com.lyun.estate.biz.company.service.CompanyServiceFacade;
 import com.lyun.estate.mgt.supports.RestResponse;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,36 +12,30 @@ import org.springframework.web.bind.annotation.*;
 public class CompanyController {
 
     private final CompanyService companyService;
-    private final EmployeeService employeeService;
-    private final DepartmentService departmentService;
+    private final CompanyServiceFacade companyServiceFacade;
 
-    public CompanyController(CompanyService companyService, EmployeeService employeeService, DepartmentService departmentService) {
+    public CompanyController(CompanyService companyService, CompanyServiceFacade companyServiceFacade) {
         this.companyService = companyService;
-        this.employeeService = employeeService;
-        this.departmentService = departmentService;
+        this.companyServiceFacade = companyServiceFacade;
     }
 
-    @Transactional
     @PostMapping("create")
     public Object create(CreateCompanyEntity entity) {
-        companyService.create(entity.getCompany());
-
-        Department department = new Department()
-                .setCompanyId(entity.getCompany().getId())
-                .setName(entity.getCompany().getName())
-                .setShortName(entity.getCompany().getShortName())
-                .setAddress(entity.getCompany().getAddress());
-        departmentService.create(department);
-
-        employeeService.createBoss(entity.getBoss()
-                .setCompanyId(entity.getCompany().getId())
-                .setDepartmentId(department.getId())
-                .setStatus(Status.WORKING));
-        return entity.getCompany();
+        return companyServiceFacade.createCompany(entity);
     }
 
     @GetMapping("lock")
     public Object lock(@RequestParam Long id, @RequestParam Boolean locked) {
         return new RestResponse().add("ret", companyService.lock(id, locked)).get();
+    }
+
+    @PostMapping("edit")
+    public Object edit(Company company) {
+        return companyService.update(company);
+    }
+
+    @GetMapping("query-all")
+    public Object queryAll() {
+        return companyService.findAll();
     }
 }

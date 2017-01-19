@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.company;
+package com.lyun.estate.biz.company.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -21,6 +21,7 @@ public class Company {
     private String address;
     private String introduction;
     @Null
+    @JsonIgnore
     private String secretKey;
     @Future
     private Date startDate;

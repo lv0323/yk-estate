@@ -1,6 +1,5 @@
-package com.lyun.estate.mgt.company.entity;
+package com.lyun.estate.biz.company.entity;
 
-import com.lyun.estate.biz.company.Company;
 import com.lyun.estate.biz.employee.entity.Employee;
 
 public class CreateCompanyEntity {
