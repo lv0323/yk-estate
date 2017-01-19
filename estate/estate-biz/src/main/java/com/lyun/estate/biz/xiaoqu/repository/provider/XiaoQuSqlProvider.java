@@ -74,4 +74,22 @@ public class XiaoQuSqlProvider {
             WHERE("xq.id = #{id}");
         }}.toString();
     }
+
+    public String findSellCommunityListByMap() {
+        return new SQL() {{
+            SELECT("community.id,community.name,xiaoQu.avg_price,community.longitude,community.latitude,'XIAO_QU' as domain_type,community.sell_house_count as building_counts");
+            FROM("t_community community");
+            LEFT_OUTER_JOIN("t_xiao_qu xiaoQu on xiaoQu.community_id = community.id");
+            WHERE("community.longitude >= #{minLongitude} and community.longitude <= #{maxLongitude} and community.latitude >= #{minLatitude} and community.latitude <= #{maxLatitude}");
+        }}.toString();
+    }
+
+    public String findRentCommunityListByMap() {
+        return new SQL() {{
+            SELECT("community.id,community.name,xiaoQu.avg_price,community.longitude,community.latitude,'XIAO_QU' as domain_type,community.rent_house_count as building_counts");
+            FROM("t_community community");
+            LEFT_OUTER_JOIN("t_xiao_qu xiaoQu on xiaoQu.community_id = community.id");
+            WHERE("community.longitude >= #{minLongitude} and community.longitude <= #{maxLongitude} and community.latitude >= #{minLatitude} and community.latitude <= #{maxLatitude}");
+        }}.toString();
+    }
 }

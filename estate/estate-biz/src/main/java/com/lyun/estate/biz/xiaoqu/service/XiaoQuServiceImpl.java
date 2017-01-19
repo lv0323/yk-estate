@@ -6,23 +6,21 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.housedict.def.StructureType;
 import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
 import com.lyun.estate.biz.housedict.entity.SubDistrict;
 import com.lyun.estate.biz.housedict.service.HouseService;
-import com.lyun.estate.biz.housedict.def.StructureType;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.biz.spec.file.service.FileService;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
-import com.lyun.estate.biz.spec.xiaoqu.entity.KeywordResp;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuFilter;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuSummary;
+import com.lyun.estate.biz.spec.xiaoqu.entity.*;
 import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuDetailBean;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
@@ -34,6 +32,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -56,6 +55,7 @@ public class XiaoQuServiceImpl implements XiaoQuService {
 
     @Autowired
     private HouseService houseService;
+
 
     /**
      * @param filter
@@ -237,5 +237,37 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         return new PageList<>(Lists.newArrayList(),
                 new Paginator(pageBounds.getPage(), pageBounds.getLimit(), 0));
     }
+
+    @Override
+    public List<EstateMapResource> findAllDistrictListByMap(int cityId, BizType bizType) {
+        if (bizType == BizType.SELL) {
+            return houseService.findAllSellDistrictListByMap(cityId);
+        } else if (bizType == BizType.RENT) {
+            return houseService.findAllRentDistrictListByMap(cityId);
+        }
+        return null;
+    }
+
+    @Override
+    public List<EstateMapResource> findAllSubDistrictListByMap(int cityId, BizType bizType) {
+        if (bizType == BizType.SELL) {
+            return houseService.findAllSellSubDistrictListByMap(cityId);
+        } else if (bizType == BizType.RENT) {
+            return houseService.findAllRentSubDistrictListByMap(cityId);
+        }
+        return null;
+    }
+
+    @Override
+    public List<EstateMapResource> findCommunityListByMap(BigDecimal minLongitude, BigDecimal maxLongitude, BigDecimal minLatitude, BigDecimal maxLatitude, BizType bizType) {
+        //TODO 缓存处理
+        if (bizType == BizType.SELL) {
+            return xiaoQuRepository.findSellCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude);
+        } else if (bizType == BizType.RENT) {
+            return xiaoQuRepository.findRentCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude);
+        }
+        return null;
+    }
+
 
 }
