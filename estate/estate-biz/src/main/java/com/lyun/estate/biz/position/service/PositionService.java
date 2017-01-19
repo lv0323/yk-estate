@@ -3,6 +3,8 @@ package com.lyun.estate.biz.position.service;
 import com.lyun.estate.biz.employee.repo.EmployeeRepo;
 import com.lyun.estate.biz.position.entity.Position;
 import com.lyun.estate.biz.position.repo.PositionRepo;
+import com.lyun.estate.core.supports.exceptions.EstateException;
+import com.lyun.estate.core.supports.exceptions.ExCode;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +28,9 @@ public class PositionService {
 
     public Boolean deleteById(Long id) {
         Objects.requireNonNull(id);
-        return employeeRepo.countByPositionId(id) == 0 && repo.deleteById(id) == 1;
+        if (employeeRepo.countByPositionId(id) > 0)
+            throw new EstateException(ExCode.HAS_EMPLOYEE);
+        return repo.deleteById(id) == 1;
     }
 
     public Position update(Position position) {
