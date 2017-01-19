@@ -26,9 +26,7 @@ public class AppConfigService {
 
     public RegionConfig findDistricts(Long cityId) {
         List<Region> regions = repository.findDistricts(cityId);
-        regions.forEach(region -> {
-            region.setSubs(repository.findSubDistricts(region.getId()));
-        });
+        regions.forEach(region -> region.setSubs(repository.findSubDistricts(region.getId())));
         Date lastUpdatedTime = repository.findDistrictsRelLastUpdatedTime(cityId);
 
         return new RegionConfig().setRegions(regions).setLastUpdatedTime(lastUpdatedTime);

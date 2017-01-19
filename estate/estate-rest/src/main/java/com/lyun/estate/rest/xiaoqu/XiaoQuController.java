@@ -2,7 +2,7 @@ package com.lyun.estate.rest.xiaoqu;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.lyun.estate.biz.houselicence.def.StructureType;
+import com.lyun.estate.biz.housedict.def.StructureType;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
 import com.lyun.estate.biz.spec.xiaoqu.entity.KeywordResp;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;

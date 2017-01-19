@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.houselicence.def;
+package com.lyun.estate.biz.housedict.def;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
@@ -28,7 +28,7 @@ public enum StructureType {
 
     public static List<Integer> possibleIntValues(StructureType type) {
         List<Integer> result = Lists.newArrayList();
-        for (int i = 0; i < 32; i++) {
+        for (int i = 1; i < 17; i++) {
             if (((i >> (type.bits - 1)) & 0x0001) == 1) {
                 result.add(i);
             }
