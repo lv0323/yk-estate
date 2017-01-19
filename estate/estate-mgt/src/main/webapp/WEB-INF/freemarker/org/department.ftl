@@ -1,4 +1,4 @@
-<link href="${contextPath}/css/org/department.css" rel="stylesheet">
+<link href="${contextPath}/css/org/orgnization.css" rel="stylesheet">
 
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
@@ -177,7 +177,7 @@
                             </div>
                             <div class="box-body">
                                 <!-- table -->
-                                <table id="departList" class="table table-bordered table-hover">
+                                <table id="departList" class="list table table-bordered table-hover">
                                     <thead><tr>
                                         <th><span>部门名称</span></th>
                                         <th><span>部门电话</span></th>

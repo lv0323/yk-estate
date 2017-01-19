@@ -50,8 +50,8 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="/mgt/org/department.ftl">部门列表</a></li>
-                    <li><a href="/mgt/org/position.ftl">员工管理</a></li>
-                    <li><a href="#">岗位管理</a></li>
+                    <li><a href="/mgt/org/employee.ftl">员工管理</a></li>
+                    <li><a href="/mgt/org/position.ftl">岗位管理</a></li>
                 </ul>
             </li>
         </ul>

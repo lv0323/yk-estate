@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 @Controller
 @RequestMapping("/org")
-public class OrgnizationController {
+public class DepartmentPage {
 
     @GetMapping("/department")
     public ModelAndView index() {
