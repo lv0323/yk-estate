@@ -3,6 +3,7 @@ package com.lyun.estate.biz.company.service;
 import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.repo.CompanyRepository;
 import com.lyun.estate.core.utils.Validations;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -34,7 +35,7 @@ public class CompanyService {
         return repository.selectOne(company.getId());
     }
 
-    public List<Company> findAll() {
-        return repository.selectAll();
+    public List<Company> find(RowBounds rowBounds) {
+        return repository.select(rowBounds);
     }
 }

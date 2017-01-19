@@ -3,6 +3,7 @@ package com.lyun.estate.biz.company.repo;
 import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.repo.provider.CompanyProvider;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -23,5 +24,5 @@ public interface CompanyRepository {
     Company selectOne(Long id);
 
     @Select("select * from t_company")
-    List<Company> selectAll();
+    List<Company> select(RowBounds rowBounds);
 }
