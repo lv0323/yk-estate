@@ -11,7 +11,6 @@ import com.lyun.estate.biz.spec.xiaoqu.entity.EstateMapResource;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.jvm.hotspot.utilities.Assert;
 
 import java.util.List;
 import java.util.Optional;
@@ -82,13 +81,19 @@ public class HouseService {
         return Optional.ofNullable(houseRepository.findPrimaryDistrict(subDistrictId)).orElse(new District());
     }
 
-    public List<EstateMapResource> findAllDistrictListByMap(int cityId) {
-        //TODO 获取城市所有地区列表
-        return null;
+    public List<EstateMapResource> findAllSellDistrictListByMap(int cityId) {
+        return houseRepository.findAllSellDistrictListByMap(cityId);
     }
 
-    public List<EstateMapResource> findAllSubDistrictListByMap(int cityId) {
-        //TODO 获取城市所有板块列表
-        return null;
+    public List<EstateMapResource> findAllRentDistrictListByMap(int cityId) {
+        return houseRepository.findAllRentDistrictListByMap(cityId);
+    }
+
+    public List<EstateMapResource> findAllSellSubDistrictListByMap(int cityId) {
+        return houseRepository.findAllSellSubDistrictListByMap(cityId);
+    }
+
+    public List<EstateMapResource> findAllRentSubDistrictListByMap(int cityId) {
+        return houseRepository.findAllRentSubDistrictListByMap(cityId);
     }
 }

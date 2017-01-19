@@ -6,14 +6,15 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.housedict.def.StructureType;
 import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
 import com.lyun.estate.biz.housedict.entity.SubDistrict;
 import com.lyun.estate.biz.housedict.service.HouseService;
-import com.lyun.estate.biz.housedict.def.StructureType;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;
@@ -238,21 +239,35 @@ public class XiaoQuServiceImpl implements XiaoQuService {
     }
 
     @Override
-    public List<EstateMapResource> findAllDistrictListByMap(int cityId) {
-        //TODO 获取城市所有地区列表
+    public List<EstateMapResource> findAllDistrictListByMap(int cityId, BizType bizType) {
+        if (bizType == BizType.SELL) {
+            return houseService.findAllSellDistrictListByMap(cityId);
+        } else if (bizType == BizType.RENT) {
+            return houseService.findAllRentDistrictListByMap(cityId);
+        }
         return null;
     }
 
     @Override
-    public List<EstateMapResource> findAllSubDistrictListByMap(int cityId) {
-        //TODO 获取城市所有板块列表
+    public List<EstateMapResource> findAllSubDistrictListByMap(int cityId, BizType bizType) {
+        if (bizType == BizType.SELL) {
+            return houseService.findAllSellSubDistrictListByMap(cityId);
+        } else if (bizType == BizType.RENT) {
+            return houseService.findAllRentSubDistrictListByMap(cityId);
+        }
         return null;
     }
 
     @Override
-    public List<EstateMapResource> findCommunityListByMap(BigDecimal minLongitude, BigDecimal maxLongitude, BigDecimal minLatitude, BigDecimal maxLatitude) {
+    public List<EstateMapResource> findCommunityListByMap(BigDecimal minLongitude, BigDecimal maxLongitude, BigDecimal minLatitude, BigDecimal maxLatitude, BizType bizType) {
         //TODO 缓存处理
-        return xiaoQuRepository.findCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude);
+        if (bizType == BizType.SELL) {
+            return xiaoQuRepository.findSellCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude);
+        } else if (bizType == BizType.RENT) {
+            return xiaoQuRepository.findRentCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude);
+        }
+        return null;
     }
+
 
 }

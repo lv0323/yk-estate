@@ -2,6 +2,7 @@ package com.lyun.estate.biz.spec.xiaoqu.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
 import com.lyun.estate.biz.spec.xiaoqu.entity.*;
 
@@ -26,14 +27,14 @@ public interface XiaoQuService {
      * 查找城市所有区域信息
      * @return
      */
-    List<EstateMapResource> findAllDistrictListByMap(int cityId);
+    List<EstateMapResource> findAllDistrictListByMap(int cityId, BizType bizType);
 
     /**
      * 查找板块所有信息
      * @param cityId
      * @return
      */
-    List<EstateMapResource> findAllSubDistrictListByMap(int cityId);
+    List<EstateMapResource> findAllSubDistrictListByMap(int cityId, BizType bizType);
 
     /**
      * 查找坐标内所有小区信息
@@ -43,5 +44,5 @@ public interface XiaoQuService {
      * @param maxLatitude
      * @return
      */
-    List<EstateMapResource> findCommunityListByMap(BigDecimal minLongitude, BigDecimal maxLongitude, BigDecimal minLatitude, BigDecimal maxLatitude);
+    List<EstateMapResource> findCommunityListByMap(BigDecimal minLongitude, BigDecimal maxLongitude, BigDecimal minLatitude, BigDecimal maxLatitude, BizType bizType);
 }

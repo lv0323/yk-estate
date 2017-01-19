@@ -28,17 +28,25 @@ public interface HouseRepository {
             "WHERE dr.is_primary = 'Y' AND dr.sub_district_id = #{id}")
     District findPrimaryDistrict(@Param("id") Long subDistrictId);
 
-    @Select("select district.id,district.name,district.sell_avg_price,district.longitude,district.latitude,'DISTRICT' as domain_type,district.sell_avg_price as building_counts" +
-            " from t_district district where ")
+    @Select("select district.id,district.name,district.sell_avg_price,district.longitude,district.latitude,'DISTRICT' as domain_type,district.sell_house_count as building_counts" +
+            " from t_district district where district.city_id = #{cityId}")
     List<EstateMapResource> findAllSellDistrictListByMap(@Param("cityId") int cityId);
 
     @Select("select district.id,district.name,district.sell_avg_price,district.longitude,district.latitude,'DISTRICT' as domain_type,district.rent_house_count as building_counts" +
-            " from t_district district where ")
+            " from t_district district where district.city_id = #{cityId}")
     List<EstateMapResource> findAllRentDistrictListByMap(@Param("cityId") int cityId);
 
-    @Select("select subDistrict.id,subDistrict.name,subDistrict.sell_avg_price,subDistrict.longitude,subDistrict.latitude,'SUB_DISTRICT' as domain_type,subDistrict.sell_avg_price as building_counts\n" +
-            " from t_sub_district subDistrict")
+    @Select("select subDistrict.id,subDistrict.name,subDistrict.sell_avg_price,subDistrict.longitude,subDistrict.latitude,'SUB_DISTRICT' as domain_type,subDistrict.sell_house_count as building_counts\n" +
+            " from t_sub_district" +
+            " join t_district_rel rel on rel.sub_district_id = subDistrict.id and rel.is_primary='Y'\n" +
+            " join t_district district on district.id = rel.district_id\n" +
+            " where district.city_id = #{cityId}")
     List<EstateMapResource> findAllSellSubDistrictListByMap(@Param("cityId") int cityId);
 
+    @Select("select subDistrict.id,subDistrict.name,subDistrict.sell_avg_price,subDistrict.longitude,subDistrict.latitude,'SUB_DISTRICT' as domain_type,subDistrict.rent_house_count as building_counts\n" +
+            " from t_sub_district" +
+            " join t_district_rel rel on rel.sub_district_id = subDistrict.id and rel.is_primary='Y'\n" +
+            " join t_district district on district.id = rel.district_id\n" +
+            " where district.city_id = #{cityId}")
     List<EstateMapResource> findAllRentSubDistrictListByMap(@Param("cityId") int cityId);
 }
