@@ -1,6 +1,6 @@
 package com.lyun.estate.rest.map;
 
-import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.spec.fang.def.BizType;
 import com.lyun.estate.biz.spec.xiaoqu.entity.EstateMapResource;
 import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
 import org.springframework.beans.factory.annotation.Autowired;

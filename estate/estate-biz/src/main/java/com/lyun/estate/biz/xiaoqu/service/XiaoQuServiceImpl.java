@@ -6,7 +6,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.spec.fang.def.BizType;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.entity.FileDescription;
