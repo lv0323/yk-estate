@@ -6,9 +6,10 @@ import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class DepartmentService {
@@ -30,8 +31,6 @@ public class DepartmentService {
 
     public Department update(Department department) {
         Objects.requireNonNull(department);
-        if (department.getParentId() == null)
-            throw new EstateException(ExCode.NULL_PARENT);
         if (refCheck(department))
             throw new EstateException(ExCode.INVALID_PARENT);
         repo.update(Objects.requireNonNull(department));
@@ -40,11 +39,15 @@ public class DepartmentService {
 
     private boolean refCheck(Department department) {
         List<Department> departmentList = selectByCompanyId(department.getCompanyId());
-        List<Long> childList = new ArrayList<>();
+        Set<Long> childList = new HashSet<>();
         childList.add(department.getId());
-        for (Department depart : departmentList) {
-            if (childList.contains(depart.getParentId()))
-                childList.add(depart.getId());
+        int lastSize = 0;
+        while (lastSize != childList.size()) {
+            lastSize = childList.size();
+            for (Department depart : departmentList) {
+                if (childList.contains(depart.getParentId()))
+                    childList.add(depart.getId());
+            }
         }
         return childList.contains(department.getParentId());
     }

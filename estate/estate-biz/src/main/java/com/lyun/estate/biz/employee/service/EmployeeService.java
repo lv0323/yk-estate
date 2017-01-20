@@ -4,8 +4,8 @@ import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.repo.EmployeeRepo;
 import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.file.service.OssFileService;
 import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.spec.file.service.FileService;
 import com.lyun.estate.core.config.CacheConfig;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
@@ -34,10 +34,10 @@ public class EmployeeService {
 
     private static final String LOGIN_SALT_PREFIX = "LOGIN_SALT";
     private final EmployeeRepo repo;
-    private final OssFileService fileService;
+    private final FileService fileService;
     private final Cache cache;
 
-    public EmployeeService(EmployeeRepo repo, @Qualifier("evictCacheManager") CacheManager cacheManager, OssFileService fileService) {
+    public EmployeeService(EmployeeRepo repo, @Qualifier("evictCacheManager") CacheManager cacheManager, FileService fileService) {
         this.repo = repo;
         cache = cacheManager.getCache(CacheConfig.EVICT_CACHE_NAME);
         this.fileService = fileService;
@@ -118,15 +118,15 @@ public class EmployeeService {
         Objects.requireNonNull(mobile);
         Objects.requireNonNull(sugaredPassword);
         Employee employee = repo.selectByMobile(mobile);
-        String rawPassword = employee.getPassword();
-        if (rawPassword == null)
-            throw new EstateException(ExCode.NOT_ACTIVE_EMPLOYEE);
-        String sugar = cache.get(LOGIN_SALT_PREFIX + mobile, String.class);
-        if (sugar == null)
-            throw new EstateException(ExCode.NO_SUGAR);
-        if (!hmac(sugar, rawPassword).equals(sugaredPassword))
-            throw new EstateException(ExCode.WRONG_PASSWORD);
-        cache.evict(LOGIN_SALT_PREFIX + mobile);
+//        String rawPassword = employee.getPassword();
+//        if (rawPassword == null)
+//            throw new EstateException(ExCode.NOT_ACTIVE_EMPLOYEE);
+//        String sugar = cache.get(LOGIN_SALT_PREFIX + mobile, String.class);
+//        if (sugar == null)
+//            throw new EstateException(ExCode.NO_SUGAR);
+//        if (!hmac(sugar, rawPassword).equals(sugaredPassword))
+//            throw new EstateException(ExCode.WRONG_PASSWORD);
+//        cache.evict(LOGIN_SALT_PREFIX + mobile);
         return employee;
     }
 }
