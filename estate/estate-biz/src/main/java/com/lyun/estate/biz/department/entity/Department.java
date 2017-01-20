@@ -1,21 +1,37 @@
 package com.lyun.estate.biz.department.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lyun.estate.biz.housedict.entity.City;
+import com.lyun.estate.biz.housedict.entity.District;
+import com.lyun.estate.biz.housedict.entity.SubDistrict;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 
 public class Department {
 
     private Long id;
     private Long parentId;
+    @NotNull
     private Long companyId;
+    @NotNull
     private String name;
     private String shortName;
     private String telephone;
     private String address;
+    @NotNull
     private Long cityId;
+    @Null
+    private City city;
+    @NotNull
     private Long districtId;
+    @Null
+    private District district;
+    @NotNull
     private Long subDistrictId;
+    @Null
+    private SubDistrict subDistrict;
     private BigDecimal longitude;
     private BigDecimal latitude;
     @JsonIgnore
@@ -147,6 +163,33 @@ public class Department {
 
     public Department setLatitude(BigDecimal latitude) {
         this.latitude = latitude;
+        return this;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public Department setCity(City city) {
+        this.city = city;
+        return this;
+    }
+
+    public District getDistrict() {
+        return district;
+    }
+
+    public Department setDistrict(District district) {
+        this.district = district;
+        return this;
+    }
+
+    public SubDistrict getSubDistrict() {
+        return subDistrict;
+    }
+
+    public Department setSubDistrict(SubDistrict subDistrict) {
+        this.subDistrict = subDistrict;
         return this;
     }
 }
