@@ -23,7 +23,7 @@ CREATE TABLE t_department
   city_id         BIGINT,
   district_id     BIGINT,
   sub_district_id BIGINT,
-  longtitude      NUMERIC(12, 9),
+  longitude       NUMERIC(12, 9),
   latitude        NUMERIC(12, 9),
   create_time     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_time     TIMESTAMP

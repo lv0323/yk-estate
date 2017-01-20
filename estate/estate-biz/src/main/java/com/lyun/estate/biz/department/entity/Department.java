@@ -2,6 +2,8 @@ package com.lyun.estate.biz.department.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.math.BigDecimal;
+
 public class Department {
 
     private Long id;
@@ -11,6 +13,11 @@ public class Department {
     private String shortName;
     private String telephone;
     private String address;
+    private Long cityId;
+    private Long districtId;
+    private Long subDistrictId;
+    private BigDecimal longitude;
+    private BigDecimal latitude;
     @JsonIgnore
     private java.sql.Timestamp createTime;
     @JsonIgnore
@@ -95,6 +102,51 @@ public class Department {
 
     public Department setUpdateTime(java.sql.Timestamp updateTime) {
         this.updateTime = updateTime;
+        return this;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public Department setCityId(Long cityId) {
+        this.cityId = cityId;
+        return this;
+    }
+
+    public Long getDistrictId() {
+        return districtId;
+    }
+
+    public Department setDistrictId(Long districtId) {
+        this.districtId = districtId;
+        return this;
+    }
+
+    public Long getSubDistrictId() {
+        return subDistrictId;
+    }
+
+    public Department setSubDistrictId(Long subDistrictId) {
+        this.subDistrictId = subDistrictId;
+        return this;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public Department setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+        return this;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public Department setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
         return this;
     }
 }

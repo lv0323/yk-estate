@@ -78,7 +78,12 @@ public class EmployeeService {
         return repo.selectById(employee.getId());
     }
 
-    public Employee avatar(Long id, InputStream avatarIS, String suffix) {
+    public String getAvatar(Long id) {
+        FileDescription fd = fileService.findFirst(id, DomainType.AVATAR, null, null);
+        return fd != null ? fd.getFileURI() : null;
+    }
+
+    public Employee createAvatar(Long id, InputStream avatarIS, String suffix) {
         repo.avatar(id, fileService.save(new FileDescription()
                 .setOwnerId(id)
                 .setOwnerType(DomainType.AVATAR)

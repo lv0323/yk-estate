@@ -42,8 +42,13 @@ public class EmployeeController {
     }
 
     @GetMapping("avatar")
+    public Object avatar(@RequestParam Long id, @SessionAttribute LoginEmployee employee) {
+        return employeeService.getAvatar(id);
+    }
+
+    @PostMapping("avatar")
     public Object avatar(@RequestParam Long id, @RequestParam MultipartFile avatar, @SessionAttribute LoginEmployee employee) throws IOException {
-        return employeeService.avatar(id, avatar.getInputStream(),
+        return employeeService.createAvatar(id, avatar.getInputStream(),
                 avatar.getOriginalFilename().substring(avatar.getOriginalFilename().lastIndexOf('.')));
     }
 
