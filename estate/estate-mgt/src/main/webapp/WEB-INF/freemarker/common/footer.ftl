@@ -2,7 +2,7 @@
 <input hidden="hidden" id="clientId" value="${clientId!}"/>
 <input hidden="hidden" id="vn" value="${bts!}"/>
 <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2016 <a href="#">Yingke Estate</a>.</strong> All rights
+    Copyright &copy; 2014-2016 <a href="#">Yingke Estate</a>.All rights
     reserved.
 </footer>
 <script type="text/javascript">

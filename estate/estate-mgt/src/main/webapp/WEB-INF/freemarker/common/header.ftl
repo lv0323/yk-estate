@@ -5,6 +5,9 @@
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <title>盈科地产</title>
      <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+     <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+     <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+     <META HTTP-EQUIV="Expires" CONTENT="0">
      <link rel="stylesheet" href="${contextPath}/css/common/bootstrap.min.css">
      <link rel="stylesheet" href="${contextPath}/css/common/animate.css">
      <link rel="stylesheet" href="${contextPath}/css/sidebar/sidebar.css">
@@ -19,7 +22,20 @@
    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
      <![endif]-->
+     <script src="${contextPath!}/js/libs/angular.min.js"></script>
  </head>
+ <style>
+     .main-footer{
+         margin: 0 auto;
+         width: 100%;
+         text-align: center;
+         position: fixed;
+         bottom: 0;
+         background: transparent;
+         border: none;
+         color: #fff;
+     }
+ </style>
  <body class="hold-transition skin-blue sidebar-mini">
 
 

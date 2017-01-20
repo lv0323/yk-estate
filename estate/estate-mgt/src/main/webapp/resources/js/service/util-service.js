@@ -1,4 +1,4 @@
-define(contextPath + '/js/service/util-service.js', ['main-app', 'cryptojs.sha256',contextPath + '/js/service/i18n-service.js'], function (mainApp, CryptoJS,i18nService) {
+define(contextPath + '/js/service/util-service.js', ['main-app', 'cryptojs.md5' ,contextPath + '/js/service/i18n-service.js'], function (mainApp, CryptoJS ,i18nService) {
 
     var UtilService = {};
 
@@ -6,24 +6,13 @@ define(contextPath + '/js/service/util-service.js', ['main-app', 'cryptojs.sha25
         return randomStr(length);
     };
 
-    UtilService.hash = function (str) {
-        return b64url(CryptoJS.SHA256(str).toString(CryptoJS.enc.Latin1), '=');
-    };
-
-    UtilService.hashNoPadding = function (str) {
-        return b64url(CryptoJS.SHA256(str).toString(CryptoJS.enc.Latin1), '=').replace(/=/g, '');
-    };
-
     UtilService.generateSignature = function () {
         var message = '';
         var args = Array.prototype.slice.call(arguments);
         args.forEach(function (element, index, array) {
             message = message + element;
-            if (index < array.length - 1) {
-                message += ' ';
-            }
         });
-        return b64url(CryptoJS.SHA256(message).toString(CryptoJS.enc.Latin1), '=');
+        return CryptoJS.HmacMD5(arguments[0],arguments[1]).toString(CryptoJS.enc.Hex);
     };
 
     UtilService.goTo = function (url) {
