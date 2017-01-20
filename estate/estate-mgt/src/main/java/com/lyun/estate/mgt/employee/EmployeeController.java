@@ -1,10 +1,11 @@
 package com.lyun.estate.mgt.employee;
 
+import com.lyun.estate.biz.auth.sms.CheckSmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCode;
+import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.message.service.SmsService;
-import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,9 +60,8 @@ public class EmployeeController {
     }
 
     @PostMapping("active")
-    public Object active(@RequestHeader SmsCode smsCode, @RequestParam String password, @RequestParam String secretKey) {
-        if (!smsService.isSmsCodeCorrect(smsCode))
-            throw new ValidateException("SmsCode", "SMS Code错误");
+    @CheckSmsCode
+    public Object active(@RequestHeader(SmsCodeArgumentResolver.SMS_CODE_HEADER) SmsCode smsCode, @RequestParam String password, @RequestParam String secretKey) {
         return new RestResponse().add("ret", employeeService.active(smsCode.getMobile(), password, secretKey)).get();
     }
 
