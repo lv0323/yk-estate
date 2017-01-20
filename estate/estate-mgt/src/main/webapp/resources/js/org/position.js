@@ -5,7 +5,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
     function (mainApp,RequestService) {
 
         var BaseUrl = "/api/position/";
-        var header = {'x-auth-token': 'd75b1d56-e19a-4e03-bff0-7c7c54dfc093'};
+        var header = {'x-auth-token': '889a9b62-1908-4146-894b-1c30167e35e4'};
         var positionAllDataRaw = {};
 
         RequestService.get(BaseUrl+"query",null,header)
@@ -20,14 +20,10 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                             '<td>'+positionRaw["note"]+'</td>' +
                             '<td class="text-right"><a class="btn" id="editPositionBtn" data-index="'+index+'" data-id="'+positionRaw["id"]+'" data-toggle="modal" data-target="#editPositionDialog">编辑</a>';
 
-                        //if position has binded employee, disable delete button
-                        // if(positionRaw.deletable){
-                            appendHtml+='<span class="opt-gap"></span>'+
-                                '<a class="btn" id="delPositionBtn" data-id="'+positionRaw["id"]+'" data-toggle="modal" data-target="#deletePositionDialog">删除</a></td>'+
-                                '</tr>';
-                        // }else{
-                        //     appendHtml+='</tr>';
-                        // }
+                        appendHtml+='<span class="opt-gap"></span>'+
+                            '<a class="btn" id="delPositionBtn" data-id="'+positionRaw["id"]+'" data-toggle="modal" data-target="#deletePositionDialog">删除</a></td>'+
+                            '</tr>';
+
                         $('#positionList>tbody').append(appendHtml);
                     });
 
@@ -75,9 +71,14 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
         $('#deletePositionDialog').on('click','#confirmDelPositionBtn',function(){
             var positionId_request = parseInt($('#deletePositionDialog #positionId').val(),10);
             RequestService.get(BaseUrl+"delete",{id:positionId_request},header)
-                .done(function(data){
+                .done(function(){
                     location.reload(true);
-                    console.log(data);
+                })
+                .fail(function (data) {
+                    var res = JSON.parse(data.responseText);
+                    if(res["ex_code"] === "HAS_EMPLOYEE"){
+                        alert(res["message"]);
+                    }
                 });
         });
 
@@ -95,13 +96,13 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
         //action for updated Position
         $('#editPositionDialog').on('click','#confirmEditPositionBtn',function(){
             var id = $('#editPositionDialog #positionId').val();
-            var toAddPosition = {
+            var toEditPosition = {
                     id: parseInt(id,10),
                     name: $('#editPositionDialog #positionName').val(),
                     note: $('#editPositionDialog #positionNote').val()
                 };
 
-            RequestService.post(BaseUrl+"edit",toAddPosition,header)
+            RequestService.post(BaseUrl+"edit",toEditPosition,header)
                 .done(function(){
                     location.reload(true);
                 });

@@ -5,7 +5,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
     function (mainApp,RequestService) {
 
         var BaseUrl = "/api/department/";
-        var header = {'x-auth-token':'d75b1d56-e19a-4e03-bff0-7c7c54dfc093'};
+        var header = {'x-auth-token':'889a9b62-1908-4146-894b-1c30167e35e4'};
         var departAllDataRaw = {};
 
         //get data from server and display data
@@ -14,7 +14,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                 if(data === null){
                     $('#departList>tbody').append('<tr><td colspan="4">没有数据</td></tr>');
                 }else {
-                    departAllDataRaw = data;
+                    departAllDataRaw.departmentRaw = data;
                     $.each(data,function(index,departRaw){
                         var appendHtml = '<tr>' +
                             '<td><a class="btn" id="lookDepartBtn" data-id="'+departRaw.department["id"]+'">'+departRaw.department["name"]+'</a></td>' +
@@ -33,9 +33,8 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                         $('#departList>tbody').append(appendHtml);
 
                         //initialize departments selection in add/edit dialog
-                        $('#addDepartDialog #departPid').append('<option value="'+departRaw.department["id"]+'">'+departRaw.department["name"]+'</option>');
-                        $('#editDepartDialog #departPid').append('<option value="'+departRaw.department["id"]+'">'+departRaw.department["name"]+'</option>');
-
+                        $('#addDepartDialog #departPid').append('<option value="'+departRaw.department["id"]+'">'+'&nbsp;'.repeat(departRaw.level*4)+departRaw.department["name"]+'</option>');
+                        $('#editDepartDialog #departPid').append('<option value="'+departRaw.department["id"]+'">'+'&nbsp;'.repeat(departRaw.level*4)+departRaw.department["name"]+'</option>');
                     });
 
                     $('#departList').DataTable({
@@ -60,17 +59,24 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
 
         //action for added department
         $('#addDepartDialog').on('click','#confirmAddDepartBtn',function(){
-            var parent_id = $('#addDepartDialog #departPid option:selected').val();
             var toAddDepart = {
-                address: $('#addDepartDialog #departAddress').val(),
-                name: $('#addDepartDialog #departName').val(),
-                parentId: parseInt(parent_id,10),
-                shortName: $('#addDepartDialog #departSpell').val(),
-                telephone: $('#addDepartDialog #departTel').val()
-            };
+                    address: $('#addDepartDialog #departAddress').val(),
+                    name: $('#addDepartDialog #departName').val(),
+                    parentId: $('#addDepartDialog #departPid option:selected').val(),
+                    shortName: $('#addDepartDialog #departSpell').val(),
+                    telephone: $('#addDepartDialog #departTel').val()
+                };
+
+
             RequestService.post(BaseUrl+"add",toAddDepart,header)
                 .done(function(){
                     location.reload(true);
+                })
+                .fail(function (data) {
+                    /*var res = JSON.parse(data.responseText);
+                    if(res["ex_code"] === "NULL_PARENT"){
+                        alert(res["message"]);
+                    }*/
                 });
         });
 
@@ -93,15 +99,19 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
         //initialize title and default value in edit department dialog
         $('#departList').on('click','#editDepartBtn',function(e){
             var index = $(e.target).data('index');
-            var depart = departAllDataRaw[index].department;
+            var depart = departAllDataRaw.departmentRaw[index].department;
             var pId  = depart["parent_id"];
             $('#editDepartDialog #editDepartLabel').text('编辑部门');
             if(pId){
-                $('#editDepartDialog #departPid').prop('disabled',false);
+                // $('#editDepartDialog #departPid').prop('disabled',false);
+                $('#editDepartDialog #departPid').css('display','inline');
+                $('#editDepartDialog #superiorDepartLabel').css('display','inline');
                 $('#editDepartDialog #departPid').find('option[value='+pId+']').attr('selected','selected');
                 $('#editDepartDialog #departPid').find('option[value!='+pId+']').removeAttr('selected');
             }else{
-                $('#editDepartDialog #departPid').prop('disabled','disabled');
+                // $('#editDepartDialog #departPid').prop('disabled','disabled');
+                $('#editDepartDialog #departPid').css('display','none');
+                $('#editDepartDialog #superiorDepartLabel').css('display','none');
                 $('#editDepartDialog #departPid').find('option[value=""]').attr('selected','selected');
                 $('#editDepartDialog #departPid').find('option[value!='+pId+']').removeAttr('selected');
             }
@@ -116,9 +126,9 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
         $('#editDepartDialog').on('click','#confirmEditDepartBtn',function(){
             var id = $('#editDepartDialog #departId').val();
             var parent_id = $('#editDepartDialog #departPid option:selected').val();
-            var toAddDepart = {};
+            var toEditDepart = {};
             if(parent_id){
-                toAddDepart = {
+                toEditDepart = {
                     id: parseInt(id,10),
                     address: $('#editDepartDialog #departAddress').val(),
                     name: $('#editDepartDialog #departName').val(),
@@ -127,8 +137,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                     telephone: $('#editDepartDialog #departTel').val()
                 };
             }else{
-                parent_id = "";
-                toAddDepart = {
+                toEditDepart = {
                     id: parseInt(id,10),
                     address: $('#editDepartDialog #departAddress').val(),
                     name: $('#editDepartDialog #departName').val(),
@@ -137,10 +146,21 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                     telephone: $('#editDepartDialog #departTel').val()
                 };
             }
-            RequestService.post(BaseUrl+"edit",toAddDepart,header)
-                .done(function(){
-                    location.reload(true);
-                });
+            if(parent_id === id){
+                alert("父部门不能为其本身"); //forbid depart to be arranged under itself
+            }else {
+                RequestService.post(BaseUrl+"edit",toEditDepart,header)
+                    .done(function(){
+                        location.reload(true);
+                    })
+                    .fail(function (data) {
+                        var res = JSON.parse(data.responseText);
+                        if(res["ex_code"] === "INVALID_PARENT"){
+                            alert(res["message"]); //in case parent depart to be arranged under its child
+                        }
+                    });
+            }
+
         });
 
 

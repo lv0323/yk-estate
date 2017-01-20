@@ -19,7 +19,7 @@
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">上级部门</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
                             <select id="departPid" class="form-control btn-group dropdown" onchange="">
-                                <option value="">--请选择--</option>
+                                <#--<option value="">请选择</option>-->
                             </select>
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                             <input type="text" id="departName" class="form-control" reg="^[\S]{1,8}$" placeholder="名称限8个字符">
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
-                            <input type="text" id="departSpell" class="form-control" placeholder="拼音简码">
+                            <input type="text" id="departSpell" class="form-control hidden" placeholder="拼音简码">
                         </div>
                     </div>
                     <div class="form-group">
@@ -40,12 +40,20 @@
                     </div>
                     <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">部门地址</label>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <input id="departDid" class="form-control btn-group dropup">
-
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <select id="departCid" class="form-control btn-group dropup">
+                                <option value="">请选择</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <select id="departDid" class="form-control btn-group dropup">
+                                <option value="">请选择</option>
+                            </select>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
-                            <input id="departSDid" class="form-control btn-group dropup">
+                            <select id="departSDid" class="form-control btn-group dropup">
+                                <option value="">请选择</option>
+                            </select>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
                             <input type="text" id="departAddress" class="form-control" placeholder="请输入详细地址">
@@ -74,7 +82,7 @@
             <div class="modal-body">
                 <form id="editDepartForm" class="form-horizontal" method="post">
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">上级部门</label>
+                        <label id="superiorDepartLabel" class="col-lg-2 col-md-2 col-sm-2 control-label">上级部门</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
                             <select id="departPid" class="form-control btn-group dropdown" onchange="">
                                 <option value="" class="hidden"></option>
@@ -88,7 +96,7 @@
                             <input type="text" id="departName" class="form-control" reg="^[\S]{1,8}$" placeholder="名称限8个字符">
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
-                            <input type="text" id="departSpell" class="form-control" placeholder="拼音简码">
+                            <input type="text" id="departSpell" class="form-control hidden" placeholder="拼音简码">
                         </div>
                     </div>
                     <div class="form-group">
@@ -99,12 +107,20 @@
                     </div>
                     <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">部门地址</label>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <input id="departDid" class="form-control btn-group dropup">
-
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <select id="departCid" class="form-control btn-group dropup">
+                                <option value="">请选择</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <select id="departDid" class="form-control btn-group dropup">
+                                <option value="">请选择</option>
+                            </select>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
-                            <input id="departSDid" class="form-control btn-group dropup">
+                            <select id="departSDid" class="form-control btn-group dropup">
+                                <option value="">请选择</option>
+                            </select>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
                             <input type="text" id="departAddress" class="form-control" placeholder="请输入详细地址">
