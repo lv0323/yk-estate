@@ -2,8 +2,7 @@ package com.lyun.estate.biz.employee.def;
 
 public enum Status {
     WORKING("在职"),
-    INTERN("实习"),
-    QUIT("离职");
+    INTERN("实习");
 
     private String status;
 

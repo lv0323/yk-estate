@@ -7,8 +7,10 @@ import com.lyun.estate.biz.message.service.SmsService;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Objects;
 
 @RestController
@@ -37,6 +39,18 @@ public class EmployeeController {
     @PostMapping("edit")
     public Object edit(Employee entity, @SessionAttribute LoginEmployee employee) {
         return employeeService.update(entity);
+    }
+
+    @GetMapping("avatar")
+    public Object avatar(@RequestParam Long id, @RequestParam MultipartFile avatar, @SessionAttribute LoginEmployee employee) throws IOException {
+        return employeeService.avatar(id, avatar.getInputStream(),
+                avatar.getOriginalFilename().substring(avatar.getOriginalFilename().lastIndexOf('.')));
+    }
+
+    @GetMapping("quit")
+    public Object quit(@RequestParam Long id, @SessionAttribute LoginEmployee employee) throws IOException {
+        employeeService.quit(id);
+        return new RestResponse().add("ret", true).get();
     }
 
     @PostMapping("active")

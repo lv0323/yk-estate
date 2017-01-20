@@ -2,6 +2,10 @@ package com.lyun.estate.biz.employee.service;
 
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.repo.EmployeeRepo;
+import com.lyun.estate.biz.file.def.FileType;
+import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.file.service.OssFileService;
+import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.core.config.CacheConfig;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
@@ -18,6 +22,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
@@ -29,11 +34,13 @@ public class EmployeeService {
 
     private static final String LOGIN_SALT_PREFIX = "LOGIN_SALT";
     private final EmployeeRepo repo;
+    private final OssFileService fileService;
     private final Cache cache;
 
-    public EmployeeService(EmployeeRepo repo, @Qualifier("evictCacheManager") CacheManager cacheManager) {
+    public EmployeeService(EmployeeRepo repo, @Qualifier("evictCacheManager") CacheManager cacheManager, OssFileService fileService) {
         this.repo = repo;
         cache = cacheManager.getCache(CacheConfig.EVICT_CACHE_NAME);
+        this.fileService = fileService;
     }
 
     private static String hmac(String salt, String password) {
@@ -69,6 +76,19 @@ public class EmployeeService {
         Objects.requireNonNull(Objects.requireNonNull(employee).getId());
         repo.update(validate(employee));
         return repo.selectById(employee.getId());
+    }
+
+    public Employee avatar(Long id, InputStream avatarIS, String suffix) {
+        repo.avatar(id, fileService.save(new FileDescription()
+                .setOwnerId(id)
+                .setOwnerType(DomainType.AVATAR)
+                .setFileType(FileType.IMAGE), avatarIS, suffix).getId());
+        return repo.selectById(id);
+    }
+
+    public Boolean quit(Long id) {
+        repo.quit(id);
+        return true;
     }
 
     public Employee selectByMobile(String mobile) {
