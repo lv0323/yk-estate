@@ -4,11 +4,11 @@ import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
 import com.lyun.estate.biz.housedict.entity.SubDistrict;
 import com.lyun.estate.biz.housedict.repository.DistrictRepository;
-import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Mapper
+@Service
 public class DistrictService {
 
     private final DistrictRepository repository;

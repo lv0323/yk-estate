@@ -16,8 +16,8 @@ public class DistrictController {
         this.service = service;
     }
 
-    @GetMapping("citys")
-    public Object citys() {
+    @GetMapping("cites")
+    public Object cites() {
         return service.findCities();
     }
 
