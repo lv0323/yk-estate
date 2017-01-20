@@ -19,8 +19,8 @@ public interface DepartmentRepo {
     int deleteById(Long id);
 
     @Update("update t_department set parent_id=#{parentId},name=#{name},short_name=#{shortName},telephone=#{telephone},address=#{address}, " +
-            "city_id=#{cityId},district_id=#{districtId},sub_district_id=#{subDistrictId},longitude=#{longitude},latitude=#{latitude}" +
-            "update_time=CURRENT_TIMESTAMP where id=#{id}")
+            "city_id=#{cityId},district_id=#{districtId},sub_district_id=#{subDistrictId},longitude=#{longitude},latitude=#{latitude}, " +
+            "update_time=CURRENT_TIMESTAMP where id=#{id} and #{parentId} <> #{id}")
     int update(Department department);
 
     @Select("select * from t_department where id=#{id}")
