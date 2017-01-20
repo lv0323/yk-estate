@@ -2,7 +2,7 @@ package com.lyun.estate.biz.spec.xiaoqu.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.spec.fang.def.BizType;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
 import com.lyun.estate.biz.spec.xiaoqu.entity.*;
 
