@@ -10,7 +10,8 @@ public enum ExCode {
     OSS_EXCEPTION("OSS错误"),
     NOT_ACTIVE_EMPLOYEE("未激活"),
     NO_SUGAR("找不到Sugar"),
-    WRONG_PASSWORD("密码错误");
+    WRONG_PASSWORD("密码错误"),
+    HAS_EMPLOYEE("该岗位下有员工，不能删除");
 
 
     private final String messageTemplate;
