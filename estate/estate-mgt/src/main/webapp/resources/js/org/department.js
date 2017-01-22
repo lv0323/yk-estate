@@ -5,7 +5,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
     function (mainApp,RequestService) {
 
         var BaseUrl = "/api/department/";
-        var header = {'x-auth-token':'889a9b62-1908-4146-894b-1c30167e35e4'};
+        var header = {};
         var departAllDataRaw = {};
 
         //get data from server and display data

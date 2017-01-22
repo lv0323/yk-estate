@@ -3,7 +3,8 @@ requirejs.config({
         jquery: contextPath+'/js/libs/jquery-2.2.0.min',
         bootstrap: contextPath+'/js/libs/bootstrap.min',
         'cryptojs.core': contextPath+'/js/libs/core-min',
-        'cryptojs.sha256': contextPath+'/js/libs/sha256-min',
+        'cryptojs.md5': contextPath+'/js/libs/md5',
+        'cryptojs.hmac': contextPath+'/js/libs/hmac',
         'parsley': contextPath+'/js/libs/parsley.min',
         'datepicker': contextPath+'/js/libs/bootstrap-datepicker.min',
         'datepicker.zh-cn': contextPath+'/js/libs/bootstrap-datepicker.zh-CN',
@@ -14,8 +15,8 @@ requirejs.config({
     },
     shim: {
         'bootstrap': ['jquery'],
-        'cryptojs.sha256': {
-            deps: ['cryptojs.core'],
+        'cryptojs.md5': {
+            deps: ['cryptojs.core','cryptojs.hmac'],
             exports: 'CryptoJS'
         },
         'parsley': ['jquery'],
