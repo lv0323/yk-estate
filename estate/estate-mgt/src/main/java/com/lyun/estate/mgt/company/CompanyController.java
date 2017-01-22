@@ -8,6 +8,8 @@ import com.lyun.estate.mgt.supports.RestResponse;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+
 @RestController
 @RequestMapping("api/company")
 public class CompanyController {
@@ -28,6 +30,11 @@ public class CompanyController {
     @GetMapping("lock")
     public Object lock(@RequestParam Long id, @RequestParam Boolean locked) {
         return new RestResponse().add("ret", companyService.lock(id, locked)).get();
+    }
+
+    @GetMapping("renew")
+    public Object renew(@RequestParam Long id, @RequestParam Date endDate) {
+        return new RestResponse().add("ret", companyService.renew(id, endDate)).get();
     }
 
     @PostMapping("edit")

@@ -29,6 +29,11 @@ public class CompanyService {
         return true;
     }
 
+    public Boolean renew(Long id, java.sql.Date endDate) {
+        repository.renew(id, endDate);
+        return true;
+    }
+
     public Company update(Company company) {
         Objects.requireNonNull(Validations.doValidate(company).getId());
         repository.update(company);
