@@ -15,7 +15,9 @@ public enum ExCode {
     NULL_PARENT("父部门不能为空"),
     INVALID_PARENT("父部门不能调整为自身子部门的下级部门，请重新选择调整的部门数据"),
     CANT_SALT("获取Salt失败"),
-    LOGIN_FAIL("登录失败");
+    LOGIN_FAIL("登录失败"),
+    COMPANY_LOCKED("公司被冻结"),
+    COMPANY_EXPIRED("公司授权已到截止日期");
 
     private final String messageTemplate;
 
