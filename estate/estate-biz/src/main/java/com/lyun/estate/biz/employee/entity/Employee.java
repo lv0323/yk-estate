@@ -28,6 +28,8 @@ public class Employee {
     @Null
     private Boolean isBoss;
     private Boolean isAgent;
+    @Null
+    private Long avatarId;
     @Pattern(regexp = "^1\\d{10}$")
     private String mobile;
     @Null
@@ -45,6 +47,8 @@ public class Employee {
     private String wechat;
     @NotNull
     private Status status;
+    @Null
+    private Boolean quit;
     private java.sql.Date entryDate;
     @JsonIgnore
     private java.sql.Timestamp createTime;
@@ -219,6 +223,24 @@ public class Employee {
 
     public Employee setPosition(Position position) {
         this.position = position;
+        return this;
+    }
+
+    public Long getAvatarId() {
+        return avatarId;
+    }
+
+    public Employee setAvatarId(Long avatarId) {
+        this.avatarId = avatarId;
+        return this;
+    }
+
+    public Boolean getQuit() {
+        return quit;
+    }
+
+    public Employee setQuit(Boolean quit) {
+        this.quit = quit;
         return this;
     }
 }

@@ -11,8 +11,10 @@ public enum ExCode {
     NOT_ACTIVE_EMPLOYEE("未激活"),
     NO_SUGAR("找不到Sugar"),
     WRONG_PASSWORD("密码错误"),
-    HAS_EMPLOYEE("该岗位下有员工，不能删除");
-
+    HAS_EMPLOYEE("该岗位下有员工，不能删除"),
+    NULL_PARENT("父部门不能为空"),
+    INVALID_PARENT("父部门不能调整为自身子部门的下级部门，请重新选择调整的部门数据"),
+    CANT_SALT("获取Salt失败");
 
     private final String messageTemplate;
 
