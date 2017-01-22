@@ -36,6 +36,7 @@ public class XiaoQuSqlProvider {
             if (selector.getExcludeIds() != null && !selector.getExcludeIds().isEmpty()) {
                 WHERE("xq.id not in (" + Joiner.on(",").skipNulls().join(selector.getExcludeIds()) + ")");
             }
+            WHERE("c.city_id = #{cityId}");
         }}.toString();
     }
 

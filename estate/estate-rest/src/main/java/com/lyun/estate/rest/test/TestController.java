@@ -9,10 +9,10 @@ import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.file.service.OssFileService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.spec.file.service.FileService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.types.Constant;
@@ -37,7 +37,7 @@ public class TestController {
     @Autowired
     private TokenProvider tokenProvider;
     @Autowired
-    private OssFileService fileService;
+    private FileService fileService;
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
@@ -108,12 +108,14 @@ public class TestController {
 
 
     @GetMapping("/keywords/contain")
-    List<KeywordBean> findContain(@RequestParam String keyword, @RequestParam(required = false) Integer limit) {
-        return keywordService.findContain(keyword, Lists.newArrayList(DomainType.values()), limit);
+    List<KeywordBean> findContain(@RequestParam Long cityId, @RequestParam String keyword,
+                                  @RequestParam(required = false) Integer limit) {
+        return keywordService.findContain(keyword, cityId, Lists.newArrayList(DomainType.values()), limit);
     }
 
     @GetMapping("/keywords/name-match")
-    List<KeywordBean> findNameMatch(@RequestParam String keyword, @RequestParam(required = false) Integer limit) {
-        return keywordService.findNameMatch(keyword, Lists.newArrayList(DomainType.values()), limit);
+    List<KeywordBean> findNameMatch(@RequestParam Long cityId, @RequestParam String keyword,
+                                    @RequestParam(required = false) Integer limit) {
+        return keywordService.findNameMatch(keyword, cityId, Lists.newArrayList(DomainType.values()), limit);
     }
 }

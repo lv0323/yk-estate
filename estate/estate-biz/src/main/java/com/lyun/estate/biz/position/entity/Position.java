@@ -9,6 +9,8 @@ public class Position {
     private String name;
     private String note;
     @JsonIgnore
+    private Boolean isDeleted;
+    @JsonIgnore
     private java.sql.Timestamp createTime;
     @JsonIgnore
     private java.sql.Timestamp updateTime;
@@ -65,6 +67,15 @@ public class Position {
 
     public Position setUpdateTime(java.sql.Timestamp updateTime) {
         this.updateTime = updateTime;
+        return this;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public Position setDeleted(Boolean deleted) {
+        isDeleted = deleted;
         return this;
     }
 }

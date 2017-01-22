@@ -10,7 +10,8 @@ public enum DomainType {
     LINE("地铁线"),
     STATION("地铁站"),
     XIAO_QU("小区"),
-    FANG("房");
+    FANG("房"),
+    AVATAR("头像");
 
     private final String label;
 

@@ -10,11 +10,11 @@ import java.util.*;
 
 @RestController
 @RequestMapping("api/department")
-public class DepartmentController {
+public class DepartmentRest {
 
     private final DepartmentService service;
 
-    public DepartmentController(DepartmentService service) {
+    public DepartmentRest(DepartmentService service) {
         this.service = service;
     }
 
@@ -52,7 +52,7 @@ public class DepartmentController {
         departmentMap.put(null, null);
         Map<Long, Map<String, Object>> nextDepartmentMap = new HashMap<>();
         int level = 0;
-        while (!departmentList.isEmpty()) {
+        while (!departmentMap.isEmpty()) {
             Iterator<Department> iterator = departmentList.iterator();
             while (iterator.hasNext()) {
                 Department depart = iterator.next();

@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.fang.def;
+package com.lyun.estate.biz.spec.fang.def;
 
 import com.google.common.collect.Lists;
 

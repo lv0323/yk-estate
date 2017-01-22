@@ -13,15 +13,20 @@ CREATE TABLE t_company
 
 CREATE TABLE t_department
 (
-  id          BIGSERIAL PRIMARY KEY,
-  parent_id   BIGINT,
-  company_id  BIGINT,
-  name        VARCHAR(64),
-  short_name  VARCHAR(16),
-  telephone   VARCHAR(16),
-  address     VARCHAR(128),
-  create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_time TIMESTAMP
+  id              BIGSERIAL PRIMARY KEY,
+  parent_id       BIGINT,
+  company_id      BIGINT,
+  name            VARCHAR(64),
+  short_name      VARCHAR(16),
+  telephone       VARCHAR(16),
+  address         VARCHAR(128),
+  city_id         BIGINT,
+  district_id     BIGINT,
+  sub_district_id BIGINT,
+  longitude       NUMERIC(12, 9),
+  latitude        NUMERIC(12, 9),
+  create_time     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  update_time     TIMESTAMP
 );
 
 CREATE TABLE t_position
@@ -30,6 +35,7 @@ CREATE TABLE t_position
   company_id  BIGINT,
   name        VARCHAR(16),
   note        VARCHAR(128),
+  is_deleted  BOOLEAN   DEFAULT FALSE,
   create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_time TIMESTAMP
 );
@@ -42,6 +48,7 @@ CREATE TABLE t_employee
   position_id   BIGINT,
   is_boss       BOOLEAN   DEFAULT FALSE,
   is_agent      BOOLEAN   DEFAULT FALSE,
+  avatar_id     BIGINT,
   mobile        CHAR(11),
   password      CHAR(32),
   salt          CHAR(32),
@@ -50,6 +57,7 @@ CREATE TABLE t_employee
   idcard_number CHAR(18),
   wechat        VARCHAR(32),
   status        VARCHAR(8),
+  quit          BOOLEAN   DEFAULT FALSE,
   entry_date    DATE      DEFAULT CURRENT_DATE,
   create_time   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_time   TIMESTAMP

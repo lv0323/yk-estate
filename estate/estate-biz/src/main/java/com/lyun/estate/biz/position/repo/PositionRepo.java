@@ -12,7 +12,7 @@ public interface PositionRepo {
     @Insert("insert into t_position (company_id,name,note) values (#{companyId},#{name},#{note})")
     int insert(Position position);
 
-    @Delete("delete from t_position where id = #{id}")
+    @Update("update t_position set is_deleted = true where id = #{id}")
     int deleteById(Long id);
 
     @Update("update t_position set name=#{name},note=#{note},update_time=CURRENT_TIMESTAMP where id=#{id}")
@@ -21,6 +21,6 @@ public interface PositionRepo {
     @Select("select * from t_position where id=#{id}")
     Position selectById(Long id);
 
-    @Select("select * from t_position where company_id=#{companyId}")
+    @Select("select * from t_position where company_id=#{companyId} and is_deleted = false")
     List<Position> selectByCompanyId(Long companyId);
 }
