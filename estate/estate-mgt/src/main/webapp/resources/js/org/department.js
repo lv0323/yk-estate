@@ -5,8 +5,32 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
     function (mainApp,RequestService) {
 
         var BaseUrl = "/api/department/";
+<<<
         var header = {};
+===
         var departAllDataRaw = {};
+
+        //get city from server
+        RequestService.get(BaseUrl+"district/cites",null,header)
+            .done(function (data) {
+                departAllDataRaw.city = data;
+                $.each(data,function (index, city) {
+                    $('#addDepartDialog #departCid').append('<option id="'+city.id+'">'+city.name+'</option>');
+                    $('#editDepartDialog #departCid').append('<option id="'+city.id+'">'+city.name+'</option>');
+                });
+            });
+
+
+
+        //get subDistrict from server
+        RequestService.get(BaseUrl+"district/sub-districts",null,header)
+            .done(function (data) {
+                departAllDataRaw.subDistrict = data;
+                $.each(data,function (index, subDistrict) {
+                    $('#addDepartDialog #departSDid').append('<option id="'+subDistrict.id+'">'+subDistrict.name+'</option>');
+                    $('#editDepartDialog #departSDid').append('<option id="'+subDistrict.id+'">'+subDistrict.name+'</option>');
+                });
+            });
 
         //get data from server and display data
         RequestService.get(BaseUrl+"query-sorted",null,header)
@@ -55,6 +79,20 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
         //initialize title in add department dialog
         $('.fadeInRight').on('click','#addDepartBtn',function(){
             $('#addDepartDialog #addDepartLabel').text('增加部门');
+        });
+
+        //initialize title in add department dialog
+        $('.addDepartDialog').on('change','#departCid',function(){
+            var city_id = $('#addDepartDialog #departCid option:selected').val();
+            //get district from server
+            RequestService.get(BaseUrl+"district/districts",city_id,header)
+                .done(function (data) {
+                    departAllDataRaw.district = data;
+                    $.each(data,function (index, district) {
+                        $('#addDepartDialog #departDid').append('<option id="'+district.id+'">'+district.name+'</option>');
+                        $('#editDepartDialog #departDid').append('<option id="'+district.id+'">'+district.name+'</option>');
+                    });
+                });
         });
 
         //action for added department
