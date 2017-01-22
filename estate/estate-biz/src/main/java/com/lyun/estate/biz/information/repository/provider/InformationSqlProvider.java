@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.information.respository.provider;
+package com.lyun.estate.biz.information.repository.provider;
 
 import com.lyun.estate.biz.information.entity.Information;
 import com.lyun.estate.biz.information.entity.InformationCounter;
@@ -36,10 +36,10 @@ public class InformationSqlProvider {
     public String updateInfoCounter(InformationCounter informationCounter) {
         return new SQL(){{
             UPDATE("t_information_counter");
-            SET_IF("owner_id", "#{ownerId}", informationCounter.getOwnerId() != null);
-            SET_IF("c_info_index", "#{CInfoIndex}", informationCounter.getCInfoIndex() != null);
-            SET_IF("c_monthly_report_index", "#{CMonthlyReportIndex}", informationCounter.getCMonthlyReportIndex() != null);
-            SET_IF("notice_index", "#{noticeIndex}", informationCounter.getNoticeIndex() != null);
+            SET_IF("owner_id=#{ownerId}",  informationCounter.getOwnerId() != null);
+            SET_IF("c_info_index=#{CInfoIndex}",  informationCounter.getCInfoIndex() != null);
+            SET_IF("c_monthly_report_index=#{CMonthlyReportIndex}", informationCounter.getCMonthlyReportIndex() != null);
+            SET_IF("notice_index=#{noticeIndex}", informationCounter.getNoticeIndex() != null);
             SET("update_time=now()");
             WHERE("id=#{id}");
         }}.toString();

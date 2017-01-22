@@ -230,12 +230,12 @@ public class XiaoQuServiceImpl implements XiaoQuService {
     @Override
     public List<EstateMapResource> findCommunityListByMap(BigDecimal minLongitude, BigDecimal maxLongitude,
                                                           BigDecimal minLatitude, BigDecimal maxLatitude,
-                                                          BizType bizType) {
+                                                          BizType bizType, Integer cityId) {
         //TODO 缓存处理
         if (bizType == BizType.SELL) {
-            return xiaoQuRepository.findSellCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude);
+            return xiaoQuRepository.findSellCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude, cityId);
         } else if (bizType == BizType.RENT) {
-            return xiaoQuRepository.findRentCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude);
+            return xiaoQuRepository.findRentCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude, cityId);
         }
         return null;
     }

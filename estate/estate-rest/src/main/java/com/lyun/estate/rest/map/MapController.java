@@ -46,15 +46,17 @@ public class MapController {
     List<EstateMapResource> sellCommunity(@RequestParam(required = true) BigDecimal minLongitude,
                                           @RequestParam(required = true) BigDecimal maxLongitude,
                                           @RequestParam(required = true) BigDecimal minLatitude,
-                                          @RequestParam(required = true) BigDecimal maxLatitude) {
-        return xiaoQuService.findCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude, BizType.SELL);
+                                          @RequestParam(required = true) BigDecimal maxLatitude,
+                                          @RequestParam Integer cityId) {
+        return xiaoQuService.findCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude, BizType.SELL, cityId);
     }
 
     @GetMapping("/rent/community")
     List<EstateMapResource> rentCommunity(@RequestParam(required = true) BigDecimal minLongitude,
                                           @RequestParam(required = true) BigDecimal maxLongitude,
                                           @RequestParam(required = true) BigDecimal minLatitude,
-                                          @RequestParam(required = true) BigDecimal maxLatitude) {
-        return xiaoQuService.findCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude, BizType.RENT);
+                                          @RequestParam(required = true) BigDecimal maxLatitude,
+                                          @RequestParam Integer cityId) {
+        return xiaoQuService.findCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude, BizType.RENT, cityId);
     }
 }

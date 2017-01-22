@@ -17,7 +17,7 @@ public class InformationResource {
     private InfoBusinessType businessType;
     private Long sender;
     private Long receiver;
-    private String url;
+    private String data;
     private Date createTime;
 
     public Long getId() {
@@ -84,12 +84,12 @@ public class InformationResource {
         this.receiver = receiver;
     }
 
-    public String getUrl() {
-        return url;
+    public String getData() {
+        return data;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setData(String data) {
+        this.data = data;
     }
 
     public Date getCreateTime() {
