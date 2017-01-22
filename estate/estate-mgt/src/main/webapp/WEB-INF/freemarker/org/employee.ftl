@@ -69,18 +69,61 @@
             </div>
         </div>
     </section>
+    <div class="col-sm-4 col-sm-offset-2 m-b">
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" data-submenu="">
+                Dropdown <span class="caret"></span>
+            </button>
 
+            <ul class="dropdown-menu">
+                <li class="dropdown-submenu">
+                    <a tabindex="0">Action</a>
 
+                    <ul class="dropdown-menu">
+                        <li><a tabindex="0">Sub action</a></li>
+                        <li class="dropdown-submenu">
+                            <a tabindex="0">Another sub action</a>
 
+                            <ul class="dropdown-menu">
+                                <li><a tabindex="0">Sub action</a></li>
+                                <li><a tabindex="0">Another sub action</a></li>
+                                <li><a tabindex="0">Something else here</a></li>
+                            </ul>
+                        </li>
+                        <li><a tabindex="0">Something else here</a></li>
+                        <li class="disabled"><a tabindex="-1">Disabled action</a></li>
+                        <li class="dropdown-submenu">
+                            <a tabindex="0">Another action</a>
+
+                            <ul class="dropdown-menu">
+                                <li><a tabindex="0">Sub action</a></li>
+                                <li><a tabindex="0">Another sub action</a></li>
+                                <li><a tabindex="0">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown-header">Dropdown header</li>
+                <li class="dropdown-submenu">
+                    <a tabindex="0">Another action</a>
+
+                    <ul class="dropdown-menu">
+                        <li><a tabindex="0">Sub action</a></li>
+                        <li><a tabindex="0">Another sub action</a></li>
+                        <li><a tabindex="0">Something else here</a></li>
+                    </ul>
+                </li>
+                <li><a tabindex="0">Something else here</a></li>
+                <li class="divider"></li>
+                <li><a tabindex="0">Separated link</a></li>
+            </ul>
+
+        </div>
+    </div>
 </div>
 
 
 <#include "/common/footer.ftl" />
 
+<script src="${contextPath!}/js/org/employee.js"></script>
 
-<script>
-    $(function () {
-
-
-    });
-</script>
