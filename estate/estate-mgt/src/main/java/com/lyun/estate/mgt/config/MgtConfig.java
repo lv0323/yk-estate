@@ -5,19 +5,18 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.config.BizConfig;
 import com.lyun.estate.core.config.CoreConfig;
+import com.lyun.estate.mgt.advice.AuthInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.session.Session;
+import org.springframework.session.web.http.CookieHttpSessionStrategy;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.session.web.http.HttpSessionStrategy;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
@@ -85,13 +84,35 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
     @Bean
     public HttpSessionStrategy sessionStrategy() {
         return new HeaderHttpSessionStrategy() {
+            HttpSessionStrategy cookieStrategy = new CookieHttpSessionStrategy();
+
+            @Override
+            public String getRequestedSessionId(HttpServletRequest request) {
+                String sessionId = super.getRequestedSessionId(request);
+                if (sessionId == null)
+                    sessionId = cookieStrategy.getRequestedSessionId(request);
+                return sessionId;
+            }
+
             @Override
             public void onNewSession(Session session, HttpServletRequest request, HttpServletResponse response) {
+                cookieStrategy.onNewSession(session, request, response);
+            }
+
+            @Override
+            public void onInvalidateSession(HttpServletRequest request, HttpServletResponse response) {
+                cookieStrategy.onInvalidateSession(request, response);
             }
         };
     }
 
-//    @Bean
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AuthInterceptor()).excludePathPatterns("/index", "/swagger-resources/**", "/**/api-docs",
+                "/api/employee/active", "/api/employee/salt", "/api/employee/login");
+    }
+
+    //    @Bean
 //    public Object mapper(SqlSession session) {
 //        MapperHelper mapperHelper = new MapperHelper();
 //        mapperHelper.setConfig(new Config());

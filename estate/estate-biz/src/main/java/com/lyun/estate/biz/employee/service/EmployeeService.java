@@ -118,6 +118,8 @@ public class EmployeeService {
         Objects.requireNonNull(mobile);
         Objects.requireNonNull(sugaredPassword);
         Employee employee = repo.selectByMobile(mobile);
+        if (employee == null)
+            throw new EstateException(ExCode.LOGIN_FAIL);
         String rawPassword = employee.getPassword();
         if (rawPassword == null)
             throw new EstateException(ExCode.NOT_ACTIVE_EMPLOYEE);
