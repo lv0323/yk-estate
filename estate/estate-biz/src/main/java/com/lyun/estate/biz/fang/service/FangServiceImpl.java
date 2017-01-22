@@ -36,12 +36,12 @@ public class FangServiceImpl implements FangService {
     private XiaoQuService xiaoQuService;
 
     @Override
-    public List<KeywordResp> keywords(String keyword) {
+    public List<KeywordResp> keywords(Long cityId, String keyword) {
         List<KeywordResp> result = new ArrayList<>();
         if (Strings.isNullOrEmpty(keyword)) {
             return result;
         }
-        List<KeywordBean> keywordBeans = keywordService.findContain(keyword,
+        List<KeywordBean> keywordBeans = keywordService.findContain(keyword, cityId,
                 Lists.newArrayList(DomainType.DISTRICT,
                         DomainType.SUB_DISTRICT,
                         DomainType.LINE,

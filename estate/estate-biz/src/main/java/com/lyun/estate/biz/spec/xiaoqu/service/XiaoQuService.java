@@ -17,7 +17,7 @@ public interface XiaoQuService {
     PageList<XiaoQuSummary> findXiaoQuSummaryByKeyword(XiaoQuFilter filter, XQSummaryOrder order,
                                                        PageBounds pageBounds);
 
-    List<KeywordResp> keywords(String keyword);
+    List<KeywordResp> keywords(Long cityId, String keyword);
 
     XiaoQuDetail getDetail(Long id);
 
@@ -25,12 +25,14 @@ public interface XiaoQuService {
 
     /**
      * 查找城市所有区域信息
+     *
      * @return
      */
     List<EstateMapResource> findAllDistrictListByMap(int cityId, BizType bizType);
 
     /**
      * 查找板块所有信息
+     *
      * @param cityId
      * @return
      */
@@ -38,11 +40,13 @@ public interface XiaoQuService {
 
     /**
      * 查找坐标内所有小区信息
+     *
      * @param minLongitude
      * @param maxLongitude
      * @param minLatitude
      * @param maxLatitude
      * @return
      */
-    List<EstateMapResource> findCommunityListByMap(BigDecimal minLongitude, BigDecimal maxLongitude, BigDecimal minLatitude, BigDecimal maxLatitude, BizType bizType);
+    List<EstateMapResource> findCommunityListByMap(BigDecimal minLongitude, BigDecimal maxLongitude,
+                                                   BigDecimal minLatitude, BigDecimal maxLatitude, BizType bizType);
 }
