@@ -50,6 +50,7 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
         params.put("contextPath", Strings.nullToEmpty(env.getProperty("estate.context-path")));
         configurer.setFreemarkerVariables(params);
         params.put("bts", System.currentTimeMillis() / 1000L);
+        params.put("clientId", "1001");
         return configurer;
     }
 
