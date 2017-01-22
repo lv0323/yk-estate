@@ -27,8 +27,8 @@ public interface XiaoQuRepository {
     XiaoQuDetailBean findDetail(@Param("id") Long id);
 
     @SelectProvider(type = XiaoQuSqlProvider.class, method = "findSellCommunityListByMap")
-    List<EstateMapResource> findSellCommunityListByMap(@Param("minLongitude") BigDecimal minLongitude, @Param("maxLongitude") BigDecimal maxLongitude, @Param("minLatitude") BigDecimal minLatitude, @Param("maxLatitude") BigDecimal maxLatitude);
+    List<EstateMapResource> findSellCommunityListByMap(@Param("minLongitude") BigDecimal minLongitude, @Param("maxLongitude") BigDecimal maxLongitude, @Param("minLatitude") BigDecimal minLatitude, @Param("maxLatitude") BigDecimal maxLatitude, @Param("cityId") Integer cityId);
 
     @SelectProvider(type = XiaoQuSqlProvider.class, method = "findRentCommunityListByMap")
-    List<EstateMapResource> findRentCommunityListByMap(@Param("minLongitude") BigDecimal minLongitude, @Param("maxLongitude") BigDecimal maxLongitude, @Param("minLatitude") BigDecimal minLatitude, @Param("maxLatitude") BigDecimal maxLatitude);
+    List<EstateMapResource> findRentCommunityListByMap(@Param("minLongitude") BigDecimal minLongitude, @Param("maxLongitude") BigDecimal maxLongitude, @Param("minLatitude") BigDecimal minLatitude, @Param("maxLatitude") BigDecimal maxLatitude, @Param("cityId") Integer cityId);
 }
