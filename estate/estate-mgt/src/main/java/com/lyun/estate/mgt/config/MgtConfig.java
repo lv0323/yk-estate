@@ -48,7 +48,7 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
         HashMap<String, Object> params = new HashMap<>();
         params.put("contextPath", Strings.nullToEmpty(env.getProperty("estate.context-path")));
         configurer.setFreemarkerVariables(params);
-
+        params.put("bts", System.currentTimeMillis() / 1000L);
         return configurer;
     }
 

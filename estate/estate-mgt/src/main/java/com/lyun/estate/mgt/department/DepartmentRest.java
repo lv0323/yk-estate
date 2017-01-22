@@ -10,11 +10,11 @@ import java.util.*;
 
 @RestController
 @RequestMapping("api/department")
-public class DepartmentController {
+public class DepartmentRest {
 
     private final DepartmentService service;
 
-    public DepartmentController(DepartmentService service) {
+    public DepartmentRest(DepartmentService service) {
         this.service = service;
     }
 
