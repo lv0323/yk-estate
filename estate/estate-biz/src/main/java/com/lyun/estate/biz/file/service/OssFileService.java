@@ -50,7 +50,6 @@ public class OssFileService extends AbstractFileService {
         ExceptionUtil.checkNotNull("ownerId", entity.getOwnerId());
         ExceptionUtil.checkNotNull("ownerType", entity.getOwnerType());
         ExceptionUtil.checkNotNull("fileType", entity.getFileType());
-        ExceptionUtil.checkNotNull("customType", entity.getCustomType());
         ExceptionUtil.checkNotNull("inputStream", inputStream);
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(suffix), "suffix", suffix);
         if (!suffix.startsWith("."))

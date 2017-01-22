@@ -13,15 +13,18 @@ public interface EmployeeRepo {
     @InsertProvider(type = EmployeeProvider.class, method = "insert")
     int insert(Employee employee);
 
-    @Delete("delete from t_employee where id = #{id}")
-    int deleteById(Long id);
-
     @Update("update t_employee set " +
             "department_id = #{departmentId}, position_id = #{positionId}, " +
             "mobile = #{mobile}, name = #{name}, gender = #{gender}, " +
             "idcard_number = #{idcardNumber}, wechat = #{wechat}, status = #{status}, " +
             "update_time = CURRENT_TIMESTAMP where id = #{id}")
     int update(Employee employee);
+
+    @Update("update t_employee set avatar_id = #{avatarId} where id = #{id}")
+    int avatar(@Param("id") Long id, @Param("avatarId") Long avatarId);
+
+    @Update("update t_employee set quit = true where id = #{id}")
+    int quit(Long id);
 
     @Select("select * from t_employee where company_id = #{companyId}")
     @Results({
@@ -35,11 +38,14 @@ public interface EmployeeRepo {
     @Select("select * from t_employee where id = #{id}")
     Employee selectById(Long id);
 
-    @Update("update t_employee set password = #{1}, salt = #{2} where mobile = #{0} and not status = 'QUIT' and password isnull and " +
+    @Update("update t_employee set password = #{1}, salt = #{2} where mobile = #{0} and quit = false and password isnull and " +
             "(select secret_key from t_company where id = " +
-            "(select company_id from t_employee where mobile = #{0} and not status = 'QUIT')) = #{3}")
+            "(select company_id from t_employee where mobile = #{0} and quit = false)) = #{3}")
     int active(String mobile, String password, String salt, String secretKey);
 
-    @Select("select * from t_employee where mobile = #{mobile} and not status = 'QUIT'")
+    @Select("select * from t_employee where mobile = #{mobile} and quit = false")
     Employee selectByMobile(String mobile);
+
+    @Select("select count(*) from t_employee where position_id = #{id} and quit = false")
+    int countByPositionId(Long id);
 }

@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.houselicence.service;
 
-import com.lyun.estate.biz.houselicence.def.LicenceType;
+import com.lyun.estate.biz.spec.fang.def.BizType;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.spec.houselicence.HouseLicenceService;
 
@@ -10,8 +10,8 @@ import com.lyun.estate.biz.spec.houselicence.HouseLicenceService;
 public class HouseLicenceServiceImpl implements HouseLicenceService {
 
     @Override
-    public HouseLicence register(LicenceType licenceType, Long communityId, Long buildingId, Long buildingUnitId,
-                                 String houseNumber) {
+    public HouseLicence register(BizType type, Long communityId, String building, String buildingUnit,
+                                 String houseNo) {
         return null;
     }
 
@@ -20,9 +20,4 @@ public class HouseLicenceServiceImpl implements HouseLicenceService {
         return null;
     }
 
-    @Override
-    public HouseLicence find(LicenceType licenceType, Long communityId, Long buildingId, Long buildingUnitId,
-                             String houseNumber) {
-        return null;
-    }
 }

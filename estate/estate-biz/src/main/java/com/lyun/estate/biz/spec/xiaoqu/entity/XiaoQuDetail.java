@@ -2,14 +2,11 @@ package com.lyun.estate.biz.spec.xiaoqu.entity;
 
 import com.lyun.estate.core.supports.types.YN;
 
-import java.math.BigDecimal;
-
 /**
  * Created by Jeffrey on 2017-01-09.
  */
 public class XiaoQuDetail {
     private Long id;
-    private BigDecimal ranking;
     private Integer avgPrice;
     private String name;
     private String alias;
@@ -43,15 +40,6 @@ public class XiaoQuDetail {
 
     public XiaoQuDetail setId(Long id) {
         this.id = id;
-        return this;
-    }
-
-    public BigDecimal getRanking() {
-        return ranking;
-    }
-
-    public XiaoQuDetail setRanking(BigDecimal ranking) {
-        this.ranking = ranking;
         return this;
     }
 
@@ -293,7 +281,6 @@ public class XiaoQuDetail {
     public String toString() {
         return "XiaoQuDetail{" +
                 "id=" + id +
-                ", ranking=" + ranking +
                 ", avgPrice=" + avgPrice +
                 ", name='" + name + '\'' +
                 ", alias='" + alias + '\'' +

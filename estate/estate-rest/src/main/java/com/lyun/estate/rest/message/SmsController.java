@@ -30,9 +30,4 @@ public class SmsController {
         return smsService.sendCheckSms(new SmsResource().setMobile(mobile).setType(type));
     }
 
-    @GetMapping(value = "test")
-    public SmsResponse send() {
-        return smsService.sendCheckSms(new SmsResource().setMobile("15021916760").setType(SmsType.LOGIN));
-    }
-
 }

@@ -1,16 +1,39 @@
 package com.lyun.estate.biz.department.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lyun.estate.biz.housedict.entity.City;
+import com.lyun.estate.biz.housedict.entity.District;
+import com.lyun.estate.biz.housedict.entity.SubDistrict;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import java.math.BigDecimal;
 
 public class Department {
 
     private Long id;
     private Long parentId;
+    @NotNull
     private Long companyId;
+    @NotNull
     private String name;
     private String shortName;
     private String telephone;
     private String address;
+    @NotNull
+    private Long cityId;
+    @Null
+    private City city;
+    @NotNull
+    private Long districtId;
+    @Null
+    private District district;
+    @NotNull
+    private Long subDistrictId;
+    @Null
+    private SubDistrict subDistrict;
+    private BigDecimal longitude;
+    private BigDecimal latitude;
     @JsonIgnore
     private java.sql.Timestamp createTime;
     @JsonIgnore
@@ -95,6 +118,78 @@ public class Department {
 
     public Department setUpdateTime(java.sql.Timestamp updateTime) {
         this.updateTime = updateTime;
+        return this;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public Department setCityId(Long cityId) {
+        this.cityId = cityId;
+        return this;
+    }
+
+    public Long getDistrictId() {
+        return districtId;
+    }
+
+    public Department setDistrictId(Long districtId) {
+        this.districtId = districtId;
+        return this;
+    }
+
+    public Long getSubDistrictId() {
+        return subDistrictId;
+    }
+
+    public Department setSubDistrictId(Long subDistrictId) {
+        this.subDistrictId = subDistrictId;
+        return this;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public Department setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+        return this;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public Department setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+        return this;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public Department setCity(City city) {
+        this.city = city;
+        return this;
+    }
+
+    public District getDistrict() {
+        return district;
+    }
+
+    public Department setDistrict(District district) {
+        this.district = district;
+        return this;
+    }
+
+    public SubDistrict getSubDistrict() {
+        return subDistrict;
+    }
+
+    public Department setSubDistrict(SubDistrict subDistrict) {
+        this.subDistrict = subDistrict;
         return this;
     }
 }

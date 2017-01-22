@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.spec.houselicence;
 
-import com.lyun.estate.biz.houselicence.def.LicenceType;
+import com.lyun.estate.biz.spec.fang.def.BizType;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 
 /**
@@ -8,12 +8,9 @@ import com.lyun.estate.biz.houselicence.entity.HouseLicence;
  */
 public interface HouseLicenceService {
 
-    HouseLicence register(LicenceType licenceType, Long communityId, Long buildingId, Long buildingUnitId,
-                          String houseNumber);
+    HouseLicence register(BizType type, Long communityId, String building, String buildingUnit,
+                          String houseNo);
 
     HouseLicence invalid(Long houseLicenceId);
-
-    HouseLicence find(LicenceType licenceType, Long communityId, Long buildingId, Long buildingUnitId,
-                      String houseNumber);
 
 }

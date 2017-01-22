@@ -10,26 +10,33 @@ CREATE TABLE t_city (-- 城市
 );
 
 CREATE TABLE t_district (--地区
-  id          BIGSERIAL PRIMARY KEY, --id
-  city_id     BIGINT      NOT NULL, -- 城市id
-  abbr        VARCHAR(30) NOT NULL UNIQUE, -- 拼音简称
-  name        VARCHAR(20) NOT NULL, -- 中文名
-  longitude   NUMERIC(12, 9), -- 经度
-  latitude    NUMERIC(12, 9), -- 纬度
-  view_region VARCHAR(64), --地图显示区域
-  create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_time TIMESTAMP
+  id               BIGSERIAL PRIMARY KEY, --id
+  city_id          BIGINT      NOT NULL, -- 城市id
+  abbr             VARCHAR(30) NOT NULL UNIQUE, -- 拼音简称
+  name             VARCHAR(20) NOT NULL, -- 中文名
+  longitude        NUMERIC(12, 9), -- 经度
+  latitude         NUMERIC(12, 9), -- 纬度
+  view_region      TEXT, --地图显示区域
+  sell_avg_price   DECIMAL(28, 8) DEFAULT 0.00, -- 小区挂牌均价
+  sell_house_count INTEGER        DEFAULT 0, --小区挂牌房源数量
+  rent_house_count INTEGER        DEFAULT 0, --小区出租房源数量
+  create_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+  update_time      TIMESTAMP
 );
 
 CREATE TABLE t_sub_district (--地区
-  id          BIGSERIAL PRIMARY KEY, --id
-  abbr        VARCHAR(30) NOT NULL UNIQUE, -- 拼音简称
-  name        VARCHAR(20) NOT NULL, -- 中文名
-  longitude   NUMERIC(12, 9), -- 经度
-  latitude    NUMERIC(12, 9), -- 纬度
-  view_region VARCHAR(64), --地图显示区域
-  create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_time TIMESTAMP
+  id               BIGSERIAL PRIMARY KEY, --id
+  city_id          BIGINT      NOT NULL, -- 城市id
+  abbr             VARCHAR(30) NOT NULL UNIQUE, -- 拼音简称
+  name             VARCHAR(20) NOT NULL, -- 中文名
+  longitude        NUMERIC(12, 9), -- 经度
+  latitude         NUMERIC(12, 9), -- 纬度
+  view_region      TEXT, --地图显示区域
+  sell_avg_price   DECIMAL(28, 8) DEFAULT 0.00, -- 小区挂牌均价
+  sell_house_count INTEGER        DEFAULT 0, --小区挂牌房源数量
+  rent_house_count INTEGER        DEFAULT 0, --小区出租房源数量
+  create_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+  update_time      TIMESTAMP
 );
 
 CREATE TABLE t_district_rel (
@@ -57,6 +64,7 @@ CREATE TABLE t_line (--地铁线路
 CREATE TABLE t_station (--地铁站点
   id          BIGSERIAL PRIMARY KEY, --id
   abbr        VARCHAR(50) NOT NULL UNIQUE, --站点简称
+  city_id     BIGINT      NOT NULL, -- 城市id
   name        VARCHAR(20) NOT NULL, --中文名
   longitude   NUMERIC(12, 9), -- 经度
   latitude    NUMERIC(12, 9), -- 纬度

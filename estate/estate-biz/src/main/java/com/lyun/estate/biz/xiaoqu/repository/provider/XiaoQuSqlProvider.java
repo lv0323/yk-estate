@@ -30,9 +30,13 @@ public class XiaoQuSqlProvider {
             if (selector.getStructureTypes() != null) {
                 WHERE("c.structure_type in (" + Joiner.on(",").skipNulls().join(selector.getStructureTypes()) + ")");
             }
-            if (selector.getXiaoQuIds() != null) {
+            if (selector.getXiaoQuIds() != null && !selector.getXiaoQuIds().isEmpty()) {
                 WHERE("xq.id in (" + Joiner.on(",").skipNulls().join(selector.getXiaoQuIds()) + ")");
             }
+            if (selector.getExcludeIds() != null && !selector.getExcludeIds().isEmpty()) {
+                WHERE("xq.id not in (" + Joiner.on(",").skipNulls().join(selector.getExcludeIds()) + ")");
+            }
+            WHERE("c.city_id = #{cityId}");
         }}.toString();
     }
 
@@ -54,11 +58,13 @@ public class XiaoQuSqlProvider {
                     "  c.developers,\n" +
                     "  c.structure_type,\n" +
                     "  c.builded_year,\n" +
+                    "  c.develop_year,\n" +
                     "  c.property_company,\n" +
                     "  c.property_company_phone,\n" +
                     "  c.property_fee,\n" +
                     "  c.parking_space,\n" +
                     "  c.parking_rate,\n" +
+                    "  c.parking_fee,\n" +
                     "  c.buildings,\n" +
                     "  c.houses,\n" +
                     "  c.container_rate,\n" +
@@ -67,6 +73,24 @@ public class XiaoQuSqlProvider {
             LEFT_OUTER_JOIN("t_community c ON xq.community_id = c.id");
             LEFT_OUTER_JOIN("t_district_rel dr ON c.sub_district_id = dr.sub_district_id AND dr.is_primary = 'Y'");
             WHERE("xq.id = #{id}");
+        }}.toString();
+    }
+
+    public String findSellCommunityListByMap() {
+        return new SQL() {{
+            SELECT("community.id,community.name,xiaoQu.avg_price,community.longitude,community.latitude,'XIAO_QU' as domain_type,xiaoQu.sell_house_count as building_counts");
+            FROM("t_community community");
+            LEFT_OUTER_JOIN("t_xiao_qu xiaoQu on xiaoQu.community_id = community.id");
+            WHERE("community.longitude >= #{minLongitude} and community.longitude <= #{maxLongitude} and community.latitude >= #{minLatitude} and community.latitude <= #{maxLatitude}");
+        }}.toString();
+    }
+
+    public String findRentCommunityListByMap() {
+        return new SQL() {{
+            SELECT("community.id,community.name,xiaoQu.avg_price,community.longitude,community.latitude,'XIAO_QU' as domain_type,community.rent_house_count as building_counts");
+            FROM("t_community community");
+            LEFT_OUTER_JOIN("t_xiao_qu xiaoQu on xiaoQu.community_id = community.id");
+            WHERE("community.longitude >= #{minLongitude} and community.longitude <= #{maxLongitude} and community.latitude >= #{minLatitude} and community.latitude <= #{maxLatitude}");
         }}.toString();
     }
 }

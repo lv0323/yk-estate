@@ -1,13 +1,14 @@
 package com.lyun.estate.biz.spec.xiaoqu.entity;
 
-import com.lyun.estate.biz.houselicence.def.StructureType;
+import com.lyun.estate.biz.housedict.def.StructureType;
 
 /**
  * Created by Jeffrey on 2017-01-09.
  */
 public class XiaoQuFilter {
-    private String district;
-    private String subDistrict;
+    private Long cityId;
+    private Long districtId;
+    private Long subDistrictId;
     private StructureType structureType;
     private Integer minPrice;
     private Integer maxPrice;
@@ -15,21 +16,30 @@ public class XiaoQuFilter {
     private Integer maxYear;
     private String keyword;
 
-    public String getDistrict() {
-        return district;
+    public Long getCityId() {
+        return cityId;
     }
 
-    public XiaoQuFilter setDistrict(String district) {
-        this.district = district;
+    public XiaoQuFilter setCityId(Long cityId) {
+        this.cityId = cityId;
         return this;
     }
 
-    public String getSubDistrict() {
-        return subDistrict;
+    public Long getDistrictId() {
+        return districtId;
     }
 
-    public XiaoQuFilter setSubDistrict(String subDistrict) {
-        this.subDistrict = subDistrict;
+    public XiaoQuFilter setDistrictId(Long districtId) {
+        this.districtId = districtId;
+        return this;
+    }
+
+    public Long getSubDistrictId() {
+        return subDistrictId;
+    }
+
+    public XiaoQuFilter setSubDistrictId(Long subDistrictId) {
+        this.subDistrictId = subDistrictId;
         return this;
     }
 
@@ -90,11 +100,12 @@ public class XiaoQuFilter {
     @Override
     public String toString() {
         return "XiaoQuFilter{" +
-                "district='" + district + '\'' +
-                ", subDistrict='" + subDistrict + '\'' +
+                "cityId=" + cityId +
+                ", districtId=" + districtId +
+                ", subDistrictId=" + subDistrictId +
+                ", structureType=" + structureType +
                 ", minPrice=" + minPrice +
                 ", maxPrice=" + maxPrice +
-                ", structureType=" + structureType +
                 ", minYear=" + minYear +
                 ", maxYear=" + maxYear +
                 ", keyword='" + keyword + '\'' +

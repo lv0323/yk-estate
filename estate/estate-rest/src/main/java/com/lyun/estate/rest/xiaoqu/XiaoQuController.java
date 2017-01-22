@@ -2,7 +2,7 @@ package com.lyun.estate.rest.xiaoqu;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.lyun.estate.biz.houselicence.def.StructureType;
+import com.lyun.estate.biz.housedict.def.StructureType;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
 import com.lyun.estate.biz.spec.xiaoqu.entity.KeywordResp;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
@@ -27,13 +27,15 @@ public class XiaoQuController {
 
 
     @GetMapping("/keywords")
-    List<KeywordResp> keywords(@RequestParam String keyword) {
-        return xiaoQuService.keywords(keyword);
+    List<KeywordResp> keywords(@RequestParam Long cityId,
+                               @RequestParam String keyword) {
+        return xiaoQuService.keywords(cityId, keyword);
     }
 
     @GetMapping("/")
-    public PageList<XiaoQuSummary> summary(@RequestParam(required = false) String district,
-                                           @RequestParam(required = false) String subDistrict,
+    public PageList<XiaoQuSummary> summary(@RequestParam Long cityId,
+                                           @RequestParam(required = false) Long districtId,
+                                           @RequestParam(required = false) Long subDistrictId,
                                            @RequestParam(required = false) StructureType structureType,
                                            @RequestParam(required = false) Integer minPrice,
                                            @RequestParam(required = false) Integer maxPrice,
@@ -42,8 +44,10 @@ public class XiaoQuController {
                                            @RequestParam(required = false) String keyword,
                                            @RequestParam(required = false) XQSummaryOrder order,
                                            @RequestHeader("X-PAGING") PageBounds pageBounds) {
-        XiaoQuFilter filter = new XiaoQuFilter().setDistrict(district)
-                .setSubDistrict(subDistrict)
+        XiaoQuFilter filter = new XiaoQuFilter()
+                .setCityId(cityId)
+                .setDistrictId(districtId)
+                .setSubDistrictId(subDistrictId)
                 .setStructureType(structureType)
                 .setMinYear(minYear)
                 .setMaxYear(maxYear)
@@ -59,6 +63,11 @@ public class XiaoQuController {
     @GetMapping(value = "/{id}")
     public XiaoQuDetail detail(@PathVariable Long id) {
         return xiaoQuService.getDetail(id);
+    }
+
+    @GetMapping(value = "/nearby")
+    PageList<XiaoQuSummary> nearby(@RequestParam Long id) {
+        return xiaoQuService.findNearbyXiaoQu(id);
     }
 
 }
