@@ -11,7 +11,11 @@ public enum ExCode {
     NOT_ACTIVE_EMPLOYEE("未激活"),
     NO_SUGAR("找不到Sugar"),
     WRONG_PASSWORD("密码错误"),
-    HAS_EMPLOYEE("该岗位下有员工，不能删除");
+    HAS_EMPLOYEE("该岗位下有员工，不能删除"),
+    CREATE_FAIL("{}新增失败,{}"),
+    UPDATE_FAIL("{}更新失败,{}"),
+    NOT_FOUND("根据{}未找到{}"),
+    ;
 
 
     private final String messageTemplate;

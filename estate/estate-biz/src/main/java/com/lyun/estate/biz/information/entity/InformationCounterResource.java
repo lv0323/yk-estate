@@ -10,7 +10,7 @@ public class InformationCounterResource {
     private Long ownerId;
     private Integer unreadCInfoCount;
     private Integer unreadCMReportCount;
-    private Integer noticeIndex;
+    private Integer unreadNoticeCount;
     private Date createTime;
 
     public Long getId() {
@@ -45,12 +45,12 @@ public class InformationCounterResource {
         this.unreadCMReportCount = unreadCMReportCount;
     }
 
-    public Integer getNoticeIndex() {
-        return noticeIndex;
+    public Integer getUnreadNoticeCount() {
+        return unreadNoticeCount;
     }
 
-    public void setNoticeIndex(Integer noticeIndex) {
-        this.noticeIndex = noticeIndex;
+    public void setUnreadNoticeCount(Integer unreadNoticeCount) {
+        this.unreadNoticeCount = unreadNoticeCount;
     }
 
     public Date getCreateTime() {
@@ -68,7 +68,7 @@ public class InformationCounterResource {
                 ", ownerId=" + ownerId +
                 ", unreadCInfoCount=" + unreadCInfoCount +
                 ", unreadCMReportCount=" + unreadCMReportCount +
-                ", noticeIndex=" + noticeIndex +
+                ", unreadNoticeCount=" + unreadNoticeCount +
                 ", createTime=" + createTime +
                 '}';
     }
