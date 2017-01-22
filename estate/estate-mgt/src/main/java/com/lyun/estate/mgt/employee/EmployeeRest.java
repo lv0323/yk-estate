@@ -19,13 +19,13 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("api/employee")
-public class EmployeeController {
+public class EmployeeRest {
 
     private final EmployeeService employeeService;
     private final SessionRepository<Session> sessionRepository;
 
     @SuppressWarnings("unchecked")
-    public EmployeeController(EmployeeService employeeService, SessionRepository sessionRepository) {
+    public EmployeeRest(EmployeeService employeeService, SessionRepository sessionRepository) {
         this.employeeService = employeeService;
         this.sessionRepository = sessionRepository;
     }
