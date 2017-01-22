@@ -11,6 +11,7 @@ import com.lyun.estate.biz.information.entity.InformationCounterResource;
 import com.lyun.estate.biz.information.entity.InformationResource;
 import com.lyun.estate.biz.information.repository.InformationRepository;
 import com.lyun.estate.biz.spec.fang.entity.FangDetail;
+import com.lyun.estate.biz.spec.fang.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.service.FangService;
 import com.lyun.estate.core.supports.ExecutionContext;
 import com.lyun.estate.core.supports.exceptions.EstateException;
@@ -63,7 +64,7 @@ public class InformationService {
         List<InformationResource> resultList = informationResourceList.stream().map(t -> {
             switch (t.getContentType()) {
                 case COMMUNITY:
-                    FangDetail fang = fangService.getDetail(Long.valueOf(t.getInfoContent()));
+                    FangSummary fang = fangService.getSummary(Long.valueOf(t.getInfoContent()));
                     if (fang == null) {
                         logger.warn("根据信息中存放的content[{}]无法获取有效房源", t.getInfoContent());
                         break;

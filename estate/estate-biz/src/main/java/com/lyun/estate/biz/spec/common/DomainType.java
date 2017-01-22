@@ -11,7 +11,7 @@ public enum DomainType {
     STATION("地铁站"),
     XIAO_QU("小区"),
     FANG("房"),
-    AVATAR("头像");
+    EMPLOYEE("员工");
 
     private final String label;
 

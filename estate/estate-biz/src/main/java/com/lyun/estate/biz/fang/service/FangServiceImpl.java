@@ -17,6 +17,7 @@ import com.lyun.estate.biz.spec.xiaoqu.entity.KeywordResp;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.List;
 /**
  * Created by Jeffrey on 2017-01-20.
  */
+@Service
 public class FangServiceImpl implements FangService {
 
     @Autowired
@@ -84,6 +86,12 @@ public class FangServiceImpl implements FangService {
 
     @Override
     public FangDetail getDetail(Long id) {
+        return null;
+    }
+
+    @Override
+    public FangSummary getSummary(Long id) {
+        //TODO 实现
         return null;
     }
 
