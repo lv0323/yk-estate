@@ -2,6 +2,7 @@ package com.lyun.estate.biz.employee.service;
 
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.repo.EmployeeRepo;
+import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.spec.common.DomainType;
@@ -79,14 +80,15 @@ public class EmployeeService {
     }
 
     public String getAvatar(Long id) {
-        FileDescription fd = fileService.findFirst(id, DomainType.AVATAR, null, null);
+        FileDescription fd = fileService.findFirst(id, DomainType.EMPLOYEE, CustomType.AVATAR, null);
         return fd != null ? fd.getFileURI() : null;
     }
 
     public Employee createAvatar(Long id, InputStream avatarIS, String suffix) {
         repo.avatar(id, fileService.save(new FileDescription()
                 .setOwnerId(id)
-                .setOwnerType(DomainType.AVATAR)
+                .setOwnerType(DomainType.EMPLOYEE)
+                .setCustomType(CustomType.AVATAR)
                 .setFileType(FileType.IMAGE), avatarIS, suffix).getId());
         return repo.selectById(id);
     }
