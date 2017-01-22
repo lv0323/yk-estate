@@ -20,7 +20,7 @@ require(['main-app',
             $scope.activeData={};
             $scope.warn={
                 title:'提示',
-                content:'请输入用户名和密码',
+                content:'请输入完整信息',
             };
             /*页面切换*/
             $scope.changePage= function(page){
@@ -28,11 +28,11 @@ require(['main-app',
             };
             /*登录*/
             $scope.submit = function(){
-                if (!$scope.loginData.mobile||!$scope.loginData.password) {
-                    show({title:'提示',content:'请输入用户名和密码'})
+                if (!$scope.loginData.mobile||!$scope.loginData.password||!$scope.loginData.captcha) {
+                    show({title:'提示',content:'请输入完整信息'})
                     return;
                 }
-                IdentityService.loginAction({mobile:$scope.loginData.mobile,password:$scope.loginData.password}).done(function(response){
+                IdentityService.loginAction({mobile:$scope.loginData.mobile,password:$scope.loginData.password}, {clientId:clientId, code:$scope.loginData.captcha,id:$scope.captchaId}).done(function(response){
                     $window.location=contextPath+'/org/department.ftl';
                 }).fail(function(response){
                     show({title:'提示',content:response&&response.message});
