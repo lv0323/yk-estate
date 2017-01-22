@@ -6,6 +6,7 @@ import java.util.List;
  * Created by Jeffrey on 2017-01-09.
  */
 public class XiaoQuSelector {
+    private Long cityId;
     private Long districtId;
     private Long subDistrictId;
     private List<Long> xiaoQuIds;
@@ -15,6 +16,15 @@ public class XiaoQuSelector {
     private Integer minYear;
     private Integer maxYear;
     private List<Long> excludeIds;
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public XiaoQuSelector setCityId(Long cityId) {
+        this.cityId = cityId;
+        return this;
+    }
 
     public Long getDistrictId() {
         return districtId;
@@ -101,7 +111,8 @@ public class XiaoQuSelector {
     @Override
     public String toString() {
         return "XiaoQuSelector{" +
-                "districtId=" + districtId +
+                "cityId=" + cityId +
+                ", districtId=" + districtId +
                 ", subDistrictId=" + subDistrictId +
                 ", xiaoQuIds=" + xiaoQuIds +
                 ", minPrice=" + minPrice +

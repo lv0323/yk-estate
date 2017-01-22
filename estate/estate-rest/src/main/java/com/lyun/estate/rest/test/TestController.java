@@ -108,12 +108,14 @@ public class TestController {
 
 
     @GetMapping("/keywords/contain")
-    List<KeywordBean> findContain(@RequestParam String keyword, @RequestParam(required = false) Integer limit) {
-        return keywordService.findContain(keyword, Lists.newArrayList(DomainType.values()), limit);
+    List<KeywordBean> findContain(@RequestParam Long cityId, @RequestParam String keyword,
+                                  @RequestParam(required = false) Integer limit) {
+        return keywordService.findContain(keyword, cityId, Lists.newArrayList(DomainType.values()), limit);
     }
 
     @GetMapping("/keywords/name-match")
-    List<KeywordBean> findNameMatch(@RequestParam String keyword, @RequestParam(required = false) Integer limit) {
-        return keywordService.findNameMatch(keyword, Lists.newArrayList(DomainType.values()), limit);
+    List<KeywordBean> findNameMatch(@RequestParam Long cityId, @RequestParam String keyword,
+                                    @RequestParam(required = false) Integer limit) {
+        return keywordService.findNameMatch(keyword, cityId, Lists.newArrayList(DomainType.values()), limit);
     }
 }

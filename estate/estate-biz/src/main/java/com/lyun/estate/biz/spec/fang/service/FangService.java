@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface FangService {
 
-    List<KeywordResp> keywords(String keyword);
+    List<KeywordResp> keywords(Long cityId, String keyword);
 
     PageList<FangSummary> findFangSummaryByKeyword(FangFilter filter, XQSummaryOrder order,
                                                    PageBounds pageBounds);
