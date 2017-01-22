@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.employee.service;
 
+import com.lyun.estate.biz.company.entity.Company;
+import com.lyun.estate.biz.company.repo.CompanyRepository;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.repo.EmployeeRepo;
 import com.lyun.estate.biz.file.def.CustomType;
@@ -7,10 +9,11 @@ import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.biz.spec.file.service.FileService;
+import com.lyun.estate.biz.utils.clock.ClockTools;
 import com.lyun.estate.core.config.CacheConfig;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
-import com.lyun.estate.core.supports.exceptions.ValidateException;
+import com.lyun.estate.core.utils.Validations;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -19,15 +22,10 @@ import org.springframework.stereotype.Service;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -35,13 +33,17 @@ public class EmployeeService {
 
     private static final String LOGIN_SALT_PREFIX = "LOGIN_SALT";
     private final EmployeeRepo repo;
+    private final CompanyRepository companyRepository;
     private final FileService fileService;
     private final Cache cache;
+    private final ClockTools clockTools;
 
-    public EmployeeService(EmployeeRepo repo, @Qualifier("evictCacheManager") CacheManager cacheManager, FileService fileService) {
+    public EmployeeService(EmployeeRepo repo, @Qualifier("evictCacheManager") CacheManager cacheManager, CompanyRepository companyRepository, FileService fileService, ClockTools clockTools) {
         this.repo = repo;
         cache = cacheManager.getCache(CacheConfig.EVICT_CACHE_NAME);
+        this.companyRepository = companyRepository;
         this.fileService = fileService;
+        this.clockTools = clockTools;
     }
 
     private static String hmac(String salt, String password) {
@@ -55,17 +57,13 @@ public class EmployeeService {
         }
     }
 
-    private <T> T validate(T bean) {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<T>> constraintViolationSet = validator.validate(Objects.requireNonNull(bean));
-        if (!constraintViolationSet.isEmpty())
-            throw new ValidateException("ConstraintViolation", "参数不合法");
-        return bean;
+    public Employee create(Employee employee) {
+        repo.insert(Validations.doValidate(employee));
+        return employee;
     }
 
-    public Employee create(Employee employee) {
-        repo.insert(validate(employee));
+    public Employee createBoss(Employee employee) {
+        repo.insert(Validations.doValidate(employee).setIsBoss(Boolean.TRUE));
         return employee;
     }
 
@@ -75,7 +73,7 @@ public class EmployeeService {
 
     public Employee update(Employee employee) {
         Objects.requireNonNull(Objects.requireNonNull(employee).getId());
-        repo.update(validate(employee));
+        repo.update(Validations.doValidate(employee));
         return repo.selectById(employee.getId());
     }
 
@@ -122,6 +120,7 @@ public class EmployeeService {
         Employee employee = repo.selectByMobile(mobile);
         if (employee == null)
             throw new EstateException(ExCode.LOGIN_FAIL);
+        checkCompany(employee.getCompanyId());
         String rawPassword = employee.getPassword();
         if (rawPassword == null)
             throw new EstateException(ExCode.NOT_ACTIVE_EMPLOYEE);
@@ -132,5 +131,13 @@ public class EmployeeService {
             throw new EstateException(ExCode.WRONG_PASSWORD);
         cache.evict(LOGIN_SALT_PREFIX + mobile);
         return employee;
+    }
+
+    private void checkCompany(Long companyId) {
+        Company company = companyRepository.selectOne(companyId);
+        if (company.getLocked())
+            throw new EstateException(ExCode.COMPANY_LOCKED);
+        if (company.getEndDate().getTime() < clockTools.now().getTime())
+            throw new EstateException(ExCode.COMPANY_EXPIRED);
     }
 }
