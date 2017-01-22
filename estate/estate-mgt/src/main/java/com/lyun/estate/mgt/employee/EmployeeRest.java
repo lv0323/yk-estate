@@ -18,12 +18,12 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("api/employee")
-public class EmployeeController {
+public class EmployeeRest {
 
     private final EmployeeService employeeService;
     private final SmsService smsService;
 
-    public EmployeeController(EmployeeService employeeService, SmsService smsService) {
+    public EmployeeRest(EmployeeService employeeService, SmsService smsService) {
         this.employeeService = employeeService;
         this.smsService = smsService;
     }
