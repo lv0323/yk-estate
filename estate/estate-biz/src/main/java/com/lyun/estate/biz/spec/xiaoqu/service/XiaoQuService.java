@@ -48,5 +48,5 @@ public interface XiaoQuService {
      * @return
      */
     List<EstateMapResource> findCommunityListByMap(BigDecimal minLongitude, BigDecimal maxLongitude,
-                                                   BigDecimal minLatitude, BigDecimal maxLatitude, BizType bizType);
+                                                   BigDecimal minLatitude, BigDecimal maxLatitude, BizType bizType,Integer cityId);
 }

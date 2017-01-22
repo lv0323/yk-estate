@@ -8,9 +8,9 @@ import java.util.Date;
 public class InformationCounter {
     private Long id;
     private Long ownerId;
-    private Integer communityInfoIndex;
-    private Integer communityMonthlyReportIndex;
-    private Integer noticeIndex;
+    private Long CInfoIndex;
+    private Long CMonthlyReportIndex;
+    private Long noticeIndex;
     private Date createTime;
     private Date updateTime;
 
@@ -30,27 +30,27 @@ public class InformationCounter {
         this.ownerId = ownerId;
     }
 
-    public Integer getCommunityInfoIndex() {
-        return communityInfoIndex;
+    public Long getCInfoIndex() {
+        return CInfoIndex;
     }
 
-    public void setCommunityInfoIndex(Integer communityInfoIndex) {
-        this.communityInfoIndex = communityInfoIndex;
+    public void setCInfoIndex(Long CInfoIndex) {
+        this.CInfoIndex = CInfoIndex;
     }
 
-    public Integer getCommunityMonthlyReportIndex() {
-        return communityMonthlyReportIndex;
+    public Long getCMonthlyReportIndex() {
+        return CMonthlyReportIndex;
     }
 
-    public void setCommunityMonthlyReportIndex(Integer communityMonthlyReportIndex) {
-        this.communityMonthlyReportIndex = communityMonthlyReportIndex;
+    public void setCMonthlyReportIndex(Long CMonthlyReportIndex) {
+        this.CMonthlyReportIndex = CMonthlyReportIndex;
     }
 
-    public Integer getNoticeIndex() {
+    public Long getNoticeIndex() {
         return noticeIndex;
     }
 
-    public void setNoticeIndex(Integer noticeIndex) {
+    public void setNoticeIndex(Long noticeIndex) {
         this.noticeIndex = noticeIndex;
     }
 
@@ -75,8 +75,8 @@ public class InformationCounter {
         return "InformationCounter{" +
                 "id=" + id +
                 ", ownerId=" + ownerId +
-                ", communityInfoIndex=" + communityInfoIndex +
-                ", communityMonthlyReportIndex=" + communityMonthlyReportIndex +
+                ", CInfoIndex=" + CInfoIndex +
+                ", CMonthlyReportIndex=" + CMonthlyReportIndex +
                 ", noticeIndex=" + noticeIndex +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +

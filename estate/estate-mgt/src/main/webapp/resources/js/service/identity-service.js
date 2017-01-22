@@ -50,8 +50,23 @@ define(contextPath + '/js/service/identity-service.js',
             }).fail(function (response) {
                 defer.reject(response);
             });
-
             return defer.promise();
+        };
+
+        IdentityService.sendSMS = function (params) {
+            var header = {
+                'X-CAPTCHA': "id=" + params.id +"&clientId="+ params.clientId +"&code="+ params.code,
+                'Content-Type':'application/json;charset=utf-8'
+            };
+            var data ={
+                mobile: params.mobile, type: params.type
+            }
+            return requestService.post('/sms', JSON.stringify(data), header);
+        };
+
+        IdentityService.activate = function (params, header) {
+
+            return requestService.post('/api/employee/active', params, header);
         };
 
         return IdentityService;

@@ -46,3 +46,18 @@ body {
     border-radius: 4px;
     height: 50px;
 }
+.bottom-content{
+    margin-top: 10px;
+}
+.to-active{
+    float: right;
+}
+.sms-container{
+    position: relative;
+}
+.get-sms{
+    position: absolute;
+    right: 0;
+    width: 80px;
+    top:8px;
+}

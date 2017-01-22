@@ -11,7 +11,8 @@ requirejs.config({
         'datetimepicker': contextPath+'/js/libs/bootstrap-datetimepicker.min',
         'datetimepicker.zh-cn': contextPath+'/js/libs/bootstrap-datetimepicker.zh-CN',
         'datatables': contextPath+'/js/plugins/datatables/jquery.dataTables.min',
-        'datatablesBootstrap': contextPath+'/js/plugins/datatables/dataTables.bootstrap.min'
+        'datatablesBootstrap': contextPath+'/js/plugins/datatables/dataTables.bootstrap.min',
+        'submenu': contextPath+'/js/plugins/bootstrap-submenu'
     },
     shim: {
         'bootstrap': ['jquery'],
@@ -28,7 +29,8 @@ requirejs.config({
         'datatablesBootstrap':{
             deps: ['jquery', 'bootstrap', 'datatables'],
             exports: 'datatablesBootstrap'
-        }
+        },
+        'submenu':['jquery', 'bootstrap']
     },
     waitSeconds: 0,
     urlArgs: "vn="+vn

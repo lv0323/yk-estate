@@ -22,4 +22,7 @@ public interface FangService {
 
     FangDetail getDetail(Long id);
 
+    /* 根据房屋ID查询房源信息 */
+    FangSummary getSummary(Long id);
+
 }
