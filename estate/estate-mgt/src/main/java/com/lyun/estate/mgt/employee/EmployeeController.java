@@ -6,6 +6,8 @@ import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.message.service.SmsService;
+import com.lyun.estate.core.supports.exceptions.EstateException;
+import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,7 +71,7 @@ public class EmployeeController {
     public Object salt(@RequestParam String mobile) {
         Employee employee = employeeService.selectByMobile(mobile);
         if (employee == null)
-            return new RestResponse().add("ret", false).get();
+            return new EstateException(ExCode.CANT_SALT);
         return new RestResponse().add("ret", true).add("salt", employee.getSalt()).add("sugar", employeeService.sugar(mobile)).get();
     }
 

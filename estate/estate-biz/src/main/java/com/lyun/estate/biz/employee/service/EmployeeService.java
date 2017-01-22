@@ -118,15 +118,15 @@ public class EmployeeService {
         Objects.requireNonNull(mobile);
         Objects.requireNonNull(sugaredPassword);
         Employee employee = repo.selectByMobile(mobile);
-//        String rawPassword = employee.getPassword();
-//        if (rawPassword == null)
-//            throw new EstateException(ExCode.NOT_ACTIVE_EMPLOYEE);
-//        String sugar = cache.get(LOGIN_SALT_PREFIX + mobile, String.class);
-//        if (sugar == null)
-//            throw new EstateException(ExCode.NO_SUGAR);
-//        if (!hmac(sugar, rawPassword).equals(sugaredPassword))
-//            throw new EstateException(ExCode.WRONG_PASSWORD);
-//        cache.evict(LOGIN_SALT_PREFIX + mobile);
+        String rawPassword = employee.getPassword();
+        if (rawPassword == null)
+            throw new EstateException(ExCode.NOT_ACTIVE_EMPLOYEE);
+        String sugar = cache.get(LOGIN_SALT_PREFIX + mobile, String.class);
+        if (sugar == null)
+            throw new EstateException(ExCode.NO_SUGAR);
+        if (!hmac(sugar, rawPassword).equals(sugaredPassword))
+            throw new EstateException(ExCode.WRONG_PASSWORD);
+        cache.evict(LOGIN_SALT_PREFIX + mobile);
         return employee;
     }
 }
