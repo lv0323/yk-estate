@@ -1,5 +1,8 @@
 package com.lyun.estate.mgt.employee;
 
+import com.lyun.estate.biz.auth.captcha.Captcha;
+import com.lyun.estate.biz.auth.captcha.CaptchaArgumentResolver;
+import com.lyun.estate.biz.auth.captcha.CheckCaptcha;
 import com.lyun.estate.biz.auth.sms.CheckSmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
@@ -77,8 +80,10 @@ public class EmployeeRest {
         return new RestResponse().add("ret", true).add("salt", employee.getSalt()).add("sugar", employeeService.sugar(mobile)).get();
     }
 
+    @CheckCaptcha
     @GetMapping("login")
-    public Object login(@RequestParam String mobile, @RequestParam String password, HttpSession cookieSession) {
+    public Object login(@RequestParam String mobile, @RequestParam String password, HttpSession cookieSession,
+                        @RequestHeader(CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {
         Employee employee = employeeService.login(mobile, password);
         cookieSession.setAttribute("employee", true);
         Session session = sessionRepository.createSession();
