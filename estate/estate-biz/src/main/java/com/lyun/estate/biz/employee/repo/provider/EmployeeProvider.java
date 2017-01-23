@@ -16,6 +16,7 @@ public class EmployeeProvider {
                 .VALUES("idcard_number", "#{idcardNumber}")
                 .VALUES("wechat", "#{wechat}")
                 .VALUES("status", "#{status}")
+                .VALUES_IF("is_boss", "#{isBoss}", employee.getIsBoss() != null)
                 .VALUES_IF("is_agent", "#{isAgent}", employee.getIsAgent() != null).toString();
     }
 }

@@ -36,6 +36,7 @@ public class DepartmentRest {
 
     @PostMapping("edit")
     public Object edit(Department department, @SessionAttribute LoginEmployee employee) {
+        Objects.requireNonNull(department).setCompanyId(employee.getCompanyId());
         return service.update(department);
     }
 

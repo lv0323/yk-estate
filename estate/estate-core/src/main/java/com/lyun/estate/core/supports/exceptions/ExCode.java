@@ -20,6 +20,8 @@ public enum ExCode {
     CANT_SALT("获取Salt失败"),
     LOGIN_FAIL("登录失败"),
     JSON_ERROR("JSON对象{},转换错误:{}"),
+    COMPANY_LOCKED("公司被冻结"),
+    COMPANY_EXPIRED("公司授权已到截止日期"),
     ;
 
     private final String messageTemplate;
