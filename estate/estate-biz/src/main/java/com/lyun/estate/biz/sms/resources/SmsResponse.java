@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.message.resources;
+package com.lyun.estate.biz.sms.resources;
 
 public class SmsResponse {
     private String mobile;

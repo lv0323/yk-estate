@@ -1,15 +1,15 @@
-package com.lyun.estate.biz.information.entity;
+package com.lyun.estate.biz.message.entity;
 
 import java.util.Date;
 
 /**
  * Created by jesse on 2017/1/20.
  */
-public class InformationCounter {
+public class MessageCounter {
     private Long id;
     private Long ownerId;
-    private Long CInfoIndex;
-    private Long CMonthlyReportIndex;
+    private Long CMsIndex;
+    private Long CMReportIndex;
     private Long noticeIndex;
     private Date createTime;
     private Date updateTime;
@@ -30,20 +30,20 @@ public class InformationCounter {
         this.ownerId = ownerId;
     }
 
-    public Long getCInfoIndex() {
-        return CInfoIndex;
+    public Long getCMsIndex() {
+        return CMsIndex;
     }
 
-    public void setCInfoIndex(Long CInfoIndex) {
-        this.CInfoIndex = CInfoIndex;
+    public void setCMsIndex(Long CMsIndex) {
+        this.CMsIndex = CMsIndex;
     }
 
-    public Long getCMonthlyReportIndex() {
-        return CMonthlyReportIndex;
+    public Long getCMReportIndex() {
+        return CMReportIndex;
     }
 
-    public void setCMonthlyReportIndex(Long CMonthlyReportIndex) {
-        this.CMonthlyReportIndex = CMonthlyReportIndex;
+    public void setCMReportIndex(Long CMReportIndex) {
+        this.CMReportIndex = CMReportIndex;
     }
 
     public Long getNoticeIndex() {
@@ -72,11 +72,11 @@ public class InformationCounter {
 
     @Override
     public String toString() {
-        return "InformationCounter{" +
+        return "MessageCounter{" +
                 "id=" + id +
                 ", ownerId=" + ownerId +
-                ", CInfoIndex=" + CInfoIndex +
-                ", CMonthlyReportIndex=" + CMonthlyReportIndex +
+                ", CMsIndex=" + CMsIndex +
+                ", CMReportIndex=" + CMReportIndex +
                 ", noticeIndex=" + noticeIndex +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +

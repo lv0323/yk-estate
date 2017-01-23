@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.auth.sms;
 
-import com.lyun.estate.biz.message.service.SmsService;
+import com.lyun.estate.biz.sms.service.SmsService;
 import com.lyun.estate.core.supports.ExecutionContext;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import org.aspectj.lang.JoinPoint;
