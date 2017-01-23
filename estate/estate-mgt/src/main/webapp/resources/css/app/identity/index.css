@@ -3,8 +3,15 @@ body {
     background:url("../../../img/identity/login_background.png");
     background-position: center;
 }
-.login-box-body{
+.login-box-body,.identity-box{
     padding: 5px;
+    border-radius: 5px;
+    background: #fff;
+    border-top: 0;
+    color: #666;
+}
+.identity-box{
+    margin-bottom: 10px;
 }
 .form-group{
     margin: 0;
@@ -19,9 +26,6 @@ body {
     color: #fff;
     background: url('../../../img/common/logo.png') left calc(50% - 124px) center no-repeat;
 }
-.login-box-body{
-    border-radius: 5px;
-}
 .form-control{
     font-size: 18px;
     letter-spacing: .1em;
@@ -34,7 +38,7 @@ body {
 }
 #captcha-image{
     position: absolute;
-    right: 20px;
+    right: 10px;
     top: 0;
     height: 100%;
     width: 140px;
@@ -57,7 +61,7 @@ body {
 }
 .get-sms{
     position: absolute;
-    right: 0;
-    width: 80px;
+    right: 10px;
+    width: 140px;
     top:8px;
 }
