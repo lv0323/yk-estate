@@ -35,6 +35,15 @@ public interface EmployeeRepo {
     })
     List<Employee> selectByCompanyId(Long companyId);
 
+    @Select("select * from t_employee where company_id = #{companyId} and is_boss = true")
+    @Results({
+            @Result(column = "department_id", property = "departmentId", javaType = Long.class),
+            @Result(column = "department_id", property = "department", one = @One(select = "com.lyun.estate.biz.department.repo.DepartmentRepo.selectById")),
+            @Result(column = "position_id", property = "positionId", javaType = Long.class),
+            @Result(column = "position_id", property = "position", one = @One(select = "com.lyun.estate.biz.position.repo.PositionRepo.selectById"))
+    })
+    List<Employee> selectBossByCompanyId(Long companyId);
+
     @Select("select * from t_employee where id = #{id}")
     Employee selectById(Long id);
 
