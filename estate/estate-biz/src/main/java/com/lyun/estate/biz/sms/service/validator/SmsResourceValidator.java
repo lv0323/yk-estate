@@ -1,6 +1,6 @@
-package com.lyun.estate.biz.message.service.validator;
+package com.lyun.estate.biz.sms.service.validator;
 
-import com.lyun.estate.biz.message.resources.SmsResource;
+import com.lyun.estate.biz.sms.resources.SmsResource;
 import com.lyun.estate.biz.user.repository.UserMapper;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.supports.types.SmsType;

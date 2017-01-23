@@ -1,15 +1,14 @@
-package com.lyun.estate.rest.message;
+package com.lyun.estate.rest.sms;
 
 import com.lyun.estate.biz.auth.captcha.Captcha;
 import com.lyun.estate.biz.auth.captcha.CaptchaArgumentResolver;
 import com.lyun.estate.biz.auth.captcha.CheckCaptcha;
-import com.lyun.estate.biz.message.resources.SmsResource;
-import com.lyun.estate.biz.message.resources.SmsResponse;
-import com.lyun.estate.biz.message.service.SmsService;
+import com.lyun.estate.biz.sms.resources.SmsResource;
+import com.lyun.estate.biz.sms.resources.SmsResponse;
+import com.lyun.estate.biz.sms.service.SmsService;
 import com.lyun.estate.core.supports.types.SmsType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
