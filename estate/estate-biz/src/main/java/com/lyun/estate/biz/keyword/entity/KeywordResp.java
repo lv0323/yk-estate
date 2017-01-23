@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.spec.xiaoqu.entity;
+package com.lyun.estate.biz.keyword.entity;
 
 import com.lyun.estate.biz.spec.common.DomainType;
 

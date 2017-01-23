@@ -1,9 +1,13 @@
 package com.lyun.estate.biz.keyword.service;
 
 import com.google.common.base.Strings;
+import com.lyun.estate.biz.housedict.service.HouseService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
+import com.lyun.estate.biz.keyword.entity.KeywordResp;
 import com.lyun.estate.biz.keyword.repository.KeywordRepository;
 import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
+import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +23,12 @@ public class KeywordService {
 
     @Autowired
     private KeywordRepository keywordRepository;
+
+    @Autowired
+    private HouseService houseService;
+
+    @Autowired
+    private XiaoQuService xiaoQuService;
 
 
     public KeywordService(KeywordRepository keywordRepository) {
@@ -89,5 +99,39 @@ public class KeywordService {
             }
         }
         return results;
+    }
+
+    public List<KeywordResp> decorate(List<KeywordBean> keywordBeans) {
+        List<KeywordResp> result = new ArrayList<>();
+
+        keywordBeans.forEach(keywordBean -> {
+            KeywordResp resp = new KeywordResp();
+            resp.setType(keywordBean.getDomainType());
+            resp.setResp(keywordBean.getName());
+
+            StringBuilder noteBuilder = new StringBuilder();
+            if (!Strings.isNullOrEmpty(keywordBean.getAlias())) {
+                noteBuilder.append("(").append(keywordBean.getAlias()).append(") ");
+            }
+
+            if (keywordBean.getDomainType() == DomainType.DISTRICT) {
+                noteBuilder.append("区域");
+            } else if (keywordBean.getDomainType() == DomainType.SUB_DISTRICT) {
+                noteBuilder.append(houseService.findPrimaryDistrict(keywordBean.getId()).getName());
+            } else if (keywordBean.getDomainType() == DomainType.LINE) {
+                noteBuilder.append("地铁线");
+            } else if (keywordBean.getDomainType() == DomainType.STATION) {
+                noteBuilder.append("地铁站");
+            } else if (keywordBean.getDomainType() == DomainType.XIAO_QU) {
+                XiaoQuDetail detail = xiaoQuService.getDetail(keywordBean.getId());
+                noteBuilder.append(detail.getDistrict()).append(" ")
+                        .append(detail.getDistrict());
+                resp.setNote(noteBuilder.toString());
+            }
+            resp.setNote(noteBuilder.toString().trim());
+            result.add(resp);
+        });
+
+        return result;
     }
 }

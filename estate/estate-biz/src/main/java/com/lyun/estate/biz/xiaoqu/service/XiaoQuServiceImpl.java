@@ -6,6 +6,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.entity.FileDescription;
@@ -17,10 +18,12 @@ import com.lyun.estate.biz.housedict.service.HouseService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;
-import com.lyun.estate.biz.spec.fang.def.BizType;
 import com.lyun.estate.biz.spec.file.service.FileService;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
-import com.lyun.estate.biz.spec.xiaoqu.entity.*;
+import com.lyun.estate.biz.spec.xiaoqu.entity.EstateMapResource;
+import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
+import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuFilter;
+import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuSummary;
 import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuDetailBean;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
@@ -130,39 +133,6 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         });
 
         return summaries;
-    }
-
-    @Override
-    public List<KeywordResp> keywords(Long cityId, String keyword) {
-        List<KeywordResp> result = new ArrayList<>();
-        if (Strings.isNullOrEmpty(keyword)) {
-            return result;
-        }
-        List<KeywordBean> keywordBeans = keywordService.findContain(keyword, cityId,
-                Lists.newArrayList(DomainType.DISTRICT, DomainType.SUB_DISTRICT, DomainType.XIAO_QU), 10);
-
-        keywordBeans.forEach(keywordBean -> {
-            KeywordResp resp = new KeywordResp();
-            resp.setType(keywordBean.getDomainType());
-            resp.setResp(keywordBean.getName());
-
-            StringBuilder noteBuilder = new StringBuilder();
-            if (!Strings.isNullOrEmpty(keywordBean.getAlias())) {
-                noteBuilder.append("(").append(keywordBean.getAlias()).append(") ");
-            }
-
-            if (keywordBean.getDomainType() == DomainType.SUB_DISTRICT) {
-                noteBuilder.append(houseService.findPrimaryDistrict(keywordBean.getId()).getName());
-            } else if (keywordBean.getDomainType() == DomainType.XIAO_QU) {
-                XiaoQuDetailBean detail = xiaoQuRepository.findDetail(keywordBean.getId());
-                noteBuilder.append(houseService.findDistrict(detail.getDistrictId()).getName()).append(" ")
-                        .append(houseService.findSubDistrict(detail.getSubDistrictId()).getName());
-                resp.setNote(noteBuilder.toString());
-            }
-            resp.setNote(noteBuilder.toString().trim());
-            result.add(resp);
-        });
-        return result;
     }
 
     @Override

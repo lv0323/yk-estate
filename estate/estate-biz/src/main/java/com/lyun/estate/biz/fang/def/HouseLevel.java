@@ -1,16 +1,17 @@
-package com.lyun.estate.biz.spec.fang.def;
+package com.lyun.estate.biz.fang.def;
 
 /**
  * Created by Jeffrey on 2017-01-18.
  */
-public enum HouseRanking {
+public enum HouseLevel {
     A("A"),
     B("B"),
-    C("C"),;
+    C("C"),
+    D("D"),;
 
     private final String label;
 
-    HouseRanking(String label) {
+    HouseLevel(String label) {
         this.label = label;
     }
 
