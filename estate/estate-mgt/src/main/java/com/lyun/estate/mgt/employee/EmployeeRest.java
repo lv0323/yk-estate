@@ -92,7 +92,7 @@ public class EmployeeRest {
                 employee.getDepartmentId(), employee.getPositionId(), employee.getIsBoss(), employee.getIsAgent(),
                 employee.getMobile(), employee.getName(), employee.getGender()));
         sessionRepository.save(session);
-        return new RestResponse().add("ret", true).add("token", session.getId()).get();
+        return new RestResponse().add("ret", true).add("token", session.getId()).add("user", employee).get();
     }
 
     @GetMapping("logout")
