@@ -92,7 +92,7 @@
             <li class="header">主导航</li>
             <!-- Optionally, you can add icons to the links -->
             <li><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
-            <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
+            <li><a href="/mgt/franchisee/company.ftl"><i class="fa fa-link"></i> <span>加盟商管理</span></a></li>
             <li class="treeview active">
                 <a href="#"><i class="fa fa-link"></i> <span>组织机构</span>
                     <span class="pull-right-container">
