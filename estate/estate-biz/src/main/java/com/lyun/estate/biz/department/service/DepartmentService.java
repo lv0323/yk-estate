@@ -31,7 +31,7 @@ public class DepartmentService {
 
     public Department update(Department department) {
         Objects.requireNonNull(department);
-        if (refCheck(department))
+        if (Objects.equals(department.getParentId(), department.getId()) || refCheck(department))
             throw new EstateException(ExCode.INVALID_PARENT);
         repo.update(Objects.requireNonNull(department));
         return repo.selectById(department.getId());
