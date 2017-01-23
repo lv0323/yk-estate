@@ -21,14 +21,17 @@ public class Department {
     private String telephone;
     private String address;
     @NotNull
+    @JsonIgnore
     private Long cityId;
     @Null
     private City city;
     @NotNull
+    @JsonIgnore
     private Long districtId;
     @Null
     private District district;
     @NotNull
+    @JsonIgnore
     private Long subDistrictId;
     @Null
     private SubDistrict subDistrict;
