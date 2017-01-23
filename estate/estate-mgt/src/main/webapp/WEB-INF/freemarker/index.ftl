@@ -2,7 +2,7 @@
 <link href="${contextPath}/css/app/identity/index.css?vn=${bts!}" rel="stylesheet">
 <div class="login-box"  id="loginBox" data-angular>
     <div class="login-logo">
-        盈科地产后台管理系统
+        盈家后台管理系统
     </div>
     <!-- /.login-logo -->
 <div ng-controller="LoginCtrl" ng-cloak>
@@ -10,7 +10,7 @@
     <form id="loginForm" ng-submit="submit()">
         <div class="login-box-body">
             <div class="form-group has-feedback">
-                <input type="text" class="form-control" ng-model="loginData.mobile" placeholder="请输入用户名">
+                <input type="text" class="form-control" ng-model="loginData.mobile" placeholder="请输入手机号">
             </div>
             <div class="form-group has-feedback">
                 <input type="password" class="form-control" ng-model="loginData.password" placeholder="请输入密码">
@@ -25,22 +25,26 @@
         <div class="bottom-content"><a class="to-active"  ng-click="changePage('active')">去激活</a></div>
     </div>
     <div ng-if="state.page=='active'">
-    <form id="loginForm" ng-submit="activate()">
-        <div class="login-box-body">
-            <div class="form-group has-feedback">
+    <form id="activeForm" ng-submit="activate()">
+        <div class="identity-box">
+            <div class="form-group has-feedback" style="border-bottom: 1px solld #333;">
                 <input type="text" class="form-control" ng-model="activeData.secretKey" placeholder="请输入授权码">
             </div>
+        </div>
+        <div class="identity-box">
             <div class="form-group has-feedback">
-                <input type="text" class="form-control" ng-model="activeData.mobile" placeholder="请输入用户名">
+                <input type="text" class="form-control" ng-model="activeData.mobile" placeholder="请输入手机号">
             </div>
             <div class="form-group has-feedback captcha-container">
                 <input type="text" class="form-control" ng-model="activeData.captcha" placeholder="请输入验证码">
                 <img id="captcha-image" alt="验证码" title="验证码" ng-click="loadActiveCaptcha()" ng-src="{{activeCaptcha}}">
             </div>
             <div class="form-group has-feedback sms-container">
-                <input type="te xt" class="form-control" ng-model="activeData.sms" placeholder="请输入手机验证码">
-                <a class="btn btn-primary get-sms" ng-click="getActiveSMS()" ng-disabled="!activeData.captcha||!activeData.captcha">验证码</a>
+                <input type="te xt" class="form-control" ng-model="activeData.sms" placeholder="请输入短信验证码">
+                <a class="btn btn-primary get-sms" ng-click="getActiveSMS()" ng-disabled="!activeData.mobile||!activeData.captcha||!activeData.sendSMS">{{activeData.smsText}}</a>
             </div>
+            </div>
+            <div class="identity-box">
             <div class="form-group has-feedback">
                 <input type="password" class="form-control" ng-model="activeData.password" placeholder="请输入密码">
             </div>

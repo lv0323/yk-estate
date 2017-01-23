@@ -11,12 +11,12 @@ define(contextPath + '/js/service/identity-service.js',
             return requestService.get('/auth/identities/', data, header);
         };
 
-        IdentityService.login = function (params) {
+        IdentityService.login = function (params, header) {
             var opts = {};
             var password = utilService.generateSignature(utilService.generateSignature(params.password, params.salt), params.sugar);
             opts.password= password;
             opts.mobile= params.mobile;
-            return requestService.get('/api/employee/login', opts, {});
+            return requestService.get('/api/employee/login', opts, header||{});
         };
 
         IdentityService.logout = function () {
@@ -35,7 +35,8 @@ define(contextPath + '/js/service/identity-service.js',
                         password:params.password,
                         mobile: params.mobile
                     };
-                    IdentityService.login(opts, header).done(function(response){
+
+                    IdentityService.login(opts, {'X-CAPTCHA': "id=" + header.id +"&clientId="+ header.clientId +"&code="+ header.code}).done(function(response){
                         var userInfo = {
                             tokenSecret: response.token
                         };
