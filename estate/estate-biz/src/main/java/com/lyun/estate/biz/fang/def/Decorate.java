@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.spec.fang.def;
+package com.lyun.estate.biz.fang.def;
 
 /**
  * Created by Jeffrey on 2017-01-18.
@@ -6,7 +6,7 @@ package com.lyun.estate.biz.spec.fang.def;
 public enum Decorate {
     MAO("毛坯"),
     JIAN("简装"),
-    ZHOONG("中装"),
+    ZHONG("中装"),
     JING("精装"),
     HAO("豪装"),;
     private final String label;

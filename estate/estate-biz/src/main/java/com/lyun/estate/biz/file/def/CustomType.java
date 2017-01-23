@@ -3,6 +3,7 @@ package com.lyun.estate.biz.file.def;
 public enum CustomType {
     SHIJING("实景"),
     HUXING("户型"),
+    CERTIF("证件"),
     AVATAR("头像");
 
     private String label;

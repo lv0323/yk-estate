@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.spec.houselicence;
 
-import com.lyun.estate.biz.spec.fang.def.BizType;
+import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 
 /**

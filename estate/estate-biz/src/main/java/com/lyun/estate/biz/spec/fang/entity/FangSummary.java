@@ -1,9 +1,6 @@
 package com.lyun.estate.biz.spec.fang.entity;
 
-import com.lyun.estate.biz.spec.fang.def.BizType;
-import com.lyun.estate.biz.spec.fang.def.HouseTag;
-import com.lyun.estate.biz.spec.fang.def.Orientation;
-import com.lyun.estate.biz.spec.fang.def.PriceUnit;
+import com.lyun.estate.biz.fang.def.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,10 +17,11 @@ public class FangSummary {
     private BigDecimal unitPrice;
     private Integer sCounts;
     private Integer tCounts;
-    private Orientation orientation;
     private BigDecimal estateArea;
+    private Orientation orientation;
     private List<HouseTag> tags;
     private String xiaoQuName;
+    private HouseProcess process;
     private String imageURI;
 
     public Long getId() {
@@ -143,22 +141,12 @@ public class FangSummary {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "FangSummary{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", bizType=" + bizType +
-                ", totalPrice=" + totalPrice +
-                ", priceUnit=" + priceUnit +
-                ", unitPrice=" + unitPrice +
-                ", sCounts=" + sCounts +
-                ", tCounts=" + tCounts +
-                ", orientation=" + orientation +
-                ", estateArea=" + estateArea +
-                ", tags=" + tags +
-                ", xiaoQuName='" + xiaoQuName + '\'' +
-                ", imageURI='" + imageURI + '\'' +
-                '}';
+    public HouseProcess getProcess() {
+        return process;
+    }
+
+    public FangSummary setProcess(HouseProcess process) {
+        this.process = process;
+        return this;
     }
 }

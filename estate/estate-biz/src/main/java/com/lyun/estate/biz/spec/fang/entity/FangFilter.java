@@ -1,7 +1,9 @@
 package com.lyun.estate.biz.spec.fang.entity;
 
+import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.housedict.def.StructureType;
-import com.lyun.estate.biz.spec.fang.def.*;
+import com.lyun.estate.biz.spec.fang.def.ElevatorFilter;
+import com.lyun.estate.biz.spec.fang.def.ShiCountsFilter;
 
 import java.util.List;
 
@@ -9,23 +11,35 @@ import java.util.List;
  * Created by Jeffrey on 2017-01-09.
  */
 public class FangFilter {
+    private Long cityId;
     private BizType bizType;
-    private String district;
-    private String subDistrict;
-    private String line;
-    private String stataion;
+    private Long districtId;
+    private Long subDistrictId;
+    private Long lineId;
+    private Long stationId;
     private List<ShiCountsFilter> shiCountsFilters;
     private List<Orientation> orientations;
-    private List<AreaFilter> areaFilters;
     private List<HouseTag> houseTags;
-    private List<YearFilter> yearFilters;
     private List<FloorType> floorTypes;
     private List<Decorate> decorates;
     private List<ElevatorFilter> elevatorFilters;
     private StructureType structureType;
     private Integer minPrice;
     private Integer maxPrice;
+    private Integer minYear;
+    private Integer maxYear;
+    private Integer minArea;
+    private Integer maxArea;
     private String keyword;
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public FangFilter setCityId(Long cityId) {
+        this.cityId = cityId;
+        return this;
+    }
 
     public BizType getBizType() {
         return bizType;
@@ -36,39 +50,39 @@ public class FangFilter {
         return this;
     }
 
-    public String getDistrict() {
-        return district;
+    public Long getDistrictId() {
+        return districtId;
     }
 
-    public FangFilter setDistrict(String district) {
-        this.district = district;
+    public FangFilter setDistrictId(Long districtId) {
+        this.districtId = districtId;
         return this;
     }
 
-    public String getSubDistrict() {
-        return subDistrict;
+    public Long getSubDistrictId() {
+        return subDistrictId;
     }
 
-    public FangFilter setSubDistrict(String subDistrict) {
-        this.subDistrict = subDistrict;
+    public FangFilter setSubDistrictId(Long subDistrictId) {
+        this.subDistrictId = subDistrictId;
         return this;
     }
 
-    public String getLine() {
-        return line;
+    public Long getLineId() {
+        return lineId;
     }
 
-    public FangFilter setLine(String line) {
-        this.line = line;
+    public FangFilter setLineId(Long lineId) {
+        this.lineId = lineId;
         return this;
     }
 
-    public String getStataion() {
-        return stataion;
+    public Long getStationId() {
+        return stationId;
     }
 
-    public FangFilter setStataion(String stataion) {
-        this.stataion = stataion;
+    public FangFilter setStationId(Long stationId) {
+        this.stationId = stationId;
         return this;
     }
 
@@ -91,30 +105,12 @@ public class FangFilter {
         return this;
     }
 
-    public List<AreaFilter> getAreaFilters() {
-        return areaFilters;
-    }
-
-    public FangFilter setAreaFilters(List<AreaFilter> areaFilters) {
-        this.areaFilters = areaFilters;
-        return this;
-    }
-
     public List<HouseTag> getHouseTags() {
         return houseTags;
     }
 
     public FangFilter setHouseTags(List<HouseTag> houseTags) {
         this.houseTags = houseTags;
-        return this;
-    }
-
-    public List<YearFilter> getYearFilters() {
-        return yearFilters;
-    }
-
-    public FangFilter setYearFilters(List<YearFilter> yearFilters) {
-        this.yearFilters = yearFilters;
         return this;
     }
 
@@ -172,6 +168,42 @@ public class FangFilter {
         return this;
     }
 
+    public Integer getMinYear() {
+        return minYear;
+    }
+
+    public FangFilter setMinYear(Integer minYear) {
+        this.minYear = minYear;
+        return this;
+    }
+
+    public Integer getMaxYear() {
+        return maxYear;
+    }
+
+    public FangFilter setMaxYear(Integer maxYear) {
+        this.maxYear = maxYear;
+        return this;
+    }
+
+    public Integer getMinArea() {
+        return minArea;
+    }
+
+    public FangFilter setMinArea(Integer minArea) {
+        this.minArea = minArea;
+        return this;
+    }
+
+    public Integer getMaxArea() {
+        return maxArea;
+    }
+
+    public FangFilter setMaxArea(Integer maxArea) {
+        this.maxArea = maxArea;
+        return this;
+    }
+
     public String getKeyword() {
         return keyword;
     }
@@ -179,5 +211,31 @@ public class FangFilter {
     public FangFilter setKeyword(String keyword) {
         this.keyword = keyword;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "FangFilter{" +
+                "cityId=" + cityId +
+                ", bizType=" + bizType +
+                ", districtId=" + districtId +
+                ", subDistrictId=" + subDistrictId +
+                ", lineId=" + lineId +
+                ", stationId=" + stationId +
+                ", shiCountsFilters=" + shiCountsFilters +
+                ", orientations=" + orientations +
+                ", houseTags=" + houseTags +
+                ", floorTypes=" + floorTypes +
+                ", decorates=" + decorates +
+                ", elevatorFilters=" + elevatorFilters +
+                ", structureType=" + structureType +
+                ", minPrice=" + minPrice +
+                ", maxPrice=" + maxPrice +
+                ", minYear=" + minYear +
+                ", maxYear=" + maxYear +
+                ", minArea=" + minArea +
+                ", maxArea=" + maxArea +
+                ", keyword='" + keyword + '\'' +
+                '}';
     }
 }
