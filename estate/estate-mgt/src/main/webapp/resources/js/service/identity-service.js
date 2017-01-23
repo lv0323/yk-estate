@@ -20,7 +20,14 @@ define(contextPath + '/js/service/identity-service.js',
         };
 
         IdentityService.logout = function () {
-            return requestService.get('/auth/logout');
+            var defer =$.Deferred();
+            requestService.get('/api/employee/logout').done(function(response){
+                localStorage.removeItem('userInfo');
+                defer.resolve(response);
+            }).fail(function(response){
+                defer.reject(response);
+            });
+            return defer.promise();
         };
         IdentityService.getSalt = function(param){
           return requestService.get('/api/employee/salt',param);
@@ -38,7 +45,10 @@ define(contextPath + '/js/service/identity-service.js',
 
                     IdentityService.login(opts, {'X-CAPTCHA': "id=" + header.id +"&clientId="+ header.clientId +"&code="+ header.code}).done(function(response){
                         var userInfo = {
-                            tokenSecret: response.token
+                            tokenSecret: response.token,
+                            id: response.user &&response.user.id,
+                            name: response.user &&response.user.name,
+                            company_id: response.user &&response.user.company_id,
                         };
                         localStorage.setItem("userInfo", JSON.stringify(userInfo));
                          defer.resolve(response);

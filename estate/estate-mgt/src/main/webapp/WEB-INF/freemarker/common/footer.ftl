@@ -13,18 +13,17 @@
 <!-- jQuery 2.2.3 -->
 <script src="${contextPath}/js/libs/jquery-2.2.0.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
-<script src="${contextPath}/js/libs/bootstrap.min.js"></script>
+<#--<script src="${contextPath}/js/libs/bootstrap.js"></script>-->
 <script src="${contextPath}/js/libs/require.min.js?vn=${bts!}"></script>
 <script src="${contextPath!}/js/main.js?vn=${bts!}"></script>
-<script src="${contextPath!}/js/service/request-service.js"></script>
-
+<#--<script src="${contextPath!}/js/service/request-service.js"></script>-->
 <!-- FastClick -->
 <#--<script src="${contextPath}/js/plugins/fastclick/fastclick.js"></script>-->
-
 <!-- AdminLTE for demo purposes -->
 <script src="${contextPath}/js/demo.js"></script>
 <!-- AdminLTE App -->
 <script src="${contextPath}/js/app.js"></script>
+<script src="${contextPath}/js/identity/userInfo.js"></script>
 <!-- page script -->
 </body>
 </html>
