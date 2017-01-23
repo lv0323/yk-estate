@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.company.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lyun.estate.biz.employee.entity.Employee;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Future;
@@ -20,6 +21,8 @@ public class Company {
     @NotEmpty
     private String address;
     private String introduction;
+    @Null
+    private Employee boss;
     @Null
     @JsonIgnore
     private String secretKey;
@@ -138,6 +141,15 @@ public class Company {
 
     public Company setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
+        return this;
+    }
+
+    public Employee getBoss() {
+        return boss;
+    }
+
+    public Company setBoss(Employee boss) {
+        this.boss = boss;
         return this;
     }
 }
