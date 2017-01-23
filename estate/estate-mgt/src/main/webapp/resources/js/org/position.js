@@ -5,7 +5,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
     function (mainApp,RequestService) {
 
         var BaseUrl = "/api/position/";
-        var header = {'x-auth-token': '889a9b62-1908-4146-894b-1c30167e35e4'};
+        var header = {};
         var positionAllDataRaw = {};
 
         RequestService.get(BaseUrl+"query",null,header)
@@ -74,8 +74,8 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                 .done(function(){
                     location.reload(true);
                 })
-                .fail(function (data) {
-                    var res = JSON.parse(data.responseText);
+                .fail(function (res) {
+                    // var res = JSON.parse(data.responseText);
                     if(res["ex_code"] === "HAS_EMPLOYEE"){
                         alert(res["message"]);
                     }
