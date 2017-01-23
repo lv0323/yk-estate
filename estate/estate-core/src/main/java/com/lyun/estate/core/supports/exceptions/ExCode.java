@@ -18,7 +18,8 @@ public enum ExCode {
     NULL_PARENT("父部门不能为空"),
     INVALID_PARENT("父部门不能调整为自身子部门的下级部门，请重新选择调整的部门数据"),
     CANT_SALT("获取Salt失败"),
-    LOGIN_FAIL("登录失败");
+    LOGIN_FAIL("登录失败"),
+    JSON_ERROR("JSON对象{},转换错误:{}"),
     ;
 
     private final String messageTemplate;
