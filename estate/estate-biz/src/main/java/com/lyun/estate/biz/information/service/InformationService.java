@@ -10,7 +10,6 @@ import com.lyun.estate.biz.information.entity.InformationCounter;
 import com.lyun.estate.biz.information.entity.InformationCounterResource;
 import com.lyun.estate.biz.information.entity.InformationResource;
 import com.lyun.estate.biz.information.repository.InformationRepository;
-import com.lyun.estate.biz.spec.fang.entity.FangDetail;
 import com.lyun.estate.biz.spec.fang.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.service.FangService;
 import com.lyun.estate.core.supports.ExecutionContext;
@@ -72,7 +71,7 @@ public class InformationService {
                     try {
                         t.setData(mapper.writeValueAsString(fang));
                     } catch (JsonProcessingException e) {
-                        e.printStackTrace();
+                        throw new EstateException(JSON_ERROR, fang.toString(), e.getMessage());
                     }
                     break;
                 case PHOTO_ARTICLE:
@@ -82,7 +81,6 @@ public class InformationService {
                 default:
                     throw new EstateException(PARAM_ILLEGAL, "InfoContentType", t.getContentType());
             }
-
             return t;
         }).collect(Collectors.toList());
          /* 更新消息计数器 */
@@ -114,12 +112,12 @@ public class InformationService {
         }
         return resultList;
     }
-    //TODO 会更新InfoCounter相应的值
+
     @Transactional
     public List<InformationResource> getCurrentUserInfoByBusinessType(InfoBusinessType businessType, PageBounds pageBounds) {
         return getInfoByBusinessType(Long.valueOf(executionContext.getUserId()), businessType, pageBounds);
     }
-    //TODO 如果用户没有InfoCounter会创建一个
+
     @Transactional
     public boolean createInfo(String infoTitle, String infoSummary, String infoContent, InfoContentType contentType, InfoBusinessType businessType, Long sender, Long receiver) {
         /* 创建info */

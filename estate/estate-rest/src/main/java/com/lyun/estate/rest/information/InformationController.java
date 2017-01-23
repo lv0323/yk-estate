@@ -15,7 +15,7 @@ import java.util.List;
  * Created by jesse on 2017/1/19.
  */
 @RestController
-@RequestMapping("/infomation")
+@RequestMapping("/information")
 public class InformationController {
 
     @Autowired
