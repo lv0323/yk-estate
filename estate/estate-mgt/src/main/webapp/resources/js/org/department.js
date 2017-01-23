@@ -5,8 +5,33 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
     function (mainApp,RequestService) {
 
         var BaseUrl = "/api/department/";
+
         var header = {};
+
         var departAllDataRaw = {};
+
+        function iniDropList(url,superior_id,header,jqueryElementOuter,jqueryElementInner){
+            RequestService.get(url,{id:superior_id},header)
+                .done(function (data) {
+                    var appendOption = '';
+                    $.each(data, function (index, element) {
+                        appendOption += '<option id="' + element.id + '">' + element.name + '</option>';
+
+                    });
+                    $('#'+jqueryElementOuter+' #'+jqueryElementInner).html(appendOption);
+                })
+        }
+
+        //get city from server
+        RequestService.get(BaseUrl+"district/cites",null,header)
+            .done(function (data) {
+                var appendOption = "";
+                $.each(data,function (index, city) {
+                    appendOption += '<option id="'+city.id+'">'+city.name+'</option>';
+                });
+                $('#addDepartDialog #departCid').append(appendOption);
+                $('#editDepartDialog #departCid').append(appendOption);
+            });
 
         //get data from server and display data
         RequestService.get(BaseUrl+"query-sorted",null,header)
@@ -57,6 +82,32 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
             $('#addDepartDialog #addDepartLabel').text('增加部门');
         });
 
+        //get district and subDistrict from server in add department dialog
+        $('#addDepartDialog').on('change','#departCid',function(){
+            var city_id = $('#addDepartDialog #departCid option:selected').attr("id");
+            //get district from server
+            RequestService.get(BaseUrl+"district/districts",{id:city_id},header)
+                .done(function (data) {
+                    var appendOption = "";
+                    $.each(data,function (index, district) {
+                        appendOption += '<option id="'+district.id+'">'+district.name+'</option>';
+                    });
+                    $('#addDepartDialog #departDid').html(appendOption);
+
+                    var district_id = $('#addDepartDialog #departDid option:selected').attr("id");
+                    //get subDistrict from server
+                    iniDropList(BaseUrl+"district/sub-districts",district_id,header,'addDepartDialog','departSDid');
+                });
+        });
+
+        //get subDistrict from server in add department dialog
+        $('#addDepartDialog').on('change','#departDid',function(){
+            var district_id = $('#addDepartDialog #departDid option:selected').attr("id");
+            iniDropList(BaseUrl+"district/sub-districts",district_id,header,'addDepartDialog','departSDid');
+        });
+
+
+
         //action for added department
         $('#addDepartDialog').on('click','#confirmAddDepartBtn',function(){
             var toAddDepart = {
@@ -64,10 +115,11 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                     name: $('#addDepartDialog #departName').val(),
                     parentId: $('#addDepartDialog #departPid option:selected').val(),
                     shortName: $('#addDepartDialog #departSpell').val(),
-                    telephone: $('#addDepartDialog #departTel').val()
+                    telephone: $('#addDepartDialog #departTel').val(),
+                    cityId:$('#addDepartDialog #departCid option:selected').attr("id"),
+                    districtId:$('#addDepartDialog #departDid option:selected').attr("id"),
+                    subDistrictId:$('#addDepartDialog #departSDid option:selected').attr("id")
                 };
-
-
             RequestService.post(BaseUrl+"add",toAddDepart,header)
                 .done(function(){
                     location.reload(true);
@@ -120,7 +172,59 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
             $('#editDepartDialog #departSpell').val(depart["short_name"]);
             $('#editDepartDialog #departTel').val(depart["telephone"]);
             $('#editDepartDialog #departAddress').val(depart["address"]);
+            $('#editDepartDialog #departCid').find('option[id='+depart["city_id"]+']').attr('selected','selected');
+            var city_id = $('#editDepartDialog #departCid option:selected').attr("id");
+            if(city_id){
+                RequestService.get(BaseUrl+"district/districts",{id:city_id},header)
+                    .done(function (data) {
+                        var appendOption = "";
+                        $.each(data,function (index, district) {
+                            appendOption += '<option id="'+district.id+'">'+district.name+'</option>';
+                        });
+                        $('#editDepartDialog #departDid').html(appendOption);
+                        $('#editDepartDialog #departDid').find('option[id='+depart["district_id"]+']').attr('selected','selected');
+                        var district_id = $('#editDepartDialog #departDid option:selected').attr("id");
+                        //get subDistrict from server
+                        RequestService.get(BaseUrl+"district/sub-districts",{id:district_id},header)
+                            .done(function (data) {
+                                var appendOption = '';
+                                $.each(data, function (index, subDistrict) {
+                                    appendOption += '<option id="' + subDistrict.id + '">' + subDistrict.name + '</option>';
+
+                                });
+                                $('#editDepartDialog #departSDid').html(appendOption);
+                                $('#editDepartDialog #departSDid').find('option[id='+depart["sub_district_id"]+']').attr('selected','selected');
+                            });
+
+                    });
+            }
+
         });
+
+        //get district and subDistrict from server in edit department dialog
+        $('#editDepartDialog').on('change','#departCid',function(){
+            var city_id = $('#editDepartDialog #departCid option:selected').attr("id");
+            //get district from server
+            RequestService.get(BaseUrl+"district/districts",{id:city_id},header)
+                .done(function (data) {
+                    var appendOption = "";
+                    $.each(data,function (index, district) {
+                        appendOption += '<option id="'+district.id+'">'+district.name+'</option>';
+                    });
+                    $('#editDepartDialog #departDid').html(appendOption);
+
+                    var district_id = $('#editDepartDialog #departDid option:selected').attr("id");
+                    //get subDistrict from server
+                    iniDropList(BaseUrl+"district/sub-districts",district_id,header,'editDepartDialog','departSDid');
+                });
+        });
+
+        //get subDistrict from server in edit department dialog
+        $('#editDepartDialog').on('change','#departDid',function(){
+            var district_id = $('#editDepartDialog #departDid option:selected').attr("id");
+            iniDropList(BaseUrl+"district/sub-districts",district_id,header,'editDepartDialog','departSDid');
+        });
+
 
         //action for updated department
         $('#editDepartDialog').on('click','#confirmEditDepartBtn',function(){
@@ -134,7 +238,10 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                     name: $('#editDepartDialog #departName').val(),
                     parentId: parseInt(parent_id,10),
                     shortName: $('#editDepartDialog #departSpell').val(),
-                    telephone: $('#editDepartDialog #departTel').val()
+                    telephone: $('#editDepartDialog #departTel').val(),
+                    cityId:$('#editDepartDialog #departCid option:selected').attr("id"),
+                    districtId:$('#editDepartDialog #departDid option:selected').attr("id"),
+                    subDistrictId:$('#editDepartDialog #departSDid option:selected').attr("id")
                 };
             }else{
                 toEditDepart = {
@@ -143,7 +250,10 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                     name: $('#editDepartDialog #departName').val(),
                     parentId: parent_id,
                     shortName: $('#editDepartDialog #departSpell').val(),
-                    telephone: $('#editDepartDialog #departTel').val()
+                    telephone: $('#editDepartDialog #departTel').val(),
+                    cityId:$('#editDepartDialog #departCid option:selected').attr("id"),
+                    districtId:$('#editDepartDialog #departDid option:selected').attr("id"),
+                    subDistrictId:$('#editDepartDialog #departSDid option:selected').attr("id")
                 };
             }
             if(parent_id === id){
@@ -153,8 +263,8 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                     .done(function(){
                         location.reload(true);
                     })
-                    .fail(function (data) {
-                        var res = JSON.parse(data.responseText);
+                    .fail(function (res) {
+                        // var res = JSON.parse(data.responseText);
                         if(res["ex_code"] === "INVALID_PARENT"){
                             alert(res["message"]); //in case parent depart to be arranged under its child
                         }
