@@ -21,7 +21,8 @@ public interface CompanyRepository {
     @Update("update t_company set end_date = #{endDate} where id = #{id}")
     int renew(@Param("id") Long id, @Param("endDate") Date endDate);
 
-    @Update("update t_company set name = #{name},short_name = #{shortName},license = #{license},address = #{address},introduction = #{introduction} where id = #{id}")
+    @Update("update t_company set name = #{name},short_name = #{shortName},license = #{license},address = #{address},introduction = #{introduction}, " +
+            "update_time = CURRENT_TIMESTAMP where id = #{id}")
     int update(Company company);
 
     @Select("select * from t_company where id = #{id}")
