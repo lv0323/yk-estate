@@ -109,7 +109,9 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor()).excludePathPatterns("/index", "/swagger-resources/**", "/**/api-docs",
+        registry.addInterceptor(new AuthInterceptor()).excludePathPatterns("/css/**", "/js/**", "/img/**", "/favicon.ico",
+                "/index", "/swagger-resources/**", "/**/api-docs",
+                "/captcha", "/sms",
                 "/api/employee/active", "/api/employee/salt", "/api/employee/login");
     }
 
