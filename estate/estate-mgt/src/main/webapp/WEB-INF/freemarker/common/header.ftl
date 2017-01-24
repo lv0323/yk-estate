@@ -24,6 +24,22 @@
    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
      <![endif]-->
      <script src="${contextPath!}/js/libs/angular.min.js"></script>
+     <style>
+         .dropdown-yk{width:120px; position:relative}
+         .dropdown-yk .parent{width:144px; height:34px; line-height:34px; padding-left:4px; border:1px solid #ccc; color:#807a62; cursor:pointer}
+         .dropdown-yk ul{width:138px;border:1px solid #ccc; position:absolute; display:none;z-index: 10; list-style: none; background: #fff;padding:0;margin:2px 0 0;}
+         .dropdown-yk ul li{height:24px;cursor:pointer; position:relative;list-style: none;padding:0;margin:0;}
+         .dropdown-yk ul li span{ width:138px; height:24px; line-height:24px; padding-left:10px; display:block; left:0; top:0; position:absolute;}
+         .dropdown-yk ul li dl{ width:138px;height:auto;position:absolute; left:138px; top:0;border:1px solid #ccc; display:none; background: #fff}
+         .dropdown-yk ul li dl dd{border-bottom:1px solid #fff; padding-left:10px;height:24px; line-height:24px; }
+         .dropdown-yk ul li dl dd:hover{ background:#bbb;}
+         .dropdown-yk ul li:hover{ background:#ccc; color:#fff;}
+         .dropdown-yk ul li:hover dl{
+             background: #fff;
+             color: #666;
+            }
+         }
+     </style>
  </head>
  <style>
      .main-footer{
