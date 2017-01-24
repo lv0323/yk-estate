@@ -15,6 +15,7 @@ public enum ExCode {
     CREATE_FAIL("{}新增失败,{}"),
     UPDATE_FAIL("{}更新失败,{}"),
     NOT_FOUND("根据{}未找到{}"),
+    EXISTED_ERROR("{}已经存在,{}"),
     NULL_PARENT("父部门不能为空"),
     INVALID_PARENT("父部门不能调整为自身子部门的下级部门，请重新选择调整的部门数据"),
     CANT_SALT("获取Salt失败"),

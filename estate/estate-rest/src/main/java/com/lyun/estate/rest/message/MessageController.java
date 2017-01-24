@@ -3,9 +3,12 @@ package com.lyun.estate.rest.message;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.lyun.estate.biz.message.def.MessageBusinessType;
 import com.lyun.estate.biz.message.def.MessageContentType;
+import com.lyun.estate.biz.message.entity.Message;
 import com.lyun.estate.biz.message.entity.MessageCounterResource;
 import com.lyun.estate.biz.message.entity.MessageResource;
 import com.lyun.estate.biz.message.service.MessageService;
+import com.lyun.estate.biz.mq.consumer.MessageConsumer;
+import com.lyun.estate.biz.mq.producer.MessageProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +24,12 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
+    @Autowired
+    private MessageProducer messageProducer;
+
+    @Autowired
+    private MessageConsumer messageConsumer;
+
     @GetMapping("/counter")
     MessageCounterResource getMessageCounter() {
         return messageService.getMessageCounter();
@@ -33,9 +42,22 @@ public class MessageController {
     }
 
     //TODO 不在rest提供API
-    @GetMapping("/create")
-    boolean createMessage(@RequestParam(required = true) String title, @RequestParam(required = true) String summary, @RequestParam(required = true) String content,
+    @GetMapping("/produce")
+    boolean produceMessage(@RequestParam(required = true) String title, @RequestParam(required = true) String summary, @RequestParam(required = true) String content,
                           @RequestParam(required = true) MessageContentType contentType, @RequestParam(required = true) MessageBusinessType businessType) {
-        return messageService.createMessage(title, summary, content, contentType, businessType);
+//        return messageService.createMessage(title, summary, content, contentType, businessType);
+        Message message = new Message();
+        message.setTitle(title);
+        message.setSummary(summary);
+        message.setContent(content);
+        message.setContentType(contentType);
+        message.setBusinessType(businessType);
+        return messageProducer.send(message);
+    }
+
+    //TODO 不在rest提供API
+    @GetMapping("/consume")
+    boolean consumeMessage() {
+        return messageConsumer.receive();
     }
 }

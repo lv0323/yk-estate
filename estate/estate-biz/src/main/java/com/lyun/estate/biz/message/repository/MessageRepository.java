@@ -14,6 +14,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 /**
  * Created by jesse on 2017/1/20.
  */
@@ -46,4 +48,7 @@ public interface MessageRepository {
 
     @InsertProvider(type = MessageSqlProvider.class, method = "updateMessageCounter")
     int updateMessageCounter(MessageCounter messageCounter);
+
+    @Select("SELECT * FROM t_message WHERE uuid=#{uuid}")
+    Message getMessageByUUID(@Param("uuid") String uuid);
 }

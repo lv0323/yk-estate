@@ -8,9 +8,11 @@ CREATE TABLE t_message (
   sender_id         BIGINT REFERENCES t_user (id), --地图显示区域
   receiver_id       BIGINT REFERENCES t_user (id),
   create_time    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_time    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  update_time    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  uuid    VARCHAR(128) NOT NULL
 );
-CREATE INDEX idx_ms_receiver ON t_message (receiverId,business_type);
+CREATE INDEX idx_ms_receiver ON t_message (receiver_id,business_type);
+CREATE INDEX idx_ms_uuid ON t_message (uuid);
 
 CREATE TABLE t_message_counter (-- 城市
   id             BIGSERIAL PRIMARY KEY, --id
