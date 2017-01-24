@@ -23,7 +23,7 @@
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                        <span class="hidden-xs username">呵呵哒</span>
+                        <span class="hidden-xs username"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
