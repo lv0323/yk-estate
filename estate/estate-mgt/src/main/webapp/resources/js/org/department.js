@@ -62,8 +62,8 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                             $('#addDepartDialog .listUl').append('<li class="department department-'+ index +'" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
                             $('#editDepartDialog .listUl').append('<li class="department department-'+ index +'" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
                         }else{
-                            $('#addDepartDialog').find('.department[index='+departRaw.department.parent_id+']').find('.department-dl').append('<li class="department" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
-                            $('#editDepartDialog').find('.department[index='+departRaw.department.parent_id+']').find('.department-dl').append('<li class="department" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
+                            $('#addDepartDialog').find('.department[index='+departRaw.department.parent_id+']').find('>.department-dl').append('<li class="department" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
+                            $('#editDepartDialog').find('.department[index='+departRaw.department.parent_id+']').find('>.department-dl').append('<li class="department" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
                         }
 
                     });
