@@ -20,6 +20,7 @@ public class MessageSqlProvider {
             VALUES_IF("business_type", "#{businessType}", message.getBusinessType() != null);
             VALUES_IF("sender_id", "#{senderId}", message.getSenderId() != null);
             VALUES_IF("receiver_id", "#{receiverId}", message.getReceiverId() != null);
+            VALUES("uuid", "#{uuid}");
         }}.toString();
     }
 

@@ -4,6 +4,7 @@ import com.lyun.estate.biz.message.def.MessageBusinessType;
 import com.lyun.estate.biz.message.def.MessageContentType;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by jesse on 2017/1/20.
@@ -19,6 +20,7 @@ public class Message {
     private Long receiverId;
     private Date createTime;
     private Date updateTime;
+    private String uuid = UUID.randomUUID().toString();
 
     public Long getId() {
         return id;
@@ -100,6 +102,14 @@ public class Message {
         this.receiverId = receiverId;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     @Override
     public String toString() {
         return "Message{" +
@@ -113,6 +123,7 @@ public class Message {
                 ", receiverId=" + receiverId +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", uuid='" + uuid + '\'' +
                 '}';
     }
 }

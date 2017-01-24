@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,6 +46,9 @@ public class MessageService {
 
 
     public MessageCounterResource getMessageCounter(Long receiverId) {
+        if (receiverId == null) {
+            throw new EstateException(PARAM_NULL, "receiverId");
+        }
         return messageRepository.getMessageCounterResource(receiverId);
     }
 
@@ -54,6 +58,12 @@ public class MessageService {
 
     @Transactional
     public List<MessageResource> getMessage(Long receiverId, MessageBusinessType businessType, PageBounds pageBounds) {
+        if (receiverId == null) {
+            throw new EstateException(PARAM_NULL, "receiverId");
+        }
+        if (businessType == null) {
+            throw new EstateException(PARAM_NULL, "businessType");
+        }
          /*  获取消息 */
         List<MessageResource> messageResourceList = messageRepository.getMessage(receiverId, businessType, pageBounds);
         if (CollectionUtils.isEmpty(messageResourceList)) {
@@ -152,6 +162,13 @@ public class MessageService {
     public boolean createMessage(String title, String summary, String content, MessageContentType contentType, MessageBusinessType businessType) {
         //TODO 默认sender
         return createMessage(title, summary, content, contentType, businessType, 1L, Long.valueOf(executionContext.getUserId()));
+    }
+
+    public Message getMessageByUUID(String uuid) {
+        if (StringUtils.isEmpty(uuid)) {
+            throw new EstateException(PARAM_NULL, "UUID");
+        }
+        return messageRepository.getMessageByUUID(uuid);
     }
 
 }
