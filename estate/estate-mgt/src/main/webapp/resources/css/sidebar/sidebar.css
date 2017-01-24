@@ -6,3 +6,9 @@
     background: #d9e9f6;
     text-align: center;
 }
+
+.main-header .user-image,.img-circle {
+    display: none;
+}
+
+

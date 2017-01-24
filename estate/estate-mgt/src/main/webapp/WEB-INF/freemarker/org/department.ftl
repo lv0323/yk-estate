@@ -18,9 +18,11 @@
                     <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">上级部门</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <select id="departPid" class="form-control btn-group dropdown" onchange="">
-                                <#--<option value="">请选择</option>-->
-                            </select>
+                            <div class="dropdown-yk">
+                                <div class="parent">请选择</div>
+                                <ul class="listUl">
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -81,12 +83,14 @@
             </div>
             <div class="modal-body">
                 <form id="editDepartForm" class="form-horizontal" method="post">
-                    <div class="form-group">
+                    <div class="form-group parent-department-form-group">
                         <label id="superiorDepartLabel" class="col-lg-2 col-md-2 col-sm-2 control-label">上级部门</label>
-                        <div class="col-lg-3 col-md-4 col-sm-4">
-                            <select id="departPid" class="form-control btn-group dropdown" onchange="">
-                                <option value="" class="hidden"></option>
-                            </select>
+                        <div class="col-lg-3 col-md-4 col-sm-4 ">
+                            <div class="dropdown-yk">
+                                <div class="parent">请选择</div>
+                                <ul class="listUl">
+                                </ul>
+                            </div>
                             <input id="departId" class="hidden">
                         </div>
                     </div>

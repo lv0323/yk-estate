@@ -58,8 +58,14 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                         $('#departList>tbody').append(appendHtml);
 
                         //initialize departments selection in add/edit dialog
-                        $('#addDepartDialog #departPid').append('<option value="'+departRaw.department["id"]+'">'+'&nbsp;'.repeat(departRaw.level*4)+departRaw.department["name"]+'</option>');
-                        $('#editDepartDialog #departPid').append('<option value="'+departRaw.department["id"]+'">'+'&nbsp;'.repeat(departRaw.level*4)+departRaw.department["name"]+'</option>');
+                        if(departRaw.level === 0){
+                            $('#addDepartDialog .listUl').append('<li class="department department-'+ index +'" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
+                            $('#editDepartDialog .listUl').append('<li class="department department-'+ index +'" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
+                        }else{
+                            $('#addDepartDialog').find('.department[index='+departRaw.department.parent_id+']').find('.department-dl').append('<li class="department" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
+                            $('#editDepartDialog').find('.department[index='+departRaw.department.parent_id+']').find('.department-dl').append('<li class="department" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
+                        }
+
                     });
 
                     $('#departList').DataTable({
@@ -113,7 +119,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
             var toAddDepart = {
                     address: $('#addDepartDialog #departAddress').val(),
                     name: $('#addDepartDialog #departName').val(),
-                    parentId: $('#addDepartDialog #departPid option:selected').val(),
+                    parentId: $('#addDepartDialog .parent').attr('department'),
                     shortName: $('#addDepartDialog #departSpell').val(),
                     telephone: $('#addDepartDialog #departTel').val(),
                     cityId:$('#addDepartDialog #departCid option:selected').attr("id"),
@@ -156,16 +162,14 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
             $('#editDepartDialog #editDepartLabel').text('编辑部门');
             if(pId){
                 // $('#editDepartDialog #departPid').prop('disabled',false);
-                $('#editDepartDialog #departPid').css('display','inline');
-                $('#editDepartDialog #superiorDepartLabel').css('display','inline');
-                $('#editDepartDialog #departPid').find('option[value='+pId+']').attr('selected','selected');
-                $('#editDepartDialog #departPid').find('option[value!='+pId+']').removeAttr('selected');
+                $('#editDepartDialog .parent-department-form-group').show(0);
+                $("#editDepartDialog .dropdown-yk .parent").text($('#editDepartDialog').find('.department[index='+pId+'] >.department-name').text());
+                $("#editDepartDialog .dropdown-yk .parent").attr('department',pId);
             }else{
                 // $('#editDepartDialog #departPid').prop('disabled','disabled');
-                $('#editDepartDialog #departPid').css('display','none');
-                $('#editDepartDialog #superiorDepartLabel').css('display','none');
-                $('#editDepartDialog #departPid').find('option[value=""]').attr('selected','selected');
-                $('#editDepartDialog #departPid').find('option[value!='+pId+']').removeAttr('selected');
+                $("#editDepartDialog .dropdown-yk .parent").text('请选择');
+                $("#editDepartDialog .dropdown-yk .parent").removeAttr('department');
+                $('#editDepartDialog .parent-department-form-group').hide(0);
             }
             $('#editDepartDialog #departId').val(depart["id"]);
             $('#editDepartDialog #departName').val(depart["name"]);
@@ -229,7 +233,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
         //action for updated department
         $('#editDepartDialog').on('click','#confirmEditDepartBtn',function(){
             var id = $('#editDepartDialog #departId').val();
-            var parent_id = $('#editDepartDialog #departPid option:selected').val();
+            var parent_id = $('#editDepartDialog .parent').attr('department');
             var toEditDepart = {};
             if(parent_id){
                 toEditDepart = {
@@ -273,5 +277,58 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
 
         });
 
+        /*下拉框*/
+        //点击后判断ul是否隐藏
+        $(".dropdown-yk .parent").click(function(){
+            var ul = $(".listUl");
+            if(ul.css("display")=="none"){
+                ul.slideDown(200);
+            }else{
+                ul.slideUp(200);
+            }
+            return false;
+        });
+        //鼠标悬停显示二级导航栏目
+       /* $('.dropdown-yk li').hover(function(){
+            $('dl',this).show(0);
+        },function(){
+            $('dl',this).hide(0);
+        }).each(function(){
+            var second = $(this).find('.second');
+            if(second.length == '1'){
+                $(this).addClass('dot');
+            }
+        });*/
 
+        $('.dropdown-yk').on('mouseover mouseout','.department',function(e){
+            if(event.type == "mouseover"){
+                if($('>dl',this).find('.department').length>0){
+                    $('>dl',this).show(0);
+                }
+            }else if(event.type == "mouseout"){
+                $('dl',this).hide(0);
+            }
+        });
+
+        /*$('.dropdown-yk dl').each(function(){
+            $('dd:last',this).css('border-bottom','0');
+        });*/
+        $('.dropdown-yk').on('click','.department',function () {
+            $(".dropdown-yk .parent").text($(this).find('>.department-name').text());
+            $(".dropdown-yk .parent").attr('department',$(this).find('>.department-name').data('index'));
+            $(".listUl").hide();
+            return false;
+        });
+
+        //选中某个内容后赋值给p标签，并隐藏ul列表
+        /*$(".dropdown-yk .add").click(function(){
+            var txt = $(this).text();
+            $(".dropdown-yk .parent").html(txt);
+            $(".listUl").hide();
+            return false;
+        });*/
+
+        $('.modal-content').on('click', function(){
+            $(".listUl").hide();
+        });
 });

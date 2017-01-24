@@ -51,7 +51,7 @@ public class EmployeeRest {
 
     @GetMapping("avatar")
     public Object avatar(@RequestParam Long id, @SessionAttribute LoginEmployee employee) {
-        return new RestResponse().add("url", employeeService.getAvatar(id));
+        return new RestResponse().add("url", employeeService.getAvatar(id)).get();
     }
 
     @PostMapping("avatar")
