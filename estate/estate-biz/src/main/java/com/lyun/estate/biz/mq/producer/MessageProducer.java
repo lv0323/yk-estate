@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.mq.producer;
 
 import com.lyun.estate.biz.message.entity.Message;
+import com.lyun.estate.biz.message.service.MessageService;
 import com.lyun.estate.biz.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +30,14 @@ public class MessageProducer {
     @Qualifier("smsRabbitTemplate")
     private AmqpTemplate template;
 
+    @Autowired
+    private MessageService messageService;
+
     @PostConstruct
     public void init() {
         Queue queue = new Queue(QUEUE_NAME);
         TopicExchange exchange = new TopicExchange(EXCHANGE_NAME);
-        Binding binding = BindingBuilder.bind(queue).to(exchange).with("*");
+        Binding binding = BindingBuilder.bind(queue).to(exchange).with("message");
         amqpAdmin.declareQueue(queue);
         amqpAdmin.declareExchange(exchange);
         amqpAdmin.declareBinding(binding);
@@ -42,8 +46,14 @@ public class MessageProducer {
 
     @Transactional
     public boolean send(Message message) {
-        template.convertAndSend(EXCHANGE_NAME, "message", message);
-        logger.info("发送消息[{}]成功", message.toString());
-        return true;
+        try {
+            template.convertAndSend(EXCHANGE_NAME, "message", message);
+            logger.info("发送消息[{}]成功", message.toString());
+            return true;
+        } catch (Exception ex) {
+            /* 发送到MQ失败处理流程 **/
+            return messageService.produceMessage(message);
+        }
+
     }
 }

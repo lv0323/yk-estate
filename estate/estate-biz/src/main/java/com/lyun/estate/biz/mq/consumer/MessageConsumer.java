@@ -41,18 +41,16 @@ public class MessageConsumer {
                 logger.info("队列里没有消息!");
                 return true;
             }
-            // 重复消息处理
-            if (messageService.getMessageByUUID(message.getUuid()) != null) {
-                logger.warn("消息[{}]已经存在，忽略！消息内容为：{}", message.getUuid(), message.toString());
-                return true;
-            }
-            boolean result = messageService.createMessage(message.getTitle(), message.getSummary(), message.getContent(), message.getContentType(), message.getBusinessType(), message.getSenderId(), message.getReceiverId());
+            boolean result = messageService.consumeMessage(message);
             logger.info("接收消息[{}][{}]", message.toString(), result);
             return result;
         } catch (Exception ex) {
+            /* MQ收到消息后保存失败理流程 **/
+            logger.warn("处理消息[{}]错误:[{}]", o.toString(), ex.getMessage());
             try {
                 String errorObject = mapper.writeValueAsString(o);
-                FileWriter fw = new FileWriter("message_error.json");
+                //TODO 指定文件路径地址
+                FileWriter fw = new FileWriter("message_error.json", true);
                 PrintWriter out = new PrintWriter(fw);
                 out.write(errorObject);
                 out.println();
