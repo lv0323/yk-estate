@@ -75,7 +75,7 @@
 
 
 <!-- Modal deletePositionDialog -->
-<div class="modal fade bs-example-modal-sm" id="deletePositionDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDepartLabel">
+<div class="modal fade bs-example-modal-sm" id="deletePositionDialog" tabindex="-1" role="dialog" aria-labelledby="deletePositionLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">

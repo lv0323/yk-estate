@@ -176,7 +176,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
             $('#editDepartDialog #departSpell').val(depart["short_name"]);
             $('#editDepartDialog #departTel').val(depart["telephone"]);
             $('#editDepartDialog #departAddress').val(depart["address"]);
-            $('#editDepartDialog #departCid').find('option[id='+depart["city_id"]+']').attr('selected','selected');
+            $('#editDepartDialog #departCid').find('option[id='+depart.city["id"]+']').attr('selected','selected');
             var city_id = $('#editDepartDialog #departCid option:selected').attr("id");
             if(city_id){
                 RequestService.get(BaseUrl+"district/districts",{id:city_id},header)
@@ -186,7 +186,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                             appendOption += '<option id="'+district.id+'">'+district.name+'</option>';
                         });
                         $('#editDepartDialog #departDid').html(appendOption);
-                        $('#editDepartDialog #departDid').find('option[id='+depart["district_id"]+']').attr('selected','selected');
+                        $('#editDepartDialog #departDid').find('option[id='+depart.district["id"]+']').attr('selected','selected');
                         var district_id = $('#editDepartDialog #departDid option:selected').attr("id");
                         //get subDistrict from server
                         RequestService.get(BaseUrl+"district/sub-districts",{id:district_id},header)
@@ -197,7 +197,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
 
                                 });
                                 $('#editDepartDialog #departSDid').html(appendOption);
-                                $('#editDepartDialog #departSDid').find('option[id='+depart["sub_district_id"]+']').attr('selected','selected');
+                                $('#editDepartDialog #departSDid').find('option[id='+depart.sub_district["id"]+']').attr('selected','selected');
                             });
 
                     });

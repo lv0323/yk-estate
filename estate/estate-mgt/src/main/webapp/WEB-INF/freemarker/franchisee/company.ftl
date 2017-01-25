@@ -17,80 +17,79 @@
             <div class="modal-body">
                 <form id="addCompanyForm" class="form-horizontal" method="post">
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-3 col-sm-3 control-label">公司名称</label>
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">公司名称<span class="required-field">*</span></label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="companyName" class="form-control" placeholder="公司名称">
+                            <input type="text" id="addCompanyName" class="form-control" placeholder="公司名称" required>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
-                            <input type="text" id="companySpell" class="form-control" placeholder="拼音简码">
+                            <input type="text" id="addCompanySpell" class="form-control" placeholder="拼音简码">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-3 col-sm-3 control-label">公司许可证</label>
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">公司许可证<span class="required-field">*</span></label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="companyLicense" class="form-control" placeholder="公司许可证">
+                            <input type="text" id="addCompanyLicense" class="form-control" placeholder="公司许可证">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-3 col-sm-3 control-label">公司地址</label>
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">公司地址<span class="required-field">*</span></label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="companyAddress" class="form-control" placeholder="公司地址">
+                            <input type="text" id="addCompanyAddress" class="form-control" placeholder="公司地址">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-3 col-sm-3 control-label">公司说明</label>
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">公司说明</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="companyNote" class="form-control" placeholder="公司说明">
+                            <input type="text" id="addCompanyNote" class="form-control" placeholder="公司说明">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-3 col-sm-3 control-label">加盟有效时期</label>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">加盟有效时期<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="input-group date">
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="text" class="form-control pull-right" id="companyStartDate">
+                                <input type="text" class="form-control pull-right" id="addCompanyStartDate">
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="input-group date">
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="text" class="form-control pull-right" id="companyEndDate">
+                                <input type="text" class="form-control pull-right" id="addCompanyEndDate">
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-3 col-sm-3 control-label">法人姓名</label>
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">法人姓名<span class="required-field">*</span></label>
                         <div class="col-lg-3 col-md-3 col-sm-3">
                             <input type="text" id="companyRepName" class="form-control" placeholder="法人姓名">
                         </div>
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">性别</label>
                         <div class="col-lg-3 col-md-3 col-sm-3">
-
-                            <input type="radio" id="companyRepGender" value="M">男
-                            <input type="radio" id="companyRepGender" value="F">女
-
+                            <div id="companyRepGender">
+                                <input type="radio" id="M" value="M" checked="checked">男
+                                <input type="radio" id="F" value="F">女
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-3 col-sm-3 control-label">法人电话</label>
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">法人电话<span class="required-field">*</span></label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
                             <input type="text" id="companyRepMobile" class="form-control" placeholder="法人电话">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-3 col-sm-3 control-label">法人身份证</label>
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">法人身份证<span class="required-field">*</span></label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
                             <input type="text" id="companyRepID" class="form-control" placeholder="法人身份证">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-3 col-sm-3 control-label">法人微信</label>
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">法人微信</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="companyWechat" class="form-control" placeholder="法人微信">
+                            <input type="text" id="companyRepWechat" class="form-control" placeholder="法人微信">
                         </div>
                     </div>
                 </form>
@@ -103,35 +102,50 @@
     </div>
 </div>
 
-<!-- Modal editPositionDialog -->
-<div class="modal fade" id="editPositionDialog" tabindex="-1" role="dialog" aria-labelledby="editPositionLabel">
+<!-- Modal editCompanyDialog -->
+<div class="modal fade" id="editCompanyDialog" tabindex="-1" role="dialog" aria-labelledby="editCompanyLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title" id="editPositionLabel"></h4>
+                <h4 class="modal-title" id="editCompanyLabel"></h4>
             </div>
             <div class="modal-body">
-                <form id="editPositionForm" class="form-horizontal" method="post">
+                <form id="editCompanyForm" class="form-horizontal" method="post">
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">岗位名称</label>
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">公司名称<span class="required-field">*</span></label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="positionName" class="form-control" placeholder="岗位名称">
-                            <input id="positionId" class="hidden">
+                            <input type="text" id="editCompanyName" class="form-control" placeholder="公司名称">
+                            <input type="text" id="editCompanyId" class="hidden">
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <input type="text" id="editCompanySpell" class="form-control" placeholder="拼音简码">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">岗位说明</label>
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">公司许可证<span class="required-field">*</span></label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="positionNote" class="form-control" placeholder="岗位说明">
+                            <input type="text" id="editCompanyLicense" class="form-control" placeholder="公司许可证">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">公司地址<span class="required-field">*</span></label>
+                        <div class="col-lg-3 col-md-4 col-sm-4">
+                            <input type="text" id="editCompanyAddress" class="form-control" placeholder="公司地址">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">公司说明</label>
+                        <div class="col-lg-3 col-md-4 col-sm-4">
+                            <input type="text" id="editCompanyNote" class="form-control" placeholder="公司说明">
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="confirmEditPositionBtn">保存</button>
+                <button type="button" class="btn btn-primary" id="confirmEditCompanyBtn">保存</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>
         </div>
@@ -139,27 +153,64 @@
 </div>
 
 
-<!-- Modal deletePositionDialog -->
-<div class="modal fade bs-example-modal-sm" id="deletePositionDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDepartLabel">
-    <div class="modal-dialog modal-sm" role="document">
+<!-- Modal renewCompanyDialog -->
+<div class="modal fade" id="renewCompanyDialog" tabindex="-1" role="dialog" aria-labelledby="renewCompanyLabel">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title" id="deletePositionLabel">删除岗位</h4>
+                <h4 class="modal-title" id="renewCompanyLabel">公司续约</h4>
             </div>
             <div class="modal-body">
-                该操作不可恢复，确认删除?
-                <input id="positionId" class="hidden">
+                <input id="renewCompanyId" class="hidden">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">加盟截止时期延至</label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" data-provide="datepicker" id="companyEndDateRenew">
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="confirmDelPositionBtn">确定</button>
+                <button type="button" class="btn btn-primary" id="confirmRenewCompanyBtn">确定</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>
         </div>
     </div>
 </div>
+
+
+<!-- Modal toggleLockCompanyDialog -->
+<div class="modal fade" id="toggleLockCompanyDialog" tabindex="-1" role="dialog" aria-labelledby="toggleLockCompanyLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title" id="toggleLockCompanyLabel">公司解冻｜冻结</h4>
+            </div>
+            <input id="toggleLockCompanyId" class="hidden">
+            <input id="toggleLockCompanyLocked" class="hidden">
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmToggleLockCompanyBtn">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <div class="content-wrapper">
@@ -198,7 +249,7 @@
                                 <table id="companyList" class="list table table-bordered table-hover">
                                     <thead><tr>
                                         <th><span>公司名称</span></th>
-                                        <th><span>公司状态</span></th>
+                                        <th><span>公司法人</span></th>
                                         <th><span>公司地址</span></th>
                                         <th class="text-right"><span>操作</span></th>
                                     </tr></thead>
@@ -222,13 +273,3 @@
 <!-- bootstrap datepicker -->
 <#--<script src="js/plugins/datepicker/bootstrap-datepicker.js"></script>-->
 <script src="${contextPath!}/js/franchisee/company.js"></script>
-<script>
-    $(function () {
-      /*  $('#companyStartDate').datepicker({
-            autoclose: true
-        });
-        $('#companyEndDate').datepicker({
-            autoclose: true
-        });*/
-    });
-</script>
