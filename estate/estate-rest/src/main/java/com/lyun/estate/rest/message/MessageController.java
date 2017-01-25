@@ -56,6 +56,33 @@ public class MessageController {
     }
 
     //TODO 不在rest提供API
+    @GetMapping("/produce/fang")
+    boolean produceFangMessage(@RequestParam(required = true) Long senderId,
+                           @RequestParam(required = true) Long receiverId,
+                           @RequestParam(required = true) Long fangId) {
+        Message message = messageService.generateSimpleFangMessage(senderId, receiverId, fangId);
+        return messageProducer.send(message);
+    }
+
+    //TODO 不在rest提供API
+    @GetMapping("/produce/report")
+    boolean produceReportMessage(@RequestParam(required = true) Long senderId,
+                           @RequestParam(required = true) Long receiverId,
+                           @RequestParam(required = true) Long reportId) {
+        Message message = messageService.generateSimpleReportMessage(senderId, receiverId, reportId);
+        return messageProducer.send(message);
+    }
+
+    //TODO 不在rest提供API
+    @GetMapping("/produce/text")
+    boolean produceTextMessage(@RequestParam(required = true) Long senderId,
+                               @RequestParam(required = true) Long receiverId,
+                               @RequestParam(required = true) String content) {
+        Message message = messageService.generateSimplePhotoArticleMessage(senderId, receiverId, content);
+        return messageProducer.send(message);
+    }
+
+    //TODO 不在rest提供API
     @GetMapping("/consume")
     boolean consumeMessage() {
         return messageConsumer.receive();
