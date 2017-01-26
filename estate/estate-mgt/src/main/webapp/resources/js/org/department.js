@@ -1,8 +1,8 @@
 /**
  * Created by yanghong on 1/17/17.
  */
-require(['main-app',contextPath + '/js/service/request-service.js','datatables','datatablesBootstrap'],
-    function (mainApp,RequestService) {
+require(['main-app',contextPath + '/js/service/organization-service.js','datatables','datatablesBootstrap'],
+    function (mainApp,OrganizationService) {
 
         var BaseUrl = "/api/department/";
 
@@ -10,20 +10,9 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
 
         var departAllDataRaw = {};
 
-        function iniDropList(url,superior_id,header,jqueryElementOuter,jqueryElementInner){
-            RequestService.get(url,{id:superior_id},header)
-                .done(function (data) {
-                    var appendOption = '';
-                    $.each(data, function (index, element) {
-                        appendOption += '<option id="' + element.id + '">' + element.name + '</option>';
-
-                    });
-                    $('#'+jqueryElementOuter+' #'+jqueryElementInner).html(appendOption);
-                })
-        }
 
         //get city from server
-        RequestService.get(BaseUrl+"district/cites",null,header)
+        OrganizationService.queryElement({url:BaseUrl+"district/cites",header:header})
             .done(function (data) {
                 var appendOption = "";
                 $.each(data,function (index, city) {
@@ -34,7 +23,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
             });
 
         //get data from server and display data
-        RequestService.get(BaseUrl+"query-sorted",null,header)
+        OrganizationService.queryElement({url:BaseUrl+"query-sorted",header:header})
             .done(function(data){
                 if(data === null){
                     $('#departList>tbody').append('<tr><td colspan="4">没有数据</td></tr>');
@@ -91,8 +80,11 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
         //get district and subDistrict from server in add department dialog
         $('#addDepartDialog').on('change','#departCid',function(){
             var city_id = $('#addDepartDialog #departCid option:selected').attr("id");
+            var toAddCity = {
+                id:city_id
+            };
             //get district from server
-            RequestService.get(BaseUrl+"district/districts",{id:city_id},header)
+            OrganizationService.getElement({url:BaseUrl+"district/districts",data:toAddCity,header:header})
                 .done(function (data) {
                     var appendOption = "";
                     $.each(data,function (index, district) {
@@ -102,14 +94,14 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
 
                     var district_id = $('#addDepartDialog #departDid option:selected').attr("id");
                     //get subDistrict from server
-                    iniDropList(BaseUrl+"district/sub-districts",district_id,header,'addDepartDialog','departSDid');
+                    OrganizationService.iniDropList(BaseUrl+"district/sub-districts",district_id,header,'addDepartDialog','departSDid');
                 });
         });
 
         //get subDistrict from server in add department dialog
         $('#addDepartDialog').on('change','#departDid',function(){
             var district_id = $('#addDepartDialog #departDid option:selected').attr("id");
-            iniDropList(BaseUrl+"district/sub-districts",district_id,header,'addDepartDialog','departSDid');
+            OrganizationService.iniDropList(BaseUrl+"district/sub-districts",district_id,header,'addDepartDialog','departSDid');
         });
 
 
@@ -126,7 +118,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                     districtId:$('#addDepartDialog #departDid option:selected').attr("id"),
                     subDistrictId:$('#addDepartDialog #departSDid option:selected').attr("id")
                 };
-            RequestService.post(BaseUrl+"add",toAddDepart,header)
+            OrganizationService.updatePostDepartment({url:BaseUrl+"add",data:toAddDepart,header:header})
                 .done(function(){
                     location.reload(true);
                 })
@@ -148,7 +140,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
         //delete data according to index value where specifies id
         $('#deleteDepartDialog').on('click','#confirmDelDepartBtn',function(){
             var departId_request = parseInt($('#deleteDepartDialog #departId').val(),10);
-            RequestService.get(BaseUrl+"delete",{id:departId_request},header)
+            OrganizationService.getElement({url:BaseUrl+"delete",data:{id:departId_request},header:header})
                 .done(function(){
                     location.reload(true);
                 });
@@ -179,7 +171,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
             $('#editDepartDialog #departCid').find('option[id='+depart.city["id"]+']').attr('selected','selected');
             var city_id = $('#editDepartDialog #departCid option:selected').attr("id");
             if(city_id){
-                RequestService.get(BaseUrl+"district/districts",{id:city_id},header)
+                OrganizationService.getElement({url:BaseUrl+"district/districts",data:{id:city_id},header:header})
                     .done(function (data) {
                         var appendOption = "";
                         $.each(data,function (index, district) {
@@ -189,7 +181,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                         $('#editDepartDialog #departDid').find('option[id='+depart.district["id"]+']').attr('selected','selected');
                         var district_id = $('#editDepartDialog #departDid option:selected').attr("id");
                         //get subDistrict from server
-                        RequestService.get(BaseUrl+"district/sub-districts",{id:district_id},header)
+                        OrganizationService.getElement({url:BaseUrl+"district/sub-districts",data:{id:district_id},header:header})
                             .done(function (data) {
                                 var appendOption = '';
                                 $.each(data, function (index, subDistrict) {
@@ -209,7 +201,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
         $('#editDepartDialog').on('change','#departCid',function(){
             var city_id = $('#editDepartDialog #departCid option:selected').attr("id");
             //get district from server
-            RequestService.get(BaseUrl+"district/districts",{id:city_id},header)
+            OrganizationService.getElement({url:BaseUrl+"district/districts",data:{id:city_id},header:header})
                 .done(function (data) {
                     var appendOption = "";
                     $.each(data,function (index, district) {
@@ -219,14 +211,14 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
 
                     var district_id = $('#editDepartDialog #departDid option:selected').attr("id");
                     //get subDistrict from server
-                    iniDropList(BaseUrl+"district/sub-districts",district_id,header,'editDepartDialog','departSDid');
+                    OrganizationService.iniDropList(BaseUrl+"district/sub-districts",district_id,header,'editDepartDialog','departSDid');
                 });
         });
 
         //get subDistrict from server in edit department dialog
         $('#editDepartDialog').on('change','#departDid',function(){
             var district_id = $('#editDepartDialog #departDid option:selected').attr("id");
-            iniDropList(BaseUrl+"district/sub-districts",district_id,header,'editDepartDialog','departSDid');
+            OrganizationService.iniDropList(BaseUrl+"district/sub-districts",district_id,header,'editDepartDialog','departSDid');
         });
 
 
@@ -263,7 +255,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
             if(parent_id === id){
                 alert("父部门不能为其本身"); //forbid depart to be arranged under itself
             }else {
-                RequestService.post(BaseUrl+"edit",toEditDepart,header)
+                OrganizationService.updatePostDepartment({url:BaseUrl+"edit",data:toEditDepart,header:header})
                     .done(function(){
                         location.reload(true);
                     })

@@ -37,7 +37,7 @@ require(['main-app',contextPath + '/js/service/company-service.js','datatables',
                         '<td class="text-right">' +
                         '<a class="btn" id="editCompanyBtn" data-index="'+index+'" data-id="'+companyRaw["id"]+'" data-toggle="modal" data-target="#editCompanyDialog">编辑</a>' +
                         '<span class="opt-gap"></span>'+
-                        '<a class="btn" id="renewCompanyBtn" data-id="'+companyRaw["id"]+'" data-toggle="modal" data-target="#renewCompanyDialog">续约</a>'+
+                        '<a class="btn" id="renewCompanyBtn" data-index="'+index+'" data-id="'+companyRaw["id"]+'" data-toggle="modal" data-target="#renewCompanyDialog">续约</a>'+
                         '<span class="opt-gap"></span>';
 
                     if(companyRaw["locked"]){
@@ -65,6 +65,10 @@ require(['main-app',contextPath + '/js/service/company-service.js','datatables',
                 $('#companyList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
             });
 
+        $('.fadeInRight').on('click','#lookCompanyBtn',function (e) {
+            var id = $(e.target).data('id');
+            // window.open(contextPath+'/mgt/franchisee/company-detail.ftl');
+        });
 
        //initialize title in add Company dialog
         $('.fadeInRight').on('click','#addCompanyBtn',function(){
@@ -180,14 +184,16 @@ require(['main-app',contextPath + '/js/service/company-service.js','datatables',
 
         //initialize title in toggle lock Company dialog
         $('.fadeInRight').on('click','#renewCompanyBtn',function(e){
-            var id = $(e.target).data('id');
-            $('#toggleLockCompanyId').val(id);
+            var index = $(e.target).data('index');
+            var company = companyAllDataRaw[index];
+            $('#renewCompanyId').val(company["id"]);
+            $('#companyEndDateRenew').val(company["end_date"]);
         });
 
         //action for toggle lock Company
         $('#renewCompanyDialog').on('click','#confirmRenewCompanyBtn',function(){
             var toUpdateData ={
-                id: $('#toggleLockCompanyId').val(),
+                id: $('#renewCompanyId').val(),
                 endDate: $('#companyEndDateRenew').val()
             }
             CompanyService.updateGetCompany({url:BaseUrl+"renew", data:toUpdateData, header:header})
