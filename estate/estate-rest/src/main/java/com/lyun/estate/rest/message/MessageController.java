@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLEncoder;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -97,21 +97,36 @@ public class MessageController {
         return messageConsumer.receive();
     }
 
+//    @GetMapping("/report/test")
+//    String reportTest(@RequestParam(required = true) String reportName, Map param) throws SQLException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+//        param.put("receiverId",3);
+//        return reportEngine.report(reportName, null, param, MessageCounterResource.class);
+//    }
+//
+//    @GetMapping("/report/test2")
+//    void reportTest2(@RequestParam(required = true) String reportName, Map param, HttpServletResponse response) throws SQLException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+//        param.put("receiverId",3);
+//        reportEngine.report(reportName, null, param, response.getOutputStream(), MessageCounterResource.class);
+//    }
+
     @GetMapping("/report/test")
-    String reportTest(@RequestParam(required = true) String reportName, Map param) throws SQLException {
+    String reportTest(@RequestParam(required = true) String reportName, Map param) throws SQLException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+        param.put("receiverId",3);
         return reportEngine.report(reportName, null, param);
     }
 
     @GetMapping("/report/test2")
-    void reportTest2(@RequestParam(required = true) String reportName, Map param, HttpServletResponse response) throws SQLException, IOException {
+    void reportTest2(@RequestParam(required = true) String reportName, Map param, HttpServletResponse response) throws SQLException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+        param.put("receiverId",3);
         reportEngine.report(reportName, null, param, response.getOutputStream());
     }
 
     @GetMapping("/report/test3")
-    void reportTest3(@RequestParam(required = true) String reportName, Map param, HttpServletResponse response) throws SQLException, IOException {
+    void reportTest3(@RequestParam(required = true) String reportName, Map param, HttpServletResponse response) throws SQLException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
 //        response.setContentType("text/csv");
 //        response.setHeader("Content-Disposition", "attachment; filename=\""
 //                + URLEncoder.encode("测试", "UTF-8") + ".csv\"");
-        reportEngine.exportCsv(reportName, null, param, response.getOutputStream());
+        param.put("receiverId",3);
+        reportEngine.exportCsv(reportName, null, param, response.getOutputStream(), MessageCounterResource.class);
     }
 }
