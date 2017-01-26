@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ROOT>
+    <ReportInfo id="getXiaoQu" region="DEFAULT">
+        <SQL>
+            <![CDATA[
+                select messageCounter.id, messageCounter.owner_id, messageCounter.create_time, sum(case when message.business_type='C_MS' then 1 else 0 end) as u_c_ms_count
+  , sum(case when message.business_type='C_M_REPORT' then 1 else 0 end) as u_c_m_report_count
+  , sum(case when message.business_type='NOTICE' then 1 else 0 end) as u_notice_count
+from t_message_counter messageCounter
+  left join t_message message on message.receiver_id = messageCounter.owner_id
+where ((message.business_type='C_MS' and message.id > messageCounter.c_ms_index) or (message.business_type='C_M_REPORT' and message.id > messageCounter.c_m_report_index) or
+       (message.business_type='NOTICE' and message.id > messageCounter.notice_index))
+      and messageCounter.owner_id=#{receiverId}
+group by messageCounter.id, messageCounter.owner_id, messageCounter.create_time
+			]]>
+        </SQL>
+        <Header>
+            <Column>编号</Column>
+            <Column>拥有者</Column>
+            <Column>创建时间</Column>
+            <Column>小区动态未读个数</Column>
+            <Column>月报未读个数</Column>
+            <Column>公告未读个数</Column>
+        </Header>
+    </ReportInfo>
+
+</ROOT>

@@ -45,9 +45,6 @@ public class MessageService {
     @Autowired
     private ExecutionContext executionContext;
 
-    @Autowired
-    private MessageProducer messageProducer;
-
 
     public MessageCounterResource getMessageCounter(Long receiverId) {
         if (receiverId == null) {
