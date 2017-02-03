@@ -21,7 +21,7 @@ public enum StructureType {
     private final String label;
     private final Integer bits;
 
-    StructureType(String label, Integer bits) {
+    StructureType(String label, Integer bits ) {
         this.label = label;
         this.bits = bits;
     }

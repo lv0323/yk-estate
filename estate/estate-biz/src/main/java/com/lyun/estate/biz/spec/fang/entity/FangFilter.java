@@ -23,7 +23,7 @@ public class FangFilter {
     private List<FloorType> floorTypes;
     private List<Decorate> decorates;
     private List<ElevatorFilter> elevatorFilters;
-    private StructureType structureType;
+    private List<StructureType> structureTypes;
     private Integer minPrice;
     private Integer maxPrice;
     private Integer minYear;
@@ -141,12 +141,12 @@ public class FangFilter {
         return this;
     }
 
-    public StructureType getStructureType() {
-        return structureType;
+    public List<StructureType> getStructureTypes() {
+        return structureTypes;
     }
 
-    public FangFilter setStructureType(StructureType structureType) {
-        this.structureType = structureType;
+    public FangFilter setStructureTypes(List<StructureType> structureTypes) {
+        this.structureTypes = structureTypes;
         return this;
     }
 
@@ -228,7 +228,7 @@ public class FangFilter {
                 ", floorTypes=" + floorTypes +
                 ", decorates=" + decorates +
                 ", elevatorFilters=" + elevatorFilters +
-                ", structureType=" + structureType +
+                ", structureTypes=" + structureTypes +
                 ", minPrice=" + minPrice +
                 ", maxPrice=" + maxPrice +
                 ", minYear=" + minYear +
