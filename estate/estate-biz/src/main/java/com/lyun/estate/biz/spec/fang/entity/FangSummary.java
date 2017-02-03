@@ -12,7 +12,7 @@ public class FangSummary {
     private Long id;
     private String title;
     private BizType bizType;
-    private BigDecimal totalPrice;
+    private BigDecimal publishPrice;
     private PriceUnit priceUnit;
     private BigDecimal unitPrice;
     private Integer sCounts;
@@ -51,12 +51,12 @@ public class FangSummary {
         return this;
     }
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
+    public BigDecimal getPublishPrice() {
+        return publishPrice;
     }
 
-    public FangSummary setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
+    public FangSummary setPublishPrice(BigDecimal publishPrice) {
+        this.publishPrice = publishPrice;
         return this;
     }
 

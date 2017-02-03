@@ -4,9 +4,9 @@ package com.lyun.estate.biz.fang.def;
  * Created by Jeffrey on 2017-01-18.
  */
 public enum HouseTag {
-    ONLY("唯一"),
-    OVER_2("满二年"),
-    OVER_5("满五年"),
+    ONLY("唯一", false),
+    OVER_2("满二年", false),
+    OVER_5("满五年", false),
     DECORATE_JING("精装修", false),
     HAS_KEY("有钥匙", false),
     ANY_TIME("随时看房", false),
