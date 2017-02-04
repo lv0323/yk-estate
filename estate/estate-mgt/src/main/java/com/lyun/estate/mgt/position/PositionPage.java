@@ -1,4 +1,4 @@
-package com.lyun.estate.mgt.orgnization;
+package com.lyun.estate.mgt.position;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

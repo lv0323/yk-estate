@@ -1,14 +1,14 @@
 /**
  * Created by yanghong on 1/19/17.
  */
-require(['main-app',contextPath + '/js/service/request-service.js','datatables','datatablesBootstrap'],
-    function (mainApp,RequestService) {
+require(['main-app',contextPath + '/js/service/organization-service.js','datatables','datatablesBootstrap'],
+    function (mainApp,OrganizationService) {
 
         var BaseUrl = "/api/position/";
         var header = {};
         var positionAllDataRaw = {};
 
-        RequestService.get(BaseUrl+"query",null,header)
+        OrganizationService.queryElement({url:BaseUrl+"query",header:header})
             .done(function(data){
                 if(data === null){
                     $('#positionList>tbody').append('<tr><td colspan="3">没有数据</td></tr>');
@@ -54,7 +54,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                 name: $('#addPositionDialog #positionName').val(),
                 note: $('#addPositionDialog #positionNote').val()
             };
-            RequestService.post(BaseUrl+"add",toAddPosition,header)
+            OrganizationService.updatePostDepartment ({url:BaseUrl+"add",data:toAddPosition,header:header})
                 .done(function(){
                     location.reload(true);
                 });
@@ -70,7 +70,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
         //delete data according to index value where specifies id
         $('#deletePositionDialog').on('click','#confirmDelPositionBtn',function(){
             var positionId_request = parseInt($('#deletePositionDialog #positionId').val(),10);
-            RequestService.get(BaseUrl+"delete",{id:positionId_request},header)
+            OrganizationService.updatePostDepartment({url:BaseUrl+"delete",data:{id:positionId_request},header:header})
                 .done(function(){
                     location.reload(true);
                 })
@@ -102,7 +102,7 @@ require(['main-app',contextPath + '/js/service/request-service.js','datatables',
                     note: $('#editPositionDialog #positionNote').val()
                 };
 
-            RequestService.post(BaseUrl+"edit",toEditPosition,header)
+            OrganizationService.updatePostDepartment({url:BaseUrl+"edit",data:toEditPosition,header:header})
                 .done(function(){
                     location.reload(true);
                 });

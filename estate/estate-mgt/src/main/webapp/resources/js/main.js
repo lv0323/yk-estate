@@ -6,8 +6,8 @@ requirejs.config({
         'cryptojs.md5': contextPath+'/js/libs/md5',
         'cryptojs.hmac': contextPath+'/js/libs/hmac',
         'parsley': contextPath+'/js/libs/parsley.min',
-        'datepicker': contextPath+'/js/libs/bootstrap-datepicker.min',
-        'datepicker.zh-cn': contextPath+'/js/libs/bootstrap-datepicker.zh-CN',
+        'datepicker': contextPath+'/js/plugins/datepicker/bootstrap-datepicker',
+        'datepicker.zh-cn': contextPath+'/js/plugins/datepicker/locales/bootstrap-datepicker.zh-CN',
         'datetimepicker': contextPath+'/js/libs/bootstrap-datetimepicker.min',
         'datetimepicker.zh-cn': contextPath+'/js/libs/bootstrap-datetimepicker.zh-CN',
         'datatables': contextPath+'/js/plugins/datatables/jquery.dataTables.min',
@@ -21,8 +21,11 @@ requirejs.config({
             exports: 'CryptoJS'
         },
         'parsley': ['jquery'],
+        'datepicker': {
+            deps: ['jquery', 'bootstrap'],
+            exports: '$.fn.datepicker'
+        },
         'datepicker.zh-cn': ['jquery', 'datepicker'],
-        'datepicker': ['jquery', 'bootstrap'],
         'datetimepicker.zh-cn': ['jquery', 'datetimepicker'],
         'datetimepicker': ['jquery', 'bootstrap'],
         'datatables':['jquery', 'bootstrap'],

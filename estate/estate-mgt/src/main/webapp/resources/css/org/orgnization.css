@@ -19,3 +19,6 @@ span.opt-gap{
 .modal-body>form input{
     font-size: 13px;
 }
+.required-field{
+    color: red;
+}
