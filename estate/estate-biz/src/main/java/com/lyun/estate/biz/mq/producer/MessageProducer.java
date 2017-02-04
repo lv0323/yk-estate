@@ -2,7 +2,6 @@ package com.lyun.estate.biz.mq.producer;
 
 import com.lyun.estate.biz.message.entity.Message;
 import com.lyun.estate.biz.message.service.MessageService;
-import com.lyun.estate.biz.mq.consumer.MessageConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.*;
@@ -18,7 +17,7 @@ import javax.annotation.PostConstruct;
  */
 @Service
 public class MessageProducer {
-    private static final Logger logger = LoggerFactory.getLogger(MessageConsumer.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageProducer.class);
 
     private final static String QUEUE_NAME = "estate.queue.message";
     private final static String EXCHANGE_NAME = "estate.exchange.message";

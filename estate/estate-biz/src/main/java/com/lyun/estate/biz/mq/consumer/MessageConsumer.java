@@ -7,6 +7,7 @@ import com.lyun.estate.biz.message.entity.Message;
 import com.lyun.estate.biz.message.service.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,6 +34,10 @@ public class MessageConsumer {
     @Qualifier("smsRabbitTemplate")
     private RabbitTemplate rabbitTemplate;
 
+    /**
+     * pull模式
+     * @return
+     */
     public boolean receive() {
         Object o = rabbitTemplate.receiveAndConvert(QUEUE_NAME);
         try {
@@ -66,5 +71,36 @@ public class MessageConsumer {
             }
         }
 
+    }
+
+    /**
+     * 发布-订阅模式
+     * @param message
+     */
+    @RabbitListener(queues = QUEUE_NAME)
+    public void receiveMessage(final Message message) {
+        try {
+            if (message == null) {
+                logger.info("队列里没有消息!");
+            } else {
+                boolean result = messageService.consumeMessage(message);
+                logger.info("接收消息[{}][{}]", message.toString(), result);
+            }
+        } catch (Exception ex) {
+            /* MQ收到消息后保存失败理流程 **/
+            assert message != null;
+            logger.warn("处理消息[{}]错误:[{}]", message.toString(), ex.getMessage());
+            try {
+                //TODO 指定文件路径地址
+                FileWriter fw = new FileWriter("message_error.json", true);
+                PrintWriter out = new PrintWriter(fw);
+                out.write(message.toString());
+                out.println();
+                fw.close();
+                out.close();
+            }  catch (IOException e) {
+                logger.warn("文件操作异常:[{}]", e.getMessage());
+            }
+        }
     }
 }
