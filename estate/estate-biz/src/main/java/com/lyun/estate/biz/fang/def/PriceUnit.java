@@ -9,7 +9,7 @@ import java.util.List;
  */
 public enum PriceUnit {
     YUAN("元"),
-    WAN_YUAN("万元"),
+    WAN("万元"),
     YUAN_D("元/天"),
     YUAN_M("元/月"),
     YUAN_Q("元/季"),
@@ -25,7 +25,7 @@ public enum PriceUnit {
         if (bizType == BizType.RENT) {
             return Lists.newArrayList(YUAN, YUAN_D, YUAN_M, YUAN_Q, YUAN_Y);
         } else if (bizType == BizType.SELL) {
-            return Lists.newArrayList(YUAN, WAN_YUAN);
+            return Lists.newArrayList(YUAN, WAN);
         } else {
             return Lists.newArrayList();
         }

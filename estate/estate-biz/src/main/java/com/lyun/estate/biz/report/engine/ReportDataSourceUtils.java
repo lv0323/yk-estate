@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by jesse on 2017/1/25.
  */
-@Service
+//@Service
 public class ReportDataSourceUtils {
     private final Map<String, ReportInfo> dataSourceMap = new ConcurrentHashMap<String, ReportInfo>();
     private final static String CONNECTOR = ":";

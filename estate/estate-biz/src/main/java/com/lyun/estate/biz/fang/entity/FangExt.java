@@ -20,7 +20,6 @@ public class FangExt {
     private HouseStatus status;
     private HouseSource source;
     private CertifType certifType;
-    private CertifyAgeType certifyAgeType;
     private String certifAdress;//证件地址
     private String certifNo;//证件编号
     private PropertyType propertyType;
@@ -29,6 +28,7 @@ public class FangExt {
     private BigDecimal purchasePrice;//万元
     private Date purchaseDate; //上次购入时间
     private YN isOnly;
+    private Integer overYears;
     private YN mortgage;
     private String note;
 
