@@ -6,12 +6,14 @@ import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.fang.def.Decorate;
+import com.lyun.estate.biz.fang.def.HouseProcess;
 import com.lyun.estate.biz.fang.def.Showing;
 import com.lyun.estate.biz.fang.entity.FangSelector;
 import com.lyun.estate.biz.fang.entity.FangTag;
 import com.lyun.estate.biz.fang.repo.FangRepository;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
+import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;
@@ -73,11 +75,13 @@ public class FangServiceImpl implements FangService {
 
         FangSelector selector = new FangSelector();
         BeanUtils.copyProperties(filter, selector);
+        selector.setProcess(HouseProcess.PUBLISH);
 
         //shiCountsFilter
         if (filter.getShiCountsFilters() != null && !filter.getShiCountsFilters().isEmpty()) {
             List<Integer> sCounts = new ArrayList<>();
             filter.getShiCountsFilters().forEach(shiCountsFilter -> sCounts.addAll(shiCountsFilter.getCounts()));
+            selector.setsCounts(sCounts);
         }
 
         //ElevatorFilter
@@ -193,11 +197,12 @@ public class FangServiceImpl implements FangService {
         summaries.forEach(summary -> {
                     List<FangTag> fangTags = fangRepository.findTags(summary.getId());
                     summary.setTags(fangTags.stream().map(FangTag::getHouseTag).collect(Collectors.toList()));
-                    summary.setImageURI(fileService.findFirst(summary.getId(),
-                            DomainType.FANG,
-                            CustomType.SHIJING,
-                            FileProcess.WATERMARK)
-                            .getFileURI());
+                    summary.setImageURI(Optional.ofNullable(
+                            fileService.findFirst(summary.getId(),
+                                    DomainType.FANG,
+                                    CustomType.SHIJING,
+                                    FileProcess.WATERMARK)).
+                            map(FileDescription::getFileURI).orElse(null));
                 }
         );
         return summaries;

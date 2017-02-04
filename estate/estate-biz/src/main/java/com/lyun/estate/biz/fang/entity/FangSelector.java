@@ -27,6 +27,7 @@ public class FangSelector {
     private List<Showing> showings;
     private YN isOnly;
     private YN nearLine;
+    private HouseProcess process;
     private Integer overYears;
     private Integer minPrice;
     private Integer maxPrice;
@@ -248,6 +249,15 @@ public class FangSelector {
 
     public FangSelector setMaxArea(Integer maxArea) {
         this.maxArea = maxArea;
+        return this;
+    }
+
+    public HouseProcess getProcess() {
+        return process;
+    }
+
+    public FangSelector setProcess(HouseProcess process) {
+        this.process = process;
         return this;
     }
 }

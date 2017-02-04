@@ -43,7 +43,6 @@ CREATE TABLE t_fang_ext (
   status             VARCHAR(20)    NOT NULL, --现状
   source             VARCHAR(15)    NOT NULL, --来源
   certif_type        VARCHAR(10)    NOT NULL, --产证类型
-  certif_age_type    VARCHAR(10), --房本年限
   certif_adress      VARCHAR(100), --房产地址
   certif_no          VARCHAR(50), --房产证号
   property_type      VARCHAR(10)    NOT NULL, --交易权属

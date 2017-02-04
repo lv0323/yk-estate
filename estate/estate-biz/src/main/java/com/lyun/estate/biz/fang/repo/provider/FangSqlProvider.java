@@ -10,7 +10,7 @@ import com.lyun.estate.core.repo.SQL;
 public class FangSqlProvider {
     public String findSummaryById() {
         return new SQL() {{
-            SELECT("f.id, fd.title, f.biz_type, f.total_price, f.price_unit, f.s_counts,f.t_counts,f.estate_area,f.orientation,f.process, c.name as xiao_qu_name")
+            SELECT("f.id, fd.title, f.biz_type, f.publish_price, f.price_unit, f.unit_price, f.s_counts,f.t_counts,f.estate_area,f.orientation,f.process, c.name as xiao_qu_name")
                     .FROM("t_fang f ")
                     .LEFT_OUTER_JOIN("t_xiao_qu xq ON f.xiao_qu_id = xq.id")
                     .LEFT_OUTER_JOIN("t_community c ON xq.community_id = c.id")
@@ -33,7 +33,7 @@ public class FangSqlProvider {
 
     public String findSummaryBySelector(FangSelector selector) {
         return new SQL() {{
-            SELECT("  f.id,  f.ranking,  fd.title,  f.biz_type,  f.publish_price,  f.price_unit,  f.s_counts,  f.t_counts,  f.estate_area,  f.orientation,  f.process,  c.name AS xiao_qu_name");
+            SELECT("  f.id,  f.ranking,  fd.title,  f.biz_type,  f.publish_price,  f.price_unit, f.unit_price, f.s_counts,  f.t_counts,  f.estate_area,  f.orientation,  f.process,  c.name AS xiao_qu_name");
 
             FROM("t_fang f ")
                     .LEFT_OUTER_JOIN("t_xiao_qu xq ON f.xiao_qu_id = xq.id")
@@ -47,25 +47,44 @@ public class FangSqlProvider {
                 LEFT_OUTER_JOIN("t_community_station_rel csr ON c.id = csr.community_id");
             }
             if (selector.getLineId() != null) {
-                LEFT_OUTER_JOIN("t_line_station_rel lsr ON lsr.station_id = csr.id");
+                LEFT_OUTER_JOIN("t_line_station_rel lsr ON lsr.station_id = csr.station_id");
             }
             WHERE("c.city_id = #{cityId}");
             WHERE("f.biz_type = #{bizType}");
-
-            WHERE_IF("f.s_counts IN (" + Joiner.on(",").skipNulls().join(selector.getsCounts()) + ")",
-                    selector.getsCounts() != null && !selector.getsCounts().isEmpty());
-
-            WHERE_IF("f.orientation IN (" + Joiner.on(",").skipNulls().join(selector.getOrientations()) + ")",
-                    selector.getOrientations() != null && !selector.getOrientations().isEmpty());
-
-            WHERE_IF("f.floor_type IN (" + Joiner.on(",").skipNulls().join(selector.getFloorTypes()) + ")",
-                    selector.getFloorTypes() != null && !selector.getFloorTypes().isEmpty());
-
-            WHERE_IF("f.structure_type IN (" + Joiner.on(",").skipNulls().join(selector.getStructureTypes()) + ")",
-                    selector.getStructureTypes() != null && !selector.getStructureTypes().isEmpty());
-
-            WHERE_IF("f.id NOT IN (" + Joiner.on(",").skipNulls().join(selector.getExcludeIds()) + ")",
-                    selector.getExcludeIds() != null && !selector.getExcludeIds().isEmpty());
+            if (selector.getsCounts() != null && !selector.getsCounts().isEmpty()) {
+                WHERE("f.s_counts IN (" + Joiner.on(",").skipNulls().join(selector.getsCounts()) + ")");
+            }
+            if (selector.getOrientations() != null && !selector.getOrientations().isEmpty()) {
+                StringBuilder sqlBuilder = new StringBuilder();
+                selector.getOrientations().forEach(t -> sqlBuilder.append("'").append(t).append("',"));
+                String sql = sqlBuilder.toString();
+                sql = sql.substring(0, sql.length() - 1);
+                WHERE("f.orientation IN (" + sql + ")");
+            }
+            if (selector.getDecorates() != null && !selector.getDecorates().isEmpty()) {
+                StringBuilder sqlBuilder = new StringBuilder();
+                selector.getDecorates().forEach(t -> sqlBuilder.append("'").append(t).append("',"));
+                String sql = sqlBuilder.toString();
+                sql = sql.substring(0, sql.length() - 1);
+                WHERE("f.decorate IN (" + sql + ")");
+            }
+            if (selector.getFloorTypes() != null && !selector.getFloorTypes().isEmpty()) {
+                StringBuilder sqlBuilder = new StringBuilder();
+                selector.getFloorTypes().forEach(t -> sqlBuilder.append("'").append(t).append("',"));
+                String sql = sqlBuilder.toString();
+                sql = sql.substring(0, sql.length() - 1);
+                WHERE("f.floor_type IN (" + sql + ")");
+            }
+            if (selector.getStructureTypes() != null && !selector.getStructureTypes().isEmpty()) {
+                StringBuilder sqlBuilder = new StringBuilder();
+                selector.getStructureTypes().forEach(t -> sqlBuilder.append("'").append(t).append("',"));
+                String sql = sqlBuilder.toString();
+                sql = sql.substring(0, sql.length() - 1);
+                WHERE("f.structure_type IN (" + sql + ")");
+            }
+            if (selector.getExcludeIds() != null && !selector.getExcludeIds().isEmpty()) {
+                WHERE("f.id NOT IN (" + Joiner.on(",").skipNulls().join(selector.getExcludeIds()) + ")");
+            }
 
             WHERE_IF("f.has_elevator = #{hasElevator}", selector.getHasElevator() != null);
             WHERE_IF("f.estate_area >= #{minArea}", selector.getMinArea() != null);
@@ -77,17 +96,27 @@ public class FangSqlProvider {
             WHERE_IF("fe.is_only = #{isOnly}", selector.getIsOnly() != null);
             WHERE_IF("fe.over_years >= #{overYears}", selector.getOverYears() != null);
 
-            WHERE_IF("fe.showing IN (" + Joiner.on(",").skipNulls().join(selector.getShowings()) + ")",
-                    selector.getShowings() != null && !selector.getShowings().isEmpty());
-
-            WHERE_IF("xq.id IN (" + Joiner.on(",").skipNulls().join(selector.getXiaoQuIds()) + ")",
-                    selector.getXiaoQuIds() != null && !selector.getXiaoQuIds().isEmpty());
+            if (selector.getShowings() != null && !selector.getShowings().isEmpty()) {
+                StringBuilder sqlBuilder = new StringBuilder();
+                selector.getShowings().forEach(t -> sqlBuilder.append("'").append(t).append("',"));
+                String sql = sqlBuilder.toString();
+                sql = sql.substring(0, sql.length() - 1);
+                WHERE("fe.showing IN (" + sql + ")");
+            }
+            if (selector.getXiaoQuIds() != null && !selector.getXiaoQuIds().isEmpty()) {
+                WHERE("xq.id IN (" + Joiner.on(",").skipNulls().join(selector.getXiaoQuIds()) + ")");
+            }
 
             WHERE_IF("c.near_line = #{nearLine}", selector.getNearLine() != null);
             WHERE_IF("c.sub_district_id = #{subDistrictId}", selector.getSubDistrictId() != null);
             WHERE_IF("dr.district_id = #{districtId}", selector.getDistrictId() != null);
             WHERE_IF("csr.station_id = #{stationId}", selector.getStationId() != null);
             WHERE_IF("lsr.line_id = #{lineId}", selector.getLineId() != null);
+            if (selector.getProcess() != null) {
+                WHERE("f.process =#{process}");
+            } else {
+                WHERE("f.process <> 'DELEGATE'");
+            }
 
         }}.toString();
     }

@@ -31,7 +31,7 @@ public class ReportEngine {
     private static final String COMMA_SPLIT = ",";
     private static final String LINE_SPLIT = "\r\n";
 
-    @Autowired
+    @Autowired(required = false)
     private ReportDataSourceUtils reportDataSourceUtils;
 
     @Autowired
