@@ -31,7 +31,7 @@ require(['main-app',contextPath + '/js/service/company-service.js','datatables',
                 var appendHtml = '';
                 $.each(data,function (index, companyRaw) {
                     appendHtml = '<tr>' +
-                        '<td><a class="btn" id="lookCompanyBtn" data-id="'+companyRaw["id"]+'">'+companyRaw["name"]+'</a></td>' +
+                        '<td><a class="btn" id="lookCompanyBtn" href="/mgt/franchisee/companyDetail.ftl" data-id="'+companyRaw["id"]+'">'+companyRaw["name"]+'</a></td>' +
                         '<td>'+companyRaw.boss["name"]+'</td>' +
                         '<td>'+companyRaw["address"]+'</td>' +
                         '<td class="text-right">' +
@@ -67,13 +67,12 @@ require(['main-app',contextPath + '/js/service/company-service.js','datatables',
 
         $('.fadeInRight').on('click','#lookCompanyBtn',function (e) {
             var id = $(e.target).data('id');
-            // window.open(contextPath+'/mgt/franchisee/company-detail.ftl');
         });
 
        //initialize title in add Company dialog
-        $('.fadeInRight').on('click','#addCompanyBtn',function(){
-            $('#addCompanyDialog #addCompanyLabel').text('创建公司');
-        });
+       //  $('.fadeInRight').on('click','#addCompanyBtn',function(){
+       //      $('#addCompanyDialog #addCompanyLabel').text('创建公司');
+       //  });
 
         //get checked gender
         $('#companyRepGender').on('click','input',function(){
@@ -100,7 +99,8 @@ require(['main-app',contextPath + '/js/service/company-service.js','datatables',
 
             CompanyService.updatePostCompany({url:BaseUrl+"create",data:toAddData,header:header})
                 .done(function(){
-                    location.reload(true);
+                    // location.reload(true);
+                    window.location.href="/mgt/franchisee/company.ftl";
                 })
                 .fail(function () {
                     alert("请填写所有必填字段，内容不宜过长，加盟日期需为将来日期");

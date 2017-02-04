@@ -17,9 +17,23 @@ import java.util.HashMap;
 public class DepartmentPage {
 
     @GetMapping("/department")
-    public ModelAndView index() {
-        HashMap<String, String> params = new HashMap<>();
+    public ModelAndView department() {
+        HashMap<String, Object> params = new HashMap<>();
         params.put("message", "message");
         return new ModelAndView("/org/department", params);
+    }
+
+    @GetMapping("/addDepartment")
+    public ModelAndView addDepartment() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("message", "message");
+        return new ModelAndView("/org/addDepartment", params);
+    }
+
+    @GetMapping("/departmentDetail")
+    public ModelAndView departmentDetail() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("message", "message");
+        return new ModelAndView("/org/departmentDetail", params);
     }
 }

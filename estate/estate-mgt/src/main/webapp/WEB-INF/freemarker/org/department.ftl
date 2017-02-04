@@ -4,7 +4,7 @@
 <#include "/common/sidebar.ftl" />
 
 <!-- Modal addDepartDialog -->
-<div class="modal fade" id="addDepartDialog" tabindex="-1" role="dialog" aria-labelledby="addDepartLabel">
+<#--<div class="modal fade" id="addDepartDialog" tabindex="-1" role="dialog" aria-labelledby="addDepartLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -69,7 +69,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 <!-- Modal editDepartDialog -->
 <div class="modal fade" id="editDepartDialog" tabindex="-1" role="dialog" aria-labelledby="editDepartLabel">
@@ -174,7 +174,7 @@
                 </a>
             </li>
             <li class="active">
-                部门列表
+                部门管理
             </li>
         </ol>
     </section>
@@ -189,7 +189,8 @@
                             <div class="box-header">
                                 <h3 class="box-title">部门列表</h3>
                                 <div class="box-tools">
-                                    <a class="btn" id="addDepartBtn" data-toggle="modal" data-target="#addDepartDialog">
+                                    <#--<a class="btn" id="addDepartBtn" data-toggle="modal" data-target="#addDepartDialog">-->
+                                     <a class="btn" id="addDepartBtn" href="/mgt/org/addDepartment.ftl">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                         新增部门
                                     </a>

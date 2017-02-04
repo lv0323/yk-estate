@@ -31,7 +31,7 @@ public class ReportEngine {
     private static final String COMMA_SPLIT = ",";
     private static final String LINE_SPLIT = "\r\n";
 
-    @Autowired
+    @Autowired(required = false)
     private ReportDataSourceUtils reportDataSourceUtils;
 
     @Autowired
@@ -58,6 +58,7 @@ public class ReportEngine {
 
     /**
      * 小流量数据查询
+     *
      * @param reportName
      * @param region
      * @param param
@@ -77,6 +78,7 @@ public class ReportEngine {
 
     /**
      * 小流量数据查询
+     *
      * @param reportName
      * @param region
      * @param param
@@ -96,6 +98,7 @@ public class ReportEngine {
 
     /**
      * 大流量数据查询
+     *
      * @param reportName
      * @param region
      * @param param
@@ -117,6 +120,7 @@ public class ReportEngine {
 
     /**
      * 大流量数据查询
+     *
      * @param reportName
      * @param region
      * @param param
@@ -138,6 +142,7 @@ public class ReportEngine {
 
     /**
      * 数据导出，默认采用大流量方式
+     *
      * @param reportName
      * @param region
      * @param param
@@ -210,14 +215,14 @@ public class ReportEngine {
                     sb.append(reportUtils.camelName(columnName)).append(":").append("").append(",");
                 } else {
                     Class<?> fieldClass = Class.forName(field.getGenericType().getTypeName());
-                    Object value = getResultFromResultSet(rs, field.getName(),fieldClass);
+                    Object value = getResultFromResultSet(rs, field.getName(), fieldClass);
                     if (fieldClass == java.util.Date.class) {
                         value = ((Date) value).getTime();
                     }
                     sb.append(field.getName()).append(":").append(value).append(",");
                 }
             }
-            sb.deleteCharAt(sb.length()-1);
+            sb.deleteCharAt(sb.length() - 1);
             sb.append("}");
         }
         sb.append("]");
@@ -237,7 +242,7 @@ public class ReportEngine {
                 String value = rs.getString(columnName);
                 sb.append(reportUtils.camelOrUnderscoreName(columnName)).append(":").append(value).append(",");
             }
-            sb.deleteCharAt(sb.length()-1);
+            sb.deleteCharAt(sb.length() - 1);
             sb.append("}");
         }
         sb.append("]");
@@ -267,14 +272,14 @@ public class ReportEngine {
                     sb.append(reportUtils.camelName(columnName)).append(":").append("").append(",");
                 } else {
                     Class<?> fieldClass = Class.forName(field.getGenericType().getTypeName());
-                    Object value = getResultFromResultSet(rs, field.getName(),fieldClass);
+                    Object value = getResultFromResultSet(rs, field.getName(), fieldClass);
                     if (fieldClass == java.util.Date.class) {
                         value = ((Date) value).getTime();
                     }
                     sb.append(field.getName()).append(":").append(value).append(",");
                 }
             }
-            sb.deleteCharAt(sb.length()-1);
+            sb.deleteCharAt(sb.length() - 1);
             sb.append("}");
             printWriter.write(sb.toString());
         }
@@ -300,7 +305,7 @@ public class ReportEngine {
                 String value = rs.getString(columnName);
                 sb.append(reportUtils.camelOrUnderscoreName(columnName)).append(":").append(value).append(",");
             }
-            sb.deleteCharAt(sb.length()-1);
+            sb.deleteCharAt(sb.length() - 1);
             sb.append("}");
             printWriter.write(sb.toString());
         }
@@ -333,7 +338,7 @@ public class ReportEngine {
                     tempLineList.add(formatCsvString(null));
                 } else {
                     Class<?> fieldClass = Class.forName(field.getGenericType().getTypeName());
-                    Object value = getResultFromResultSet(rs, field.getName(),fieldClass);
+                    Object value = getResultFromResultSet(rs, field.getName(), fieldClass);
                     if (fieldClass == java.util.Date.class) {
                         value = reportUtils.format((Date) value);
                     }
