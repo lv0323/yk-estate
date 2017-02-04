@@ -1,6 +1,5 @@
 package com.lyun.estate.biz.report.engine;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,6 @@ import java.util.stream.Collectors;
 public class ReportEngine {
     private static final String COMMA_SPLIT = ",";
     private static final String LINE_SPLIT = "\r\n";
-    private ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     private ReportDataSourceUtils reportDataSourceUtils;
