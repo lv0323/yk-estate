@@ -18,7 +18,7 @@ public class FangDetail {
     private Long licenceId;
     private BizType bizType;
     private String title;
-    private BigDecimal totalPrice;
+    private BigDecimal publishPrice;
     private PriceUnit priceUnit;
     private HouseType houseType;
     private HouseSubType houseSubType;
@@ -87,12 +87,12 @@ public class FangDetail {
         return this;
     }
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
+    public BigDecimal getPublishPrice() {
+        return publishPrice;
     }
 
-    public FangDetail setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
+    public FangDetail setPublishPrice(BigDecimal publishPrice) {
+        this.publishPrice = publishPrice;
         return this;
     }
 

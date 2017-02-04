@@ -1,6 +1,9 @@
 package com.lyun.estate.biz.fang.repo;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.entity.FangDescr;
+import com.lyun.estate.biz.fang.entity.FangSelector;
 import com.lyun.estate.biz.fang.entity.FangTag;
 import com.lyun.estate.biz.fang.repo.provider.FangSqlProvider;
 import com.lyun.estate.biz.spec.fang.entity.FangDetail;
@@ -27,4 +30,7 @@ public interface FangRepository {
 
     @SelectProvider(type = FangSqlProvider.class, method = "findDetailById")
     FangDetail findDetail(Long fangId);
+
+    @SelectProvider(type = FangSqlProvider.class, method = "findSummaryBySelector")
+    PageList<FangSummary> findSummaryBySelector(FangSelector selector, PageBounds pageBounds);
 }

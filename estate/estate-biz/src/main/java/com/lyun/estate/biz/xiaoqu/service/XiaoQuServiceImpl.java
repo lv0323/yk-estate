@@ -38,7 +38,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by Jeffrey on 2017-01-06.
@@ -90,11 +92,23 @@ public class XiaoQuServiceImpl implements XiaoQuService {
             Optional<KeywordBean> condition = keywordService.findNameMatch(filter.getKeyword(), filter.getCityId(),
                     Lists.newArrayList(DomainType.DISTRICT, DomainType.SUB_DISTRICT), 1).stream().findAny();
             if (condition.isPresent()) {
-                if (selector.getDistrictId() == null && condition.get().getDomainType() == DomainType.DISTRICT) {
-                    selector.setDistrictId(condition.get().getId());
-                } else if (selector.getSubDistrictId() == null && condition.get()
-                        .getDomainType() == DomainType.SUB_DISTRICT) {
-                    selector.setSubDistrictId(condition.get().getId());
+                switch (condition.get().getDomainType()) {
+                    case DISTRICT:
+                        if (selector.getDistrictId() != null && !Objects.equals(selector.getDistrictId(),
+                                condition.get().getId())) {
+                            return empty;
+                        } else {
+                            selector.setDistrictId(condition.get().getId());
+                        }
+                        break;
+                    case SUB_DISTRICT:
+                        if (selector.getSubDistrictId() != null && !Objects.equals(selector.getSubDistrictId(),
+                                condition.get().getId())) {
+                            return empty;
+                        } else {
+                            selector.setSubDistrictId(condition.get().getId());
+                        }
+                        break;
                 }
             } else {
                 List<KeywordBean> xiaoQus = keywordService.findContain(filter.getKeyword(), filter.getCityId(),
@@ -102,9 +116,7 @@ public class XiaoQuServiceImpl implements XiaoQuService {
                 if (xiaoQus.isEmpty()) {
                     return empty;
                 } else {
-                    List<Long> xqIds = new ArrayList<>();
-                    xiaoQus.forEach(keywordBean -> xqIds.add(keywordBean.getId()));
-                    selector.setXiaoQuIds(xqIds);
+                    selector.setXiaoQuIds(xiaoQus.stream().map(KeywordBean::getId).collect(Collectors.toList()));
                 }
             }
         }
@@ -203,9 +215,17 @@ public class XiaoQuServiceImpl implements XiaoQuService {
                                                           BizType bizType, Integer cityId) {
         //TODO 缓存处理
         if (bizType == BizType.SELL) {
-            return xiaoQuRepository.findSellCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude, cityId);
+            return xiaoQuRepository.findSellCommunityListByMap(minLongitude,
+                    maxLongitude,
+                    minLatitude,
+                    maxLatitude,
+                    cityId);
         } else if (bizType == BizType.RENT) {
-            return xiaoQuRepository.findRentCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude, cityId);
+            return xiaoQuRepository.findRentCommunityListByMap(minLongitude,
+                    maxLongitude,
+                    minLatitude,
+                    maxLatitude,
+                    cityId);
         }
         return null;
     }

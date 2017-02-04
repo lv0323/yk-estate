@@ -33,7 +33,7 @@ public class XiaoQuController {
 
 
     @GetMapping("/keywords")
-    List<KeywordResp> keywords(@RequestParam Long cityId,
+    public List<KeywordResp> keywords(@RequestParam Long cityId,
                                @RequestParam String keyword) {
         return keywordService.decorate(keywordService.findContain(keyword, cityId,
                 Lists.newArrayList(DomainType.DISTRICT, DomainType.SUB_DISTRICT, DomainType.XIAO_QU), 10));
@@ -73,7 +73,7 @@ public class XiaoQuController {
     }
 
     @GetMapping(value = "/nearby")
-    PageList<XiaoQuSummary> nearby(@RequestParam Long id) {
+    public PageList<XiaoQuSummary> nearby(@RequestParam Long id) {
         return xiaoQuService.findNearbyXiaoQu(id);
     }
 

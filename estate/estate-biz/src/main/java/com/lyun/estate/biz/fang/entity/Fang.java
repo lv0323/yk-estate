@@ -26,7 +26,7 @@ public class Fang {
     private Decorate decorate;
     private BigDecimal estateArea;
     private BigDecimal realArea;
-    private BigDecimal totalPrice;
+    private BigDecimal publishPrice;
     private PriceUnit priceUnit;
     private BigDecimal transferPrice;
     private BigDecimal unitPrice; //单价

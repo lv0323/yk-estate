@@ -1,30 +1,30 @@
 CREATE TABLE t_fang (
   id             BIGSERIAL PRIMARY KEY,
-  biz_type       VARCHAR(10)    NOT NULL, --租售
-  house_type     VARCHAR(10)    NOT NULL, --用途
-  house_sub_type VARCHAR(15)    NOT NULL, --用途类型
-  licence_id     BIGINT         NOT NULL, -- licence_id
-  xiao_qu_id     BIGINT         NOT NULL, -- xiao_qu_id
+  biz_type       VARCHAR(10)         NOT NULL, --租售
+  house_type     VARCHAR(10)         NOT NULL, --用途
+  house_sub_type VARCHAR(15)         NOT NULL, --用途类型
+  licence_id     BIGINT UNIQUE       NOT NULL, -- licence_id
+  xiao_qu_id     BIGINT              NOT NULL, -- xiao_qu_id
   ranking        NUMERIC(10, 2), --评分
-  s_counts       INT            NOT NULL, --室
-  t_counts       INT            NOT NULL, --厅
-  c_counts       INT            NOT NULL, --厨
-  w_counts       INT            NOT NULL, --卫
-  yt_counts      INT            NOT NULL, --阳台
+  s_counts       INT                 NOT NULL, --室
+  t_counts       INT                 NOT NULL, --厅
+  c_counts       INT                 NOT NULL, --厨
+  w_counts       INT                 NOT NULL, --卫
+  yt_counts      INT                 NOT NULL, --阳台
   orientation    VARCHAR(5), --朝向
   decorate       VARCHAR(10), --装修
-  estate_area    NUMERIC(10, 5) NOT NULL, --产证面积
-  real_area      NUMERIC(10, 5) NOT NULL, --室内面积
-  total_price    NUMERIC(28, 5) NOT NULL, --总价
-  price_unit     VARCHAR(10)    NOT NULL, --总价单位
-  unit_price     NUMERIC(28, 5) NOT NULL, --单价
+  estate_area    NUMERIC(10, 5)      NOT NULL, --产证面积
+  real_area      NUMERIC(10, 5)      NOT NULL, --室内面积
+  publish_price  NUMERIC(28, 5)      NOT NULL, --挂牌价
+  price_unit     VARCHAR(10)         NOT NULL, --挂牌价单位
+  unit_price     NUMERIC(28, 5)      NOT NULL, --单价
   transfer_price NUMERIC(28, 5), --转让费
   bottom_price   NUMERIC(28, 5), --底价
   resident       VARCHAR(1), --是否可落户
-  process        VARCHAR(20)    NOT NULL, --流程状态
-  floor_counts   INT            NOT NULL, --总层高
-  floor_type     VARCHAR(10)    NOT NULL, --层高类型
-  structure_yype VARCHAR(10), --结构
+  process        VARCHAR(20)         NOT NULL, --流程状态
+  floor_counts   INT                 NOT NULL, --总层高
+  floor_type     VARCHAR(10)         NOT NULL, --层高类型
+  structure_type VARCHAR(10), --结构
   build_year     INT, --建造时间
   heating_type   VARCHAR(15), --供暖类型
   has_elevator   VARCHAR(1), --是否有电梯
@@ -50,8 +50,9 @@ CREATE TABLE t_fang_ext (
   taxes_willing      VARCHAR(15), --税费
   commission_willing VARCHAR(15), --佣金
   purchase_price     NUMERIC(28, 5), --购入价格
-  purchase_date      TIMESTAMP, --购入时间
+  purchase_date      DATE, --购入时间
   is_only            VARCHAR(1), --唯一住房
+  over_years         INTEGER, --满2，满5
   mortgage           VARCHAR(1), --有无贷款抵押
   note               VARCHAR(500) --备注信息
 );
@@ -65,7 +66,7 @@ CREATE TABLE t_fang_tag (
 
 CREATE TABLE t_fang_descr (
   id         BIGSERIAL PRIMARY KEY,
-  fang_id    BIGINT UNIQUE,
+  fang_id    BIGINT UNIQUE NOT NULL,
   title      VARCHAR(100), --标题
   core       VARCHAR(500), --核心卖点
   hu_xing    VARCHAR(500), --户型介绍
@@ -81,7 +82,7 @@ CREATE TABLE t_fang_descr (
 
 CREATE TABLE t_fang_contact (
   id           BIGSERIAL PRIMARY KEY,
-  fang_id      BIGINT,
+  fang_id      BIGINT NOT NULL,
   ower_name    VARCHAR(20), --业主姓名
   contact_type VARCHAR(10), --联系类别
   contact_info VARCHAR(50) --联系方式
