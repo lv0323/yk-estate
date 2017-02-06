@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by jesse on 2017/1/25.
  */
-//@Service
+@Service
 public class ReportDataSourceUtils {
     private final Map<String, ReportInfo> dataSourceMap = new ConcurrentHashMap<String, ReportInfo>();
     private final static String CONNECTOR = ":";
@@ -37,7 +37,7 @@ public class ReportDataSourceUtils {
     public void init() throws IOException, SAXException, ParserConfigurationException {
 //        parseDataSourceXml(context.getEnvironment().getRequiredProperty("report.datasource"));
         //TODO context获取报错
-        parseDataSourceXml("/Users/jesse/git/yk-estate/estate/estate-biz/src/main/resources/estate/biz/ReportInfo.xml");
+        parseDataSourceXml("../estate-biz/src/main/resources/estate/biz/ReportInfo.xml");
     }
 
     private void parseDataSourceXml(String xmlPath) throws ParserConfigurationException, IOException, SAXException {
