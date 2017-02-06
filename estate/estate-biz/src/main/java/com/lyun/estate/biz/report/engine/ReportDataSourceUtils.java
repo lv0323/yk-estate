@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by jesse on 2017/1/25.
  */
-//@Service
+@Service
 public class ReportDataSourceUtils {
     private final Map<String, ReportInfo> dataSourceMap = new ConcurrentHashMap<String, ReportInfo>();
     private final static String CONNECTOR = ":";
@@ -35,16 +35,12 @@ public class ReportDataSourceUtils {
 
     @PostConstruct
     public void init() throws IOException, SAXException, ParserConfigurationException {
-//        parseDataSourceXml(context.getEnvironment().getRequiredProperty("report.datasource"));
-        //TODO context获取报错
-        parseDataSourceXml("/Users/jesse/git/yk-estate/estate/estate-biz/src/main/resources/estate/biz/ReportInfo.xml");
+        parseDataSourceXml(context.getEnvironment().getRequiredProperty("report.datasource"));
     }
 
     private void parseDataSourceXml(String xmlPath) throws ParserConfigurationException, IOException, SAXException {
         Assert.hasLength(xmlPath, "需指定解析的文件路径");
-        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = builderFactory.newDocumentBuilder();
-        Document document = builder.parse(xmlPath);
+        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xmlPath);
         NodeList nodeList = document.getElementsByTagName("ReportInfo");
         ReportInfo reportInfo = null;
         for (int i =0; i < nodeList.getLength(); i++) {
