@@ -14,6 +14,7 @@ import com.lyun.estate.biz.housedict.def.StructureType;
 import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
 import com.lyun.estate.biz.housedict.entity.SubDistrict;
+import com.lyun.estate.biz.housedict.service.CityService;
 import com.lyun.estate.biz.housedict.service.HouseService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
@@ -59,6 +60,9 @@ public class XiaoQuServiceImpl implements XiaoQuService {
 
     @Autowired
     private HouseService houseService;
+
+    @Autowired
+    private CityService cityService;
 
 
     /**
@@ -132,13 +136,13 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         result.forEach(bean -> {
             XiaoQuSummary summary = new XiaoQuSummary();
             BeanUtils.copyProperties(bean, summary);
-            summary.setDistrict(Optional.ofNullable(houseService.findDistrict(bean.getDistrictId()))
+            summary.setDistrict(Optional.ofNullable(cityService.findDistrict(bean.getDistrictId()))
                     .map(District::getName)
                     .orElse(null));
-            summary.setSubDistrict(Optional.ofNullable(houseService.findSubDistrict(bean.getSubDistrictId())).map(
+            summary.setSubDistrict(Optional.ofNullable(cityService.findSubDistrict(bean.getSubDistrictId())).map(
                     SubDistrict::getName).orElse(null));
             summary.setStructure(StructureType.getTypeStr(bean.getStructureType()));
-            FileDescription firstImg = fileService.findFirst(bean.getId(), DomainType.XIAO_QU, CustomType.SHIJING,
+            FileDescription firstImg = fileService.findFirst(bean.getId(), DomainType.XIAO_QU, CustomType.SHI_JING,
                     FileProcess.WATERMARK);
             summary.setImageURI(Optional.ofNullable(firstImg).map(FileDescription::getFileURI).orElse(null));
             summaries.add(summary);
@@ -153,15 +157,15 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         XiaoQuDetailBean bean = xiaoQuRepository.findDetail(id);
         XiaoQuDetail detail = new XiaoQuDetail();
         BeanUtils.copyProperties(bean, detail);
-        detail.setCity(Optional.ofNullable(houseService.findCity(bean.getCityId())).map(City::getName).orElse(null));
-        detail.setDistrict(Optional.ofNullable(houseService.findDistrict(bean.getDistrictId()))
+        detail.setCity(Optional.ofNullable(cityService.findCity(bean.getCityId())).map(City::getName).orElse(null));
+        detail.setDistrict(Optional.ofNullable(cityService.findDistrict(bean.getDistrictId()))
                 .map(District::getName)
                 .orElse(null));
-        detail.setSubDistrict(Optional.ofNullable(houseService.findSubDistrict(bean.getSubDistrictId()))
+        detail.setSubDistrict(Optional.ofNullable(cityService.findSubDistrict(bean.getSubDistrictId()))
                 .map(SubDistrict::getName)
                 .orElse(null));
         detail.setStructure(StructureType.getTypeStr(bean.getStructureType()));
-        FileDescription firstImg = fileService.findFirst(bean.getId(), DomainType.XIAO_QU, CustomType.SHIJING,
+        FileDescription firstImg = fileService.findFirst(bean.getId(), DomainType.XIAO_QU, CustomType.SHI_JING,
                 FileProcess.WATERMARK);
         detail.setImageURI(Optional.ofNullable(firstImg).map(FileDescription::getFileURI).orElse(null));
         //todo: fix this

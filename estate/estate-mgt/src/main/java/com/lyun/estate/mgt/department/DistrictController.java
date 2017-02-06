@@ -1,6 +1,6 @@
 package com.lyun.estate.mgt.department;
 
-import com.lyun.estate.biz.housedict.service.DistrictService;
+import com.lyun.estate.biz.housedict.service.CityService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/department/district")
 public class DistrictController {
 
-    private final DistrictService service;
+    private final CityService service;
 
-    public DistrictController(DistrictService service) {
+    public DistrictController(CityService service) {
         this.service = service;
     }
 
@@ -23,11 +23,11 @@ public class DistrictController {
 
     @GetMapping("districts")
     public Object district(@RequestParam Long id) {
-        return service.findDistrictsByCityId(id);
+        return service.findOrderedDistrictsByCityId(id);
     }
 
     @GetMapping("sub-districts")
     public Object subDistrict(@RequestParam Long id) {
-        return service.findSubDistrictsByDistrictId(id);
+        return service.findOrderedSubDistrictsByDistrictId(id);
     }
 }

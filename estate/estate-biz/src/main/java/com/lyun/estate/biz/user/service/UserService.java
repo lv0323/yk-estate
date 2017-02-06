@@ -20,7 +20,7 @@ import com.lyun.estate.biz.utils.clock.ClockTools;
 import com.lyun.estate.core.supports.ExecutionContext;
 import com.lyun.estate.core.supports.exceptions.EstateBizException;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
-import com.lyun.estate.core.supports.types.SmsType;
+import com.lyun.estate.biz.sms.def.SmsType;
 import com.lyun.estate.core.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;

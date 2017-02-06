@@ -1,4 +1,4 @@
-package com.lyun.estate.core.supports.types;
+package com.lyun.estate.biz.sms.def;
 
 import java.util.ArrayList;
 import java.util.List;

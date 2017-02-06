@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Constant {
-    public static final String JSON_DATE_FORMAT = "yyyy-MM-dd'T'hh:mm:ss";
 
     public static class CLIENT_ID {
         public static final int WEB = 1000;

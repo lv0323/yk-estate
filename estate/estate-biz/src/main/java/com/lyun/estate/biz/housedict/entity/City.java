@@ -10,7 +10,6 @@ public class City {
     private String name;
     private BigDecimal longitude;
     private BigDecimal latitude;
-    private String viewRegion;
 
     public Long getId() {
         return id;
@@ -54,15 +53,6 @@ public class City {
 
     public City setLatitude(BigDecimal latitude) {
         this.latitude = latitude;
-        return this;
-    }
-
-    public String getViewRegion() {
-        return viewRegion;
-    }
-
-    public City setViewRegion(String viewRegion) {
-        this.viewRegion = viewRegion;
         return this;
     }
 }

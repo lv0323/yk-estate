@@ -3,7 +3,7 @@ package com.lyun.estate.biz.sms.service.validator;
 import com.lyun.estate.biz.sms.resources.SmsResource;
 import com.lyun.estate.biz.user.repository.UserMapper;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
-import com.lyun.estate.core.supports.types.SmsType;
+import com.lyun.estate.biz.sms.def.SmsType;
 import com.lyun.estate.core.utils.ValidateUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;

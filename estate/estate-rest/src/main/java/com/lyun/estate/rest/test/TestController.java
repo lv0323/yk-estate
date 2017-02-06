@@ -78,7 +78,7 @@ public class TestController {
             FileDescription fileDescription = new FileDescription()
                     .setOwnerId(0L)
                     .setOwnerType(DomainType.XIAO_QU)
-                    .setCustomType(CustomType.HUXING)
+                    .setCustomType(CustomType.HU_XING)
                     .setFileType(FileType.IMAGE)
                     .setFileProcess(FileProcess.WATERMARK.getFlag());
 

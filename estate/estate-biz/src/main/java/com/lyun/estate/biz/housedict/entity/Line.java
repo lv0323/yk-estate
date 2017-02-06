@@ -1,10 +1,11 @@
 package com.lyun.estate.biz.housedict.entity;
 
-
 import java.math.BigDecimal;
 
-public class District {
-
+/**
+ * Created by Jeffrey on 2017-02-06.
+ */
+public class Line {
     private Long id;
     private Long cityId;
     private String abbr;
@@ -16,7 +17,7 @@ public class District {
         return id;
     }
 
-    public District setId(Long id) {
+    public Line setId(Long id) {
         this.id = id;
         return this;
     }
@@ -25,7 +26,7 @@ public class District {
         return cityId;
     }
 
-    public District setCityId(Long cityId) {
+    public Line setCityId(Long cityId) {
         this.cityId = cityId;
         return this;
     }
@@ -34,7 +35,7 @@ public class District {
         return abbr;
     }
 
-    public District setAbbr(String abbr) {
+    public Line setAbbr(String abbr) {
         this.abbr = abbr;
         return this;
     }
@@ -43,7 +44,7 @@ public class District {
         return name;
     }
 
-    public District setName(String name) {
+    public Line setName(String name) {
         this.name = name;
         return this;
     }
@@ -52,7 +53,7 @@ public class District {
         return longitude;
     }
 
-    public District setLongitude(BigDecimal longitude) {
+    public Line setLongitude(BigDecimal longitude) {
         this.longitude = longitude;
         return this;
     }
@@ -61,7 +62,7 @@ public class District {
         return latitude;
     }
 
-    public District setLatitude(BigDecimal latitude) {
+    public Line setLatitude(BigDecimal latitude) {
         this.latitude = latitude;
         return this;
     }

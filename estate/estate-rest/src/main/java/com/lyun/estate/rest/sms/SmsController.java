@@ -6,7 +6,7 @@ import com.lyun.estate.biz.auth.captcha.CheckCaptcha;
 import com.lyun.estate.biz.sms.resources.SmsResource;
 import com.lyun.estate.biz.sms.resources.SmsResponse;
 import com.lyun.estate.biz.sms.service.SmsService;
-import com.lyun.estate.core.supports.types.SmsType;
+import com.lyun.estate.biz.sms.def.SmsType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;

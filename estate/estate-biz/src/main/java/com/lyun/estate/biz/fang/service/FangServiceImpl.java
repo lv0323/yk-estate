@@ -198,7 +198,7 @@ public class FangServiceImpl implements FangService {
                     summary.setImageURI(Optional.ofNullable(
                             fileService.findFirst(summary.getId(),
                                     DomainType.FANG,
-                                    CustomType.SHIJING,
+                                    CustomType.SHI_JING,
                                     FileProcess.WATERMARK)).
                             map(FileDescription::getFileURI).orElse(null));
                 }
@@ -253,7 +253,7 @@ public class FangServiceImpl implements FangService {
         decorateTags(summary);
         summary.setImageURI(Optional.ofNullable(fileService.findFirst(id,
                 DomainType.FANG,
-                CustomType.SHIJING,
+                CustomType.SHI_JING,
                 FileProcess.WATERMARK))
                 .map(FileDescription::getFileURI).orElse(null));
         return summary;

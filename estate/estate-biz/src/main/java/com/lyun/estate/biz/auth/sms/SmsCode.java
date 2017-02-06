@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.auth.sms;
 
-import com.lyun.estate.core.supports.types.SmsType;
+import com.lyun.estate.biz.sms.def.SmsType;
 
 public class SmsCode {
     private String id;
