@@ -79,28 +79,34 @@ public class MessageConsumer {
      */
     @RabbitListener(queues = QUEUE_NAME)
     public void receiveMessage(final Message message) {
-        try {
-            if (message == null) {
-                logger.info("队列里没有消息!");
-            } else {
-                boolean result = messageService.consumeMessage(message);
-                logger.info("接收消息[{}][{}]", message.toString(), result);
-            }
-        } catch (Exception ex) {
-            /* MQ收到消息后保存失败理流程 **/
-            assert message != null;
-            logger.warn("处理消息[{}]错误:[{}]", message.toString(), ex.getMessage());
-            try {
-                //TODO 指定文件路径地址
-                FileWriter fw = new FileWriter("message_error.json", true);
-                PrintWriter out = new PrintWriter(fw);
-                out.write(message.toString());
-                out.println();
-                fw.close();
-                out.close();
-            }  catch (IOException e) {
-                logger.warn("文件操作异常:[{}]", e.getMessage());
-            }
+//        try {
+//            if (message == null) {
+//                logger.info("队列里没有消息!");
+//            } else {
+//                boolean result = messageService.consumeMessage(message);
+//                logger.info("接收消息[{}][{}]", message.toString(), result);
+//            }
+//        } catch (Exception ex) {
+//            /* MQ收到消息后保存失败理流程 **/
+//            assert message != null;
+//            logger.warn("处理消息[{}]错误:[{}]", message.toString(), ex.getMessage());
+//            try {
+//                //TODO 指定文件路径地址
+//                FileWriter fw = new FileWriter("message_error.json", true);
+//                PrintWriter out = new PrintWriter(fw);
+//                out.write(message.toString());
+//                out.println();
+//                fw.close();
+//                out.close();
+//            }  catch (IOException e) {
+//                logger.warn("文件操作异常:[{}]", e.getMessage());
+//            }
+//        }
+        if (message == null) {
+            logger.info("队列里没有消息!");
+        } else {
+            boolean result = messageService.consumeMessage(message);
+            logger.info("接收消息[{}][{}]", message.toString(), result);
         }
     }
 }

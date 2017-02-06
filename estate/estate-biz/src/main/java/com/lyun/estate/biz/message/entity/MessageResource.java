@@ -2,6 +2,7 @@ package com.lyun.estate.biz.message.entity;
 
 import com.lyun.estate.biz.message.def.MessageBusinessType;
 import com.lyun.estate.biz.message.def.MessageContentType;
+import com.lyun.estate.biz.message.def.MessageStatus;
 
 import java.util.Date;
 
@@ -10,13 +11,12 @@ import java.util.Date;
  */
 public class MessageResource {
     private Long id;
-    private Long receiver;
     private String title;
     private String summary;
     private String content;
     private MessageContentType contentType;
-    private MessageBusinessType businessType;
     private String data;
+    private MessageStatus status;
     private Date createTime;
 
     public Long getId() {
@@ -25,14 +25,6 @@ public class MessageResource {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(Long receiver) {
-        this.receiver = receiver;
     }
 
     public String getTitle() {
@@ -67,20 +59,20 @@ public class MessageResource {
         this.contentType = contentType;
     }
 
-    public MessageBusinessType getBusinessType() {
-        return businessType;
-    }
-
-    public void setBusinessType(MessageBusinessType businessType) {
-        this.businessType = businessType;
-    }
-
     public String getData() {
         return data;
     }
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public MessageStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MessageStatus status) {
+        this.status = status;
     }
 
     public Date getCreateTime() {
