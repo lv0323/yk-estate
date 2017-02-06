@@ -23,7 +23,7 @@ import java.io.PrintWriter;
 @Service
 public class MessageConsumer {
     private static final Logger logger = LoggerFactory.getLogger(MessageConsumer.class);
-    private final static String QUEUE_NAME = "estate.queue.message";
+    private final static String QUEUE_NAME = "estate.queue.ms";
 
     private ObjectMapper mapper = new ObjectMapper();
 

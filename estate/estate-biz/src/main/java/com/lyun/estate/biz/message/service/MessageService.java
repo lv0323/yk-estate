@@ -3,14 +3,13 @@ package com.lyun.estate.biz.message.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.lyun.estate.biz.message.def.MessageBusinessType;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.message.def.MessageContentType;
+import com.lyun.estate.biz.message.def.MessageStatus;
 import com.lyun.estate.biz.message.entity.Message;
-import com.lyun.estate.biz.message.entity.MessageCounter;
-import com.lyun.estate.biz.message.entity.MessageCounterResource;
 import com.lyun.estate.biz.message.entity.MessageResource;
+import com.lyun.estate.biz.message.entity.MessageSummaryResource;
 import com.lyun.estate.biz.message.repository.MessageRepository;
-import com.lyun.estate.biz.mq.producer.MessageProducer;
 import com.lyun.estate.biz.spec.fang.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.service.FangService;
 import com.lyun.estate.core.supports.ExecutionContext;
@@ -24,7 +23,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 import static com.lyun.estate.core.supports.exceptions.ExCode.*;
 
@@ -46,32 +45,32 @@ public class MessageService {
     private ExecutionContext executionContext;
 
 
-    public MessageCounterResource getMessageCounter(Long receiverId) {
+    public List<MessageSummaryResource> getMessageSummary(Long receiverId) {
         if (receiverId == null) {
             throw new EstateException(PARAM_NULL, "receiverId");
         }
-        return messageRepository.getMessageCounterResource(receiverId);
+        return messageRepository.getMessageSummaryResource(receiverId);
     }
 
-    public MessageCounterResource getMessageCounter() {
-        return getMessageCounter(Long.valueOf(executionContext.getUserId()));
+    public List<MessageSummaryResource> getMessageSummary() {
+        return getMessageSummary(Long.valueOf(executionContext.getUserId()));
     }
 
     @Transactional
-    public List<MessageResource> getMessage(Long receiverId, MessageBusinessType businessType, PageBounds pageBounds) {
+    public PageList<MessageResource> getMessage(Long receiverId, Long senderId, Long lastMessageId, PageBounds pageBounds) {
         if (receiverId == null) {
             throw new EstateException(PARAM_NULL, "receiverId");
         }
-        if (businessType == null) {
-            throw new EstateException(PARAM_NULL, "businessType");
+        if (senderId == null) {
+            throw new EstateException(PARAM_NULL, "senderId");
         }
          /*  获取消息 */
-        List<MessageResource> messageResourceList = messageRepository.getMessage(receiverId, businessType, pageBounds);
+        PageList<MessageResource> messageResourceList = messageRepository.getMessage(receiverId, senderId, pageBounds);
         if (CollectionUtils.isEmpty(messageResourceList)) {
             return messageResourceList;
         }
         /*  JSON转换 */
-        List<MessageResource> resultList = messageResourceList.stream().map(t -> {
+        messageResourceList.forEach(t -> {
             switch (t.getContentType()) {
                 case FANG:
                     FangSummary fang = fangService.getSummary(Long.valueOf(t.getContent()));
@@ -96,54 +95,49 @@ public class MessageService {
                 default:
                     throw new EstateException(PARAM_ILLEGAL, "MessageContentType", t.getContentType());
             }
-            return t;
-        }).collect(Collectors.toList());
-         /* 更新消息计数器 */
-        MessageResource lastMessageResource = messageResourceList.stream().reduce((x, y) -> {
-            if (x.getId() >= y.getId()) {
-                return x;
-            }
-            return y;
-        }).get();
-        MessageCounter messageCounter = messageRepository.getMessageCounter(receiverId);
-        if (messageCounter == null) {
-            throw new EstateException(NOT_FOUND, receiverId, "MessageCounter");
+        });
+        //TODO 标记未读为已读
+        if (messageRepository.updateToRead(receiverId, senderId, lastMessageId) <= 0) {
+            throw new EstateException(UPDATE_FAIL, "message status", "receiver:" + receiverId + ";sender:" + senderId + ";lastMessageId:" + lastMessageId);
         }
-        switch (businessType) {
-            case C_MS:
-                messageCounter.setCMsIndex(lastMessageResource.getId());
-                break;
-            case C_M_REPORT:
-                messageCounter.setCMReportIndex(lastMessageResource.getId());
-                break;
-            case NOTICE:
-                messageCounter.setNoticeIndex(lastMessageResource.getId());
-                break;
-            default:
-                throw new EstateException(PARAM_ILLEGAL, "MessageBusinessType", businessType);
-        }
-        if (messageRepository.updateMessageCounter(messageCounter) != 1) {
-            throw new EstateException(UPDATE_FAIL, "MessageCounter", messageCounter.toString());
-        }
-        return resultList;
+
+        return messageResourceList;
+    }
+
+    public List<MessageResource> getMessage(Long senderId, Long lastMessageId, PageBounds pageBounds) {
+        return getMessage(Long.valueOf(executionContext.getUserId()), senderId, lastMessageId, pageBounds);
     }
 
     @Transactional
-    public List<MessageResource> getMessage(MessageBusinessType businessType, PageBounds pageBounds) {
-        return getMessage(Long.valueOf(executionContext.getUserId()), businessType, pageBounds);
-    }
-
-    @Transactional
-    public boolean createMessage(String title, String summary, String content, MessageContentType contentType, MessageBusinessType businessType, Long senderId, Long receiverId) {
+    private boolean createMessage(String title, String summary, String content, MessageContentType contentType, Long senderId, Long receiverId, String uuid) {
         /* 创建message */
+        if (StringUtils.isEmpty(title)) {
+            throw new EstateException(PARAM_NULL, "title");
+        }
+        if (StringUtils.isEmpty(content)) {
+            throw new EstateException(PARAM_NULL, "content");
+        }
+        if (contentType == null) {
+            throw new EstateException(PARAM_NULL, "contentType");
+        }
+        if (senderId == null) {
+            throw new EstateException(PARAM_NULL, "senderId");
+        }
+        if (receiverId == null) {
+            throw new EstateException(PARAM_NULL, "receiverId");
+        }
+        if (StringUtils.isEmpty(uuid)) {
+            throw new EstateException(PARAM_NULL, "uuid");
+        }
         Message message = new Message();
         message.setTitle(title);
         message.setSummary(summary);
         message.setContent(content);
         message.setContentType(contentType);
-        message.setBusinessType(businessType);
         message.setSenderId(senderId);
         message.setReceiverId(receiverId);
+        message.setUuid(uuid);
+        message.setStatus(MessageStatus.UNREAD);
         return createMessage(message);
     }
 
@@ -151,80 +145,81 @@ public class MessageService {
         if (messageRepository.createMessage(message) != 1) {
             throw new EstateException(CREATE_FAIL, "Message", message.toString());
         }
-        /* 首次创建message counter */
-        MessageCounter messageCounter = messageRepository.getMessageCounter(message.getReceiverId());
-        if (messageCounter == null) {
-            messageCounter = new MessageCounter();
-            messageCounter.setOwnerId(message.getReceiverId());
-            if (messageRepository.createMessageCounter(messageCounter) != 1) {
-                throw new EstateException(CREATE_FAIL, "MessageCounter", messageCounter.toString());
-            }
-        }
         return true;
     }
 
+    /**
+     * 提供小区动态消息生成器
+     * @param receiverId
+     * @param fangId
+     * @param title
+     * @return
+     */
     @Transactional
-    public Message generateSimpleFangMessage(Long senderId, Long receiverId, Long fangId) {
-        if (senderId == null) {
-            //TODO 默认发送者
-            senderId = 1L;
-        }
+    public Message generateSimpleFangMessage(Long receiverId, Long fangId, String title, String summary) {
         if (receiverId == null) {
-            throw new EstateException(PARAM_ILLEGAL, "receiverId", receiverId);
+            throw new EstateException(PARAM_NULL, "receiverId");
         }
         if (fangId == null) {
-            throw new EstateException(PARAM_ILLEGAL, "fangId", fangId);
+            throw new EstateException(PARAM_NULL, "fangId");
+        }
+        if (StringUtils.isEmpty(title)) {
+            throw new EstateException(PARAM_NULL, "title");
         }
         Message message = new Message();
+        message.setTitle(title);
+        message.setSummary(summary);
         message.setContent(fangId.toString());
         message.setContentType(MessageContentType.FANG);
-        message.setBusinessType(MessageBusinessType.C_MS);
-        message.setSenderId(senderId);
+        message.setSenderId(1L);//TODO 默认的发送者
         message.setReceiverId(receiverId);
+        message.setUuid(UUID.randomUUID().toString());
 
         return message;
     }
 
     @Transactional
-    public Message generateSimpleReportMessage(Long senderId, Long receiverId, Long reportId) {
-        if (senderId == null) {
-            //TODO 默认发送者
-            senderId = 1L;
-        }
+    public Message generateSimpleReportMessage(Long receiverId, Long reportId, String title, String summary) {
         if (receiverId == null) {
-            throw new EstateException(PARAM_ILLEGAL, "receiverId", receiverId);
+            throw new EstateException(PARAM_NULL, "receiverId");
         }
         if (reportId == null) {
-            throw new EstateException(PARAM_ILLEGAL, "reportId", reportId);
+            throw new EstateException(PARAM_NULL, "reportId");
+        }
+        if (StringUtils.isEmpty(title)) {
+            throw new EstateException(PARAM_NULL, "title");
         }
         Message message = new Message();
+        message.setTitle(title);
+        message.setSummary(summary);
         message.setContent(reportId.toString());
         message.setContentType(MessageContentType.REPORT);
-        message.setBusinessType(MessageBusinessType.C_M_REPORT);
-        message.setSenderId(senderId);
+        message.setSenderId(2L);//TODO 默认的发送者
         message.setReceiverId(receiverId);
+        message.setUuid(UUID.randomUUID().toString());
 
         return message;
     }
 
-    public Message generateSimplePhotoArticleMessage(Long senderId, Long receiverId, String content) {
-        if (senderId == null) {
-            //TODO 默认发送者
-            senderId = 1L;
-        }
+    public Message generateSimplePhotoArticleMessage(Long receiverId, String content, String title, String summary) {
         if (receiverId == null) {
-            throw new EstateException(PARAM_ILLEGAL, "receiverId", receiverId);
+            throw new EstateException(PARAM_NULL, "receiverId");
         }
         if (StringUtils.isEmpty(content)) {
-            throw new EstateException(PARAM_ILLEGAL, "content", content);
+            throw new EstateException(PARAM_NULL, "content");
+        }
+        if (StringUtils.isEmpty(title)) {
+            throw new EstateException(PARAM_NULL, "title");
         }
 
         Message message = new Message();
+        message.setTitle(title);
+        message.setSummary(summary);
         message.setContent(content);
         message.setContentType(MessageContentType.PHOTO_ARTICLE);
-        message.setBusinessType(MessageBusinessType.NOTICE);
-        message.setSenderId(senderId);
+        message.setSenderId(3L);//TODO 默认的发送者
         message.setReceiverId(receiverId);
+        message.setUuid(UUID.randomUUID().toString());
 
         return message;
     }
@@ -234,7 +229,7 @@ public class MessageService {
         if (message == null) {
             throw new EstateException(PARAM_NULL, "message");
         }
-        return createMessage(message.getTitle(), message.getSummary(), message.getContent(), message.getContentType(), message.getBusinessType(), message.getSenderId(), message.getReceiverId());
+        return createMessage(message.getTitle(), message.getSummary(), message.getContent(), message.getContentType(), message.getSenderId(), message.getReceiverId(), message.getUuid());
     }
 
     @Transactional
@@ -247,7 +242,7 @@ public class MessageService {
             logger.warn("消息[{}]已经存在，忽略！消息内容为：{}", message.getUuid(), message.toString());
             return true;
         }
-        return createMessage(message.getTitle(), message.getSummary(), message.getContent(), message.getContentType(), message.getBusinessType(), message.getSenderId(), message.getReceiverId());
+        return createMessage(message.getTitle(), message.getSummary(), message.getContent(), message.getContentType(), message.getSenderId(), message.getReceiverId(), message.getUuid());
     }
 
     private Message getMessageByUUID(String uuid) {
