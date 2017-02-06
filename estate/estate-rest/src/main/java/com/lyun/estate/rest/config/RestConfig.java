@@ -7,8 +7,6 @@ import com.lyun.estate.core.config.CoreConfig;
 import com.lyun.estate.core.supports.resolvers.PageBoundsArgumentResolver;
 import com.lyun.estate.core.supports.resolvers.PageListSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.*;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
