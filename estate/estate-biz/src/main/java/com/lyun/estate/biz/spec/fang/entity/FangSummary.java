@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.spec.fang.entity;
 
 import com.lyun.estate.biz.fang.def.*;
+import com.lyun.estate.core.supports.types.YN;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,6 +24,11 @@ public class FangSummary {
     private String xiaoQuName;
     private HouseProcess process;
     private String imageURI;
+    private YN isOnly;
+    private Integer overYears;
+    private Showing showing;
+    private YN nearLine;
+    private Decorate decorate;
 
     public Long getId() {
         return id;
@@ -147,6 +153,51 @@ public class FangSummary {
 
     public FangSummary setProcess(HouseProcess process) {
         this.process = process;
+        return this;
+    }
+
+    public YN getIsOnly() {
+        return isOnly;
+    }
+
+    public FangSummary setIsOnly(YN isOnly) {
+        this.isOnly = isOnly;
+        return this;
+    }
+
+    public Integer getOverYears() {
+        return overYears;
+    }
+
+    public FangSummary setOverYears(Integer overYears) {
+        this.overYears = overYears;
+        return this;
+    }
+
+    public Showing getShowing() {
+        return showing;
+    }
+
+    public FangSummary setShowing(Showing showing) {
+        this.showing = showing;
+        return this;
+    }
+
+    public YN getNearLine() {
+        return nearLine;
+    }
+
+    public FangSummary setNearLine(YN nearLine) {
+        this.nearLine = nearLine;
+        return this;
+    }
+
+    public Decorate getDecorate() {
+        return decorate;
+    }
+
+    public FangSummary setDecorate(Decorate decorate) {
+        this.decorate = decorate;
         return this;
     }
 }
