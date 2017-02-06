@@ -10,11 +10,12 @@ import com.lyun.estate.core.repo.SQL;
 public class FangSqlProvider {
     public String findSummaryById() {
         return new SQL() {{
-            SELECT("f.id, fd.title, f.biz_type, f.publish_price, f.price_unit, f.unit_price, f.s_counts,f.t_counts,f.estate_area,f.orientation,f.process, c.name as xiao_qu_name")
+            SELECT("f.id, fd.title, fe.showing, fe.is_only, fe.over_years, f.ranking, f.update_time,  f.biz_type, f.publish_price,  f.price_unit, f.unit_price, f.s_counts,  f.t_counts,  f.estate_area,  f.orientation, f.decorate, f.process, c.near_line, c.name AS xiao_qu_name")
                     .FROM("t_fang f ")
                     .LEFT_OUTER_JOIN("t_xiao_qu xq ON f.xiao_qu_id = xq.id")
                     .LEFT_OUTER_JOIN("t_community c ON xq.community_id = c.id")
-                    .LEFT_OUTER_JOIN("t_fang_descr fd on f.id = fd.id")
+                    .LEFT_OUTER_JOIN("t_fang_descr fd on f.id = fd.fang_id")
+                    .LEFT_OUTER_JOIN("t_fang_ext fe on f.id = fe.fang_id")
                     .WHERE("f.id = #{fangId}");
         }}.toString();
     }
@@ -33,9 +34,8 @@ public class FangSqlProvider {
 
     public String findSummaryBySelector(FangSelector selector) {
         return new SQL() {{
-            SELECT("  f.id,  f.ranking,  fd.title,  f.biz_type,  f.publish_price,  f.price_unit, f.unit_price, f.s_counts,  f.t_counts,  f.estate_area,  f.orientation,  f.process,  c.name AS xiao_qu_name");
-
-            FROM("t_fang f ")
+            SELECT("f.id, fd.title, fe.showing, fe.is_only, fe.over_years, f.ranking, f.update_time,  f.biz_type, f.publish_price,  f.price_unit, f.unit_price, f.s_counts,  f.t_counts,  f.estate_area,  f.orientation, f.decorate, f.process, c.near_line, c.name AS xiao_qu_name")
+                    .FROM("t_fang f ")
                     .LEFT_OUTER_JOIN("t_xiao_qu xq ON f.xiao_qu_id = xq.id")
                     .LEFT_OUTER_JOIN("t_community c ON xq.community_id = c.id")
                     .LEFT_OUTER_JOIN("t_fang_ext fe ON fe.fang_id = f.id")

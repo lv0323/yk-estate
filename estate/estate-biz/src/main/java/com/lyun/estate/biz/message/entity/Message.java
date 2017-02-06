@@ -20,7 +20,7 @@ public class Message {
     private MessageStatus status;
     private Date createTime;
     private Date updateTime;
-    private String uuid = UUID.randomUUID().toString();
+    private String uuid;
 
     public Long getId() {
         return id;
@@ -104,6 +104,10 @@ public class Message {
 
     public String getUuid() {
         return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     @Override

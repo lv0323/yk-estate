@@ -18,6 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by jesse on 2017/1/19.
@@ -45,8 +46,9 @@ public class MessageController {
 
     @GetMapping("/show")
     List<MessageResource> getMessage(@RequestParam(required = true) Long senderId,
+                                     @RequestParam(required = true) Long lastMessageId,
                                      @RequestHeader("X-PAGING") PageBounds pageBounds) {
-        return messageService.getMessage(senderId, pageBounds);
+        return messageService.getMessage(senderId, lastMessageId, pageBounds);
     }
 
     //TODO 不在rest提供API
@@ -60,13 +62,13 @@ public class MessageController {
         message.setContentType(contentType);
         message.setSenderId(senderId);
         message.setReceiverId(receiverId);
+        message.setUuid(UUID.randomUUID().toString());
         return messageProducer.send(message);
     }
 
     //TODO 不在rest提供API
     @PostMapping("/produce/fang")
-    boolean produceFangMessage(@RequestParam(required = true) Long senderId,
-                               @RequestParam(required = true) Long receiverId,
+    boolean produceFangMessage(@RequestParam(required = true) Long receiverId,
                                @RequestParam(required = true) Long fangId,
                                @RequestParam(required = true) String title, @RequestParam(required = false) String summary) {
         Message message = messageService.generateSimpleFangMessage(receiverId, fangId, title, summary);
@@ -75,8 +77,7 @@ public class MessageController {
 
     //TODO 不在rest提供API
     @PostMapping("/produce/report")
-    boolean produceReportMessage(@RequestParam(required = true) Long senderId,
-                                 @RequestParam(required = true) Long receiverId,
+    boolean produceReportMessage(@RequestParam(required = true) Long receiverId,
                                  @RequestParam(required = true) Long reportId,
                                  @RequestParam(required = true) String title, @RequestParam(required = false) String summary) {
         Message message = messageService.generateSimpleReportMessage(receiverId, reportId, title, summary);
@@ -85,8 +86,7 @@ public class MessageController {
 
     //TODO 不在rest提供API
     @PostMapping("/produce/text")
-    boolean produceTextMessage(@RequestParam(required = true) Long senderId,
-                               @RequestParam(required = true) Long receiverId,
+    boolean produceTextMessage(@RequestParam(required = true) Long receiverId,
                                @RequestParam(required = true) String content,
                                @RequestParam(required = true) String title, @RequestParam(required = false) String summary) {
         Message message = messageService.generateSimplePhotoArticleMessage(receiverId, content, title, summary);

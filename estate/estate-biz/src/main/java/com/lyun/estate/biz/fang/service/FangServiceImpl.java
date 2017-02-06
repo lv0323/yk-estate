@@ -5,9 +5,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.lyun.estate.biz.fang.def.Decorate;
-import com.lyun.estate.biz.fang.def.HouseProcess;
-import com.lyun.estate.biz.fang.def.Showing;
+import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.entity.FangSelector;
 import com.lyun.estate.biz.fang.entity.FangTag;
 import com.lyun.estate.biz.fang.repo.FangRepository;
@@ -32,10 +30,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -197,6 +192,9 @@ public class FangServiceImpl implements FangService {
         summaries.forEach(summary -> {
                     List<FangTag> fangTags = fangRepository.findTags(summary.getId());
                     summary.setTags(fangTags.stream().map(FangTag::getHouseTag).collect(Collectors.toList()));
+
+                    decorateTags(summary);
+
                     summary.setImageURI(Optional.ofNullable(
                             fileService.findFirst(summary.getId(),
                                     DomainType.FANG,
@@ -206,6 +204,31 @@ public class FangServiceImpl implements FangService {
                 }
         );
         return summaries;
+    }
+
+    private void decorateTags(FangSummary summary) {
+        Set<HouseTag> tags = new HashSet<>(Optional.ofNullable(summary.getTags()).orElse(new ArrayList<>()));
+
+        if (summary.getIsOnly() == YN.Y) {
+            tags.add(HouseTag.ONLY);
+        }
+        if (Optional.ofNullable(summary.getOverYears()).orElse(0) >= 5) {
+            tags.add(HouseTag.OVER_5);
+        } else if (Optional.ofNullable(summary.getOverYears()).orElse(0) >= 2) {
+            tags.add(HouseTag.OVER_2);
+        }
+        if (summary.getDecorate() == Decorate.JING) {
+            tags.add(HouseTag.DECORATE_JING);
+        }
+        if (summary.getShowing() == Showing.ANY_TIME) {
+            tags.add(HouseTag.ANY_TIME);
+        } else if (summary.getShowing() == Showing.HAS_KEY) {
+            tags.add(HouseTag.HAS_KEY);
+        }
+        if (summary.getNearLine() == YN.Y) {
+            tags.add(HouseTag.NEAR_LINE);
+        }
+        summary.setTags(Lists.newArrayList(tags));
     }
 
     @Override
@@ -227,9 +250,27 @@ public class FangServiceImpl implements FangService {
         FangSummary summary = fangRepository.findSummary(id);
         List<FangTag> fangTags = fangRepository.findTags(id);
         summary.setTags(fangTags.stream().map(FangTag::getHouseTag).collect(Collectors.toList()));
-        summary.setImageURI(fileService.findFirst(id, DomainType.FANG, CustomType.SHIJING, FileProcess.WATERMARK)
-                .getFileURI());
+        decorateTags(summary);
+        summary.setImageURI(Optional.ofNullable(fileService.findFirst(id,
+                DomainType.FANG,
+                CustomType.SHIJING,
+                FileProcess.WATERMARK))
+                .map(FileDescription::getFileURI).orElse(null));
         return summary;
+    }
+
+    @Override
+    public List<FangSummary> findSummaryByXiaoQuId(Long cityId, BizType bizType, Long xiaoQuId) {
+        ExceptionUtil.checkNotNull("城市", cityId);
+        ExceptionUtil.checkNotNull("业务", bizType);
+        ExceptionUtil.checkNotNull("小区", xiaoQuId);
+        FangSelector selector = new FangSelector();
+        selector.setCityId(cityId);
+        selector.setBizType(bizType);
+        selector.setXiaoQuIds(Lists.newArrayList(xiaoQuId));
+        selector.setProcess(HouseProcess.PUBLISH);
+
+        return findFangSummaryBySelector(selector, null);
     }
 
 }
