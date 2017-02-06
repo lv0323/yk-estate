@@ -1,5 +1,6 @@
 package com.lyun.estate.rest.file;
 
+import com.google.common.collect.Lists;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.spec.common.DomainType;
@@ -20,11 +21,13 @@ public class FileController {
     }
 
     @GetMapping
-    public Object file(@RequestParam Long ownerId, @RequestParam DomainType ownerType,
-                       @RequestParam(required = false) CustomType customType) {
-        FileProcess process = null;
-        if (customType == CustomType.HUXING)
+    public Object file(@RequestParam Long ownerId,
+                       @RequestParam DomainType ownerType,
+                       @RequestParam CustomType customType) {
+        FileProcess process = FileProcess.NONE;
+        if (Lists.newArrayList(CustomType.HUXING, CustomType.SHIJING, CustomType.CERTIF).contains(customType)) {
             process = FileProcess.WATERMARK;
+        }
         return fileService.find(ownerId, ownerType, customType, process);
     }
 }
