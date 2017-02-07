@@ -53,22 +53,6 @@ public class AmqpConfig implements RabbitListenerConfigurer {
         return connectionFactory;
     }
 
-    @Value("${estate.amqp.queue.sms.name}")
-    private String smsQueueName;
-    @Value("${estate.amqp.queue.attention.name}")
-    private String attentionQueueName;
-
-    @Bean
-    public RabbitTemplate smsRabbitTemplate(ConnectionFactory syncConnectionFactory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate();
-        rabbitTemplate.setConnectionFactory(syncConnectionFactory);
-        rabbitTemplate.setQueue(smsQueueName);
-        rabbitTemplate.setRoutingKey(smsQueueName);
-        rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
-        rabbitTemplate.setMandatory(true);
-        return rabbitTemplate;
-    }
-
     @Bean
     public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
