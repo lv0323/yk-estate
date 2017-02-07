@@ -15,7 +15,6 @@
             </li>
             <li>
                 <a href="#">
-                    <i class="fa fa-home fa-lg" aria-hidden="true"></i>
                 公司管理
                 </a>
             </li>
@@ -35,10 +34,10 @@
                             <div class="box-header">
                                 <h3 class="box-title">公司详情</h3>
                             </div>
-                            <div class="box-body">
+                            <div class="box-body" id="addCompanyDialog">
                                 <form id="addCompanyForm" class="form-horizontal" method="post">
                                     <div class="form-group">
-                                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">公司名称<span class="required-field">*</span></label>
+                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司名称<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="addCompanyName" class="form-control" placeholder="公司名称" required>
                                         </div>
@@ -47,26 +46,26 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">公司许可证<span class="required-field">*</span></label>
+                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司许可证<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="addCompanyLicense" class="form-control" placeholder="公司许可证">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">公司地址<span class="required-field">*</span></label>
+                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司地址<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="addCompanyAddress" class="form-control" placeholder="公司地址">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">公司说明</label>
+                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司说明</label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="addCompanyNote" class="form-control" placeholder="公司说明">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">加盟有效时期<span class="required-field">*</span></label>
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">加盟有效时期<span class="required-field">*</span></label>
+                                        <div class="col-lg-3 col-md-4 col-sm-4">
                                             <div class="input-group date">
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
@@ -74,7 +73,7 @@
                                                 <input type="text" class="form-control pull-right" id="addCompanyStartDate">
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                        <div class="col-lg-3 col-md-4 col-sm-4">
                                             <div class="input-group date">
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
@@ -84,7 +83,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">法人姓名<span class="required-field">*</span></label>
+                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人姓名<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                             <input type="text" id="companyRepName" class="form-control" placeholder="法人姓名">
                                         </div>
@@ -96,19 +95,19 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">法人电话<span class="required-field">*</span></label>
+                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人电话<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="companyRepMobile" class="form-control" placeholder="法人电话">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">法人身份证<span class="required-field">*</span></label>
+                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人身份证<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="companyRepID" class="form-control" placeholder="法人身份证">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">法人微信</label>
+                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人微信</label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="companyRepWechat" class="form-control" placeholder="法人微信">
                                         </div>
@@ -125,10 +124,4 @@
 
 
 <#include "/common/footer.ftl" />
-<!-- InputMask -->
-<#--<script src="js/plugins/input-mask/jquery.inputmask.js"></script>-->
-<#--<script src="js/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>-->
-<#--<script src="js/plugins/input-mask/jquery.inputmask.extensions.js"></script>-->
-<!-- bootstrap datepicker -->
-<#--<script src="js/plugins/datepicker/bootstrap-datepicker.js"></script>-->
 <script src="${contextPath!}/js/franchisee/company.js"></script>

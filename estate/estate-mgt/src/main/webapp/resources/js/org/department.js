@@ -1,7 +1,7 @@
 /**
  * Created by yanghong on 1/17/17.
  */
-require(['main-app',contextPath + '/js/service/organization-service.js','datatables','datatablesBootstrap'],
+require(['main-app',contextPath + '/js/service/organization-service.js'],
     function (mainApp,OrganizationService) {
 
         var BaseUrl = "/api/department/";
@@ -31,7 +31,7 @@ require(['main-app',contextPath + '/js/service/organization-service.js','datatab
                     departAllDataRaw.departmentRaw = data;
                     $.each(data,function(index,departRaw){
                         var appendHtml = '<tr>' +
-                            '<td><a class="btn" id="lookDepartBtn" data-id="'+departRaw.department["id"]+'">'+departRaw.department["name"]+'</a></td>' +
+                            '<td><a class="btn" id="lookDepartBtn" href="/mgt/org/departmentDetail.ftl" data-id="'+departRaw.department["id"]+'">'+departRaw.department["name"]+'</a></td>' +
                             '<td>'+departRaw.department["telephone"]+'</td>' +
                             '<td>'+departRaw.department["address"]+'</td>' +
                             '<td class="text-right"><a class="btn" id="editDepartBtn" data-index="'+index+'" data-id="'+departRaw.department["id"]+'" data-toggle="modal" data-target="#editDepartDialog">编辑</a>';
@@ -73,9 +73,9 @@ require(['main-app',contextPath + '/js/service/organization-service.js','datatab
             });
 
         //initialize title in add department dialog
-        $('.fadeInRight').on('click','#addDepartBtn',function(){
-            $('#addDepartDialog #addDepartLabel').text('增加部门');
-        });
+        // $('.fadeInRight').on('click','#addDepartBtn',function(){
+        //     $('#addDepartDialog #addDepartLabel').text('增加部门');
+        // });
 
         //get district and subDistrict from server in add department dialog
         $('#addDepartDialog').on('change','#departCid',function(){
@@ -120,7 +120,8 @@ require(['main-app',contextPath + '/js/service/organization-service.js','datatab
                 };
             OrganizationService.updatePostDepartment({url:BaseUrl+"add",data:toAddDepart,header:header})
                 .done(function(){
-                    location.reload(true);
+                    // location.reload(true);
+                    window.location.href="/mgt/org/department.ftl";
                 })
                 .fail(function (data) {
                     /*var res = JSON.parse(data.responseText);

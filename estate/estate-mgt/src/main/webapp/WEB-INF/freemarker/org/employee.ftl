@@ -4,6 +4,84 @@
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
 
+<!-- Modal addEmployeeDialog -->
+<div class="modal fade" id="addEmployeeDialog" tabindex="-1" role="dialog" aria-labelledby="addEmployeeLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title" id="addEmployeeLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <form id="addEmployeeForm" class="form-horizontal" method="post">
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">真实姓名<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="addEmployeeName" class="form-control" placeholder="真实姓名">
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <div id="addEmployeeGender">
+                                <input type="radio" id="M" value="M" checked="checked">男
+                                <input type="radio" id="F" value="F">女
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">手机号<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="addEmployeeMobile" class="form-control" placeholder="手机号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">身份证号<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="addEmployeeID" class="form-control" placeholder="身份证号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">微信</label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="addEmployeeWechat" class="form-control" placeholder="微信">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">部门<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="addEmployeeDepart" class="form-control" placeholder="部门">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="addEmployeePosition" class="form-control" placeholder="岗位">
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <input type="checkbox" id="isAgent">是经纪人
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位状态<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div id="addEmployeeStatus">
+                                <select id="workingStatus" class="form-control btn-group dropup">
+                                    <option value="WORKING">在职</option>
+                                    <option value="INTERN">实习</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmAddEmployeeBtn">保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="content-wrapper">
     <section class="content-header">
         <ol class="breadcrumb">
@@ -69,57 +147,7 @@
             </div>
         </div>
     </section>
-    <div class="col-sm-4 col-sm-offset-2 m-b">
-        <div class="dropdown">
-            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" data-submenu="">
-                Dropdown <span class="caret"></span>
-            </button>
 
-            <ul class="dropdown-menu">
-                <li class="dropdown-submenu">
-                    <a tabindex="0">Action</a>
-
-                    <ul class="dropdown-menu">
-                        <li><a tabindex="0">Sub action</a></li>
-                        <li class="dropdown-submenu">
-                            <a tabindex="0">Another sub action</a>
-
-                            <ul class="dropdown-menu">
-                                <li><a tabindex="0">Sub action</a></li>
-                                <li><a tabindex="0">Another sub action</a></li>
-                                <li><a tabindex="0">Something else here</a></li>
-                            </ul>
-                        </li>
-                        <li><a tabindex="0">Something else here</a></li>
-                        <li class="disabled"><a tabindex="-1">Disabled action</a></li>
-                        <li class="dropdown-submenu">
-                            <a tabindex="0">Another action</a>
-
-                            <ul class="dropdown-menu">
-                                <li><a tabindex="0">Sub action</a></li>
-                                <li><a tabindex="0">Another sub action</a></li>
-                                <li><a tabindex="0">Something else here</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown-header">Dropdown header</li>
-                <li class="dropdown-submenu">
-                    <a tabindex="0">Another action</a>
-
-                    <ul class="dropdown-menu">
-                        <li><a tabindex="0">Sub action</a></li>
-                        <li><a tabindex="0">Another sub action</a></li>
-                        <li><a tabindex="0">Something else here</a></li>
-                    </ul>
-                </li>
-                <li><a tabindex="0">Something else here</a></li>
-                <li class="divider"></li>
-                <li><a tabindex="0">Separated link</a></li>
-            </ul>
-
-        </div>
-    </div>
 </div>
 
 

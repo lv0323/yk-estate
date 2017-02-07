@@ -5,7 +5,7 @@
 <#include "/common/sidebar.ftl" />
 
 <!-- Modal addCompanyDialog -->
-<div class="modal fade" id="addCompanyDialog" tabindex="-1" role="dialog" aria-labelledby="addCompanyLabel">
+<#--<div class="modal fade" id="addCompanyDialog" tabindex="-1" role="dialog" aria-labelledby="addCompanyLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -100,7 +100,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 <!-- Modal editCompanyDialog -->
 <div class="modal fade" id="editCompanyDialog" tabindex="-1" role="dialog" aria-labelledby="editCompanyLabel">
@@ -236,9 +236,10 @@
                     <section class="connectedSortable">
                         <div class="box box-solid">
                             <div class="box-header">
-                                <h3 class="box-title">公司管理</h3>
+                                <h3 class="box-title">公司列表</h3>
                                 <div class="box-tools">
-                                    <a class="btn" id="addCompanyBtn" data-toggle="modal" data-target="#addCompanyDialog">
+                                    <#--<a class="btn" id="addCompanyBtn" data-toggle="modal" data-target="#addCompanyDialog">-->
+                                    <a class="btn" id="addCompanyBtn" href="/mgt/franchisee/addCompany.ftl">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                         创建公司
                                     </a>
@@ -266,10 +267,4 @@
 
 
 <#include "/common/footer.ftl" />
-<!-- InputMask -->
-<#--<script src="js/plugins/input-mask/jquery.inputmask.js"></script>-->
-<#--<script src="js/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>-->
-<#--<script src="js/plugins/input-mask/jquery.inputmask.extensions.js"></script>-->
-<!-- bootstrap datepicker -->
-<#--<script src="js/plugins/datepicker/bootstrap-datepicker.js"></script>-->
 <script src="${contextPath!}/js/franchisee/company.js"></script>
