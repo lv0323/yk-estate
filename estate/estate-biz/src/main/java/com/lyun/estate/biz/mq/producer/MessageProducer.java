@@ -34,8 +34,8 @@ public class MessageProducer {
 
     @PostConstruct
     public void init() {
-        Queue queue = new Queue(QUEUE_NAME);
-        TopicExchange exchange = new TopicExchange(EXCHANGE_NAME);
+        Queue queue = new Queue(QUEUE_NAME, true);
+        TopicExchange exchange = new TopicExchange(EXCHANGE_NAME, true, false);
         Binding binding = BindingBuilder.bind(queue).to(exchange).with("ms");
         amqpAdmin.declareQueue(queue);
         amqpAdmin.declareExchange(exchange);

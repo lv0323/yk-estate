@@ -42,7 +42,7 @@ public class MapController {
         return xiaoQuService.findAllSubDistrictListByMap(cityId, BizType.RENT);
     }
 
-    @GetMapping("/sell/community")
+    @GetMapping("/sell/xiaoqu")
     List<EstateMapResource> sellCommunity(@RequestParam(required = true) BigDecimal minLongitude,
                                           @RequestParam(required = true) BigDecimal maxLongitude,
                                           @RequestParam(required = true) BigDecimal minLatitude,
@@ -51,7 +51,7 @@ public class MapController {
         return xiaoQuService.findCommunityListByMap(minLongitude, maxLongitude, minLatitude, maxLatitude, BizType.SELL, cityId);
     }
 
-    @GetMapping("/rent/community")
+    @GetMapping("/rent/xiaoqu")
     List<EstateMapResource> rentCommunity(@RequestParam(required = true) BigDecimal minLongitude,
                                           @RequestParam(required = true) BigDecimal maxLongitude,
                                           @RequestParam(required = true) BigDecimal minLatitude,
