@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public enum FangSummaryOrder {
     DEFAULT("默认排序", Lists.newArrayList(new Order("ranking", Order.Direction.DESC, null))),
-    TIME_DESC("最新发布", Lists.newArrayList(new Order("update_time", Order.Direction.DESC, null))),
+    TIME_DESC("最新发布", Lists.newArrayList(new Order("publish_time", Order.Direction.DESC, null))),
     PUBLISH_PRICE_UP("总价由低到高", Lists.newArrayList(new Order("publish_price", Order.Direction.ASC, null))),
     PUBLISH_PRICE_DOWN("总价由高到低", Lists.newArrayList(new Order("publish_price", Order.Direction.DESC, null))),
     UNIT_PRICE_UP("单价价由低到高", Lists.newArrayList(new Order("unit_price", Order.Direction.ASC, null))),

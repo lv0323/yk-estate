@@ -29,7 +29,8 @@ CREATE TABLE t_fang (
   heating_type   VARCHAR(15), --供暖类型
   has_elevator   VARCHAR(1), --是否有电梯
   create_time    TIMESTAMP, --创建时间
-  update_time    TIMESTAMP --更新时间
+  update_time    TIMESTAMP, --更新时间
+  publish_time   TIMESTAMP  --挂牌时间
 );
 
 CREATE TABLE t_fang_ext (
@@ -49,7 +50,7 @@ CREATE TABLE t_fang_ext (
   taxes_willing      VARCHAR(15), --税费
   commission_willing VARCHAR(15), --佣金
   purchase_price     NUMERIC(28, 5), --购入价格
-  purchase_date      DATE, --购入时间
+  purchaseDate      DATE, --购入时间
   is_only            VARCHAR(1), --唯一住房
   over_years         INTEGER, --满2，满5
   mortgage           VARCHAR(1), --有无贷款抵押

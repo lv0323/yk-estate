@@ -4,10 +4,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
-import com.lyun.estate.biz.spec.xiaoqu.entity.EstateMapResource;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuFilter;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuSummary;
+import com.lyun.estate.biz.spec.xiaoqu.entity.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,6 +20,8 @@ public interface XiaoQuService {
     XiaoQuDetail getDetail(Long id);
 
     PageList<XiaoQuSummary> findNearbyXiaoQu(Long id);
+
+    List<XiaoQuStationRel> findStations(Long xiaoQuId);
 
     /**
      * 查找城市所有区域信息
@@ -49,5 +48,6 @@ public interface XiaoQuService {
      * @return
      */
     List<EstateMapResource> findCommunityListByMap(BigDecimal minLongitude, BigDecimal maxLongitude,
-                                                   BigDecimal minLatitude, BigDecimal maxLatitude, BizType bizType,Integer cityId);
+                                                   BigDecimal minLatitude, BigDecimal maxLatitude, BizType bizType,
+                                                   Integer cityId);
 }

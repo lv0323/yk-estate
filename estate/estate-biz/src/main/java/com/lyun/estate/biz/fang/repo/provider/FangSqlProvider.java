@@ -10,7 +10,7 @@ import com.lyun.estate.core.repo.SQL;
 public class FangSqlProvider {
     public String findSummaryById() {
         return new SQL() {{
-            SELECT("f.id, fd.title, fe.showing, fe.is_only, fe.over_years, f.ranking, f.update_time,  f.biz_type, f.publish_price,  f.price_unit, f.unit_price, f.s_counts,  f.t_counts,  f.estate_area,  f.orientation, f.decorate, f.process, c.near_line, c.name AS xiao_qu_name")
+            SELECT("f.id, fd.title, fe.showing, fe.is_only, fe.over_years, f.ranking, f.publish_time,  f.biz_type, f.publish_price,  f.price_unit, f.unit_price, f.s_counts,  f.t_counts,  f.estate_area,  f.orientation, f.decorate, f.process, c.near_line, c.name AS xiao_qu_name")
                     .FROM("t_fang f ")
                     .LEFT_OUTER_JOIN("t_xiao_qu xq ON f.xiao_qu_id = xq.id")
                     .LEFT_OUTER_JOIN("t_community c ON xq.community_id = c.id")
@@ -22,11 +22,13 @@ public class FangSqlProvider {
 
     public String findDetailById() {
         return new SQL() {{
-            SELECT("f.*,  fd.title,  fe.showing,  fe.purchase_date,  c.name AS xiao_qu_name")
+            SELECT("f.*, fe.*,c.near_line, c.name AS xiao_qu_name, sd.name AS sub_district, d.name AS district")
                     .FROM("t_fang f ")
                     .LEFT_OUTER_JOIN("t_xiao_qu xq ON f.xiao_qu_id = xq.id")
                     .LEFT_OUTER_JOIN("t_community c ON xq.community_id = c.id")
-                    .LEFT_OUTER_JOIN("t_fang_descr fd on f.id = fd.id")
+                    .LEFT_OUTER_JOIN("t_sub_district sd on sd.id = c.sub_district_id")
+                    .LEFT_OUTER_JOIN("t_district_rel dr on dr.sub_district_id = c.sub_district_id AND dr.is_primary = 'Y'")
+                    .LEFT_OUTER_JOIN("t_district d on dr.district_id = d.id")
                     .LEFT_OUTER_JOIN("t_fang_ext fe ON f.id = fe.fang_id")
                     .WHERE("f.id = #{fangId}");
         }}.toString();
@@ -34,7 +36,7 @@ public class FangSqlProvider {
 
     public String findSummaryBySelector(FangSelector selector) {
         return new SQL() {{
-            SELECT("f.id, fd.title, fe.showing, fe.is_only, fe.over_years, f.ranking, f.update_time,  f.biz_type, f.publish_price,  f.price_unit, f.unit_price, f.s_counts,  f.t_counts,  f.estate_area,  f.orientation, f.decorate, f.process, c.near_line, c.name AS xiao_qu_name")
+            SELECT("f.id, fd.title, fe.showing, fe.is_only, fe.over_years, f.ranking, f.publish_time,  f.biz_type, f.publish_price,  f.price_unit, f.unit_price, f.s_counts,  f.t_counts,  f.estate_area,  f.orientation, f.decorate, f.process, c.near_line, c.name AS xiao_qu_name")
                     .FROM("t_fang f ")
                     .LEFT_OUTER_JOIN("t_xiao_qu xq ON f.xiao_qu_id = xq.id")
                     .LEFT_OUTER_JOIN("t_community c ON xq.community_id = c.id")

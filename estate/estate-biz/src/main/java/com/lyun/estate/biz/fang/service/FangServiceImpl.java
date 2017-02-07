@@ -22,7 +22,6 @@ import com.lyun.estate.biz.spec.fang.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.entity.FangSummaryOrder;
 import com.lyun.estate.biz.spec.fang.service.FangService;
 import com.lyun.estate.biz.spec.file.service.FileService;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.core.supports.types.YN;
@@ -39,7 +38,6 @@ import java.util.stream.Collectors;
 @Service
 public class FangServiceImpl implements FangService {
 
-
     @Autowired
     private FangRepository fangRepository;
 
@@ -47,10 +45,10 @@ public class FangServiceImpl implements FangService {
     private FileService fileService;
 
     @Autowired
-    private XiaoQuService xiaoQuService;
+    private KeywordService keywordService;
 
     @Autowired
-    private KeywordService keywordService;
+    private XiaoQuService xiaoQuService;
 
     @Override
     public PageList<FangSummary> findFangSummaryByKeyword(FangFilter filter, FangSummaryOrder order,
@@ -193,7 +191,7 @@ public class FangServiceImpl implements FangService {
                     List<FangTag> fangTags = fangRepository.findTags(summary.getId());
                     summary.setTags(fangTags.stream().map(FangTag::getHouseTag).collect(Collectors.toList()));
 
-                    decorateTags(summary);
+                    decorateTagsForSummary(summary);
 
                     summary.setImageURI(Optional.ofNullable(
                             fileService.findFirst(summary.getId(),
@@ -206,7 +204,7 @@ public class FangServiceImpl implements FangService {
         return summaries;
     }
 
-    private void decorateTags(FangSummary summary) {
+    private void decorateTagsForSummary(FangSummary summary) {
         Set<HouseTag> tags = new HashSet<>(Optional.ofNullable(summary.getTags()).orElse(new ArrayList<>()));
 
         if (summary.getIsOnly() == YN.Y) {
@@ -231,15 +229,41 @@ public class FangServiceImpl implements FangService {
         summary.setTags(Lists.newArrayList(tags));
     }
 
+    private void decorateTagsForDetail(FangDetail detail) {
+        Set<HouseTag> tags = new HashSet<>(Optional.ofNullable(detail.getTags()).orElse(new ArrayList<>()));
+
+        if (detail.getIsOnly() == YN.Y) {
+            tags.add(HouseTag.ONLY);
+        }
+        if (Optional.ofNullable(detail.getOverYears()).orElse(0) >= 5) {
+            tags.add(HouseTag.OVER_5);
+        } else if (Optional.ofNullable(detail.getOverYears()).orElse(0) >= 2) {
+            tags.add(HouseTag.OVER_2);
+        }
+        if (detail.getDecorate() == Decorate.JING) {
+            tags.add(HouseTag.DECORATE_JING);
+        }
+        if (detail.getShowing() == Showing.ANY_TIME) {
+            tags.add(HouseTag.ANY_TIME);
+        } else if (detail.getShowing() == Showing.HAS_KEY) {
+            tags.add(HouseTag.HAS_KEY);
+        }
+        if (detail.getNearLine() == YN.Y) {
+            tags.add(HouseTag.NEAR_LINE);
+        }
+        detail.setTags(Lists.newArrayList(tags));
+    }
+
     @Override
     public FangDetail getDetail(Long id) {
         ExceptionUtil.checkNotNull("房编号", id);
         FangDetail fangDetail = fangRepository.findDetail(id);
         if (fangDetail != null) {
+            List<FangTag> fangTags = fangRepository.findTags(fangDetail.getId());
+            fangDetail.setTags(fangTags.stream().map(FangTag::getHouseTag).collect(Collectors.toList()));
+            decorateTagsForDetail(fangDetail);
+            fangDetail.setStations(xiaoQuService.findStations(fangDetail.getXiaoQuId()));
             fangDetail.setDescr(fangRepository.findDescr(id));
-            XiaoQuDetail detail = xiaoQuService.getDetail(fangDetail.getXiaoQuId());
-            fangDetail.setSubDistrict(detail.getSubDistrict());
-            fangDetail.setDistrict(detail.getDistrict());
         }
         return fangDetail;
     }
@@ -250,7 +274,7 @@ public class FangServiceImpl implements FangService {
         FangSummary summary = fangRepository.findSummary(id);
         List<FangTag> fangTags = fangRepository.findTags(id);
         summary.setTags(fangTags.stream().map(FangTag::getHouseTag).collect(Collectors.toList()));
-        decorateTags(summary);
+        decorateTagsForSummary(summary);
         summary.setImageURI(Optional.ofNullable(fileService.findFirst(id,
                 DomainType.FANG,
                 CustomType.SHI_JING,

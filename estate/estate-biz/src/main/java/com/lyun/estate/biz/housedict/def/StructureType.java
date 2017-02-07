@@ -1,7 +1,9 @@
 package com.lyun.estate.biz.housedict.def;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Jeffrey on 2017-01-03.
  */
+@JsonSerialize(using = LabelEnumSerializer.class)
 public enum StructureType {
     TA("塔楼", 1),
     BAN("板楼", 2),
@@ -21,7 +24,7 @@ public enum StructureType {
     private final String label;
     private final Integer bits;
 
-    StructureType(String label, Integer bits ) {
+    StructureType(String label, Integer bits) {
         this.label = label;
         this.bits = bits;
     }
