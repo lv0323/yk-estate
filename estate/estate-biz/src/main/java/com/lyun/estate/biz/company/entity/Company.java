@@ -32,9 +32,9 @@ public class Company {
     private Date endDate;
     private Boolean locked;
     @JsonIgnore
-    private Timestamp createTime;
+    private Date createTime;
     @JsonIgnore
-    private Timestamp updateTime;
+    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -90,6 +90,15 @@ public class Company {
         return this;
     }
 
+    public Employee getBoss() {
+        return boss;
+    }
+
+    public Company setBoss(Employee boss) {
+        this.boss = boss;
+        return this;
+    }
+
     public String getSecretKey() {
         return secretKey;
     }
@@ -126,30 +135,21 @@ public class Company {
         return this;
     }
 
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public Company setCreateTime(Timestamp createTime) {
+    public Company setCreateTime(Date createTime) {
         this.createTime = createTime;
         return this;
     }
 
-    public Timestamp getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public Company setUpdateTime(Timestamp updateTime) {
+    public Company setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-        return this;
-    }
-
-    public Employee getBoss() {
-        return boss;
-    }
-
-    public Company setBoss(Employee boss) {
-        this.boss = boss;
         return this;
     }
 }

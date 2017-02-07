@@ -3,7 +3,7 @@ package com.lyun.estate.rest.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lyun.estate.core.supports.ExecutionContext;
 import com.lyun.estate.core.supports.exceptions.ErrorResource;
-import com.lyun.estate.core.supports.exceptions.EstateBizException;
+import com.lyun.estate.core.supports.exceptions.EasyCodeException;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
@@ -54,11 +54,9 @@ public class ExceptionAdvice {
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         if (t instanceof ValidateException) {
             logger.warn("校验失败", t);
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
             writeResponse(response, handleValidateExceptionResult((ValidateException) t));
         } else if (t instanceof ServletRequestBindingException) {
             logger.warn("Spring参数校验失败", t);
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
             writeResponse(response, handleRequireParamMissException((ServletRequestBindingException) t));
         } else if (t instanceof BindException || t instanceof IllegalArgumentException) {
             logger.warn("请求参数不正确", t);
@@ -66,9 +64,9 @@ public class ExceptionAdvice {
                     .setExCode("param.illegal")
                     .setMessage("参数异常")
                     .setLogRef(executionContext.getCorrelationId()));
-        } else if (t instanceof EstateBizException) {
+        } else if (t instanceof EasyCodeException) {
             logger.error("业务异常", t);
-            writeResponse(response, handleBizException((EstateBizException) t));
+            writeResponse(response, handleBizException((EasyCodeException) t));
         } else {
             EstateException baseException = writeExceptionLog(t);
             ErrorResource errorResource = new ErrorResource(executionContext.getCorrelationId(),
@@ -126,7 +124,7 @@ public class ExceptionAdvice {
         throw new RuntimeException(t);
     }
 
-    private ErrorResource handleBizException(EstateBizException t) {
+    private ErrorResource handleBizException(EasyCodeException t) {
         return new ErrorResource()
                 .setExCode(t.getCode())
                 .setLogRef(executionContext.getCorrelationId())

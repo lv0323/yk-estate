@@ -5,7 +5,7 @@ import com.lyun.estate.biz.sms.resources.SmsResource;
 import com.lyun.estate.biz.sms.resources.SmsResponse;
 import com.lyun.estate.biz.sms.service.validator.SmsResourceValidator;
 import com.lyun.estate.biz.user.repository.UserMapper;
-import com.lyun.estate.core.config.CacheConfig;
+import com.lyun.estate.core.config.EstateCacheConfig;
 import com.lyun.estate.core.supports.ExecutionContext;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.supports.types.YN;
@@ -28,7 +28,7 @@ public class SmsService {
     @Autowired
     Environment environment;
     @Autowired
-    @Qualifier("evictCacheManager")
+    @Qualifier(EstateCacheConfig.MANAGER_10_5K)
     CacheManager cacheManager;
     @Autowired
     UserMapper userMapper;
@@ -58,8 +58,9 @@ public class SmsService {
                     executionContext.getCorrelationId());
         }
         String smsId = CommonUtil.getUuid();
-        String smsKv = smsId + ":" + smsResource.getMobile() + ":" + smsCode + ":" + serial + ":" + smsResource.getType() + ":" + executionContext.getClientId();
-        cacheManager.getCache(CacheConfig.EVICT_CACHE_NAME).put(smsKv, smsKv);
+        String smsKv = smsId + ":" + smsResource.getMobile() + ":" + smsCode + ":" + serial + ":" + smsResource.getType() + ":" + executionContext
+                .getClientId();
+        cacheManager.getCache(EstateCacheConfig.SMS_CACHE).put(smsKv, smsKv);
         return new SmsResponse().setMobile(smsResource.getMobile()).setSmsId(smsId).setSerial(serial);
     }
 
@@ -82,10 +83,11 @@ public class SmsService {
         if (!ValidateUtil.isClientId(smsCode.getClientId())) {
             throw new ValidateException("X-SMS-CODE.clientId.isNull", "客户端编号不存在");
         }
-        String smsKv = smsCode.getId() + ":" + smsCode.getMobile() + ":" + smsCode.getCode() + ":" + smsCode.getSerial() + ":" + smsCode.getType() + ":" + smsCode.getClientId();
-        Cache.ValueWrapper valueWrapper = cacheManager.getCache(CacheConfig.EVICT_CACHE_NAME).get(smsKv);
+        String smsKv = smsCode.getId() + ":" + smsCode.getMobile() + ":" + smsCode.getCode() + ":" + smsCode.getSerial() + ":" + smsCode
+                .getType() + ":" + smsCode.getClientId();
+        Cache.ValueWrapper valueWrapper = cacheManager.getCache(EstateCacheConfig.SMS_CACHE).get(smsKv);
         boolean result = valueWrapper != null && smsKv.equals(valueWrapper.get());
-        cacheManager.getCache(CacheConfig.EVICT_CACHE_NAME).evict(smsKv);
+        cacheManager.getCache(EstateCacheConfig.SMS_CACHE).evict(smsKv);
         return result;
     }
 

@@ -19,8 +19,9 @@ public class ExceptionAdvice {
 
     @ExceptionHandler
     public ResponseEntity<?> handleException(Throwable t) {
-        if (!(t instanceof EstateException))
+        if (!(t instanceof EstateException)) {
             t = new EstateException(t, ExCode.DEFAULT_EXCEPTION).setId(UUID.randomUUID().toString());
+        }
         EstateException exception = (EstateException) t;
         logger.error("Throwable, id: " + exception.getId(), exception);
         return new ResponseEntity<>(new ErrorResource(exception.getId(),

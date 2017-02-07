@@ -8,7 +8,6 @@ import org.apache.ibatis.session.RowBounds;
 import java.sql.Date;
 import java.util.List;
 
-@Mapper
 public interface CompanyRepository {
 
     @InsertProvider(type = CompanyProvider.class, method = "insert")

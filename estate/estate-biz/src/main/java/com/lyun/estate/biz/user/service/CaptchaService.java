@@ -4,7 +4,7 @@ import cn.apiclub.captcha.Captcha;
 import cn.apiclub.captcha.noise.CurvedLineNoiseProducer;
 import cn.apiclub.captcha.text.producer.DefaultTextProducer;
 import com.lyun.estate.biz.user.repository.UserMapper;
-import com.lyun.estate.core.config.CacheConfig;
+import com.lyun.estate.core.config.EstateCacheConfig;
 import com.lyun.estate.core.supports.LJSWordRenderer;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.utils.ValidateUtil;
@@ -23,8 +23,9 @@ public class CaptchaService {
     private static final int maxHeight = 320;
     @Autowired
     UserMapper userMapper;
+
     @Autowired
-    @Qualifier("evictCacheManager")
+    @Qualifier(EstateCacheConfig.MANAGER_10_5K)
     CacheManager cacheManager;
 
     public BufferedImage getCaptcha(int clientId, String id, int width, int height) {
@@ -52,14 +53,14 @@ public class CaptchaService {
                 .gimp()
                 .build();
         String captchaStr = clientId + ":" + id + ":" + captcha.getAnswer().toLowerCase();
-        cacheManager.getCache("evictDefault").put(captchaStr, captchaStr);
+        cacheManager.getCache(EstateCacheConfig.CAPTCHA_CACHE).put(captchaStr, captchaStr);
         return captcha.getImage();
     }
 
     public boolean isCaptchaCorrect(int clientId, String id, String code) {
         String captchaStr = clientId + ":" + id + ":" + code.toLowerCase();
-        boolean result = cacheManager.getCache(CacheConfig.EVICT_CACHE_NAME).get(captchaStr) != null;
-        cacheManager.getCache("evictDefault").evict(captchaStr);
+        boolean result = cacheManager.getCache(EstateCacheConfig.CAPTCHA_CACHE).get(captchaStr) != null;
+        cacheManager.getCache(EstateCacheConfig.CAPTCHA_CACHE).evict(captchaStr);
         return result;
     }
 }
