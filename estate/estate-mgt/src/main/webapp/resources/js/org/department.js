@@ -1,7 +1,7 @@
 /**
  * Created by yanghong on 1/17/17.
  */
-require(['main-app',contextPath + '/js/service/organization-service.js','datatables','datatablesBootstrap'],
+require(['main-app',contextPath + '/js/service/organization-service.js'],
     function (mainApp,OrganizationService) {
 
         var BaseUrl = "/api/department/";

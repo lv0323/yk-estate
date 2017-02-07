@@ -1,7 +1,7 @@
 /**
  * Created by yanghong on 1/23/17.
  */
-require(['main-app',contextPath + '/js/service/company-service.js','datatables','datatablesBootstrap','datepicker.zh-cn'],
+require(['main-app',contextPath + '/js/service/company-service.js','datepicker.zh-cn'],
     function (mainApp,CompanyService) {
         var BaseUrl = "/api/company/";
         var header = {};
