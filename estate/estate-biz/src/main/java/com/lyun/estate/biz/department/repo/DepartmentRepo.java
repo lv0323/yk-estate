@@ -26,22 +26,22 @@ public interface DepartmentRepo {
     @Select("select * from t_department where id=#{id}")
     @Results({
             @Result(column = "city_id", property = "cityId", javaType = Long.class),
-            @Result(column = "city_id", property = "city", one = @One(select = "com.lyun.estate.biz.housedict.repository.HouseRepository.findCity")),
+            @Result(column = "city_id", property = "city", one = @One(select = "com.lyun.estate.biz.housedict.repository.CityRepository.findCity")),
             @Result(column = "district_id", property = "districtId", javaType = Long.class),
-            @Result(column = "district_id", property = "district", one = @One(select = "com.lyun.estate.biz.housedict.repository.HouseRepository.findDistrict")),
+            @Result(column = "district_id", property = "district", one = @One(select = "com.lyun.estate.biz.housedict.repository.CityRepository.findDistrict")),
             @Result(column = "sub_district_id", property = "subDistrictId", javaType = Long.class),
-            @Result(column = "sub_district_id", property = "subDistrict", one = @One(select = "com.lyun.estate.biz.housedict.repository.HouseRepository.findSubDistrict"))
+            @Result(column = "sub_district_id", property = "subDistrict", one = @One(select = "com.lyun.estate.biz.housedict.repository.CityRepository.findSubDistrict"))
     })
     Department selectById(Long id);
 
     @Select("select * from t_department where company_id=#{companyId}")
     @Results({
             @Result(column = "city_id", property = "cityId", javaType = Long.class),
-            @Result(column = "city_id", property = "city", one = @One(select = "com.lyun.estate.biz.housedict.repository.HouseRepository.findCity")),
+            @Result(column = "city_id", property = "city", one = @One(select = "com.lyun.estate.biz.housedict.repository.CityRepository.findCity")),
             @Result(column = "district_id", property = "districtId", javaType = Long.class),
-            @Result(column = "district_id", property = "district", one = @One(select = "com.lyun.estate.biz.housedict.repository.HouseRepository.findDistrict")),
+            @Result(column = "district_id", property = "district", one = @One(select = "com.lyun.estate.biz.housedict.repository.CityRepository.findDistrict")),
             @Result(column = "sub_district_id", property = "subDistrictId", javaType = Long.class),
-            @Result(column = "sub_district_id", property = "subDistrict", one = @One(select = "com.lyun.estate.biz.housedict.repository.HouseRepository.findSubDistrict"))
+            @Result(column = "sub_district_id", property = "subDistrict", one = @One(select = "com.lyun.estate.biz.housedict.repository.CityRepository.findSubDistrict"))
     })
     List<Department> selectByCompanyId(Long companyId);
 }
