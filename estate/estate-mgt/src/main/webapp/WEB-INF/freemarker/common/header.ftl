@@ -8,6 +8,7 @@
      <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
      <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
      <META HTTP-EQUIV="Expires" CONTENT="0">
+     <link href="${contextPath!}/img/favicon.ico" rel="shortcut icon" type="image/x-icon">
      <link rel="stylesheet" href="${contextPath}/css/common/bootstrap.min.css">
      <link rel="stylesheet" href="${contextPath}/css/common/animate.css">
      <link rel="stylesheet" href="${contextPath}/css/sidebar/sidebar.css">

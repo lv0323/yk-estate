@@ -86,4 +86,9 @@ public class DepartmentRest {
         }
         return sortedList;
     }
+
+    @GetMapping("/{departmentId}")
+    Department findOne(@PathVariable Long departmentId) {
+        return service.findOne(departmentId);
+    }
 }

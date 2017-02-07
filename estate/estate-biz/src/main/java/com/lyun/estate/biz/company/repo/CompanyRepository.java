@@ -33,4 +33,7 @@ public interface CompanyRepository {
             @Result(column = "id", property = "boss", one = @One(select = "com.lyun.estate.biz.employee.repo.EmployeeRepo.selectBossByCompanyId")),
     })
     List<Company> select(RowBounds rowBounds);
+
+    @Select("select * from t_company where id=#{id}")
+    Company findOne(Long id);
 }
