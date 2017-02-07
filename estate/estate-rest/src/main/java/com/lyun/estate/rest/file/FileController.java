@@ -25,7 +25,7 @@ public class FileController {
                        @RequestParam DomainType ownerType,
                        @RequestParam CustomType customType) {
         FileProcess process = FileProcess.NONE;
-        if (Lists.newArrayList(CustomType.HUXING, CustomType.SHIJING, CustomType.CERTIF).contains(customType)) {
+        if (Lists.newArrayList(CustomType.HU_XING, CustomType.SHI_JING, CustomType.CERTIF).contains(customType)) {
             process = FileProcess.WATERMARK;
         }
         return fileService.find(ownerId, ownerType, customType, process);

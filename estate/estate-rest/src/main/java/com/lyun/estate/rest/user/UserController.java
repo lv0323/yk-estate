@@ -17,7 +17,7 @@ import com.lyun.estate.biz.user.resources.SaltResource;
 import com.lyun.estate.biz.user.resources.SaltResponse;
 import com.lyun.estate.biz.user.resources.TokenResponse;
 import com.lyun.estate.biz.user.service.UserService;
-import com.lyun.estate.core.supports.types.SmsType;
+import com.lyun.estate.biz.sms.def.SmsType;
 import com.lyun.estate.rest.supports.resources.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

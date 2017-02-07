@@ -14,19 +14,6 @@ import java.util.List;
  */
 public interface HouseRepository {
 
-    @Select("SELECT * FROM t_district WHERE id = #{id}")
-    District findDistrict(@Param("id") Long id);
-
-    @Select("SELECT * FROM t_sub_district WHERE id = #{id}")
-    SubDistrict findSubDistrict(@Param("id") Long id);
-
-    @Select("SELECT * FROM t_city WHERE id = #{id}")
-    City findCity(@Param("id") Long id);
-
-
-    @Select("SELECT d.* FROM t_district_rel dr  LEFT JOIN t_district d on dr.district_id = d.id\n" +
-            "WHERE dr.is_primary = 'Y' AND dr.sub_district_id = #{id}")
-    District findPrimaryDistrict(@Param("id") Long subDistrictId);
 
     @Select("select district.id,district.name,district.sell_avg_price as avg_price,district.longitude,district.latitude,'DISTRICT' as domain_type,district.sell_house_count as building_counts,district.view_region as position_border" +
             " from t_district district where district.city_id = #{cityId}")

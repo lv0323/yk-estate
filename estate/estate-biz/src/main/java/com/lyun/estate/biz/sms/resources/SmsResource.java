@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.sms.resources;
 
-import com.lyun.estate.core.supports.types.SmsType;
+import com.lyun.estate.biz.sms.def.SmsType;
 
 public class SmsResource {
     private String mobile;

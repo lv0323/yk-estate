@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.keyword.service;
 
 import com.google.common.base.Strings;
-import com.lyun.estate.biz.housedict.service.HouseService;
+import com.lyun.estate.biz.housedict.service.CityService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.entity.KeywordResp;
 import com.lyun.estate.biz.keyword.repository.KeywordRepository;
@@ -25,7 +25,7 @@ public class KeywordService {
     private KeywordRepository keywordRepository;
 
     @Autowired
-    private HouseService houseService;
+    private CityService cityService;
 
     @Autowired
     private XiaoQuService xiaoQuService;
@@ -117,7 +117,7 @@ public class KeywordService {
             if (keywordBean.getDomainType() == DomainType.DISTRICT) {
                 noteBuilder.append("区域");
             } else if (keywordBean.getDomainType() == DomainType.SUB_DISTRICT) {
-                noteBuilder.append(houseService.findPrimaryDistrict(keywordBean.getId()).getName());
+                noteBuilder.append(cityService.findPrimaryDistrict(keywordBean.getId()).getName());
             } else if (keywordBean.getDomainType() == DomainType.LINE) {
                 noteBuilder.append("地铁线");
             } else if (keywordBean.getDomainType() == DomainType.STATION) {
