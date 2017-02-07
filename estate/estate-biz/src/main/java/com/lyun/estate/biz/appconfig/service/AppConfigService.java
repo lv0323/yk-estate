@@ -27,7 +27,6 @@ public class AppConfigService {
     private CityService cityService;
 
     public RegionConfig findCities() {
-
         List<City> cities = cityService.findCities();
         List<Region> regions = cities.stream().map(city -> {
             Region region = new Region();

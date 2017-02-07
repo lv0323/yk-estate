@@ -3,6 +3,7 @@ package com.lyun.estate.mgt.supports;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 public class RestResponse {
 
     private Map<String, Object> map = new HashMap<>();

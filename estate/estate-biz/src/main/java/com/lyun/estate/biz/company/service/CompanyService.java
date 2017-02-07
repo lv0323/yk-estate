@@ -7,6 +7,7 @@ import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.biz.employee.def.Status;
 import com.lyun.estate.biz.employee.service.EmployeeService;
+import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.core.utils.Validations;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,8 @@ public class CompanyService {
     private final EmployeeService employeeService;
     private final DepartmentService departmentService;
 
-    public CompanyService(CompanyRepository repository, EmployeeService employeeService, DepartmentService departmentService) {
+    public CompanyService(CompanyRepository repository, EmployeeService employeeService,
+                          DepartmentService departmentService) {
         this.repository = repository;
         this.employeeService = employeeService;
         this.departmentService = departmentService;
@@ -70,5 +72,10 @@ public class CompanyService {
                 .setDepartmentId(department.getId())
                 .setStatus(Status.WORKING));
         return entity.getCompany();
+    }
+
+    public Company findOne(Long id) {
+        ExceptionUtil.checkNotNull("公司编号", id);
+        return repository.findOne(id);
     }
 }

@@ -1,10 +1,15 @@
 package com.lyun.estate.mgt.config;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.config.BizConfig;
 import com.lyun.estate.core.config.CoreConfig;
+import com.lyun.estate.core.supports.resolvers.PageBoundsArgumentResolver;
+import com.lyun.estate.core.supports.resolvers.PageListSerializer;
+import com.lyun.estate.core.supports.types.Constant;
 import com.lyun.estate.mgt.advice.AuthInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +21,20 @@ import org.springframework.session.Session;
 import org.springframework.session.web.http.CookieHttpSessionStrategy;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.session.web.http.HttpSessionStrategy;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 @Configuration
 @EnableSwagger2
@@ -38,6 +47,9 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private Environment env;
 
+    @Autowired
+    private PageBoundsArgumentResolver pageBoundsArgumentResolver;
+
     @Bean
     public FreeMarkerConfigurer freemarkerConfigurer() {
         FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
@@ -46,10 +58,10 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
 
         // ADD YOUR PARAMS BELOW FOR PARAM USING IN FREEMARKER
         HashMap<String, Object> params = new HashMap<>();
-        params.put("contextPath", Strings.nullToEmpty(env.getProperty("estate.context-path")));
+        params.put("contextPath", Strings.nullToEmpty(env.getProperty("mgt.context.path")));
         configurer.setFreemarkerVariables(params);
         params.put("bts", System.currentTimeMillis() / 1000L);
-        params.put("clientId", "1001");
+        params.put("clientId", String.valueOf(Constant.CLIENT_ID.MGT));
         return configurer;
     }
 
@@ -57,6 +69,7 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
     public FreeMarkerViewResolver viewResolver() {
         return new FreeMarkerViewResolver();
     }
+
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -68,10 +81,7 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
                 .setCachePeriod(60 * 60 * 24);
         registry.addResourceHandler("/img/**")
                 .addResourceLocations("/resources/img/")
-                .setCachePeriod(0);
-        registry.addResourceHandler("/favicon.ico")
-                .addResourceLocations("/resources/favicon.ico")
-                .setCachePeriod(60 * 60 * 24 * 7);
+                .setCachePeriod(60 * 60 * 24);
     }
 
     @Bean
@@ -107,20 +117,39 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
         };
     }
 
+
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor()).excludePathPatterns("/css/**", "/js/**", "/img/**", "/favicon.ico",
-                "/index", "/swagger-resources/**", "/**/api-docs",
-                "/captcha", "/sms",
-                "/api/employee/active", "/api/employee/salt", "/api/employee/login");
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        if (this.pageBoundsArgumentResolver != null) {
+            argumentResolvers.add(this.pageBoundsArgumentResolver);
+        }
     }
 
-    //    @Bean
-//    public Object mapper(SqlSession session) {
-//        MapperHelper mapperHelper = new MapperHelper();
-//        mapperHelper.setConfig(new Config());
-//        mapperHelper.registerMapper(Mapper.class);
-//        mapperHelper.processConfiguration(session.getConfiguration());
-//        return null;
-//    }
+    @Bean
+    MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(new PageListSerializer());
+        return new MappingJackson2HttpMessageConverter(objectMapper.registerModule(module));
+    }
+
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AuthInterceptor())
+                .excludePathPatterns(
+                        "/css/**",
+                        "/js/**",
+                        "/img/**",
+                        "/fonts/**",
+                        "/**/favicon.ico",
+                        "/index",
+                        "/swagger-resources/**",
+                        "/**/api-docs",
+                        "/captcha",
+                        "/sms",
+                        "/api/employee/active",
+                        "/api/employee/salt",
+                        "/api/employee/login");
+    }
 }

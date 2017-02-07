@@ -21,37 +21,32 @@ public class EstateCacheConfig {
 
 
     public static final String CAPTCHA_CACHE = "CAPTCHA_CACHE";
-
     public static final String SMS_CACHE = "SMS_CACHE";
-
     public static final String MGT_LOGIN_CACHE = "MGT_LOGIN_CACHE";
 
     @Bean(MANAGER_0_5K)
     @Primary
-    public CacheManager manager_0_5000() {
+    public CacheManager manager_0_5K() {
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
-        caffeineCacheManager.setCaffeine(Caffeine.newBuilder().maximumSize(5000).weakKeys().weakValues());
+        caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
+                .maximumSize(5000));
         return caffeineCacheManager;
     }
 
     @Bean(MANAGER_10_5K)
-    CacheManager manager_10_5000() {
+    CacheManager manager_10_5K() {
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
         caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
                 .maximumSize(5000)
-                .weakKeys()
-                .weakValues()
                 .expireAfterWrite(10, TimeUnit.MINUTES));
         return caffeineCacheManager;
     }
 
     @Bean(MANAGER_60_5K)
-    CacheManager manager_60_5000() {
+    CacheManager manager_60_5K() {
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
         caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
                 .maximumSize(5000)
-                .weakKeys()
-                .weakValues()
                 .expireAfterWrite(60, TimeUnit.MINUTES));
         return caffeineCacheManager;
     }

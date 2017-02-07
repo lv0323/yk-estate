@@ -11,11 +11,11 @@ import java.sql.Date;
 
 @RestController
 @RequestMapping("api/company")
-public class CompanyController {
+public class CompanyRest {
 
     private final CompanyService service;
 
-    public CompanyController(CompanyService service) {
+    public CompanyRest(CompanyService service) {
         this.service = service;
     }
 
@@ -40,7 +40,14 @@ public class CompanyController {
     }
 
     @GetMapping("query")
-    public Object queryAll(@RequestParam(required = false, defaultValue = "0") int offset, @RequestParam(required = false, defaultValue = "2147483647") int limit) {
+    public Object queryAll(@RequestParam(required = false, defaultValue = "0") int offset,
+                           @RequestParam(required = false, defaultValue = "2147483647") int limit) {
         return service.find(new RowBounds(offset, limit));
     }
+
+    @GetMapping("/{companyId}")
+    public Company findOne(@PathVariable Long companyId) {
+        return service.findOne(companyId);
+    }
+
 }

@@ -3,7 +3,6 @@ package com.lyun.estate.biz.user.service;
 import cn.apiclub.captcha.Captcha;
 import cn.apiclub.captcha.noise.CurvedLineNoiseProducer;
 import cn.apiclub.captcha.text.producer.DefaultTextProducer;
-import com.lyun.estate.biz.user.repository.UserMapper;
 import com.lyun.estate.core.config.EstateCacheConfig;
 import com.lyun.estate.core.supports.LJSWordRenderer;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
@@ -21,8 +20,6 @@ import java.util.ArrayList;
 public class CaptchaService {
     private static final int maxWidth = 320;
     private static final int maxHeight = 320;
-    @Autowired
-    UserMapper userMapper;
 
     @Autowired
     @Qualifier(EstateCacheConfig.MANAGER_10_5K)
@@ -44,7 +41,7 @@ public class CaptchaService {
         java.util.List<Font> fonts = new ArrayList<>();
         fonts.add(new Font("Arial", Font.PLAIN, fontSize));
         fonts.add(new Font("Courier", Font.PLAIN, fontSize));
-        final String chars = "abcdefghijkmnpqrstuvwxzABCDEFGHJKMNPQRSTUVWXYZ23456789";
+        final String chars = "abcdefghjkmnpqrstuvwxzABCDEFGHJKMNPQRSTUVWXYZ23456789";
         Captcha captcha = new Captcha.Builder(width, height)
                 .addText(new DefaultTextProducer(4, chars.toCharArray()), new LJSWordRenderer(colors, fonts))
                 .addBackground()

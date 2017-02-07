@@ -4,6 +4,7 @@ import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.repo.DepartmentRepo;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
+import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -58,5 +59,10 @@ public class DepartmentService {
 
     public List<Department> selectByCompanyId(Long companyId) {
         return repo.selectByCompanyId(Objects.requireNonNull(companyId));
+    }
+
+    public Department findOne(Long departmentId) {
+        ExceptionUtil.checkNotNull("部门编号", departmentId);
+        return repo.selectById(departmentId);
     }
 }
