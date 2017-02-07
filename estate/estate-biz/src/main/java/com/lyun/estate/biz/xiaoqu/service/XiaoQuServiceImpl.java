@@ -13,6 +13,7 @@ import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.housedict.def.StructureType;
 import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
+import com.lyun.estate.biz.housedict.entity.Line;
 import com.lyun.estate.biz.housedict.entity.SubDistrict;
 import com.lyun.estate.biz.housedict.service.CityService;
 import com.lyun.estate.biz.housedict.service.HouseService;
@@ -21,10 +22,7 @@ import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.biz.spec.file.service.FileService;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
-import com.lyun.estate.biz.spec.xiaoqu.entity.EstateMapResource;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuFilter;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuSummary;
+import com.lyun.estate.biz.spec.xiaoqu.entity.*;
 import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuDetailBean;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
@@ -191,6 +189,18 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         }
         return new PageList<>(Lists.newArrayList(),
                 new Paginator(pageBounds.getPage(), pageBounds.getLimit(), 0));
+    }
+
+    @Override
+    public List<XiaoQuStationRel> findStations(Long xiaoQuId) {
+        ExceptionUtil.checkNotNull("小区编号", xiaoQuId);
+        List<XiaoQuStationRel> stationRels = xiaoQuRepository.findStations(xiaoQuId);
+        stationRels.forEach(r -> {
+            r.setLineName(Optional.ofNullable(cityService.findPrimaryLine(r.getStationId()))
+                    .map(Line::getName)
+                    .orElse(""));
+        });
+        return stationRels;
     }
 
     @Override

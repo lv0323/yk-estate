@@ -3,7 +3,7 @@ package com.lyun.estate.biz.spec.fang.entity;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.entity.FangDescr;
 import com.lyun.estate.biz.housedict.def.StructureType;
-import com.lyun.estate.biz.housedict.entity.Station;
+import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuStationRel;
 import com.lyun.estate.core.supports.types.YN;
 
 import java.math.BigDecimal;
@@ -17,8 +17,8 @@ public class FangDetail {
     private Long id;
     private Long licenceId;
     private BizType bizType;
-    private String title;
     private BigDecimal publishPrice;
+    private Date publishTime;
     private PriceUnit priceUnit;
     private HouseType houseType;
     private HouseSubType houseSubType;
@@ -35,7 +35,7 @@ public class FangDetail {
     private HouseProcess process;
     private BigDecimal transferPrice;
     private YN resident;
-    private Integer floorCount;//总层高
+    private Integer floorCounts;//总层高
     private FloorType floorType;
     private Decorate decorate;
     private StructureType structureType;
@@ -43,8 +43,11 @@ public class FangDetail {
     private Showing showing;
     private HeatingType heatingType;
     private Boolean hasElevator;
-    private Date purchase_date;
-    private List<Station> stations;
+    private Date purchaseDate;
+    private List<XiaoQuStationRel> stations;
+    private YN isOnly;
+    private YN nearLine;
+    private Integer overYears;
     private String district;
     private String subDistrict;
     private Long xiaoQuId;
@@ -75,15 +78,6 @@ public class FangDetail {
 
     public FangDetail setBizType(BizType bizType) {
         this.bizType = bizType;
-        return this;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public FangDetail setTitle(String title) {
-        this.title = title;
         return this;
     }
 
@@ -240,12 +234,21 @@ public class FangDetail {
         return this;
     }
 
-    public Integer getFloorCount() {
-        return floorCount;
+    public Date getPublishTime() {
+        return publishTime;
     }
 
-    public FangDetail setFloorCount(Integer floorCount) {
-        this.floorCount = floorCount;
+    public FangDetail setPublishTime(Date publishTime) {
+        this.publishTime = publishTime;
+        return this;
+    }
+
+    public Integer getFloorCounts() {
+        return floorCounts;
+    }
+
+    public FangDetail setFloorCounts(Integer floorCounts) {
+        this.floorCounts = floorCounts;
         return this;
     }
 
@@ -312,20 +315,20 @@ public class FangDetail {
         return this;
     }
 
-    public Date getPurchase_date() {
-        return purchase_date;
+    public Date getPurchaseDate() {
+        return purchaseDate;
     }
 
-    public FangDetail setPurchase_date(Date purchase_date) {
-        this.purchase_date = purchase_date;
+    public FangDetail setPurchaseDate(Date purchaseDate) {
+        this.purchaseDate = purchaseDate;
         return this;
     }
 
-    public List<Station> getStations() {
+    public List<XiaoQuStationRel> getStations() {
         return stations;
     }
 
-    public FangDetail setStations(List<Station> stations) {
+    public FangDetail setStations(List<XiaoQuStationRel> stations) {
         this.stations = stations;
         return this;
     }
@@ -372,6 +375,33 @@ public class FangDetail {
 
     public FangDetail setDescr(FangDescr descr) {
         this.descr = descr;
+        return this;
+    }
+
+    public YN getIsOnly() {
+        return isOnly;
+    }
+
+    public FangDetail setIsOnly(YN isOnly) {
+        this.isOnly = isOnly;
+        return this;
+    }
+
+    public YN getNearLine() {
+        return nearLine;
+    }
+
+    public FangDetail setNearLine(YN nearLine) {
+        this.nearLine = nearLine;
+        return this;
+    }
+
+    public Integer getOverYears() {
+        return overYears;
+    }
+
+    public FangDetail setOverYears(Integer overYears) {
+        this.overYears = overYears;
         return this;
     }
 }

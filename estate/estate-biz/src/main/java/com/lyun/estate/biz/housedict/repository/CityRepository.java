@@ -2,6 +2,7 @@ package com.lyun.estate.biz.housedict.repository;
 
 import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
+import com.lyun.estate.biz.housedict.entity.Line;
 import com.lyun.estate.biz.housedict.entity.SubDistrict;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -31,4 +32,9 @@ public interface CityRepository {
     @Select("SELECT d.* FROM t_district_rel dr  LEFT JOIN t_district d on dr.district_id = d.id\n" +
             "WHERE dr.is_primary = 'Y' AND dr.sub_district_id = #{id}")
     District findPrimaryDistrict(@Param("id") Long subDistrictId);
+
+    @Select("SELECT l.* FROM t_line_station_rel lsr" +
+            " LEFT JOIN t_line l ON lsr.line_id = l.id" +
+            " WHERE lsr.station_id = #{stationId} ORDER BY lsr.id LIMIT 1;")
+    Line findPrimaryLine(@Param("stationId") Long stationId);
 }

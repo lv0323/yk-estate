@@ -2,6 +2,7 @@ package com.lyun.estate.biz.housedict.service;
 
 import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
+import com.lyun.estate.biz.housedict.entity.Line;
 import com.lyun.estate.biz.housedict.entity.SubDistrict;
 import com.lyun.estate.biz.housedict.repository.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,9 @@ public class CityService {
 
     public SubDistrict findSubDistrict(Long id) {
         return cityRepository.findSubDistrict(id);
+    }
+
+    public Line findPrimaryLine(Long stationId) {
+        return cityRepository.findPrimaryLine(stationId);
     }
 }
