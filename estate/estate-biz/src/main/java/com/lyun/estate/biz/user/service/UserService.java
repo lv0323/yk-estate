@@ -2,28 +2,21 @@ package com.lyun.estate.biz.user.service;
 
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.token.JWTToken;
-import com.lyun.estate.biz.auth.token.repository.TokenMapper;
 import com.lyun.estate.biz.auth.token.TokenProvider;
+import com.lyun.estate.biz.auth.token.repository.TokenMapper;
+import com.lyun.estate.biz.sms.def.SmsType;
 import com.lyun.estate.biz.user.domain.User;
 import com.lyun.estate.biz.user.repository.UserMapper;
-import com.lyun.estate.biz.user.resources.ChangePasswordResource;
-import com.lyun.estate.biz.user.resources.LoginResource;
-import com.lyun.estate.biz.user.resources.RegisterResource;
-import com.lyun.estate.biz.user.resources.RegisterResponse;
-import com.lyun.estate.biz.user.resources.SaltResource;
-import com.lyun.estate.biz.user.resources.SaltResponse;
-import com.lyun.estate.biz.user.resources.TokenResponse;
+import com.lyun.estate.biz.user.resources.*;
 import com.lyun.estate.biz.user.service.validator.ChangePasswordResourceValidator;
 import com.lyun.estate.biz.user.service.validator.LoginResourceValidator;
 import com.lyun.estate.biz.user.service.validator.RegisterResourceValidator;
 import com.lyun.estate.biz.utils.clock.ClockTools;
 import com.lyun.estate.core.supports.ExecutionContext;
-import com.lyun.estate.core.supports.exceptions.EstateBizException;
+import com.lyun.estate.core.supports.exceptions.EasyCodeException;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
-import com.lyun.estate.biz.sms.def.SmsType;
 import com.lyun.estate.core.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,8 +33,6 @@ public class UserService {
     UserMapper userMapper;
     @Autowired
     TokenMapper tokenMapper;
-    @Autowired
-    CacheManager cacheManager;
     @Autowired
     TokenProvider tokenProvider;
     @Autowired
@@ -76,11 +67,12 @@ public class UserService {
                 ) {
             registerResponse.setRegistered(true);
         } else {
-            throw new EstateBizException("error.user.register", "用户注册失败");
+            throw new EasyCodeException("error.user.register", "用户注册失败");
         }
         if (registerResource.isLogin()) {
             registerResponse
-                    .setToken(getLoginToken(userMapper.findUserByMobile(smsCode.getMobile()), getDefaultValidDays()).getToken());
+                    .setToken(getLoginToken(userMapper.findUserByMobile(smsCode.getMobile()),
+                            getDefaultValidDays()).getToken());
         }
         return registerResponse;
     }
@@ -153,7 +145,8 @@ public class UserService {
     }
 
     @Transactional
-    public TokenResponse changePassword(ChangePasswordResource changePasswordResource, SmsCode smsCode, JWTToken token) {
+    public TokenResponse changePassword(ChangePasswordResource changePasswordResource, SmsCode smsCode,
+                                        JWTToken token) {
         if (!StringUtils.isEmpty(executionContext.getUserId())) {
             changePasswordResource.setUserId(Long.valueOf(executionContext.getUserId()));
         }

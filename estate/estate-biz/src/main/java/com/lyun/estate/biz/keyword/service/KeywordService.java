@@ -30,7 +30,6 @@ public class KeywordService {
     @Autowired
     private XiaoQuService xiaoQuService;
 
-
     public KeywordService(KeywordRepository keywordRepository) {
         this.keywordRepository = keywordRepository;
     }

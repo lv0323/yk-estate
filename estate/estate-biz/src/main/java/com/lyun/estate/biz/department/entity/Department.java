@@ -8,6 +8,7 @@ import com.lyun.estate.biz.housedict.entity.SubDistrict;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Department {
 
@@ -38,9 +39,9 @@ public class Department {
     private BigDecimal longitude;
     private BigDecimal latitude;
     @JsonIgnore
-    private java.sql.Timestamp createTime;
+    private Date createTime;
     @JsonIgnore
-    private java.sql.Timestamp updateTime;
+    private Date updateTime;
 
 
     public Long getId() {
@@ -106,20 +107,20 @@ public class Department {
         return this;
     }
 
-    public java.sql.Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public Department setCreateTime(java.sql.Timestamp createTime) {
+    public Department setCreateTime(Date createTime) {
         this.createTime = createTime;
         return this;
     }
 
-    public java.sql.Timestamp getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public Department setUpdateTime(java.sql.Timestamp updateTime) {
+    public Department setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
         return this;
     }

@@ -10,7 +10,7 @@ import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.biz.spec.file.service.FileService;
 import com.lyun.estate.biz.utils.clock.ClockTools;
-import com.lyun.estate.core.config.CacheConfig;
+import com.lyun.estate.core.config.EstateCacheConfig;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.utils.Validations;
@@ -38,9 +38,11 @@ public class EmployeeService {
     private final Cache cache;
     private final ClockTools clockTools;
 
-    public EmployeeService(EmployeeRepo repo, @Qualifier("evictCacheManager") CacheManager cacheManager, CompanyRepository companyRepository, FileService fileService, ClockTools clockTools) {
+    public EmployeeService(EmployeeRepo repo,
+                           @Qualifier(EstateCacheConfig.MANAGER_10_5K) CacheManager cacheManager,
+                           CompanyRepository companyRepository, FileService fileService, ClockTools clockTools) {
         this.repo = repo;
-        cache = cacheManager.getCache(CacheConfig.EVICT_CACHE_NAME);
+        cache = cacheManager.getCache(EstateCacheConfig.MGT_LOGIN_CACHE);
         this.companyRepository = companyRepository;
         this.fileService = fileService;
         this.clockTools = clockTools;
