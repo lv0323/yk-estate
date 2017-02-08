@@ -14,6 +14,7 @@ public class FangDescr {
     private String zhuangXiu;
     private String jiaoTong;
     private String xiaoQu;
+    private String touZi;
 
     public Long getId() {
         return id;
@@ -102,6 +103,15 @@ public class FangDescr {
 
     public FangDescr setXiaoQu(String xiaoQu) {
         this.xiaoQu = xiaoQu;
+        return this;
+    }
+
+    public String getTouZi() {
+        return touZi;
+    }
+
+    public FangDescr setTouZi(String touZi) {
+        this.touZi = touZi;
         return this;
     }
 }
