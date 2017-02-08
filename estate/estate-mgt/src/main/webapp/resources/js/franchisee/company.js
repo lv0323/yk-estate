@@ -1,9 +1,9 @@
 /**
  * Created by yanghong on 1/23/17.
  */
-require(['main-app',contextPath + '/js/service/company-service.js','datepicker.zh-cn'],
+require(['main-app',contextPath + '/js/service/company-service.js','datatables','datatablesBootstrap','datepicker.zh-cn'],
     function (mainApp,CompanyService) {
-        var BaseUrl = "/api/company/";
+
         var header = {};
         var companyAllDataRaw = {};
 
@@ -25,7 +25,7 @@ require(['main-app',contextPath + '/js/service/company-service.js','datepicker.z
         });
 
         //get data from server and display data
-        CompanyService.queryCompany({url:BaseUrl+"query",header:header})
+        CompanyService.getCompany(header)
             .done(function (data) {
                 companyAllDataRaw = data;
                 var appendHtml = '';
@@ -47,7 +47,6 @@ require(['main-app',contextPath + '/js/service/company-service.js','datepicker.z
                         appendHtml += '<a class="btn" id="toggleLockCompanyBtn" data-index="'+index+'" data-id="'+companyRaw["id"]+'" data-toggle="modal" data-target="#toggleLockCompanyDialog">冻结</a></td>'+
                             '</tr>';
                     }
-
                     $('#companyList>tbody').append(appendHtml);
 
                 });
@@ -97,7 +96,7 @@ require(['main-app',contextPath + '/js/service/company-service.js','datepicker.z
                 'boss.wechat':$('#companyRepWechat').val()
             };
 
-            CompanyService.updatePostCompany({url:BaseUrl+"create",data:toAddData,header:header})
+            CompanyService.addCompany({data:toAddData},header)
                 .done(function(){
                     // location.reload(true);
                     window.location.href="/mgt/franchisee/company.ftl";
@@ -132,7 +131,7 @@ require(['main-app',contextPath + '/js/service/company-service.js','datepicker.z
                 introduction: $('#editCompanyNote').val()
             };
 
-            CompanyService.updatePostCompany({url:BaseUrl+"edit",data:toEditCompany,header:header})
+            CompanyService.editCompany({data:toEditCompany},header)
                 .done(function(){
                     location.reload(true);
                 })
@@ -172,7 +171,7 @@ require(['main-app',contextPath + '/js/service/company-service.js','datepicker.z
                     locked: 'true'
                 }
             }
-            CompanyService.updateGetCompany({url:BaseUrl+"lock", data:toUpdateData, header:header})
+            CompanyService.toggleLockCompany({data:toUpdateData},header)
                 .done(function () {
                     location.reload(true);
                 })
@@ -195,8 +194,9 @@ require(['main-app',contextPath + '/js/service/company-service.js','datepicker.z
             var toUpdateData ={
                 id: $('#renewCompanyId').val(),
                 endDate: $('#companyEndDateRenew').val()
-            }
-            CompanyService.updateGetCompany({url:BaseUrl+"renew", data:toUpdateData, header:header})
+            };
+
+            CompanyService.renewCompany({data:toUpdateData},header)
                 .done(function () {
                     location.reload(true);
                 })

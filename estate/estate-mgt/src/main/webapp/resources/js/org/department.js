@@ -1,18 +1,16 @@
 /**
  * Created by yanghong on 1/17/17.
  */
-require(['main-app',contextPath + '/js/service/organization-service.js'],
-    function (mainApp,OrganizationService) {
-
+require(['main-app',contextPath + '/js/service/department-service.js','datatables','datatablesBootstrap'],
+    function (mainApp,DepartmentService) {
         var BaseUrl = "/api/department/";
-
         var header = {};
 
         var departAllDataRaw = {};
 
 
-        //get city from server
-        OrganizationService.queryElement({url:BaseUrl+"district/cites",header:header})
+        //get city from server in add/edit dialog
+        DepartmentService.getCity(header)
             .done(function (data) {
                 var appendOption = "";
                 $.each(data,function (index, city) {
@@ -23,7 +21,7 @@ require(['main-app',contextPath + '/js/service/organization-service.js'],
             });
 
         //get data from server and display data
-        OrganizationService.queryElement({url:BaseUrl+"query-sorted",header:header})
+        DepartmentService.getDepartment(header)
             .done(function(data){
                 if(data === null){
                     $('#departList>tbody').append('<tr><td colspan="4">没有数据</td></tr>');
@@ -80,11 +78,9 @@ require(['main-app',contextPath + '/js/service/organization-service.js'],
         //get district and subDistrict from server in add department dialog
         $('#addDepartDialog').on('change','#departCid',function(){
             var city_id = $('#addDepartDialog #departCid option:selected').attr("id");
-            var toAddCity = {
-                id:city_id
-            };
+
             //get district from server
-            OrganizationService.getElement({url:BaseUrl+"district/districts",data:toAddCity,header:header})
+            DepartmentService.getDistrict({data:{id:city_id}},header)
                 .done(function (data) {
                     var appendOption = "";
                     $.each(data,function (index, district) {
@@ -94,14 +90,14 @@ require(['main-app',contextPath + '/js/service/organization-service.js'],
 
                     var district_id = $('#addDepartDialog #departDid option:selected').attr("id");
                     //get subDistrict from server
-                    OrganizationService.iniDropList(BaseUrl+"district/sub-districts",district_id,header,'addDepartDialog','departSDid');
+                    DepartmentService.iniDropListBySupId(BaseUrl+"district/sub-districts",district_id,header,'addDepartDialog','departSDid');
                 });
         });
 
         //get subDistrict from server in add department dialog
         $('#addDepartDialog').on('change','#departDid',function(){
             var district_id = $('#addDepartDialog #departDid option:selected').attr("id");
-            OrganizationService.iniDropList(BaseUrl+"district/sub-districts",district_id,header,'addDepartDialog','departSDid');
+            DepartmentService.iniDropListBySupId(BaseUrl+"district/sub-districts",district_id,header,'addDepartDialog','departSDid');
         });
 
 
@@ -118,7 +114,7 @@ require(['main-app',contextPath + '/js/service/organization-service.js'],
                     districtId:$('#addDepartDialog #departDid option:selected').attr("id"),
                     subDistrictId:$('#addDepartDialog #departSDid option:selected').attr("id")
                 };
-            OrganizationService.updatePostDepartment({url:BaseUrl+"add",data:toAddDepart,header:header})
+            DepartmentService.addDepartment({data:toAddDepart},header)
                 .done(function(){
                     // location.reload(true);
                     window.location.href="/mgt/org/department.ftl";
@@ -141,7 +137,7 @@ require(['main-app',contextPath + '/js/service/organization-service.js'],
         //delete data according to index value where specifies id
         $('#deleteDepartDialog').on('click','#confirmDelDepartBtn',function(){
             var departId_request = parseInt($('#deleteDepartDialog #departId').val(),10);
-            OrganizationService.getElement({url:BaseUrl+"delete",data:{id:departId_request},header:header})
+            DepartmentService.deleteDepartment({data:{id:departId_request}},header)
                 .done(function(){
                     location.reload(true);
                 });
@@ -172,7 +168,7 @@ require(['main-app',contextPath + '/js/service/organization-service.js'],
             $('#editDepartDialog #departCid').find('option[id='+depart.city["id"]+']').attr('selected','selected');
             var city_id = $('#editDepartDialog #departCid option:selected').attr("id");
             if(city_id){
-                OrganizationService.getElement({url:BaseUrl+"district/districts",data:{id:city_id},header:header})
+                DepartmentService.getDistrict({data:{id:city_id}},header)
                     .done(function (data) {
                         var appendOption = "";
                         $.each(data,function (index, district) {
@@ -182,7 +178,7 @@ require(['main-app',contextPath + '/js/service/organization-service.js'],
                         $('#editDepartDialog #departDid').find('option[id='+depart.district["id"]+']').attr('selected','selected');
                         var district_id = $('#editDepartDialog #departDid option:selected').attr("id");
                         //get subDistrict from server
-                        OrganizationService.getElement({url:BaseUrl+"district/sub-districts",data:{id:district_id},header:header})
+                        DepartmentService.getSubDistrict({data:{id:district_id}},header)
                             .done(function (data) {
                                 var appendOption = '';
                                 $.each(data, function (index, subDistrict) {
@@ -202,7 +198,7 @@ require(['main-app',contextPath + '/js/service/organization-service.js'],
         $('#editDepartDialog').on('change','#departCid',function(){
             var city_id = $('#editDepartDialog #departCid option:selected').attr("id");
             //get district from server
-            OrganizationService.getElement({url:BaseUrl+"district/districts",data:{id:city_id},header:header})
+            DepartmentService.getDistrict({data:{id:city_id}},header)
                 .done(function (data) {
                     var appendOption = "";
                     $.each(data,function (index, district) {
@@ -212,14 +208,14 @@ require(['main-app',contextPath + '/js/service/organization-service.js'],
 
                     var district_id = $('#editDepartDialog #departDid option:selected').attr("id");
                     //get subDistrict from server
-                    OrganizationService.iniDropList(BaseUrl+"district/sub-districts",district_id,header,'editDepartDialog','departSDid');
+                    DepartmentService.iniDropListBySupId(BaseUrl+"district/sub-districts",district_id,header,'editDepartDialog','departSDid');
                 });
         });
 
         //get subDistrict from server in edit department dialog
         $('#editDepartDialog').on('change','#departDid',function(){
             var district_id = $('#editDepartDialog #departDid option:selected').attr("id");
-            OrganizationService.iniDropList(BaseUrl+"district/sub-districts",district_id,header,'editDepartDialog','departSDid');
+            DepartmentService.iniDropListBySupId(BaseUrl+"district/sub-districts",district_id,header,'editDepartDialog','departSDid');
         });
 
 
@@ -256,7 +252,7 @@ require(['main-app',contextPath + '/js/service/organization-service.js'],
             if(parent_id === id){
                 alert("父部门不能为其本身"); //forbid depart to be arranged under itself
             }else {
-                OrganizationService.updatePostDepartment({url:BaseUrl+"edit",data:toEditDepart,header:header})
+                DepartmentService.editDepartment({data:toEditDepart},header)
                     .done(function(){
                         location.reload(true);
                     })

@@ -49,33 +49,117 @@
                     <div class="form-group">
                         <label class="col-lg-3 col-md-3 col-sm-3 control-label">部门<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <input type="text" id="addEmployeeDepart" class="form-control" placeholder="部门">
+                            <select type="text" id="addEmployeeDepart" class="form-control btn-group dropup">
+
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <input type="text" id="addEmployeePosition" class="form-control" placeholder="岗位">
+                            <select type="text" id="addEmployeePosition" class="form-control btn-group dropup">
+
+                            </select>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
-                            <input type="checkbox" id="isAgent">是经纪人
+                            <input type="checkbox" id="addEmployeeIsAgent">是经纪人
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位状态<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <div id="addEmployeeStatus">
-                                <select id="workingStatus" class="form-control btn-group dropup">
-                                    <option value="WORKING">在职</option>
-                                    <option value="INTERN">实习</option>
-                                </select>
-                            </div>
+                            <select id="addEmployeeStatus" class="form-control btn-group dropup">
+                                <option value="WORKING">在职</option>
+                                <option value="INTERN">实习</option>
+                            </select>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="confirmAddEmployeeBtn">保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal editEmployeeDialog -->
+<div class="modal fade" id="editEmployeeDialog" tabindex="-1" role="dialog" aria-labelledby="editEmployeeLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title" id="editEmployeeLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <form id="editEmployeeForm" class="form-horizontal" method="post">
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">真实姓名<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="editEmployeeName" class="form-control" placeholder="真实姓名">
+                            <input id="editEmployeeId" class="hidden">
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <div id="editEmployeeGender">
+                                <input type="radio" value="M" checked="checked">男
+                                <input type="radio" value="F">女
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">手机号<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="editEmployeeMobile" class="form-control" placeholder="手机号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">身份证号<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="editEmployeeID" class="form-control" placeholder="身份证号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">微信</label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="editEmployeeWechat" class="form-control" placeholder="微信">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">部门<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <select type="text" id="editEmployeeDepart" class="form-control btn-group dropup">
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <select type="text" id="editEmployeePosition" class="form-control btn-group dropup">
+
+                            </select>
+                        </div>
+                        <div class="hidden col-lg-3 col-md-3 col-sm-3">
+                            <input type="checkbox" id="editEmployeeIsAgent">是经纪人
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位状态<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <select id="editEmployeeStatus" class="form-control btn-group dropup">
+                                <option value="WORKING">在职</option>
+                                <option value="INTERN">实习</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmEditEmployeeBtn">保存</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>
         </div>
@@ -130,11 +214,10 @@
                                     <!-- table -->
                                     <table id="employeeList" class="list table table-bordered table-hover">
                                         <thead><tr>
-                                            <th><span>编号</span></th>
                                             <th><span>姓名</span></th>
-                                            <th><span>状态</span></th>
-                                            <th><span>电话</span></th>
+                                            <th><span>部门</span></th>
                                             <th><span>岗位</span></th>
+                                            <th><span>电话</span></th>
                                             <th class="text-right"><span>操作</span></th>
                                         </tr></thead>
                                         <tbody></tbody>
