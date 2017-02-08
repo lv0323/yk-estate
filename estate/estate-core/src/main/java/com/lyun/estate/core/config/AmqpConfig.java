@@ -54,6 +54,15 @@ public class AmqpConfig implements RabbitListenerConfigurer {
     }
 
     @Bean
+    public RabbitTemplate messageRabbitTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate();
+        rabbitTemplate.setConnectionFactory(connectionFactory);
+        rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+        rabbitTemplate.setMandatory(true);
+        return rabbitTemplate;
+    }
+
+    @Bean
     public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
     }

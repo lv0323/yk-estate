@@ -1,10 +1,9 @@
 package com.lyun.estate.biz.message.entity;
 
-import com.lyun.estate.biz.message.def.MessageContentType;
 import com.lyun.estate.biz.message.def.MessageStatus;
+import com.lyun.estate.biz.spec.common.DomainType;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created by jesse on 2017/1/20.
@@ -13,14 +12,13 @@ public class Message {
     private Long id;
     private String title;
     private String summary;
-    private String content;
-    private MessageContentType contentType;
+    private Long domainId;
+    private DomainType domainType;
     private Long senderId;
     private Long receiverId;
     private MessageStatus status;
     private Date createTime;
     private Date updateTime;
-    private String uuid;
 
     public Long getId() {
         return id;
@@ -46,20 +44,20 @@ public class Message {
         this.summary = summary;
     }
 
-    public String getContent() {
-        return content;
+    public Long getDomainId() {
+        return domainId;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setDomainId(Long domainId) {
+        this.domainId = domainId;
     }
 
-    public MessageContentType getContentType() {
-        return contentType;
+    public DomainType getDomainType() {
+        return domainType;
     }
 
-    public void setContentType(MessageContentType contentType) {
-        this.contentType = contentType;
+    public void setDomainType(DomainType domainType) {
+        this.domainType = domainType;
     }
 
     public Long getSenderId() {
@@ -102,28 +100,19 @@ public class Message {
         this.updateTime = updateTime;
     }
 
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
     @Override
     public String toString() {
         return "Message{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", summary='" + summary + '\'' +
-                ", content='" + content + '\'' +
-                ", contentType=" + contentType +
+                ", domainId=" + domainId +
+                ", domainType=" + domainType +
                 ", senderId=" + senderId +
                 ", receiverId=" + receiverId +
                 ", status=" + status +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
-                ", uuid='" + uuid + '\'' +
                 '}';
     }
 }

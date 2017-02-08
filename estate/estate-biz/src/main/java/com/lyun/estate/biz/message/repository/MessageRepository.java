@@ -2,6 +2,7 @@ package com.lyun.estate.biz.message.repository;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.message.entity.EventMessage;
 import com.lyun.estate.biz.message.entity.Message;
 import com.lyun.estate.biz.message.entity.MessageResource;
 import com.lyun.estate.biz.message.entity.MessageSummaryResource;
@@ -35,13 +36,17 @@ public interface MessageRepository {
     @Select("SELECT * FROM t_message message WHERE message.receiver_id=#{receiverId} and message.sender_id=#{senderId} order by message.create_time desc")
     PageList<MessageResource> getMessage(@Param("receiverId") Long receiverId, @Param("senderId") Long senderId, PageBounds pageBounds);
 
-    @Update("UPDATE t_message message SET status='READ' WHERE message.receiver_id=#{receiverId} and message.sender_id=#{senderId} and message.id <=#{lastMessageId}")
+    @Update("UPDATE t_message message SET status='READ', update_time=now() WHERE message.receiver_id=#{receiverId} and message.sender_id=#{senderId} and message.id <=#{lastMessageId}")
     int updateToRead(@Param("receiverId") Long receiverId, @Param("senderId") Long senderId, @Param("lastMessageId") Long lastMessageId);
 
     @InsertProvider(type = MessageSqlProvider.class, method = "createMessage")
     @Options(useGeneratedKeys = true)
     int createMessage(Message message);
 
-    @Select("SELECT * FROM t_message WHERE uuid=#{uuid}")
-    Message getMessageByUUID(@Param("uuid") String uuid);
+    @InsertProvider(type = MessageSqlProvider.class, method = "createEventMessage")
+    @Options(useGeneratedKeys = true)
+    int createEventMessage(EventMessage eventMessage);
+
+    @Select("SELECT * FROM t_event_message WHERE uuid=#{uuid}")
+    Message getEventMessageByUUID(@Param("uuid") String uuid);
 }
