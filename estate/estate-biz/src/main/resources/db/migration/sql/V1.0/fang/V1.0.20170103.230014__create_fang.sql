@@ -50,7 +50,7 @@ CREATE TABLE t_fang_ext (
   taxes_willing      VARCHAR(15), --税费
   commission_willing VARCHAR(15), --佣金
   purchase_price     NUMERIC(28, 5), --购入价格
-  purchaseDate      DATE, --购入时间
+  purchaseDate       DATE, --购入时间
   is_only            VARCHAR(1), --唯一住房
   over_years         INTEGER, --满2，满5
   mortgage           VARCHAR(1), --有无贷款抵押
@@ -76,7 +76,8 @@ CREATE TABLE t_fang_descr (
   pei_tao    VARCHAR(500), --周边配套
   shui_fei   VARCHAR(500), --税费解析
   jiao_tong  VARCHAR(500), --交通出行
-  xiao_qu    VARCHAR(500) --小区简介
+  xiao_qu    VARCHAR(500), --小区简介
+  tou_zi     VARCHAR(500) --投资分析
 );
 
 

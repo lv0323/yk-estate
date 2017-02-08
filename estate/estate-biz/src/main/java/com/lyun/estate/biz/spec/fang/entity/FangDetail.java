@@ -52,6 +52,7 @@ public class FangDetail {
     private String subDistrict;
     private Long xiaoQuId;
     private String xiaoQuName;
+    private PropertyType propertyType;
     private FangDescr descr;
 
     public Long getId() {
@@ -402,6 +403,15 @@ public class FangDetail {
 
     public FangDetail setOverYears(Integer overYears) {
         this.overYears = overYears;
+        return this;
+    }
+
+    public PropertyType getPropertyType() {
+        return propertyType;
+    }
+
+    public FangDetail setPropertyType(PropertyType propertyType) {
+        this.propertyType = propertyType;
         return this;
     }
 }
