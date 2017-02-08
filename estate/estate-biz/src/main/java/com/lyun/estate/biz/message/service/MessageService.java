@@ -15,7 +15,7 @@ import com.lyun.estate.biz.message.repository.MessageRepository;
 import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.biz.spec.fang.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.service.FangService;
-import com.lyun.estate.core.supports.ExecutionContext;
+import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +49,7 @@ public class MessageService {
     private FollowService followService;
 
     @Autowired
-    private ExecutionContext executionContext;
+    private RestContext restContext;
 
 
     public List<MessageSummaryResource> getMessageSummary(Long receiverId) {
@@ -60,11 +60,12 @@ public class MessageService {
     }
 
     public List<MessageSummaryResource> getMessageSummary() {
-        return getMessageSummary(Long.valueOf(executionContext.getUserId()));
+        return getMessageSummary(restContext.getUserId());
     }
 
     @Transactional
-    public PageList<MessageResource> getMessage(Long receiverId, Long senderId, Long lastMessageId, PageBounds pageBounds) {
+    public PageList<MessageResource> getMessage(Long receiverId, Long senderId, Long lastMessageId,
+                                                PageBounds pageBounds) {
         if (receiverId == null) {
             throw new EstateException(PARAM_NULL, "receiverId");
         }
@@ -107,18 +108,21 @@ public class MessageService {
         });
         //TODO 标记未读为已读
         if (messageRepository.updateToRead(receiverId, senderId, lastMessageId) <= 0) {
-            throw new EstateException(UPDATE_FAIL, "message status", "receiver:" + receiverId + ";sender:" + senderId + ";lastMessageId:" + lastMessageId);
+            throw new EstateException(UPDATE_FAIL,
+                    "message status",
+                    "receiver:" + receiverId + ";sender:" + senderId + ";lastMessageId:" + lastMessageId);
         }
 
         return messageResourceList;
     }
 
     public List<MessageResource> getMessage(Long senderId, Long lastMessageId, PageBounds pageBounds) {
-        return getMessage(Long.valueOf(executionContext.getUserId()), senderId, lastMessageId, pageBounds);
+        return getMessage(restContext.getUserId(), senderId, lastMessageId, pageBounds);
     }
 
     @Transactional
-    private boolean createMessage(String title, String summary, Long domainId, DomainType domainType, Long senderId, Long receiverId) {
+    private boolean createMessage(String title, String summary, Long domainId, DomainType domainType, Long senderId,
+                                  Long receiverId) {
         /* 创建message */
         if (StringUtils.isEmpty(title)) {
             throw new EstateException(PARAM_NULL, "title");
@@ -155,6 +159,7 @@ public class MessageService {
 
     /**
      * 提供房源事件消息模板
+     *
      * @param fangId
      * @param title
      * @return
@@ -176,6 +181,7 @@ public class MessageService {
 
     /**
      * 提供小区事件消息模板
+     *
      * @param xiaoQuId
      * @param title
      * @return
@@ -197,6 +203,7 @@ public class MessageService {
 
     /**
      * 提供月报事件消息模板
+     *
      * @param reportId
      * @param title
      * @return
@@ -218,6 +225,7 @@ public class MessageService {
 
     /**
      * 提供公告事件消息模板
+     *
      * @param noticeId
      * @param title
      * @return
@@ -250,7 +258,12 @@ public class MessageService {
         if (message == null) {
             throw new EstateException(PARAM_NULL, "message");
         }
-        return createMessage(message.getTitle(), message.getSummary(), message.getDomainId(), message.getDomainType(), message.getSenderId(), message.getReceiverId());
+        return createMessage(message.getTitle(),
+                message.getSummary(),
+                message.getDomainId(),
+                message.getDomainType(),
+                message.getSenderId(),
+                message.getReceiverId());
     }
 
     @Transactional
@@ -275,6 +288,7 @@ public class MessageService {
 
     /**
      * 事件消息处理
+     *
      * @param eventMessage
      * @return
      */
@@ -284,23 +298,35 @@ public class MessageService {
         }
         switch (eventMessage.getDomainType()) {
             case FANG:
-                List<Follow> fangFollowers = followService.getFollowers(eventMessage.getDomainType(), eventMessage.getDomainId());
+                List<Follow> fangFollowers = followService.getFollowers(eventMessage.getDomainType(),
+                        eventMessage.getDomainId());
                 if (CollectionUtils.isEmpty(fangFollowers)) {
                     logger.info("房源[{}]没有关注者，不需要发送消息", eventMessage.getDomainId());
                     return true;
                 }
                 fangFollowers.forEach(t -> {
-                    createMessage(eventMessage.getTitle(), null, eventMessage.getDomainId(), eventMessage.getDomainType(), 1L/* TODO指定发送者 */, t.getFollowerId());
+                    createMessage(eventMessage.getTitle(),
+                            null,
+                            eventMessage.getDomainId(),
+                            eventMessage.getDomainType(),
+                            1L/* TODO指定发送者 */,
+                            t.getFollowerId());
                 });
                 return true;
             case XIAO_QU:
-                List<Follow> xiaoQuFollowers = followService.getFollowers(eventMessage.getDomainType(), eventMessage.getDomainId());
+                List<Follow> xiaoQuFollowers = followService.getFollowers(eventMessage.getDomainType(),
+                        eventMessage.getDomainId());
                 if (CollectionUtils.isEmpty(xiaoQuFollowers)) {
                     logger.info("房源[{}]没有关注者，不需要发送消息", eventMessage.getDomainId());
                     return true;
                 }
                 xiaoQuFollowers.forEach(t -> {
-                    createMessage(eventMessage.getTitle(), null, eventMessage.getDomainId(), eventMessage.getDomainType(), 2L/* TODO指定发送者 */, t.getFollowerId());
+                    createMessage(eventMessage.getTitle(),
+                            null,
+                            eventMessage.getDomainId(),
+                            eventMessage.getDomainType(),
+                            2L/* TODO指定发送者 */,
+                            t.getFollowerId());
                 });
                 return true;
             case REPORT:

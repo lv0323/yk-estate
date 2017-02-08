@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.auth.captcha;
 
 import com.lyun.estate.biz.user.service.CaptchaService;
-import com.lyun.estate.core.supports.ExecutionContext;
+import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.utils.ValidateUtil;
 import org.aspectj.lang.JoinPoint;
@@ -20,7 +20,7 @@ public class CaptchaAspect {
     @Autowired
     CaptchaService captchaService;
     @Autowired
-    ExecutionContext executionContext;
+    RestContext restContext;
 
     public void check(Captcha captcha) {
         if (!ValidateUtil.isClientId(captcha.getClientId())) {
@@ -36,7 +36,7 @@ public class CaptchaAspect {
         if (!captchaService.isCaptchaCorrect(captcha.getClientId(), captcha.getId(), captcha.getCode())) {
             throw new ValidateException("code.illegal", "图片验证码不正确");
         }
-        executionContext.setClientId(captcha.getClientId() + "");
+        restContext.setClientId(captcha.getClientId() + "");
     }
 
     @Before(value = "@annotation(checkCaptcha)", argNames = "joinPoint,checkCaptcha")

@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.UUID;
-
 @RestControllerAdvice
 public class ExceptionAdvice {
 
@@ -20,11 +18,11 @@ public class ExceptionAdvice {
     @ExceptionHandler
     public ResponseEntity<?> handleException(Throwable t) {
         if (!(t instanceof EstateException)) {
-            t = new EstateException(t, ExCode.DEFAULT_EXCEPTION).setId(UUID.randomUUID().toString());
+            t = new EstateException(t, ExCode.DEFAULT_EXCEPTION);
         }
         EstateException exception = (EstateException) t;
-        logger.error("Throwable, id: " + exception.getId(), exception);
-        return new ResponseEntity<>(new ErrorResource(exception.getId(),
+        logger.error("Throwable, id: ", exception);
+        return new ResponseEntity<>(new ErrorResource("",
                 exception.getExCode().name(),
                 exception.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }

@@ -6,7 +6,7 @@ import com.lyun.estate.biz.sms.resources.SmsResponse;
 import com.lyun.estate.biz.sms.service.validator.SmsResourceValidator;
 import com.lyun.estate.biz.user.repository.UserMapper;
 import com.lyun.estate.core.config.EstateCacheConfig;
-import com.lyun.estate.core.supports.ExecutionContext;
+import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.supports.types.YN;
 import com.lyun.estate.core.utils.CommonUtil;
@@ -33,7 +33,7 @@ public class SmsService {
     @Autowired
     UserMapper userMapper;
     @Autowired
-    ExecutionContext executionContext;
+    RestContext restContext;
     @Autowired
     SmsAmqpClient smsAmqpClient;
 
@@ -55,10 +55,10 @@ public class SmsService {
             serial = CommonUtil.randomNumberSeq(2);
             smsAmqpClient.sendMessage(new com.lyun.layer.amqp.spec.pojos.SmsCode()
                             .setCode(smsCode).setMobile(smsResource.getMobile()).setSerial(serial),
-                    executionContext.getCorrelationId());
+                    restContext.getCorrelationId());
         }
         String smsId = CommonUtil.getUuid();
-        String smsKv = smsId + ":" + smsResource.getMobile() + ":" + smsCode + ":" + serial + ":" + smsResource.getType() + ":" + executionContext
+        String smsKv = smsId + ":" + smsResource.getMobile() + ":" + smsCode + ":" + serial + ":" + smsResource.getType() + ":" + restContext
                 .getClientId();
         cacheManager.getCache(EstateCacheConfig.SMS_CACHE).put(smsKv, smsKv);
         return new SmsResponse().setMobile(smsResource.getMobile()).setSmsId(smsId).setSerial(serial);

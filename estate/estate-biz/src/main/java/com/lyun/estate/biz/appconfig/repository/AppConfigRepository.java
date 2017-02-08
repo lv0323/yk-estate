@@ -2,6 +2,7 @@ package com.lyun.estate.biz.appconfig.repository;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;

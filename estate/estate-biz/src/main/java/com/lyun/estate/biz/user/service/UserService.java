@@ -12,7 +12,7 @@ import com.lyun.estate.biz.user.service.validator.ChangePasswordResourceValidato
 import com.lyun.estate.biz.user.service.validator.LoginResourceValidator;
 import com.lyun.estate.biz.user.service.validator.RegisterResourceValidator;
 import com.lyun.estate.biz.utils.clock.ClockTools;
-import com.lyun.estate.core.supports.ExecutionContext;
+import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.EasyCodeException;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.utils.CommonUtil;
@@ -40,7 +40,7 @@ public class UserService {
     @Autowired
     Environment environment;
     @Autowired
-    ExecutionContext executionContext;
+    RestContext restContext;
 
     private int getDefaultValidDays() {
         return Integer.valueOf(environment.getRequiredProperty("register.login.default.valid.days"));
@@ -62,8 +62,8 @@ public class UserService {
                 .setUserName(registerResource.getUserName())
                 .setSalt(registerResource.getSalt())
                 .setHash(registerResource.getHash())
-                .setClientId(Integer.valueOf(executionContext.getClientId()))
-                .setDescription("logRef:" + executionContext.getCorrelationId())) == 1
+                .setClientId(Integer.valueOf(restContext.getClientId()))
+                .setDescription("logRef:" + restContext.getCorrelationId())) == 1
                 ) {
             registerResponse.setRegistered(true);
         } else {
@@ -133,13 +133,13 @@ public class UserService {
 
     private TokenResponse getLoginToken(User user, int defaultValidDays) {
         JWTToken jwtToken = tokenProvider.generate(String.valueOf(user.getId()),
-                Integer.valueOf(executionContext.getClientId()),
+                Integer.valueOf(restContext.getClientId()),
                 defaultValidDays * 24,
                 new HashMap<String, Object>() {{
-                    put("clientId", executionContext.getClientId());
-                    put("browserName", executionContext.getBrowserName());
-                    put("osName", executionContext.getOsName());
-                    put("userAddress", executionContext.getUserAddress());
+                    put("clientId", restContext.getClientId());
+                    put("browserName", restContext.getBrowserName());
+                    put("osName", restContext.getOsName());
+                    put("userAddress", restContext.getUserAddress());
                 }});
         return new TokenResponse().setToken(jwtToken.getToken());
     }
@@ -147,8 +147,8 @@ public class UserService {
     @Transactional
     public TokenResponse changePassword(ChangePasswordResource changePasswordResource, SmsCode smsCode,
                                         JWTToken token) {
-        if (!StringUtils.isEmpty(executionContext.getUserId())) {
-            changePasswordResource.setUserId(Long.valueOf(executionContext.getUserId()));
+        if (restContext.getUserId() != null) {
+            changePasswordResource.setUserId(restContext.getUserId());
         }
         DataBinder dataBinder = new DataBinder(changePasswordResource, "changePassword");
         final User[] loginUser = {null};
