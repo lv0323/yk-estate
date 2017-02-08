@@ -1,7 +1,7 @@
 package com.lyun.estate.rest.message;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.lyun.estate.biz.message.def.MessageContentType;
+import com.lyun.estate.biz.message.entity.EventMessage;
 import com.lyun.estate.biz.message.entity.Message;
 import com.lyun.estate.biz.message.entity.MessageResource;
 import com.lyun.estate.biz.message.entity.MessageSummaryResource;
@@ -9,6 +9,7 @@ import com.lyun.estate.biz.message.service.MessageService;
 import com.lyun.estate.biz.mq.consumer.MessageConsumer;
 import com.lyun.estate.biz.mq.producer.MessageProducer;
 import com.lyun.estate.biz.report.engine.ReportEngine;
+import com.lyun.estate.biz.spec.common.DomainType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,50 +54,53 @@ public class MessageController {
 
     //TODO 不在rest提供API
     @PostMapping("/produce")
-    boolean produceMessage(@RequestParam(required = true) String title, @RequestParam(required = false) String summary, @RequestParam(required = true) String content,
-                           @RequestParam(required = true) MessageContentType contentType, @RequestParam(required = true) Long senderId, @RequestParam(required = true) Long receiverId) {
+    boolean produceMessage(@RequestParam(required = true) String title,
+                           @RequestParam(required = true) Long domainId,
+                           @RequestParam(required = true) DomainType domainType) {
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setTitle(title);
+        eventMessage.setDomainId(domainId);
+        eventMessage.setDomainType(domainType);
+        eventMessage.setUuid(UUID.randomUUID().toString());
+        return messageProducer.send(eventMessage);
+    }
+
+    //TODO 不在rest提供API
+    @PostMapping("/produce/direct")
+    boolean produceMessage(@RequestParam(required = true) String title, @RequestParam(required = false) String summary, @RequestParam(required = true) Long domainId,
+                           @RequestParam(required = true) DomainType domainType, @RequestParam(required = true) Long senderId, @RequestParam(required = true) Long receiverId) {
         Message message = new Message();
         message.setTitle(title);
         message.setSummary(summary);
-        message.setContent(content);
-        message.setContentType(contentType);
+        message.setDomainId(domainId);
+        message.setDomainType(domainType);
         message.setSenderId(senderId);
         message.setReceiverId(receiverId);
-        message.setUuid(UUID.randomUUID().toString());
         return messageProducer.send(message);
     }
 
     //TODO 不在rest提供API
     @PostMapping("/produce/fang")
-    boolean produceFangMessage(@RequestParam(required = true) Long receiverId,
-                               @RequestParam(required = true) Long fangId,
-                               @RequestParam(required = true) String title, @RequestParam(required = false) String summary) {
-        Message message = messageService.generateSimpleFangMessage(receiverId, fangId, title, summary);
+    boolean produceFangMessage(@RequestParam(required = true) Long fangId,
+                               @RequestParam(required = true) String title) {
+        EventMessage message = messageService.generateSimpleFangEventMessage(fangId, title);
+        return messageProducer.send(message);
+    }
+
+    //TODO 不在rest提供API
+    @PostMapping("/produce/xiaoQu")
+    boolean produceXiaoQuMessage(@RequestParam(required = true) Long xiaoQuId,
+                               @RequestParam(required = true) String title) {
+        EventMessage message = messageService.generateSimpleXiaoQuEventMessage(xiaoQuId, title);
         return messageProducer.send(message);
     }
 
     //TODO 不在rest提供API
     @PostMapping("/produce/report")
-    boolean produceReportMessage(@RequestParam(required = true) Long receiverId,
-                                 @RequestParam(required = true) Long reportId,
-                                 @RequestParam(required = true) String title, @RequestParam(required = false) String summary) {
-        Message message = messageService.generateSimpleReportMessage(receiverId, reportId, title, summary);
+    boolean produceReportMessage(@RequestParam(required = true) Long reportId,
+                                 @RequestParam(required = true) String title) {
+        EventMessage message = messageService.generateSimpleReportEventMessage(reportId, title);
         return messageProducer.send(message);
-    }
-
-    //TODO 不在rest提供API
-    @PostMapping("/produce/text")
-    boolean produceTextMessage(@RequestParam(required = true) Long receiverId,
-                               @RequestParam(required = true) String content,
-                               @RequestParam(required = true) String title, @RequestParam(required = false) String summary) {
-        Message message = messageService.generateSimplePhotoArticleMessage(receiverId, content, title, summary);
-        return messageProducer.send(message);
-    }
-
-    //TODO 不在rest提供API
-    @GetMapping("/consume")
-    boolean consumeMessage() {
-        return messageConsumer.receive();
     }
 
 //    @GetMapping("/report/test")

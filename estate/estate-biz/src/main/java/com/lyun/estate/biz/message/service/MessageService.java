@@ -4,12 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.lyun.estate.biz.message.def.MessageContentType;
+import com.lyun.estate.biz.favorite.entity.Follow;
+import com.lyun.estate.biz.favorite.service.FollowService;
 import com.lyun.estate.biz.message.def.MessageStatus;
+import com.lyun.estate.biz.message.entity.EventMessage;
 import com.lyun.estate.biz.message.entity.Message;
 import com.lyun.estate.biz.message.entity.MessageResource;
 import com.lyun.estate.biz.message.entity.MessageSummaryResource;
 import com.lyun.estate.biz.message.repository.MessageRepository;
+import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.biz.spec.fang.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.service.FangService;
 import com.lyun.estate.core.supports.ExecutionContext;
@@ -25,6 +28,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.UUID;
 
+import static com.lyun.estate.biz.spec.common.DomainType.REPORT;
 import static com.lyun.estate.core.supports.exceptions.ExCode.*;
 
 /**
@@ -40,6 +44,9 @@ public class MessageService {
 
     @Autowired
     private FangService fangService;
+
+    @Autowired
+    private FollowService followService;
 
     @Autowired
     private ExecutionContext executionContext;
@@ -71,11 +78,11 @@ public class MessageService {
         }
         /*  JSON转换 */
         messageResourceList.forEach(t -> {
-            switch (t.getContentType()) {
+            switch (t.getDomainType()) {
                 case FANG:
-                    FangSummary fang = fangService.getSummary(Long.valueOf(t.getContent()));
+                    FangSummary fang = fangService.getSummary(t.getDomainId());
                     if (fang == null) {
-                        logger.warn("根据信息中存放的content[{}]无法获取有效房源", t.getContent());
+                        logger.warn("根据信息中存放的content[{}]无法获取有效房源", t.getDomainId());
                         break;
                     }
                     try {
@@ -86,14 +93,16 @@ public class MessageService {
                     break;
                 case REPORT:
                     //TODO 月报实现
-                    t.setData(t.getContent());
+                    t.setData(t.getDomainId().toString());
                     break;
-                case PHOTO_ARTICLE:
-                    //TODO 图文实现
-                    t.setData(t.getContent());
+                case NOTICE:
+                    //TODO 公告
+                    t.setData(t.getDomainId().toString());
                     break;
                 default:
-                    throw new EstateException(PARAM_ILLEGAL, "MessageContentType", t.getContentType());
+                    //TODO 默认处理
+                    t.setData(t.getDomainId().toString());
+                    break;
             }
         });
         //TODO 标记未读为已读
@@ -109,16 +118,16 @@ public class MessageService {
     }
 
     @Transactional
-    private boolean createMessage(String title, String summary, String content, MessageContentType contentType, Long senderId, Long receiverId, String uuid) {
+    private boolean createMessage(String title, String summary, Long domainId, DomainType domainType, Long senderId, Long receiverId) {
         /* 创建message */
         if (StringUtils.isEmpty(title)) {
             throw new EstateException(PARAM_NULL, "title");
         }
-        if (StringUtils.isEmpty(content)) {
-            throw new EstateException(PARAM_NULL, "content");
+        if (domainId == null) {
+            throw new EstateException(PARAM_NULL, "domainId");
         }
-        if (contentType == null) {
-            throw new EstateException(PARAM_NULL, "contentType");
+        if (domainType == null) {
+            throw new EstateException(PARAM_NULL, "domainType");
         }
         if (senderId == null) {
             throw new EstateException(PARAM_NULL, "senderId");
@@ -126,17 +135,13 @@ public class MessageService {
         if (receiverId == null) {
             throw new EstateException(PARAM_NULL, "receiverId");
         }
-        if (StringUtils.isEmpty(uuid)) {
-            throw new EstateException(PARAM_NULL, "uuid");
-        }
         Message message = new Message();
         message.setTitle(title);
         message.setSummary(summary);
-        message.setContent(content);
-        message.setContentType(contentType);
+        message.setDomainId(domainId);
+        message.setDomainType(domainType);
         message.setSenderId(senderId);
         message.setReceiverId(receiverId);
-        message.setUuid(uuid);
         message.setStatus(MessageStatus.UNREAD);
         return createMessage(message);
     }
@@ -149,79 +154,95 @@ public class MessageService {
     }
 
     /**
-     * 提供小区动态消息生成器
-     * @param receiverId
+     * 提供房源事件消息模板
      * @param fangId
      * @param title
      * @return
      */
-    @Transactional
-    public Message generateSimpleFangMessage(Long receiverId, Long fangId, String title, String summary) {
-        if (receiverId == null) {
-            throw new EstateException(PARAM_NULL, "receiverId");
-        }
+    public EventMessage generateSimpleFangEventMessage(Long fangId, String title) {
         if (fangId == null) {
             throw new EstateException(PARAM_NULL, "fangId");
         }
         if (StringUtils.isEmpty(title)) {
             throw new EstateException(PARAM_NULL, "title");
         }
-        Message message = new Message();
-        message.setTitle(title);
-        message.setSummary(summary);
-        message.setContent(fangId.toString());
-        message.setContentType(MessageContentType.FANG);
-        message.setSenderId(1L);//TODO 默认的发送者
-        message.setReceiverId(receiverId);
-        message.setUuid(UUID.randomUUID().toString());
-
-        return message;
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setUuid(UUID.randomUUID().toString());
+        eventMessage.setTitle(title);
+        eventMessage.setDomainType(DomainType.FANG);
+        eventMessage.setDomainId(fangId);
+        return eventMessage;
     }
 
-    @Transactional
-    public Message generateSimpleReportMessage(Long receiverId, Long reportId, String title, String summary) {
-        if (receiverId == null) {
-            throw new EstateException(PARAM_NULL, "receiverId");
+    /**
+     * 提供小区事件消息模板
+     * @param xiaoQuId
+     * @param title
+     * @return
+     */
+    public EventMessage generateSimpleXiaoQuEventMessage(Long xiaoQuId, String title) {
+        if (xiaoQuId == null) {
+            throw new EstateException(PARAM_NULL, "xiaoQuId");
         }
+        if (StringUtils.isEmpty(title)) {
+            throw new EstateException(PARAM_NULL, "title");
+        }
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setUuid(UUID.randomUUID().toString());
+        eventMessage.setTitle(title);
+        eventMessage.setDomainType(DomainType.XIAO_QU);
+        eventMessage.setDomainId(xiaoQuId);
+        return eventMessage;
+    }
+
+    /**
+     * 提供月报事件消息模板
+     * @param reportId
+     * @param title
+     * @return
+     */
+    public EventMessage generateSimpleReportEventMessage(Long reportId, String title) {
         if (reportId == null) {
             throw new EstateException(PARAM_NULL, "reportId");
         }
         if (StringUtils.isEmpty(title)) {
             throw new EstateException(PARAM_NULL, "title");
         }
-        Message message = new Message();
-        message.setTitle(title);
-        message.setSummary(summary);
-        message.setContent(reportId.toString());
-        message.setContentType(MessageContentType.REPORT);
-        message.setSenderId(2L);//TODO 默认的发送者
-        message.setReceiverId(receiverId);
-        message.setUuid(UUID.randomUUID().toString());
-
-        return message;
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setUuid(UUID.randomUUID().toString());
+        eventMessage.setTitle(title);
+        eventMessage.setDomainType(REPORT);
+        eventMessage.setDomainId(reportId);
+        return eventMessage;
     }
 
-    public Message generateSimplePhotoArticleMessage(Long receiverId, String content, String title, String summary) {
-        if (receiverId == null) {
-            throw new EstateException(PARAM_NULL, "receiverId");
-        }
-        if (StringUtils.isEmpty(content)) {
-            throw new EstateException(PARAM_NULL, "content");
+    /**
+     * 提供公告事件消息模板
+     * @param noticeId
+     * @param title
+     * @return
+     */
+    public EventMessage generateSimpleNoticeEventMessage(Long noticeId, String title) {
+        if (noticeId == null) {
+            throw new EstateException(PARAM_NULL, "noticeId");
         }
         if (StringUtils.isEmpty(title)) {
             throw new EstateException(PARAM_NULL, "title");
         }
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setUuid(UUID.randomUUID().toString());
+        eventMessage.setTitle(title);
+        eventMessage.setDomainType(DomainType.NOTICE);
+        eventMessage.setDomainId(noticeId);
+        return eventMessage;
+    }
 
-        Message message = new Message();
-        message.setTitle(title);
-        message.setSummary(summary);
-        message.setContent(content);
-        message.setContentType(MessageContentType.PHOTO_ARTICLE);
-        message.setSenderId(3L);//TODO 默认的发送者
-        message.setReceiverId(receiverId);
-        message.setUuid(UUID.randomUUID().toString());
-
-        return message;
+    @Transactional
+    public boolean produceMessage(EventMessage eventMessage) {
+        if (eventMessage == null) {
+            throw new EstateException(PARAM_NULL, "eventMessage");
+        }
+        return eventMessageHandler(eventMessage);
     }
 
     @Transactional
@@ -229,27 +250,68 @@ public class MessageService {
         if (message == null) {
             throw new EstateException(PARAM_NULL, "message");
         }
-        return createMessage(message.getTitle(), message.getSummary(), message.getContent(), message.getContentType(), message.getSenderId(), message.getReceiverId(), message.getUuid());
+        return createMessage(message.getTitle(), message.getSummary(), message.getDomainId(), message.getDomainType(), message.getSenderId(), message.getReceiverId());
     }
 
     @Transactional
-    public boolean consumeMessage(Message message) {
-        if (message == null) {
-            throw new EstateException(PARAM_NULL, "message");
+    public boolean consumeMessage(EventMessage eventMessage) {
+        if (eventMessage == null) {
+            throw new EstateException(PARAM_NULL, "eventMessage");
         }
         // 重复消息处理
-        if (getMessageByUUID(message.getUuid()) != null) {
-            logger.warn("消息[{}]已经存在，忽略！消息内容为：{}", message.getUuid(), message.toString());
+        if (getEventMessageByUUID(eventMessage.getUuid()) != null) {
+            logger.warn("消息[{}]已经存在，忽略！消息内容为：{}", eventMessage.getUuid(), eventMessage.toString());
             return true;
         }
-        return createMessage(message.getTitle(), message.getSummary(), message.getContent(), message.getContentType(), message.getSenderId(), message.getReceiverId(), message.getUuid());
+        return eventMessageHandler(eventMessage);
     }
 
-    private Message getMessageByUUID(String uuid) {
+    private Message getEventMessageByUUID(String uuid) {
         if (StringUtils.isEmpty(uuid)) {
             throw new EstateException(PARAM_NULL, "UUID");
         }
-        return messageRepository.getMessageByUUID(uuid);
+        return messageRepository.getEventMessageByUUID(uuid);
     }
 
+    /**
+     * 事件消息处理
+     * @param eventMessage
+     * @return
+     */
+    private boolean eventMessageHandler(EventMessage eventMessage) {
+        if (eventMessage.getDomainType() == null) {
+            throw new EstateException(PARAM_NULL, "domainType");
+        }
+        switch (eventMessage.getDomainType()) {
+            case FANG:
+                List<Follow> fangFollowers = followService.getFollowers(eventMessage.getDomainType(), eventMessage.getDomainId());
+                if (CollectionUtils.isEmpty(fangFollowers)) {
+                    logger.info("房源[{}]没有关注者，不需要发送消息", eventMessage.getDomainId());
+                    return true;
+                }
+                fangFollowers.forEach(t -> {
+                    createMessage(eventMessage.getTitle(), null, eventMessage.getDomainId(), eventMessage.getDomainType(), 1L/* TODO指定发送者 */, t.getFollowerId());
+                });
+                return true;
+            case XIAO_QU:
+                List<Follow> xiaoQuFollowers = followService.getFollowers(eventMessage.getDomainType(), eventMessage.getDomainId());
+                if (CollectionUtils.isEmpty(xiaoQuFollowers)) {
+                    logger.info("房源[{}]没有关注者，不需要发送消息", eventMessage.getDomainId());
+                    return true;
+                }
+                xiaoQuFollowers.forEach(t -> {
+                    createMessage(eventMessage.getTitle(), null, eventMessage.getDomainId(), eventMessage.getDomainType(), 2L/* TODO指定发送者 */, t.getFollowerId());
+                });
+                return true;
+            case REPORT:
+                //TODO 指定的目标客户
+                return true;
+            case NOTICE:
+                //TODO 指定的目标客户
+                return true;
+            default:
+                //TODO 指定的目标客户
+                return true;
+        }
+    }
 }

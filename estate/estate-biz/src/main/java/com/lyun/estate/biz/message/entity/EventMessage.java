@@ -1,6 +1,5 @@
 package com.lyun.estate.biz.message.entity;
 
-import com.lyun.estate.biz.message.def.MessageStatus;
 import com.lyun.estate.biz.spec.common.DomainType;
 
 import java.util.Date;
@@ -8,15 +7,14 @@ import java.util.Date;
 /**
  * Created by jesse on 2017/1/20.
  */
-public class MessageResource {
+public class EventMessage {
     private Long id;
     private String title;
-    private String summary;
     private Long domainId;
     private DomainType domainType;
-    private String data;
-    private MessageStatus status;
     private Date createTime;
+    private Date updateTime;
+    private String uuid;
 
     public Long getId() {
         return id;
@@ -32,14 +30,6 @@ public class MessageResource {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
     }
 
     public Long getDomainId() {
@@ -58,22 +48,6 @@ public class MessageResource {
         this.domainType = domainType;
     }
 
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public MessageStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(MessageStatus status) {
-        this.status = status;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -82,17 +56,32 @@ public class MessageResource {
         this.createTime = createTime;
     }
 
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     @Override
     public String toString() {
-        return "MessageResource{" +
+        return "EventMessage{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", summary='" + summary + '\'' +
                 ", domainId=" + domainId +
                 ", domainType=" + domainType +
-                ", data='" + data + '\'' +
-                ", status=" + status +
                 ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", uuid='" + uuid + '\'' +
                 '}';
     }
 }
