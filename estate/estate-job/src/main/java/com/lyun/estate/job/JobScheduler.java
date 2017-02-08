@@ -1,7 +1,7 @@
 package com.lyun.estate.job;
 
 import com.lyun.estate.job.config.JobConfig;
-import com.lyun.estate.job.supports.context.JobExecutionContext;
+import com.lyun.estate.core.supports.context.JobContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 public class JobScheduler implements SchedulingConfigurer {
 
     @Autowired
-    JobExecutionContext jobExecutionContext;
+    JobContext jobContext;
 
     @Bean(destroyMethod = "shutdown")
     public Executor taskExecutor() {

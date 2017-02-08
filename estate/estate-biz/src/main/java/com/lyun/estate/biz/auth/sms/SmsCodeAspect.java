@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.auth.sms;
 
 import com.lyun.estate.biz.sms.service.SmsService;
-import com.lyun.estate.core.supports.ExecutionContext;
+import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -18,13 +18,13 @@ public class SmsCodeAspect {
     @Autowired
     SmsService smsService;
     @Autowired
-    ExecutionContext executionContext;
+    RestContext restContext;
 
     public void check(SmsCode smsCode) {
         if (!smsService.isSmsCodeCorrect(smsCode)) {
             throw new ValidateException("smsCode.illegal", "短信验证码错误");
         }
-        executionContext.setClientId(smsCode.getClientId() + "");
+        restContext.setClientId(smsCode.getClientId() + "");
     }
 
     @Before(value = "@annotation(checkSmsCode)", argNames = "joinPoint,checkSmsCode")

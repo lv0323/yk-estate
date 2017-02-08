@@ -2,7 +2,7 @@ package com.lyun.estate.job;
 
 
 import com.lyun.estate.core.utils.CommonUtil;
-import com.lyun.estate.job.supports.context.JobExecutionContext;
+import com.lyun.estate.core.supports.context.JobContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ public abstract class BaseJob implements Runnable {
     private Logger logger = LoggerFactory.getLogger(getClass());
     private String jobName;
     @Autowired
-    private JobExecutionContext jobExecutionContext;
+    private JobContext jobContext;
 
     @Override
     public void run() {
@@ -29,12 +29,12 @@ public abstract class BaseJob implements Runnable {
 
     private void initJobMeta() {
         setJobName(jobName());
-        jobExecutionContext.setJobName(jobName());
-        jobExecutionContext.setCorrelationId(CommonUtil.getUuid());
+        jobContext.setJobName(jobName());
+        jobContext.setCorrelationId(CommonUtil.getUuid());
     }
 
     private void clear() {
-        jobExecutionContext.clear();
+        jobContext.clear();
     }
 
     public String getJobName() {
@@ -45,12 +45,12 @@ public abstract class BaseJob implements Runnable {
         this.jobName = jobName;
     }
 
-    public JobExecutionContext getJobExecutionContext() {
-        return jobExecutionContext;
+    public JobContext getJobExecutionContext() {
+        return jobContext;
     }
 
-    public void setJobExecutionContext(JobExecutionContext jobExecutionContext) {
-        this.jobExecutionContext = jobExecutionContext;
+    public void setJobExecutionContext(JobContext jobContext) {
+        this.jobContext = jobContext;
     }
 
     public abstract String jobName();

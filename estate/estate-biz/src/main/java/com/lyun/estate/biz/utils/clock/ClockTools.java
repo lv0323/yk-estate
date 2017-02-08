@@ -4,6 +4,7 @@ import com.lyun.estate.biz.utils.clock.repository.ClockMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.Date;
 
 @Component
@@ -15,5 +16,10 @@ public class ClockTools {
     public Date now() {
         return clockMapper.now();
     }
+
+    public Instant nowInstant() {
+        return clockMapper.now().toInstant();
+    }
+
 
 }

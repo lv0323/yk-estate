@@ -3,16 +3,14 @@ package com.lyun.estate.biz.favorite.service;
 import com.lyun.estate.biz.favorite.entity.Follow;
 import com.lyun.estate.biz.favorite.repository.FollowMapper;
 import com.lyun.estate.biz.spec.common.DomainType;
-import com.lyun.estate.core.supports.ExecutionContext;
+import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.EasyCodeException;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.lyun.estate.core.supports.exceptions.ExCode.PARAM_NULL;
 
@@ -20,7 +18,7 @@ import static com.lyun.estate.core.supports.exceptions.ExCode.PARAM_NULL;
 public class FollowService {
 
     @Autowired
-    private ExecutionContext executionContext;
+    private RestContext restContext;
 
     @Autowired
     private FollowMapper followMapper;
@@ -30,7 +28,7 @@ public class FollowService {
         if (isFollow(targetId, domainType)) {
             return true;
         }
-        long userId = Long.valueOf(executionContext.getUserId());
+        long userId = restContext.getUserId();
         if (1 != followMapper.createFollow(targetId, domainType, userId)) {
             throw new EasyCodeException("favorite.error", "关注失败");
         } else {
@@ -43,7 +41,7 @@ public class FollowService {
         if (!isFollow(targetId, domainType)) {
             return true;
         }
-        long userId = Long.valueOf(executionContext.getUserId());
+        long userId = restContext.getUserId();
         if (1 != followMapper.deleteFollow(targetId, domainType, userId)) {
             throw new EasyCodeException("cancel.favorite.error", "取消关注失败");
         } else {
@@ -52,7 +50,7 @@ public class FollowService {
     }
 
     public boolean isFollow(long targetId, DomainType domainType) {
-        return null != followMapper.findFollow(targetId, domainType, Long.valueOf(executionContext.getUserId()));
+        return null != followMapper.findFollow(targetId, domainType, restContext.getUserId());
     }
 
     public List<Follow> getFollowers(DomainType domainType, Long targetId) {

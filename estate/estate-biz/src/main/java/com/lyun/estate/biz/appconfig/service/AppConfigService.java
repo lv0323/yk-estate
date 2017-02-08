@@ -23,6 +23,7 @@ public class AppConfigService {
 
     @Autowired
     private AppConfigRepository repository;
+
     @Autowired
     private CityService cityService;
 

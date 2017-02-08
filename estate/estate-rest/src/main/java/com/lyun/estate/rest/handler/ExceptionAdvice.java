@@ -1,16 +1,11 @@
 package com.lyun.estate.rest.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lyun.estate.core.supports.ExecutionContext;
-import com.lyun.estate.core.supports.exceptions.ErrorResource;
-import com.lyun.estate.core.supports.exceptions.EasyCodeException;
-import com.lyun.estate.core.supports.exceptions.EstateException;
-import com.lyun.estate.core.supports.exceptions.ExCode;
-import com.lyun.estate.core.supports.exceptions.ValidateException;
+import com.lyun.estate.core.supports.context.RestContext;
+import com.lyun.estate.core.supports.exceptions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
@@ -24,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,15 +30,14 @@ public class ExceptionAdvice {
     private static final Logger logger = LoggerFactory.getLogger(ExceptionAdvice.class);
 
     @Autowired
-    ExecutionContext executionContext;
-    @Autowired
-    MessageSource messageSource;
+    RestContext restContext;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
 
     private EstateException writeExceptionLog(Throwable t) {
         EstateException estateException = translate(t);
-        logger.error("Throwable, id: " + estateException.getId(), t);
+        logger.error("Throwable, id: " + restContext.getCorrelationId(), t);
         return estateException;
     }
 
@@ -63,13 +56,13 @@ public class ExceptionAdvice {
             writeResponse(response, new ErrorResource()
                     .setExCode("param.illegal")
                     .setMessage("参数异常")
-                    .setLogRef(executionContext.getCorrelationId()));
+                    .setLogRef(restContext.getCorrelationId()));
         } else if (t instanceof EasyCodeException) {
             logger.error("业务异常", t);
             writeResponse(response, handleBizException((EasyCodeException) t));
         } else {
             EstateException baseException = writeExceptionLog(t);
-            ErrorResource errorResource = new ErrorResource(executionContext.getCorrelationId(),
+            ErrorResource errorResource = new ErrorResource(restContext.getCorrelationId(),
                     baseException.getExCode().name(),
                     baseException.getLocalizedMessage());
             writeResponse(response, errorResource);
@@ -87,7 +80,7 @@ public class ExceptionAdvice {
     private Map<String, Object> handleValidateExceptionResult(ValidateException ex) {
         Map<String, Object> responseBody = new HashMap<>();
         String code = ex.getCode();
-        responseBody.put("logRef", executionContext.getCorrelationId());
+        responseBody.put("logRef", restContext.getCorrelationId());
         responseBody.put("exCode", code);
         responseBody.put("message", getMessage(code, null, ex.getMessage()));
         if (!StringUtils.isEmpty(ex.getObjectErrors())) {
@@ -96,11 +89,14 @@ public class ExceptionAdvice {
                     String errorCode = objectError.getCodes()[0];
                     return new ErrorResource()
                             .setExCode(errorCode)
-                            .setMessage(getMessage(errorCode, objectError.getArguments(), objectError.getDefaultMessage()));
+                            .setMessage(getMessage(errorCode,
+                                    objectError.getArguments(),
+                                    objectError.getDefaultMessage()));
                 }).collect(Collectors.toList()));
             } else {
                 ObjectError objectError = ex.getObjectErrors().get(0);
-                responseBody.put("message", getMessage(objectError.getCode(), objectError.getArguments(), objectError.getDefaultMessage()));
+                responseBody.put("message",
+                        getMessage(objectError.getCode(), objectError.getArguments(), objectError.getDefaultMessage()));
             }
         }
         return responseBody;
@@ -118,7 +114,7 @@ public class ExceptionAdvice {
             }
             return new ErrorResource()
                     .setExCode("request.parameter.miss")
-                    .setLogRef(executionContext.getCorrelationId())
+                    .setLogRef(restContext.getCorrelationId())
                     .setMessage(getMessage("request.parameter.miss", new String[]{parameterName}, "参数{0}缺失"));
         }
         throw new RuntimeException(t);
@@ -127,7 +123,7 @@ public class ExceptionAdvice {
     private ErrorResource handleBizException(EasyCodeException t) {
         return new ErrorResource()
                 .setExCode(t.getCode())
-                .setLogRef(executionContext.getCorrelationId())
+                .setLogRef(restContext.getCorrelationId())
                 .setMessage(getMessage(t.getCode(), null, t.getMessage()));
     }
 
@@ -140,7 +136,7 @@ public class ExceptionAdvice {
     }
 
     private String getMessage(String code, Object[] args, String defaultMessage) {
-        return messageSource.getMessage(code, args, defaultMessage, new Locale(executionContext.getRequestLocale()));
+        return defaultMessage;
     }
 
 }
