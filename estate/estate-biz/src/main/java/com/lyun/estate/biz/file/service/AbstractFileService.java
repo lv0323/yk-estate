@@ -1,9 +1,6 @@
 package com.lyun.estate.biz.file.service;
 
 import com.google.common.base.Strings;
-import com.lyun.estate.biz.utils.settings.def.NameSpace;
-import com.lyun.estate.biz.utils.settings.entity.Setting;
-import com.lyun.estate.biz.utils.settings.SettingProvider;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.Target;
@@ -11,8 +8,12 @@ import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.repository.FileRepository;
 import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.biz.spec.file.service.FileService;
+import com.lyun.estate.biz.utils.settings.SettingProvider;
+import com.lyun.estate.biz.utils.settings.def.NameSpace;
+import com.lyun.estate.biz.utils.settings.entity.Setting;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,13 +21,14 @@ import java.util.List;
 
 public abstract class AbstractFileService implements FileService {
 
-    protected final FileRepository repository;
     @Autowired
-    private SettingProvider settingProvider;
+    protected FileRepository repository;
 
-    protected AbstractFileService(FileRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    protected SettingProvider settingProvider;
+
+    @Autowired
+    protected Environment environment;
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
