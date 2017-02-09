@@ -183,6 +183,7 @@ public class XiaoQuServiceImpl implements XiaoQuService {
             pageBounds.getOrders().addAll(XQSummaryOrder.DEFAULT.getOrders());
             XiaoQuSelector selector = new XiaoQuSelector();
             selector.setSubDistrictId(xiaoQuDetailBean.getSubDistrictId());
+            selector.setCityId(xiaoQuDetailBean.getCityId());
             selector.setExcludeIds(Lists.newArrayList(id));
 
             return findXiaoQuSummaryBySelector(selector, pageBounds);
