@@ -1,9 +1,6 @@
 package com.lyun.estate.biz.housedict.service;
 
-import com.lyun.estate.biz.housedict.entity.City;
-import com.lyun.estate.biz.housedict.entity.District;
-import com.lyun.estate.biz.housedict.entity.Line;
-import com.lyun.estate.biz.housedict.entity.SubDistrict;
+import com.lyun.estate.biz.housedict.entity.*;
 import com.lyun.estate.biz.housedict.repository.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +18,20 @@ public class CityService {
         return cityRepository.findCities();
     }
 
-    public List<District> findOrderedDistrictsByCityId(Long cityId) {
-        return cityRepository.findOrderedDistrictsByCityId(cityId);
+    public List<District> findOrderedDistricts(Long cityId) {
+        return cityRepository.findOrderedDistricts(cityId);
     }
 
-    public List<SubDistrict> findOrderedSubDistrictsByDistrictId(Long districtId) {
-        return cityRepository.findOrderedSubDistrictsByDistrictId(districtId);
+    public List<SubDistrict> findOrderedSubDistricts(Long districtId) {
+        return cityRepository.findOrderedSubDistricts(districtId);
+    }
+
+    public List<Line> findOrderedLines(Long cityId) {
+        return cityRepository.findOrderedLines(cityId);
+    }
+
+    public List<Station> findOrderedStations(Long lineId){
+        return cityRepository.findOrderedStations(lineId);
     }
 
     public District findPrimaryDistrict(Long subDistrictId) {

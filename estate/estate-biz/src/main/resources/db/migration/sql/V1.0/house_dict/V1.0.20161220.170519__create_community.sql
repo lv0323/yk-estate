@@ -6,7 +6,7 @@ CREATE TABLE t_city (-- 城市
   latitude    NUMERIC(12, 9), -- 纬度
   view_region VARCHAR(64), --地图显示区域
   create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_time TIMESTAMP
+  update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE t_district (--地区
@@ -21,7 +21,7 @@ CREATE TABLE t_district (--地区
   sell_house_count INTEGER        DEFAULT 0, --小区挂牌房源数量
   rent_house_count INTEGER        DEFAULT 0, --小区出租房源数量
   create_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
-  update_time      TIMESTAMP
+  update_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE t_sub_district (--地区
@@ -36,7 +36,7 @@ CREATE TABLE t_sub_district (--地区
   sell_house_count INTEGER        DEFAULT 0, --小区挂牌房源数量
   rent_house_count INTEGER        DEFAULT 0, --小区出租房源数量
   create_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
-  update_time      TIMESTAMP
+  update_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE t_district_rel (
@@ -44,7 +44,7 @@ CREATE TABLE t_district_rel (
   district_id     BIGINT NOT NULL, --地区id
   sub_district_id BIGINT NOT NULL, -- 板块id
   create_time     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_time     TIMESTAMP,
+  update_time     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE (district_id, sub_district_id)
 );
 
@@ -58,7 +58,7 @@ CREATE TABLE t_line (--地铁线路
   latitude    NUMERIC(12, 9), -- 纬度
   view_region VARCHAR(64), --地图显示区域
   create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_time TIMESTAMP
+  update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE t_station (--地铁站点
@@ -70,7 +70,7 @@ CREATE TABLE t_station (--地铁站点
   latitude    NUMERIC(12, 9), -- 纬度
   view_region VARCHAR(64), --地图显示区域
   create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_time TIMESTAMP
+  update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE t_line_station_rel (
@@ -78,7 +78,7 @@ CREATE TABLE t_line_station_rel (
   line_id     BIGINT NOT NULL, --线路id
   station_id  BIGINT NOT NULL, -- 站点id
   create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_time TIMESTAMP,
+  update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE (line_id, station_id)
 );
 

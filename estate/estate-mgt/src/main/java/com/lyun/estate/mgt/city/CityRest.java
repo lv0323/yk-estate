@@ -23,11 +23,11 @@ public class CityRest {
 
     @GetMapping("districts")
     public Object district(@RequestParam Long id) {
-        return service.findOrderedDistrictsByCityId(id);
+        return service.findOrderedDistricts(id);
     }
 
     @GetMapping("sub-districts")
     public Object subDistrict(@RequestParam Long id) {
-        return service.findOrderedSubDistrictsByDistrictId(id);
+        return service.findOrderedSubDistricts(id);
     }
 }

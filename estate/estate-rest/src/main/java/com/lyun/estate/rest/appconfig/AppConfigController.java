@@ -18,14 +18,19 @@ public class AppConfigController {
     @Autowired
     private AppConfigService appConfigService;
 
-    @GetMapping("/cities")
+    @GetMapping("cities")
     public RegionConfig getCities() {
         return appConfigService.findCities();
     }
 
-    @GetMapping("/districts")
+    @GetMapping("districts")
     public RegionConfig getDistricts(@RequestParam Long cityId) {
-        return appConfigService.findDistricts(cityId);
+        return appConfigService.findDistrictRel(cityId);
+    }
+
+    @GetMapping("lines")
+    public RegionConfig getStations(@RequestParam Long cityId) {
+        return appConfigService.findLineRel(cityId);
     }
 
 }
