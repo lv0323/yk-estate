@@ -22,7 +22,7 @@ public class FangSqlProvider {
 
     public String findDetailById() {
         return new SQL() {{
-            SELECT("f.*, fe.*,c.near_line, c.name AS xiao_qu_name, sd.name AS sub_district, d.name AS district")
+            SELECT("f.*, fe.*,c.near_line, c.name AS xiao_qu_name, c.longitude, c.latitude, sd.name AS sub_district, d.name AS district")
                     .FROM("t_fang f ")
                     .LEFT_OUTER_JOIN("t_xiao_qu xq ON f.xiao_qu_id = xq.id")
                     .LEFT_OUTER_JOIN("t_community c ON xq.community_id = c.id")

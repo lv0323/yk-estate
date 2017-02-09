@@ -53,6 +53,9 @@ public class FangDetail {
     private Long xiaoQuId;
     private String xiaoQuName;
     private PropertyType propertyType;
+    private BigDecimal longitude;
+    private BigDecimal latitude;
+
     private FangDescr descr;
 
     public Long getId() {
@@ -412,6 +415,24 @@ public class FangDetail {
 
     public FangDetail setPropertyType(PropertyType propertyType) {
         this.propertyType = propertyType;
+        return this;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public FangDetail setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+        return this;
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public FangDetail setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
         return this;
     }
 }
