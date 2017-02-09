@@ -3,6 +3,8 @@ package com.lyun.estate.biz.spec.fang.entity;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.housedict.def.StructureType;
 import com.lyun.estate.biz.spec.fang.def.ElevatorFilter;
+import com.lyun.estate.biz.spec.fang.def.HouseTypeFilter;
+import com.lyun.estate.biz.spec.fang.def.IntPair;
 import com.lyun.estate.biz.spec.fang.def.ShiCountsFilter;
 
 import java.util.List;
@@ -26,11 +28,10 @@ public class FangFilter {
     private List<StructureType> structureTypes;
     private Integer minPrice;
     private Integer maxPrice;
-    private Integer minYear;
-    private Integer maxYear;
-    private Integer minArea;
-    private Integer maxArea;
     private String keyword;
+    private List<IntPair> areas;
+    private List<IntPair> years;
+    private List<HouseTypeFilter> houseTypeFilters;
 
     public Long getCityId() {
         return cityId;
@@ -168,42 +169,6 @@ public class FangFilter {
         return this;
     }
 
-    public Integer getMinYear() {
-        return minYear;
-    }
-
-    public FangFilter setMinYear(Integer minYear) {
-        this.minYear = minYear;
-        return this;
-    }
-
-    public Integer getMaxYear() {
-        return maxYear;
-    }
-
-    public FangFilter setMaxYear(Integer maxYear) {
-        this.maxYear = maxYear;
-        return this;
-    }
-
-    public Integer getMinArea() {
-        return minArea;
-    }
-
-    public FangFilter setMinArea(Integer minArea) {
-        this.minArea = minArea;
-        return this;
-    }
-
-    public Integer getMaxArea() {
-        return maxArea;
-    }
-
-    public FangFilter setMaxArea(Integer maxArea) {
-        this.maxArea = maxArea;
-        return this;
-    }
-
     public String getKeyword() {
         return keyword;
     }
@@ -213,29 +178,31 @@ public class FangFilter {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "FangFilter{" +
-                "cityId=" + cityId +
-                ", bizType=" + bizType +
-                ", districtId=" + districtId +
-                ", subDistrictId=" + subDistrictId +
-                ", lineId=" + lineId +
-                ", stationId=" + stationId +
-                ", shiCountsFilters=" + shiCountsFilters +
-                ", orientations=" + orientations +
-                ", houseTags=" + houseTags +
-                ", floorTypes=" + floorTypes +
-                ", decorates=" + decorates +
-                ", elevatorFilters=" + elevatorFilters +
-                ", structureTypes=" + structureTypes +
-                ", minPrice=" + minPrice +
-                ", maxPrice=" + maxPrice +
-                ", minYear=" + minYear +
-                ", maxYear=" + maxYear +
-                ", minArea=" + minArea +
-                ", maxArea=" + maxArea +
-                ", keyword='" + keyword + '\'' +
-                '}';
+    public List<IntPair> getAreas() {
+        return areas;
+    }
+
+    public FangFilter setAreas(List<IntPair> areas) {
+        this.areas = areas;
+        return this;
+    }
+
+    public List<IntPair> getYears() {
+        return years;
+    }
+
+    public FangFilter setYears(List<IntPair> years) {
+        this.years = years;
+        return this;
+    }
+
+    public List<HouseTypeFilter> getHouseTypeFilters() {
+        return houseTypeFilters;
+    }
+
+    public FangFilter setHouseTypeFilters(
+            List<HouseTypeFilter> houseTypeFilters) {
+        this.houseTypeFilters = houseTypeFilters;
+        return this;
     }
 }

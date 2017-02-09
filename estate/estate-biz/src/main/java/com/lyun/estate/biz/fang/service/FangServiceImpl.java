@@ -28,6 +28,7 @@ import com.lyun.estate.core.supports.types.YN;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -68,6 +69,7 @@ public class FangServiceImpl implements FangService {
 
         FangSelector selector = new FangSelector();
         BeanUtils.copyProperties(filter, selector);
+
         selector.setProcess(HouseProcess.PUBLISH);
 
         //shiCountsFilter
@@ -90,6 +92,8 @@ public class FangServiceImpl implements FangService {
                 }
             }
         }
+
+
         //houseTags
         if (filter.getHouseTags() != null && !filter.getHouseTags().isEmpty()) {
             filter.getHouseTags().forEach(houseTag -> {
