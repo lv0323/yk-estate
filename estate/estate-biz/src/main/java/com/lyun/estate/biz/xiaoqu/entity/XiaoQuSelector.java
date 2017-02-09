@@ -9,6 +9,8 @@ public class XiaoQuSelector {
     private Long cityId;
     private Long districtId;
     private Long subDistrictId;
+    private Long lineId;
+    private Long stationId;
     private List<Long> xiaoQuIds;
     private Integer minPrice;
     private Integer maxPrice;
@@ -108,12 +110,32 @@ public class XiaoQuSelector {
         return this;
     }
 
+    public Long getLineId() {
+        return lineId;
+    }
+
+    public XiaoQuSelector setLineId(Long lineId) {
+        this.lineId = lineId;
+        return this;
+    }
+
+    public Long getStationId() {
+        return stationId;
+    }
+
+    public XiaoQuSelector setStationId(Long stationId) {
+        this.stationId = stationId;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "XiaoQuSelector{" +
                 "cityId=" + cityId +
                 ", districtId=" + districtId +
                 ", subDistrictId=" + subDistrictId +
+                ", lineId=" + lineId +
+                ", stationId=" + stationId +
                 ", xiaoQuIds=" + xiaoQuIds +
                 ", minPrice=" + minPrice +
                 ", maxPrice=" + maxPrice +

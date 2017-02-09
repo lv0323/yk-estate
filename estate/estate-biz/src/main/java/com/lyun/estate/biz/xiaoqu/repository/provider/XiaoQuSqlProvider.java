@@ -21,6 +21,12 @@ public class XiaoQuSqlProvider {
                 LEFT_OUTER_JOIN(
                         "t_district_rel dr ON c.sub_district_id = dr.sub_district_id");
             }
+            if (selector.getStationId() != null || selector.getLineId() != null) {
+                LEFT_OUTER_JOIN("t_community_station_rel csr ON c.id = csr.community_id");
+            }
+            if (selector.getLineId() != null) {
+                LEFT_OUTER_JOIN("t_line_station_rel lsr ON lsr.station_id = csr.station_id");
+            }
             WHERE_IF("dr.district_id = #{districtId}", selector.getDistrictId() != null);
             WHERE_IF("c.sub_district_id = #{subDistrictId}", selector.getSubDistrictId() != null);
             WHERE_IF("xq.avg_price >= #{minPrice}", selector.getMinPrice() != null);
@@ -36,6 +42,8 @@ public class XiaoQuSqlProvider {
             if (selector.getExcludeIds() != null && !selector.getExcludeIds().isEmpty()) {
                 WHERE("xq.id not in (" + Joiner.on(",").skipNulls().join(selector.getExcludeIds()) + ")");
             }
+            WHERE_IF("csr.station_id = #{stationId}", selector.getStationId() != null);
+            WHERE_IF("lsr.line_id = #{lineId}", selector.getLineId() != null);
             WHERE("c.city_id = #{cityId}");
         }}.toString();
     }

@@ -9,6 +9,8 @@ public class XiaoQuFilter {
     private Long cityId;
     private Long districtId;
     private Long subDistrictId;
+    private Long lineId;
+    private Long stationId;
     private StructureType structureType;
     private Integer minPrice;
     private Integer maxPrice;
@@ -97,12 +99,32 @@ public class XiaoQuFilter {
         return this;
     }
 
+    public Long getLineId() {
+        return lineId;
+    }
+
+    public XiaoQuFilter setLineId(Long lineId) {
+        this.lineId = lineId;
+        return this;
+    }
+
+    public Long getStationId() {
+        return stationId;
+    }
+
+    public XiaoQuFilter setStationId(Long stationId) {
+        this.stationId = stationId;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "XiaoQuFilter{" +
                 "cityId=" + cityId +
                 ", districtId=" + districtId +
                 ", subDistrictId=" + subDistrictId +
+                ", lineId=" + lineId +
+                ", stationId=" + stationId +
                 ", structureType=" + structureType +
                 ", minPrice=" + minPrice +
                 ", maxPrice=" + maxPrice +
