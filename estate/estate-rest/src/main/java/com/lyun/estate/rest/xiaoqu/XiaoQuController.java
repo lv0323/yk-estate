@@ -34,7 +34,7 @@ public class XiaoQuController {
 
     @GetMapping("/keywords")
     public List<KeywordResp> keywords(@RequestParam Long cityId,
-                               @RequestParam String keyword) {
+                                      @RequestParam String keyword) {
         return keywordService.decorate(keywordService.findContain(keyword, cityId,
                 Lists.newArrayList(DomainType.DISTRICT, DomainType.SUB_DISTRICT, DomainType.XIAO_QU), 10));
     }
@@ -43,6 +43,8 @@ public class XiaoQuController {
     public PageList<XiaoQuSummary> summary(@RequestParam Long cityId,
                                            @RequestParam(required = false) Long districtId,
                                            @RequestParam(required = false) Long subDistrictId,
+                                           @RequestParam(required = false) Long lineId,
+                                           @RequestParam(required = false) Long stationId,
                                            @RequestParam(required = false) StructureType structureType,
                                            @RequestParam(required = false) Integer minPrice,
                                            @RequestParam(required = false) Integer maxPrice,
@@ -55,6 +57,8 @@ public class XiaoQuController {
                 .setCityId(cityId)
                 .setDistrictId(districtId)
                 .setSubDistrictId(subDistrictId)
+                .setLineId(lineId)
+                .setStationId(stationId)
                 .setStructureType(structureType)
                 .setMinYear(minYear)
                 .setMaxYear(maxYear)
