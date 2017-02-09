@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -14,7 +15,7 @@ import java.util.Map;
  * Created by Jeffrey on 16/5/26.
  */
 public class LabelEnumSerializer extends StdSerializer<Enum> {
-    ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     public LabelEnumSerializer() {
         super(Enum.class);
@@ -30,36 +31,8 @@ public class LabelEnumSerializer extends StdSerializer<Enum> {
             map.put("label", labelField.get(value));
             mapper.writeValue(gen, map);
         } catch (NoSuchFieldException | IllegalAccessException e) {
+            ExceptionUtil.catching(e);
             gen.writeString(value.name());
-        }
-    }
-
-
-    private class NameLabelObject {
-        private String name;
-        private String label;
-
-        NameLabelObject(String name, String label) {
-            this.name = name;
-            this.label = label;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public NameLabelObject setName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-        public NameLabelObject setLabel(String label) {
-            this.label = label;
-            return this;
         }
     }
 }

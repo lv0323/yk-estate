@@ -16,7 +16,7 @@ import java.util.Map;
  * Created by Jeffrey on 16/5/26.
  */
 public class PageListSerializer extends StdSerializer<PageList> {
-    private ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     public PageListSerializer() {
         super(PageList.class);

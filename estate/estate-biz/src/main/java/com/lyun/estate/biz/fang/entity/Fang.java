@@ -12,9 +12,9 @@ import java.util.Date;
  */
 public class Fang {
     private Long id;
+    private HouseSubType houseSubType;
     private BizType bizType;
     private HouseType houseType;
-    private HouseSubType houseSubType;
     private Long licenceId;
     private Long xiaoQuId;
     private Integer sCounts;//室

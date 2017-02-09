@@ -9,6 +9,7 @@ import com.lyun.estate.biz.keyword.entity.KeywordResp;
 import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.biz.spec.fang.def.ElevatorFilter;
+import com.lyun.estate.biz.spec.fang.def.IntPair;
 import com.lyun.estate.biz.spec.fang.def.ShiCountsFilter;
 import com.lyun.estate.biz.spec.fang.entity.FangDetail;
 import com.lyun.estate.biz.spec.fang.entity.FangFilter;
@@ -19,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by Jeffrey on 2017-02-03.
@@ -61,10 +64,8 @@ public class FangController {
                                          @RequestParam(required = false) List<StructureType> sts,
                                          @RequestParam(required = false) Integer minPrice,
                                          @RequestParam(required = false) Integer maxPrice,
-                                         @RequestParam(required = false) Integer minYear,
-                                         @RequestParam(required = false) Integer maxYear,
-                                         @RequestParam(required = false) Integer minArea,
-                                         @RequestParam(required = false) Integer maxArea,
+                                         @RequestParam(required = false) List<String> yips,
+                                         @RequestParam(required = false) List<String> aips,
                                          @RequestParam(required = false) String keyword,
                                          @RequestParam(required = false) FangSummaryOrder order,
                                          @RequestHeader("X-PAGING") PageBounds pageBounds) {
@@ -84,12 +85,15 @@ public class FangController {
                 .setElevatorFilters(efs)
                 .setStructureTypes(sts)
                 .setMinPrice(minPrice)
-                .setMaxPrice(maxPrice)
-                .setMinYear(minYear)
-                .setMaxYear(maxYear)
-                .setMinArea(minArea)
-                .setMaxArea(maxArea)
-                .setKeyword(keyword);
+                .setMaxPrice(maxPrice).setKeyword(keyword)
+                .setYears(Optional.ofNullable(yips).map(t -> t.stream()
+                        .map(IntPair::fromIntPairStr)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList())).orElse(null))
+                .setAreas(Optional.ofNullable(aips).map(t -> t.stream()
+                        .map(IntPair::fromIntPairStr)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList())).orElse(null));
 
         return fangService.findFangSummaryByKeyword(fangFilter,
                 Optional.ofNullable(order).orElse(FangSummaryOrder.DEFAULT),

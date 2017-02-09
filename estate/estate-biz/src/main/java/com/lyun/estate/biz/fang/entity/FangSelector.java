@@ -2,6 +2,8 @@ package com.lyun.estate.biz.fang.entity;
 
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.housedict.def.StructureType;
+import com.lyun.estate.biz.spec.fang.def.HouseTypeFilter;
+import com.lyun.estate.biz.spec.fang.def.IntPair;
 import com.lyun.estate.core.supports.types.YN;
 
 import java.util.List;
@@ -31,10 +33,9 @@ public class FangSelector {
     private Integer overYears;
     private Integer minPrice;
     private Integer maxPrice;
-    private Integer minYear;
-    private Integer maxYear;
-    private Integer minArea;
-    private Integer maxArea;
+    private List<IntPair> areas;
+    private List<IntPair> years;
+    private List<HouseType> houseTypes;
 
     public Long getCityId() {
         return cityId;
@@ -216,48 +217,39 @@ public class FangSelector {
         return this;
     }
 
-    public Integer getMinYear() {
-        return minYear;
-    }
-
-    public FangSelector setMinYear(Integer minYear) {
-        this.minYear = minYear;
-        return this;
-    }
-
-    public Integer getMaxYear() {
-        return maxYear;
-    }
-
-    public FangSelector setMaxYear(Integer maxYear) {
-        this.maxYear = maxYear;
-        return this;
-    }
-
-    public Integer getMinArea() {
-        return minArea;
-    }
-
-    public FangSelector setMinArea(Integer minArea) {
-        this.minArea = minArea;
-        return this;
-    }
-
-    public Integer getMaxArea() {
-        return maxArea;
-    }
-
-    public FangSelector setMaxArea(Integer maxArea) {
-        this.maxArea = maxArea;
-        return this;
-    }
-
     public HouseProcess getProcess() {
         return process;
     }
 
     public FangSelector setProcess(HouseProcess process) {
         this.process = process;
+        return this;
+    }
+
+    public List<IntPair> getAreas() {
+        return areas;
+    }
+
+    public FangSelector setAreas(List<IntPair> areas) {
+        this.areas = areas;
+        return this;
+    }
+
+    public List<IntPair> getYears() {
+        return years;
+    }
+
+    public FangSelector setYears(List<IntPair> years) {
+        this.years = years;
+        return this;
+    }
+
+    public List<HouseType> getHouseTypes() {
+        return houseTypes;
+    }
+
+    public FangSelector setHouseTypes(List<HouseType> houseTypes) {
+        this.houseTypes = houseTypes;
         return this;
     }
 }
