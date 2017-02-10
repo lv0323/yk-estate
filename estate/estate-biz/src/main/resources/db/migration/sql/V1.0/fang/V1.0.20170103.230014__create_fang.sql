@@ -30,7 +30,8 @@ CREATE TABLE t_fang (
   has_elevator   VARCHAR(1), --是否有电梯
   create_time    TIMESTAMP, --创建时间
   update_time    TIMESTAMP, --更新时间
-  publish_time   TIMESTAMP  --挂牌时间
+  publish_time   TIMESTAMP,  --挂牌时间
+  name_kw     VARCHAR(200)
 );
 
 CREATE TABLE t_fang_ext (
