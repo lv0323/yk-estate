@@ -1,5 +1,8 @@
 package com.lyun.estate.biz.keyword.service;
 
+import com.github.stuxuhai.jpinyin.PinyinException;
+import com.github.stuxuhai.jpinyin.PinyinFormat;
+import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.housedict.service.CityService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
@@ -8,8 +11,11 @@ import com.lyun.estate.biz.keyword.repository.KeywordRepository;
 import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +27,7 @@ import java.util.Optional;
 @Service
 public class KeywordService {
     private static final String PINYIN_SEPARATOR = ",";
+    private static final Logger logger = LoggerFactory.getLogger(KeywordService.class);
 
     @Autowired
     private KeywordRepository keywordRepository;
@@ -41,6 +48,17 @@ public class KeywordService {
         if (scopes == null || Strings.isNullOrEmpty(keyword) || limit <= 0) {
             return results;
         }
+        String convertedKeyword = null;
+        try {
+            convertedKeyword = PinyinHelper.convertToPinyinString(keyword, "", PinyinFormat.WITHOUT_TONE);
+            if (StringUtils.isEmpty(convertedKeyword)) {
+                logger.warn("查询关键词转换后为空,忽略");
+                return results;
+            }
+        } catch (PinyinException e) {
+            logger.warn("查询关键词[{}]转换发生错误[{}],忽略", keyword, e.getMessage());
+            return results;
+        }
         Integer count = 0;
         for (DomainType domainType : scopes) {
             if (count >= limit) {
@@ -53,7 +71,7 @@ public class KeywordService {
                 }
                 String kw = keywordBean.getKeyword().replace(",", "");
                 assert kw != null;
-                if (kw.contains(keyword) || keywordMatch(kw, new StringBuilder(), PINYIN_SEPARATOR).contains(keyword)) {
+                if (kw.toLowerCase().contains(keyword.toLowerCase()) || keywordMatch(keywordBean.getKeyword(), new StringBuilder(), PINYIN_SEPARATOR).toLowerCase().contains(convertedKeyword.toLowerCase())) {
                     results.add(keywordBean);
                     count++;
                 }
@@ -85,6 +103,17 @@ public class KeywordService {
             return results;
         }
         Integer count = 0;
+        String convertedKeyword = null;
+        try {
+            convertedKeyword = PinyinHelper.convertToPinyinString(keyword, "", PinyinFormat.WITHOUT_TONE);
+            if (StringUtils.isEmpty(convertedKeyword)) {
+                logger.warn("查询关键词转换后为空,忽略");
+                return results;
+            }
+        } catch (PinyinException e) {
+            logger.warn("查询关键词[{}]转换发生错误[{}],忽略", keyword, e.getMessage());
+            return results;
+        }
         for (DomainType domainType : scopes) {
             if (count >= limit) {
                 break;
@@ -96,7 +125,7 @@ public class KeywordService {
                 }
                 String kw = keywordBean.getKeyword().replace(",", "");
                 assert kw != null;
-                if (kw.contains(keyword) || keywordMatch(kw, new StringBuilder(), PINYIN_SEPARATOR).contains(keyword)) {
+                if (kw.toLowerCase().contains(keyword.toLowerCase()) || keywordMatch(keywordBean.getKeyword(), new StringBuilder(), PINYIN_SEPARATOR).toLowerCase().contains(convertedKeyword.toLowerCase())) {
                     results.add(keywordBean);
                     count++;
                 }

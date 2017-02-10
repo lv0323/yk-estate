@@ -5,6 +5,7 @@ package com.lyun.estate.biz.spec.xiaoqu.entity;
  */
 public class XiaoQuSummary {
     private Long id;
+    private Long cityId;
     private String name;
     private String district;
     private String subDistrict;
@@ -19,6 +20,15 @@ public class XiaoQuSummary {
 
     public XiaoQuSummary setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public XiaoQuSummary setCityId(Long cityId) {
+        this.cityId = cityId;
         return this;
     }
 
