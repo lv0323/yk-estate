@@ -8,8 +8,6 @@ import com.lyun.estate.biz.spec.fang.entity.FangFilter;
 import com.lyun.estate.biz.spec.fang.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.entity.FangSummaryOrder;
 
-import java.util.List;
-
 /**
  * Created by Jeffrey on 2017-01-20.
  */
@@ -23,6 +21,7 @@ public interface FangService {
     /* 根据房屋ID查询房源信息 */
     FangSummary getSummary(Long id);
 
-    List<FangSummary> findSummaryByXiaoQuId(Long cityId, BizType bizType, Long xiaoQuId);
+    PageList<FangSummary> findSummaryByXiaoQuId(Long cityId, Long xiaoQuId, BizType bizType, PageBounds pageBounds);
 
+    PageList<FangSummary> findNearbyByFangId(Long id);
 }

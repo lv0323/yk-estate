@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class FangDetail {
     private Long id;
+    private Long cityId;
     private Long licenceId;
     private BizType bizType;
     private BigDecimal publishPrice;
@@ -64,6 +65,15 @@ public class FangDetail {
 
     public FangDetail setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public FangDetail setCityId(Long cityId) {
+        this.cityId = cityId;
         return this;
     }
 

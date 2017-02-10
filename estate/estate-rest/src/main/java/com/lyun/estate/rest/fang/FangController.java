@@ -109,4 +109,17 @@ public class FangController {
         return fangService.getDetail(id);
     }
 
+    @GetMapping("/xiaoqu")
+    public PageList<FangSummary> summary(@RequestParam Long cityId,
+                                         @RequestParam Long xiaoQuId,
+                                         @RequestParam BizType bizType,
+                                         @RequestHeader("X-PAGING") PageBounds pageBounds) {
+        return fangService.findSummaryByXiaoQuId(cityId, xiaoQuId, bizType, pageBounds);
+    }
+
+    @GetMapping("/nearby")
+    public PageList<FangSummary> nearby(@RequestParam Long fangId) {
+        return fangService.findNearbyByFangId(fangId);
+    }
+
 }

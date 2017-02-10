@@ -7,6 +7,7 @@ import com.lyun.estate.core.supports.types.YN;
  */
 public class XiaoQuDetail {
     private Long id;
+    private Long cityId;
     private Integer avgPrice;
     private String name;
     private String alias;
@@ -40,6 +41,15 @@ public class XiaoQuDetail {
 
     public XiaoQuDetail setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public XiaoQuDetail setCityId(Long cityId) {
+        this.cityId = cityId;
         return this;
     }
 
