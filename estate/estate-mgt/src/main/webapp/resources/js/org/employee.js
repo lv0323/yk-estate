@@ -62,7 +62,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js','datatables'
                         '<td class="text-right">' +
                         '<a class="btn" id="editEmployeeBtn" data-index="'+index+'" data-id="'+employeeRaw["id"]+'" data-toggle="modal" data-target="#editEmployeeDialog">编辑</a>' +
                         '<span class="opt-gap"></span>' +
-                        '<a class="btn" id="deleteEmployeeBtn" data-index="'+index+'" data-id="'+employeeRaw["id"]+'" data-toggle="modal" data-target="#deleteEmployeeDialog">离职</a>' +
+                        '<a class="btn" id="quitEmployeeBtn" data-index="'+index+'" data-id="'+employeeRaw["id"]+'" data-toggle="modal" data-target="#quitEmployeeDialog">离职</a>' +
                         '</td>' +
                         '</tr>';
                 });
@@ -79,14 +79,6 @@ require(['main-app',contextPath + '/js/service/employee-service.js','datatables'
                 $('#employeeList>tbody').html(appendHtml);
             }
 
-            $('#employeeList').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false
-            });
         }
 
         function filterEmployee(quitPosition, header) {
@@ -100,7 +92,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js','datatables'
                         EmployeeService.nonQuitEmployee.push(employeeRaw);
                     }
                 });
-
+                employeeAllDataRaw = EmployeeService.nonQuitEmployee;
                 if(quitPosition == 'nonQuit'){
                     displayFilteredEmployee(quitPosition,EmployeeService.nonQuitEmployee);
                 }else if(quitPosition == 'quit'){
@@ -118,6 +110,15 @@ require(['main-app',contextPath + '/js/service/employee-service.js','datatables'
         });
 
         filterEmployee(quitPosition, header);
+
+        $('#employeeList').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": false,
+            "info": false,
+            "autoWidth": false
+        });
         //get data from server and display data
         /*EmployeeService.getEmployee(header)
             .done(function(data){
@@ -206,7 +207,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js','datatables'
             $('#editEmployeeGender').find('input[value='+employee["gender"]+']').prop('checked',true);
             $('#editEmployeeGender').find('input[value!='+employee["gender"]+']').prop('checked',false);
             $('#editEmployeeMobile').val(employee["mobile"]);
-            $('#editEmployeeID').val(employee["idcard_number"]);
+            $('#editEmployeeID').val(employee["idcardNumber"]);
             $('#editEmployeeWechat').val(employee["wechat"]);
             // $('#editEmployeeIsAgent').prop('checked',employee["is_agent"]);
             $('#editEmployeeStatus').val(employee["status"]);
@@ -235,6 +236,24 @@ require(['main-app',contextPath + '/js/service/employee-service.js','datatables'
                 })
                 .fail(function () {
                     alert("请填写所有必填字段");
+                });
+        });
+
+        //set employeeId in quit dialog
+        $('#employeeList').on('click','#quitEmployeeBtn',function(e){
+            var employeeId = parseInt($(e.target).data('id'),10);
+            $('#quitEmployeeId').val(employeeId);
+        });
+
+        //action for quiting employee
+        $('#quitEmployeeDialog').on('click','#confirmQuitEmployeeBtn',function(){
+            var employeeId = $('#quitEmployeeId').val();
+            EmployeeService.quitEmployeeAction({data:{id:employeeId}}, header)
+                .done(function () {
+                    location.reload(true);
+                })
+                .fail(function (res) {
+                    // var res = JSON.parse(data.responseText);
                 });
         });
 

@@ -166,6 +166,30 @@
     </div>
 </div>
 
+
+<!-- Modal quitEmployeeDialog -->
+<div class="modal fade bs-example-modal-sm" id="quitEmployeeDialog" tabindex="-1" role="dialog" aria-labelledby="quitEmployeeLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title" id="quitEmployeeLabel">员工离职</h4>
+            </div>
+            <div class="modal-body">
+                该操作不可恢复，确认执行离职操作?
+                <input id="quitEmployeeId" class="hidden">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmQuitEmployeeBtn">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="content-wrapper">
     <section class="content-header">
         <ol class="breadcrumb">

@@ -8,7 +8,7 @@ require(['main-app',contextPath + '/js/service/department-service.js'],
         var BaseUrl = "/api/department/";
         var departId = window.location.href.split('?')[1];
 
-        //initialize departments
+        //initialize departments in parent department selector
         DepartmentService.getDepartment(header)
             .done(function(data){
                 //get city from server in add/edit dialog
@@ -26,12 +26,12 @@ require(['main-app',contextPath + '/js/service/department-service.js'],
                     if(departRaw.level === 0){
                         $('#editDepartDialog .listUl').append('<li class="department department-'+ index +'" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
                     }else{
-                        $('#editDepartDialog').find('.department[index='+departRaw.department.parent_id+']').find('>.department-dl').append('<li class="department" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
+                        $('#editDepartDialog').find('.department[index='+departRaw.department.parentId+']').find('>.department-dl').append('<li class="department" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
                     }
 
                     DepartmentService.getSpecifiedDepartment(departId,header)
                         .done(function (depart) {
-                            var pId  = depart["parent_id"];
+                            var pId  = depart["parentId"];
                             if(pId){
                                 // $('#editDepartDialog #departPid').prop('disabled',false);
                                 $('#editDepartDialog .parent-department-form-group').show(0);
@@ -45,7 +45,7 @@ require(['main-app',contextPath + '/js/service/department-service.js'],
                             }
                             $('#editDepartDialog #departId').val(depart["id"]);
                             $('#editDepartDialog #departName').val(depart["name"]);
-                            $('#editDepartDialog #departSpell').val(depart["short_name"]);
+                            $('#editDepartDialog #departSpell').val(depart["shortName"]);
                             $('#editDepartDialog #departTel').val(depart["telephone"]);
                             $('#editDepartDialog #departAddress').val(depart["address"]);
                             $('#editDepartDialog #departCid').find('option[id='+depart.city["id"]+']').attr('selected','selected');
@@ -69,7 +69,7 @@ require(['main-app',contextPath + '/js/service/department-service.js'],
 
                                                 });
                                                 $('#editDepartDialog #departSDid').html(appendOption);
-                                                $('#editDepartDialog #departSDid').find('option[id='+depart.sub_district["id"]+']').attr('selected','selected');
+                                                $('#editDepartDialog #departSDid').find('option[id='+depart.subDistrict["id"]+']').attr('selected','selected');
                                             });
 
                                     });

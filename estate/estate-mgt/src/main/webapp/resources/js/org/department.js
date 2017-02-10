@@ -42,12 +42,22 @@ require(['main-app',contextPath + '/js/service/department-service.js','datatable
                         //if parent_id is null, disable delete button
                         if(departRaw.deletable){
                             appendHtml+='<span class="opt-gap"></span>'+
-                                '<a class="btn" id="delDepartBtn" data-pid="'+departRaw.department["parent_id"]+'" data-id="'+departRaw.department["id"]+'" data-toggle="modal" data-target="#deleteDepartDialog">删除</a></td>'+
+                                '<a class="btn" id="delDepartBtn" data-pid="'+departRaw.department["parentId"]+'" data-id="'+departRaw.department["id"]+'" data-toggle="modal" data-target="#deleteDepartDialog">删除</a></td>'+
                                 '</tr>';
                         }else{
                             appendHtml+='</tr>';
                         }
                         $('#departList>tbody').append(appendHtml);
+
+                        //initialize departments selection in add/edit dialog
+                        if(departRaw.level === 0){
+                            $('#addDepartDialog .listUl').append('<li class="department department-'+ index +'" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
+                            $('#editDepartDialog .listUl').append('<li class="department department-'+ index +'" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
+                        }else{
+                            $('#addDepartDialog').find('.department[index='+departRaw.department.parentId+']').find('>.department-dl').append('<li class="department" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
+                            $('#editDepartDialog').find('.department[index='+departRaw.department.parentId+']').find('>.department-dl').append('<li class="department" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
+                        }
+
                     });
                     $('#departList').DataTable({
                         "paging": true,

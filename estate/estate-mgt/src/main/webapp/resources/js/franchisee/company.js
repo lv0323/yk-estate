@@ -31,7 +31,7 @@ require(['main-app',contextPath + '/js/service/company-service.js','datatables',
                 var appendHtml = '';
                 $.each(data,function (index, companyRaw) {
                     appendHtml = '<tr>' +
-                        '<td><a class="btn" id="lookCompanyBtn" href="/mgt/franchisee/companyDetail.ftl" data-id="'+companyRaw["id"]+'">'+companyRaw["name"]+'</a></td>' +
+                        '<td><a class="btn" id="lookCompanyBtn" data-id="'+companyRaw["id"]+'">'+companyRaw["name"]+'</a></td>' +
                         '<td>'+companyRaw.boss["name"]+'</td>' +
                         '<td>'+companyRaw["address"]+'</td>' +
                         '<td class="text-right">' +
@@ -64,14 +64,17 @@ require(['main-app',contextPath + '/js/service/company-service.js','datatables',
                 $('#companyList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
             });
 
-        $('.fadeInRight').on('click','#lookCompanyBtn',function (e) {
-            var id = $(e.target).data('id');
+        //open new window for company details
+        $('#companyList').on('click','#lookCompanyBtn',function(e){
+            var companyId = $(e.target).data('id');
+            window.location.href="/mgt/franchisee/companyDetail.ftl?"+companyId;
         });
 
-       //initialize title in add Company dialog
-       //  $('.fadeInRight').on('click','#addCompanyBtn',function(){
-       //      $('#addCompanyDialog #addCompanyLabel').text('创建公司');
-       //  });
+        //open new window for Company details
+        $('#companyList').on('click','#editCompanyBtn',function(e){
+            var companyId = $(e.target).data('id');
+            window.location.href="/mgt/franchisee/editCompanyDetail.ftl?"+companyId;
+        });
 
         //get checked gender
         $('#companyRepGender').on('click','input',function(){
@@ -107,39 +110,6 @@ require(['main-app',contextPath + '/js/service/company-service.js','datatables',
         });
 
 
-        //initialize title and default value in edit Company dialog
-        $('#companyList').on('click','#editCompanyBtn',function(e) {
-            var index = $(e.target).data('index');
-            var company = companyAllDataRaw[index];
-            $('#editCompanyLabel').text('编辑公司');
-            $('#editCompanyName').val(company["name"]);
-            $('#editCompanyId').val(company["id"]);
-            $('#editCompanySpell').val(company["short_name"]);
-            $('#editCompanyLicense').val(company["license"]);
-            $('#editCompanyAddress').val(company["address"]);
-            $('#editCompanyNote').val(company["introduction"]);
-        });
-
-        //action for updated Company
-        $('#editCompanyDialog').on('click','#confirmEditCompanyBtn',function(){
-            var toEditCompany = {
-                id: $('#editCompanyId').val(),
-                name: $('#editCompanyName').val(),
-                shortName: $('#editCompanySpell').val(),
-                license: $('#editCompanyLicense').val(),
-                address: $('#editCompanyAddress').val(),
-                introduction: $('#editCompanyNote').val()
-            };
-
-            CompanyService.editCompany({data:toEditCompany},header)
-                .done(function(){
-                    location.reload(true);
-                })
-                .fail(function () {
-                    alert("请填写所有必填字段，内容不宜过长");
-                });
-
-        });
 
 
         //initialize title in toggle lock Company dialog
@@ -186,7 +156,7 @@ require(['main-app',contextPath + '/js/service/company-service.js','datatables',
             var index = $(e.target).data('index');
             var company = companyAllDataRaw[index];
             $('#renewCompanyId').val(company["id"]);
-            $('#companyEndDateRenew').val(company["end_date"]);
+            $('#companyEndDateRenew').val(company["endDate"]);
         });
 
         //action for toggle lock Company

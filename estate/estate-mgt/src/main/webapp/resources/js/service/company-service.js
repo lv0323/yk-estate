@@ -11,6 +11,10 @@ define(contextPath+'/js/service/company-service.js',
             return RequestService.get('/api/company/query', null, header);
         };
 
+        CompanyService.getSpecifiedCompany = function (companyId,header) {
+            return RequestService.get('/api/company/'+companyId, header);
+        };
+
         CompanyService.addCompany = function (params,header) {
             return RequestService.post('/api/company/create',params.data,header);
         };

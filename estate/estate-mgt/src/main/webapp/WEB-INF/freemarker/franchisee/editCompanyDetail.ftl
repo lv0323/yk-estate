@@ -34,43 +34,47 @@
                             <div class="box-header">
                                 <h3 class="box-title">公司详情</h3>
                             </div>
-                            <div class="box-body" id="addCompanyDialog">
-                                <form id="addCompanyForm" class="form-horizontal" method="post">
+                            <div class="box-body" id="editCompanyDialog">
+                                <form id="editCompanyForm" class="form-horizontal" method="post">
                                     <div class="form-group">
                                         <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司名称<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
-                                            <input type="text" id="addCompanyName" class="form-control" placeholder="公司名称" required>
+                                            <input type="text" id="editCompanyName" class="form-control" placeholder="公司名称" required>
+                                            <input id="editCompanyId" class="hidden">
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-3">
-                                            <input type="text" id="addCompanySpell" class="form-control" placeholder="拼音简码">
+                                            <input type="text" id="editCompanySpell" class="form-control" placeholder="拼音简码">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司许可证<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
-                                            <input type="text" id="addCompanyLicense" class="form-control" placeholder="公司许可证">
+                                            <input type="text" id="editCompanyLicense" class="form-control" placeholder="公司许可证">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司地址<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
-                                            <input type="text" id="addCompanyAddress" class="form-control" placeholder="公司地址">
+                                            <input type="text" id="editCompanyAddress" class="form-control" placeholder="公司地址">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司说明</label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
-                                            <input type="text" id="addCompanyNote" class="form-control" placeholder="公司说明">
+                                            <input type="text" id="editCompanyNote" class="form-control" placeholder="公司说明">
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-2">
+                                            <div type="text" id="editCompanyLocked" class="control-label"></div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <#--<div class="form-group">
                                         <label class="col-lg-2 col-md-2 col-sm-3 control-label">加盟有效时期<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <div class="input-group date">
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
                                                 </div>
-                                                <input type="text" class="form-control pull-right" id="addCompanyStartDate">
+                                                <input type="text" class="form-control pull-right" id="editCompanyStartDate">
                                             </div>
                                         </div>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
@@ -78,7 +82,7 @@
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
                                                 </div>
-                                                <input type="text" class="form-control pull-right" id="addCompanyEndDate">
+                                                <input type="text" class="form-control pull-right" id="editCompanyEndDate">
                                             </div>
                                         </div>
                                     </div>
@@ -111,7 +115,7 @@
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="companyRepWechat" class="form-control" placeholder="法人微信">
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </form>
                                 <div class="modal-footer center">
                                     <button type="button" class="btn btn-primary" id="confirmEditCompanyBtn">保存</button>

@@ -19,36 +19,12 @@ define(contextPath + '/js/service/employee-service.js',
             return requestService.get('/api/employee/query', null, header);
         };
 
-        /*EmployeeService.filterEmployee = function (header) {
-            //EmployeeService.quitEmployee.push("1");
-            //console.log("quit: "+EmployeeService.quitEmployee);
-            EmployeeService.quitEmployee = [];
-            EmployeeService.nonQuitEmployee = [];
-            EmployeeService.getEmployee(header).done(function (data) {
-                $.each(data,function (index, employeeRaw) {
-                    if(employeeRaw["quit"]){
-                        EmployeeService.quitEmployee.push(employeeRaw);
-                    }else {
-                        EmployeeService.nonQuitEmployee.push(employeeRaw);
-                    }
-                });
-                console.log("quit: "+EmployeeService.quitEmployee);
-                console.log("nonQuit: "+EmployeeService.nonQuitEmployee);
-            });
-        };*/
-
-        EmployeeService.getNonQuitEmployee = function (header) {
-            //EmployeeService.nonQuitEmployee.push("2");
-            //console.log("nonQuit"+EmployeeService.nonQuitEmployee);
-            EmployeeService.getEmployee(header).done(function (data) {
-                $.each(data,function (index, employeeRaw) {
-                    //EmployeeService.nonQuitEmployee.push(employeeRaw);
-                });
-            });
-        };
-
         EmployeeService.addEmployee = function (params, header) {
             return requestService.post('/api/employee/create', params.data, header);
+        };
+
+        EmployeeService.quitEmployeeAction = function (params, header) {
+            return requestService.get('/api/employee/quit', params.data, header);
         };
 
         EmployeeService.editEmployee = function (params, header) {

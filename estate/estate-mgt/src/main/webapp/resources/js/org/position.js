@@ -75,7 +75,7 @@ require(['main-app',contextPath + '/js/service/position-service.js','datatables'
                 })
                 .fail(function (res) {
                     // var res = JSON.parse(data.responseText);
-                    if(res["ex_code"] === "HAS_EMPLOYEE"){
+                    if(res["exCode"] === "HAS_EMPLOYEE"){
                         alert(res["message"]);
                     }
                 });
