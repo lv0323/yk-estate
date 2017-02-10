@@ -126,26 +126,36 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         return findXiaoQuSummaryBySelector(selector, pageBounds);
     }
 
+    @Override
+    public XiaoQuSummary getSummary(Long id) {
+        ExceptionUtil.checkNotNull("小区编号", id);
+        XiaoQuSummaryBean summaryBean = xiaoQuRepository.findSummary(id);
+        return mapBeanToSummary(summaryBean);
+
+    }
+
+    private XiaoQuSummary mapBeanToSummary(XiaoQuSummaryBean summaryBean) {
+        if (summaryBean == null) {
+            return null;
+        }
+        XiaoQuSummary summary = new XiaoQuSummary();
+        BeanUtils.copyProperties(summaryBean, summary);
+        summary.setDistrict(Optional.ofNullable(cityService.findDistrict(summaryBean.getDistrictId()))
+                .map(District::getName)
+                .orElse(null));
+        summary.setSubDistrict(Optional.ofNullable(cityService.findSubDistrict(summaryBean.getSubDistrictId())).map(
+                SubDistrict::getName).orElse(null));
+        summary.setStructure(StructureType.getTypeStr(summaryBean.getStructureType()));
+        FileDescription firstImg = fileService.findFirst(summaryBean.getId(), DomainType.XIAO_QU, CustomType.SHI_JING,
+                FileProcess.WATERMARK);
+        summary.setImageURI(Optional.ofNullable(firstImg).map(FileDescription::getFileURI).orElse(null));
+        return summary;
+    }
+
     private PageList<XiaoQuSummary> findXiaoQuSummaryBySelector(XiaoQuSelector selector, PageBounds pageBounds) {
-        PageList<XiaoQuSummaryBean> result = xiaoQuRepository.findSummary(selector, pageBounds);
-
+        PageList<XiaoQuSummaryBean> result = xiaoQuRepository.findSummaryBySelector(selector, pageBounds);
         PageList<XiaoQuSummary> summaries = new PageList<>(new ArrayList<>(), result.getPaginator());
-
-        result.forEach(bean -> {
-            XiaoQuSummary summary = new XiaoQuSummary();
-            BeanUtils.copyProperties(bean, summary);
-            summary.setDistrict(Optional.ofNullable(cityService.findDistrict(bean.getDistrictId()))
-                    .map(District::getName)
-                    .orElse(null));
-            summary.setSubDistrict(Optional.ofNullable(cityService.findSubDistrict(bean.getSubDistrictId())).map(
-                    SubDistrict::getName).orElse(null));
-            summary.setStructure(StructureType.getTypeStr(bean.getStructureType()));
-            FileDescription firstImg = fileService.findFirst(bean.getId(), DomainType.XIAO_QU, CustomType.SHI_JING,
-                    FileProcess.WATERMARK);
-            summary.setImageURI(Optional.ofNullable(firstImg).map(FileDescription::getFileURI).orElse(null));
-            summaries.add(summary);
-        });
-
+        result.forEach(bean -> summaries.add(mapBeanToSummary(bean)));
         return summaries;
     }
 

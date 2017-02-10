@@ -17,6 +17,8 @@ public interface XiaoQuService {
     PageList<XiaoQuSummary> findXiaoQuSummaryByKeyword(XiaoQuFilter filter, XQSummaryOrder order,
                                                        PageBounds pageBounds);
 
+    XiaoQuSummary getSummary(Long id);
+
     XiaoQuDetail getDetail(Long id);
 
     PageList<XiaoQuSummary> findNearbyXiaoQu(Long id);

@@ -15,7 +15,7 @@ import java.util.Objects;
 public class FangSqlProvider {
     public String findSummaryById() {
         return new SQL() {{
-            SELECT("f.id, fd.title, fe.showing, fe.is_only, fe.over_years, f.ranking, f.publish_time,  f.biz_type, f.publish_price,  f.price_unit, f.unit_price, f.s_counts,  f.t_counts,  f.estate_area,  f.orientation, f.decorate, f.process, c.near_line, c.name AS xiao_qu_name")
+            SELECT("f.id, fd.title, fe.showing, fe.is_only, fe.over_years, f.ranking, f.publish_time,  f.biz_type, f.publish_price,  f.price_unit, f.unit_price, f.s_counts,  f.t_counts,  f.estate_area,  f.orientation, f.decorate, f.process, c.near_line, c.city_id, c.sub_district_id, c.name AS xiao_qu_name")
                     .FROM("t_fang f ")
                     .LEFT_OUTER_JOIN("t_xiao_qu xq ON f.xiao_qu_id = xq.id")
                     .LEFT_OUTER_JOIN("t_community c ON xq.community_id = c.id")
@@ -27,7 +27,7 @@ public class FangSqlProvider {
 
     public String findDetailById() {
         return new SQL() {{
-            SELECT("f.*, fe.*,c.near_line, c.name AS xiao_qu_name, c.longitude, c.latitude, sd.name AS sub_district, d.name AS district")
+            SELECT("f.*, fe.*,c.near_line, c.city_id, c.name AS xiao_qu_name, c.longitude, c.latitude, sd.name AS sub_district, d.name AS district")
                     .FROM("t_fang f ")
                     .LEFT_OUTER_JOIN("t_xiao_qu xq ON f.xiao_qu_id = xq.id")
                     .LEFT_OUTER_JOIN("t_community c ON xq.community_id = c.id")
@@ -42,7 +42,7 @@ public class FangSqlProvider {
 
     public String findSummaryBySelector(FangSelector selector) {
         return new SQL() {{
-            SELECT("f.id, fd.title, fe.showing, fe.is_only, fe.over_years, f.ranking, f.publish_time,  f.biz_type, f.publish_price,  f.price_unit, f.unit_price, f.s_counts,  f.t_counts,  f.estate_area,  f.orientation, f.decorate, f.process, c.near_line, c.name AS xiao_qu_name")
+            SELECT("f.id, fd.title, fe.showing, fe.is_only, fe.over_years, f.ranking, f.publish_time,  f.biz_type, f.publish_price,  f.price_unit, f.unit_price, f.s_counts,  f.t_counts,  f.estate_area,  f.orientation, f.decorate, f.process, c.near_line, c.city_id, c.sub_district_id, c.name AS xiao_qu_name")
                     .FROM("t_fang f ")
                     .LEFT_OUTER_JOIN("t_xiao_qu xq ON f.xiao_qu_id = xq.id")
                     .LEFT_OUTER_JOIN("t_community c ON xq.community_id = c.id")

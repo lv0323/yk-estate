@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class FangSummary {
     private Long id;
+    private Long cityId;
+    private Long subDistrictId;
     private String title;
     private BizType bizType;
     private BigDecimal publishPrice;
@@ -36,6 +38,24 @@ public class FangSummary {
 
     public FangSummary setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public FangSummary setCityId(Long cityId) {
+        this.cityId = cityId;
+        return this;
+    }
+
+    public Long getSubDistrictId() {
+        return subDistrictId;
+    }
+
+    public FangSummary setSubDistrictId(Long subDistrictId) {
+        this.subDistrictId = subDistrictId;
         return this;
     }
 

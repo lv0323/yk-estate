@@ -8,9 +8,9 @@ import com.lyun.estate.core.repo.SQL;
  * Created by Jeffrey on 2017-01-09.
  */
 public class XiaoQuSqlProvider {
-    public String findSummary(XiaoQuSelector selector) {
+    public String findSummaryBySelector(XiaoQuSelector selector) {
         return new SQL() {{
-            SELECT("xq.id, xq.ranking, xq.avg_price, c.name, dr.district_id, c.sub_district_id, c.builded_year, c.structure_type");
+            SELECT("xq.id, xq.ranking, xq.avg_price, c.city_id, c.name, dr.district_id, c.sub_district_id, c.builded_year, c.structure_type");
             SELECT("CASE WHEN xq.avg_price ISNULL THEN 1 ELSE 0 END AS ap_null");
             FROM("t_xiao_qu xq ");
             LEFT_OUTER_JOIN("t_community c ON xq.community_id = c.id");

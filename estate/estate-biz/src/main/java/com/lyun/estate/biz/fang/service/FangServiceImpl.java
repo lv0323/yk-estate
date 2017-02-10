@@ -267,14 +267,16 @@ public class FangServiceImpl implements FangService {
     public FangDetail getDetail(Long id) {
         ExceptionUtil.checkNotNull("房编号", id);
         FangDetail fangDetail = fangRepository.findDetail(id);
-        if (fangDetail != null) {
+        if (fangDetail == null || fangDetail.getProcess() == HouseProcess.DELEGATE) {
+            return null;
+        } else {
             List<FangTag> fangTags = fangRepository.findTags(fangDetail.getId());
             fangDetail.setTags(fangTags.stream().map(FangTag::getHouseTag).collect(Collectors.toList()));
             decorateTagsForDetail(fangDetail);
             fangDetail.setStations(xiaoQuService.findStations(fangDetail.getXiaoQuId()));
             fangDetail.setDescr(fangRepository.findDescr(id));
+            return fangDetail;
         }
-        return fangDetail;
     }
 
     @Override
@@ -293,17 +295,46 @@ public class FangServiceImpl implements FangService {
     }
 
     @Override
-    public List<FangSummary> findSummaryByXiaoQuId(Long cityId, BizType bizType, Long xiaoQuId) {
-        ExceptionUtil.checkNotNull("城市", cityId);
+    public PageList<FangSummary> findSummaryByXiaoQuId(Long cityId,
+                                                       Long xiaoQuId,
+                                                       BizType bizType,
+                                                       PageBounds pageBounds) {
+        ExceptionUtil.checkNotNull("城市编号", cityId);
+        ExceptionUtil.checkNotNull("小区编号", xiaoQuId);
         ExceptionUtil.checkNotNull("业务", bizType);
-        ExceptionUtil.checkNotNull("小区", xiaoQuId);
+
+        pageBounds.getOrders().clear();
+        pageBounds.getOrders().addAll(FangSummaryOrder.DEFAULT.getOrders());
+
         FangSelector selector = new FangSelector();
         selector.setCityId(cityId);
-        selector.setBizType(bizType);
         selector.setXiaoQuIds(Lists.newArrayList(xiaoQuId));
+        selector.setBizType(bizType);
         selector.setProcess(HouseProcess.PUBLISH);
 
-        return findFangSummaryBySelector(selector, null);
+        return findFangSummaryBySelector(selector, pageBounds);
+    }
+
+    @Override
+    public PageList<FangSummary> findNearbyByFangId(Long fangId) {
+        FangSummary summary = getSummary(fangId);
+        if (summary == null || summary.getProcess() == HouseProcess.DELEGATE) {
+            return new PageList<>();
+        }
+
+        PageBounds pageBounds = new PageBounds(1, 3);
+        pageBounds.setContainsTotalCount(false);
+        pageBounds.getOrders().clear();
+        pageBounds.getOrders().addAll(FangSummaryOrder.DEFAULT.getOrders());
+
+        FangSelector selector = new FangSelector();
+        selector.setCityId(summary.getCityId());
+        selector.setBizType(summary.getBizType());
+        selector.setSubDistrictId(summary.getSubDistrictId());
+        selector.setExcludeIds(Lists.newArrayList(fangId));
+        selector.setProcess(HouseProcess.PUBLISH);
+
+        return findFangSummaryBySelector(selector, pageBounds);
     }
 
 }
