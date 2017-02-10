@@ -40,9 +40,6 @@
                                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">上级部门</label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <div class="dropdown-yk">
-                                                <div class="parent">请选择</div>
-                                                <ul class="listUl">
-                                                </ul>
                                             </div>
                                         </div>
                                     </div>
