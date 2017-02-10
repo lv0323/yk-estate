@@ -293,17 +293,45 @@ public class FangServiceImpl implements FangService {
     }
 
     @Override
-    public List<FangSummary> findSummaryByXiaoQuId(Long cityId, BizType bizType, Long xiaoQuId) {
-        ExceptionUtil.checkNotNull("城市", cityId);
+    public PageList<FangSummary> findSummaryByXiaoQuId(Long cityId,
+                                                       Long xiaoQuId,
+                                                       BizType bizType,
+                                                       PageBounds pageBounds) {
+        ExceptionUtil.checkNotNull("城市编号", cityId);
+        ExceptionUtil.checkNotNull("小区编号", xiaoQuId);
         ExceptionUtil.checkNotNull("业务", bizType);
-        ExceptionUtil.checkNotNull("小区", xiaoQuId);
+
+        pageBounds.getOrders().clear();
+        pageBounds.getOrders().addAll(FangSummaryOrder.DEFAULT.getOrders());
+
         FangSelector selector = new FangSelector();
         selector.setCityId(cityId);
-        selector.setBizType(bizType);
         selector.setXiaoQuIds(Lists.newArrayList(xiaoQuId));
+        selector.setBizType(bizType);
         selector.setProcess(HouseProcess.PUBLISH);
 
-        return findFangSummaryBySelector(selector, null);
+        return findFangSummaryBySelector(selector, pageBounds);
+    }
+
+    @Override
+    public PageList<FangSummary> findNearbyByFangId(Long fangId) {
+        FangSummary summary = getSummary(fangId);
+        if (summary == null || summary.getProcess() == HouseProcess.DELEGATE) {
+            return new PageList<>();
+        }
+
+        PageBounds pageBounds = new PageBounds(1, 3);
+        pageBounds.setContainsTotalCount(false);
+        pageBounds.getOrders().clear();
+        pageBounds.getOrders().addAll(FangSummaryOrder.DEFAULT.getOrders());
+
+        FangSelector selector = new FangSelector();
+        selector.setCityId(summary.getCityId());
+        selector.setBizType(summary.getBizType());
+        selector.setSubDistrictId(summary.getSubDistrictId());
+        selector.setExcludeIds(Lists.newArrayList(fangId));
+
+        return findFangSummaryBySelector(selector, pageBounds);
     }
 
 }
