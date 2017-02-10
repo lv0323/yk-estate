@@ -28,7 +28,6 @@ import com.lyun.estate.core.supports.types.YN;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -93,6 +92,12 @@ public class FangServiceImpl implements FangService {
             }
         }
 
+        //HouseTypeFilter
+        if (filter.getHouseTypeFilters() != null) {
+            List<HouseType> houseTypes = new ArrayList<>();
+            filter.getHouseTypeFilters().forEach(t -> houseTypes.addAll(t.getTypes()));
+            selector.setHouseTypes(houseTypes);
+        }
 
         //houseTags
         if (filter.getHouseTags() != null && !filter.getHouseTags().isEmpty()) {

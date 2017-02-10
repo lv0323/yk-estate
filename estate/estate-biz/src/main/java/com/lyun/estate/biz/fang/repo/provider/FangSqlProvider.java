@@ -4,9 +4,10 @@ import com.google.common.base.Joiner;
 import com.lyun.estate.biz.fang.entity.FangSelector;
 import com.lyun.estate.biz.spec.fang.def.IntPair;
 import com.lyun.estate.core.repo.SQL;
-import org.springframework.util.CollectionUtils;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Jeffrey on 2017-01-23.
@@ -58,33 +59,37 @@ public class FangSqlProvider {
             }
             WHERE("c.city_id = #{cityId}");
             WHERE("f.biz_type = #{bizType}");
-            if (!CollectionUtils.isEmpty(selector.getsCounts())) {
+            if (hasNotNullElement(selector.getsCounts())) {
                 WHERE("f.s_counts IN (" + Joiner.on(",").skipNulls().join(selector.getsCounts()) + ")");
             }
-            if (!CollectionUtils.isEmpty(selector.getOrientations())) {
+            if (hasNotNullElement(selector.getOrientations())) {
                 WHERE("f.orientation IN (" + buildQMEnumsStr(selector.getOrientations()) + ")");
             }
-            if (!CollectionUtils.isEmpty(selector.getDecorates())) {
+            if (hasNotNullElement(selector.getDecorates())) {
                 WHERE("f.decorate IN (" + buildQMEnumsStr(selector.getDecorates()) + ")");
             }
-            if (!CollectionUtils.isEmpty(selector.getFloorTypes())) {
+            if (hasNotNullElement(selector.getFloorTypes())) {
                 WHERE("f.floor_type IN (" + buildQMEnumsStr(selector.getFloorTypes()) + ")");
             }
-            if (!CollectionUtils.isEmpty(selector.getStructureTypes())) {
+            if (hasNotNullElement(selector.getStructureTypes())) {
                 WHERE("f.structure_type IN (" + buildQMEnumsStr(selector.getStructureTypes()) + ")");
             }
-            if (!CollectionUtils.isEmpty(selector.getExcludeIds())) {
+            if (hasNotNullElement(selector.getExcludeIds())) {
                 WHERE("f.id NOT IN (" + Joiner.on(",").skipNulls().join(selector.getExcludeIds()) + ")");
             }
 
             WHERE_IF("f.has_elevator = #{hasElevator}", selector.getHasElevator() != null);
 
-            if (!CollectionUtils.isEmpty(selector.getAreas())) {
+            if (hasNotNullElement(selector.getAreas())) {
                 WHERE(buildIntPairWhere("f.estate_area", selector.getAreas()));
             }
 
-            if (!CollectionUtils.isEmpty(selector.getYears())) {
+            if (hasNotNullElement(selector.getYears())) {
                 WHERE(buildIntPairWhere("f.build_year", selector.getYears()));
+            }
+
+            if (hasNotNullElement(selector.getHouseTypes())) {
+                WHERE("f.house_type IN (" + buildQMEnumsStr(selector.getHouseTypes()) + ")");
             }
 
             WHERE_IF("f.publish_price >= #{minPrice}", selector.getMinPrice() != null);
@@ -116,7 +121,7 @@ public class FangSqlProvider {
 
     private String buildQMEnumsStr(List<? extends Enum<?>> enums) {
         StringBuilder sqlBuilder = new StringBuilder();
-        enums.forEach(t -> sqlBuilder.append("'").append(t.name()).append("',"));
+        enums.stream().filter(Objects::nonNull).forEach(t -> sqlBuilder.append("'").append(t.name()).append("',"));
         String sql = sqlBuilder.toString();
         return sql.substring(0, sql.length() - 1);
     }
@@ -125,7 +130,7 @@ public class FangSqlProvider {
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("(");
         final boolean[] isFirst = {true};
-        intPairs.forEach(a -> {
+        intPairs.stream().filter(Objects::nonNull).forEach(a -> {
             if (isFirst[0]) {
                 isFirst[0] = false;
             } else {
@@ -146,5 +151,9 @@ public class FangSqlProvider {
         sqlBuilder.append(")");
 
         return sqlBuilder.toString();
+    }
+
+    private boolean hasNotNullElement(Collection<?> collection) {
+        return collection != null && collection.stream().anyMatch(Objects::nonNull);
     }
 }

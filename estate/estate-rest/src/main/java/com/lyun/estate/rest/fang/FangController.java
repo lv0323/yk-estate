@@ -9,6 +9,7 @@ import com.lyun.estate.biz.keyword.entity.KeywordResp;
 import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.biz.spec.fang.def.ElevatorFilter;
+import com.lyun.estate.biz.spec.fang.def.HouseTypeFilter;
 import com.lyun.estate.biz.spec.fang.def.IntPair;
 import com.lyun.estate.biz.spec.fang.def.ShiCountsFilter;
 import com.lyun.estate.biz.spec.fang.entity.FangDetail;
@@ -68,6 +69,7 @@ public class FangController {
                                          @RequestParam(required = false) List<String> aips,
                                          @RequestParam(required = false) String keyword,
                                          @RequestParam(required = false) FangSummaryOrder order,
+                                         @RequestParam(required = false) List<HouseTypeFilter> htfs,
                                          @RequestHeader("X-PAGING") PageBounds pageBounds) {
 
         FangFilter fangFilter = new FangFilter();
@@ -85,7 +87,9 @@ public class FangController {
                 .setElevatorFilters(efs)
                 .setStructureTypes(sts)
                 .setMinPrice(minPrice)
-                .setMaxPrice(maxPrice).setKeyword(keyword)
+                .setMaxPrice(maxPrice)
+                .setKeyword(keyword)
+                .setHouseTypeFilters(htfs)
                 .setYears(Optional.ofNullable(yips).map(t -> t.stream()
                         .map(IntPair::fromIntPairStr)
                         .filter(Objects::nonNull)
