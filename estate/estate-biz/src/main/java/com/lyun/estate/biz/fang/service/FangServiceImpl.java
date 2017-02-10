@@ -267,14 +267,16 @@ public class FangServiceImpl implements FangService {
     public FangDetail getDetail(Long id) {
         ExceptionUtil.checkNotNull("房编号", id);
         FangDetail fangDetail = fangRepository.findDetail(id);
-        if (fangDetail != null) {
+        if (fangDetail == null || fangDetail.getProcess() == HouseProcess.DELEGATE) {
+            return null;
+        } else {
             List<FangTag> fangTags = fangRepository.findTags(fangDetail.getId());
             fangDetail.setTags(fangTags.stream().map(FangTag::getHouseTag).collect(Collectors.toList()));
             decorateTagsForDetail(fangDetail);
             fangDetail.setStations(xiaoQuService.findStations(fangDetail.getXiaoQuId()));
             fangDetail.setDescr(fangRepository.findDescr(id));
+            return fangDetail;
         }
-        return fangDetail;
     }
 
     @Override
@@ -330,6 +332,7 @@ public class FangServiceImpl implements FangService {
         selector.setBizType(summary.getBizType());
         selector.setSubDistrictId(summary.getSubDistrictId());
         selector.setExcludeIds(Lists.newArrayList(fangId));
+        selector.setProcess(HouseProcess.PUBLISH);
 
         return findFangSummaryBySelector(selector, pageBounds);
     }
