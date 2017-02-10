@@ -34,7 +34,7 @@ require(['main-app',contextPath + '/js/service/department-service.js','datatable
                     });
                     $.each(data,function(index,departRaw){
                         var appendHtml = '<tr>' +
-                            '<td><a class="btn" id="lookDepartBtn" href="/mgt/org/departmentDetail.ftl" data-id="'+departRaw.department["id"]+'">'+departRaw.department["name"]+'</a></td>' +
+                            '<td><a class="btn" id="lookDepartBtn" data-id="'+departRaw.department["id"]+'">'+departRaw.department["name"]+'</a></td>' +
                             '<td>'+departRaw.department["telephone"]+'</td>' +
                             '<td>'+departRaw.department["address"]+'</td>' +
                             '<td class="text-right"><a class="btn" id="editDepartBtn" data-index="'+index+'" data-id="'+departRaw.department["id"]+'" data-toggle="modal" data-target="#editDepartDialog">编辑</a>';
@@ -64,10 +64,17 @@ require(['main-app',contextPath + '/js/service/department-service.js','datatable
                 $('#departList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
             });
 
-        //initialize title in add department dialog
-        // $('.fadeInRight').on('click','#addDepartBtn',function(){
-        //     $('#addDepartDialog #addDepartLabel').text('增加部门');
-        // });
+        //open new window for department details
+        $('#departList').on('click','#lookDepartBtn',function(e){
+            var departId = $(e.target).data('id');
+            window.location.href="/mgt/org/departmentDetail.ftl?"+departId;
+        });
+
+        //open new window for department details
+        $('#departList').on('click','#editDepartBtn',function(e){
+            var departId = $(e.target).data('id');
+            window.location.href="/mgt/org/editDepartmentDetail.ftl?"+departId;
+        });
 
         //get district and subDistrict from server in add department dialog
         $('#addDepartDialog').on('change','#departCid',function(){
@@ -138,7 +145,7 @@ require(['main-app',contextPath + '/js/service/department-service.js','datatable
         });
 
         //initialize title and default value in edit department dialog
-        $('#departList').on('click','#editDepartBtn',function(e){
+        /*$('#departList').on('click','#editDepartBtn',function(e){
             var index = $(e.target).data('index');
             var depart = departAllDataRaw.departmentRaw[index].department;
             var pId  = depart["parent_id"];
@@ -262,6 +269,6 @@ require(['main-app',contextPath + '/js/service/department-service.js','datatable
                         }
                     });
             }
-        });
+        });*/
 });
 

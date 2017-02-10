@@ -19,6 +19,10 @@ define(contextPath + '/js/service/department-service.js',
                 });
         };
 
+        DepartmentService.getSpecifiedDepartment = function (departId,header) {
+            return RequestService.get('/api/department/'+departId, header);
+        };
+
         DepartmentService.getDepartment = function (header) {
             return RequestService.get('/api/department/query-sorted', null, header);
         };

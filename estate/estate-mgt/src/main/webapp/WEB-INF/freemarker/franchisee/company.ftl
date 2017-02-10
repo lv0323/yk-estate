@@ -103,6 +103,7 @@
 </div>-->
 
 <!-- Modal editCompanyDialog -->
+<#--
 <div class="modal fade" id="editCompanyDialog" tabindex="-1" role="dialog" aria-labelledby="editCompanyLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -151,6 +152,7 @@
         </div>
     </div>
 </div>
+-->
 
 
 <!-- Modal renewCompanyDialog -->

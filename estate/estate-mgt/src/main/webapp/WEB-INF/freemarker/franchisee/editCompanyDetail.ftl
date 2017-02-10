@@ -113,6 +113,9 @@
                                         </div>
                                     </div>
                                 </form>
+                                <div class="modal-footer center">
+                                    <button type="button" class="btn btn-primary" id="confirmEditCompanyBtn">保存</button>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -125,10 +128,3 @@
 
 <#include "/common/footer.ftl" />
 <script src="${contextPath!}/js/franchisee/companyDetail.js"></script>
-<script>
-    $(function () {
-        $('#editCompanyDialog input').prop("disabled", true);
-        $('#editCompanyDialog select').prop("disabled", true);
-    });
-
-</script>

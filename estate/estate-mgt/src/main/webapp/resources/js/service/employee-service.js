@@ -5,7 +5,11 @@ define(contextPath + '/js/service/employee-service.js',
         contextPath + '/js/service/request-service.js'],
     function (mainApp, utilService, DepartmentService, PositionService, requestService) {
 
-        var EmployeeService = {};
+        var EmployeeService = {
+            quitEmployee:[],
+            nonQuitEmployee:[]
+        };
+
         EmployeeService.getAvatar = function (params, header) {
             var data = {id: params.id};
             return requestService.get('/api/employee/avatar', data, header);
@@ -13,6 +17,34 @@ define(contextPath + '/js/service/employee-service.js',
 
         EmployeeService.getEmployee = function (header) {
             return requestService.get('/api/employee/query', null, header);
+        };
+
+        /*EmployeeService.filterEmployee = function (header) {
+            //EmployeeService.quitEmployee.push("1");
+            //console.log("quit: "+EmployeeService.quitEmployee);
+            EmployeeService.quitEmployee = [];
+            EmployeeService.nonQuitEmployee = [];
+            EmployeeService.getEmployee(header).done(function (data) {
+                $.each(data,function (index, employeeRaw) {
+                    if(employeeRaw["quit"]){
+                        EmployeeService.quitEmployee.push(employeeRaw);
+                    }else {
+                        EmployeeService.nonQuitEmployee.push(employeeRaw);
+                    }
+                });
+                console.log("quit: "+EmployeeService.quitEmployee);
+                console.log("nonQuit: "+EmployeeService.nonQuitEmployee);
+            });
+        };*/
+
+        EmployeeService.getNonQuitEmployee = function (header) {
+            //EmployeeService.nonQuitEmployee.push("2");
+            //console.log("nonQuit"+EmployeeService.nonQuitEmployee);
+            EmployeeService.getEmployee(header).done(function (data) {
+                $.each(data,function (index, employeeRaw) {
+                    //EmployeeService.nonQuitEmployee.push(employeeRaw);
+                });
+            });
         };
 
         EmployeeService.addEmployee = function (params, header) {

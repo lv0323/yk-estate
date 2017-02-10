@@ -72,7 +72,7 @@
 </div>-->
 
 <!-- Modal editDepartDialog -->
-<div class="modal fade" id="editDepartDialog" tabindex="-1" role="dialog" aria-labelledby="editDepartLabel">
+<#--<div class="modal fade" id="editDepartDialog" tabindex="-1" role="dialog" aria-labelledby="editDepartLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -135,7 +135,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 
 <!-- Modal deleteDepartDialog -->

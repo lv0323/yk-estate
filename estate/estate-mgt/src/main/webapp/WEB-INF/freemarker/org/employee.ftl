@@ -208,9 +208,25 @@
                                             <i class="fa fa-plus" aria-hidden="true"></i>
                                             新增员工
                                         </a>
+                                        <span class="opt-gap"></span>
+                                        <a class="btn" id="filterEmployeeBtn">
+                                            <i class="fa fa-filter" aria-hidden="true"></i>
+                                            筛选
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="box-body">
+                                    <div id="box-filter" class="form-horizontal" style="display:none;">
+                                        <div class="form-group ">
+                                            <label class="col-lg-3 col-md-3 col-sm-3 control-label">在职｜离职： </label>
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <select id="quitPosition" class="form-control btn-group dropup">
+                                                    <option value="nonQuit">在职</option>
+                                                    <option value="quit">离职</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <!-- table -->
                                     <table id="employeeList" class="list table table-bordered table-hover">
                                         <thead><tr>
