@@ -50,7 +50,7 @@ public class KeywordService {
         }
         String convertedKeyword = null;
         try {
-            convertedKeyword = PinyinHelper.convertToPinyinString(keyword, "", PinyinFormat.WITHOUT_TONE);
+            convertedKeyword = PinyinHelper.convertToPinyinString(keyword.replace(" ", ""), "", PinyinFormat.WITHOUT_TONE);
             if (StringUtils.isEmpty(convertedKeyword)) {
                 logger.warn("查询关键词转换后为空,忽略");
                 return results;
@@ -105,7 +105,7 @@ public class KeywordService {
         Integer count = 0;
         String convertedKeyword = null;
         try {
-            convertedKeyword = PinyinHelper.convertToPinyinString(keyword, "", PinyinFormat.WITHOUT_TONE);
+            convertedKeyword = PinyinHelper.convertToPinyinString(keyword.replace(" ", ""), "", PinyinFormat.WITHOUT_TONE);
             if (StringUtils.isEmpty(convertedKeyword)) {
                 logger.warn("查询关键词转换后为空,忽略");
                 return results;
