@@ -17,7 +17,7 @@ public class EstateCacheConfig {
 
     public static final String MANAGER_10_5K = "MANAGER_10_5K";
 
-    public static final String MANAGER_60_5K = "MANAGER_10_5K";
+    public static final String MANAGER_60_5K = "MANAGER_60_5K";
 
 
     public static final String CAPTCHA_CACHE = "CAPTCHA_CACHE";

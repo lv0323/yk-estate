@@ -6,7 +6,8 @@ CREATE TABLE t_city (-- 城市
   latitude    NUMERIC(12, 9), -- 纬度
   view_region VARCHAR(64), --地图显示区域
   create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  name_kw     VARCHAR(200)
 );
 
 CREATE TABLE t_district (--地区
@@ -21,7 +22,8 @@ CREATE TABLE t_district (--地区
   sell_house_count INTEGER        DEFAULT 0, --小区挂牌房源数量
   rent_house_count INTEGER        DEFAULT 0, --小区出租房源数量
   create_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
-  update_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP
+  update_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+  name_kw     VARCHAR(200)
 );
 
 CREATE TABLE t_sub_district (--地区
@@ -36,7 +38,8 @@ CREATE TABLE t_sub_district (--地区
   sell_house_count INTEGER        DEFAULT 0, --小区挂牌房源数量
   rent_house_count INTEGER        DEFAULT 0, --小区出租房源数量
   create_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
-  update_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP
+  update_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+  name_kw     VARCHAR(200)
 );
 
 CREATE TABLE t_district_rel (
@@ -58,7 +61,8 @@ CREATE TABLE t_line (--地铁线路
   latitude    NUMERIC(12, 9), -- 纬度
   view_region VARCHAR(64), --地图显示区域
   create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  name_kw     VARCHAR(200)
 );
 
 CREATE TABLE t_station (--地铁站点
@@ -70,7 +74,8 @@ CREATE TABLE t_station (--地铁站点
   latitude    NUMERIC(12, 9), -- 纬度
   view_region VARCHAR(64), --地图显示区域
   create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  name_kw     VARCHAR(200)
 );
 
 CREATE TABLE t_line_station_rel (
@@ -112,7 +117,9 @@ CREATE TABLE t_community (
   update_by_id           BIGINT, --更新者id
   update_time            TIMESTAMP, --更新时间
   is_deleted             CHAR(1)   DEFAULT 'N',
-  version                INT --版本号
+  version                INT, --版本号
+  name_kw                VARCHAR(200),
+  alias_kw               VARCHAR(200)
 );
 
 CREATE TABLE t_community_station_rel (

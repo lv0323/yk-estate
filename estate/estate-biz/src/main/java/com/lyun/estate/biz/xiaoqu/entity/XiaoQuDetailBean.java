@@ -34,6 +34,8 @@ public class XiaoQuDetailBean {
     private Integer houses;
     private String containerRate;
     private String greenRate;
+    private String nameKw;
+    private String aliasKw;
 
     public Long getId() {
         return id;
@@ -267,5 +269,21 @@ public class XiaoQuDetailBean {
     public XiaoQuDetailBean setSubDistrictId(Long subDistrictId) {
         this.subDistrictId = subDistrictId;
         return this;
+    }
+
+    public String getNameKw() {
+        return nameKw;
+    }
+
+    public void setNameKw(String nameKw) {
+        this.nameKw = nameKw;
+    }
+
+    public String getAliasKw() {
+        return aliasKw;
+    }
+
+    public void setAliasKw(String aliasKw) {
+        this.aliasKw = aliasKw;
     }
 }

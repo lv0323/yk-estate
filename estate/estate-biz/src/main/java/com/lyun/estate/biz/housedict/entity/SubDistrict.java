@@ -10,6 +10,7 @@ public class SubDistrict {
     private String name;
     private BigDecimal longitude;
     private BigDecimal latitude;
+    private String nameKw;
 
     public Long getId() {
         return id;
@@ -54,5 +55,13 @@ public class SubDistrict {
     public SubDistrict setLatitude(BigDecimal latitude) {
         this.latitude = latitude;
         return this;
+    }
+
+    public String getNameKw() {
+        return nameKw;
+    }
+
+    public void setNameKw(String nameKw) {
+        this.nameKw = nameKw;
     }
 }

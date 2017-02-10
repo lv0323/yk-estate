@@ -20,6 +20,7 @@ import java.util.Optional;
  */
 @Service
 public class KeywordService {
+    private static final String PINYIN_SEPARATOR = ",";
 
     @Autowired
     private KeywordRepository keywordRepository;
@@ -50,7 +51,9 @@ public class KeywordService {
                 if (count >= limit) {
                     break;
                 }
-                if (keywordBean.getKeyword().contains(keyword)) {
+                String kw = keywordBean.getKeyword().replace(",", "");
+                assert kw != null;
+                if (kw.contains(keyword) || keywordMatch(kw, new StringBuilder(), PINYIN_SEPARATOR).contains(keyword)) {
                     results.add(keywordBean);
                     count++;
                 }
@@ -91,7 +94,9 @@ public class KeywordService {
                 if (count >= limit) {
                     break;
                 }
-                if (keywordBean.getName().equals(keyword)) {
+                String kw = keywordBean.getKeyword().replace(",", "");
+                assert kw != null;
+                if (kw.contains(keyword) || keywordMatch(kw, new StringBuilder(), PINYIN_SEPARATOR).contains(keyword)) {
                     results.add(keywordBean);
                     count++;
                 }
@@ -132,5 +137,24 @@ public class KeywordService {
         });
 
         return result;
+    }
+
+    /**
+     * 将keyword转成首字母形式
+     * @param src 源
+     * @param dis 中间结果
+     * @param separator 分隔符
+     * @return 结果
+     */
+    private String keywordMatch(String src, StringBuilder dis, String separator) {
+        if (dis == null) {
+            dis = new StringBuilder();
+        }
+        if (!src.contains(separator)) {
+            return dis.append(src.charAt(0)).toString();
+        } else {
+            dis.append(src.charAt(0));
+            return keywordMatch(src.substring(src.indexOf(separator) + 1), dis, separator);
+        }
     }
 }
