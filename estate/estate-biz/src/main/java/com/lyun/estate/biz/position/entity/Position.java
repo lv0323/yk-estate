@@ -13,6 +13,7 @@ public class Position {
     private String note;
     private Date createTime;
     private Date updateTime;
+    private Boolean isDeleted;
 
     public Long getId() {
         return id;
@@ -74,6 +75,15 @@ public class Position {
 
     public Position setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public Position setDeleted(Boolean deleted) {
+        isDeleted = deleted;
         return this;
     }
 }
