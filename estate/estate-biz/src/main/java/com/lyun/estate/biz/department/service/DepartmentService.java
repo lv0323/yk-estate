@@ -5,19 +5,20 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.department.entity.Department;
+import com.lyun.estate.biz.department.entity.DepartmentDTO;
 import com.lyun.estate.biz.department.repo.DepartmentRepo;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartmentService {
@@ -76,7 +77,7 @@ public class DepartmentService {
     }
 
     private Set<Long> findChildIds(Long companyId, Long departmentId) {
-        List<Department> departmentList = listAllByCompanyId(companyId);
+        List<Department> departmentList = repo.listAllByCompanyId(companyId);
         Set<Long> childIds = new HashSet<>();
         childIds.add(departmentId);
         int lastAdd;
@@ -93,14 +94,68 @@ public class DepartmentService {
         return childIds;
     }
 
-    public PageList<Department> selectByCompanyId(Long companyId, PageBounds pageBounds) {
-        ExceptionUtil.checkNotNull("公司编号", companyId);
-        return repo.selectByCompanyId(companyId, pageBounds);
+    private Map<Long, Integer> findDeptLevel(Long companyId) {
+        HashMap<Long, Integer> deptLevel = new HashMap<>();
+        List<Department> departmentList = repo.listAllByCompanyId(companyId);
+        if (CollectionUtils.isEmpty(departmentList)) {
+            return deptLevel;
+        }
+        Set<Long> depts = new HashSet<>();
+        int level = 1;
+        int lastAdd;
+        Optional<Department> first = departmentList.stream()
+                .filter(d -> Objects.equals(d.getParentId(), 0L))
+                .findFirst();
+        if (!first.isPresent()) {
+            return deptLevel;
+        } else {
+            depts.add(first.get().getId());
+            deptLevel.put(first.get().getId(), level);
+            level++;
+        }
+        do {
+            lastAdd = 0;
+            for (Department department : departmentList) {
+                if (depts.contains(department.getParentId()) && !depts.contains(department.getId())) {
+                    depts.add(department.getId());
+                    lastAdd += 1;
+                    deptLevel.put(department.getId(), level);
+                }
+            }
+            level++;
+        } while (lastAdd > 0);
+
+        return deptLevel;
     }
 
-    public List<Department> listAllByCompanyId(Long companyId) {
+    public PageList<DepartmentDTO> selectByCompanyId(Long companyId, PageBounds pageBounds) {
         ExceptionUtil.checkNotNull("公司编号", companyId);
-        return repo.listAllByCompanyId(companyId);
+        PageList<Department> departments = repo.selectByCompanyId(companyId, pageBounds);
+        Map<Long, Integer> deptLevel = findDeptLevel(companyId);
+        List<DepartmentDTO> deptDTOs = departments.stream().map(department -> {
+            DepartmentDTO dto = new DepartmentDTO();
+            BeanUtils.copyProperties(department, dto);
+            dto.setPrimary(Objects.equals(dto.getParentId(), 0L));
+            dto.setHasChild(findChildIds(department.getCompanyId(), department.getId()).size() > 1);
+            dto.setLevel(deptLevel.get(department.getId()));
+            return dto;
+        }).collect(Collectors.toList());
+
+        return new PageList<>(deptDTOs, departments.getPaginator());
+    }
+
+    public List<DepartmentDTO> listAllByCompanyId(Long companyId) {
+        ExceptionUtil.checkNotNull("公司编号", companyId);
+        List<Department> departments = repo.listAllByCompanyId(companyId);
+        Map<Long, Integer> deptLevel = findDeptLevel(companyId);
+        return departments.stream().map(department -> {
+            DepartmentDTO dto = new DepartmentDTO();
+            BeanUtils.copyProperties(department, dto);
+            dto.setPrimary(Objects.equals(dto.getParentId(), 0L));
+            dto.setHasChild(findChildIds(department.getCompanyId(), department.getId()).size() > 1);
+            dto.setLevel(deptLevel.get(department.getId()));
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     public Department selectById(Long departmentId) {

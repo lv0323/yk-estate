@@ -59,7 +59,7 @@ public class ExceptionAdvice {
                     .setLogRef(restContext.getCorrelationId()));
         } else if (t instanceof EasyCodeException) {
             logger.error("业务异常", t);
-            writeResponse(response, handleBizException((EasyCodeException) t));
+            writeResponse(response, handleEasyCodeException((EasyCodeException) t));
         } else {
             EstateException baseException = writeExceptionLog(t);
             ErrorResource errorResource = new ErrorResource(restContext.getCorrelationId(),
@@ -120,7 +120,7 @@ public class ExceptionAdvice {
         throw new RuntimeException(t);
     }
 
-    private ErrorResource handleBizException(EasyCodeException t) {
+    private ErrorResource handleEasyCodeException(EasyCodeException t) {
         return new ErrorResource()
                 .setExCode(t.getCode())
                 .setLogRef(restContext.getCorrelationId())
