@@ -76,7 +76,7 @@ public class EmployeeRest {
     public Object salt(@RequestParam String mobile) {
         Employee employee = employeeService.selectByMobile(mobile);
         if (employee == null)
-            throw new EstateException(ExCode.CANT_SALT);
+            throw new EstateException(ExCode.EMPLOYEE_NO_SALT);
         return new RestResponse().add("ret", true).add("salt", employee.getSalt()).add("sugar", employeeService.sugar(mobile)).get();
     }
 

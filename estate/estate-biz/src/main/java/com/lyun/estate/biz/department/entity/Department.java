@@ -1,12 +1,5 @@
 package com.lyun.estate.biz.department.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lyun.estate.biz.housedict.entity.City;
-import com.lyun.estate.biz.housedict.entity.District;
-import com.lyun.estate.biz.housedict.entity.SubDistrict;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -14,33 +7,17 @@ public class Department {
 
     private Long id;
     private Long parentId;
-    @NotNull
     private Long companyId;
-    @NotNull
     private String name;
-    private String shortName;
     private String telephone;
     private String address;
-    @NotNull
-    @JsonIgnore
     private Long cityId;
-    @Null
-    private City city;
-    @NotNull
-    @JsonIgnore
     private Long districtId;
-    @Null
-    private District district;
-    @NotNull
-    @JsonIgnore
     private Long subDistrictId;
-    @Null
-    private SubDistrict subDistrict;
     private BigDecimal longitude;
     private BigDecimal latitude;
-    @JsonIgnore
+    private Boolean isDeleted;
     private Date createTime;
-    @JsonIgnore
     private Date updateTime;
 
 
@@ -77,15 +54,6 @@ public class Department {
 
     public Department setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    public Department setShortName(String shortName) {
-        this.shortName = shortName;
         return this;
     }
 
@@ -170,30 +138,12 @@ public class Department {
         return this;
     }
 
-    public City getCity() {
-        return city;
+    public Boolean getDeleted() {
+        return isDeleted;
     }
 
-    public Department setCity(City city) {
-        this.city = city;
-        return this;
-    }
-
-    public District getDistrict() {
-        return district;
-    }
-
-    public Department setDistrict(District district) {
-        this.district = district;
-        return this;
-    }
-
-    public SubDistrict getSubDistrict() {
-        return subDistrict;
-    }
-
-    public Department setSubDistrict(SubDistrict subDistrict) {
-        this.subDistrict = subDistrict;
+    public Department setDeleted(Boolean deleted) {
+        isDeleted = deleted;
         return this;
     }
 }

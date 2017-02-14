@@ -41,7 +41,7 @@ public class CompanyService {
         return true;
     }
 
-    public Boolean renew(Long id, java.sql.Date endDate) {
+    public Boolean renew(Long id, Date endDate) {
         repository.renew(id, endDate);
         return true;
     }
@@ -63,7 +63,6 @@ public class CompanyService {
         Department department = new Department()
                 .setCompanyId(entity.getCompany().getId())
                 .setName(entity.getCompany().getName())
-                .setShortName(entity.getCompany().getShortName())
                 .setAddress(entity.getCompany().getAddress());
         departmentService.create(department);
 

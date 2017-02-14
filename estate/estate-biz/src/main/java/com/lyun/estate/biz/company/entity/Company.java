@@ -1,13 +1,11 @@
 package com.lyun.estate.biz.company.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lyun.estate.biz.employee.entity.Employee;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Null;
 import java.sql.Date;
-import java.sql.Timestamp;
 
 public class Company {
 
@@ -15,16 +13,11 @@ public class Company {
     @NotEmpty
     private String name;
     @NotEmpty
-    private String shortName;
-    @NotEmpty
     private String license;
     @NotEmpty
     private String address;
     private String introduction;
     @Null
-    private Employee boss;
-    @Null
-    @JsonIgnore
     private String secretKey;
     @Future
     private Date startDate;
@@ -54,15 +47,6 @@ public class Company {
         return this;
     }
 
-    public String getShortName() {
-        return shortName;
-    }
-
-    public Company setShortName(String shortName) {
-        this.shortName = shortName;
-        return this;
-    }
-
     public String getLicense() {
         return license;
     }
@@ -87,15 +71,6 @@ public class Company {
 
     public Company setIntroduction(String introduction) {
         this.introduction = introduction;
-        return this;
-    }
-
-    public Employee getBoss() {
-        return boss;
-    }
-
-    public Company setBoss(Employee boss) {
-        this.boss = boss;
         return this;
     }
 

@@ -1,19 +1,19 @@
 package com.lyun.estate.biz.position.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lyun.estate.biz.position.def.PositionType;
+
+import java.util.Date;
 
 public class Position {
 
     private Long id;
     private Long companyId;
     private String name;
+    private PositionType type;
     private String note;
-    @JsonIgnore
     private Boolean isDeleted;
-    @JsonIgnore
-    private java.sql.Timestamp createTime;
-    @JsonIgnore
-    private java.sql.Timestamp updateTime;
+    private Date createTime;
+    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -51,22 +51,12 @@ public class Position {
         return this;
     }
 
-    public java.sql.Timestamp getCreateTime() {
-        return createTime;
+    public PositionType getType() {
+        return type;
     }
 
-    public Position setCreateTime(java.sql.Timestamp createTime) {
-        this.createTime = createTime;
-        return this;
-    }
-
-
-    public java.sql.Timestamp getUpdateTime() {
-        return updateTime;
-    }
-
-    public Position setUpdateTime(java.sql.Timestamp updateTime) {
-        this.updateTime = updateTime;
+    public Position setType(PositionType type) {
+        this.type = type;
         return this;
     }
 
@@ -76,6 +66,24 @@ public class Position {
 
     public Position setDeleted(Boolean deleted) {
         isDeleted = deleted;
+        return this;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public Position setCreateTime(Date createTime) {
+        this.createTime = createTime;
+        return this;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public Position setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
         return this;
     }
 }

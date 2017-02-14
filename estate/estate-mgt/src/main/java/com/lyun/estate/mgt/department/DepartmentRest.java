@@ -26,23 +26,23 @@ public class DepartmentRest {
 
     @GetMapping("delete")
     public Object delete(@RequestParam Long id, @SessionAttribute LoginEmployee employee) {
-        Department department = service.selectById(id);
-        if (department == null)
-            return new RestResponse().add("ret", true).get();
-        if (!Objects.equals(department.getCompanyId(), employee.getCompanyId()))
-            return new RestResponse().add("ret", false).get();
         return new RestResponse().add("ret", service.deleteById(id)).get();
     }
 
     @PostMapping("edit")
     public Object edit(Department department, @SessionAttribute LoginEmployee employee) {
         Objects.requireNonNull(department).setCompanyId(employee.getCompanyId());
-        return service.update(department);
+        return service.updateInfo(department);
     }
 
     @GetMapping("query")
     public Object query(@SessionAttribute LoginEmployee employee) {
         return service.selectByCompanyId(employee.getCompanyId());
+    }
+
+    @GetMapping("changeParent")
+    public Department changParent(@RequestParam Long departmentId, @RequestParam Long parentId) {
+        return service.changeParent(departmentId, parentId);
     }
 
     @GetMapping("query-sorted")
@@ -89,6 +89,6 @@ public class DepartmentRest {
 
     @GetMapping("/{departmentId}")
     Department findOne(@PathVariable Long departmentId) {
-        return service.findOne(departmentId);
+        return service.selectById(departmentId);
     }
 }

@@ -43,7 +43,7 @@ public class PageBoundsArgumentResolver implements HandlerMethodArgumentResolver
 
     private static final String LIMIT = "limit";
 
-    private static final String COUNT = "count";
+    private static final String TOTAL = "total";
 
     private static final String ORDERS = "orders";
 
@@ -65,10 +65,10 @@ public class PageBoundsArgumentResolver implements HandlerMethodArgumentResolver
         String offsetStr = map.getFirst(OFFSET);
         String limitStr = map.getFirst(LIMIT);
         String orderStr = map.getFirst(ORDERS);
-        String countStr = map.getFirst(COUNT);
+        String totalStr = map.getFirst(TOTAL);
 
         //parse count
-        boolean containsTotalCount = Boolean.parseBoolean(countStr);
+        boolean containsTotalCount = Boolean.parseBoolean(totalStr);
 
         //parse Orders
         List<Order> orders = new ArrayList<>();
