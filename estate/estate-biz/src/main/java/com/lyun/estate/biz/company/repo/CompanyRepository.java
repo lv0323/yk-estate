@@ -5,7 +5,7 @@ import com.lyun.estate.biz.company.repo.provider.CompanyProvider;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.session.RowBounds;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 public interface CompanyRepository {

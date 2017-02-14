@@ -121,16 +121,16 @@ public class EmployeeService {
         Objects.requireNonNull(sugaredPassword);
         Employee employee = repo.selectByMobile(mobile);
         if (employee == null)
-            throw new EstateException(ExCode.LOGIN_FAIL);
+            throw new EstateException(ExCode.EMPLOYEE_LOGIN_FAIL);
         checkCompany(employee.getCompanyId());
         String rawPassword = employee.getPassword();
         if (rawPassword == null)
-            throw new EstateException(ExCode.NOT_ACTIVE_EMPLOYEE);
+            throw new EstateException(ExCode.EMPLOYEE_NOT_ACTIVE);
         String sugar = cache.get(LOGIN_SALT_PREFIX + mobile, String.class);
         if (sugar == null)
-            throw new EstateException(ExCode.NO_SUGAR);
+            throw new EstateException(ExCode.EMPLOYEE_NO_SUGAR);
         if (!hmac(sugar, rawPassword).equals(sugaredPassword))
-            throw new EstateException(ExCode.WRONG_PASSWORD);
+            throw new EstateException(ExCode.EMPLOYEE_WRONG_PASSWORD);
         cache.evict(LOGIN_SALT_PREFIX + mobile);
         return employee;
     }
@@ -141,5 +141,9 @@ public class EmployeeService {
             throw new EstateException(ExCode.COMPANY_LOCKED);
         if (company.getEndDate().getTime() < clockTools.now().getTime())
             throw new EstateException(ExCode.COMPANY_EXPIRED);
+    }
+
+    public List<Employee> listByDepartmentIds(List<Long> departmentIds) {
+        return null;
     }
 }
