@@ -5,7 +5,11 @@ define(contextPath + '/js/service/employee-service.js',
         contextPath + '/js/service/request-service.js'],
     function (mainApp, utilService, DepartmentService, PositionService, requestService) {
 
-        var EmployeeService = {};
+        var EmployeeService = {
+            quitEmployee:[],
+            nonQuitEmployee:[]
+        };
+
         EmployeeService.getAvatar = function (params, header) {
             var data = {id: params.id};
             return requestService.get('/api/employee/avatar', data, header);
@@ -17,6 +21,10 @@ define(contextPath + '/js/service/employee-service.js',
 
         EmployeeService.addEmployee = function (params, header) {
             return requestService.post('/api/employee/create', params.data, header);
+        };
+
+        EmployeeService.quitEmployeeAction = function (params, header) {
+            return requestService.get('/api/employee/quit', params.data, header);
         };
 
         EmployeeService.editEmployee = function (params, header) {

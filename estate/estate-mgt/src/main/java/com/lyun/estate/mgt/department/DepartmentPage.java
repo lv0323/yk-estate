@@ -36,4 +36,11 @@ public class DepartmentPage {
         params.put("message", "message");
         return new ModelAndView("/org/departmentDetail", params);
     }
+
+    @GetMapping("/editDepartmentDetail")
+    public ModelAndView editDepartmentDetail() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("message", "message");
+        return new ModelAndView("/org/editDepartmentDetail", params);
+    }
 }

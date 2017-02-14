@@ -103,7 +103,7 @@
 </div>-->
 
 <!-- Modal editCompanyDialog -->
-<div class="modal fade" id="editCompanyDialog" tabindex="-1" role="dialog" aria-labelledby="editCompanyLabel">
+<#--<div class="modal fade" id="editCompanyDialog" tabindex="-1" role="dialog" aria-labelledby="editCompanyLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -150,7 +150,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 
 <!-- Modal renewCompanyDialog -->
@@ -250,12 +250,14 @@
                                 <table id="companyList" class="list table table-bordered table-hover">
                                     <thead><tr>
                                         <th><span>公司名称</span></th>
-                                        <th><span>公司法人</span></th>
-                                        <th><span>公司地址</span></th>
+                                        <th><span>公司授权号</span></th>
+                                        <th><span>加盟有效起始日期</span></th>
+                                        <th><span>加盟有效截止日期</span></th>
                                         <th class="text-right"><span>操作</span></th>
                                     </tr></thead>
                                     <tbody></tbody>
                                 </table>
+                                <ul id="companyList_paging" class="pagination"></ul>
                             </div>
                         </div>
                     </section>

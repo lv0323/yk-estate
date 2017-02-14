@@ -80,6 +80,7 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
                 .setCachePeriod(60 * 60 * 24);
     }
 
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         if (this.pageBoundsArgumentResolver != null) {

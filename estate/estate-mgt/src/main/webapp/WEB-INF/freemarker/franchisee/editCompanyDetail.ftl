@@ -67,7 +67,7 @@
                                             <div type="text" id="editCompanyLocked" class="control-label"></div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <#--<div class="form-group">
                                         <label class="col-lg-2 col-md-2 col-sm-3 control-label">加盟有效时期<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <div class="input-group date">
@@ -86,37 +86,40 @@
                                             </div>
                                         </div>
                                     </div>
-                                <#--<div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人姓名<span class="required-field">*</span></label>
-                                    <div class="col-lg-3 col-md-3 col-sm-3">
-                                        <input type="text" id="companyRepName" class="form-control" placeholder="法人姓名">
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-3">
-                                        <div id="companyRepGender">
-                                            <input type="radio" id="M" value="M" checked="checked">男
-                                            <input type="radio" id="F" value="F">女
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人姓名<span class="required-field">*</span></label>
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <input type="text" id="companyRepName" class="form-control" placeholder="法人姓名">
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <div id="companyRepGender">
+                                                <input type="radio" id="M" value="M" checked="checked">男
+                                                <input type="radio" id="F" value="F">女
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人电话<span class="required-field">*</span></label>
-                                    <div class="col-lg-3 col-md-4 col-sm-4">
-                                        <input type="text" id="companyRepMobile" class="form-control" placeholder="法人电话">
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人电话<span class="required-field">*</span></label>
+                                        <div class="col-lg-3 col-md-4 col-sm-4">
+                                            <input type="text" id="companyRepMobile" class="form-control" placeholder="法人电话">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人身份证<span class="required-field">*</span></label>
-                                    <div class="col-lg-3 col-md-4 col-sm-4">
-                                        <input type="text" id="companyRepID" class="form-control" placeholder="法人身份证">
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人身份证<span class="required-field">*</span></label>
+                                        <div class="col-lg-3 col-md-4 col-sm-4">
+                                            <input type="text" id="companyRepID" class="form-control" placeholder="法人身份证">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人微信</label>
-                                    <div class="col-lg-3 col-md-4 col-sm-4">
-                                        <input type="text" id="companyRepWechat" class="form-control" placeholder="法人微信">
-                                    </div>
-                                </div>-->
+                                    <div class="form-group">
+                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人微信</label>
+                                        <div class="col-lg-3 col-md-4 col-sm-4">
+                                            <input type="text" id="companyRepWechat" class="form-control" placeholder="法人微信">
+                                        </div>
+                                    </div>-->
                                 </form>
+                                <div class="modal-footer center">
+                                    <button type="button" class="btn btn-primary" id="confirmEditCompanyBtn">保存</button>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -129,10 +132,3 @@
 
 <#include "/common/footer.ftl" />
 <script src="${contextPath!}/js/franchisee/companyDetail.js"></script>
-<script>
-    $(function () {
-        $('#editCompanyDialog input').prop("disabled", true);
-        $('#editCompanyDialog select').prop("disabled", true);
-    });
-
-</script>

@@ -166,6 +166,30 @@
     </div>
 </div>
 
+
+<!-- Modal quitEmployeeDialog -->
+<div class="modal fade bs-example-modal-sm" id="quitEmployeeDialog" tabindex="-1" role="dialog" aria-labelledby="quitEmployeeLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title" id="quitEmployeeLabel">员工离职</h4>
+            </div>
+            <div class="modal-body">
+                该操作不可恢复，确认执行离职操作?
+                <input id="quitEmployeeId" class="hidden">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmQuitEmployeeBtn">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="content-wrapper">
     <section class="content-header">
         <ol class="breadcrumb">
@@ -208,9 +232,25 @@
                                             <i class="fa fa-plus" aria-hidden="true"></i>
                                             新增员工
                                         </a>
+                                        <span class="opt-gap"></span>
+                                        <a class="btn" id="filterEmployeeBtn">
+                                            <i class="fa fa-filter" aria-hidden="true"></i>
+                                            筛选
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="box-body">
+                                    <div id="box-filter" class="form-horizontal" style="display:none;">
+                                        <div class="form-group ">
+                                            <label class="col-lg-3 col-md-3 col-sm-3 control-label">在职｜离职： </label>
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <select id="quitPosition" class="form-control btn-group dropup">
+                                                    <option value="nonQuit">在职</option>
+                                                    <option value="quit">离职</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <!-- table -->
                                     <table id="employeeList" class="list table table-bordered table-hover">
                                         <thead><tr>
@@ -222,6 +262,7 @@
                                         </tr></thead>
                                         <tbody></tbody>
                                     </table>
+                                    <ul id="employeeList_paging" class="pagination"></ul>
                                 </div>
                             </div>
                         </div>

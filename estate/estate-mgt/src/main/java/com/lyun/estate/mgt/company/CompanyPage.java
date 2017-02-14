@@ -33,7 +33,12 @@ public class CompanyPage {
     @GetMapping("/companyDetail")
     public ModelAndView companyDetail() {
         HashMap<String, Object> params = new HashMap<>();
-//        params.put("platformList", Arrays.asList(HouseTag.values()));
         return new ModelAndView("/franchisee/companyDetail", params);
+    }
+
+    @GetMapping("/editCompanyDetail")
+    public ModelAndView editCompanyDetail() {
+        HashMap<String, Object> params = new HashMap<>();
+        return new ModelAndView("/franchisee/editCompanyDetail", params);
     }
 }
