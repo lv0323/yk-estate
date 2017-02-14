@@ -31,6 +31,6 @@ public interface DepartmentRepo {
     @Select("select * from t_department where company_id=#{companyId} and is_deleted = false")
     List<Department> selectByCompanyId(Long companyId);
 
-    @Update("update t_department set parent_id = #{parenXtId} where id = #{id} ")
+    @Update("update t_department set parent_id = #{parentId} where id = #{id} ")
     int updateParent(@Param("id") Long id, @Param("parentId") Long parentId);
 }
