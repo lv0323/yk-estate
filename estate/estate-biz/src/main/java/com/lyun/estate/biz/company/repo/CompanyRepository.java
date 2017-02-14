@@ -28,10 +28,6 @@ public interface CompanyRepository {
     Company selectOne(Long id);
 
     @Select("select * from t_company")
-    @Results({
-            @Result(column = "id", property = "id", javaType = Long.class),
-            @Result(column = "id", property = "boss", one = @One(select = "com.lyun.estate.biz.employee.repo.EmployeeRepo.selectBossByCompanyId")),
-    })
     List<Company> select(RowBounds rowBounds);
 
     @Select("select * from t_company where id=#{id}")
