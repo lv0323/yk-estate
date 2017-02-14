@@ -18,6 +18,7 @@ public class Department {
     private BigDecimal latitude;
     private Date createTime;
     private Date updateTime;
+    private Boolean isDeleted;
 
 
     public Long getId() {
@@ -134,6 +135,15 @@ public class Department {
 
     public Department setLatitude(BigDecimal latitude) {
         this.latitude = latitude;
+        return this;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public Department setDeleted(Boolean deleted) {
+        isDeleted = deleted;
         return this;
     }
 }
