@@ -27,6 +27,7 @@ public enum ExCode {
     //position
     POSITION_HAS_EMPLOYEE("该岗位下有员工，不能删除"),
     //department
+    DEPT_IS_PRIMARY("该部门为公司总部，不能删除或调动"),
     DEPT_HAS_EMPLOYEE("该部门有员工，不能删除"),
     DEPT_HAS_CHILD("该部门有子部门，不能删除"),
     DEPT_NULL_PARENT("父部门不能为空"),

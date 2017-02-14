@@ -1,6 +1,5 @@
 package com.lyun.estate.biz.employee.service;
 
-import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.repo.CompanyRepository;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.repo.EmployeeRepo;
@@ -31,7 +30,7 @@ import java.util.UUID;
 @Service
 public class EmployeeService {
 
-    private static final String LOGIN_SALT_PREFIX = "LOGIN_SALT";
+    private static final String LOGIN_SUGAR_PREFIX = "LOGIN_SALT";
     private final EmployeeRepo repo;
     private final CompanyRepository companyRepository;
     private final FileService fileService;
@@ -112,7 +111,7 @@ public class EmployeeService {
 
     public String sugar(String mobile) {
         String salt = UUID.randomUUID().toString().replace("-", "");
-        cache.put(LOGIN_SALT_PREFIX + Objects.requireNonNull(mobile), salt);
+        cache.put(LOGIN_SUGAR_PREFIX + Objects.requireNonNull(mobile), salt);
         return salt;
     }
 
@@ -126,21 +125,17 @@ public class EmployeeService {
         String rawPassword = employee.getPassword();
         if (rawPassword == null)
             throw new EstateException(ExCode.EMPLOYEE_NOT_ACTIVE);
-        String sugar = cache.get(LOGIN_SALT_PREFIX + mobile, String.class);
+        String sugar = cache.get(LOGIN_SUGAR_PREFIX + mobile, String.class);
         if (sugar == null)
             throw new EstateException(ExCode.EMPLOYEE_NO_SUGAR);
         if (!hmac(sugar, rawPassword).equals(sugaredPassword))
             throw new EstateException(ExCode.EMPLOYEE_WRONG_PASSWORD);
-        cache.evict(LOGIN_SALT_PREFIX + mobile);
+        cache.evict(LOGIN_SUGAR_PREFIX + mobile);
         return employee;
     }
 
-    private void checkCompany(Long companyId) {
-        Company company = companyRepository.selectOne(companyId);
-        if (company.getLocked())
-            throw new EstateException(ExCode.COMPANY_LOCKED);
-        if (company.getEndDate().getTime() < clockTools.now().getTime())
-            throw new EstateException(ExCode.COMPANY_EXPIRED);
+    private boolean checkCompany(Long companyId) {
+        return true;
     }
 
     public List<Employee> listByDepartmentIds(List<Long> departmentIds) {
