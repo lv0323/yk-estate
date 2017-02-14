@@ -8,6 +8,7 @@ define(contextPath+'/js/service/company-service.js',
         var CompanyService = {};
 
         CompanyService.getCompany = function (header) {
+
             return RequestService.get('/api/company/query', null, header);
         };
 

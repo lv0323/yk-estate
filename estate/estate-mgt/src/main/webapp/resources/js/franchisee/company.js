@@ -1,11 +1,17 @@
 /**
  * Created by yanghong on 1/23/17.
  */
-require(['main-app',contextPath + '/js/service/company-service.js','datatables','datatablesBootstrap','datepicker.zh-cn'],
-    function (mainApp,CompanyService) {
+require(['main-app',contextPath + '/js/service/company-service.js',contextPath + '/js/plugins/pagination/pagingPlugin.js','jqPaginator','datepicker.zh-cn'],
+    function (mainApp,CompanyService,pagingPlugin) {
 
         var header = {};
         var companyAllDataRaw = {};
+
+        var pageConfig = {
+            limit: 8,
+            init: false
+        };
+
 
         $.fn.datepicker.defaults.language = "zh-CN";
         $('#addCompanyStartDate').datepicker({
@@ -24,45 +30,82 @@ require(['main-app',contextPath + '/js/service/company-service.js','datatables',
             autoclose: true
         });
 
+        var displayTable = function (data) {
+            companyAllDataRaw = data.items;
+            //var appendHtml = '';
+            $('#companyList>tbody').html(data.items.map(function(item, index){
+                return '<tr>' +
+                    '<td><a class="btn" id="lookCompanyBtn" data-id="'+item["id"]+'">'+item["name"]+'</a></td>' +
+                    '<td>'+item["secretKey"]+'</td>' +
+                    '<td>'+item["startDate"]+'</td>' +
+                    '<td>'+item["endDate"]+'</td>' +
+                    '<td class="text-right">' +
+                    '<a class="btn" id="editCompanyBtn" data-index="'+index+'" data-id="'+item["id"]+'" data-toggle="modal" data-target="#editCompanyDialog">编辑</a>' +
+                    '<span class="opt-gap"></span>'+
+                    '<a class="btn" id="renewCompanyBtn" data-index="'+index+'" data-id="'+item["id"]+'" data-toggle="modal" data-target="#renewCompanyDialog">续约</a>'+
+                    '<span class="opt-gap"></span>'+
+                    '<a class="btn" id="toggleLockCompanyBtn" data-index="'+index+'" data-id="'+item["id"]+'" data-toggle="modal" data-target="#toggleLockCompanyDialog">' + (item["locked"]?"解冻":"冻结") + '</a></td>'+
+                    '</tr>';
+            }));
+
+            /*var table = $('#companyList').DataTable({
+             "bProcessing": true,
+             "bServerSide": true,
+             "sAjaxDataProp": "",
+             "ajax":{
+             url: contextPath+'/api/company/query',
+             type: "get",
+             data: null,
+             headers: header,
+             dataType: 'json'
+             },
+             "aoColumns": [
+             { "mData": "name" },
+             { "mData": "boss.name" },
+             { "mData": "address" }
+             ],
+             "paging": true,
+             "lengthChange": true,
+             "searching": false,
+             "ordering": false,
+             "info": false,
+             "autoWidth": false
+             });*/
+        };
+
+        var pagination = function(dataTotal) {
+            if(pageConfig.init){
+                return;
+            }
+            pageConfig.init = true;
+            var config = {
+                pagingId:'#companyList_paging',
+                totalCounts:dataTotal,
+                pageSize: pageConfig.limit,
+                onChange: function (num, type) {
+                    getCompany((num-1)*pageConfig.limit, pageConfig.limit);
+                }
+            };
+            pagingPlugin.init(config);
+
+        };
+
+
         //get data from server and display data
-        CompanyService.getCompany(header)
-            .done(function (data) {
-                companyAllDataRaw = data;
-                var appendHtml = '';
-                $.each(data,function (index, companyRaw) {
-                    appendHtml = '<tr>' +
-                        '<td><a class="btn" id="lookCompanyBtn" data-id="'+companyRaw["id"]+'">'+companyRaw["name"]+'</a></td>' +
-                        '<td>'+companyRaw.boss["name"]+'</td>' +
-                        '<td>'+companyRaw["address"]+'</td>' +
-                        '<td class="text-right">' +
-                        '<a class="btn" id="editCompanyBtn" data-index="'+index+'" data-id="'+companyRaw["id"]+'" data-toggle="modal" data-target="#editCompanyDialog">编辑</a>' +
-                        '<span class="opt-gap"></span>'+
-                        '<a class="btn" id="renewCompanyBtn" data-index="'+index+'" data-id="'+companyRaw["id"]+'" data-toggle="modal" data-target="#renewCompanyDialog">续约</a>'+
-                        '<span class="opt-gap"></span>';
-
-                    if(companyRaw["locked"]){
-                        appendHtml += '<a class="btn" id="toggleLockCompanyBtn" data-index="'+index+'" data-id="'+companyRaw["id"]+'" data-toggle="modal" data-target="#toggleLockCompanyDialog">解冻</a></td>'+
-                            '</tr>';
-                    }else {
-                        appendHtml += '<a class="btn" id="toggleLockCompanyBtn" data-index="'+index+'" data-id="'+companyRaw["id"]+'" data-toggle="modal" data-target="#toggleLockCompanyDialog">冻结</a></td>'+
-                            '</tr>';
-                    }
-                    $('#companyList>tbody').append(appendHtml);
-
+        function getCompany(offset, limit) {
+            CompanyService.getCompany({'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
+                .done(function(data){
+                    displayTable(data);
+                    pagination(data.total);
+                })
+                .fail(function () {
+                    $('#companyList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
                 });
+        }
+        //initialize table when page loading
+         getCompany(0, pageConfig.limit);
 
-                $('#companyList').DataTable({
-                    "paging": true,
-                    "lengthChange": false,
-                    "searching": false,
-                    "ordering": false,
-                    "info": false,
-                    "autoWidth": false
-                });
-            })
-            .fail(function () {
-                $('#companyList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
-            });
+
 
         //open new window for company details
         $('#companyList').on('click','#lookCompanyBtn',function(e){

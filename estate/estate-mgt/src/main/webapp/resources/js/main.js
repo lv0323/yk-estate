@@ -13,7 +13,8 @@ requirejs.config({
         'datatables': contextPath+'/js/plugins/datatables/jquery.dataTables.min',
         'datatablesBootstrap': contextPath+'/js/plugins/datatables/dataTables.bootstrap.min',
         'submenu': contextPath+'/js/plugins/bootstrap-submenu',
-        'dropdown': contextPath+'/js/plugins/dropdown/index'
+        'dropdown': contextPath+'/js/plugins/dropdown/index',
+        'jqPaginator': contextPath+'/js/plugins/pagination/jqPaginator'
     },
     shim: {
         'bootstrap': ['jquery'],
@@ -34,7 +35,8 @@ requirejs.config({
             deps: ['jquery', 'bootstrap', 'datatables'],
             exports: 'datatablesBootstrap'
         },
-        'submenu':['jquery', 'bootstrap']
+        'submenu':['jquery', 'bootstrap'],
+        'jqPaginator':['jquery']
     },
     waitSeconds: 0,
     urlArgs: "vn="+vn

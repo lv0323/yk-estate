@@ -204,6 +204,7 @@
                                     </tr></thead>
                                     <tbody></tbody>
                                 </table>
+                                <ul id="departList_paging" class="pagination"></ul>
                             </div>
                         </div>
                     </section>

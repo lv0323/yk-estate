@@ -138,6 +138,7 @@
                                     </tr></thead>
                                     <tbody></tbody>
                                 </table>
+                                <ul id="positionList_paging" class="pagination"></ul>
                             </div>
                         </div>
                     </section>
