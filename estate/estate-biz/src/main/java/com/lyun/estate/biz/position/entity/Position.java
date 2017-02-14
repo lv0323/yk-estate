@@ -11,7 +11,6 @@ public class Position {
     private String name;
     private PositionType type;
     private String note;
-    private Boolean isDeleted;
     private Date createTime;
     private Date updateTime;
 
@@ -57,15 +56,6 @@ public class Position {
 
     public Position setType(PositionType type) {
         this.type = type;
-        return this;
-    }
-
-    public Boolean getDeleted() {
-        return isDeleted;
-    }
-
-    public Position setDeleted(Boolean deleted) {
-        isDeleted = deleted;
         return this;
     }
 

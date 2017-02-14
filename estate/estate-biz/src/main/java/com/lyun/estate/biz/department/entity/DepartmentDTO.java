@@ -3,7 +3,7 @@ package com.lyun.estate.biz.department.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Department {
+public class DepartmentDTO {
 
     private Long id;
     private Long parentId;
@@ -16,15 +16,19 @@ public class Department {
     private Long subDistrictId;
     private BigDecimal longitude;
     private BigDecimal latitude;
+    private Boolean isDeleted;
     private Date createTime;
     private Date updateTime;
+    private Boolean isPrimary;
+    private Boolean hasChild;
+    private Integer level;
 
 
     public Long getId() {
         return id;
     }
 
-    public Department setId(Long id) {
+    public DepartmentDTO setId(Long id) {
         this.id = id;
         return this;
     }
@@ -33,7 +37,7 @@ public class Department {
         return parentId;
     }
 
-    public Department setParentId(Long parentId) {
+    public DepartmentDTO setParentId(Long parentId) {
         this.parentId = parentId;
         return this;
     }
@@ -42,7 +46,7 @@ public class Department {
         return companyId;
     }
 
-    public Department setCompanyId(Long companyId) {
+    public DepartmentDTO setCompanyId(Long companyId) {
         this.companyId = companyId;
         return this;
     }
@@ -51,7 +55,7 @@ public class Department {
         return name;
     }
 
-    public Department setName(String name) {
+    public DepartmentDTO setName(String name) {
         this.name = name;
         return this;
     }
@@ -60,7 +64,7 @@ public class Department {
         return telephone;
     }
 
-    public Department setTelephone(String telephone) {
+    public DepartmentDTO setTelephone(String telephone) {
         this.telephone = telephone;
         return this;
     }
@@ -69,7 +73,7 @@ public class Department {
         return address;
     }
 
-    public Department setAddress(String address) {
+    public DepartmentDTO setAddress(String address) {
         this.address = address;
         return this;
     }
@@ -78,7 +82,7 @@ public class Department {
         return createTime;
     }
 
-    public Department setCreateTime(Date createTime) {
+    public DepartmentDTO setCreateTime(Date createTime) {
         this.createTime = createTime;
         return this;
     }
@@ -87,7 +91,7 @@ public class Department {
         return updateTime;
     }
 
-    public Department setUpdateTime(Date updateTime) {
+    public DepartmentDTO setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
         return this;
     }
@@ -96,7 +100,7 @@ public class Department {
         return cityId;
     }
 
-    public Department setCityId(Long cityId) {
+    public DepartmentDTO setCityId(Long cityId) {
         this.cityId = cityId;
         return this;
     }
@@ -105,7 +109,7 @@ public class Department {
         return districtId;
     }
 
-    public Department setDistrictId(Long districtId) {
+    public DepartmentDTO setDistrictId(Long districtId) {
         this.districtId = districtId;
         return this;
     }
@@ -114,7 +118,7 @@ public class Department {
         return subDistrictId;
     }
 
-    public Department setSubDistrictId(Long subDistrictId) {
+    public DepartmentDTO setSubDistrictId(Long subDistrictId) {
         this.subDistrictId = subDistrictId;
         return this;
     }
@@ -123,7 +127,7 @@ public class Department {
         return longitude;
     }
 
-    public Department setLongitude(BigDecimal longitude) {
+    public DepartmentDTO setLongitude(BigDecimal longitude) {
         this.longitude = longitude;
         return this;
     }
@@ -132,8 +136,44 @@ public class Department {
         return latitude;
     }
 
-    public Department setLatitude(BigDecimal latitude) {
+    public DepartmentDTO setLatitude(BigDecimal latitude) {
         this.latitude = latitude;
+        return this;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public DepartmentDTO setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+        return this;
+    }
+
+    public Boolean getHasChild() {
+        return hasChild;
+    }
+
+    public DepartmentDTO setHasChild(Boolean hasChild) {
+        this.hasChild = hasChild;
+        return this;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public DepartmentDTO setLevel(Integer level) {
+        this.level = level;
+        return this;
+    }
+
+    public Boolean getPrimary() {
+        return isPrimary;
+    }
+
+    public DepartmentDTO setPrimary(Boolean primary) {
+        isPrimary = primary;
         return this;
     }
 }
