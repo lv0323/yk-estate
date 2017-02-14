@@ -1,22 +1,20 @@
 /**
  * Created by yanghong on 1/19/17.
  */
-require(['main-app',contextPath + '/js/service/position-service.js','jqPaginator'],
-    function (mainApp,PositionService) {
+require(['main-app',contextPath + '/js/service/position-service.js',contextPath + '/js/plugins/pagination/pagingPlugin.js'],
+    function (mainApp,PositionService,pagingPlugin) {
 
         var header = {};
         var positionAllDataRaw = {};
 
         var pageConfig = {
-            limit: 10,
-            pageSize: 10,
-            visiblePages: 5
+            limit: 8,
+            init: false
         };
 
         var displayTable = function (data) {
-            positionAllDataRaw = data;
-            resData.total = data.total;
-            $('#positionList>tbody').html(data.map(function (positionRaw,index) {
+            positionAllDataRaw = data.items;
+            $('#positionList>tbody').html(data.items.map(function (positionRaw,index) {
                 return '<tr>' +
                     '<td>'+positionRaw["name"]+'</td>' +
                     '<td>'+positionRaw["note"]+'</td>' +
@@ -27,25 +25,30 @@ require(['main-app',contextPath + '/js/service/position-service.js','jqPaginator
             }));
         };
 
-        var resData = {};
-        resData.total=100;
-        var dataTotal = resData.total;
-        var totalPages = Math.ceil(dataTotal/pageConfig.limit); //向上取整
-
-        $('#positionList_paging').jqPaginator({
-            totalCounts: dataTotal,
-            totalPages: totalPages,
-            pageSize: pageConfig.pageSize,
-            visiblePages: pageConfig.visiblePages,
-            currentPage: 1,
-            onPageChange: function (num, type) {
-                getPosition((num-1)*pageConfig.limit, pageConfig.limit)
+        var pagination = function(dataTotal) {
+            if(pageConfig.init){
+                return;
             }
-        });
+            pageConfig.init = true;
+            var config = {
+                pagingId:'#positionList_paging',
+                totalCounts:dataTotal,
+                pageSize: pageConfig.limit,
+                onChange: function (num, type) {
+                    getPosition((num-1)*pageConfig.limit, pageConfig.limit);
+                }
+            };
+            pagingPlugin.init(config);
+
+        };
+
 
         function getPosition(offset, limit) {
-            PositionService.getPosition(header)
-                .done(displayTable)
+            PositionService.getPosition({'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
+                .done(function(data){
+                    displayTable(data);
+                    pagination(data.total);
+                })
                 .fail(function(){
                     $('#positionList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
                 });

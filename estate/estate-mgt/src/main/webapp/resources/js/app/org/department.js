@@ -1,8 +1,8 @@
 /**
  * Created by yanghong on 1/17/17.
  */
-require(['main-app',contextPath + '/js/service/department-service.js','datatables','dropdown','datatablesBootstrap'],
-    function (mainApp,DepartmentService) {
+require(['main-app',contextPath + '/js/service/department-service.js',contextPath + '/js/plugins/pagination/pagingPlugin.js','dropdown'],
+    function (mainApp,DepartmentService,pagingPlugin) {
         var BaseUrl = "/api/department/";
         var header = {};
         var departAllDataRaw = {};
@@ -24,110 +24,59 @@ require(['main-app',contextPath + '/js/service/department-service.js','datatable
         DepartmentService.getCity(header)
             .done(iniCityDropdown);
 
-        //get city from server in add/edit dialog
-        /*DepartmentService.getCity(header)
-            .done(function (data) {
-                var appendOption = "";
-                $.each(data,function (index, city) {
-                    appendOption += '<option id="'+city.id+'">'+city.name+'</option>';
-                });
-                $('#addDepartDialog #departCid').append(appendOption);
-                $('#editDepartDialog #departCid').append(appendOption);
-            });*/
-
         //get data from server and display data
         var displayTable = function (data) {
-            departAllDataRaw.departmentRaw = data;
-            /*下拉框所需要的数据*/
-            departAllDataRaw.dropdownData = data.map(function(item, index){
-                return {level:item.level,name:item.department.name,id:item.department.id,parent_id:item.department.parent_id};
+            departAllDataRaw.departmentRaw = data.items;
+            /*得到下拉框所需要的数据*/
+            departAllDataRaw.dropdownData = data.items.map(function(item, index){
+                return {level:item.level,name:item.name,id:item.id,parent_id:item.parentId};
             });
+            /*为add窗口中下拉框添加所需要的数据*/
             $("#addDepartForm .dropdown-yk").duojiDropdown({
                 data:departAllDataRaw.dropdownData
             });
 
-            $('#departList>tbody').html(data.map(function (departRaw, index) {
+            $('#departList>tbody').html(data.items.map(function (depart, index) {
                 return '<tr>' +
-                    '<td><a class="btn" id="lookDepartBtn" data-id="'+departRaw.department["id"]+'">'+departRaw.department["name"]+'</a></td>' +
-                    '<td>'+departRaw.department["telephone"]+'</td>' +
-                    '<td>'+departRaw.department["address"]+'</td>' +
-                    '<td class="text-right"><a class="btn" id="editDepartBtn" data-index="'+index+'" data-id="'+departRaw.department["id"]+'" data-toggle="modal" data-target="#editDepartDialog">编辑</a>'+
+                    '<td><a class="btn" id="lookDepartBtn" data-id="'+depart["id"]+'">'+depart["name"]+'</a></td>' +
+                    '<td>'+depart["telephone"]+'</td>' +
+                    '<td>'+depart["address"]+'</td>' +
+                    '<td class="text-right"><a class="btn" id="editDepartBtn" data-index="'+index+'" data-id="'+depart["id"]+'" data-toggle="modal" data-target="#editDepartDialog">编辑</a>'+
                     '<span class="opt-gap"></span>'+
-                    '<a class="btn" id="delDepartBtn" data-pid="'+departRaw.department["parentId"]+'" data-id="'+departRaw.department["id"]+'" data-toggle="modal" data-target="#deleteDepartDialog">删除</a></td>'+
+                    '<a class="btn" id="delDepartBtn" data-pid="'+depart["parentId"]+'" data-id="'+depart["id"]+'" data-toggle="modal" data-target="#deleteDepartDialog">删除</a></td>'+
                     '</tr>';
             }));
         };
 
-        DepartmentService.getDepartment(header)
-            .done(displayTable)
-            .fail(function(){
-                $('#departList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
-            });
-
-        $('#departList').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": false,
-            "info": false,
-            "autoWidth": false
-        });
-
-        //get data from server and display data
-        /*DepartmentService.getDepartment(header)
-            .done(function(data){
-                if(data === null){
-                    $('#departList>tbody').append('<tr><td colspan="4">没有数据</td></tr>');
-                }else {
-                    departAllDataRaw.departmentRaw = data;
-                    /!*下拉框所需要的数据*!/
-                    departAllDataRaw.dropdownData = data.map(function(item, index){
-                        return {level:item.level,name:item.department.name,id:item.department.id,parent_id:item.department.parent_id};
-                    });
-                    $("#addDepartForm .dropdown-yk").duojiDropdown({
-                        data:departAllDataRaw.dropdownData,
-                    });
-                    $.each(data,function(index,departRaw){
-                        var appendHtml = '<tr>' +
-                            '<td><a class="btn" id="lookDepartBtn" data-id="'+departRaw.department["id"]+'">'+departRaw.department["name"]+'</a></td>' +
-                            '<td>'+departRaw.department["telephone"]+'</td>' +
-                            '<td>'+departRaw.department["address"]+'</td>' +
-                            '<td class="text-right"><a class="btn" id="editDepartBtn" data-index="'+index+'" data-id="'+departRaw.department["id"]+'" data-toggle="modal" data-target="#editDepartDialog">编辑</a>';
-
-                        //if parent_id is null, disable delete button
-                        if(departRaw.deletable){
-                            appendHtml+='<span class="opt-gap"></span>'+
-                                '<a class="btn" id="delDepartBtn" data-pid="'+departRaw.department["parentId"]+'" data-id="'+departRaw.department["id"]+'" data-toggle="modal" data-target="#deleteDepartDialog">删除</a></td>'+
-                                '</tr>';
-                        }else{
-                            appendHtml+='</tr>';
-                        }
-                        $('#departList>tbody').append(appendHtml);
-
-                        //initialize departments selection in add/edit dialog
-                        if(departRaw.level === 0){
-                            $('#addDepartDialog .listUl').append('<li class="department department-'+ index +'" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
-                            $('#editDepartDialog .listUl').append('<li class="department department-'+ index +'" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
-                        }else{
-                            $('#addDepartDialog').find('.department[index='+departRaw.department.parentId+']').find('>.department-dl').append('<li class="department" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
-                            $('#editDepartDialog').find('.department[index='+departRaw.department.parentId+']').find('>.department-dl').append('<li class="department" index="'+departRaw.department.id+'"><span class="department-name" data-index="'+ departRaw.department.id +'">'+ departRaw.department.name +'</span><dl class="department-dl"></dl>')
-                        }
-
-                    });
-                    $('#departList').DataTable({
-                        "paging": true,
-                        "lengthChange": false,
-                        "searching": false,
-                        "ordering": false,
-                        "info": false,
-                        "autoWidth": false
-                    });
-
+        var pagination = function(dataTotal) {
+            if(pageConfig.init){
+                return;
+            }
+            pageConfig.init = true;
+            var config = {
+                pagingId:'#departList_paging',
+                totalCounts:dataTotal,
+                pageSize: pageConfig.limit,
+                onChange: function (num, type) {
+                    getDepartment((num-1)*pageConfig.limit, pageConfig.limit);
                 }
-            })
-            .fail(function(){
-                $('#departList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
-            });*/
+            };
+            pagingPlugin.init(config);
+
+        };
+
+        function getDepartment(offset, limit) {
+            DepartmentService.getDepartment({'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
+                .done(function(data){
+                    displayTable(data);
+                    pagination(data.total);
+                })
+                .fail(function(){
+                    $('#departList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
+                });
+        }
+
+        getDepartment(0, pageConfig.limit);
 
         //open new window for department details
         $('#departList').on('click','#lookDepartBtn',function(e){
@@ -174,7 +123,7 @@ require(['main-app',contextPath + '/js/service/department-service.js','datatable
                     address: $('#addDepartDialog #departAddress').val(),
                     name: $('#addDepartDialog #departName').val(),
                     parentId: $('#addDepartDialog .dropdown-yk').attr('selectedValue'),
-                    shortName: $('#addDepartDialog #departSpell').val(),
+                    // shortName: $('#addDepartDialog #departSpell').val(),
                     telephone: $('#addDepartDialog #departTel').val(),
                     cityId:$('#addDepartDialog #departCid option:selected').attr("id"),
                     districtId:$('#addDepartDialog #departDid option:selected').attr("id"),
