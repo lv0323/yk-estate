@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.department.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -18,6 +20,8 @@ public class Department {
     private BigDecimal latitude;
     private Date createTime;
     private Date updateTime;
+
+    @JsonIgnore
     private Boolean isDeleted;
 
 
@@ -142,8 +146,12 @@ public class Department {
         return isDeleted;
     }
 
+/*<<<<<<< HEAD
     public Department setDeleted(Boolean deleted) {
         isDeleted = deleted;
         return this;
+=======*/
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }

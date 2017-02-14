@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.position.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lyun.estate.biz.position.def.PositionType;
 
 import java.util.Date;
@@ -13,6 +14,8 @@ public class Position {
     private String note;
     private Date createTime;
     private Date updateTime;
+
+    @JsonIgnore
     private Boolean isDeleted;
 
     public Long getId() {
@@ -82,8 +85,12 @@ public class Position {
         return isDeleted;
     }
 
+/*<<<<<<< HEAD
     public Position setDeleted(Boolean deleted) {
         isDeleted = deleted;
         return this;
+=======*/
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }
