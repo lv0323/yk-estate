@@ -1,8 +1,8 @@
-package com.lyun.estate.mgt.employee;
+package com.lyun.estate.mgt.context;
 
 import com.lyun.estate.biz.employee.def.Gender;
 
-public class LoginEmployee {
+public class Operator {
 
     private Long id;
     private Long companyId;
@@ -14,23 +14,11 @@ public class LoginEmployee {
     private String name;
     private Gender gender;
 
-    public LoginEmployee(Long id, Long companyId, Long departmentId, Long positionId, Boolean isBoss, Boolean isAgent, String mobile, String name, Gender gender) {
-        this.id = id;
-        this.companyId = companyId;
-        this.departmentId = departmentId;
-        this.positionId = positionId;
-        this.isBoss = isBoss;
-        this.isAgent = isAgent;
-        this.mobile = mobile;
-        this.name = name;
-        this.gender = gender;
-    }
-
     public Long getId() {
         return id;
     }
 
-    public LoginEmployee setId(Long id) {
+    public Operator setId(Long id) {
         this.id = id;
         return this;
     }
@@ -39,7 +27,7 @@ public class LoginEmployee {
         return companyId;
     }
 
-    public LoginEmployee setCompanyId(Long companyId) {
+    public Operator setCompanyId(Long companyId) {
         this.companyId = companyId;
         return this;
     }
@@ -48,7 +36,7 @@ public class LoginEmployee {
         return departmentId;
     }
 
-    public LoginEmployee setDepartmentId(Long departmentId) {
+    public Operator setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
         return this;
     }
@@ -57,7 +45,7 @@ public class LoginEmployee {
         return positionId;
     }
 
-    public LoginEmployee setPositionId(Long positionId) {
+    public Operator setPositionId(Long positionId) {
         this.positionId = positionId;
         return this;
     }
@@ -66,7 +54,7 @@ public class LoginEmployee {
         return isBoss;
     }
 
-    public LoginEmployee setBoss(Boolean boss) {
+    public Operator setBoss(Boolean boss) {
         isBoss = boss;
         return this;
     }
@@ -75,7 +63,7 @@ public class LoginEmployee {
         return isAgent;
     }
 
-    public LoginEmployee setAgent(Boolean agent) {
+    public Operator setAgent(Boolean agent) {
         isAgent = agent;
         return this;
     }
@@ -84,7 +72,7 @@ public class LoginEmployee {
         return mobile;
     }
 
-    public LoginEmployee setMobile(String mobile) {
+    public Operator setMobile(String mobile) {
         this.mobile = mobile;
         return this;
     }
@@ -93,7 +81,7 @@ public class LoginEmployee {
         return name;
     }
 
-    public LoginEmployee setName(String name) {
+    public Operator setName(String name) {
         this.name = name;
         return this;
     }
@@ -102,7 +90,7 @@ public class LoginEmployee {
         return gender;
     }
 
-    public LoginEmployee setGender(Gender gender) {
+    public Operator setGender(Gender gender) {
         this.gender = gender;
         return this;
     }

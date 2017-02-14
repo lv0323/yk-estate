@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.position.service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.employee.repo.EmployeeRepo;
 import com.lyun.estate.biz.position.entity.Position;
@@ -8,8 +10,6 @@ import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class PositionService {
@@ -48,9 +48,9 @@ public class PositionService {
         return null;
     }
 
-    public List<Position> selectByCompanyId(Long companyId) {
+    public PageList<Position> selectByCompanyId(Long companyId, PageBounds pageBounds) {
         ExceptionUtil.checkNotNull("公司编号", companyId);
-        return repo.selectByCompanyId(companyId);
+        return repo.selectByCompanyId(companyId, pageBounds);
     }
 
     public Position selectById(Long id) {

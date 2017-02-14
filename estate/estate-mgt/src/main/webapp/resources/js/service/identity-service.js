@@ -16,12 +16,12 @@ define(contextPath + '/js/service/identity-service.js',
             var password = utilService.generateSignature(utilService.generateSignature(params.password, params.salt), params.sugar);
             opts.password= password;
             opts.mobile= params.mobile;
-            return requestService.get('/api/employee/login', opts, header||{});
+            return requestService.get('/api/auth/login', opts, header||{});
         };
 
         IdentityService.logout = function () {
             var defer =$.Deferred();
-            requestService.get('/api/employee/logout').done(function(response){
+            requestService.get('/api/auth/logout').done(function(response){
                 localStorage.removeItem('userInfo');
                 defer.resolve(response);
             }).fail(function(response){
@@ -30,7 +30,7 @@ define(contextPath + '/js/service/identity-service.js',
             return defer.promise();
         };
         IdentityService.getSalt = function(param){
-          return requestService.get('/api/employee/salt',param);
+          return requestService.get('/api/auth/salt',param);
         };
         IdentityService.loginAction = function (params, header) {
             var defer =$.Deferred();
@@ -77,7 +77,7 @@ define(contextPath + '/js/service/identity-service.js',
 
         IdentityService.activate = function (params, header) {
 
-            return requestService.post('/api/employee/active', params, header);
+            return requestService.post('/api/auth/active', params, header);
         };
 
         return IdentityService;

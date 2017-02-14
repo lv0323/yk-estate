@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.department.service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.department.entity.Department;
@@ -74,7 +76,7 @@ public class DepartmentService {
     }
 
     private Set<Long> findChildIds(Long companyId, Long departmentId) {
-        List<Department> departmentList = selectByCompanyId(companyId);
+        List<Department> departmentList = listAllByCompanyId(companyId);
         Set<Long> childIds = new HashSet<>();
         childIds.add(departmentId);
         int lastAdd;
@@ -91,9 +93,14 @@ public class DepartmentService {
         return childIds;
     }
 
-    public List<Department> selectByCompanyId(Long companyId) {
+    public PageList<Department> selectByCompanyId(Long companyId, PageBounds pageBounds) {
         ExceptionUtil.checkNotNull("公司编号", companyId);
-        return repo.selectByCompanyId(companyId);
+        return repo.selectByCompanyId(companyId, pageBounds);
+    }
+
+    public List<Department> listAllByCompanyId(Long companyId) {
+        ExceptionUtil.checkNotNull("公司编号", companyId);
+        return repo.listAllByCompanyId(companyId);
     }
 
     public Department selectById(Long departmentId) {

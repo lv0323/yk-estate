@@ -1,12 +1,12 @@
 package com.lyun.estate.biz.position.repo;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.position.entity.Position;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-
-import java.util.List;
 
 
 public interface PositionRepo {
@@ -25,5 +25,5 @@ public interface PositionRepo {
     Position selectById(Long id);
 
     @Select("select * from t_position where company_id=#{companyId} and is_deleted = false")
-    List<Position> selectByCompanyId(Long companyId);
+    PageList<Position> selectByCompanyId(Long companyId, PageBounds pageBounds);
 }

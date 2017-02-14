@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.company.repo;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.repo.provider.CompanyProvider;
 import org.apache.ibatis.annotations.*;
@@ -28,7 +29,7 @@ public interface CompanyRepository {
     Company selectOne(Long id);
 
     @Select("select * from t_company")
-    List<Company> select(RowBounds rowBounds);
+    PageList<Company> select(RowBounds rowBounds);
 
     @Select("select * from t_company where id=#{id}")
     Company findOne(Long id);

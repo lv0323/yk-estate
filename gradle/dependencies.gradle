@@ -81,7 +81,6 @@ ext {
             jjwt                        : "io.jsonwebtoken:jjwt:$ver.jjwt",
             oss                         : "com.aliyun.oss:aliyun-sdk-oss:$ver.oss",
             hibernate_validator         : "org.hibernate:hibernate-validator:$ver.hibernate_validator",
-            spring_session              : "org.springframework.session:spring-session",
             jpinyin                     : "com.github.stuxuhai:jpinyin:$ver.jpinyin"
     ]
 
