@@ -49,6 +49,10 @@ public class DepartmentService {
         if (department.getDeleted()) {
             return true;
         }
+        if (Objects.equals(department.getParentId(), 0L)) {
+            throw new EstateException(ExCode.DEPT_IS_PRIMARY, id);
+        }
+
         Set<Long> childIds = findChildIds(department.getCompanyId(), department.getId());
 
         if (findChildIds(department.getCompanyId(), id).size() > 1) {
@@ -102,8 +106,10 @@ public class DepartmentService {
         ExceptionUtil.checkNotNull("部门编号", id);
         ExceptionUtil.checkNotNull("父部门编号", parentId);
         Department dept = repo.selectForUpdate(id);
+        if (Objects.equals(dept.getParentId(), 0L)) {
+            throw new EstateException(ExCode.DEPT_IS_PRIMARY);
+        }
         Department parentDept = selectById(parentId);
-
         if (!Objects.equals(dept.getCompanyId(), parentDept.getCompanyId())) {
             throw new EstateException(ExCode.DEPT_ILLEGAL_PARENT);
         }
