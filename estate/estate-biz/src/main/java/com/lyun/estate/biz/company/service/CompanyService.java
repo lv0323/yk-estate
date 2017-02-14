@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.company.service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.entity.CreateCompanyEntity;
 import com.lyun.estate.biz.company.repo.CompanyRepository;
@@ -52,7 +53,7 @@ public class CompanyService {
         return repository.selectOne(company.getId());
     }
 
-    public List<Company> find(RowBounds rowBounds) {
+    public PageList<Company> find(RowBounds rowBounds) {
         return repository.select(rowBounds);
     }
 

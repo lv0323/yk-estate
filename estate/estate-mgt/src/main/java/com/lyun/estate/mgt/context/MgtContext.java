@@ -1,13 +1,14 @@
-package com.lyun.estate.core.supports.context;
+package com.lyun.estate.mgt.context;
 
+import com.lyun.estate.core.supports.context.BaseContext;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MgtContext extends BaseContext {
 
-    public static final String CORRELATION_ID = "correlationId";
+    public static final String OPERATOR = "operator";
 
-    public static final String OPERATOR_ID = "operatorId";
+    public static final String CORRELATION_ID = "correlationId";
 
     public static final String RESOURCE_PATH = "resourcePath";
 
@@ -22,12 +23,12 @@ public class MgtContext extends BaseContext {
     public static final String OS_NAME = "osName";
 
 
-    public Long getUserId() {
-        return (Long) get(OPERATOR_ID);
+    public Operator getOperator() {
+        return (Operator) get(OPERATOR);
     }
 
-    public void setUserId(Long id) {
-        put(OPERATOR_ID, id);
+    public void setOperator(Operator operator) {
+        put(OPERATOR, operator);
     }
 
     public String getMethod() {

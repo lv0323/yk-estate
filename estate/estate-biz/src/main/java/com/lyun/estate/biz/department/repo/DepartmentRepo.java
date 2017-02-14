@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.department.repo;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.department.entity.Department;
 import org.apache.ibatis.annotations.*;
 
@@ -29,8 +31,11 @@ public interface DepartmentRepo {
     Department selectForUpdate(Long id);
 
     @Select("select * from t_department where company_id=#{companyId} and is_deleted = false")
-    List<Department> selectByCompanyId(Long companyId);
+    PageList<Department> selectByCompanyId(Long companyId, PageBounds pageBounds);
 
     @Update("update t_department set parent_id = #{parentId} where id = #{id} ")
     int updateParent(@Param("id") Long id, @Param("parentId") Long parentId);
+
+    @Select("select * from t_department where company_id=#{companyId} and is_deleted = false")
+    List<Department> listAllByCompanyId(Long companyId);
 }

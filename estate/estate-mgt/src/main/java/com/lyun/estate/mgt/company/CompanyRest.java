@@ -1,6 +1,7 @@
 package com.lyun.estate.mgt.company;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.entity.CreateCompanyEntity;
 import com.lyun.estate.biz.company.service.CompanyService;
@@ -40,7 +41,7 @@ public class CompanyRest {
     }
 
     @GetMapping("query")
-    public Object queryAll(@RequestHeader("X-PAGING") PageBounds pageBounds) {
+    public PageList<Company> queryAll(@RequestHeader("X-PAGING") PageBounds pageBounds) {
         return service.find(pageBounds);
     }
 

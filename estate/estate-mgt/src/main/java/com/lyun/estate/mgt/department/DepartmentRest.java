@@ -1,9 +1,12 @@
 package com.lyun.estate.mgt.department;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.service.DepartmentService;
-import com.lyun.estate.mgt.employee.LoginEmployee;
+import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.supports.RestResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -14,30 +17,33 @@ public class DepartmentRest {
 
     private final DepartmentService service;
 
+    @Autowired
+    private MgtContext mgtContext;
+
     public DepartmentRest(DepartmentService service) {
         this.service = service;
     }
 
     @PostMapping("add")
-    public Object add(Department department, @SessionAttribute LoginEmployee employee) {
-        Objects.requireNonNull(department).setCompanyId(employee.getCompanyId());
+    public Object add(Department department) {
+        Objects.requireNonNull(department).setCompanyId(mgtContext.getOperator().getCompanyId());
         return service.create(department);
     }
 
     @GetMapping("delete")
-    public Object delete(@RequestParam Long id, @SessionAttribute LoginEmployee employee) {
+    public Object delete(@RequestParam Long id) {
         return new RestResponse().add("ret", service.deleteById(id)).get();
     }
 
     @PostMapping("edit")
-    public Object edit(Department department, @SessionAttribute LoginEmployee employee) {
-        Objects.requireNonNull(department).setCompanyId(employee.getCompanyId());
+    public Object edit(Department department) {
+        Objects.requireNonNull(department).setCompanyId(mgtContext.getOperator().getCompanyId());
         return service.updateInfo(department);
     }
 
     @GetMapping("query")
-    public List<Department> query(@SessionAttribute LoginEmployee employee) {
-        return service.selectByCompanyId(employee.getCompanyId());
+    public PageList<Department> query(@RequestHeader("X-PAGING") PageBounds pageBounds) {
+        return service.selectByCompanyId(mgtContext.getOperator().getCompanyId(), pageBounds);
     }
 
     @GetMapping("changeParent")
@@ -46,8 +52,8 @@ public class DepartmentRest {
     }
 
     @GetMapping("query-sorted")
-    public Object querySorted(@SessionAttribute LoginEmployee employee) {
-        List<Department> departmentList = service.selectByCompanyId(employee.getCompanyId());
+    public Object querySorted() {
+        List<Department> departmentList = service.listAllByCompanyId(mgtContext.getOperator().getCompanyId());
         List<Map<String, Object>> sortedList = new LinkedList<>();
         Map<Long, Map<String, Object>> departmentMap = new HashMap<>();
         departmentMap.put(null, null);

@@ -1,8 +1,8 @@
-package com.lyun.estate.rest.supports;
+package com.lyun.estate.mgt.supports;
 
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.utils.clock.ClockTools;
-import com.lyun.estate.core.supports.context.RestContext;
+import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.core.utils.CommonUtil;
 import eu.bitwalker.useragentutils.Browser;
@@ -19,8 +19,8 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 @Component
 public class AccessLogListener implements ApiListener {
@@ -34,7 +34,7 @@ public class AccessLogListener implements ApiListener {
     private static Logger logger = LoggerFactory.getLogger(AccessLogListener.class);
 
     @Autowired
-    private RestContext restContext;
+    private MgtContext mgtContext;
 
     @Autowired
     private ClockTools clockTools;
@@ -48,25 +48,25 @@ public class AccessLogListener implements ApiListener {
 
         response.setHeader("X-TIMESTAMP", String.valueOf((clockTools.nowInstant().toEpochMilli() / 1000)));
 
-        restContext.setCorrelationId(buildCorrelationId(request));
+        mgtContext.setCorrelationId(buildCorrelationId(request));
 
         String userAddress = StringUtils.isEmpty(request.getHeader(FORWARDED_FOR_HEADER)) ? request.getRemoteHost() : request
                 .getHeader(FORWARDED_FOR_HEADER);
         if (StringUtils.hasText(userAddress) && userAddress.indexOf(',') > 0) {
             userAddress = userAddress.substring(0, userAddress.indexOf(','));
         }
-        restContext.setUserAddress(userAddress);
+        mgtContext.setUserAddress(userAddress);
 
-        restContext.setResourcePath(buildRequestPath(request));
+        mgtContext.setResourcePath(buildRequestPath(request));
         // parser request base url
         String proto = request.getHeader(X_FORWARDED_PROTO);
         String host = request.getHeader(X_FORWARDED_HOST);
         String port = request.getHeader(X_FORWARDED_PORT);
         if (StringUtils.hasText(proto) && StringUtils.hasText(host) && StringUtils.hasText(port)) {
             String requestBaseUrl = proto + "://" + host + ":" + port;
-            restContext.setRequestBaseUrl(requestBaseUrl);
+            mgtContext.setRequestBaseUrl(requestBaseUrl);
         } else {
-            restContext.setRequestBaseUrl(environment.getRequiredProperty("core.baseUrl"));
+            mgtContext.setRequestBaseUrl(environment.getRequiredProperty("mgt.baseUrl"));
         }
 
         String userAgent = request.getHeader(USER_AGENT_HEADER);
@@ -83,17 +83,11 @@ public class AccessLogListener implements ApiListener {
                         .map(a -> ":" + a)
                         .orElse("");
 
-                restContext.setBrowserName(browser);
-                restContext.setOsName(Optional
+                mgtContext.setBrowserName(browser);
+                mgtContext.setOsName(Optional
                         .ofNullable(ua.getOperatingSystem())
                         .map(OperatingSystem::getName)
                         .orElse(null));
-
-                Matcher matcher = Pattern.compile("ykestate\\/(\\d+(\\.\\d+){1,2})")
-                        .matcher(userAgent);
-                if (matcher.matches()) {
-                    restContext.setAppVersion("iOS/" + matcher.group(1));
-                }
             } catch (Exception e) {
                 ExceptionUtil.catching(e);
             }
@@ -108,7 +102,7 @@ public class AccessLogListener implements ApiListener {
 
     @Override
     public void onComplete() {
-        restContext.clear();
+        mgtContext.clear();
     }
 
     private String buildRequestLog(HttpServletRequest request) {
