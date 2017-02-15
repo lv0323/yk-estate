@@ -24,15 +24,18 @@ import com.lyun.estate.biz.spec.file.service.FileService;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
 import com.lyun.estate.biz.spec.xiaoqu.entity.*;
 import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
+import com.lyun.estate.biz.xiaoqu.entity.Community;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuDetailBean;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSummaryBean;
 import com.lyun.estate.biz.xiaoqu.repository.XiaoQuRepository;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.apache.commons.lang.math.RandomUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -255,5 +258,14 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         return null;
     }
 
+    @Override
+    public List<Community> findAllCommunity() {
+        return xiaoQuRepository.findAllCommunity();
+    }
 
+    @Override
+    @Transactional
+    public int updateKeyword(Long id, String keyword) {
+        return xiaoQuRepository.updateCommunityKeyword(id, keyword);
+    }
 }

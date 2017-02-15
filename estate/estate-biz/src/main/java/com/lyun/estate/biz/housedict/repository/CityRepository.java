@@ -3,6 +3,7 @@ package com.lyun.estate.biz.housedict.repository;
 import com.lyun.estate.biz.housedict.entity.*;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -40,4 +41,13 @@ public interface CityRepository {
 
     @Select("SELECT s.* FROM t_line_station_rel lsr LEFT JOIN t_station s on lsr.station_id = s.id WHERE lsr.line_id = #{lineId} ORDER BY s.id")
     List<Station> findOrderedStations(Long lineId);
+
+    @Update("UPDATE T_CITY SET NAME_KW=#{keyword} WHERE id=#{id}")
+    int updateCityKeyword(@Param("id") Long id, @Param("keyword") String keyword);
+
+    @Update("UPDATE T_DISTRICT SET NAME_KW=#{keyword} WHERE id=#{id}")
+    int updateDistrictKeyword(@Param("id") Long id, @Param("keyword") String keyword);
+
+    @Update("UPDATE T_SUB_DISTRICT SET NAME_KW=#{keyword} WHERE id=#{id}")
+    int updateSubDistrictKeyword(@Param("id") Long id, @Param("keyword") String keyword);
 }
