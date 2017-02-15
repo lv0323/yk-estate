@@ -46,9 +46,9 @@ require(['main-app',contextPath + '/js/service/company-service.js',
                     startDate: item.startDate,
                     endDate: item.endDate,
                     operation: [
-                        {attr: {class: 'btn', id: 'hehe'}, data: {id: item.id}, text: '编辑'},
-                        {attr: {class: 'btn'}, data: {id: item.id}, text: '续约'},
-                        {attr: {class: 'btn'}, data: {id: item.id}, text: '冻结'}]
+                        {attr: {class: 'btn editCompanyBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#editCompanyDialog'}, text: '编辑'},
+                        {attr: {class: 'btn renewCompanyBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#renewCompanyDialog'}, text: '续约'},
+                        {attr: {class: 'btn toggleLockCompanyBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#toggleLockCompanyDialog'}, text: (item["locked"]?"解冻":"冻结")}]
                 }
             });
 
@@ -138,13 +138,13 @@ require(['main-app',contextPath + '/js/service/company-service.js',
 
 
         //open new window for company details
-        $('#companyList').on('click','#lookCompanyBtn',function(e){
+        $('#companyList').on('click','.lookCompanyBtn',function(e){
             var companyId = $(e.target).data('id');
             window.location.href="/mgt/franchisee/companyDetail.ftl?"+companyId;
         });
 
         //open new window for Company details
-        $('#companyList').on('click','#editCompanyBtn',function(e){
+        $('#companyList').on('click','.editCompanyBtn',function(e){
             var companyId = $(e.target).data('id');
             window.location.href="/mgt/franchisee/editCompanyDetail.ftl?"+companyId;
         });
@@ -186,7 +186,7 @@ require(['main-app',contextPath + '/js/service/company-service.js',
 
 
         //initialize title in toggle lock Company dialog
-        $('.fadeInRight').on('click','#toggleLockCompanyBtn',function(e){
+        $('.fadeInRight').on('click','.toggleLockCompanyBtn',function(e){
             var index = $(e.target).data('index');
             var company = companyAllDataRaw[index];
             $('#toggleLockCompanyId').val(company["id"]);
@@ -225,7 +225,7 @@ require(['main-app',contextPath + '/js/service/company-service.js',
 
 
         //initialize title in toggle lock Company dialog
-        $('.fadeInRight').on('click','#renewCompanyBtn',function(e){
+        $('.fadeInRight').on('click','.renewCompanyBtn',function(e){
             var index = $(e.target).data('index');
             var company = companyAllDataRaw[index];
             $('#renewCompanyId').val(company["id"]);
