@@ -6,16 +6,14 @@ import com.lyun.estate.biz.company.entity.CreateCompanyEntity;
 import com.lyun.estate.biz.company.repo.CompanyRepository;
 import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.service.DepartmentService;
-import com.lyun.estate.biz.employee.def.Status;
+import com.lyun.estate.biz.employee.def.WorkingStatus;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
-import com.lyun.estate.core.utils.Validations;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -33,7 +31,7 @@ public class CompanyService {
     }
 
     public Company create(Company company) {
-        repository.insert(Validations.doValidate(company).setSecretKey(String.valueOf(new Date().getTime())));
+        repository.insert(company);
         return company;
     }
 
@@ -48,7 +46,7 @@ public class CompanyService {
     }
 
     public Company update(Company company) {
-        Objects.requireNonNull(Validations.doValidate(company).getId());
+        Objects.requireNonNull(company.getId());
         repository.update(company);
         return repository.selectOne(company.getId());
     }
@@ -67,10 +65,10 @@ public class CompanyService {
                 .setAddress(entity.getCompany().getAddress());
         departmentService.create(department);
 
-        employeeService.createBoss(entity.getBoss()
+        employeeService.create(entity.getBoss()
                 .setCompanyId(entity.getCompany().getId())
                 .setDepartmentId(department.getId())
-                .setStatus(Status.WORKING));
+                .setStatus(WorkingStatus.WORKING).setBoss(Boolean.TRUE));
         return entity.getCompany();
     }
 

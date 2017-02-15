@@ -5,9 +5,11 @@ import com.lyun.estate.biz.fang.entity.FangSelector;
 import com.lyun.estate.biz.spec.fang.def.IntPair;
 import com.lyun.estate.core.repo.SQL;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+
+import static com.lyun.estate.core.repo.SqlSupport.buildQMEnumsStr;
+import static com.lyun.estate.core.repo.SqlSupport.hasNotNullElement;
 
 /**
  * Created by Jeffrey on 2017-01-23.
@@ -97,10 +99,10 @@ public class FangSqlProvider {
             WHERE_IF("fe.is_only = #{isOnly}", selector.getIsOnly() != null);
             WHERE_IF("fe.over_years >= #{overYears}", selector.getOverYears() != null);
 
-            if (selector.getShowings() != null && !selector.getShowings().isEmpty()) {
+            if (hasNotNullElement(selector.getShowings())) {
                 WHERE("fe.showing IN (" + buildQMEnumsStr(selector.getShowings()) + ")");
             }
-            if (selector.getXiaoQuIds() != null && !selector.getXiaoQuIds().isEmpty()) {
+            if (hasNotNullElement(selector.getXiaoQuIds())) {
                 WHERE("xq.id IN (" + Joiner.on(",").skipNulls().join(selector.getXiaoQuIds()) + ")");
             }
 
@@ -117,13 +119,6 @@ public class FangSqlProvider {
             }
 
         }}.toString();
-    }
-
-    private String buildQMEnumsStr(List<? extends Enum<?>> enums) {
-        StringBuilder sqlBuilder = new StringBuilder();
-        enums.stream().filter(Objects::nonNull).forEach(t -> sqlBuilder.append("'").append(t.name()).append("',"));
-        String sql = sqlBuilder.toString();
-        return sql.substring(0, sql.length() - 1);
     }
 
     private String buildIntPairWhere(String column, List<IntPair> intPairs) {
@@ -151,9 +146,5 @@ public class FangSqlProvider {
         sqlBuilder.append(")");
 
         return sqlBuilder.toString();
-    }
-
-    private boolean hasNotNullElement(Collection<?> collection) {
-        return collection != null && collection.stream().anyMatch(Objects::nonNull);
     }
 }

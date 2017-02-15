@@ -3,7 +3,6 @@ package com.lyun.estate.biz.department.service;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.entity.DepartmentDTO;
 import com.lyun.estate.biz.department.repo.DepartmentRepo;
@@ -61,7 +60,8 @@ public class DepartmentService {
         if (findChildIds(department.getCompanyId(), id).size() > 1) {
             throw new EstateException(ExCode.DEPT_HAS_CHILD, id);
         }
-        if (!employeeService.listByDepartmentIds(Lists.newArrayList(childIds))
+        if (!employeeService.listByCompanyIdDepartmentId(
+                department.getCompanyId(), department.getId(), null)
                 .isEmpty()) {
             throw new EstateException(ExCode.DEPT_HAS_EMPLOYEE, id);
         }
@@ -76,10 +76,12 @@ public class DepartmentService {
         return repo.selectById(department.getId());
     }
 
-    private Set<Long> findChildIds(Long companyId, Long departmentId) {
+    public Set<Long> findChildIds(Long companyId, Long departmentId) {
         List<Department> departmentList = repo.listAllByCompanyId(companyId);
         Set<Long> childIds = new HashSet<>();
-        childIds.add(departmentId);
+        if (departmentList.stream().anyMatch(d->Objects.equals(d.getId(),departmentId))){
+            childIds.add(departmentId);
+        }
         int lastAdd;
         do {
             lastAdd = 0;

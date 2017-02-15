@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.employee.def;
 
-public enum Status {
+public enum WorkingStatus {
     WORKING("正式"),
     TRAINING("试用"),
     LEAVING("请假"),
@@ -8,7 +8,7 @@ public enum Status {
 
     private String status;
 
-    Status(String status) {
+    WorkingStatus(String status) {
         this.status = status;
     }
 
