@@ -57,7 +57,8 @@ define(contextPath+'/js/utils/dataTableHelp.js', ['main-app', 'datatables'],
                 var dataStr = "";
                 if(Array.isArray(data)){
                     content = data.map(function (item, index) {
-
+                        attrStr = "";
+                        dataStr = "";
                         for (var attr in item.attr) {
                             attrStr += attr + '="' + item.attr[attr] + '" ';
                         }
@@ -69,6 +70,8 @@ define(contextPath+'/js/utils/dataTableHelp.js', ['main-app', 'datatables'],
                     });
                     return content.join('<span class="opt-gap"></span>');
                 }else{
+                    attrStr = "";
+                    dataStr = "";
                     for (var attr in data.attr) {
                         attrStr += attr + '="' + data.attr[attr] + '" ';
                     }
