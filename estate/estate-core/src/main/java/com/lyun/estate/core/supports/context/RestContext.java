@@ -27,6 +27,16 @@ public class RestContext extends BaseContext {
 
     public static final String APP_VERSION = "appVersion";
 
+    public static final String ACCESS_TIME = "accessTime";
+
+    public Long getAccessTime() {
+        return (Long) get(ACCESS_TIME);
+    }
+
+    public void setAccessTime(Long accessTime) {
+        put(ACCESS_TIME, accessTime);
+    }
+
     public String getClientId() {
         return (String) get(CLIENT_ID);
     }
