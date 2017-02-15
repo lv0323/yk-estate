@@ -6,6 +6,7 @@ requirejs.config({
         'cryptojs.md5': contextPath+'/js/libs/md5',
         'cryptojs.hmac': contextPath+'/js/libs/hmac',
         'parsley': contextPath+'/js/libs/parsley.min',
+        'zTree': contextPath+'/js/libs/jquery.ztree.core.min',
         'datepicker': contextPath+'/js/plugins/datepicker/bootstrap-datepicker',
         'datepicker.zh-cn': contextPath+'/js/plugins/datepicker/locales/bootstrap-datepicker.zh-CN',
         'datetimepicker': contextPath+'/js/libs/bootstrap-datetimepicker.min',
@@ -23,6 +24,10 @@ requirejs.config({
             exports: 'CryptoJS'
         },
         'parsley': ['jquery'],
+        'zTree':{
+            deps:['jquery'],
+            exports: 'zTree'
+        },
         'datepicker': {
             deps: ['jquery', 'bootstrap'],
             exports: '$.fn.datepicker'
