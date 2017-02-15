@@ -81,4 +81,8 @@ public class XiaoQuController {
         return xiaoQuService.findNearbyXiaoQu(id);
     }
 
+    @GetMapping("/updateAllKeyword")
+    public boolean updateAllKeyword() {
+        return keywordService.updateAllKeyword();
+    }
 }

@@ -4,6 +4,7 @@ import com.lyun.estate.biz.housedict.entity.*;
 import com.lyun.estate.biz.housedict.repository.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -52,5 +53,20 @@ public class CityService {
 
     public Line findPrimaryLine(Long stationId) {
         return cityRepository.findPrimaryLine(stationId);
+    }
+
+    @Transactional
+    public int updateCityKeyword(Long id, String keyword) {
+        return cityRepository.updateCityKeyword(id, keyword);
+    }
+
+    @Transactional
+    public int updateDistrictKeyword(Long id, String keyword) {
+        return cityRepository.updateDistrictKeyword(id, keyword);
+    }
+
+    @Transactional
+    public int updateSubDistrictKeyword(Long id, String keyword) {
+        return cityRepository.updateSubDistrictKeyword(id, keyword);
     }
 }

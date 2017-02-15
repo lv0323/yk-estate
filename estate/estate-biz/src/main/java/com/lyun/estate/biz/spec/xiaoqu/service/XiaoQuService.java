@@ -5,6 +5,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
 import com.lyun.estate.biz.spec.xiaoqu.entity.*;
+import com.lyun.estate.biz.xiaoqu.entity.Community;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -52,4 +53,8 @@ public interface XiaoQuService {
     List<EstateMapResource> findCommunityListByMap(BigDecimal minLongitude, BigDecimal maxLongitude,
                                                    BigDecimal minLatitude, BigDecimal maxLatitude, BizType bizType,
                                                    Integer cityId);
+
+    int updateKeyword(Long id, String keyword);
+
+    List<Community> findAllCommunity();
 }

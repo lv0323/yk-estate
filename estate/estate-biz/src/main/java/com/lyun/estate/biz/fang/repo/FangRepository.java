@@ -2,6 +2,7 @@ package com.lyun.estate.biz.fang.repo;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.entity.FangDescr;
 import com.lyun.estate.biz.fang.entity.FangSelector;
 import com.lyun.estate.biz.fang.entity.FangTag;
@@ -11,6 +12,7 @@ import com.lyun.estate.biz.spec.fang.entity.FangSummary;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -33,4 +35,10 @@ public interface FangRepository {
 
     @SelectProvider(type = FangSqlProvider.class, method = "findSummaryBySelector")
     PageList<FangSummary> findSummaryBySelector(FangSelector selector, PageBounds pageBounds);
+
+    @Update("UPDATE T_FANG SET NAME_KW=#{keyword} WHERE id=#{fangId}")
+    int updateKeyword(@Param("fangId") Long fangId, @Param("keyword") String keyword);
+
+    @Select("SELECT * FROM T_FANG")
+    List<Fang> findAllFang();
 }

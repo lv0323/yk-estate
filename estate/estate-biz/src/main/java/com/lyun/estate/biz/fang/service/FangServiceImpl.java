@@ -6,6 +6,7 @@ import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.fang.def.*;
+import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.entity.FangSelector;
 import com.lyun.estate.biz.fang.entity.FangTag;
 import com.lyun.estate.biz.fang.repo.FangRepository;
@@ -28,6 +29,7 @@ import com.lyun.estate.core.supports.types.YN;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -335,6 +337,17 @@ public class FangServiceImpl implements FangService {
         selector.setProcess(HouseProcess.PUBLISH);
 
         return findFangSummaryBySelector(selector, pageBounds);
+    }
+
+    @Override
+    @Transactional
+    public int updateKeyword(Long fangId, String keyword) {
+        return fangRepository.updateKeyword(fangId, keyword);
+    }
+
+    @Override
+    public List<Fang> findAllFang() {
+        return fangRepository.findAllFang();
     }
 
 }
