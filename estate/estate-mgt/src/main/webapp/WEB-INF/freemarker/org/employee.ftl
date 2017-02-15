@@ -217,8 +217,8 @@
                                 <div class="box-header with-border">
                                     <h3 class="box-title">所有部门</h3>
                                 </div>
-                                <div class="">
-
+                                <div class="zTreeDemoBackground left">
+                                    <ul id="departmentTree" class="ztree"></ul>
                                 </div>
                             </div>
                         </div>

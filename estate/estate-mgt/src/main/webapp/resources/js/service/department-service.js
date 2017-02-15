@@ -26,6 +26,9 @@ define(contextPath + '/js/service/department-service.js',
         DepartmentService.getDepartment = function (header) {
             return RequestService.get('/api/department/query', null, header);
         };
+        DepartmentService.getAllDepartment = function (header) {
+            return RequestService.get('/api/department/query-all', null, header);
+        };
 
         DepartmentService.getCity = function (header) {
             return RequestService.get('/api/department/district/cites', null, header);
