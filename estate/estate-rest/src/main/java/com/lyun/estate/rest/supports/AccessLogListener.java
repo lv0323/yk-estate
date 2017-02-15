@@ -48,6 +48,9 @@ public class AccessLogListener implements ApiListener {
 
         response.setHeader("X-TIMESTAMP", String.valueOf((clockTools.nowInstant().toEpochMilli() / 1000)));
 
+        Long accessTime = System.nanoTime();
+        restContext.setAccessTime(accessTime);
+
         restContext.setCorrelationId(buildCorrelationId(request));
 
         String userAddress = StringUtils.isEmpty(request.getHeader(FORWARDED_FOR_HEADER)) ? request.getRemoteHost() : request
@@ -103,7 +106,8 @@ public class AccessLogListener implements ApiListener {
 
     @Override
     public void onResponse(HttpServletResponse response) {
-        logger.info(buildResponseLog(response));
+        Long responseTime = System.nanoTime();
+        logger.info(buildResponseLog(response, responseTime - restContext.getAccessTime()));
     }
 
     @Override
@@ -113,6 +117,7 @@ public class AccessLogListener implements ApiListener {
 
     private String buildRequestLog(HttpServletRequest request) {
         StringBuilder accessLog = new StringBuilder();
+        append(accessLog, "[" + restContext.getCorrelationId() + "]");
         append(accessLog, request.getRemoteHost());
         append(accessLog, request.getHeader(FORWARDED_FOR_HEADER));
         append(accessLog, request.getRemoteUser());
@@ -123,10 +128,12 @@ public class AccessLogListener implements ApiListener {
         return accessLog.toString().substring(1);
     }
 
-    private String buildResponseLog(HttpServletResponse response) {
+    private String buildResponseLog(HttpServletResponse response, Long cost) {
         StringBuilder responseLog = new StringBuilder();
-        responseLog.append(Integer.toString(response.getStatus()));
+        append(responseLog, "[" + restContext.getCorrelationId() + "]");
+        append(responseLog, Integer.toString(response.getStatus()));
         append(responseLog, response.getHeader("Content-Length"));
+        append(responseLog, String.valueOf(cost));
         return responseLog.toString();
     }
 

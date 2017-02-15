@@ -68,3 +68,5 @@ CREATE TABLE t_employee
   UNIQUE (company_id, mobile)
 );
 
+ALTER SEQUENCE t_employee_id_seq RESTART WITH 100000;
+

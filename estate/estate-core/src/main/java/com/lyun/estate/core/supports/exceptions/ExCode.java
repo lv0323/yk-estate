@@ -16,6 +16,7 @@ public enum ExCode {
     //oss
     OSS_EXCEPTION("OSS错误"),
     //employee
+    EMPLOYEE_IS_BOSS("该用户为Boss,不能删除"),
     EMPLOYEE_NOT_ACTIVE("未激活"),
     EMPLOYEE_NO_SALT("获取Salt失败"),
     EMPLOYEE_NO_SUGAR("找不到Sugar"),

@@ -2,9 +2,9 @@ package com.lyun.estate.mgt.supports;
 
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.utils.clock.ClockTools;
-import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.core.utils.CommonUtil;
+import com.lyun.estate.mgt.context.MgtContext;
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -45,8 +45,8 @@ public class AccessLogListener implements ApiListener {
 
     @Override
     public void onRequest(HttpServletRequest request, HttpServletResponse response) {
-
-        response.setHeader("X-TIMESTAMP", String.valueOf((clockTools.nowInstant().toEpochMilli() / 1000)));
+        Long accessTime = System.currentTimeMillis();
+        mgtContext.setAccessTime(accessTime);
 
         mgtContext.setCorrelationId(buildCorrelationId(request));
 
@@ -97,7 +97,8 @@ public class AccessLogListener implements ApiListener {
 
     @Override
     public void onResponse(HttpServletResponse response) {
-        logger.info(buildResponseLog(response));
+        Long responseTime = System.currentTimeMillis();
+        logger.info(buildResponseLog(response, responseTime - mgtContext.getAccessTime()));
     }
 
     @Override
@@ -107,6 +108,7 @@ public class AccessLogListener implements ApiListener {
 
     private String buildRequestLog(HttpServletRequest request) {
         StringBuilder accessLog = new StringBuilder();
+        append(accessLog, "[" + mgtContext.getCorrelationId() + "]");
         append(accessLog, request.getRemoteHost());
         append(accessLog, request.getHeader(FORWARDED_FOR_HEADER));
         append(accessLog, request.getRemoteUser());
@@ -117,10 +119,12 @@ public class AccessLogListener implements ApiListener {
         return accessLog.toString().substring(1);
     }
 
-    private String buildResponseLog(HttpServletResponse response) {
+    private String buildResponseLog(HttpServletResponse response, Long cost) {
         StringBuilder responseLog = new StringBuilder();
-        responseLog.append(Integer.toString(response.getStatus()));
+        append(responseLog, "[" + mgtContext.getCorrelationId() + "]");
+        append(responseLog, Integer.toString(response.getStatus()));
         append(responseLog, response.getHeader("Content-Length"));
+        append(responseLog, String.valueOf(cost));
         return responseLog.toString();
     }
 

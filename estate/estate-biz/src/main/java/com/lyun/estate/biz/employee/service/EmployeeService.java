@@ -76,9 +76,7 @@ public class EmployeeService {
                 return null;
             }
         }
-
         return repo.selectByCompanyIdAndDeptIds(companyId, childs, pageBounds);
-
     }
 
     public Employee update(Employee employee) {
@@ -89,6 +87,12 @@ public class EmployeeService {
     }
 
     public Boolean quit(Long id) {
+        Employee employee = repo.selectById(id);
+        if (employee == null) {
+            return false;
+        } else if (employee.getBoss()) {
+            throw new EstateException(ExCode.EMPLOYEE_IS_BOSS);
+        }
         repo.quit(id);
         return true;
     }
