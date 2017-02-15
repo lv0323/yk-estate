@@ -1,58 +1,31 @@
 package com.lyun.estate.biz.employee.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.employee.def.Gender;
-import com.lyun.estate.biz.employee.def.Status;
-import com.lyun.estate.biz.position.entity.Position;
-import org.hibernate.validator.constraints.NotEmpty;
+import com.lyun.estate.biz.employee.def.WorkingStatus;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Pattern;
+import java.util.Date;
 
 public class Employee {
 
     private Long id;
     private Long companyId;
-    @NotNull
-    @JsonIgnore
     private Long departmentId;
-    @Null
-    private Department department;
-    @JsonIgnore
     private Long positionId;
-    @Null
-    private Position position;
-    @Null
     private Boolean isBoss;
     private Boolean isAgent;
-    @Null
     private Long avatarId;
-    @Pattern(regexp = "^1\\d{10}$")
     private String mobile;
-    @Null
-    @JsonIgnore
     private String password;
-    @Null
-    @JsonIgnore
     private String salt;
-    @NotEmpty
     private String name;
-    @NotNull
     private Gender gender;
-    @Pattern(regexp = "(\\d{14}[0-9Xx])|(\\d{17}[0-9Xx])")
     private String idcardNumber;
     private String wechat;
-    @NotNull
-    private Status status;
-    @Null
+    private WorkingStatus status;
     private Boolean quit;
-    private java.sql.Date entryDate;
-    @JsonIgnore
-    private java.sql.Timestamp createTime;
-    @JsonIgnore
-    private java.sql.Timestamp updateTime;
+    private Date entryDate;
+    private Date createTime;
+    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -90,21 +63,30 @@ public class Employee {
         return this;
     }
 
-    public Boolean getIsBoss() {
+    public Boolean getBoss() {
         return isBoss;
     }
 
-    public Employee setIsBoss(Boolean isBoss) {
-        this.isBoss = isBoss;
+    public Employee setBoss(Boolean boss) {
+        isBoss = boss;
         return this;
     }
 
-    public Boolean getIsAgent() {
+    public Boolean getAgent() {
         return isAgent;
     }
 
-    public Employee setIsAgent(Boolean isAgent) {
-        this.isAgent = isAgent;
+    public Employee setAgent(Boolean agent) {
+        isAgent = agent;
+        return this;
+    }
+
+    public Long getAvatarId() {
+        return avatarId;
+    }
+
+    public Employee setAvatarId(Long avatarId) {
+        this.avatarId = avatarId;
         return this;
     }
 
@@ -171,66 +153,12 @@ public class Employee {
         return this;
     }
 
-    public Status getStatus() {
+    public WorkingStatus getStatus() {
         return status;
     }
 
-    public Employee setStatus(Status status) {
+    public Employee setStatus(WorkingStatus status) {
         this.status = status;
-        return this;
-    }
-
-    public java.sql.Date getEntryDate() {
-        return entryDate;
-    }
-
-    public Employee setEntryDate(java.sql.Date entryDate) {
-        this.entryDate = entryDate;
-        return this;
-    }
-
-    public java.sql.Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public Employee setCreateTime(java.sql.Timestamp createTime) {
-        this.createTime = createTime;
-        return this;
-    }
-
-    public java.sql.Timestamp getUpdateTime() {
-        return updateTime;
-    }
-
-    public Employee setUpdateTime(java.sql.Timestamp updateTime) {
-        this.updateTime = updateTime;
-        return this;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public Employee setDepartment(Department department) {
-        this.department = department;
-        return this;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public Employee setPosition(Position position) {
-        this.position = position;
-        return this;
-    }
-
-    public Long getAvatarId() {
-        return avatarId;
-    }
-
-    public Employee setAvatarId(Long avatarId) {
-        this.avatarId = avatarId;
         return this;
     }
 
@@ -240,6 +168,33 @@ public class Employee {
 
     public Employee setQuit(Boolean quit) {
         this.quit = quit;
+        return this;
+    }
+
+    public Date getEntryDate() {
+        return entryDate;
+    }
+
+    public Employee setEntryDate(Date entryDate) {
+        this.entryDate = entryDate;
+        return this;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public Employee setCreateTime(Date createTime) {
+        this.createTime = createTime;
+        return this;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public Employee setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
         return this;
     }
 }

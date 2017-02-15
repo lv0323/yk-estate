@@ -29,6 +29,10 @@ subprojects {
     configurations.all({
         exclude group: 'commons-logging', module: 'commons-logging'
     })
+
+    tasks.withType(AbstractCompile) {
+        options.encoding = 'UTF-8'
+    }
 }
 
 task wrapper(type: Wrapper) {
