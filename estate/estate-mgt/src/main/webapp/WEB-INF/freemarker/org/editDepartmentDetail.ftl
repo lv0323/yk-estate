@@ -100,3 +100,10 @@
 
 <#include "/common/footer.ftl" />
 <script src="${contextPath!}/js/app/org/departmentDetail.js"></script>
+<script>
+    $(function () {
+        $(".dropdown-yk .parent").css({"background-color":"#eeeeee","color":"#555555","cursor":"default"});
+        $('ul.listUl').prop("disabled", true);
+    });
+
+</script>

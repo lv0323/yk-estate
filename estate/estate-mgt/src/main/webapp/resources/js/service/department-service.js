@@ -6,19 +6,7 @@ define(contextPath + '/js/service/department-service.js',
     function (mainApp, RequestService) {
 
         var DepartmentService = {};
-
-        DepartmentService.iniDropListBySupId = function(url,superior_id,header,jqueryElementOuter,jqueryElementInner){
-            RequestService.get(url,{id:superior_id},header)
-                .done(function (data) {
-                    var appendOption = '';
-                    $.each(data, function (index, element) {
-                        appendOption += '<option id="' + element.id + '">' + element.name + '</option>';
-
-                    });
-                    $('#'+jqueryElementOuter+' #'+jqueryElementInner).html(appendOption);
-                });
-        };
-
+        
         DepartmentService.getSpecifiedDepartment = function (departId,header) {
             return RequestService.get('/api/department/'+departId, header);
         };
@@ -26,12 +14,13 @@ define(contextPath + '/js/service/department-service.js',
         DepartmentService.getDepartment = function (header) {
             return RequestService.get('/api/department/query', null, header);
         };
+
         DepartmentService.getAllDepartment = function (header) {
             return RequestService.get('/api/department/query-all', null, header);
         };
 
         DepartmentService.getCity = function (header) {
-            return RequestService.get('/api/cites', null, header);
+            return RequestService.get('/api/cities/', null, header);
         };
 
         DepartmentService.getDistrict = function (params, header) {

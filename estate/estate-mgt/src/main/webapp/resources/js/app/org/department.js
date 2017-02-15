@@ -1,37 +1,41 @@
 /**
  * Created by yanghong on 1/17/17.
  */
-require(['main-app',contextPath + '/js/service/department-service.js',contextPath + '/js/plugins/pagination/pagingPlugin.js','dropdown'],
-    function (mainApp,DepartmentService,pagingPlugin) {
-        var BaseUrl = "/api/department/";
+require(['main-app',contextPath + '/js/service/department-service.js',
+        contextPath + '/js/plugins/pagination/pagingPlugin.js',
+        contextPath + '/js/utils/dataTableHelp.js',
+        'locationUtil', 'dropdown'],
+    function (mainApp, DepartmentService, pagingPlugin, dataTableHelp) {
         var header = {};
-        var departAllDataRaw = {};
+        // var departAllDataRaw = {};
+
+        var tableConfig ={
+            init: false,
+            target:null
+        };
 
         var pageConfig = {
             limit: 8,
             init: false
         };
+        //console.log(cityUtil);
 
-        //get city from server in add/edit dialog
-        var iniCityDropdown = function (data) {
-            var appendOption = "";
-            $.each(data,function (index, city) {
-                appendOption += '<option id="'+city.id+'">'+city.name+'</option>';
-            });
-            $('#addDepartDialog #departCid').append(appendOption);
-            $('#editDepartDialog #departCid').append(appendOption);
-        };
-        DepartmentService.getCity(header)
-            .done(iniCityDropdown);
+
+
+
+        /*DepartmentService.getCity(header).done(function (data) {
+            $('#addDepartDialog #departCid').LocationDropdown(data);
+        });*/
+        //$('#addDepartDialog #departCid').CityDropdown();
 
         //get data from server and display data
-        var displayTable = function (data) {
+        /*var displayTable = function (data) {
             departAllDataRaw.departmentRaw = data.items;
-            /*得到下拉框所需要的数据*/
+            /!*得到下拉框所需要的数据*!/
             departAllDataRaw.dropdownData = data.items.map(function(item, index){
                 return {level:item.level,name:item.name,id:item.id,parent_id:item.parentId};
             });
-            /*为add窗口中下拉框添加所需要的数据*/
+            /!*为add窗口中下拉框添加所需要的数据*!/
             $("#addDepartForm .dropdown-yk").duojiDropdown({
                 data:departAllDataRaw.dropdownData
             });
@@ -46,6 +50,81 @@ require(['main-app',contextPath + '/js/service/department-service.js',contextPat
                     '<a class="btn" id="delDepartBtn" data-pid="'+depart["parentId"]+'" data-id="'+depart["id"]+'" data-toggle="modal" data-target="#deleteDepartDialog">删除</a></td>'+
                     '</tr>';
             }));
+        };*/
+
+        var displayTable = function (data) {
+            //departAllDataRaw = data.items;
+            var dataSet = data.items.map(function (item, index) {
+                if(item.id === 1){
+                    return {
+                        departName: {attr: {class: 'lookDepartBtn btn'}, data: {id: item.id}, text: item.name},
+                        telephone: item.telephone,
+                        address: item.address,
+                        operation: [
+                            {
+                                attr: {class: 'btn editDepartBtn'},
+                                data: {index: index, id: item.id},
+                                text: '编辑'
+                            },
+                            {
+                                attr: {class: 'btn reDeployDepartBtn'},
+                                data: {index: index, id: item.id, toggle: 'modal', target: '#renewCompanyDialog'},
+                                text: '调动'
+                            }]
+                    }
+                }else{
+                    return {
+                        departName: {attr: {class: 'lookDepartBtn btn'}, data: {id: item.id}, text: item.name},
+                        telephone: item.telephone,
+                        address: item.address,
+                        operation: [
+                            {
+                                attr: {class: 'btn editDepartBtn'},
+                                data: {index: index, id: item.id},
+                                text: '编辑'
+                            },
+                            {
+                                attr: {class: 'btn reDeployDepartBtn'},
+                                data: {index: index, id: item.id, toggle: 'modal', target: '#renewCompanyDialog'},
+                                text: '调动'
+                            },
+                            {
+                                attr: {class: 'btn delDepartBtn'},
+                                data: {index: index, id: item.id, toggle: 'modal', target: '#toggleLockCompanyDialog'},
+                                text: '删除'
+                            }]
+                    }
+                }
+
+            });
+
+            if (!tableConfig.target) {
+                tableConfig.target = $('#departList').DataTable({
+                    data: dataSet,
+                    paging: false,
+                    searching: false,
+                    info: false,
+                    ordering: false,
+                    autoWidth: false,
+                    columnDefs: [
+                        {className: "text-right", "targets": [3]} /*添加class*/
+                    ],
+                    columns: [
+                        {
+                            title: "部门名称",
+                            data: 'departName',
+                            defaultContent: "",
+                            "render": dataTableHelp.operationFormat()
+                        },
+                        {title: "部门电话", data: 'telephone', defaultContent: ""},
+                        {title: "部门地址", data: 'address', defaultContent: ""},
+                        {title: "操作", data: 'operation', "render": dataTableHelp.operationFormat()}
+                    ]
+                });
+            } else {
+                tableConfig.target.clear();
+                tableConfig.target.rows.add(dataSet).draw();
+            }
         };
 
         var pagination = function(dataTotal) {
@@ -79,72 +158,19 @@ require(['main-app',contextPath + '/js/service/department-service.js',contextPat
         getDepartment(0, pageConfig.limit);
 
         //open new window for department details
-        $('#departList').on('click','#lookDepartBtn',function(e){
+        $('#departList').on('click','.lookDepartBtn',function(e){
             var departId = $(e.target).data('id');
             window.location.href="/mgt/org/departmentDetail.ftl?"+departId;
         });
 
         //open new window for department details
-        $('#departList').on('click','#editDepartBtn',function(e){
+        $('#departList').on('click','.editDepartBtn',function(e){
             var departId = $(e.target).data('id');
             window.location.href="/mgt/org/editDepartmentDetail.ftl?"+departId;
         });
 
-        //get district and subDistrict from server in add department dialog
-        $('#addDepartDialog').on('change','#departCid',function(){
-            var city_id = $('#addDepartDialog #departCid option:selected').attr("id");
-
-            //get district from server
-            DepartmentService.getDistrict({data:{id:city_id}},header)
-                .done(function (data) {
-                    var appendOption = "";
-                    $.each(data,function (index, district) {
-                        appendOption += '<option id="'+district.id+'">'+district.name+'</option>';
-                    });
-                    $('#addDepartDialog #departDid').html(appendOption);
-
-                    var district_id = $('#addDepartDialog #departDid option:selected').attr("id");
-                    //get subDistrict from server
-                    DepartmentService.iniDropListBySupId(BaseUrl+"district/sub-districts",district_id,header,'addDepartDialog','departSDid');
-                });
-        });
-
-        //get subDistrict from server in add department dialog
-        $('#addDepartDialog').on('change','#departDid',function(){
-            var district_id = $('#addDepartDialog #departDid option:selected').attr("id");
-            DepartmentService.iniDropListBySupId(BaseUrl+"district/sub-districts",district_id,header,'addDepartDialog','departSDid');
-        });
-
-
-
-        //action for added department
-        $('#addDepartDialog').on('click','#confirmAddDepartBtn',function(){
-            var toAddDepart = {
-                    address: $('#addDepartDialog #departAddress').val(),
-                    name: $('#addDepartDialog #departName').val(),
-                    parentId: $('#addDepartDialog .dropdown-yk').attr('selectedValue'),
-                    // shortName: $('#addDepartDialog #departSpell').val(),
-                    telephone: $('#addDepartDialog #departTel').val(),
-                    cityId:$('#addDepartDialog #departCid option:selected').attr("id"),
-                    districtId:$('#addDepartDialog #departDid option:selected').attr("id"),
-                    subDistrictId:$('#addDepartDialog #departSDid option:selected').attr("id")
-                };
-            DepartmentService.addDepartment({data:toAddDepart},header)
-                .done(function(){
-                    // location.reload(true);
-                    window.location.href="/mgt/org/department.ftl";
-                })
-                .fail(function (data) {
-                    /*var res = JSON.parse(data.responseText);
-                    if(res["ex_code"] === "NULL_PARENT"){
-                        alert(res["message"]);
-                    }*/
-                });
-        });
-
-
         //initialize index value stored in deleteDepartDialog
-        $('#departList').on('click','#delDepartBtn',function(e){
+        $('#departList').on('click','.delDepartBtn',function(e){
             var departId = parseInt($(e.target).data('id'),10);
             $('#deleteDepartDialog #departId').val(departId);
         });
