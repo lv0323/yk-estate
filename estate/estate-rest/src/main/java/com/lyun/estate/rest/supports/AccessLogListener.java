@@ -48,7 +48,7 @@ public class AccessLogListener implements ApiListener {
 
         response.setHeader("X-TIMESTAMP", String.valueOf((clockTools.nowInstant().toEpochMilli() / 1000)));
 
-        Long accessTime = System.nanoTime();
+        Long accessTime = System.currentTimeMillis();
         restContext.setAccessTime(accessTime);
 
         restContext.setCorrelationId(buildCorrelationId(request));
@@ -106,7 +106,7 @@ public class AccessLogListener implements ApiListener {
 
     @Override
     public void onResponse(HttpServletResponse response) {
-        Long responseTime = System.nanoTime();
+        Long responseTime = System.currentTimeMillis();
         logger.info(buildResponseLog(response, responseTime - restContext.getAccessTime()));
     }
 
