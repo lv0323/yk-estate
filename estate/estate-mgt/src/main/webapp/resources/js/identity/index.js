@@ -58,6 +58,7 @@ require(['main-app',
                     $window.location=contextPath+'/org/department.ftl';
                 }).fail(function(response){
                     show({title:'提示',content:response&&response.message});
+                    $scope.loadCaptcha();
                 });
             };
             /*激活图形验证码*/
@@ -121,6 +122,7 @@ require(['main-app',
                     resetData();
                 }).fail(function(response){
                     show({title:'提示',content:response&&response.message});
+                    $scope.loadActiveCaptcha();
                 });
             }
         }]);
