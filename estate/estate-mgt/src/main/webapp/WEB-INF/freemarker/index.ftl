@@ -79,4 +79,4 @@
     <!-- /.login-box-body -->
 </div>
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/identity/index.js?vn=${bts!}"></script>
+<script src="${contextPath!}/js/app/identity/index.js?vn=${bts!}"></script>

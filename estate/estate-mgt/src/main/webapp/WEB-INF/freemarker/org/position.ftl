@@ -150,4 +150,4 @@
 
 
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/org/position.js"></script>
+<script src="${contextPath!}/js/app/org/position.js"></script>

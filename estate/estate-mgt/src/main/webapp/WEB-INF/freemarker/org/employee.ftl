@@ -277,5 +277,5 @@
 
 <#include "/common/footer.ftl" />
 
-<script src="${contextPath!}/js/org/employee.js"></script>
+<script src="${contextPath!}/js/app/org/employee.js"></script>
 
