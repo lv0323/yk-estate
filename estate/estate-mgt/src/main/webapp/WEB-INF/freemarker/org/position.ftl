@@ -12,20 +12,30 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title" id="addPositionLabel"></h4>
+                <h4 class="modal-title" id="addPositionLabel">新增岗位</h4>
             </div>
             <div class="modal-body">
                 <form id="addPositionForm" class="form-horizontal" method="post">
                     <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">岗位名称</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="positionName" class="form-control" placeholder="岗位名称">
+                            <input type="text" id="addPositionName" class="form-control" placeholder="岗位名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">岗位性质</label>
+                        <div class="col-lg-3 col-md-4 col-sm-4">
+                            <select id="addPositionType" class="form-control btn-group dropup">
+                            <#list positionTypeList?if_exists as pt>
+                                <option value="${pt.name()}">${pt.getLabel()}</option>
+                            </#list>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">岗位说明</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="positionNote" class="form-control" placeholder="岗位说明">
+                            <input type="text" id="addPositionNote" class="form-control" placeholder="岗位说明">
                         </div>
                     </div>
                 </form>
@@ -46,21 +56,31 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title" id="editPositionLabel"></h4>
+                <h4 class="modal-title" id="editPositionLabel">编辑岗位</h4>
             </div>
             <div class="modal-body">
                 <form id="editPositionForm" class="form-horizontal" method="post">
                     <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">岗位名称</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="positionName" class="form-control" placeholder="岗位名称">
-                            <input id="positionId" class="hidden">
+                            <input type="text" id="editPositionName" class="form-control" placeholder="岗位名称">
+                            <input id="editPositionId" class="hidden">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">岗位性质</label>
+                        <div class="col-lg-3 col-md-4 col-sm-4">
+                            <select id="editPositionType" class="form-control btn-group dropup">
+                            <#list positionTypeList?if_exists as pt>
+                                <option value="${pt.name()}">${pt.getLabel()}</option>
+                            </#list>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">岗位说明</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="positionNote" class="form-control" placeholder="岗位说明">
+                            <input type="text" id="editPositionNote" class="form-control" placeholder="岗位说明">
                         </div>
                     </div>
                 </form>
@@ -75,7 +95,8 @@
 
 
 <!-- Modal deletePositionDialog -->
-<div class="modal fade bs-example-modal-sm" id="deletePositionDialog" tabindex="-1" role="dialog" aria-labelledby="deletePositionLabel">
+<div class="modal fade bs-example-modal-sm" id="deletePositionDialog" tabindex="-1" role="dialog"
+     aria-labelledby="deletePositionLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -86,7 +107,7 @@
             </div>
             <div class="modal-body">
                 该操作不可恢复，确认删除?
-                <input id="positionId" class="hidden">
+                <input id="delPositionId" class="hidden">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="confirmDelPositionBtn">确定</button>
@@ -122,7 +143,8 @@
                             <div class="box-header">
                                 <h3 class="box-title">岗位管理</h3>
                                 <div class="box-tools">
-                                    <a class="btn" id="addPositionBtn" data-toggle="modal" data-target="#addPositionDialog">
+                                    <a class="btn" id="addPositionBtn" data-toggle="modal"
+                                       data-target="#addPositionDialog">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                         新增岗位
                                     </a>
@@ -131,11 +153,14 @@
                             <div class="box-body">
                                 <!-- table -->
                                 <table id="positionList" class="list table table-bordered table-hover">
-                                    <thead><tr>
+                                    <thead>
+                                    <tr>
                                         <th><span>岗位名称</span></th>
+                                        <th><span>岗位性质</span></th>
                                         <th><span>说明</span></th>
                                         <th class="text-right"><span>操作</span></th>
-                                    </tr></thead>
+                                    </tr>
+                                    </thead>
                                     <tbody></tbody>
                                 </table>
                                 <ul id="positionList_paging" class="pagination"></ul>

@@ -34,7 +34,7 @@ public class DepartmentService {
     public Department create(Department department) {
         ExceptionUtil.checkNotNull("部门", department);
         ExceptionUtil.checkNotNull("公司编号", department.getCompanyId());
-        ExceptionUtil.checkIllegal(Strings.isNullOrEmpty(department.getName()), "部门名称", department.getName());
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(department.getName()), "部门名称", department.getName());
 
         repo.insert(department);
 

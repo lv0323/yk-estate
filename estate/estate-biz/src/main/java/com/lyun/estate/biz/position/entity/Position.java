@@ -85,11 +85,6 @@ public class Position {
         return isDeleted;
     }
 
-/*<<<<<<< HEAD
-    public Position setDeleted(Boolean deleted) {
-        isDeleted = deleted;
-        return this;
-=======*/
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
     }

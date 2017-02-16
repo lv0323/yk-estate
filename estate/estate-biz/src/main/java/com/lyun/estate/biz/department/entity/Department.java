@@ -146,11 +146,6 @@ public class Department {
         return isDeleted;
     }
 
-/*<<<<<<< HEAD
-    public Department setDeleted(Boolean deleted) {
-        isDeleted = deleted;
-        return this;
-=======*/
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
     }

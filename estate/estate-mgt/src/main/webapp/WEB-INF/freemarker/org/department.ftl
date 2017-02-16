@@ -3,139 +3,36 @@
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
 
-<!-- Modal addDepartDialog -->
-<#--<div class="modal fade" id="addDepartDialog" tabindex="-1" role="dialog" aria-labelledby="addDepartLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
-                <h4 class="modal-title" id="addDepartLabel"></h4>
-            </div>
-            <div class="modal-body">
-                <form id="addDepartForm" class="form-horizontal" method="post">
-                    <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">上级部门</label>
-                        <div class="col-lg-3 col-md-4 col-sm-4">
-                            <div class="dropdown-yk">
-                                <div class="parent">请选择</div>
-                                <ul class="listUl">
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">部门名称</label>
-                        <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="departName" class="form-control" reg="^[\S]{1,8}$" placeholder="名称限8个字符">
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <input type="text" id="departSpell" class="form-control hidden" placeholder="拼音简码">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">部门电话</label>
-                        <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="departTel" class="form-control" reg="^1\d{10}$|^\d{3}-\d{8}$|^\d{4}-\d{7}$|^0\d{11}$|^\d{4}-\d{8}$|^$" placeholder="部门电话">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">部门地址</label>
-                        <div class="col-lg-2 col-md-2 col-sm-2">
-                            <select id="departCid" class="form-control btn-group dropup">
-                                <option value="">请选择</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2">
-                            <select id="departDid" class="form-control btn-group dropup">
-                                <option value="">请选择</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <select id="departSDid" class="form-control btn-group dropup">
-                                <option value="">请选择</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <input type="text" id="departAddress" class="form-control" placeholder="请输入详细地址">
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="confirmAddDepartBtn">保存</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            </div>
-        </div>
-    </div>
-</div>-->
 
 <!-- Modal editDepartDialog -->
-<#--<div class="modal fade" id="editDepartDialog" tabindex="-1" role="dialog" aria-labelledby="editDepartLabel">
+<div class="modal fade" id="reDeployDepartDialog" tabindex="-1" role="dialog" aria-labelledby="reDeployDepartLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title" id="editDepartLabel"></h4>
+                <h4 class="modal-title" id="reDeployDepartLabel">修改父部门</h4>
             </div>
             <div class="modal-body">
-                <form id="editDepartForm" class="form-horizontal" method="post">
+                <form id="reDeployDepartForm" class="form-horizontal" method="post">
                     <div class="form-group parent-department-form-group">
                         <label id="superiorDepartLabel" class="col-lg-2 col-md-2 col-sm-2 control-label">上级部门</label>
                         <div class="col-lg-3 col-md-4 col-sm-4 ">
                             <div class="dropdown-yk">
                             </div>
-                            <input id="departId" class="hidden">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">部门名称</label>
-                        <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="departName" class="form-control" reg="^[\S]{1,8}$" placeholder="名称限8个字符">
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <input type="text" id="departSpell" class="form-control hidden" placeholder="拼音简码">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">部门电话</label>
-                        <div class="col-lg-3 col-md-4 col-sm-4">
-                            <input type="text" id="departTel" class="form-control" reg="^1\d{10}$|^\d{3}-\d{8}$|^\d{4}-\d{7}$|^0\d{11}$|^\d{4}-\d{8}$|^$" placeholder="部门电话">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">部门地址</label>
-                        <div class="col-lg-2 col-md-2 col-sm-2">
-                            <select id="departCid" class="form-control btn-group dropup">
-                                <option value="">请选择</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2">
-                            <select id="departDid" class="form-control btn-group dropup">
-                                <option value="">请选择</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <select id="departSDid" class="form-control btn-group dropup">
-                                <option value="">请选择</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <input type="text" id="departAddress" class="form-control" placeholder="请输入详细地址">
+                            <input id="reDeployDepartId" class="hidden">
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="confirmEditDepartBtn">保存</button>
+                <button type="button" class="btn btn-primary" id="confirmReDeployDepartBtn">保存</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>
         </div>
     </div>
-</div>-->
+</div>
 
 
 <!-- Modal deleteDepartDialog -->
@@ -150,7 +47,7 @@
             </div>
             <div class="modal-body">
                 该操作不可恢复，确认删除?
-                <input id="departId" class="hidden">
+                <input id="delDepartId" class="hidden">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="confirmDelDepartBtn">确定</button>

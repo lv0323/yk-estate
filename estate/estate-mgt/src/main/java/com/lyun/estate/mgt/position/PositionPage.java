@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.lyun.estate.biz.position.def.PositionType;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -16,8 +18,9 @@ public class PositionPage {
 
     @GetMapping("/position")
     public ModelAndView index() {
-        HashMap<String, String> params = new HashMap<>();
-        params.put("message", "message");
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("positionTypeList", Arrays.asList(PositionType.values()));
+        //params.put("message", "message");
         return new ModelAndView("/org/position", params);
     }
 }

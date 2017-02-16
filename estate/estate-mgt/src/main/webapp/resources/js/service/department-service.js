@@ -43,6 +43,9 @@ define(contextPath + '/js/service/department-service.js',
             return RequestService.get('/api/department/delete', params.data, header);
         };
 
+        DepartmentService.changeParent = function (params,header) {
+            return RequestService.get('/api/department/changeParent', params.data, header);
+        };
 
 
         return DepartmentService;

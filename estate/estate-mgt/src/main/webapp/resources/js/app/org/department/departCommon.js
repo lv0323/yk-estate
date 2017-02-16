@@ -1,7 +1,7 @@
 /**
  * Created by yanghong on 2/16/17.
  */
-define(contextPath+'/js/utils/departCommon.js',
+define(contextPath+'/js/app/org/department/departCommon.js',
     ['main-app', contextPath + '/js/service/department-service.js', 'locationUtil', 'dropdown'],
     function (mainApp,DepartmentService) {
 

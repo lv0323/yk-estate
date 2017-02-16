@@ -1,7 +1,9 @@
 /**
  * Created by yanghong on 2/9/17.
  */
-require(['main-app', contextPath + '/js/utils/departCommon.js', contextPath + '/js/service/department-service.js'],
+require(['main-app',
+        contextPath + '/js/app/org/department/departCommon.js',
+        contextPath + '/js/service/department-service.js'],
     function (mainApp, DepartCommon, DepartmentService) {
 
         var header = {};
