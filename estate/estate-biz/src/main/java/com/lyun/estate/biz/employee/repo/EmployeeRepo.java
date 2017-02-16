@@ -47,4 +47,7 @@ public interface EmployeeRepo {
 
     @Select("select count(*) from t_employee where position_id = #{id} and quit = false")
     int countByPositionId(Long id);
+
+    @Select("select * from t_employee where id =#{id}")
+    Employee findOne(Long id);
 }
