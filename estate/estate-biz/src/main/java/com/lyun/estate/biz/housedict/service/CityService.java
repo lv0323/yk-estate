@@ -69,4 +69,14 @@ public class CityService {
     public int updateSubDistrictKeyword(Long id, String keyword) {
         return cityRepository.updateSubDistrictKeyword(id, keyword);
     }
+
+    @Transactional
+    public int updateLineKeyword(Long id, String keyword) {
+        return cityRepository.updateLineKeyword(id, keyword);
+    }
+
+    @Transactional
+    public int updateStationKeyword(Long id, String keyword) {
+        return cityRepository.updateStationKeyword(id, keyword);
+    }
 }

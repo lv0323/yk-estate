@@ -1,13 +1,11 @@
 package com.lyun.estate.biz.keyword.service;
 
+import com.github.stuxuhai.jpinyin.ChineseHelper;
 import com.github.stuxuhai.jpinyin.PinyinException;
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.google.common.base.Strings;
-import com.lyun.estate.biz.fang.entity.Fang;
-import com.lyun.estate.biz.housedict.entity.City;
-import com.lyun.estate.biz.housedict.entity.District;
-import com.lyun.estate.biz.housedict.entity.SubDistrict;
+import com.lyun.estate.biz.housedict.entity.*;
 import com.lyun.estate.biz.housedict.service.CityService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.entity.KeywordResp;
@@ -21,19 +19,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Jeffrey on 2017-01-06.
  */
 @Service
 public class KeywordService {
-    private static final String PINYIN_SEPARATOR = ",";
+    private static final char CHINESE_LING = '〇';
     private static final String PINYIN_SPLIT = ";";
     private static final Logger logger = LoggerFactory.getLogger(KeywordService.class);
 
@@ -70,7 +70,7 @@ public class KeywordService {
                 if (count >= limit) {
                     break;
                 }
-                if (keywordGroupMatch(keywordBean.getKeyword(), keyword, PINYIN_SEPARATOR, PINYIN_SPLIT)) {
+                if (keywordMatch(keywordBean, keyword)) {
                     results.add(keywordBean);
                     count++;
                 }
@@ -111,7 +111,7 @@ public class KeywordService {
                 if (count >= limit) {
                     break;
                 }
-                if (keywordGroupMatch(keywordBean.getKeyword(), keyword, PINYIN_SEPARATOR, PINYIN_SPLIT)) {
+                if (keywordMatch(keywordBean, keyword)) {
                     results.add(keywordBean);
                     count++;
                 }
@@ -154,101 +154,66 @@ public class KeywordService {
         return result;
     }
 
-    /**
-     * 关键字匹配
-     * @param src 原始字段(都好分隔的拼音)
-     * @param target 关键字，有可能是汉字，有可能是拼音
-     * @param separator
-     * @param split
-     * @return
-     */
-    private boolean keywordGroupMatch(String src, String target, String separator, String split) {
-        String convertedSrc = null;
-        try {
-            convertedSrc = PinyinHelper.convertToPinyinString(src.replace(" ", ""), "", PinyinFormat.WITHOUT_TONE);
-            if (StringUtils.isEmpty(convertedSrc)) {
-                logger.warn("查询关键词转换后为空,忽略");
-                return false;
-            }
-        } catch (PinyinException e) {
-            logger.warn("查询关键词[{}]转换发生错误[{}],忽略", src, e.getMessage());
-            return false;
-        }
-        if (convertedSrc.toLowerCase().contains(target.toLowerCase())) {
-            return true;
-        }
-        if (convertedSrc.contains(split)) {
-            String[] groups = convertedSrc.split(split);
-            for (String s : groups) {
-                if (keywordMatch(s.toLowerCase(), null, separator).contains(target.toLowerCase())) {
-                    return true;
-                }
-            }
-            return false;
-        } else {
-           return keywordMatch(convertedSrc.toLowerCase(), null, separator).contains(target.toLowerCase());
-        }
-    }
-
-    /**
-     * 将keyword转成首字母形式
-     * @param src 源
-     * @param dis 中间结果
-     * @param separator 分隔符
-     * @return 结果
-     */
-    private String keywordMatch(String src, StringBuilder dis, String separator) {
-        if (dis == null) {
-            dis = new StringBuilder();
-        }
-        if (!src.contains(separator)) {
-            System.err.println(">>>>>>>>>>>>>>>>sub src:>>>>" + src);
-            return dis.append(src.charAt(0)).toString();
-        } else {
-            dis.append(src.charAt(0));
-            System.err.println(">>>>>>>>>>>>>>>>src:>>>>>>>>>>>>>>>>>>>>>>>>" + src);
-            return keywordMatch(src.substring(src.indexOf(separator) + 1), dis, separator);
-        }
-    }
-
-    /**
-     * 转换格式：汉字--> han,zi
-     * @param src
-     * @return
-     * @throws PinyinException
-     */
-    public String convertToPinyinString(String src) throws PinyinException {
-        return PinyinHelper.convertToPinyinString(src.replace(" ", ""), PINYIN_SEPARATOR, PinyinFormat.WITHOUT_TONE);
-    }
-
-    @Transactional
     public boolean updateAllKeyword() {
         List<City> cities = cityService.findCities();
         cities.forEach((City c) -> {
-            if (!StringUtils.isEmpty(c.getName())) {
+            String cityName = stringFilter(c.getName());
+            if (!StringUtils.isEmpty(cityName)) {
                 try {
-                    String cityKeyword = convertToPinyinString(c.getName());
-                    cityService.updateCityKeyword(c.getId(), cityKeyword);
+                    StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(cityName, "", PinyinFormat.WITHOUT_TONE))
+                            .append(PINYIN_SPLIT).append(PinyinHelper.getShortPinyin(cityName));
+                    cityService.updateCityKeyword(c.getId(), keyword.toString());
                 } catch (PinyinException e) {
                     logger.warn("汉字[{}]转换成拼音发生异常[{}]", c.getName(), e.getMessage());
                 }
             }
             List<District> districts = cityService.findOrderedDistricts(c.getId());
             districts.forEach(d -> {
-                if (!StringUtils.isEmpty(d.getName())) {
+                String disName = stringFilter(d.getName());
+                if (!StringUtils.isEmpty(disName)) {
                     try {
-                        String disKeyword = convertToPinyinString(d.getName());
-                        cityService.updateDistrictKeyword(d.getId(), disKeyword);
+                        StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(disName, "", PinyinFormat.WITHOUT_TONE))
+                                .append(PINYIN_SPLIT).append(PinyinHelper.getShortPinyin(disName));
+                        cityService.updateDistrictKeyword(d.getId(), keyword.toString());
                     } catch (PinyinException e) {
                         logger.warn("汉字[{}]转换成拼音发生异常[{}]", d.getName(), e.getMessage());
                     }
                 }
                 List<SubDistrict> subDistricts = cityService.findOrderedSubDistricts(d.getId());
                 subDistricts.forEach(s -> {
-                    if (!StringUtils.isEmpty(s.getName())) {
+                    String subDisName = stringFilter(s.getName());
+                    if (!StringUtils.isEmpty(subDisName)) {
                         try {
-                            String subDisKeyword = convertToPinyinString(s.getName());
-                            cityService.updateSubDistrictKeyword(s.getId(), subDisKeyword);
+                            StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(subDisName, "", PinyinFormat.WITHOUT_TONE))
+                                    .append(PINYIN_SPLIT).append(PinyinHelper.getShortPinyin(subDisName));
+                            cityService.updateSubDistrictKeyword(s.getId(), keyword.toString());
+                        } catch (PinyinException e) {
+                            logger.warn("汉字[{}]转换成拼音发生异常[{}]", s.getName(), e.getMessage());
+                        }
+                    }
+                });
+            });
+
+            List<Line> lines = cityService.findOrderedLines(c.getId());
+            lines.forEach(l -> {
+                String lineName = stringFilter(l.getName());
+                if (!StringUtils.isEmpty(lineName)) {
+                    try {
+                        StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(lineName, "", PinyinFormat.WITHOUT_TONE))
+                                .append(PINYIN_SPLIT).append(PinyinHelper.getShortPinyin(lineName));
+                        cityService.updateLineKeyword(l.getId(), keyword.toString());
+                    } catch (PinyinException e) {
+                        logger.warn("汉字[{}]转换成拼音发生异常[{}]", l.getName(), e.getMessage());
+                    }
+                }
+                List<Station> stations = cityService.findOrderedStations(l.getId());
+                stations.forEach(s -> {
+                    String stationName = stringFilter(s.getName());
+                    if (!StringUtils.isEmpty(stationName)) {
+                        try {
+                            StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(stationName, "", PinyinFormat.WITHOUT_TONE))
+                                    .append(PINYIN_SPLIT).append(PinyinHelper.getShortPinyin(stationName));
+                            cityService.updateStationKeyword(s.getId(), keyword.toString());
                         } catch (PinyinException e) {
                             logger.warn("汉字[{}]转换成拼音发生异常[{}]", s.getName(), e.getMessage());
                         }
@@ -258,18 +223,122 @@ public class KeywordService {
         });
         List<Community> allCommunity = xiaoQuService.findAllCommunity();
         allCommunity.forEach(c -> {
-            if (!StringUtils.isEmpty(c.getName())) {
+            String communityName = stringFilter(c.getName());
+            String communityAlias = stringFilter(c.getAlias());
+            if (!StringUtils.isEmpty(communityName)) {
                 try {
-                    String communityKeyword = convertToPinyinString(c.getName());
-                    if (!StringUtils.isEmpty(c.getAlias().replace(",", "").replace(" ", ""))) {
-                        communityKeyword = communityKeyword + PINYIN_SPLIT + convertToPinyinString(c.getAlias().replace(",", "").replace(" ", ""));
+                    StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(communityName, "", PinyinFormat.WITHOUT_TONE))
+                            .append(PINYIN_SPLIT).append(PinyinHelper.getShortPinyin(communityName));
+                    if (!StringUtils.isEmpty(communityAlias)) {
+                        keyword.append(PINYIN_SPLIT).append(PinyinHelper.convertToPinyinString(communityAlias, "", PinyinFormat.WITHOUT_TONE))
+                                .append(PINYIN_SPLIT).append(PinyinHelper.getShortPinyin(communityAlias));
                     }
-                    xiaoQuService.updateKeyword(c.getId(), communityKeyword);
+                    xiaoQuService.updateKeyword(c.getId(), keyword.toString());
                 } catch (PinyinException e) {
                     logger.warn("汉字[{}]转换成拼音发生异常[{}]", c.getName(), e.getMessage());
                 }
             }
         });
         return true;
+    }
+
+    /**
+     * 关键查询匹配
+     *
+     * @param keywordBean
+     * @param target
+     * @return
+     */
+    private boolean keywordMatch(KeywordBean keywordBean, String target) {
+        if (keywordBean == null || StringUtils.isEmpty(keywordBean.getKeyword()) || StringUtils.isEmpty(target)) {
+            logger.warn("存储关键词[{}]不合法或者查询关键词[{}]为空,忽略", keywordBean, target);
+            return false;
+        }
+        target = stringFilter(target);
+        if (StringUtils.isEmpty(target)) {
+            logger.warn("查询关键词[{}]为空,忽略", target);
+            return false;
+        }
+
+        /* 名称包含 */
+        if (contains(keywordBean.getName(), target)) {
+            return true;
+        }
+        /* 别名包含 */
+        if (contains(keywordBean.getAlias(), target)) {
+            return true;
+        }
+        /* 关键词包含 */
+        String pinyin = null;
+        try {
+            pinyin = PinyinHelper.convertToPinyinString(target, "", PinyinFormat.WITHOUT_TONE);
+            if (StringUtils.isEmpty(pinyin)) {
+                logger.warn("查询关键词[{}]转换后为空,忽略", target);
+                return false;
+            }
+            if (contains(keywordBean.getKeyword(), pinyin)) {
+                return true;
+            }
+        } catch (PinyinException e) {
+            logger.warn("查询关键词[{}]转换发生错误[{}],忽略", target, e.getMessage());
+            return false;
+        }
+        /* 不包含汉字进行首字母匹配 */
+        List<String> chineseList = containsChinese(target);
+        if (CollectionUtils.isEmpty(chineseList)) {
+            /* 首字母匹配 */
+            try {
+                String shortPinyin = PinyinHelper.getShortPinyin(target);
+                if (contains(keywordBean.getKeyword(), shortPinyin)) {
+                    return true;
+                }
+            } catch (PinyinException e) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 是否包含指定字符串，不区分大小写
+     *
+     * @param src
+     * @param target
+     * @return
+     */
+    private boolean contains(String src, String target) {
+        if (StringUtils.isEmpty(src) || StringUtils.isEmpty(target)) {
+            return false;
+        }
+        Pattern p = Pattern.compile(target, Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(src);
+        return m.find();
+    }
+
+    /**
+     * 过滤特殊字符
+     *
+     * @param str
+     * @return
+     */
+    private String stringFilter(String str) {
+        if (StringUtils.isEmpty(str)) {
+            return str;
+        }
+        String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.replaceAll("").trim();
+    }
+
+    private List<String> containsChinese(String src) {
+        List<String> chineseList = new ArrayList<String>();
+        for (String s : src.split("")) {
+            if (ChineseHelper.isChinese(s.charAt(0)) || s.charAt(0) == CHINESE_LING) {
+                chineseList.add(s);
+            }
+        }
+        return chineseList;
     }
 }
