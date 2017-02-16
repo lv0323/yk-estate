@@ -135,6 +135,10 @@ public class EmployeeService {
         return employee;
     }
 
+    public Employee findOne(Long id) {
+        return repo.findOne(id);
+    }
+
     private boolean checkCompany(Long companyId) {
         return true;
     }
