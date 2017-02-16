@@ -141,8 +141,8 @@ website:	http://code.google.com/p/jquerytree/
     background-color: transparent;
     background-repeat: no-repeat;
     background-attachment: scroll;
-    background-image: url("../../img/zTree/yk_newtree.png");
-    *background-image: url("../../img/zTree/zTreeStandard.gif")
+    background-image: url("../../../img/zTree/yk_newtree.png");
+    *background-image: url("../../../img/zTree/zTreeStandard.gif")
 }
 
 .ztree li span.button.chk {
@@ -313,7 +313,7 @@ website:	http://code.google.com/p/jquerytree/
     margin-top:-4px;
 }
 .ztree>li>a>span.button.ico_open ,.ztree>li>a>span.button.ico_close{
-    background-image: url("../../img/zTree/yk_newtree.png");
+    background-image: url("../../../img/zTree/yk_newtree.png");
     background-position:-4px -17px;
     margin-right: 2px;
     vertical-align: middle;
@@ -377,8 +377,8 @@ span.tmpzTreeMove_arrow {
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-position: -110px -80px;
-    background-image: url("../../img/zTree/zTreeStandard.png");
-    *background-image: url("../../img/zTree/zTreeStandard.gif")
+    background-image: url("../../../img/zTree/zTreeStandard.png");
+    *background-image: url("../../../img/zTree/zTreeStandard.gif")
 }
 
 ul.ztree.zTreeDragUL {

@@ -93,16 +93,16 @@
             <!-- Optionally, you can add icons to the links -->
             <li><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
             <li><a href="/mgt/franchisee/company.ftl"><i class="fa fa-link"></i> <span>加盟商管理</span></a></li>
-            <li class="treeview active">
+            <li class="treeview org">
                 <a href="#"><i class="fa fa-link"></i> <span>组织机构</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/org/department.ftl">部门列表</a></li>
-                    <li><a href="/mgt/org/employee.ftl">员工管理</a></li>
-                    <li><a href="/mgt/org/position.ftl">岗位管理</a></li>
+                    <li><a href="/mgt/org/department.ftl?target=.org">部门列表</a></li>
+                    <li><a href="/mgt/org/employee.ftl?target=.org">员工管理</a></li>
+                    <li><a href="/mgt/org/position.ftl?target=.org">岗位管理</a></li>
                 </ul>
             </li>
         </ul>

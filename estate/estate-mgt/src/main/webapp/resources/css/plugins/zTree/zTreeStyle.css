@@ -143,8 +143,8 @@ website:	http://code.google.com/p/jquerytree/
 	background-color: transparent;
 	background-repeat: no-repeat;
 	background-attachment: scroll;
-	background-image: url("./img/zTreeStandard.png");
-	*background-image: url("./img/zTreeStandard.gif")
+	background-image: url("../../../img/zTree/zTreeStandard.png");
+	*background-image: url("../../../img/zTree/zTreeStandard.gif")
 }
 
 .ztree li span.button.chk {
@@ -371,8 +371,8 @@ span.tmpzTreeMove_arrow {
 	background-repeat: no-repeat;
 	background-attachment: scroll;
 	background-position: -110px -80px;
-	background-image: url("./img/zTreeStandard.png");
-	*background-image: url("./img/zTreeStandard.gif")
+	background-image: url("../../../img/zTree/zTreeStandard.png");
+	*background-image: url("../../../img/zTree/zTreeStandard.gif")
 }
 
 ul.ztree.zTreeDragUL {

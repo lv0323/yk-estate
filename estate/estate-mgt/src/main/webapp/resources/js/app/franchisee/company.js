@@ -41,33 +41,29 @@ require(['main-app',contextPath + '/js/service/company-service.js',
             companyAllDataRaw = data.items;
             var dataSet =data.items.map(function(item,index){
                 return {
-                    companyName: {attr: {class: 'lookCompanyBtn btn'}, data: {id: item.id}, text: item.name},
+                    companyName: {attr: {class: 'lookCompanyBtn'}, data: {id: item.id}, text: item.name},
                     secretKey: item.secretKey,
                     startDate: item.startDate,
                     endDate: item.endDate,
                     operation: [
-                        {attr: {class: 'btn editCompanyBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#editCompanyDialog'}, text: '编辑'},
-                        {attr: {class: 'btn renewCompanyBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#renewCompanyDialog'}, text: '续约'},
-                        {attr: {class: 'btn toggleLockCompanyBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#toggleLockCompanyDialog'}, text: (item["locked"]?"解冻":"冻结")}]
+                        {attr: {class: 'editCompanyBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#editCompanyDialog'}, text: '编辑'},
+                        {attr: {class: 'renewCompanyBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#renewCompanyDialog'}, text: '续约'},
+                        {attr: {class: 'toggleLockCompanyBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#toggleLockCompanyDialog'}, text: (item["locked"]?"解冻":"冻结")}]
                 }
             });
 
             if(!tableConfig.target){
-                tableConfig.target = $('#companyList').DataTable( {
+                tableConfig.target = dataTableHelp.init({
+                    target: '#companyList',
                     data: dataSet,
-                    paging: false,
-                    searching: false,
-                    info: false,
-                    ordering: false,
-                    autoWidth: false,
                     columnDefs: [
                         { className: "text-right", "targets": [ 4 ] } /*添加class*/
                     ],
                     columns: [
-                        { title: "公司名称",data:'companyName',defaultContent: "", "render": dataTableHelp.operationFormat()},
-                        { title: "公司授权号" ,data:'secretKey', defaultContent: ""},
-                        { title: "加盟有效起始日期" ,data:'startDate', defaultContent: ""},
-                        { title: "加盟有效截止日期" ,data:'endDate', defaultContent: ""},
+                        { title: "公司名称",data:'companyName', "render": dataTableHelp.operationFormat()},
+                        { title: "公司授权号" ,data:'secretKey'},
+                        { title: "加盟有效起始日期" ,data:'startDate'},
+                        { title: "加盟有效截止日期" ,data:'endDate'},
                         { title: "操作", data:'operation', "render": dataTableHelp.operationFormat()}
                     ]
                 });
@@ -75,29 +71,6 @@ require(['main-app',contextPath + '/js/service/company-service.js',
                 tableConfig.target.clear();
                 tableConfig.target.rows.add(dataSet).draw();
             }
-            /*var table = $('#companyList').DataTable({
-             "bProcessing": true,
-             "bServerSide": true,
-             "sAjaxDataProp": "",
-             "ajax":{
-             url: contextPath+'/api/company/query',
-             type: "get",
-             data: null,
-             headers: header,
-             dataType: 'json'
-             },
-             "aoColumns": [
-             { "mData": "name" },
-             { "mData": "boss.name" },
-             { "mData": "address" }
-             ],
-             "paging": true,
-             "lengthChange": true,
-             "searching": false,
-             "ordering": false,
-             "info": false,
-             "autoWidth": false
-             });*/
         };
 
         var pagination = function(dataTotal) {
