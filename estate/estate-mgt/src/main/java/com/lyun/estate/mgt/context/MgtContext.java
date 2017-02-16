@@ -22,6 +22,16 @@ public class MgtContext extends BaseContext {
 
     public static final String OS_NAME = "osName";
 
+    public static final String ACCESS_TIME = "accessTime";
+
+    public Long getAccessTime() {
+        return (Long) get(ACCESS_TIME);
+    }
+
+    public void setAccessTime(Long accessTime) {
+        put(ACCESS_TIME, accessTime);
+    }
+
 
     public Operator getOperator() {
         return (Operator) get(OPERATOR);

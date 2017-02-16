@@ -1,12 +1,13 @@
 package com.lyun.estate.mgt.employee;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -31,8 +32,11 @@ public class EmployeeRest {
     }
 
     @GetMapping("query")
-    public Object query() {
-        return employeeService.selectByCompanyId(mgtContext.getOperator().getCompanyId());
+    public PageList<Employee> query(@RequestParam(required = false) Long departmentId,
+                                    @RequestHeader("X-PAGING") PageBounds pageBounds) {
+        return employeeService.listByCompanyIdDepartmentId(mgtContext.getOperator().getCompanyId(),
+                departmentId,
+                pageBounds);
     }
 
     @PostMapping("edit")
@@ -40,16 +44,6 @@ public class EmployeeRest {
         return employeeService.update(entity);
     }
 
-    @GetMapping("avatar")
-    public Object avatar(@RequestParam Long id) {
-        return new RestResponse().add("url", employeeService.getAvatar(id)).get();
-    }
-
-    @PostMapping("avatar")
-    public Object avatar(@RequestParam Long id, @RequestParam MultipartFile avatar) throws IOException {
-        return employeeService.createAvatar(id, avatar.getInputStream(),
-                avatar.getOriginalFilename().substring(avatar.getOriginalFilename().lastIndexOf('.')));
-    }
 
     @GetMapping("quit")
     public Object quit(@RequestParam Long id) throws IOException {

@@ -21,6 +21,9 @@
      <link rel="stylesheet" href="${contextPath}/css/plugins/bootstrap-submenu.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/datepicker/datepicker3.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/dropdown/index.css">
+     <!-- zTree-->
+     <link rel="stylesheet" href="${contextPath}/css/zTree/zTreeStyle.css">
+     <link rel="stylesheet" href="${contextPath}/css/zTree/iconSkin.css">
      <!--[if lt IE 9]>
    <script src="http://cdn.bootcss.com/html5shiv/r29/html5.js"></script>
    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>

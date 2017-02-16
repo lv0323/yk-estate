@@ -1,10 +1,12 @@
 package com.lyun.estate.biz.employee.repo;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.repo.provider.EmployeeProvider;
 import org.apache.ibatis.annotations.*;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface EmployeeRepo {
 
@@ -25,23 +27,12 @@ public interface EmployeeRepo {
     @Update("update t_employee set quit = true where id = #{id}")
     int quit(Long id);
 
-    @Select("select * from t_employee where company_id = #{companyId}")
-    @Results({
-            @Result(column = "department_id", property = "departmentId", javaType = Long.class),
-            @Result(column = "department_id", property = "department", one = @One(select = "com.lyun.estate.biz.department.repo.DepartmentRepo.selectById")),
-            @Result(column = "position_id", property = "positionId", javaType = Long.class),
-            @Result(column = "position_id", property = "position", one = @One(select = "com.lyun.estate.biz.position.repo.PositionRepo.selectById"))
-    })
-    List<Employee> selectByCompanyId(Long companyId);
+    @SelectProvider(type = EmployeeProvider.class, method = "selectByCompanyIdAndDeptIds")
+    PageList<Employee> selectByCompanyIdAndDeptIds(@Param("companyId") Long companyId,
+                                                   @Param("deptIds") Collection<Long> deptIds, PageBounds pageBounds);
 
     @Select("select * from t_employee where company_id = #{companyId} and is_boss = true")
-    @Results({
-            @Result(column = "department_id", property = "departmentId", javaType = Long.class),
-            @Result(column = "department_id", property = "department", one = @One(select = "com.lyun.estate.biz.department.repo.DepartmentRepo.selectById")),
-            @Result(column = "position_id", property = "positionId", javaType = Long.class),
-            @Result(column = "position_id", property = "position", one = @One(select = "com.lyun.estate.biz.position.repo.PositionRepo.selectById"))
-    })
-    List<Employee> selectBossByCompanyId(Long companyId);
+    Employee selectBossByCompanyId(Long companyId);
 
     @Select("select * from t_employee where id = #{id}")
     Employee selectById(Long id);

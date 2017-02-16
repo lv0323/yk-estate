@@ -1,7 +1,12 @@
 package com.lyun.estate.biz.employee.repo.provider;
 
+import com.google.common.base.Joiner;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.core.repo.SQL;
+import com.lyun.estate.core.repo.SqlSupport;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class EmployeeProvider {
 
@@ -16,7 +21,20 @@ public class EmployeeProvider {
                 .VALUES("idcard_number", "#{idcardNumber}")
                 .VALUES("wechat", "#{wechat}")
                 .VALUES("status", "#{status}")
-                .VALUES_IF("is_boss", "#{isBoss}", employee.getIsBoss() != null)
-                .VALUES_IF("is_agent", "#{isAgent}", employee.getIsAgent() != null).toString();
+                .VALUES_IF("is_boss", "#{isBoss}", employee.getBoss() != null)
+                .VALUES_IF("is_agent", "#{isAgent}", employee.getAgent() != null).toString();
+    }
+
+    @SuppressWarnings("unchecked")
+    public String selectByCompanyIdAndDeptIds(Map<String, Object> params) {
+        Collection<Long> deptIds = (Collection<Long>) params.get("deptIds");
+        return new SQL() {{
+            SELECT("*")
+                    .FROM("t_employee")
+                    .WHERE("company_id = #{companyId}");
+            if (SqlSupport.hasNotNullElement(deptIds)) {
+                WHERE("department_id IN (" + Joiner.on(",").skipNulls().join(deptIds) + ")");
+            }
+        }}.toString();
     }
 }

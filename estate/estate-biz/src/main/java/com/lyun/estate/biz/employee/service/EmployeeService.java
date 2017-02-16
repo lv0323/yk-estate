@@ -1,30 +1,28 @@
 package com.lyun.estate.biz.employee.service;
 
-import com.lyun.estate.biz.company.repo.CompanyRepository;
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.google.common.base.Strings;
+import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.repo.EmployeeRepo;
-import com.lyun.estate.biz.file.def.CustomType;
-import com.lyun.estate.biz.file.def.FileType;
-import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.spec.common.DomainType;
-import com.lyun.estate.biz.spec.file.service.FileService;
-import com.lyun.estate.biz.utils.clock.ClockTools;
 import com.lyun.estate.core.config.EstateCacheConfig;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
-import com.lyun.estate.core.utils.Validations;
+import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.InputStream;
 import java.math.BigInteger;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -32,19 +30,14 @@ public class EmployeeService {
 
     private static final String LOGIN_SUGAR_PREFIX = "LOGIN_SALT";
     private final EmployeeRepo repo;
-    private final CompanyRepository companyRepository;
-    private final FileService fileService;
     private final Cache cache;
-    private final ClockTools clockTools;
+    @Autowired
+    private DepartmentService departmentService;
 
     public EmployeeService(EmployeeRepo repo,
-                           @Qualifier(EstateCacheConfig.MANAGER_10_5K) CacheManager cacheManager,
-                           CompanyRepository companyRepository, FileService fileService, ClockTools clockTools) {
+                           @Qualifier(EstateCacheConfig.MANAGER_10_5K) CacheManager cacheManager) {
         this.repo = repo;
         cache = cacheManager.getCache(EstateCacheConfig.MGT_LOGIN_CACHE);
-        this.companyRepository = companyRepository;
-        this.fileService = fileService;
-        this.clockTools = clockTools;
     }
 
     private static String hmac(String salt, String password) {
@@ -59,46 +52,54 @@ public class EmployeeService {
     }
 
     public Employee create(Employee employee) {
-        repo.insert(Validations.doValidate(employee));
+        ExceptionUtil.checkNotNull("用户数据", employee);
+        ExceptionUtil.checkNotNull("公司编号", employee.getCompanyId());
+        ExceptionUtil.checkNotNull("部门编号", employee.getDepartmentId());
+        ExceptionUtil.checkNotNull("岗位编号", employee.getPositionId());
+        ExceptionUtil.checkNotNull("加入时间", employee.getEntryDate());
+        ExceptionUtil.checkNotNull("状态", employee.getStatus());
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(employee.getMobile()), "用户手机", employee.getMobile());
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(employee.getName()), "用户名", employee.getName());
+        repo.insert(employee);
         return employee;
     }
 
-    public Employee createBoss(Employee employee) {
-        repo.insert(Validations.doValidate(employee).setIsBoss(Boolean.TRUE));
-        return employee;
-    }
+    public PageList<Employee> listByCompanyIdDepartmentId(Long companyId,
+                                                          Long departmentId,
+                                                          PageBounds pageBounds) {
+        ExceptionUtil.checkNotNull("公司编号", companyId);
 
-    public List<Employee> selectByCompanyId(Long companyId) {
-        return repo.selectByCompanyId(Objects.requireNonNull(companyId));
+        Set<Long> childs = null;
+        if (departmentId != null) {
+            childs = departmentService.findChildIds(companyId, departmentId);
+            if (CollectionUtils.isEmpty(childs)) {
+                return null;
+            }
+        }
+        return repo.selectByCompanyIdAndDeptIds(companyId, childs, pageBounds);
     }
 
     public Employee update(Employee employee) {
-        Objects.requireNonNull(Objects.requireNonNull(employee).getId());
-        repo.update(Validations.doValidate(employee));
+        ExceptionUtil.checkNotNull("用户数据", employee);
+        ExceptionUtil.checkNotNull("用户编号", employee.getId());
+        repo.update(employee);
         return repo.selectById(employee.getId());
     }
 
-    public String getAvatar(Long id) {
-        FileDescription fd = fileService.findFirst(id, DomainType.EMPLOYEE, CustomType.AVATAR, null);
-        return fd != null ? fd.getFileURI() : null;
-    }
-
-    public Employee createAvatar(Long id, InputStream avatarIS, String suffix) {
-        repo.avatar(id, fileService.save(new FileDescription()
-                .setOwnerId(id)
-                .setOwnerType(DomainType.EMPLOYEE)
-                .setCustomType(CustomType.AVATAR)
-                .setFileType(FileType.IMAGE), avatarIS, suffix).getId());
-        return repo.selectById(id);
-    }
-
     public Boolean quit(Long id) {
+        Employee employee = repo.selectById(id);
+        if (employee == null) {
+            return false;
+        } else if (employee.getBoss()) {
+            throw new EstateException(ExCode.EMPLOYEE_IS_BOSS);
+        }
         repo.quit(id);
         return true;
     }
 
     public Employee selectByMobile(String mobile) {
-        return repo.selectByMobile(Objects.requireNonNull(mobile));
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(mobile), "用户手机", mobile);
+        return repo.selectByMobile(mobile);
     }
 
     public Boolean active(String mobile, String password, String secretKey) {
@@ -136,9 +137,5 @@ public class EmployeeService {
 
     private boolean checkCompany(Long companyId) {
         return true;
-    }
-
-    public List<Employee> listByDepartmentIds(List<Long> departmentIds) {
-        return null;
     }
 }

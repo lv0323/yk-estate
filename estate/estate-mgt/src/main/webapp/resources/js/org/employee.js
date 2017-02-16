@@ -1,12 +1,45 @@
 /**
  * Created by yanghong on 1/17/17.
  */
-require(['main-app',contextPath + '/js/service/employee-service.js','datatables','datatablesBootstrap'],
-    function (mainApp,EmployeeService) {
+require(['main-app',contextPath + '/js/service/employee-service.js',
+        contextPath + '/js/service/department-service.js',
+        contextPath+'/js/utils/dataTableHelp.js',
+    'datatables', 'zTree','datatablesBootstrap'],
+    function (mainApp, EmployeeService, DepatrmentService, dataTableHelp) {
         var header = {};
 
         var employeeAllDataRaw = {};
         var quitPosition = 'nonQuit';
+
+       /* 部门树*/
+        function departmentTree(data){
+            function beforeClick(treeId, treeNode, clickFlag) {}
+            function onClick(event, treeId, treeNode, clickFlag) {
+                console.log('点击了:'+ treeNode.id + treeNode.name);
+            }
+            var zTreeSetting = {
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                },
+                callback: {
+                    beforeClick: beforeClick,
+                    onClick: onClick
+                }
+            };
+            var departments = data.map(function(item){
+                return {
+                    name:item.name,
+                    id:item.id,
+                    pId:item.parentId};
+            })
+            $.fn.zTree.init($("#departmentTree"), zTreeSetting, departments);
+        }
+        DepatrmentService.getAllDepartment().done(function(data){
+           departmentTree(data);
+        });
+       /* end部门树*/
 
         function iniDepartDropList(header) {
             var appendOption = '';

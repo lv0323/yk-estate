@@ -1,8 +1,11 @@
 /**
  * Created by yanghong on 1/23/17.
  */
-require(['main-app',contextPath + '/js/service/company-service.js',contextPath + '/js/plugins/pagination/pagingPlugin.js','jqPaginator','datepicker.zh-cn'],
-    function (mainApp,CompanyService,pagingPlugin) {
+require(['main-app',contextPath + '/js/service/company-service.js',
+        contextPath + '/js/plugins/pagination/pagingPlugin.js',
+        contextPath + '/js/utils/dataTableHelp.js',
+    'jqPaginator','datepicker.zh-cn'],
+    function (mainApp, CompanyService, pagingPlugin, dataTableHelp) {
 
         var header = {};
         var companyAllDataRaw = {};
@@ -10,6 +13,10 @@ require(['main-app',contextPath + '/js/service/company-service.js',contextPath +
         var pageConfig = {
             limit: 8,
             init: false
+        };
+        var tableConfig ={
+            init: false,
+            target:null
         };
 
 
@@ -32,22 +39,42 @@ require(['main-app',contextPath + '/js/service/company-service.js',contextPath +
 
         var displayTable = function (data) {
             companyAllDataRaw = data.items;
-            //var appendHtml = '';
-            $('#companyList>tbody').html(data.items.map(function(item, index){
-                return '<tr>' +
-                    '<td><a class="btn" id="lookCompanyBtn" data-id="'+item["id"]+'">'+item["name"]+'</a></td>' +
-                    '<td>'+item["secretKey"]+'</td>' +
-                    '<td>'+item["startDate"]+'</td>' +
-                    '<td>'+item["endDate"]+'</td>' +
-                    '<td class="text-right">' +
-                    '<a class="btn" id="editCompanyBtn" data-index="'+index+'" data-id="'+item["id"]+'" data-toggle="modal" data-target="#editCompanyDialog">编辑</a>' +
-                    '<span class="opt-gap"></span>'+
-                    '<a class="btn" id="renewCompanyBtn" data-index="'+index+'" data-id="'+item["id"]+'" data-toggle="modal" data-target="#renewCompanyDialog">续约</a>'+
-                    '<span class="opt-gap"></span>'+
-                    '<a class="btn" id="toggleLockCompanyBtn" data-index="'+index+'" data-id="'+item["id"]+'" data-toggle="modal" data-target="#toggleLockCompanyDialog">' + (item["locked"]?"解冻":"冻结") + '</a></td>'+
-                    '</tr>';
-            }));
+            var dataSet =data.items.map(function(item,index){
+                return {
+                    companyName: {attr: {class: 'lookCompanyBtn btn'}, data: {id: item.id}, text: item.name},
+                    secretKey: item.secretKey,
+                    startDate: item.startDate,
+                    endDate: item.endDate,
+                    operation: [
+                        {attr: {class: 'btn editCompanyBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#editCompanyDialog'}, text: '编辑'},
+                        {attr: {class: 'btn renewCompanyBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#renewCompanyDialog'}, text: '续约'},
+                        {attr: {class: 'btn toggleLockCompanyBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#toggleLockCompanyDialog'}, text: (item["locked"]?"解冻":"冻结")}]
+                }
+            });
 
+            if(!tableConfig.target){
+                tableConfig.target = $('#companyList').DataTable( {
+                    data: dataSet,
+                    paging: false,
+                    searching: false,
+                    info: false,
+                    ordering: false,
+                    autoWidth: false,
+                    columnDefs: [
+                        { className: "text-right", "targets": [ 4 ] } /*添加class*/
+                    ],
+                    columns: [
+                        { title: "公司名称",data:'companyName',defaultContent: "", "render": dataTableHelp.operationFormat()},
+                        { title: "公司授权号" ,data:'secretKey', defaultContent: ""},
+                        { title: "加盟有效起始日期" ,data:'startDate', defaultContent: ""},
+                        { title: "加盟有效截止日期" ,data:'endDate', defaultContent: ""},
+                        { title: "操作", data:'operation', "render": dataTableHelp.operationFormat()}
+                    ]
+                });
+            }else{
+                tableConfig.target.clear();
+                tableConfig.target.rows.add(dataSet).draw();
+            }
             /*var table = $('#companyList').DataTable({
              "bProcessing": true,
              "bServerSide": true,
@@ -83,6 +110,9 @@ require(['main-app',contextPath + '/js/service/company-service.js',contextPath +
                 totalCounts:dataTotal,
                 pageSize: pageConfig.limit,
                 onChange: function (num, type) {
+                    if(type === 'init'){
+                        return;
+                    }
                     getCompany((num-1)*pageConfig.limit, pageConfig.limit);
                 }
             };
@@ -108,13 +138,13 @@ require(['main-app',contextPath + '/js/service/company-service.js',contextPath +
 
 
         //open new window for company details
-        $('#companyList').on('click','#lookCompanyBtn',function(e){
+        $('#companyList').on('click','.lookCompanyBtn',function(e){
             var companyId = $(e.target).data('id');
             window.location.href="/mgt/franchisee/companyDetail.ftl?"+companyId;
         });
 
         //open new window for Company details
-        $('#companyList').on('click','#editCompanyBtn',function(e){
+        $('#companyList').on('click','.editCompanyBtn',function(e){
             var companyId = $(e.target).data('id');
             window.location.href="/mgt/franchisee/editCompanyDetail.ftl?"+companyId;
         });
@@ -156,7 +186,7 @@ require(['main-app',contextPath + '/js/service/company-service.js',contextPath +
 
 
         //initialize title in toggle lock Company dialog
-        $('.fadeInRight').on('click','#toggleLockCompanyBtn',function(e){
+        $('.fadeInRight').on('click','.toggleLockCompanyBtn',function(e){
             var index = $(e.target).data('index');
             var company = companyAllDataRaw[index];
             $('#toggleLockCompanyId').val(company["id"]);
@@ -195,7 +225,7 @@ require(['main-app',contextPath + '/js/service/company-service.js',contextPath +
 
 
         //initialize title in toggle lock Company dialog
-        $('.fadeInRight').on('click','#renewCompanyBtn',function(e){
+        $('.fadeInRight').on('click','.renewCompanyBtn',function(e){
             var index = $(e.target).data('index');
             var company = companyAllDataRaw[index];
             $('#renewCompanyId').val(company["id"]);

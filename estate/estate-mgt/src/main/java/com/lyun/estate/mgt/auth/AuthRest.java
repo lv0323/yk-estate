@@ -7,9 +7,8 @@ import com.lyun.estate.biz.auth.sms.CheckSmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
 import com.lyun.estate.biz.employee.entity.Employee;
-import com.lyun.estate.biz.employee.service.EmployeeService;
-import com.lyun.estate.core.supports.exceptions.EstateException;
-import com.lyun.estate.core.supports.exceptions.ExCode;
+import com.lyun.estate.mgt.auth.def.SaltSugar;
+import com.lyun.estate.mgt.auth.service.AuthMgtService;
 import com.lyun.estate.mgt.context.Operator;
 import com.lyun.estate.mgt.supports.Constant;
 import com.lyun.estate.mgt.supports.RestResponse;
@@ -21,11 +20,10 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("api/auth")
 public class AuthRest {
 
-    private final EmployeeService employeeService;
+    private final AuthMgtService authMgtService;
 
-    @SuppressWarnings("unchecked")
-    public AuthRest(EmployeeService employeeService) {
-        this.employeeService = employeeService;
+    public AuthRest(AuthMgtService authMgtService) {
+        this.authMgtService = authMgtService;
     }
 
     @PostMapping("active")
@@ -33,17 +31,15 @@ public class AuthRest {
     public Object active(@RequestHeader(SmsCodeArgumentResolver.SMS_CODE_HEADER) SmsCode smsCode,
                          @RequestParam String password,
                          @RequestParam String secretKey) {
-        return new RestResponse().add("ret", employeeService.active(smsCode.getMobile(), password, secretKey)).get();
+        return new RestResponse().add("ret", authMgtService.active(smsCode.getMobile(), password, secretKey)).get();
     }
 
     @GetMapping("salt")
     public Object salt(@RequestParam String mobile) {
-        Employee employee = employeeService.selectByMobile(mobile);
-        if (employee == null)
-            throw new EstateException(ExCode.EMPLOYEE_NO_SALT);
+        SaltSugar saltSugar = authMgtService.saltSugar(mobile);
         return new RestResponse().add("ret", true)
-                .add("salt", employee.getSalt())
-                .add("sugar", employeeService.sugar(mobile))
+                .add("salt", saltSugar.getSalt())
+                .add("sugar", saltSugar.getSugar())
                 .get();
     }
 
@@ -53,15 +49,15 @@ public class AuthRest {
                         @RequestParam String password,
                         HttpSession session,
                         @RequestHeader(CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {
-        Employee employee = employeeService.login(mobile, password);
+        Employee employee = authMgtService.login(mobile, password);
         session.setAttribute(Constant.SESSION_IS_LOGIN, true);
         session.setAttribute(Constant.SESSION_OPERATOR, new Operator()
                 .setId(employee.getId())
                 .setCompanyId(employee.getCompanyId())
                 .setDepartmentId(employee.getDepartmentId())
                 .setPositionId(employee.getPositionId())
-                .setBoss(employee.getIsBoss())
-                .setAgent(employee.getIsAgent())
+                .setBoss(employee.getBoss())
+                .setAgent(employee.getAgent())
                 .setGender(employee.getGender())
                 .setName(employee.getName())
                 .setMobile(employee.getMobile()));
@@ -70,8 +66,9 @@ public class AuthRest {
 
     @GetMapping("logout")
     public Object logout(HttpSession session) {
+        Boolean result = authMgtService.logout();
         session.removeAttribute(Constant.SESSION_IS_LOGIN);
         session.invalidate();
-        return new RestResponse().add("ret", true).get();
+        return new RestResponse().add("ret", result).get();
     }
 }
