@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/department/district")
+@RequestMapping("api/cities/")
 public class CityRest {
 
     private final CityService service;
@@ -16,7 +16,7 @@ public class CityRest {
         this.service = service;
     }
 
-    @GetMapping("cites")
+    @GetMapping
     public Object cites() {
         return service.findCities();
     }

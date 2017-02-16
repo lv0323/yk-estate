@@ -31,15 +31,15 @@ define(contextPath + '/js/service/department-service.js',
         };
 
         DepartmentService.getCity = function (header) {
-            return RequestService.get('/api/department/district/cites', null, header);
+            return RequestService.get('/api/cites', null, header);
         };
 
         DepartmentService.getDistrict = function (params, header) {
-            return RequestService.get('/api/department/district/districts', params.data, header);
+            return RequestService.get('/api/cities/districts', params.data, header);
         };
 
         DepartmentService.getSubDistrict = function (params, header) {
-            return RequestService.get('/api/department/district/sub-districts', params.data, header);
+            return RequestService.get('/api/cities/sub-districts', params.data, header);
         };
 
         DepartmentService.addDepartment = function (params, header) {
