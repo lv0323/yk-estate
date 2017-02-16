@@ -69,9 +69,12 @@ require(['jquery'], function( $ ) {
                 }
             });
             $(this).on('click', options.selectItemClass, function () {
-                $(_this).find(options.inputClass).text($(this).children('.' + options.selectItemName).text());
-                $(_this).attr(options.selectedKey, $(this).children('.' + options.selectItemName).data('index'));
+                var text = $(this).children('.' + options.selectItemName).text();
+                var index = $(this).children('.' + options.selectItemName).data('index');
+                $(_this).find(options.inputClass).text(text);
+                $(_this).attr(options.selectedKey, index);
                 $(options.ulClass).hide();
+                options.onSelect && options.onSelect();
                 return false;
             });
             $('body').on('click', function () {

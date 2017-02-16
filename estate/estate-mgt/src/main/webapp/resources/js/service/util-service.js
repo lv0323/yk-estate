@@ -1,4 +1,6 @@
-define(contextPath + '/js/service/util-service.js', ['main-app', 'cryptojs.md5' ,contextPath + '/js/service/i18n-service.js'], function (mainApp, CryptoJS ,i18nService) {
+define(contextPath + '/js/service/util-service.js',
+    ['main-app', 'cryptojs.hmac', 'cryptojs.md5', contextPath + '/js/service/i18n-service.js'],
+    function (mainApp) {
 
     var UtilService = {};
 
