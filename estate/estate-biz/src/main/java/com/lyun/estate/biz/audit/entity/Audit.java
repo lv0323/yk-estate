@@ -19,7 +19,6 @@ public class Audit {
     private String content;
     private Date createTime;
 
-
     public Long getId() {
         return id;
     }
