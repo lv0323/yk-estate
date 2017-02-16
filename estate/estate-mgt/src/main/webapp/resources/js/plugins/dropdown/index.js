@@ -22,20 +22,26 @@ require(['jquery'], function( $ ) {
                 selectItem: 'duoji-dropdown-select-item',
                 selectItemName: 'duoji-dropdown-item-name',
                 dlClass: 'duoji-dropdown-dl',
-                selectedKey:'selectedValue'
+                selectedKey:'selectedValue',
+                topLevel : 1,
+                currentId: null
             };
 
             var options = $.extend({}, defaults, opts);
             options.selectItemClass = '.' + options.selectItem;
             options.inputClass = '.' + options.input;
-            options.ulClass = '.' + options.listUl;
+            options.listUlClass = '.' + options.listUl;
             $(_this).html('');
             $(_this).addClass('duoji-dropdown');
             $(_this).append('<div class="'+options.input+'">请选择</div> <ul class="'+options.listUl+'"> </ul>');
             /*多级下拉框*/
             $.each(options.data, function (index, item) {
-                if (item.level === 0) {
-                    $(_this).find(options.ulClass).append('<li class="' + options.selectItem + ' ' + options.selectItem + '-' + index + '" index="' + item.id + '"><span class="' + options.selectItemName + '" data-index="' + item.id + '">' + item.name + '</span><dl class="' + options.dlClass + '"></dl>')
+                if(options.currentId && item.id === options.currentId){
+                    $(_this).find(options.inputClass).text(item.name);
+                    $(_this).attr(options.selectedKey, item.id);
+                }
+                if (item.level === options.topLevel) {
+                    $(_this).find(options.listUlClass).append('<li class="' + options.selectItem + ' ' + options.selectItem + '-' + index + '" index="' + item.id + '"><span class="' + options.selectItemName + '" data-index="' + item.id + '">' + item.name + '</span><dl class="' + options.dlClass + '"></dl>')
                 } else {
                     $(_this).find('.' + options.selectItem + '[index=' + item.parent_id + ']').find('>.' + options.dlClass).append('<li class="' + options.selectItem + ' ' + options.selectItem + '-' + index + '" index="' + item.id + '"><span class="' + options.selectItemName + '" data-index="' + item.id + '">' + item.name + '</span><dl class="' + options.dlClass + '"></dl>')
                 }
@@ -51,7 +57,7 @@ require(['jquery'], function( $ ) {
             }
             //点击后判断ul是否隐藏
             $(this).find(options.inputClass).click(function () {
-                var ul = $(options.ulClass);
+                var ul = $(options.listUlClass);
                 if (ul.css("display") == "none") {
                     ul.slideDown(200);
                 } else {
@@ -73,12 +79,12 @@ require(['jquery'], function( $ ) {
                 var index = $(this).children('.' + options.selectItemName).data('index');
                 $(_this).find(options.inputClass).text(text);
                 $(_this).attr(options.selectedKey, index);
-                $(options.ulClass).hide();
+                $(options.listUlClass).hide();
                 options.onSelect && options.onSelect();
                 return false;
             });
             $('body').on('click', function () {
-                $(options.ulClass).hide();
+                $(options.listUlClass).hide();
             });
         }
     });
