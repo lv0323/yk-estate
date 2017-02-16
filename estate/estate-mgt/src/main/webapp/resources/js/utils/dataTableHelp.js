@@ -44,9 +44,25 @@
  }
  */
 
-define(contextPath+'/js/utils/dataTableHelp.js', ['main-app', 'datatables'],
+define(contextPath+'/js/utils/dataTableHelp.js', ['main-app', 'datatablesBootstrap'],
     function (mainApp) {
         var dataTableHelp = {};
+        dataTableHelp.init = function(opts){
+            var defaults = {
+                paging: false,
+                searching: false,
+                info: false,
+                ordering: false,
+                autoWidth: false,
+            };
+            var options = $.extend({}, defaults, opts);
+            options.columns && options.columns.map(function(item){
+                if(!item.defaultContent){
+                    item.defaultContent = '';
+                }
+            });
+            return $(options.target).DataTable(options);
+        }
         dataTableHelp.operationFormat = function(){
             return function (data, type, full, meta) {
                 if (!data) {
@@ -69,7 +85,7 @@ define(contextPath+'/js/utils/dataTableHelp.js', ['main-app', 'datatables'],
 
                     });
                     return content.join('<span class="opt-gap"></span>');
-                }else{
+                }else if(typeof data === 'object'){
                     attrStr = "";
                     dataStr = "";
                     for (var attr in data.attr) {
@@ -79,6 +95,8 @@ define(contextPath+'/js/utils/dataTableHelp.js', ['main-app', 'datatables'],
                         dataStr += 'data-' + dataStrK + '="' + data.data[dataStrK] + '" ';
                     }
                     return '<a ' + attrStr + dataStr + ' >' + data.text + '</a>';
+                }else{
+                    return data + '';
                 }
 
             }

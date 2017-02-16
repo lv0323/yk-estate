@@ -247,17 +247,11 @@
                             </div>
                             <div class="box-body">
                                 <!-- table -->
-                                <table id="companyList" class="list table table-bordered table-hover">
-                                    <thead><tr>
-                                        <th><span>公司名称</span></th>
-                                        <th><span>公司授权号</span></th>
-                                        <th><span>加盟有效起始日期</span></th>
-                                        <th><span>加盟有效截止日期</span></th>
-                                        <th class="text-right"><span>操作</span></th>
-                                    </tr></thead>
-                                    <tbody></tbody>
+                                <table id="companyList" class="display list table table-bordered table-hover">
                                 </table>
+                                <div class="pagination-container">
                                 <ul id="companyList_paging" class="pagination"></ul>
+                                </div>
                             </div>
                         </div>
                     </section>
