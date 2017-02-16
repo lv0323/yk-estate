@@ -50,4 +50,10 @@ public interface CityRepository {
 
     @Update("UPDATE T_SUB_DISTRICT SET NAME_KW=#{keyword} WHERE id=#{id}")
     int updateSubDistrictKeyword(@Param("id") Long id, @Param("keyword") String keyword);
+
+    @Update("UPDATE T_LINE SET NAME_KW=#{keyword} WHERE id=#{id}")
+    int updateLineKeyword(@Param("id") Long id, @Param("keyword") String keyword);
+
+    @Update("UPDATE T_STATION SET NAME_KW=#{keyword} WHERE id=#{id}")
+    int updateStationKeyword(@Param("id") Long id, @Param("keyword") String keyword);
 }
