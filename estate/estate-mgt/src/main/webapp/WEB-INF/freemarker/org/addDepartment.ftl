@@ -95,4 +95,4 @@
 
 
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/org/department.js"></script>
+<script src="${contextPath!}/js/app/org/department.js"></script>

@@ -95,7 +95,7 @@
 
 
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/org/departmentDetail.js"></script>
+<script src="${contextPath!}/js/app/org/departmentDetail.js"></script>
 <script>
     $(function () {
         $('#editDepartDialog input').prop("disabled", true);

@@ -127,4 +127,4 @@
 
 
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/franchisee/company.js"></script>
+<script src="${contextPath!}/js/app/franchisee/company.js"></script>
