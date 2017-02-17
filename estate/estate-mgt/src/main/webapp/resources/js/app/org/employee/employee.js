@@ -3,12 +3,12 @@
  */
 require(['main-app',contextPath + '/js/service/employee-service.js',
         contextPath + '/js/service/department-service.js',
-        contextPath + '/js/service/position-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath+'/js/utils/dataTableHelp.js',
         contextPath+'/js/app/org/department/departCommon.js',
-    'datatables', 'zTree','datatablesBootstrap'],
-    function (mainApp, EmployeeService, DepartmentService, PositionService, pagingPlugin, dataTableHelp, DepartCommon) {
+        contextPath+'/js/app/org/position/positionCommon.js',
+    'datatables', 'zTree','datatablesBootstrap', 'datepicker.zh-cn'],
+    function (mainApp, EmployeeService, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon, PositionCommon) {
         var header = {};
 
         var employeeAllDataRaw = {};
@@ -28,6 +28,18 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             false: false
         };
         var quitPosition = 'false'; //init nonQuit Employee by default
+
+        $.fn.datepicker.defaults.language = "zh-CN";
+        $('#addEmployeeEntryDate').datepicker({
+            todayHighlight:true,
+            startDate: '+0d',
+            autoclose: true
+        });
+        $('#editEmployeeEntryDate').datepicker({
+            todayHighlight:true,
+            startDate: '+0d',
+            autoclose: true
+        });
 
        /* 部门树*/
         function departmentTree(data){
@@ -58,41 +70,6 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
            departmentTree(data);
         });
        /* end部门树*/
-
-
-
-        /*function iniPositionDropList(header) {
-            var appendOption = '';
-            EmployeeService.getPosition(header).done(function (data) {
-                $.each(data, function (index, element) {
-                    appendOption += '<option id="' + element["id"] + '">' + element["name"] + '</option>';
-                });
-                $('#addEmployeePosition').html(appendOption);
-            });
-        }*/
-
-        /*function iniSelectedDepartDropList(header,departmentId) {
-            var appendOption = '';
-            EmployeeService.getDepartment(header).done(function (data) {
-                $.each(data, function (index, element) {
-                    appendOption += '<option id="' + element.department["id"] + '">' + element.department["name"] + '</option>';
-                });
-                $('#editEmployeeDepart').html(appendOption);
-                $('#editEmployeeDepart').find('option[id='+departmentId+']').attr('selected','selected');
-            });
-        }*/
-
-        /*function iniSelectedPositionDropList(header,positionId) {
-            var appendOption = '';
-            EmployeeService.getPosition(header).done(function (data) {
-                $.each(data, function (index, element) {
-                    appendOption += '<option id="' + element["id"] + '">' + element["name"] + '</option>';
-                });
-                $('#editEmployeePosition').html(appendOption);
-                $('#editEmployeePosition').find('option[id='+positionId+']').attr('selected','selected');
-            });
-        }*/
-
 
         var displayFilteredEmployee = function (quitPosition, data) {
             employeeAllDataRaw = data;
@@ -195,17 +172,6 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
 
         filterEmployee(quitPosition, 0, pageConfig.limit);
 
-        //get quitPosition
-        $('#quitPosition').on('change',function () {
-            var quitPosition = $('#quitPosition option:selected').val();
-            filterEmployee(quitPosition, 0, pageConfig.limit);
-        });
-
-        //initialize title in add Employee dialog
-        $('.fadeInRight').on('click','#addEmployeeBtn',function(){
-            DepartCommon.initDepartSelector();
-        });
-
         //toggle filter for Employee display
         $('.fadeInRight').on('click','#filterEmployeeBtn',function(){
             if($('#box-filter').css('display')=="none"){
@@ -215,6 +181,18 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             }
         });
 
+        //get quitPosition
+        $('#quitPosition').on('change',function () {
+            var quitPosition = $('#quitPosition option:selected').val();
+            filterEmployee(quitPosition, 0, pageConfig.limit);
+        });
+
+        //initialize title in add Employee dialog
+        $('#addEmployeeBtn').on('click', function(){
+            DepartCommon.initDepartSelector();
+            PositionCommon.initPositionSelector();
+        });
+
         //get checked gender
         $('#addEmployeeGender,#editEmployeeGender').on('click','input',function(){
             $(this).prop('checked',true);
@@ -222,34 +200,35 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         });
 
         //action for added Employee
-        $('#addEmployeeDialog').on('click','#confirmAddEmployeeBtn',function(){
+        $('#confirmAddEmployeeBtn').on('click', function(){
             var toAddData = {
-                'departmentId': $('#addEmployeeDepart option:selected').attr("id"),
+                'departmentId': $('#addEmployeeDepart').attr('selectedvalue'),
                 'positionId': $('#addEmployeePosition option:selected').attr("id"),
-                'isAgent': $('#addEmployeeIsAgent').is(':checked'),
+                'agent': $('#addEmployeeIsAgent').is(':checked'),
                 'mobile': $('#addEmployeeMobile').val(),
                 'name': $('#addEmployeeName').val(),
                 'gender': $('#addEmployeeGender input:checked').val(),
                 'idcardNumber': $('#addEmployeeID').val(),
                 'wechat': $('#addEmployeeWechat').val(),
-                'status':$('#addEmployeeStatus option:selected').val()
+                'status':$('#addEmployeeStatus option:selected').val(),
+                'entryDate': $('#addEmployeeEntryDate').val()
             };
 
             EmployeeService.addEmployee({data:toAddData},header)
                 .done(function(){
                     location.reload(true);
                 })
-                .fail(function () {
-                    alert("请填写所有必填字段");
+                .fail(function (res) {
+                    alert(res["message"]);
                 });
         });
 
         //initialize title and default value in edit Company dialog
-        $('#employeeList').on('click','#editEmployeeBtn',function(e) {
+        $('#employeeList').on('click','.editEmployeeBtn',function(e) {
             var index = $(e.target).data('index');
             var employee = employeeAllDataRaw[index];
-            // DepartCommon.initDepartSelector(departPid);
-            //$('#editEmployeePosition').find('option[id='+positionId+']').attr('selected','selected');
+            DepartCommon.initDepartSelector(employee["departmentId"]);
+            PositionCommon.initPositionSelector(employee["positionId"]);
             $('#editEmployeeName').val(employee["name"]);
             $('#editEmployeeId').val(employee["id"]);
             $('#editEmployeeGender').find('input[value='+employee["gender"]+']').prop('checked',true);
@@ -257,50 +236,52 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             $('#editEmployeeMobile').val(employee["mobile"]);
             $('#editEmployeeID').val(employee["idcardNumber"]);
             $('#editEmployeeWechat').val(employee["wechat"]);
-            // $('#editEmployeeIsAgent').prop('checked',employee["is_agent"]);
+            $('#editEmployeeIsAgent').prop('checked',employee["agent"]);
             $('#editEmployeeStatus').val(employee["status"]);
+            $('#editEmployeeEntryDate').val(employee["entryDate"]);
 
         });
 
         //action for edit Company dialog
-        $('#editEmployeeDialog').on('click','#confirmEditEmployeeBtn',function() {
+        $('#confirmEditEmployeeBtn').on('click', function() {
             var toEditData = {
                 id: $('#editEmployeeId').val(),
-                departmentId: $('#editEmployeeDepart option:selected').attr("id"),
+                departmentId: $('#editEmployeeDepart').attr("selectedvalue"),
                 positionId: $('#editEmployeePosition option:selected').attr("id"),
                 mobile: $('#editEmployeeMobile').val(),
                 name: $('#editEmployeeName').val(),
                 gender: $('#editEmployeeGender input:checked').val(),
                 idcardNumber: $('#editEmployeeID').val(),
                 wechat: $('#editEmployeeWechat').val(),
-                // isAgent: $('#editEmployeeIsAgent').is(':checked')
-                status: $('#editEmployeeStatus option:selected').val()
+                agent: $('#editEmployeeIsAgent').is(':checked'),
+                status: $('#editEmployeeStatus option:selected').val(),
+                entryDate: $('#editEmployeeEntryDate').val()
             };
 
             EmployeeService.editEmployee({data:toEditData},header)
                 .done(function(){
                     location.reload(true);
                 })
-                .fail(function () {
-                    alert("请填写所有必填字段");
+                .fail(function (res) {
+                    alert(res["message"]);
                 });
         });
 
         //set employeeId in quit dialog
-        $('#employeeList').on('click','#quitEmployeeBtn',function(e){
+        $('#employeeList').on('click','.quitEmployeeBtn',function(e){
             var employeeId = parseInt($(e.target).data('id'),10);
             $('#quitEmployeeId').val(employeeId);
         });
 
         //action for quiting employee
-        $('#quitEmployeeDialog').on('click','#confirmQuitEmployeeBtn',function(){
+        $('#confirmQuitEmployeeBtn').on('click', function(){
             var employeeId = $('#quitEmployeeId').val();
             EmployeeService.quitEmployeeAction({data:{id:employeeId}}, header)
                 .done(function () {
                     location.reload(true);
                 })
                 .fail(function (res) {
-                    // var res = JSON.parse(data.responseText);
+                    alert(res["message"]);
                 });
         });
 

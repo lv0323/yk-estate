@@ -1,4 +1,4 @@
-<link href="${contextPath}/css/org/orgnization.css" rel="stylesheet">
+<link href="${contextPath}/css/app/org/orgnization.css" rel="stylesheet">
 
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />

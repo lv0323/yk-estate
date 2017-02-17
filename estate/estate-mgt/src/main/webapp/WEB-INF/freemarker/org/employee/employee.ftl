@@ -1,6 +1,6 @@
 <!-- DataTables -->
 <#--<link rel="stylesheet" href="${contextPath}/js/plugins/datatables/dataTables.bootstrap.css">-->
-<link href="${contextPath}/css/org/orgnization.css" rel="stylesheet">
+<link href="${contextPath}/css/app/org/orgnization.css" rel="stylesheet">
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
 
@@ -21,14 +21,15 @@
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="addEmployeeName" class="form-control" placeholder="真实姓名">
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <div id="addEmployeeGender">
-                            <#list gender?if_exists as gd>
-                                <input type="radio" value="${gd.name()}">${gd.getGender()}
-                            </#list>
-                               <#-- <input type="radio" id="M" value="M" checked="checked">男
-                                <input type="radio" id="F" value="F">女-->
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">性别<span class="required-field">*</span></label>
+                        <div id="addEmployeeGender" class="col-lg-3 col-md-3 col-sm-3">
+                        <#--<input type="radio" value="M" checked="checked">男
+                        <input type="radio" value="F">女-->
+                        <#list gender?if_exists as gd>
+                            <input type="radio" value="${gd.name()}">${gd.getGender()}
+                        </#list>
                         </div>
                     </div>
                     <div class="form-group">
@@ -51,7 +52,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 col-md-3 col-sm-3 control-label">部门<span class="required-field">*</span></label>
-                        <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="superiorDepart col-lg-4 col-md-4 col-sm-4">
                             <div id="addEmployeeDepart" class="dropdown-yk">
                             </div>
                         </div>
@@ -59,10 +60,8 @@
                     <div class="form-group">
                         <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <select type="text" id="addEmployeePosition" class="form-control btn-group dropup">
-                                <#list positionTypeList?if_exists as pt>
-                                    <option value="${pt.name()}">${pt.getLabel()}</option>
-                                </#list>
+                            <select id="addEmployeePosition" class="employeePosition form-control btn-group dropup">
+
                             </select>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
@@ -77,6 +76,17 @@
                                     <option value="${ws.name()}">${ws.getStatus()}</option>
                                 </#list>
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">入职日期<span class="required-field">*</span></label>
+                        <div class=" col-lg-4 col-md-4 col-sm-4">
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="addEmployeeEntryDate" placeholder="请填入职日期">
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -108,14 +118,15 @@
                             <input type="text" id="editEmployeeName" class="form-control" placeholder="真实姓名">
                             <input id="editEmployeeId" class="hidden">
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <div id="editEmployeeGender">
-                                <#--<input type="radio" value="M" checked="checked">男
-                                <input type="radio" value="F">女-->
-                                <#list gender?if_exists as gd>
-                                    <input type="radio" value="${gd.name()}">${gd.getGender()}
-                                </#list>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">性别<span class="required-field">*</span></label>
+                        <div id="editEmployeeGender" class="col-lg-3 col-md-3 col-sm-3">
+                            <#--<input type="radio" value="M" checked="checked">男
+                            <input type="radio" value="F">女-->
+                            <#list gender?if_exists as gd>
+                                <input type="radio" value="${gd.name()}">${gd.getGender()}
+                            </#list>
                         </div>
                     </div>
                     <div class="form-group">
@@ -138,7 +149,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 col-md-3 col-sm-3 control-label">部门<span class="required-field">*</span></label>
-                        <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="superiorDepart col-lg-4 col-md-4 col-sm-4">
                             <div id="editEmployeeDepart" class="dropdown-yk">
                             </div>
                         </div>
@@ -146,13 +157,10 @@
                     <div class="form-group">
                         <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <select type="text" id="editEmployeePosition" class="form-control btn-group dropup">
-                            <#list positionTypeList?if_exists as pt>
-                                <option value="${pt.name()}">${pt.getLabel()}</option>
-                            </#list>
+                            <select id="editEmployeePosition" class="employeePosition form-control btn-group dropup">
                             </select>
                         </div>
-                        <div class="hidden col-lg-3 col-md-3 col-sm-3">
+                        <div class="col-lg-3 col-md-3 col-sm-3">
                             <input type="checkbox" id="editEmployeeIsAgent">是经纪人
                         </div>
                     </div>
@@ -164,6 +172,17 @@
                                 <option value="${ws.name()}">${ws.getStatus()}</option>
                             </#list>
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">入职日期<span class="required-field">*</span></label>
+                        <div class=" col-lg-4 col-md-4 col-sm-4">
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="editEmployeeEntryDate" placeholder="请填入职日期">
+                            </div>
                         </div>
                     </div>
                 </form>
