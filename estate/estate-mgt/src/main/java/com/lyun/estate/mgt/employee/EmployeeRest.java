@@ -2,14 +2,18 @@ package com.lyun.estate.mgt.employee;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.employee.def.Gender;
+import com.lyun.estate.biz.employee.def.WorkingStatus;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
 import com.lyun.estate.mgt.supports.RestResponse;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Date;
 
 @RestController
 @RequestMapping("api/employee")
@@ -22,8 +26,27 @@ public class EmployeeRest {
     }
 
     @PostMapping("create")
-    public Object create(Employee entity) {
-        return service.create(entity);
+    public Object create(@RequestParam Long departmentId,
+                         @RequestParam Long positionId,
+                         @RequestParam Boolean isAgent,
+                         @RequestParam String mobile,
+                         @RequestParam String name,
+                         @RequestParam Gender gender,
+                         @RequestParam(required = false) String idcardNumber,
+                         @RequestParam(required = false) String wechat,
+                         @RequestParam WorkingStatus status,
+                         @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date entryDate) {
+        Employee employee = new Employee().setDepartmentId(departmentId)
+                .setPositionId(positionId)
+                .setAgent(isAgent)
+                .setMobile(mobile)
+                .setName(name)
+                .setGender(gender)
+                .setIdcardNumber(idcardNumber)
+                .setWechat(wechat)
+                .setStatus(status)
+                .setEntryDate(entryDate);
+        return service.create(employee);
     }
 
     @GetMapping("query")
