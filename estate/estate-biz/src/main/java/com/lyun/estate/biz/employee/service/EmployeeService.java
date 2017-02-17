@@ -16,6 +16,7 @@ import com.lyun.estate.core.config.EstateCacheConfig;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -37,16 +38,15 @@ public class EmployeeService {
     private static final String LOGIN_SUGAR_PREFIX = "LOGIN_SALT";
     private final EmployeeRepo repo;
     private final Cache cache;
-    private final DepartmentService departmentService;
     private final FileService fileService;
+    @Autowired
+    private DepartmentService departmentService;
 
     public EmployeeService(EmployeeRepo repo,
                            @Qualifier(EstateCacheConfig.MANAGER_10_5K) CacheManager cacheManager,
-                           DepartmentService departmentService,
                            FileService fileService) {
         this.repo = repo;
         cache = cacheManager.getCache(EstateCacheConfig.MGT_LOGIN_CACHE);
-        this.departmentService = departmentService;
         this.fileService = fileService;
     }
 
