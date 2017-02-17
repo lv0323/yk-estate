@@ -12,6 +12,7 @@ public class Region {
     private DomainType type;
     private String abbr;
     private String name;
+    private String regionBound;
     private List<Region> subs;
 
     public Long getId() {
@@ -59,14 +60,12 @@ public class Region {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "Region{" +
-                "id=" + id +
-                ", type=" + type +
-                ", abbr='" + abbr + '\'' +
-                ", name='" + name + '\'' +
-                ", subs=" + subs +
-                '}';
+    public String getRegionBound() {
+        return regionBound;
+    }
+
+    public Region setRegionBound(String regionBound) {
+        this.regionBound = regionBound;
+        return this;
     }
 }

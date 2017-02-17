@@ -33,6 +33,7 @@ public class AppConfigService {
         List<Region> regions = cities.stream().map(city -> {
             Region region = new Region();
             BeanUtils.copyProperties(city, region);
+            region.setRegionBound(city.getViewRegion());
             region.setType(DomainType.CITY);
             return region;
         }).collect(Collectors.toList());
