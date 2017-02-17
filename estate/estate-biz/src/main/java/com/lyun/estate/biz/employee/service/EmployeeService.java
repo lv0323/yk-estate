@@ -6,11 +6,16 @@ import com.google.common.base.Strings;
 import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.repo.EmployeeRepo;
+import com.lyun.estate.biz.file.def.CustomType;
+import com.lyun.estate.biz.file.def.FileProcess;
+import com.lyun.estate.biz.file.def.FileType;
+import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.spec.file.service.FileService;
 import com.lyun.estate.core.config.EstateCacheConfig;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -20,6 +25,7 @@ import org.springframework.util.CollectionUtils;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.Objects;
 import java.util.Set;
@@ -31,13 +37,17 @@ public class EmployeeService {
     private static final String LOGIN_SUGAR_PREFIX = "LOGIN_SALT";
     private final EmployeeRepo repo;
     private final Cache cache;
-    @Autowired
-    private DepartmentService departmentService;
+    private final DepartmentService departmentService;
+    private final FileService fileService;
 
     public EmployeeService(EmployeeRepo repo,
-                           @Qualifier(EstateCacheConfig.MANAGER_10_5K) CacheManager cacheManager) {
+                           @Qualifier(EstateCacheConfig.MANAGER_10_5K) CacheManager cacheManager,
+                           DepartmentService departmentService,
+                           FileService fileService) {
         this.repo = repo;
         cache = cacheManager.getCache(EstateCacheConfig.MGT_LOGIN_CACHE);
+        this.departmentService = departmentService;
+        this.fileService = fileService;
     }
 
     private static String hmac(String salt, String password) {
@@ -141,5 +151,22 @@ public class EmployeeService {
 
     private boolean checkCompany(Long companyId) {
         return true;
+    }
+
+    public String getAvatar(Long id) {
+        FileDescription fd = fileService.findFirst(id, DomainType.EMPLOYEE, CustomType.AVATAR, FileProcess.NONE);
+        return fd != null ? fd.getFileURI() : null;
+    }
+
+    public FileDescription createAvatar(Long id, InputStream avatarIS, String suffix) {
+        FileDescription fileDescription = fileService.save(new FileDescription()
+                .setOwnerId(id)
+                .setOwnerType(DomainType.EMPLOYEE)
+                .setCustomType(CustomType.AVATAR)
+                .setFileType(FileType.IMAGE)
+                .setFileProcess(FileProcess.NONE.getFlag()), avatarIS, suffix);
+
+        repo.avatar(id, fileDescription.getId());
+        return fileService.findOne(fileDescription.getId());
     }
 }

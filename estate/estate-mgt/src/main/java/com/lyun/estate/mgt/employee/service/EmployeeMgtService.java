@@ -7,10 +7,13 @@ import com.lyun.estate.biz.audit.entity.Audit;
 import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
+import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.mgt.context.MgtContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.InputStream;
 
 /**
  * Created by Jeffrey on 2017-02-16.
@@ -84,5 +87,13 @@ public class EmployeeMgtService {
                 .setContent("【" + mgtContext.getOperator() + "】将名为【" + needQuit.getName() + "】的员工离职")
         );
         return result;
+    }
+
+    public String getAvatar() {
+        return employeeService.getAvatar(mgtContext.getOperator().getId());
+    }
+
+    public FileDescription createAvatar(InputStream inputStream, String suffix) {
+        return employeeService.createAvatar(mgtContext.getOperator().getId(), inputStream, suffix);
     }
 }
