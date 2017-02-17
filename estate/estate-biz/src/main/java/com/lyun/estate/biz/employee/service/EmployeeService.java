@@ -46,7 +46,7 @@ public class EmployeeService {
                            @Qualifier(EstateCacheConfig.MANAGER_10_5K) CacheManager cacheManager,
                            FileService fileService) {
         this.repo = repo;
-        cache = cacheManager.getCache(EstateCacheConfig.MGT_LOGIN_CACHE);
+        this.cache = cacheManager.getCache(EstateCacheConfig.MGT_LOGIN_CACHE);
         this.fileService = fileService;
     }
 
@@ -78,7 +78,6 @@ public class EmployeeService {
                                                           Long departmentId,
                                                           PageBounds pageBounds) {
         ExceptionUtil.checkNotNull("公司编号", companyId);
-
         Set<Long> childs = null;
         if (departmentId != null) {
             childs = departmentService.findChildIds(companyId, departmentId);
@@ -145,8 +144,8 @@ public class EmployeeService {
         return employee;
     }
 
-    public Employee findOne(Long id) {
-        return repo.findOne(id);
+    public Employee selectById(Long id) {
+        return repo.selectById(id);
     }
 
     private boolean checkCompany(Long companyId) {

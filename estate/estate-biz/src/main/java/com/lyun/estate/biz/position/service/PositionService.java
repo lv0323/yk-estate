@@ -3,7 +3,6 @@ package com.lyun.estate.biz.position.service;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.base.Strings;
-import com.lyun.estate.biz.employee.repo.EmployeeRepo;
 import com.lyun.estate.biz.position.entity.Position;
 import com.lyun.estate.biz.position.repo.PositionRepo;
 import com.lyun.estate.core.supports.exceptions.EstateException;
@@ -11,15 +10,15 @@ import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PositionService {
 
     private final PositionRepo repo;
-    private final EmployeeRepo employeeRepo;
 
-    public PositionService(PositionRepo repo, EmployeeRepo employeeRepo) {
+    public PositionService(PositionRepo repo) {
         this.repo = repo;
-        this.employeeRepo = employeeRepo;
     }
 
     public Position create(Position position) {
@@ -33,7 +32,7 @@ public class PositionService {
 
     public Boolean deleteById(Long id) {
         ExceptionUtil.checkNotNull("岗位", id);
-        if (employeeRepo.countByPositionId(id) > 0)
+        if (repo.countEmployeeByPositionId(id) > 0)
             throw new EstateException(ExCode.POSITION_HAS_EMPLOYEE);
         return repo.deleteById(id) == 1;
     }
@@ -55,5 +54,9 @@ public class PositionService {
 
     public Position selectById(Long id) {
         return repo.selectById(id);
+    }
+
+    public List<Position> listAllByCompanyId(Long companyId) {
+        return repo.listAllByCompanyId(companyId);
     }
 }

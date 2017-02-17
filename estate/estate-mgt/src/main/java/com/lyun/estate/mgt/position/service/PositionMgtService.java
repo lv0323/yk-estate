@@ -12,6 +12,7 @@ import com.lyun.estate.mgt.context.MgtContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -83,5 +84,9 @@ public class PositionMgtService {
 
     public PageList<Position> listByPageBounds(PageBounds pageBounds) {
         return positionService.selectByCompanyId(mgtContext.getOperator().getCompanyId(), pageBounds);
+    }
+
+    public List<Position> listAllByCompanyId() {
+        return positionService.listAllByCompanyId(mgtContext.getOperator().getCompanyId());
     }
 }

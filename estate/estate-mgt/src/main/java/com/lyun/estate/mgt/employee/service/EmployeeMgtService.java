@@ -71,7 +71,7 @@ public class EmployeeMgtService {
 
     @Transactional
     public Boolean quit(Long id) {
-        Employee needQuit = employeeService.findOne(id);
+        Employee needQuit = employeeService.selectById(id);
         if (needQuit == null) {
             return null;
         }
