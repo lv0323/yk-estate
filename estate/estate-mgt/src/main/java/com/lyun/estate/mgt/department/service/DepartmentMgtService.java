@@ -46,7 +46,9 @@ public class DepartmentMgtService {
                 .setSubject(AuditSubject.ORGANIZATION)
                 .setTargetId(result.getId())
                 .setDomainType(DomainType.DEPARTMENT)
-                .setContent("【" + mgtContext.getOperator() + "】新增了一个名为【" + result.getName() + "】的部门")
+                .setContent(
+                        "【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
+                                .getName() + "】新增了一个名为【" + result.getName() + "】的部门")
         );
         return result;
     }
@@ -61,7 +63,8 @@ public class DepartmentMgtService {
                 .setSubject(AuditSubject.ORGANIZATION)
                 .setTargetId(result.getId())
                 .setDomainType(DomainType.DEPARTMENT)
-                .setContent("【" + mgtContext.getOperator() + "】修改了部门【" + result.getName() + "】的信息")
+                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
+                        .getName() + "】修改了部门【" + result.getName() + "】的信息")
         );
         return result;
     }
@@ -84,7 +87,8 @@ public class DepartmentMgtService {
                 .setSubject(AuditSubject.ORGANIZATION)
                 .setTargetId(result.getId())
                 .setDomainType(DomainType.DEPARTMENT)
-                .setContent("【" + mgtContext.getOperator() + "】对【" + result.getName() + "】进行了部门调动")
+                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
+                        .getName() + "】对【" + result.getName() + "】进行了部门调动")
         );
         return result;
     }
@@ -107,7 +111,8 @@ public class DepartmentMgtService {
                 .setSubject(AuditSubject.ORGANIZATION)
                 .setTargetId(needDelete.getId())
                 .setDomainType(DomainType.DEPARTMENT)
-                .setContent("【" + mgtContext.getOperator() + "】删除了名为【" + needDelete.getName() + "】的部门")
+                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
+                        .getName() + "】删除了名为【" + needDelete.getName() + "】的部门")
         );
         return result;
     }

@@ -60,7 +60,9 @@ public class AuthRest {
                 .setAgent(employee.getAgent())
                 .setGender(employee.getGender())
                 .setName(employee.getName())
-                .setMobile(employee.getMobile()));
+                .setMobile(employee.getMobile())
+                .setPositionName(employee.getPositionName())
+                .setDepartmentName(employee.getDepartmentName()));
         return new RestResponse().add("ret", true).add("user", employee).get();
     }
 

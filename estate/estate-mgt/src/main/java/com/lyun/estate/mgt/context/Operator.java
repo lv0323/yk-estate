@@ -7,7 +7,9 @@ public class Operator {
     private Long id;
     private Long companyId;
     private Long departmentId;
+    private String departmentName;
     private Long positionId;
+    private String positionName;
     private Boolean isBoss;
     private Boolean isAgent;
     private String mobile;
@@ -92,6 +94,24 @@ public class Operator {
 
     public Operator setGender(Gender gender) {
         this.gender = gender;
+        return this;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public Operator setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+        return this;
+    }
+
+    public String getPositionName() {
+        return positionName;
+    }
+
+    public Operator setPositionName(String positionName) {
+        this.positionName = positionName;
         return this;
     }
 }
