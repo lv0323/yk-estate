@@ -78,4 +78,15 @@ public abstract class AbstractFileService implements FileService {
         return result;
     }
 
+    @Override
+    public FileDescription findOne(Long id) {
+        ExceptionUtil.checkNotNull("文件编号", id);
+
+        FileDescription result = repository.findOne(id);
+        if (result != null) {
+            result.setFileURI(getFileURI(result.getPath(), result.getTarget()));
+        }
+        return result;
+    }
+
 }

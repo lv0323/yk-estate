@@ -19,4 +19,6 @@ public interface FileService {
     FileDescription findFirst(Long ownerId, DomainType ownerType, CustomType customType, FileProcess fileProcess);
 
     Boolean delete(Long id);
+
+    FileDescription findOne(Long id);
 }
