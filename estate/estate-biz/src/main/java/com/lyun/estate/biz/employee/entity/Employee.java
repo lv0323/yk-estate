@@ -10,7 +10,9 @@ public class Employee {
     private Long id;
     private Long companyId;
     private Long departmentId;
+    private String departmentName;
     private Long positionId;
+    private String positionName;
     private Boolean isBoss;
     private Boolean isAgent;
     private Long avatarId;
@@ -195,6 +197,24 @@ public class Employee {
 
     public Employee setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public Employee setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+        return this;
+    }
+
+    public String getPositionName() {
+        return positionName;
+    }
+
+    public Employee setPositionName(String positionName) {
+        this.positionName = positionName;
         return this;
     }
 }

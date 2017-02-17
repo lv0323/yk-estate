@@ -7,6 +7,8 @@ import com.lyun.estate.mgt.position.service.PositionMgtService;
 import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/position")
 public class PositionRest {
@@ -35,5 +37,10 @@ public class PositionRest {
     @GetMapping("query")
     public PageList<Position> query(@RequestHeader("X-PAGING") PageBounds pageBounds) {
         return service.listByPageBounds(pageBounds);
+    }
+
+    @GetMapping("query-all")
+    public List<Position> query() {
+        return service.listAllByCompanyId();
     }
 }

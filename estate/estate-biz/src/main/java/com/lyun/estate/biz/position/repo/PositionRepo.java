@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 
 public interface PositionRepo {
 
@@ -26,4 +28,10 @@ public interface PositionRepo {
 
     @Select("select * from t_position where company_id=#{companyId} and is_deleted = false")
     PageList<Position> selectByCompanyId(Long companyId, PageBounds pageBounds);
+
+    @Select("select * from t_position where company_id=#{companyId} and is_deleted = false")
+    List<Position> listAllByCompanyId(Long companyId);
+
+    @Select("select count(*) from t_employee where position_id = #{id} and quit = false")
+    int countEmployeeByPositionId(Long id);
 }
