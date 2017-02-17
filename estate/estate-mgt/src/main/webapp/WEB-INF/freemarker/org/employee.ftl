@@ -12,7 +12,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title" id="addEmployeeLabel"></h4>
+                <h4 class="modal-title" id="addEmployeeLabel">增加员工</h4>
             </div>
             <div class="modal-body">
                 <form id="addEmployeeForm" class="form-horizontal" method="post">
@@ -23,8 +23,11 @@
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
                             <div id="addEmployeeGender">
-                                <input type="radio" id="M" value="M" checked="checked">男
-                                <input type="radio" id="F" value="F">女
+                            <#list gender?if_exists as gd>
+                                <input type="radio" value="${gd.name()}">${gd.getGender()}
+                            </#list>
+                               <#-- <input type="radio" id="M" value="M" checked="checked">男
+                                <input type="radio" id="F" value="F">女-->
                             </div>
                         </div>
                     </div>
@@ -49,16 +52,17 @@
                     <div class="form-group">
                         <label class="col-lg-3 col-md-3 col-sm-3 control-label">部门<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <select type="text" id="addEmployeeDepart" class="form-control btn-group dropup">
-
-                            </select>
+                            <div id="addEmployeeDepart" class="dropdown-yk">
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <select type="text" id="addEmployeePosition" class="form-control btn-group dropup">
-
+                                <#list positionTypeList?if_exists as pt>
+                                    <option value="${pt.name()}">${pt.getLabel()}</option>
+                                </#list>
                             </select>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
@@ -69,8 +73,9 @@
                         <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位状态<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <select id="addEmployeeStatus" class="form-control btn-group dropup">
-                                <option value="WORKING">在职</option>
-                                <option value="INTERN">实习</option>
+                                <#list workingStatusList?if_exists as ws>
+                                    <option value="${ws.name()}">${ws.getStatus()}</option>
+                                </#list>
                             </select>
                         </div>
                     </div>
@@ -93,7 +98,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title" id="editEmployeeLabel"></h4>
+                <h4 class="modal-title" id="editEmployeeLabel">编辑员工</h4>
             </div>
             <div class="modal-body">
                 <form id="editEmployeeForm" class="form-horizontal" method="post">
@@ -105,8 +110,11 @@
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
                             <div id="editEmployeeGender">
-                                <input type="radio" value="M" checked="checked">男
-                                <input type="radio" value="F">女
+                                <#--<input type="radio" value="M" checked="checked">男
+                                <input type="radio" value="F">女-->
+                                <#list gender?if_exists as gd>
+                                    <input type="radio" value="${gd.name()}">${gd.getGender()}
+                                </#list>
                             </div>
                         </div>
                     </div>
@@ -131,16 +139,17 @@
                     <div class="form-group">
                         <label class="col-lg-3 col-md-3 col-sm-3 control-label">部门<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <select type="text" id="editEmployeeDepart" class="form-control btn-group dropup">
-
-                            </select>
+                            <div id="editEmployeeDepart" class="dropdown-yk">
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <select type="text" id="editEmployeePosition" class="form-control btn-group dropup">
-
+                            <#list positionTypeList?if_exists as pt>
+                                <option value="${pt.name()}">${pt.getLabel()}</option>
+                            </#list>
                             </select>
                         </div>
                         <div class="hidden col-lg-3 col-md-3 col-sm-3">
@@ -151,8 +160,9 @@
                         <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位状态<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <select id="editEmployeeStatus" class="form-control btn-group dropup">
-                                <option value="WORKING">在职</option>
-                                <option value="INTERN">实习</option>
+                            <#list workingStatusList?if_exists as ws>
+                                <option value="${ws.name()}">${ws.getStatus()}</option>
+                            </#list>
                             </select>
                         </div>
                     </div>
@@ -245,8 +255,8 @@
                                             <label class="col-lg-3 col-md-3 col-sm-3 control-label">在职｜离职： </label>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
                                                 <select id="quitPosition" class="form-control btn-group dropup">
-                                                    <option value="nonQuit">在职</option>
-                                                    <option value="quit">离职</option>
+                                                    <option value="false">在职</option>
+                                                    <option value="true">离职</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -255,8 +265,7 @@
                                     <table id="employeeList" class="list table table-bordered table-hover">
                                         <thead><tr>
                                             <th><span>姓名</span></th>
-                                            <th><span>部门</span></th>
-                                            <th><span>岗位</span></th>
+                                            <th><span>岗位名称</span></th>
                                             <th><span>电话</span></th>
                                             <th class="text-right"><span>操作</span></th>
                                         </tr></thead>

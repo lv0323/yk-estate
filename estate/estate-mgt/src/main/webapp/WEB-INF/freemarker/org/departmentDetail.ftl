@@ -49,7 +49,7 @@
                                     <div class="form-group">
                                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">部门名称</label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
-                                            <input type="text" id="departName" class="form-control" reg="^[\S]{1,8}$" placeholder="名称限8个字符">
+                                            <input type="text" id="departName" class="form-control" reg="^[\S]{1,8}$" placeholder="名称限8个字符" disabled>
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                             <input type="text" id="departSpell" class="form-control hidden" placeholder="拼音简码">
@@ -58,28 +58,28 @@
                                     <div class="form-group">
                                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">部门电话</label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
-                                            <input type="text" id="departTel" class="form-control" reg="^1\d{10}$|^\d{3}-\d{8}$|^\d{4}-\d{7}$|^0\d{11}$|^\d{4}-\d{8}$|^$" placeholder="部门电话">
+                                            <input type="text" id="departTel" class="form-control" reg="^1\d{10}$|^\d{3}-\d{8}$|^\d{4}-\d{7}$|^0\d{11}$|^\d{4}-\d{8}$|^$" placeholder="部门电话" disabled>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-lg-2 col-md-2 col-sm-2 control-label">部门地址</label>
                                         <div class="col-lg-2 col-md-2 col-sm-2">
-                                            <select id="departCid" class="form-control btn-group dropup">
+                                            <select id="departCid" class="form-control btn-group dropup" disabled>
                                                 <option value="">请选择</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-2 col-md-2 col-sm-2">
-                                            <select id="departDid" class="form-control btn-group dropup">
+                                            <select id="departDid" class="form-control btn-group dropup" disabled>
                                                 <option value="">请选择</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-3">
-                                            <select id="departSDid" class="form-control btn-group dropup">
+                                            <select id="departSDid" class="form-control btn-group dropup" disabled>
                                                 <option value="">请选择</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-3">
-                                            <input type="text" id="departAddress" class="form-control" placeholder="请输入详细地址">
+                                            <input type="text" id="departAddress" class="form-control" placeholder="请输入详细地址" disabled>
                                         </div>
                                     </div>
                                 </form>
@@ -96,12 +96,3 @@
 
 <#include "/common/footer.ftl" />
 <script src="${contextPath!}/js/app/org/departmentDetail.js"></script>
-<script>
-    $(function () {
-        $('#editDepartDialog input').prop("disabled", true);
-        $('#editDepartDialog select').prop("disabled", true);
-        $(".dropdown-yk .parent").css({"background-color":"#eeeeee","color":"#555555","cursor":"default"});
-
-    });
-
-</script>

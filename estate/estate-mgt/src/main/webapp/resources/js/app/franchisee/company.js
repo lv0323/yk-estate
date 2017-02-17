@@ -7,6 +7,7 @@ require(['main-app',contextPath + '/js/service/company-service.js',
     'jqPaginator','datepicker.zh-cn'],
     function (mainApp, CompanyService, pagingPlugin, dataTableHelp) {
 
+
         var header = {};
         var companyAllDataRaw = {};
 
@@ -39,6 +40,7 @@ require(['main-app',contextPath + '/js/service/company-service.js',
 
         var displayTable = function (data) {
             companyAllDataRaw = data.items;
+
             var dataSet =data.items.map(function(item,index){
                 return {
                     companyName: {attr: {class: 'lookCompanyBtn'}, data: {id: item.id}, text: item.name},
@@ -71,6 +73,7 @@ require(['main-app',contextPath + '/js/service/company-service.js',
                 tableConfig.target.clear();
                 tableConfig.target.rows.add(dataSet).draw();
             }
+
         };
 
         var pagination = function(dataTotal) {

@@ -46,15 +46,7 @@ require(['jquery'], function( $ ) {
                     $(_this).find('.' + options.selectItem + '[index=' + item.parent_id + ']').find('>.' + options.dlClass).append('<li class="' + options.selectItem + ' ' + options.selectItem + '-' + index + '" index="' + item.id + '"><span class="' + options.selectItemName + '" data-index="' + item.id + '">' + item.name + '</span><dl class="' + options.dlClass + '"></dl>')
                 }
             });
-            if(options.currentValue){
-                $(_this).find(options.inputClass).text($(_this).find(options.selectItemClass+'[index='+options.currentValue+'] >.' + options.selectItemName).text());
-                $(_this).find(options.inputClass).attr(options.selectedKey,options.currentValue);
-                $(_this).attr(options.selectedKey,options.currentValue);
-            }else{
-                $(_this).find(options.inputClass).text('请选择');
-                $(_this).find(options.inputClass).removeAttr(options.selectedKey);
-                $(_this).removeAttr(options.selectedKey);
-            }
+
             //点击后判断ul是否隐藏
             $(this).find(options.inputClass).click(function () {
                 var ul = $(options.listUlClass);

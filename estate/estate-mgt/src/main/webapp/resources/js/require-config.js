@@ -16,7 +16,8 @@ requirejs.config({
         'datatablesBootstrap': 'plugins/datatables/dataTables.bootstrap.min',
         'submenu': 'plugins/bootstrap-submenu',
         'dropdown': 'plugins/dropdown/index',
-        'jqPaginator': 'plugins/pagination/jqPaginator'
+        'jqPaginator': 'plugins/pagination/jqPaginator',
+        'locationUtil': 'utils/location-util'
     },
     shim: {
         'bootstrap': ['jquery'],
@@ -37,7 +38,11 @@ requirejs.config({
             exports: 'datatablesBootstrap'
         },
         'submenu':['jquery', 'bootstrap'],
-        'jqPaginator':['jquery']
+        'jqPaginator':['jquery'],
+        'locationUtil':{
+            deps: ['jquery'],
+            exports: 'locationUtil'
+        }
     },
     waitSeconds: 0,
     urlArgs: "vn="+vn

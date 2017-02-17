@@ -100,3 +100,4 @@
 
 <#include "/common/footer.ftl" />
 <script src="${contextPath!}/js/app/org/departmentDetail.js"></script>
+
