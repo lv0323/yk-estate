@@ -31,14 +31,5 @@ define(contextPath + '/js/service/employee-service.js',
             return requestService.post('/api/employee/edit', params.data, header);
         };
 
-        /*EmployeeService.getDepartment = function (header) {
-            return DepartmentService.getDepartment(header);
-        };
-
-        EmployeeService.getPosition = function (header) {
-            return PositionService.getPosition(header);
-        };*/
-
-
         return EmployeeService;
     });

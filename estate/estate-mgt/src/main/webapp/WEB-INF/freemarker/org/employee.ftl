@@ -255,8 +255,8 @@
                                             <label class="col-lg-3 col-md-3 col-sm-3 control-label">在职｜离职： </label>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
                                                 <select id="quitPosition" class="form-control btn-group dropup">
-                                                    <option value="nonQuit">在职</option>
-                                                    <option value="quit">离职</option>
+                                                    <option value="false">在职</option>
+                                                    <option value="true">离职</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -265,8 +265,7 @@
                                     <table id="employeeList" class="list table table-bordered table-hover">
                                         <thead><tr>
                                             <th><span>姓名</span></th>
-                                            <th><span>部门</span></th>
-                                            <th><span>岗位</span></th>
+                                            <th><span>岗位名称</span></th>
                                             <th><span>电话</span></th>
                                             <th class="text-right"><span>操作</span></th>
                                         </tr></thead>

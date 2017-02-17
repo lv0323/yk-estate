@@ -3,11 +3,12 @@
  */
 require(['main-app',contextPath + '/js/service/employee-service.js',
         contextPath + '/js/service/department-service.js',
+        contextPath + '/js/service/position-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath+'/js/utils/dataTableHelp.js',
         contextPath+'/js/app/org/department/departCommon.js',
     'datatables', 'zTree','datatablesBootstrap'],
-    function (mainApp, EmployeeService, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon) {
+    function (mainApp, EmployeeService, DepartmentService, PositionService, pagingPlugin, dataTableHelp, DepartCommon) {
         var header = {};
 
         var employeeAllDataRaw = {};
@@ -23,10 +24,10 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         };
 
         var positionStatus = {
-            on: 'nonQuit',
-            off: 'quit'
+            true: true,
+            false: false
         };
-        var quitPosition = 'nonQuit'; //init nonQuit Employee by default
+        var quitPosition = 'false'; //init nonQuit Employee by default
 
        /* 部门树*/
         function departmentTree(data){
@@ -58,15 +59,6 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         });
        /* end部门树*/
 
-        /*function iniDepartDropList(header) {
-            var appendOption = '';
-            DepartmentService.getAllDepartment(header).done(function (data) {
-                $.each(data, function (index, element) {
-                    appendOption += '<option id="' + element.department["id"] + '">' + element.department["name"] + '</option>';
-                });
-                $('#addEmployeeDepart').html(appendOption);
-            });
-        }*/
 
 
         /*function iniPositionDropList(header) {
@@ -101,36 +93,63 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             });
         }*/
 
-        function displayFilteredEmployee(quitPosition, employee) {
-            var appendHtml = '';
-            if(quitPosition == 'nonQuit'){
-                $.each(employee,function (index, employeeRaw) {
-                    appendHtml += '<tr>' +
-                        '<td>'+employeeRaw["name"]+'</td>' +
-                        '<td>'+employeeRaw.department["name"]+'</td>' +
-                        '<td>'+employeeRaw.position["name"]+'</td>' +
-                        '<td>'+employeeRaw["mobile"]+'</td>' +
-                        '<td class="text-right">' +
-                        '<a class="btn" id="editEmployeeBtn" data-index="'+index+'" data-id="'+employeeRaw["id"]+'" data-toggle="modal" data-target="#editEmployeeDialog">编辑</a>' +
-                        '<span class="opt-gap"></span>' +
-                        '<a class="btn" id="quitEmployeeBtn" data-index="'+index+'" data-id="'+employeeRaw["id"]+'" data-toggle="modal" data-target="#quitEmployeeDialog">离职</a>' +
-                        '</td>' +
-                        '</tr>';
-                });
-                $('#employeeList>tbody').html(appendHtml);
-            }else if(quitPosition == 'quit'){
-                $.each(employee,function (index, employeeRaw) {
-                    appendHtml += '<tr>' +
-                        '<td>'+employeeRaw["name"]+'</td>' +
-                        '<td>'+employeeRaw.department["name"]+'</td>' +
-                        '<td>'+employeeRaw.position["name"]+'</td>' +
-                        '<td>'+employeeRaw["mobile"]+'</td>' +
-                        '</tr>';
-                });
-                $('#employeeList>tbody').html(appendHtml);
-            }
 
-        }
+        var displayFilteredEmployee = function (quitPosition, data) {
+            employeeAllDataRaw = data;
+            var dataSet = data.map(function (item, index) {
+                if(!quitPosition){
+                    return {
+                        employeeName: item.name,
+                        positionId: item.positionId,
+                        mobile: item.mobile,
+                        operation: [
+                            {
+                                attr: {class: 'btn editEmployeeBtn'},
+                                data: {index: index, id: item.id, toggle: 'modal', target: '#editEmployeeDialog'},
+                                text: '编辑'
+                            },
+                            {
+                                attr: {class: 'btn quitEmployeeBtn'},
+                                data: {index: index, id: item.id, toggle: 'modal', target: '#quitEmployeeDialog'},
+                                text: '离职'
+                            }]
+                    }
+                }else {
+                    return {
+                        employeeName: item.name,
+                        positionId: item.positionId,
+                        mobile: item.mobile,
+                        operation: '已离职'
+                    }
+                }
+            });
+
+            if (!tableConfig.target) {
+                tableConfig.target = $('#employeeList').DataTable({
+                    data: dataSet,
+                    paging: false,
+                    searching: false,
+                    info: false,
+                    ordering: false,
+                    autoWidth: false,
+                    columnDefs: [
+                        {className: "text-right", "targets": [3]} /*添加class*/
+                    ],
+                    columns: [
+                        {
+                            title: "姓名",
+                            data: 'employeeName'
+                        },
+                        {title: "岗位名称", data: 'positionId', defaultContent: ""},
+                        {title: "电话", data: 'mobile', defaultContent: ""},
+                        {title: "操作", data: 'operation', "render": dataTableHelp.operationFormat()}
+                    ]
+                });
+            } else {
+                tableConfig.target.clear();
+                tableConfig.target.rows.add(dataSet).draw();
+            }
+        };
 
         var pagination = function(dataTotal) {
             if(pageConfig.init){
@@ -152,18 +171,19 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         function filterEmployee(quitPosition, offset, limit) {
             EmployeeService.quitEmployee = [];
             EmployeeService.nonQuitEmployee = [];
+            quitPosition = (quitPosition == 'true')?positionStatus["true"]:positionStatus["false"];
             EmployeeService.getEmployee({'x-paging': 'total=true&offset='+offset+'&limit=' + limit}).done(function (data) {
-                $.each(data,function (index, employeeRaw) {
-                    if(employeeRaw["quit"]){
-                        EmployeeService.quitEmployee.push(employeeRaw);
+                $.each(data.items,function (index, employee) {
+                    if(employee["quit"]){
+                        EmployeeService.quitEmployee.push(employee);
                     }else {
-                        EmployeeService.nonQuitEmployee.push(employeeRaw);
+                        EmployeeService.nonQuitEmployee.push(employee);
                     }
                 });
-                employeeAllDataRaw = EmployeeService.nonQuitEmployee;
-                if(quitPosition == positionStatus["on"]){
+                // employeeAllDataRaw = EmployeeService.nonQuitEmployee;
+                if(!quitPosition){
                     displayFilteredEmployee(quitPosition,EmployeeService.nonQuitEmployee);
-                }else if(quitPosition == positionStatus["off"]){
+                }else{
                     displayFilteredEmployee(quitPosition,EmployeeService.quitEmployee);
                 }
                 pagination(data.total);
@@ -176,49 +196,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         $('#quitPosition').on('change',function () {
             var quitPosition = $('#quitPosition option:selected').val();
             filterEmployee(quitPosition, 0, pageConfig.limit);
-
         });
-
-        /*$('#employeeList').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": false,
-            "info": false,
-            "autoWidth": false
-        });*/
-        //get data from server and display data
-        /*EmployeeService.getEmployee(header)
-            .done(function(data){
-                employeeAllDataRaw = data;
-                var appendHtml = '';
-                $.each(data,function (index, employeeRaw) {
-                    appendHtml = '<tr>' +
-                        '<td>'+employeeRaw["name"]+'</td>' +
-                        '<td>'+employeeRaw.department["name"]+'</td>' +
-                        '<td>'+employeeRaw.position["name"]+'</td>' +
-                        '<td>'+employeeRaw["mobile"]+'</td>' +
-                        '<td class="text-right">' +
-                        '<a class="btn" id="editEmployeeBtn" data-index="'+index+'" data-id="'+employeeRaw["id"]+'" data-toggle="modal" data-target="#editEmployeeDialog">编辑</a>' +
-                        '<span class="opt-gap"></span>' +
-                        '<a class="btn" id="deleteEmployeeBtn" data-index="'+index+'" data-id="'+employeeRaw["id"]+'" data-toggle="modal" data-target="#deleteEmployeeDialog">删除</a>' +
-                        '</td>' +
-                        '</tr>';
-                    $('#employeeList>tbody').append(appendHtml);
-                });
-
-                $('#employeeList').DataTable({
-                    "paging": true,
-                    "lengthChange": false,
-                    "searching": false,
-                    "ordering": false,
-                    "info": false,
-                    "autoWidth": false
-                });
-            })
-            .fail(function () {
-                $('#employeeList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
-            });*/
 
         //initialize title in add Employee dialog
         $('.fadeInRight').on('click','#addEmployeeBtn',function(){
