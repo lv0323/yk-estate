@@ -71,7 +71,7 @@ public class EmployeeService {
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(employee.getMobile()), "用户手机", employee.getMobile());
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(employee.getName()), "用户名", employee.getName());
         repo.insert(employee);
-        return employee;
+        return repo.selectById(employee.getId());
     }
 
     public PageList<Employee> listByCompanyIdDepartmentId(Long companyId,

@@ -42,7 +42,8 @@ public class EmployeeMgtService {
                 .setSubject(AuditSubject.ORGANIZATION)
                 .setTargetId(result.getId())
                 .setDomainType(DomainType.EMPLOYEE)
-                .setContent("【" + mgtContext.getOperator() + "】新增了一个名为【" + result.getName() + "】的员工")
+                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
+                        .getName() + "】新增了一个【" + result.getDepartmentName() + "--" + result.getName() + "】员工")
         );
         return result;
     }
@@ -63,7 +64,8 @@ public class EmployeeMgtService {
                 .setSubject(AuditSubject.ORGANIZATION)
                 .setTargetId(result.getId())
                 .setDomainType(DomainType.EMPLOYEE)
-                .setContent("【" + mgtContext.getOperator() + "】修改了员工【" + result.getName() + "】的信息")
+                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
+                        .getName() + "】修改了员工【" + result.getDepartmentName() + "--" + result.getName() + "】的信息")
         );
         return result;
     }
@@ -84,7 +86,8 @@ public class EmployeeMgtService {
                 .setSubject(AuditSubject.ORGANIZATION)
                 .setTargetId(needQuit.getId())
                 .setDomainType(DomainType.POSITION)
-                .setContent("【" + mgtContext.getOperator() + "】将名为【" + needQuit.getName() + "】的员工离职")
+                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
+                        .getName() + "】离职了【" + needQuit.getDepartmentName() + "--" + needQuit.getName() + "】员工")
         );
         return result;
     }

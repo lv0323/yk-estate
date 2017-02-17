@@ -42,7 +42,8 @@ public class PositionMgtService {
                 .setSubject(AuditSubject.ORGANIZATION)
                 .setTargetId(result.getId())
                 .setDomainType(DomainType.POSITION)
-                .setContent("【" + mgtContext.getOperator() + "】新增了一个名为【" + result.getName() + "】的岗位")
+                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
+                        .getName() + "】新增了一个名为【" + result.getName() + "】的岗位")
         );
 
         return result;
@@ -62,7 +63,8 @@ public class PositionMgtService {
                 .setSubject(AuditSubject.ORGANIZATION)
                 .setTargetId(needDelete.getId())
                 .setDomainType(DomainType.POSITION)
-                .setContent("【" + mgtContext.getOperator() + "】删除了名为【" + needDelete.getName() + "】的岗位")
+                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
+                        .getName() + "】删除了名为【" + needDelete.getName() + "】的岗位")
         );
         return result;
     }
@@ -77,7 +79,8 @@ public class PositionMgtService {
                 .setSubject(AuditSubject.ORGANIZATION)
                 .setTargetId(result.getId())
                 .setDomainType(DomainType.POSITION)
-                .setContent("【" + mgtContext.getOperator() + "】修改了岗位【" + result.getName() + "】的信息")
+                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
+                        .getName() + "】修改了岗位【" + result.getName() + "】的信息")
         );
         return result;
     }
