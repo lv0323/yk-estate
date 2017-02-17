@@ -57,8 +57,30 @@ public class EmployeeRest {
     }
 
     @PostMapping("edit")
-    public Object edit(Employee entity) {
-        return service.update(entity);
+    public Object edit(@RequestParam Long id,
+                       @RequestParam Long departmentId,
+                       @RequestParam Long positionId,
+                       @RequestParam Boolean isAgent,
+                       @RequestParam String mobile,
+                       @RequestParam String name,
+                       @RequestParam Gender gender,
+                       @RequestParam(required = false) String idcardNumber,
+                       @RequestParam(required = false) String wechat,
+                       @RequestParam WorkingStatus status,
+                       @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date entryDate) {
+        Employee employee = new Employee().setId(id)
+                .setDepartmentId(departmentId)
+                .setPositionId(positionId)
+                .setAgent(isAgent)
+                .setMobile(mobile)
+                .setName(name)
+                .setGender(gender)
+                .setIdcardNumber(idcardNumber)
+                .setWechat(wechat)
+                .setStatus(status)
+                .setEntryDate(entryDate);
+
+        return service.update(employee);
     }
 
 

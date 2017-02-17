@@ -15,9 +15,9 @@ public interface EmployeeRepo {
     int insert(Employee employee);
 
     @Update("update t_employee set " +
-            "department_id = #{departmentId}, position_id = #{positionId}, " +
+            "department_id = #{departmentId}, position_id = #{positionId}, is_agent = #{isAgent}," +
             "mobile = #{mobile}, name = #{name}, gender = #{gender}, " +
-            "idcard_number = #{idcardNumber}, wechat = #{wechat}, status = #{status}, " +
+            "idcard_number = #{idcardNumber}, wechat = #{wechat}, status = #{status}, entry_date=#{entryDate}, " +
             "update_time = CURRENT_TIMESTAMP where id = #{id}")
     int update(Employee employee);
 

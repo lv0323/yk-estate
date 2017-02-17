@@ -7,8 +7,9 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         contextPath+'/js/utils/dataTableHelp.js',
         contextPath+'/js/app/org/department/departCommon.js',
         contextPath+'/js/app/org/position/positionCommon.js',
+        contextPath+'/js/service/util-service.js',
     'datatables', 'zTree','datatablesBootstrap', 'datepicker.zh-cn'],
-    function (mainApp, EmployeeService, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon, PositionCommon) {
+    function (mainApp, EmployeeService, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon, PositionCommon, UtilService) {
         var header = {};
 
         var employeeAllDataRaw = {};
@@ -204,7 +205,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             var toAddData = {
                 'departmentId': $('#addEmployeeDepart').attr('selectedvalue'),
                 'positionId': $('#addEmployeePosition option:selected').attr("id"),
-                'agent': $('#addEmployeeIsAgent').is(':checked'),
+                'isAgent': $('#addEmployeeIsAgent').is(':checked'),
                 'mobile': $('#addEmployeeMobile').val(),
                 'name': $('#addEmployeeName').val(),
                 'gender': $('#addEmployeeGender input:checked').val(),
@@ -229,6 +230,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             var employee = employeeAllDataRaw[index];
             DepartCommon.initDepartSelector(employee["departmentId"]);
             PositionCommon.initPositionSelector(employee["positionId"]);
+            var time = UtilService.timeStamp2Date(employee["entryDate"]);
             $('#editEmployeeName').val(employee["name"]);
             $('#editEmployeeId').val(employee["id"]);
             $('#editEmployeeGender').find('input[value='+employee["gender"]+']').prop('checked',true);
@@ -238,12 +240,14 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             $('#editEmployeeWechat').val(employee["wechat"]);
             $('#editEmployeeIsAgent').prop('checked',employee["agent"]);
             $('#editEmployeeStatus').val(employee["status"]);
-            $('#editEmployeeEntryDate').val(employee["entryDate"]);
+            $('#editEmployeeEntryDate').val(time);
 
         });
 
         //action for edit Company dialog
         $('#confirmEditEmployeeBtn').on('click', function() {
+            // var entryDate = new Date($('#editEmployeeEntryDate').val());
+
             var toEditData = {
                 id: $('#editEmployeeId').val(),
                 departmentId: $('#editEmployeeDepart').attr("selectedvalue"),
@@ -253,7 +257,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 gender: $('#editEmployeeGender input:checked').val(),
                 idcardNumber: $('#editEmployeeID').val(),
                 wechat: $('#editEmployeeWechat').val(),
-                agent: $('#editEmployeeIsAgent').is(':checked'),
+                isAgent: $('#editEmployeeIsAgent').is(':checked'),
                 status: $('#editEmployeeStatus option:selected').val(),
                 entryDate: $('#editEmployeeEntryDate').val()
             };
