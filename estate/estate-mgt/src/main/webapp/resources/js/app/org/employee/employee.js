@@ -100,7 +100,8 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 if(!quitPosition){
                     return {
                         employeeName: item.name,
-                        positionId: item.positionId,
+                        departmentName: item.departmentName,
+                        positionName: item.positionName,
                         mobile: item.mobile,
                         operation: [
                             {
@@ -117,7 +118,8 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 }else {
                     return {
                         employeeName: item.name,
-                        positionId: item.positionId,
+                        departmentName: item.departmentName,
+                        positionName: item.positionName,
                         mobile: item.mobile,
                         operation: '已离职'
                     }
@@ -140,7 +142,8 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                             title: "姓名",
                             data: 'employeeName'
                         },
-                        {title: "岗位名称", data: 'positionId', defaultContent: ""},
+                        {title: "所属部门", data: 'departmentName', defaultContent: ""},
+                        {title: "岗位名称", data: 'positionName', defaultContent: ""},
                         {title: "电话", data: 'mobile', defaultContent: ""},
                         {title: "操作", data: 'operation', "render": dataTableHelp.operationFormat()}
                     ]

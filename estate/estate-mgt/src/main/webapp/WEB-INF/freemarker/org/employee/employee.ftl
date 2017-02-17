@@ -265,6 +265,7 @@
                                     <table id="employeeList" class="list table table-bordered table-hover">
                                         <thead><tr>
                                             <th><span>姓名</span></th>
+                                            <th><span>所属部门</span></th>
                                             <th><span>岗位名称</span></th>
                                             <th><span>电话</span></th>
                                             <th class="text-right"><span>操作</span></th>
@@ -286,5 +287,5 @@
 
 <#include "/common/footer.ftl" />
 
-<script src="${contextPath!}/js/app/org/employee.js"></script>
+<script src="${contextPath!}/js/app/org/employee/employee.js"></script>
 

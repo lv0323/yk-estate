@@ -99,5 +99,5 @@
 
 
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/app/org/departmentDetail.js"></script>
+<script src="${contextPath!}/js/app/org/department/departmentDetail.js"></script>
 

@@ -114,4 +114,4 @@
 <!-- /.content-wrapper -->
 
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/app/org/department.js"></script>
+<script src="${contextPath!}/js/app/org/department/department.js"></script>

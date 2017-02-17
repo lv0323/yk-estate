@@ -21,6 +21,6 @@ public class PositionPage {
         HashMap<String, Object> params = new HashMap<>();
         params.put("positionTypeList", Arrays.asList(PositionType.values()));
         //params.put("message", "message");
-        return new ModelAndView("/org/position", params);
+        return new ModelAndView("/org/position/position", params);
     }
 }

@@ -23,6 +23,6 @@ public class EmployeePage {
         params.put("positionTypeList", Arrays.asList(PositionType.values()));
         params.put("workingStatusList", Arrays.asList(WorkingStatus.values()));
         params.put("gender", Arrays.asList(Gender.values()));
-        return new ModelAndView("/org/employee", params);
+        return new ModelAndView("/org/employee/employee", params);
     }
 }

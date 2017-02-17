@@ -175,4 +175,4 @@
 
 
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/app/org/position.js"></script>
+<script src="${contextPath!}/js/app/org/position/position.js"></script>
