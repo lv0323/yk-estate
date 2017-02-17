@@ -22,13 +22,13 @@
                 <li class="dropdown user user-menu">
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                        <#--<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">-->
                         <span class="hidden-xs username"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
                         <li class="user-header">
-                            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                            <#--<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">-->
 
                             <p>
                                 <span class="username"></span>
@@ -93,6 +93,17 @@
             <!-- Optionally, you can add icons to the links -->
             <li><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
             <li><a href="/mgt/franchisee/company.ftl"><i class="fa fa-link"></i> <span>加盟商管理</span></a></li>
+            <li class="treeview house">
+                <a href="#"><i class="fa fa-link"></i> <span>房源管理</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/mgt/houseManage/houseList.ftl?target=.house">房源列表</a></li>
+
+                </ul>
+            </li>
             <li class="treeview org">
                 <a href="#"><i class="fa fa-link"></i> <span>组织机构</span>
                     <span class="pull-right-container">

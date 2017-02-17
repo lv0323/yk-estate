@@ -9,20 +9,25 @@
      <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
      <META HTTP-EQUIV="Expires" CONTENT="0">
      <link href="${contextPath!}/img/favicon.ico" rel="shortcut icon" type="image/x-icon">
-     <link rel="stylesheet" href="${contextPath}/css/common/bootstrap.min.css">
-     <link rel="stylesheet" href="${contextPath}/css/common/animate.css">
-     <link rel="stylesheet" href="${contextPath}/css/common/font-awesome-4.7.0/css/font-awesome.css">
-     <link rel="stylesheet" href="${contextPath}/css/common/ionicons.min.css">
+     <link rel="stylesheet" href="${contextPath}/css/lib/bootstrap.min.css">
+     <link rel="stylesheet" href="${contextPath}/css/lib/animate.css">
+     <link rel="stylesheet" href="${contextPath}/css/lib/font-awesome-4.7.0/css/font-awesome.css">
+     <link rel="stylesheet" href="${contextPath}/css/lib/ionicons.min.css">
+     <!--plugins-->
+     <link rel="stylesheet" href="${contextPath}/css/plugins/bootstrap-select.css">
+     <link rel="stylesheet" href="${contextPath}/css/plugins/chosen/chosen.css">
+     <link rel="stylesheet" href="${contextPath}/css/plugins/bootstrap-submenu.css">
+     <link rel="stylesheet" href="${contextPath}/css/plugins/bootstrap-submenu.css">
+     <link rel="stylesheet" href="${contextPath}/css/plugins/datepicker/datepicker3.css">
+     <link rel="stylesheet" href="${contextPath}/css/plugins/datepicker/bootstrap-datetimepicker.min.css">
+     <link rel="stylesheet" href="${contextPath}/css/plugins/dropdown/index.css">
+     <link rel="stylesheet" href="${contextPath}/css/plugins/selector/bootstrap-select.min.css">
      <!-- AdminLTE-->
-     <link rel="stylesheet" href="${contextPath}/css/AdminLTE.css">
+     <link rel="stylesheet" href="${contextPath}/css/index.css">
      <link rel="stylesheet" href="${contextPath}/css/skins/skin-blue.min.css">
      <link rel="stylesheet" href="${contextPath}/css/skins/skin-black.min.css">
      <link rel="stylesheet" href="${contextPath}/css/skins/_all-skins.min.css">
      <link rel="stylesheet" href="${contextPath}/css/app/sidebar/sidebar.css">
-     <!--plugins-->
-     <link rel="stylesheet" href="${contextPath}/css/plugins/bootstrap-submenu.css">
-     <link rel="stylesheet" href="${contextPath}/css/plugins/datepicker/datepicker3.css">
-     <link rel="stylesheet" href="${contextPath}/css/plugins/dropdown/index.css">
      <!--dataTables-->
      <link rel="stylesheet" href="${contextPath}/css/plugins/datatables/dataTables.bootstrap.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/datatables/jquery.dataTables_themeroller.css">
