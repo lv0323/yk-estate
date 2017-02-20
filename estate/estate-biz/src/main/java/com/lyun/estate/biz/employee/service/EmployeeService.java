@@ -16,6 +16,7 @@ import com.lyun.estate.core.config.EstateCacheConfig;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
+import com.lyun.estate.core.utils.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
@@ -68,7 +69,7 @@ public class EmployeeService {
         ExceptionUtil.checkNotNull("岗位编号", employee.getPositionId());
         ExceptionUtil.checkNotNull("加入时间", employee.getEntryDate());
         ExceptionUtil.checkNotNull("状态", employee.getStatus());
-        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(employee.getMobile()), "用户手机", employee.getMobile());
+        ExceptionUtil.checkIllegal(ValidateUtil.isMobile(employee.getMobile()), "用户手机", employee.getMobile());
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(employee.getName()), "用户名", employee.getName());
         repo.insert(employee);
         return repo.selectById(employee.getId());

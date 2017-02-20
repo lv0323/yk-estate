@@ -6,6 +6,7 @@ public class Operator {
 
     private Long id;
     private Long companyId;
+    private Long cityId;
     private Long departmentId;
     private String departmentName;
     private Long positionId;
@@ -31,6 +32,15 @@ public class Operator {
 
     public Operator setCompanyId(Long companyId) {
         this.companyId = companyId;
+        return this;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public Operator setCityId(Long cityId) {
+        this.cityId = cityId;
         return this;
     }
 

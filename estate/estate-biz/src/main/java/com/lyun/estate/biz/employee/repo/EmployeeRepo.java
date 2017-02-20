@@ -31,7 +31,7 @@ public interface EmployeeRepo {
     PageList<Employee> selectByCompanyIdAndDeptIds(@Param("companyId") Long companyId,
                                                    @Param("deptIds") Collection<Long> deptIds, PageBounds pageBounds);
 
-    @Select("SELECT e.*,p.name as position_name, d.name as department_name  FROM t_employee e\n" +
+    @Select("SELECT e.*,p.name as position_name, d.city_id, d.name as department_name  FROM t_employee e\n" +
             " LEFT JOIN t_position p on e.position_id = p.id LEFT JOIN t_department d on e.department_id = d.id\n" +
             " WHERE e.id = #{id}")
     Employee selectById(Long id);
@@ -41,7 +41,7 @@ public interface EmployeeRepo {
             "(select company_id from t_employee where mobile = #{0} and quit = false)) = #{3}")
     int active(String mobile, String password, String salt, String secretKey);
 
-    @Select("SELECT e.*,p.name as position_name, d.name as department_name  FROM t_employee e " +
+    @Select("SELECT e.*,p.name as position_name, d.city_id, d.name as department_name  FROM t_employee e " +
             " LEFT JOIN t_position p on e.position_id = p.id LEFT JOIN t_department d on e.department_id = d.id " +
             " WHERE e.mobile = #{mobile} and e.quit = false")
     Employee selectByMobile(String mobile);

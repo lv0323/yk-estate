@@ -9,6 +9,7 @@ public class Employee {
 
     private Long id;
     private Long companyId;
+    private Long cityId;
     private Long departmentId;
     private String departmentName;
     private Long positionId;
@@ -44,6 +45,15 @@ public class Employee {
 
     public Employee setCompanyId(Long companyId) {
         this.companyId = companyId;
+        return this;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public Employee setCityId(Long cityId) {
+        this.cityId = cityId;
         return this;
     }
 

@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.fang.repo.provider;
 
 import com.google.common.base.Joiner;
-import com.lyun.estate.biz.fang.entity.FangSelector;
+import com.lyun.estate.biz.fang.domian.FangSelector;
 import com.lyun.estate.biz.spec.fang.def.IntPair;
 import com.lyun.estate.core.repo.SQL;
 

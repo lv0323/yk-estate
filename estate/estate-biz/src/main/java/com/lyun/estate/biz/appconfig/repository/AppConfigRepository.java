@@ -13,7 +13,7 @@ import java.util.Date;
  * Created by Jeffrey on 2017-01-16.
  */
 @Repository
-@CacheConfig(cacheManager = EstateCacheConfig.MANAGER_60_5K)
+@CacheConfig(cacheManager = EstateCacheConfig.MANAGER_360_5K)
 public interface AppConfigRepository {
 
     @Select("SELECT max(update_time) FROM t_city")

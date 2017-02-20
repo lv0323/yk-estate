@@ -27,7 +27,7 @@ public class ValidateUtil {
 
     public static boolean isMobile(String mobile) {
         if (!StringUtils.isEmpty(mobile)) {
-            return mobile.matches("[0-9]{11}");
+            return mobile.matches("1[0-9]{10}");
         }
         return false;
     }

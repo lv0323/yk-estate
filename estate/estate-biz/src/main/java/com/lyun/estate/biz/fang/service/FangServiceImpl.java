@@ -7,7 +7,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.entity.Fang;
-import com.lyun.estate.biz.fang.entity.FangSelector;
+import com.lyun.estate.biz.fang.domian.FangSelector;
 import com.lyun.estate.biz.fang.entity.FangTag;
 import com.lyun.estate.biz.fang.repo.FangRepository;
 import com.lyun.estate.biz.file.def.CustomType;
