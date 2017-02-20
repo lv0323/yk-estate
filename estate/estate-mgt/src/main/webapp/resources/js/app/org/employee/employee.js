@@ -46,7 +46,18 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         function departmentTree(data){
             function beforeClick(treeId, treeNode, clickFlag) {}
             function onClick(event, treeId, treeNode, clickFlag) {
-                console.log('点击了:'+ treeNode.id + treeNode.name);
+                EmployeeService.allEmployee = [];
+                $('#quitPosition').find('option[value="-1"]').attr('selected','selected');
+                $('#quitPosition').val("-1");
+                EmployeeService.getEmployee({departmentId:treeNode.id},{'x-paging':'total=true&offset=0&limit=10'})
+                    .done(function (data) {
+                        $.each(data.items,function (index, employee) {
+                            EmployeeService.allEmployee.push(employee);
+                        });
+                        displayFilteredEmployee(EmployeeService.allEmployee);
+                        pagination(data.total);
+                    });
+                //console.log('点击了:'+ treeNode.id + treeNode.name);
             }
             var zTreeSetting = {
                 data: {
@@ -72,10 +83,10 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         });
        /* end部门树*/
 
-        var displayFilteredEmployee = function (quitPosition, data) {
+        var displayFilteredEmployee = function (data) {
             employeeAllDataRaw = data;
             var dataSet = data.map(function (item, index) {
-                if(!quitPosition){
+                if(!item.quit){
                     return {
                         employeeName: item.name,
                         departmentName: item.departmentName,
@@ -152,20 +163,24 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         function filterEmployee(quitPosition, offset, limit) {
             EmployeeService.quitEmployee = [];
             EmployeeService.nonQuitEmployee = [];
-            quitPosition = (quitPosition == 'true')?positionStatus["true"]:positionStatus["false"];
-            EmployeeService.getEmployee({'x-paging': 'total=true&offset='+offset+'&limit=' + limit}).done(function (data) {
+            EmployeeService.allEmployee = [];
+            //quitPosition = (quitPosition == 'true')?positionStatus["true"]:positionStatus["false"];
+            EmployeeService.getEmployee(null, {'x-paging': 'total=true&offset='+offset+'&limit=' + limit}).done(function (data) {
                 $.each(data.items,function (index, employee) {
                     if(employee["quit"]){
                         EmployeeService.quitEmployee.push(employee);
                     }else {
                         EmployeeService.nonQuitEmployee.push(employee);
                     }
+                    EmployeeService.allEmployee.push(employee);
                 });
                 // employeeAllDataRaw = EmployeeService.nonQuitEmployee;
-                if(!quitPosition){
-                    displayFilteredEmployee(quitPosition,EmployeeService.nonQuitEmployee);
-                }else{
-                    displayFilteredEmployee(quitPosition,EmployeeService.quitEmployee);
+                if(quitPosition == 'false'){
+                    displayFilteredEmployee(EmployeeService.nonQuitEmployee);
+                }else if(quitPosition == 'true'){
+                    displayFilteredEmployee(EmployeeService.quitEmployee);
+                }else if(quitPosition == '-1'){
+                    displayFilteredEmployee(EmployeeService.allEmployee);
                 }
                 pagination(data.total);
             });

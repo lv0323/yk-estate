@@ -271,11 +271,12 @@
                                 <div class="box-body">
                                     <div id="box-filter" class="form-horizontal" style="display:none;">
                                         <div class="form-group ">
-                                            <label class="col-lg-3 col-md-3 col-sm-3 control-label">在职｜离职： </label>
-                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">在职｜离职： </label>
+                                            <div class="col-lg-2 col-md-2 col-sm-2">
                                                 <select id="quitPosition" class="form-control btn-group dropup">
                                                     <option value="false">在职</option>
                                                     <option value="true">离职</option>
+                                                    <option value="-1">全部</option>
                                                 </select>
                                             </div>
                                         </div>

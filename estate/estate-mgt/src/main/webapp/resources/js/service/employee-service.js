@@ -7,7 +7,8 @@ define(contextPath + '/js/service/employee-service.js',
 
         var EmployeeService = {
             quitEmployee:[],
-            nonQuitEmployee:[]
+            nonQuitEmployee:[],
+            allEmployee:[]
         };
 
         EmployeeService.getAvatar = function (params, header) {
@@ -15,8 +16,8 @@ define(contextPath + '/js/service/employee-service.js',
             return requestService.get('/api/employee/avatar', data, header);
         };
 
-        EmployeeService.getEmployee = function (header) {
-            return requestService.get('/api/employee/query', null, header);
+        EmployeeService.getEmployee = function (params, header) {
+            return requestService.get('/api/employee/query', params, header);
         };
 
         EmployeeService.addEmployee = function (params, header) {
