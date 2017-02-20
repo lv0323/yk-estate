@@ -1,4 +1,4 @@
-<link href="${contextPath}/css/org/orgnization.css" rel="stylesheet">
+<link href="${contextPath}/css/app/org/orgnization.css" rel="stylesheet">
 
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
@@ -19,7 +19,7 @@
                 </a>
             </li>
             <li class="active">
-                新增部门
+                编辑部门
             </li>
         </ol>
     </section>
@@ -32,15 +32,19 @@
                     <section class="connectedSortable">
                         <div class="box box-solid">
                             <div class="box-header">
-                                <h3 class="box-title">新增部门</h3>
+                                <h3 class="box-title">编辑部门</h3>
                             </div>
-                            <div class="box-body" id="addDepartDialog">
-                                <form id="addDepartForm" class="form-horizontal" method="post">
-                                    <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">上级部门</label>
-                                        <div class="col-lg-3 col-md-4 col-sm-4">
+                            <div class="box-body modal-content" id="editDepartDialog">
+                                <form id="editDepartForm" class="form-horizontal" method="post">
+                                    <div class="form-group parent-department-form-group">
+                                        <label id="superiorDepartLabel" class="col-lg-2 col-md-2 col-sm-2 control-label">上级部门</label>
+                                        <div class="superiorDepart col-lg-3 col-md-4 col-sm-4">
                                             <div class="dropdown-yk">
+                                                <div class="parent">请选择</div>
+                                                <ul class="listUl">
+                                                </ul>
                                             </div>
+                                            <input id="departId" class="hidden">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -81,7 +85,7 @@
                                     </div>
                                 </form>
                                 <div class="modal-footer center">
-                                    <button type="button" class="btn btn-primary" id="confirmAddDepartBtn">保存</button>
+                                    <button type="button" class="btn btn-primary" id="confirmEditDepartBtn">保存</button>
                                 </div>
                             </div>
                         </div>
@@ -95,5 +99,5 @@
 
 
 <#include "/common/footer.ftl" />
+<script src="${contextPath!}/js/app/org/department/departmentDetail.js"></script>
 
-<script src="${contextPath!}/js/app/org/addDepartment.js"></script>

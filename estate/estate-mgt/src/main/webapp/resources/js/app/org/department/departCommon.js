@@ -18,16 +18,16 @@ define(contextPath+'/js/app/org/department/departCommon.js',
 
                 //showing empty input for adding Depart
                 if(typeof(currentDepartPId) == 'undefined'){
-                    $(".dropdown-yk").duojiDropdown({
+                    $(".superiorDepart .dropdown-yk").duojiDropdown({
                         data: dropdownData
                     });
                 }else if (currentDepartPId != 0){
-                    $(".dropdown-yk").duojiDropdown({
+                    $(".superiorDepart .dropdown-yk").duojiDropdown({
                         data: dropdownData,
                         currentId:currentDepartPId
                     });
                 }else {
-                    $('.form-group').has(".dropdown-yk").css('display','none');
+                    $('.form-group').has('.superiorDepart .dropdown-yk').css('display','none');
                 }
             });
         };
