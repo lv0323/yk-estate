@@ -36,7 +36,8 @@ import java.util.UUID;
 @Service
 public class EmployeeService {
 
-    private static final String LOGIN_SUGAR_PREFIX = "LOGIN_SALT";
+    private static final String LOGIN_SUGAR_PREFIX = "LOGIN_SUGAR";
+    private static final String CHANGE_PSWD_SUGAR_PREFIX = "LOGIN_SUGAR";
     private final EmployeeRepo repo;
     private final Cache cache;
     private final FileService fileService;
@@ -114,16 +115,22 @@ public class EmployeeService {
 
     public Boolean active(String mobile, String password, String secretKey) {
         Objects.requireNonNull(mobile);
-        Objects.requireNonNull(password);
+        ExceptionUtil.checkIllegal(ValidateUtil.isPassword(password), "密码", "");
         Objects.requireNonNull(secretKey);
+        Employee employee = repo.selectByMobile(mobile);
+        if (employee == null) {
+            throw new EstateException(ExCode.NOT_FOUND, "手机号", "员工");
+        } else if (!Strings.isNullOrEmpty(employee.getPassword())) {
+            throw new EstateException(ExCode.EMPLOYEE_ACTIVE);
+        }
         String salt = UUID.randomUUID().toString().replace("-", "");
         return repo.active(mobile, hmac(salt, password), salt, secretKey) == 1;
     }
 
     public String sugar(String mobile) {
-        String salt = UUID.randomUUID().toString().replace("-", "");
-        cache.put(LOGIN_SUGAR_PREFIX + Objects.requireNonNull(mobile), salt);
-        return salt;
+        String sugar = UUID.randomUUID().toString().replace("-", "");
+        cache.put(LOGIN_SUGAR_PREFIX + Objects.requireNonNull(mobile), sugar);
+        return sugar;
     }
 
     public Employee login(String mobile, String sugaredPassword) {
@@ -168,5 +175,43 @@ public class EmployeeService {
 
         repo.avatar(id, fileDescription.getId());
         return fileService.findOne(fileDescription.getId());
+    }
+
+    public String sugarById(Long id) {
+        String sugar = UUID.randomUUID().toString().replace("-", "");
+        cache.put(CHANGE_PSWD_SUGAR_PREFIX + Objects.requireNonNull(id), sugar);
+        return sugar;
+    }
+
+    public Boolean changePassword(Long id, String sugaredPassword, String newPassword) {
+        ExceptionUtil.checkIllegal(ValidateUtil.isPassword(newPassword), "密码", "");
+        Employee employee = repo.selectById(id);
+        if (employee == null) {
+            throw new EstateException(ExCode.EMPLOYEE_NOT_FOUND);
+        }
+        if (Strings.isNullOrEmpty(employee.getPassword())) {
+            throw new EstateException(ExCode.EMPLOYEE_NOT_ACTIVE);
+        }
+        String sugar = cache.get(CHANGE_PSWD_SUGAR_PREFIX + id, String.class);
+        if (sugar == null)
+            throw new EstateException(ExCode.EMPLOYEE_NO_SUGAR);
+        if (!hmac(sugar, employee.getPassword()).equals(sugaredPassword)) {
+            throw new EstateException(ExCode.EMPLOYEE_WRONG_PASSWORD);
+        } else {
+            cache.evict(CHANGE_PSWD_SUGAR_PREFIX + id);
+            return repo.updatePassword(new Employee().setId(id).setPassword(hmac(employee.getSalt(), newPassword))) > 1;
+        }
+    }
+
+    public Boolean resetPassword(Long id, String newPassword) {
+        ExceptionUtil.checkNotNull("员工编号", id);
+        ExceptionUtil.checkIllegal(ValidateUtil.isPassword(newPassword), "密码", "");
+        Employee employee = repo.selectById(id);
+        if (employee == null) {
+            throw new EstateException(ExCode.EMPLOYEE_NOT_FOUND);
+        } else if (Strings.isNullOrEmpty(employee.getPassword())) {
+            throw new EstateException(ExCode.EMPLOYEE_NOT_ACTIVE);
+        }
+        return repo.updatePassword(new Employee().setId(id).setPassword(hmac(employee.getSalt(), newPassword))) > 0;
     }
 }

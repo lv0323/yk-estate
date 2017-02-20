@@ -6,6 +6,7 @@ import com.lyun.estate.biz.employee.def.Gender;
 import com.lyun.estate.biz.employee.def.WorkingStatus;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.mgt.auth.def.SaltSugar;
 import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
 import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -99,4 +100,20 @@ public class EmployeeRest {
         return service.createAvatar(avatar.getInputStream(),
                 avatar.getOriginalFilename().substring(avatar.getOriginalFilename().lastIndexOf('.')));
     }
+
+    @PostMapping("change-password")
+    public Object changePassword(@RequestParam String sugaredPassword, @RequestParam String newPassword) {
+        return new RestResponse().add("ret", service.changePassword(sugaredPassword, newPassword)).get();
+    }
+
+    @GetMapping("change-password-salt-sugar")
+    public SaltSugar changePasswordSaltSugar() {
+        return service.changePasswordSaltSugar();
+    }
+
+    @PostMapping("reset-password")
+    public Object resetPassword(Long employeeId, String newPassword) {
+        return new RestResponse().add("ret", service.resetPassword(employeeId, newPassword));
+    }
+
 }
