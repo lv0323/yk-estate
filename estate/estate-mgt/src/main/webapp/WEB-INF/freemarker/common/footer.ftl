@@ -12,7 +12,6 @@
 </script>
 <script src="${contextPath}/js/libs/require.min.js?vn=${bts!}"></script>
 <script src="${contextPath!}/js/require-config.js?vn=${bts!}"></script>
-<script src="${contextPath}/js/app/index.min.js"></script>
 <script src="${contextPath}/js/app/identity/userInfo.js"></script>
 </body>
 </html>
