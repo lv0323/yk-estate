@@ -21,6 +21,9 @@ public interface EmployeeRepo {
             "update_time = CURRENT_TIMESTAMP where id = #{id}")
     int update(Employee employee);
 
+    @Update("update t_employee set password = #{password} where id = #{id}")
+    int updatePassword(Employee employee);
+
     @Update("update t_employee set avatar_id = #{avatarId} where id = #{id}")
     int avatar(@Param("id") Long id, @Param("avatarId") Long avatarId);
 
