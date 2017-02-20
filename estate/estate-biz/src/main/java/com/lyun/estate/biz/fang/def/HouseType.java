@@ -21,6 +21,7 @@ public enum HouseType {
                     HouseSubType.GCYS,
                     HouseSubType.QL,
                     HouseSubType.SHY)),
+    SZ("商住", Lists.newArrayList(HouseSubType.D_SZ)),
     GY("公寓", Lists.newArrayList(HouseSubType.PT_GY, HouseSubType.SW_GY, HouseSubType.JD_GY)),
     SP("商铺",
             Lists.newArrayList(HouseSubType.ONE_P,

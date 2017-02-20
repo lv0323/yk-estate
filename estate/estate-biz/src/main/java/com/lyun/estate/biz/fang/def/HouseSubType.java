@@ -20,6 +20,7 @@ public enum HouseSubType {
     PT_GY("普通公寓"),
     SW_GY("商务公寓"),
     JD_GY("酒店公寓"),
+    D_SZ("商住"),
     ONE_P("单铺"),
     TWO_P("二铺打通"),
     THREE_P("三铺打通"),

@@ -90,6 +90,8 @@ public class KeywordService {
             return keywordRepository.loadStation(cityId);
         } else if (domainType == DomainType.XIAO_QU) {
             return keywordRepository.loadXiaoQu(cityId);
+        } else if (domainType == DomainType.COMMUNITY) {
+            return keywordRepository.loadCommunity(cityId);
         } else {
             return new ArrayList<>();
         }
@@ -160,7 +162,9 @@ public class KeywordService {
             String cityName = stringFilter(c.getName());
             if (!StringUtils.isEmpty(cityName)) {
                 try {
-                    StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(cityName, "", PinyinFormat.WITHOUT_TONE))
+                    StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(cityName,
+                            "",
+                            PinyinFormat.WITHOUT_TONE))
                             .append(PINYIN_SPLIT).append(PinyinHelper.getShortPinyin(cityName));
                     cityService.updateCityKeyword(c.getId(), keyword.toString());
                 } catch (PinyinException e) {
@@ -172,7 +176,9 @@ public class KeywordService {
                 String disName = stringFilter(d.getName());
                 if (!StringUtils.isEmpty(disName)) {
                     try {
-                        StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(disName, "", PinyinFormat.WITHOUT_TONE))
+                        StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(disName,
+                                "",
+                                PinyinFormat.WITHOUT_TONE))
                                 .append(PINYIN_SPLIT).append(PinyinHelper.getShortPinyin(disName));
                         cityService.updateDistrictKeyword(d.getId(), keyword.toString());
                     } catch (PinyinException e) {
@@ -184,7 +190,10 @@ public class KeywordService {
                     String subDisName = stringFilter(s.getName());
                     if (!StringUtils.isEmpty(subDisName)) {
                         try {
-                            StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(subDisName, "", PinyinFormat.WITHOUT_TONE))
+                            StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(
+                                    subDisName,
+                                    "",
+                                    PinyinFormat.WITHOUT_TONE))
                                     .append(PINYIN_SPLIT).append(PinyinHelper.getShortPinyin(subDisName));
                             cityService.updateSubDistrictKeyword(s.getId(), keyword.toString());
                         } catch (PinyinException e) {
@@ -199,7 +208,9 @@ public class KeywordService {
                 String lineName = stringFilter(l.getName());
                 if (!StringUtils.isEmpty(lineName)) {
                     try {
-                        StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(lineName, "", PinyinFormat.WITHOUT_TONE))
+                        StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(lineName,
+                                "",
+                                PinyinFormat.WITHOUT_TONE))
                                 .append(PINYIN_SPLIT).append(PinyinHelper.getShortPinyin(lineName));
                         cityService.updateLineKeyword(l.getId(), keyword.toString());
                     } catch (PinyinException e) {
@@ -211,7 +222,10 @@ public class KeywordService {
                     String stationName = stringFilter(s.getName());
                     if (!StringUtils.isEmpty(stationName)) {
                         try {
-                            StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(stationName, "", PinyinFormat.WITHOUT_TONE))
+                            StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(
+                                    stationName,
+                                    "",
+                                    PinyinFormat.WITHOUT_TONE))
                                     .append(PINYIN_SPLIT).append(PinyinHelper.getShortPinyin(stationName));
                             cityService.updateStationKeyword(s.getId(), keyword.toString());
                         } catch (PinyinException e) {
@@ -227,11 +241,17 @@ public class KeywordService {
             String communityAlias = stringFilter(c.getAlias());
             if (!StringUtils.isEmpty(communityName)) {
                 try {
-                    StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(communityName, "", PinyinFormat.WITHOUT_TONE))
+                    StringBuilder keyword = new StringBuilder().append(PinyinHelper.convertToPinyinString(communityName,
+                            "",
+                            PinyinFormat.WITHOUT_TONE))
                             .append(PINYIN_SPLIT).append(PinyinHelper.getShortPinyin(communityName));
                     if (!StringUtils.isEmpty(communityAlias)) {
-                        keyword.append(PINYIN_SPLIT).append(PinyinHelper.convertToPinyinString(communityAlias, "", PinyinFormat.WITHOUT_TONE))
-                                .append(PINYIN_SPLIT).append(PinyinHelper.getShortPinyin(communityAlias));
+                        keyword.append(PINYIN_SPLIT)
+                                .append(PinyinHelper.convertToPinyinString(communityAlias,
+                                        "",
+                                        PinyinFormat.WITHOUT_TONE))
+                                .append(PINYIN_SPLIT)
+                                .append(PinyinHelper.getShortPinyin(communityAlias));
                     }
                     xiaoQuService.updateKeyword(c.getId(), keyword.toString());
                 } catch (PinyinException e) {

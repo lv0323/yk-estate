@@ -54,6 +54,7 @@ public class AuthRest {
         session.setAttribute(Constant.SESSION_OPERATOR, new Operator()
                 .setId(employee.getId())
                 .setCompanyId(employee.getCompanyId())
+                .setCityId(employee.getCityId())
                 .setDepartmentId(employee.getDepartmentId())
                 .setPositionId(employee.getPositionId())
                 .setBoss(employee.getBoss())

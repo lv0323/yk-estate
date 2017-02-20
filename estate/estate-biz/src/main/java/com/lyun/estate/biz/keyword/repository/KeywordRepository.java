@@ -14,10 +14,11 @@ import java.util.List;
  * Created by Jeffrey on 2017-01-06.
  */
 @Repository
-@CacheConfig(cacheManager = EstateCacheConfig.MANAGER_60_5K)
+@CacheConfig(cacheManager = EstateCacheConfig.MANAGER_360_5K)
 public interface KeywordRepository {
 
-    @Select("SELECT  id,  'XIAO_QU' AS domain_type, name , alias, name_kw AS keyword FROM t_community WHERE city_id = #{cityId} ORDER BY id;")
+    @Select("SELECT  xq.id,  'XIAO_QU' AS domain_type,  c.name,  c.alias,  c.name_kw AS keyword\n" +
+            "FROM t_xiao_qu xq LEFT JOIN t_community c ON xq.community_id = c.id WHERE c.city_id = #{cityId} ORDER BY xq.id;")
     @Cacheable(cacheNames = {"keywords-xiao-qu"})
     List<KeywordBean> loadXiaoQu(@Param("cityId") Long cityId);
 
@@ -36,4 +37,8 @@ public interface KeywordRepository {
     @Select("SELECT  id,  'STATION' AS domain_type,  name, name_kw AS keyword FROM t_station WHERE city_id = #{cityId};")
     @Cacheable(cacheNames = {"keywords-station"})
     List<KeywordBean> loadStation(@Param("cityId") Long cityId);
+
+    @Select("SELECT  id,  'COMMUNITY' AS domain_type, name , alias, name_kw AS keyword FROM t_community WHERE city_id = #{cityId} ORDER BY id;")
+    @Cacheable(cacheNames = {"keywords-community"})
+    List<KeywordBean> loadCommunity(@Param("cityId") Long cityId);
 }
