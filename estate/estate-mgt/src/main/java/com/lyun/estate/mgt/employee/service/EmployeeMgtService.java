@@ -131,4 +131,8 @@ public class EmployeeMgtService {
         return new SaltSugar().setSalt(employeeService.selectById(mgtContext.getOperator().getId()).getSalt())
                 .setSugar(employeeService.sugarById(mgtContext.getOperator().getId()));
     }
+
+    public Employee self() {
+        return employeeService.selectById(mgtContext.getOperator().getId());
+    }
 }
