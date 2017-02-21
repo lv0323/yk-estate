@@ -2,7 +2,6 @@ package com.lyun.estate.biz.houselicence.entity;
 
 import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.houselicence.def.LicenceStatus;
-import com.lyun.estate.core.supports.types.YN;
 
 import java.util.Date;
 
@@ -14,12 +13,12 @@ public class HouseLicence {
     private BizType type;
     private LicenceStatus status;
     private Long communityId;
-    private String building;
-    private String buildingUnit;
+    private Long buildingId;
+    private Long buildingUnitId;
     private String houseNo;
     private Date createTime;
     private Date updateTime;
-    private YN isDeleted;
+    private Boolean isDeleted;
 
     public Long getId() {
         return id;
@@ -57,21 +56,21 @@ public class HouseLicence {
         return this;
     }
 
-    public String getBuilding() {
-        return building;
+    public Long getBuildingId() {
+        return buildingId;
     }
 
-    public HouseLicence setBuilding(String building) {
-        this.building = building;
+    public HouseLicence setBuildingId(Long buildingId) {
+        this.buildingId = buildingId;
         return this;
     }
 
-    public String getBuildingUnit() {
-        return buildingUnit;
+    public Long getBuildingUnitId() {
+        return buildingUnitId;
     }
 
-    public HouseLicence setBuildingUnit(String buildingUnit) {
-        this.buildingUnit = buildingUnit;
+    public HouseLicence setBuildingUnitId(Long buildingUnitId) {
+        this.buildingUnitId = buildingUnitId;
         return this;
     }
 
@@ -102,28 +101,12 @@ public class HouseLicence {
         return this;
     }
 
-    public YN getIsDeleted() {
+    public Boolean getDeleted() {
         return isDeleted;
     }
 
-    public HouseLicence setIsDeleted(YN isDeleted) {
-        this.isDeleted = isDeleted;
+    public HouseLicence setDeleted(Boolean deleted) {
+        isDeleted = deleted;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return "HouseLicence{" +
-                "id=" + id +
-                ", type=" + type +
-                ", status=" + status +
-                ", communityId=" + communityId +
-                ", building='" + building + '\'' +
-                ", buildingUnit='" + buildingUnit + '\'' +
-                ", houseNo='" + houseNo + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", isDeleted=" + isDeleted +
-                '}';
     }
 }

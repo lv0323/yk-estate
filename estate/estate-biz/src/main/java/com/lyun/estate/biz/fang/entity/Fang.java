@@ -33,6 +33,7 @@ public class Fang {
     private BigDecimal bottomPrice;
     private HouseProcess process;
     private YN resident;
+    private Integer floor;//总层高
     private Integer floorCounts;//总层高
     private FloorType floorType;
     private StructureType structureType;
@@ -41,262 +42,353 @@ public class Fang {
     private YN hasElevator;
     private Date createTime;
     private Date updateTime;
-    private YN isDeleted;
+    private Date publishTime;
+    private Boolean isDeleted;
     private String nameKw;
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public Fang setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public HouseSubType getHouseSubType() {
         return houseSubType;
     }
 
-    public void setHouseSubType(HouseSubType houseSubType) {
+    public Fang setHouseSubType(HouseSubType houseSubType) {
         this.houseSubType = houseSubType;
+        return this;
     }
 
     public BizType getBizType() {
         return bizType;
     }
 
-    public void setBizType(BizType bizType) {
+    public Fang setBizType(BizType bizType) {
         this.bizType = bizType;
+        return this;
     }
 
     public HouseType getHouseType() {
         return houseType;
     }
 
-    public void setHouseType(HouseType houseType) {
+    public Fang setHouseType(HouseType houseType) {
         this.houseType = houseType;
+        return this;
     }
 
     public Long getLicenceId() {
         return licenceId;
     }
 
-    public void setLicenceId(Long licenceId) {
+    public Fang setLicenceId(Long licenceId) {
         this.licenceId = licenceId;
+        return this;
     }
 
     public Long getXiaoQuId() {
         return xiaoQuId;
     }
 
-    public void setXiaoQuId(Long xiaoQuId) {
+    public Fang setXiaoQuId(Long xiaoQuId) {
         this.xiaoQuId = xiaoQuId;
+        return this;
     }
 
     public Integer getsCounts() {
         return sCounts;
     }
 
-    public void setsCounts(Integer sCounts) {
+    public Fang setsCounts(Integer sCounts) {
         this.sCounts = sCounts;
+        return this;
     }
 
     public Integer gettCounts() {
         return tCounts;
     }
 
-    public void settCounts(Integer tCounts) {
+    public Fang settCounts(Integer tCounts) {
         this.tCounts = tCounts;
+        return this;
     }
 
     public Integer getwCounts() {
         return wCounts;
     }
 
-    public void setwCounts(Integer wCounts) {
+    public Fang setwCounts(Integer wCounts) {
         this.wCounts = wCounts;
+        return this;
     }
 
     public Integer getcCounts() {
         return cCounts;
     }
 
-    public void setcCounts(Integer cCounts) {
+    public Fang setcCounts(Integer cCounts) {
         this.cCounts = cCounts;
+        return this;
     }
 
     public Integer getYtCounts() {
         return ytCounts;
     }
 
-    public void setYtCounts(Integer ytCounts) {
+    public Fang setYtCounts(Integer ytCounts) {
         this.ytCounts = ytCounts;
+        return this;
     }
 
     public Orientation getOrientation() {
         return orientation;
     }
 
-    public void setOrientation(Orientation orientation) {
+    public Fang setOrientation(Orientation orientation) {
         this.orientation = orientation;
+        return this;
     }
 
     public Decorate getDecorate() {
         return decorate;
     }
 
-    public void setDecorate(Decorate decorate) {
+    public Fang setDecorate(Decorate decorate) {
         this.decorate = decorate;
+        return this;
     }
 
     public BigDecimal getEstateArea() {
         return estateArea;
     }
 
-    public void setEstateArea(BigDecimal estateArea) {
+    public Fang setEstateArea(BigDecimal estateArea) {
         this.estateArea = estateArea;
+        return this;
     }
 
     public BigDecimal getRealArea() {
         return realArea;
     }
 
-    public void setRealArea(BigDecimal realArea) {
+    public Fang setRealArea(BigDecimal realArea) {
         this.realArea = realArea;
+        return this;
     }
 
     public BigDecimal getPublishPrice() {
         return publishPrice;
     }
 
-    public void setPublishPrice(BigDecimal publishPrice) {
+    public Fang setPublishPrice(BigDecimal publishPrice) {
         this.publishPrice = publishPrice;
+        return this;
     }
 
     public PriceUnit getPriceUnit() {
         return priceUnit;
     }
 
-    public void setPriceUnit(PriceUnit priceUnit) {
+    public Fang setPriceUnit(PriceUnit priceUnit) {
         this.priceUnit = priceUnit;
+        return this;
     }
 
     public BigDecimal getTransferPrice() {
         return transferPrice;
     }
 
-    public void setTransferPrice(BigDecimal transferPrice) {
+    public Fang setTransferPrice(BigDecimal transferPrice) {
         this.transferPrice = transferPrice;
+        return this;
     }
 
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
+    public Fang setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
+        return this;
     }
 
     public BigDecimal getBottomPrice() {
         return bottomPrice;
     }
 
-    public void setBottomPrice(BigDecimal bottomPrice) {
+    public Fang setBottomPrice(BigDecimal bottomPrice) {
         this.bottomPrice = bottomPrice;
+        return this;
     }
 
     public HouseProcess getProcess() {
         return process;
     }
 
-    public void setProcess(HouseProcess process) {
+    public Fang setProcess(HouseProcess process) {
         this.process = process;
+        return this;
     }
 
     public YN getResident() {
         return resident;
     }
 
-    public void setResident(YN resident) {
+    public Fang setResident(YN resident) {
         this.resident = resident;
+        return this;
     }
 
     public Integer getFloorCounts() {
         return floorCounts;
     }
 
-    public void setFloorCounts(Integer floorCounts) {
+    public Fang setFloorCounts(Integer floorCounts) {
         this.floorCounts = floorCounts;
+        return this;
     }
 
     public FloorType getFloorType() {
         return floorType;
     }
 
-    public void setFloorType(FloorType floorType) {
+    public Fang setFloorType(FloorType floorType) {
         this.floorType = floorType;
+        return this;
     }
 
     public StructureType getStructureType() {
         return structureType;
     }
 
-    public void setStructureType(StructureType structureType) {
+    public Fang setStructureType(StructureType structureType) {
         this.structureType = structureType;
+        return this;
     }
 
     public Integer getBuildYear() {
         return buildYear;
     }
 
-    public void setBuildYear(Integer buildYear) {
+    public Fang setBuildYear(Integer buildYear) {
         this.buildYear = buildYear;
+        return this;
     }
 
     public HeatingType getHeatingType() {
         return heatingType;
     }
 
-    public void setHeatingType(HeatingType heatingType) {
+    public Fang setHeatingType(HeatingType heatingType) {
         this.heatingType = heatingType;
+        return this;
     }
 
     public YN getHasElevator() {
         return hasElevator;
     }
 
-    public void setHasElevator(YN hasElevator) {
+    public Fang setHasElevator(YN hasElevator) {
         this.hasElevator = hasElevator;
+        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public Fang setCreateTime(Date createTime) {
         this.createTime = createTime;
+        return this;
     }
 
     public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public Fang setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
     }
 
-    public YN getIsDeleted() {
+    public Date getPublishTime() {
+        return publishTime;
+    }
+
+    public Fang setPublishTime(Date publishTime) {
+        this.publishTime = publishTime;
+        return this;
+    }
+
+    public Boolean getDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(YN isDeleted) {
-        this.isDeleted = isDeleted;
+    public Fang setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+        return this;
     }
 
     public String getNameKw() {
         return nameKw;
     }
 
-    public void setNameKw(String nameKw) {
+    public Fang setNameKw(String nameKw) {
         this.nameKw = nameKw;
+        return this;
+    }
+
+    public Integer getFloor() {
+        return floor;
+    }
+
+    public Fang setFloor(Integer floor) {
+        this.floor = floor;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Fang{" +
+                "id=" + id +
+                ", houseSubType=" + houseSubType +
+                ", bizType=" + bizType +
+                ", houseType=" + houseType +
+                ", licenceId=" + licenceId +
+                ", xiaoQuId=" + xiaoQuId +
+                ", sCounts=" + sCounts +
+                ", tCounts=" + tCounts +
+                ", wCounts=" + wCounts +
+                ", cCounts=" + cCounts +
+                ", ytCounts=" + ytCounts +
+                ", orientation=" + orientation +
+                ", decorate=" + decorate +
+                ", estateArea=" + estateArea +
+                ", realArea=" + realArea +
+                ", publishPrice=" + publishPrice +
+                ", priceUnit=" + priceUnit +
+                ", transferPrice=" + transferPrice +
+                ", unitPrice=" + unitPrice +
+                ", bottomPrice=" + bottomPrice +
+                ", process=" + process +
+                ", resident=" + resident +
+                ", floor=" + floor +
+                ", floorCounts=" + floorCounts +
+                ", floorType=" + floorType +
+                ", structureType=" + structureType +
+                ", buildYear=" + buildYear +
+                ", heatingType=" + heatingType +
+                ", hasElevator=" + hasElevator +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", publishTime=" + publishTime +
+                ", isDeleted=" + isDeleted +
+                ", nameKw='" + nameKw + '\'' +
+                '}';
     }
 }

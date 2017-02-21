@@ -105,9 +105,26 @@ public class EmployeeMgtService {
         return employeeService.changePassword(mgtContext.getOperator().getId(), sugaredPassword, newPassword);
     }
 
+    @Transactional
     public Boolean resetPassword(Long employeeId, String newPassword) {
         //todo::权限校验
-        return employeeService.resetPassword(employeeId, newPassword);
+        Employee employee = employeeService.selectById(employeeId);
+        if (employee == null) {
+            return false;
+        }
+
+        Boolean result = employeeService.resetPassword(employeeId, newPassword);
+        auditService.save(new Audit()
+                .setCompanyId(mgtContext.getOperator().getCompanyId())
+                .setDepartmentId(mgtContext.getOperator().getDepartmentId())
+                .setOperatorId(mgtContext.getOperator().getId())
+                .setSubject(AuditSubject.ORGANIZATION)
+                .setTargetId(employee.getId())
+                .setDomainType(DomainType.POSITION)
+                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
+                        .getName() + "】重设了【" + employee.getDepartmentName() + "--" + employee.getName() + "】的登录密码")
+        );
+        return result;
     }
 
     public SaltSugar changePasswordSaltSugar() {

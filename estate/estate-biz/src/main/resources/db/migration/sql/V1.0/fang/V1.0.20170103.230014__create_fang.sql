@@ -22,6 +22,7 @@ CREATE TABLE t_fang (
   bottom_price   NUMERIC(28, 5), --底价
   resident       VARCHAR(1), --是否可落户
   process        VARCHAR(20)         NOT NULL, --流程状态
+  floor          INT                 NOT NULL  DEFAULT 0, --总层高
   floor_counts   INT                 NOT NULL, --总层高
   floor_type     VARCHAR(10)         NOT NULL, --层高类型
   structure_type VARCHAR(10), --结构
@@ -30,8 +31,9 @@ CREATE TABLE t_fang (
   has_elevator   VARCHAR(1), --是否有电梯
   create_time    TIMESTAMP, --创建时间
   update_time    TIMESTAMP, --更新时间
-  publish_time   TIMESTAMP,  --挂牌时间
-  name_kw     VARCHAR(200)
+  publish_time   TIMESTAMP, --挂牌时间
+  is_deleted     BOOLEAN             NOT NULL  DEFAULT FALSE,
+  name_kw        VARCHAR(200)
 );
 
 CREATE TABLE t_fang_ext (

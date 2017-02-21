@@ -35,6 +35,10 @@ public enum ExCode {
     DEPT_NULL_PARENT("父部门不能为空"),
     DEPT_ILLEGAL_PARENT("父部门不合法"),
     DEPT_INVALID_PARENT("父部门不能调整为自身子部门的下级部门，请重新选择调整的部门数据"),
+    //licence
+    LICENCE_NULL("字典编号为空"),
+
+
     //json
     JSON_ERROR("JSON对象{},转换错误:{}"),;
 
