@@ -10,8 +10,47 @@
     color: #fff;
 }
 
+.list{
+    min-height: 130px;
+}
+.list>thead{
+    background-color: #F1F4FB;
+}
+.list>thead>tr>th{
+    color: #5b6885;
+    font-size: 0.93em;
+}
+span.opt-gap{
+    width: 1px;
+    background-color: #d2d9e8;
+    margin: 0 6px;
+    display: inline-block;
+    height: 16px;
+    vertical-align: middle;
+}
+.modal-body>form input{
+    font-size: 13px;
+}
+.center{
+    text-align: center!important;
+}
+.required-field{
+    color: red;
+}
+
 /*分页右对齐*/
 .pagination-container{
+
     text-align: center;
     padding-bottom: 1em;
+}
+
+.box .nav-stacked > li{
+    border-bottom: 1px solid #f4f4f4;
+}
+
+.nav-stacked > li.active > a{
+    border-top: 0;
+    border-left-color: #3c8dbc;
+    font-weight: 600;
 }

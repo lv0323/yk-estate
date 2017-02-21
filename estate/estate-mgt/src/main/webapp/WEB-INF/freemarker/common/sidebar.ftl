@@ -91,7 +91,6 @@
         <ul class="sidebar-menu">
             <li class="header">主导航</li>
             <!-- Optionally, you can add icons to the links -->
-            <li><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
             <li><a href="/mgt/franchisee/company.ftl"><i class="fa fa-link"></i> <span>加盟商管理</span></a></li>
             <li class="treeview house">
                 <a href="#"><i class="fa fa-link"></i> <span>房源管理</span>
@@ -114,6 +113,26 @@
                     <li><a href="/mgt/org/department.ftl?target=.org">部门列表</a></li>
                     <li><a href="/mgt/org/employee.ftl?target=.org">员工管理</a></li>
                     <li><a href="/mgt/org/position.ftl?target=.org">岗位管理</a></li>
+                </ul>
+            </li>
+            <li class="treeview tool">
+                <a href="#"><i class="fa fa-link"></i> <span>实用工具</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/mgt/tool/myProfile.ftl?target=.tool">个人中心</a></li>
+                </ul>
+            </li>
+            <li class="treeview sys">
+                <a href="#"><i class="fa fa-link"></i> <span>系统设置</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/mgt/system/operationLog.ftl?target=.sys">操作日志</a></li>
                 </ul>
             </li>
         </ul>
