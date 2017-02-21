@@ -27,21 +27,20 @@
                         <div class="box-header with-border">
                             <h3 class="box-title pull-left">房源列表</h3>
                             <div class="box-tools">
-                                <a class="btn" onclick="addHouse('ZZ')"><i class="fa fa-plus" aria-hidden="true"></i>新增住宅</a>
-                                <a class="btn" onclick="addHouse('GY')"><i class="fa fa-plus" aria-hidden="true"></i>新增公寓</a>
-                                <a class="btn" onclick="addHouse('SP')"><i class="fa fa-plus" aria-hidden="true"></i>新增商铺</a>
-                                <a class="btn" onclick="addHouse('BS')"><i class="fa fa-plus" aria-hidden="true"></i>新增别墅</a>
-                                <a class="btn" onclick="addHouse('XZL')"><i class="fa fa-plus" aria-hidden="true"></i>新增写字楼</a>
-                                <a class="btn" onclick="addHouse('CW')"><i class="fa fa-plus" aria-hidden="true"></i>新增车位</a>
-                                <a class="btn" onclick="addHouse('QT')"><i class="fa fa-plus" aria-hidden="true"></i>新增其它</a>
-
+                               <#-- <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增住宅</a>
+                                <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增公寓</a>
+                                <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增商铺</a>
+                                <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增别墅</a>
+                                <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增写字楼</a>
+                                <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增车位</a>-->
+                                <a class="btn" onclick="addHouse()"><i class="fa fa-plus" aria-hidden="true"></i>新增房源</a>
                                 <a class="btn-collapse icon-down btn" ng-click="triggerCollapse()">
                                     <strong><i class="fa" ng-class="{true:'fa-chevron-up',false:'fa-chevron-down'}[state.collapse]" aria-hidden="true"></i>更多筛选</strong>
                                 </a>
                             </div>
                         </div>
                         <div class="box-body clearfix no-padding">
-                            <form id="formlist" action="/housemanage/housemanage!getHousePage.do" class="form-inline">
+                            <form id="formlist" class="form-inline">
                                 <input id="fyHouseCityid" value="73" type="hidden">
                                 <input id="fyHouseDsid" name="houseVO.fyHouseDsid" type="hidden">
                                 <input id="fyHousePicid" name="houseVO.fyHousePicid" type="hidden">
@@ -55,13 +54,15 @@
                                         <div class="input-group" style="width:100%;">
                                             <input placeholder="房源地址、业主姓名、业主电话、房源编号..." class="form-control" name="houseVO.fyHouseEstname" type="text">
     								<span class="input-group-btn">
-    			                        <button type="button" class="btn btn-primary btn-sm" onclick="getHouseCharPage();"><i class="fa fa-search"></i> 查询</button>
+    			                        <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>查询</button>
     			                    </span>
                                         </div>
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2" style="position:realtive;">
-                                        <a onclick="getHouseCount();popverShow(this)" class="btn text-green" href="#"><i class="fa fa-bar-chart"></i>房源统计</a>
-                                        <div class="popover fade bottom in" style="min-width:120px;">
+                                        <a class="btn text-green" ng-click="getHouseCount = !getHouseCount" ng-init="getHouseCount=false">
+                                            <i class="fa fa-bar-chart"></i>房源统计{{count}}
+                                        </a>
+                                        <div class="popover fade bottom in" ng-show="getHouseCount" style="min-width:120px;">
                                             <div class="arrow"></div>
                                             <div class="popover-content no-padding" id="getHouseCount">
                                                 <table class="table table-striped">
@@ -80,7 +81,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="pull-right" style="position:relative;">
+                                    <div class="pull-right" style="position:relative;" ng-if="false">
                                         <a class="btn" onclick="popverShow1(this);favoritesPage();"><i class="fa fa-star-o" aria-hidden="true"></i>我的收藏</a>
                                         <div class="popover fade bottom in" style="right:0px;">
                                             <div class="arrow"></div>
@@ -114,7 +115,10 @@
                                         <div class="form-group sortlist">
                                             <label class="control-label">面积</label>
                                             <div id="squareMetre" class="tj">
-                                                <a href="javascript:void(0)" onclick="formatRange(&quot;minSqure&quot;,&quot;maxSqure&quot;,&quot;&quot;,&quot;&quot;);selection(this)" class="actived">不限</a><a href="javascript:void(0)" onclick="selection(this)">自定义</a><input class="form-control" id="minSqure" value="" name="houseVO.minSqure" style="width:100px;"> ~ <input class="form-control" id="maxSqure" value="" name="houseVO.maxSqure" style="width:100px;"></div>
+                                                <a ng-href="javascript:void(0)" ng-class="{'actived':filter.area.type == ''}" ng-click="setAreaType('')">不限</a>
+                                                <a ng-href="javascript:void(0)" ng-class="{'actived':filter.area.type == 'custom'}" ng-click="setAreaType('custom')">自定义</a>
+                                                <input class="form-control" id="minSqure" value="" name="houseVO.minSqure" style="width:100px;">~ <input class="form-control" id="maxSqure" value="" name="houseVO.maxSqure" style="width:100px;">
+                                            </div>
                                         </div>
                                         <div class="form-group sortlist">
                                             <label class="control-label">户型</label>
@@ -163,16 +167,17 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3">
-                                                <select id="fyHouseDepid" class="chosen-select" data-placeholder="Choose a Country..."  ng-model="filter.DepId" ng-change="setDepId(e);">
-                                                    <option value="" header="QBBM">全部部门</option>
+                                                <select id="fyHouseDepid" class="chosen-select-dep" data-placeholder="选择部门"  ng-model="filter.DepId" ng-change="setDepId(e);">
+                                                    <option ng-repeat="dep in depList" value="dep.value" repeat-done="initDepList()">{{dep.name}}</option>
+                                                    <#--<option value="" header="QBBM">全部部门</option>
                                                     <option value="126" header="RDSFC">瑞迪斯房产</option>
                                                     <option value="157" header="CW">　财务</option>
                                                     <option value="128" header="TZYYB">　　唐镇营业部</option>
                                                     <option value="127" header="CSYYB">　　　川沙营业部</option>
-                                                    <option value="182" header="CS2">　　　　川沙2</option></select>
+                                                    <option value="182" header="CS2">　　　　川沙2</option>--></select>
                                                 </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3">
-                                                <select name="houseVO.fyHouseEmpid" id="fyHouseEmpid" class="chosen-select" change="getHouseCharPage();">
+                                                <select name="houseVO.fyHouseEmpid" id="fyHouseEmpid" class="chosen-select-emp">
                                                     <option value="" header="QBYG">全部员工</option>
                                                 </select>
                                             </div>
@@ -209,37 +214,43 @@
                                             <div class="col-lg-2 col-md-2 col-sm-3">
                                                 <select class="xuanxiang select_1 selectpicker show-menu-arrow form-control bs-select-hidden" ng-model='filter.xuanxiang' ng-change="setXuanxiang()" name="houseVO.otherType" style="padding:2px 0px;width:60px;">
                                                     <option value="">--请选择--</option>
-                                                    <option value="fyHouseEntrustway">委托</option>
-                                                    <!--<option value="fyHousePrice">价格</option>-->
-                                                    <option value="fyHouseGrade">等级</option>
-                                                    <option value="fyHouseDecorate">装修</option>
+                                                    <option value="entrustWay">委托</option>
+                                                    <!--<option value="price">价格</option>-->
+                                                    <option value="grade">等级</option>
+                                                    <option value="decorate">装修</option>
                                                     <!--<option value="imageBool">照片</option>-->
-                                                    <option value="fyHousePtype">产权</option>
-                                                    <option value="fyHouseProvetype">证件</option>
-                                                    <option value="fyHouseSettle">落户</option>
+                                                    <option value="pType">产权</option>
+                                                    <option value="proveType">证件</option>
+                                                    <option value="settle">落户</option>
                                                 </select>
                                             </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10">
-                                                <select class="selected_1 hidden selectpicker show-menu-arrow form-control bs-select-hidden fyHouseEntrustway" id="fyHouseEntrustway" name="houseVO.fyHouseEntrustway" onchange="getHouseCharPage()">
+                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-if="filter.xuanxiang === 'entrustWay'">
+                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden fyHouseEntrustway" id="fyHouseEntrustway" name="houseVO.fyHouseEntrustway" ng-model="filter.xuanxiangExp.entrustWay">
                                                     <option value="">--请选择--</option>
                                                     <option value="9876">独家</option>
                                                     <option value="9877">签约</option>
                                                     <option value="9878">未签</option>
                                                     <option value="9967">限时</option>
                                                     <option value="9969">托管</option>
-                                                </select><div class="btn-group bootstrap-select selected_1 hidden show-menu-arrow form-control fyHouseEntrustway"><button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" data-id="fyHouseEntrustway" title="--请选择--"><span class="filter-option pull-left">--请选择--</span>&nbsp;<span class="caret"></span></button><div class="dropdown-menu open"><ul class="dropdown-menu inner" role="menu"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">--请选择--</span></a></li><li data-original-index="1"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">独家</span></a></li><li data-original-index="2"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">签约</span></a></li><li data-original-index="3"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">未签</span></a></li><li data-original-index="4"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">限时</span></a></li><li data-original-index="5"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">托管</span></a></li></ul></div></div>
-                                                <select class="selected_1 hidden selectpicker show-menu-arrow form-control bs-select-hidden fyHousePrice" style="padding:2px 0px;width:60px;" name="houseVO.fyHousePrice" onchange="getHouseCharPage()">
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'price'">
+                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden fyHousePrice" style="padding:2px 0px;width:60px;" name="houseVO.fyHousePrice" ng-model="filter.xuanxiangExp.price">
                                                     <option value="">--请选择--</option>
                                                     <option value="1">涨价 </option>
                                                     <option value="2">降价 </option>
-                                                </select><div class="btn-group bootstrap-select selected_1 hidden show-menu-arrow form-control fyHousePrice"><button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" title="--请选择--"><span class="filter-option pull-left">--请选择--</span>&nbsp;<span class="caret"></span></button><div class="dropdown-menu open"><ul class="dropdown-menu inner" role="menu"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">--请选择--</span></a></li><li data-original-index="1"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">涨价 </span></a></li><li data-original-index="2"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">降价 </span></a></li></ul></div></div>
-                                                <select class="selected_1 hidden selectpicker show-menu-arrow form-control bs-select-hidden fyHouseGrade" id="fyHouseGrade" style="padding:2px 0px;width:60px;" name="houseVO.fyHouseGrade" onchange="getHouseCharPage()">
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'grade'">
+                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden fyHouseGrade" id="fyHouseGrade" style="padding:2px 0px;width:60px;" name="houseVO.fyHouseGrade" ng-model="filter.xuanxiangExp.grade">
                                                     <option value="">--请选择--</option>
                                                     <option value="9872">A级</option>
                                                     <option value="9873">B级</option>
                                                     <option value="9874">C级</option>
-                                                </select><div class="btn-group bootstrap-select selected_1 hidden show-menu-arrow form-control fyHouseGrade"><button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" data-id="fyHouseGrade" title="--请选择--"><span class="filter-option pull-left">--请选择--</span>&nbsp;<span class="caret"></span></button><div class="dropdown-menu open"><ul class="dropdown-menu inner" role="menu"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">--请选择--</span></a></li><li data-original-index="1"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">A级</span></a></li><li data-original-index="2"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">B级</span></a></li><li data-original-index="3"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">C级</span></a></li></ul></div></div>
-                                                <select class="selected_1 hidden selectpicker show-menu-arrow form-control bs-select-hidden fyHouseDecorate" style="padding:2px 0px;width:60px;" id="fyHouseDecorate" name="houseVO.fyHouseDecorate" onchange="getHouseCharPage()">
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'decorate'">
+                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden fyHouseDecorate" style="padding:2px 0px;width:60px;" id="fyHouseDecorate" name="houseVO.fyHouseDecorate" ng-model="filter.xuanxiangExp.decorate">
                                                     <option value="">--请选择--</option>
                                                     <option value="9898">毛坯</option>
                                                     <option value="9899">简装</option>
@@ -247,13 +258,17 @@
                                                     <option value="9901">中装</option>
                                                     <option value="9902">豪装</option>
                                                     <option value="9903">清水</option>
-                                                </select><div class="btn-group bootstrap-select selected_1 hidden show-menu-arrow form-control fyHouseDecorate"><button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" data-id="fyHouseDecorate" title="--请选择--"><span class="filter-option pull-left">--请选择--</span>&nbsp;<span class="caret"></span></button><div class="dropdown-menu open"><ul class="dropdown-menu inner" role="menu"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">--请选择--</span></a></li><li data-original-index="1"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">毛坯</span></a></li><li data-original-index="2"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">简装</span></a></li><li data-original-index="3"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">精装</span></a></li><li data-original-index="4"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">中装</span></a></li><li data-original-index="5"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">豪装</span></a></li><li data-original-index="6"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">清水</span></a></li></ul></div></div>
-                                                <select class="selected_1 hidden selectpicker show-menu-arrow form-control bs-select-hidden imageBool" style="padding:2px 0px;width:60px;" name="houseVO.imageBool" onchange="getHouseCharPage()">
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'imageBool'">
+                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden imageBool" style="padding:2px 0px;width:60px;" name="houseVO.imageBool" ng-model="filter.xuanxiangExp.imageBool">
                                                     <option value="">--请选择--</option>
                                                     <option value="1">有 </option>
                                                     <option value="2">无 </option>
-                                                </select><div class="btn-group bootstrap-select selected_1 hidden show-menu-arrow form-control imageBool"><button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" title="--请选择--"><span class="filter-option pull-left">--请选择--</span>&nbsp;<span class="caret"></span></button><div class="dropdown-menu open"><ul class="dropdown-menu inner" role="menu"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">--请选择--</span></a></li><li data-original-index="1"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">有 </span></a></li><li data-original-index="2"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">无 </span></a></li></ul></div></div>
-                                                <select class="selected_1 hidden selectpicker show-menu-arrow form-control bs-select-hidden fyHousePtype" id="fyHousePtype" style="padding:2px 0px;width:60px;" name="houseVO.fyHousePtype" onchange="getHouseCharPage()">
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'pType'">
+                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden fyHousePtype" id="fyHousePtype" style="padding:2px 0px;width:60px;" name="houseVO.fyHousePtype" ng-model="filter.xuanxiangExp.pType">
                                                     <option value="">--请选择--</option>
                                                     <option value="10189">经济适用房</option>
                                                     <option value="10190">房改房</option>
@@ -261,8 +276,10 @@
                                                     <option value="10192">集体房</option>
                                                     <option value="10193">限价房</option>
                                                     <option value="10194">军产房</option>
-                                                </select><div class="btn-group bootstrap-select selected_1 hidden show-menu-arrow form-control fyHousePtype"><button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" data-id="fyHousePtype" title="--请选择--"><span class="filter-option pull-left">--请选择--</span>&nbsp;<span class="caret"></span></button><div class="dropdown-menu open"><ul class="dropdown-menu inner" role="menu"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">--请选择--</span></a></li><li data-original-index="1"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">经济适用房</span></a></li><li data-original-index="2"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">房改房</span></a></li><li data-original-index="3"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">商品房</span></a></li><li data-original-index="4"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">集体房</span></a></li><li data-original-index="5"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">限价房</span></a></li><li data-original-index="6"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">军产房</span></a></li></ul></div></div>
-                                                <select class="selected_1 hidden selectpicker show-menu-arrow form-control bs-select-hidden fyHouseProvetype" style="padding:2px 0px;width:60px;" id="fyHouseProvetype" name="houseVO.fyHouseProvetype" onchange="getHouseCharPage()">
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'proveType'">
+                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden fyHouseProvetype" style="padding:2px 0px;width:60px;" id="fyHouseProvetype" name="houseVO.fyHouseProvetype" ng-model="filter.xuanxiangExp.proveType">
                                                     <option value="">--请选择--</option>
                                                     <option value="10163">房产证</option>
                                                     <option value="10164">购房合同</option>
@@ -273,26 +290,23 @@
                                                     <option value="10169">回迁协议</option>
                                                     <option value="10170">收件收据</option>
                                                     <option value="10171">未出证</option>
-                                                </select><div class="btn-group bootstrap-select selected_1 hidden show-menu-arrow form-control fyHouseProvetype"><button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" data-id="fyHouseProvetype" title="--请选择--"><span class="filter-option pull-left">--请选择--</span>&nbsp;<span class="caret"></span></button><div class="dropdown-menu open"><ul class="dropdown-menu inner" role="menu"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">--请选择--</span></a></li><li data-original-index="1"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">房产证</span></a></li><li data-original-index="2"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">购房合同</span></a></li><li data-original-index="3"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">购房发票</span></a></li><li data-original-index="4"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">抵押合同</span></a></li><li data-original-index="5"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">认购书</span></a></li><li data-original-index="6"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">预售合同</span></a></li><li data-original-index="7"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">回迁协议</span></a></li><li data-original-index="8"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">收件收据</span></a></li><li data-original-index="9"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">未出证</span></a></li></ul></div></div>
-                                                <select class="selected_1 hidden selectpicker show-menu-arrow form-control bs-select-hidden fyHouseSettle" style="padding:2px 0px;width:60px;" name="houseVO.fyHouseSettle" onchange="getHouseCharPage()">
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'settle'">
+                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden fyHouseSettle" style="padding:2px 0px;width:60px;" name="houseVO.fyHouseSettle" ng-model="filter.xuanxiangExp.settle">
                                                     <option value="">--请选择--</option>
                                                     <option value="1">是</option>
                                                     <option value="0">否</option>
-                                                </select><div class="btn-group bootstrap-select selected_1 hidden show-menu-arrow form-control fyHouseSettle"><button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" title="--请选择--"><span class="filter-option pull-left">--请选择--</span>&nbsp;<span class="caret"></span></button><div class="dropdown-menu open"><ul class="dropdown-menu inner" role="menu"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">--请选择--</span></a></li><li data-original-index="1"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">是</span></a></li><li data-original-index="2"><a tabindex="0" class="" style="" data-tokens="null"><span class="text">否</span></a></li></ul></div></div>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group sortlist">
                                         <label class="control-label">排序</label>
                                         <div class="tj" id="fySortlist">
-                                            <a onclick="selectionpx(this,'0');" class="actived">系统默认</a>
-                                            <a onclick="selectionpx(this,'1');">楼盘名称<b class="iconfont text-muted up"></b></a>
-                                            <a onclick="selectionpx(this,'2');">栋座名称<b class="iconfont text-muted up"></b></a>
-                                            <a onclick="selectionpx(this,'3');">房源楼层<b class="iconfont text-muted up"></b></a>
-                                            <a onclick="selectionpx(this,'4');">房源总价<b class="iconfont text-muted up"></b></a>
-                                            <a onclick="selectionpx(this,'5');">房源单价<b class="iconfont text-muted up"></b></a>
-                                            <a onclick="selectionpx(this,'6');">建筑面积<b class="iconfont text-muted up"></b></a>
-                                            <a onclick="selectionpx(this,'7');">最后跟进日期<b class="iconfont text-muted up"></b></a>
+                                            <a ng-repeat="sort in fySortlist" ng-href="javascript:;" ng-click="setSort(sort.value)" ng-class="{'actived': sort.value == filter.sort.item}">
+                                                {{sort.name}}
+                                                <i ng-if="sort.value == filter.sort.item" class="fa" ng-class="{'fa-arrow-down':filter.sort.type == 'DESC','fa-arrow-up':filter.sort.type == 'ASC' }"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -300,8 +314,8 @@
                                     <!-- 重复提交标识 -->
                                     <input id="repeatflag" value="false" type="hidden">
                                     <input value="http://img.12157.top/upload/" id="uploadfileServerURL" type="hidden">
-                                    <div class="media clearfix" ng-repeat="house in houseList">
-                                        <img class="flagImg" ng-src="{{house.type ==='rent' ? '../img/house/rent.png':'../img/house/sale.png'}}" height="55" width="55">
+                                    <div class="media clearfix house-item" ng-repeat="house in houseList">
+                                        <img class="flagImg" ng-src="{{house.bizType ==='rent' ? '../img/house/rent.png':'../img/house/sale.png'}}" height="55" width="55">
                                         <a class="pull-left" href="javascript:void(0)" onclick="houseItem('1639')">
                                             <img class="media-object" ng-src="{{house.houseImg}}" height="75px" width="100px">
                                         </a>
@@ -333,11 +347,11 @@
                                                         <span class="tip tip-warning no-margin">有钥</span>
                                                         <span class="tip tip-default no-margin">不包</span>
                                                     </div>
-                                                    <div class="btn-add  pull-left m-l-30" style="display: none;">
-                                                        <a onclick="saveHouseFollow(1639)" href="javascript:void(0)"><i class="iconfont"></i>新增跟进</a>
-                                                        <a class="m-l-20" onclick="checkAlike(1639);" href="javascript:void(0)"><i class="iconfont"></i>新增勘察</a>
-                                                        <a class="m-l-20" onclick="checkApplyReceive('1639','','','')" href="javascript:void(0)"><i class="iconfont"></i>申请转盘</a>
-                                                        <a class="m-l-20" onclick="checkDelHouse('1639')" href="javascript:void(0)"><i class="iconfont"></i>删除</a>
+                                                    <div class="btn-add  pull-left m-l-30">
+                                                        <a onclick="saveHouseFollow(1639)" href="javascript:void(0)"><i class="fa fa-pencil"></i>新增跟进</a>
+                                                        <a class="m-l-20" onclick="checkAlike(1639);" href="javascript:void(0)"><i class="fa fa-pencil"></i>新增勘察</a>
+                                                        <a class="m-l-20" onclick="checkApplyReceive('1639','','','')" href="javascript:void(0)"><i class="fa fa-pencil"></i>申请转盘</a>
+                                                        <a class="m-l-20" onclick="checkDelHouse('1639')" href="javascript:void(0)"><i class="fa fa-pencil"></i>删除</a>
                                                     </div>
                                                 </div>
                                             </div>

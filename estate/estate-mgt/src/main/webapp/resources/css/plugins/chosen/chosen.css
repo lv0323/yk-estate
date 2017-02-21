@@ -162,10 +162,12 @@
 .chosen-container .chosen-results li.active-result {
   display: list-item;
   cursor: pointer;
+  white-space:pre;
 }
 .chosen-container .chosen-results li.disabled-result {
   display: list-item;
   color: #ccc;
+  white-space:pre;
   cursor: default;
 }
 .chosen-container .chosen-results li.highlighted {

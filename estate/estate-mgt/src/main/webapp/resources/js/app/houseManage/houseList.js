@@ -4,64 +4,15 @@
 require(['main-app',
         contextPath + '/js/service/identity-service.js',
         contextPath + '/js/service/validation-service.js',
+        contextPath + '/js/service/department-service.js',
         contextPath + '/js/service/util-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         'jqPaginator', 'select', 'chosen', 'datetimepicker.zh-cn'],
-    function (mainApp, IdentityService, ValidationService, UtilService, pagingPlugin) {
+    function (mainApp, IdentityService, ValidationService, DepartmentService, UtilService, pagingPlugin) {
         var pageConfig = {
             limit: 8,
             init: false
         };
-        //日期插件
-//选择年月日的       startView: 2,   minView: 2, format: 'yyyymmdd  hh:ii',
-/*        $('.form_datetime').datetimepicker({
-            format: 'yyyy-mm-dd hh:ii',
-            weekStart: 1,
-            todayBtn:  1,
-            autoclose: true,
-            todayHighlight: 1,
-            startView: 2,
-            minView: 0,
-            pickerPosition:'bottom-left',
-            forceParse: false,
-            language: 'zh-CN'
-        });*/
-//选择年月日的       startView: 2,   minView: 2, format: 'yyyymmdd',
-        /*$('.form_date').datetimepicker({
-            format: 'yyyy-mm-dd',
-            weekStart: 1,
-            autoclose: true,
-            startView: 2,
-            minView: 2,
-            pickerPosition:'bottom-left',
-            forceParse: false,
-            language: 'zh-CN'
-        });*/
-//选择年月的    startView: 3,   minView: 3, format: 'yyyymm',
-        /*$('.form_month').datetimepicker({
-            format: 'yyyy-mm',
-            weekStart: 1,
-            autoclose: true,
-            startView: 3,
-            minView: 3,
-            pickerPosition:'bottom-left',
-            forceParse: false,
-            language: 'zh-CN'
-        });*/
-//选择年的     startView: 4,   minView: 4, format: 'yyyy',
-        /*$('.form_year').datetimepicker({
-            format: 'yyyy',
-            weekStart: 1,
-            autoclose: true,
-            startView: 4,
-            minView: 4,
-            pickerPosition:'bottom-left',
-            forceParse: false,
-            language: 'zh-CN'
-        });*/
-
-        $('.chosen-select').chosen();
-        $('.chosen-select-deselect').chosen({ allow_single_deselect: true });
         $('.selectpicker').selectpicker({
             style: 'btn-default',
             dropupAuto:false,
@@ -88,30 +39,29 @@ require(['main-app',
                 }
             }
         });
-        HouseListModule.directive('repeatFinish',function(){
+        HouseListModule.directive('repeatDone',['$timeout', function($timeout){
             return {
-                link: function(scope,element,attr){
-                    if(scope.$last == true){
+                link: function(scope,element,attrs){
+                    if (scope.$last) {
+                        $timeout(function() {
+                            scope.$eval(attrs['repeatDone']);   // 执行绑定的表达式
+                        });
                     }
                 }
             }
-        });
+        }]);
         HouseListModule.controller("HouseListCtrl", ['$scope','$timeout', '$interval','$window','$location', function($scope, $timeout, $interval, $window) {
             $scope.filter ={
-                distract: '',
-                usage: '',
+                area:{
+                    type:'',
+                    ceil:'',
+                    floor:''
+                },
                 countf: '',
-                tradeStatus: '',
-                quality:'',
                 character:{
                     unique:false,
                     fiveYears: false,
                     towYears: false
-                },
-                tradeType:'',
-                depId:'',
-                depExp:{
-                    lowerLevel: false
                 },
                 date:{
                     dateType: '',
@@ -119,8 +69,36 @@ require(['main-app',
                     endDate: ''
 
                 },
-                xuanxiang:''
+                depExp:{
+                    lowerLevel: false
+                },
+                depId:'',
+                distract: '',
+                quality:'',
+                sort:{
+                    item:'default',
+                    type:''
+
+                },
+                tradeStatus: '',
+                tradeType:'',
+                usage: '',
+                xuanxiang: '',
+                xuanxiangExp:{
+                    entrustWay: '',
+                    price: '',
+                    grade: '',
+                    decorate: '',
+                    imageBool: '',
+                    pType : '',
+                    proveType: '',
+                    settle: ''
+                }
             };
+            /*面积*/
+            $scope.setAreaType = function(type){
+                $scope.filter.area.type = type;
+            }
             /*区域*/
             $scope.distractList =[
                 {name: '不限', value: ''},
@@ -224,7 +202,54 @@ require(['main-app',
             $scope.setXuanxiang = function(){
                 console.log($scope.filter.xuanxiang);
             };
+            $scope.fySortlist = [
+                {name: '系统默认', value: 'default'},
+                {name: '楼盘名称', value: '1'},
+                {name: '栋座名称', value: '2'},
+                {name: '房源楼层', value: '3'},
+                {name: '房源总价', value: '4'},
+                {name: '房源单价', value: '5'},
+                {name: '建筑面积', value: '6'},
+                {name: '最后跟进日期', value: '7'}
+            ];
+            $scope.setSort = function(item){
+                if(item == 'default'){
+                    if(item == $scope.filter.sort.item){
+                        return;
+                    }
+                    $scope.filter.sort.item = item;
+                    $scope.filter.sort.type = '';
 
+                } else if(item == $scope.filter.sort.item){
+                    $scope.filter.sort.type = $scope.filter.sort.type=='ASC'?'DESC':'ASC'
+                }else{
+                    $scope.filter.sort.item = item;
+                    $scope.filter.sort.type = 'DESC'
+                }
+            };
+            $scope.ddCount = function(){
+                console.log('count');
+            };
+            /*部门*/
+            DepartmentService.getAllDepartment().done(function(data){
+                $scope.depList =data.map(function(item, index){
+                    var indent = "";
+                    for(var i = 0;i<item.level;i++){
+                        indent += "   ";
+                    }
+                   return {
+                       id: item.id,
+                       name: indent+ item.name,
+                   }
+                });
+                console.log($scope.depList);
+            });
+            $scope.initDepList = function(){
+                $('.chosen-select-dep').chosen();
+            };
+            /*$('.chosen-select-dep').chosen();*/
+            /*员工*/
+            $('.chosen-select-emp').chosen();
             /*分页*/
             var pagination = function(dataTotal) {
                 $scope.state ={
@@ -248,14 +273,19 @@ require(['main-app',
                 pagingPlugin.init(config);
 
             };
-            pagination(100)
+            pagination(100);
+
             //筛选
             $scope.triggerCollapse = function(){
                 $scope.state.collapse = !$scope.state.collapse;
             };
+
             $scope.houseList = [
                 {
                     bizType:'sale',
+                    houseImg:'http://img.12157.top/upload/uploadfile/pic/web/14816115366066107.png',
+                },{
+                    bizType:'rent',
                     houseImg:'http://img.12157.top/upload/uploadfile/pic/web/14816115366066107.png',
                 }
             ];
