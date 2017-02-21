@@ -122,6 +122,9 @@ CREATE TABLE t_community (
   alias_kw               VARCHAR(200)
 );
 
+CREATE INDEX ON t_community (latitude);
+CREATE INDEX ON t_community (longitude);
+
 CREATE TABLE t_community_station_rel (
   id           BIGSERIAL PRIMARY KEY, --id
   community_id BIGINT NOT NULL, --小区id

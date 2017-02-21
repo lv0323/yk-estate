@@ -7,6 +7,7 @@ import com.lyun.estate.biz.housedict.service.HouseDictService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
 import com.lyun.estate.mgt.context.MgtContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,16 +26,21 @@ public class HouseDictMgtService {
 
     private KeywordService keywordService;
 
+    private XiaoQuService xiaoQuService;
+
     public HouseDictMgtService(MgtContext mgtContext,
-                               HouseDictService houseDictService, KeywordService keywordService) {
+                               HouseDictService houseDictService, KeywordService keywordService,
+                               XiaoQuService xiaoQuService) {
         this.mgtContext = mgtContext;
         this.houseDictService = houseDictService;
         this.keywordService = keywordService;
+        this.xiaoQuService = xiaoQuService;
     }
 
-    public Building createBuilding(Long communityId, String name, Integer floors, Integer stairs, Integer houses,
+    public Building createBuilding(Long xiaoQuId, String name, Integer floors, Integer stairs, Integer houses,
                                    String description) {
-        return houseDictService.createBuilding(communityId,
+
+        return houseDictService.createBuilding(xiaoQuId,
                 name,
                 floors,
                 stairs,
@@ -59,8 +65,8 @@ public class HouseDictMgtService {
         return count[0];
     }
 
-    public List<Building> findBuildingsByCommunityId(Long communityId) {
-        return houseDictService.findBuildingsByCommunityId(communityId);
+    public List<Building> findBuildingsByXiaoQuId(Long communityId) {
+        return houseDictService.findBuildingsByXiaoQuId(communityId);
     }
 
 
@@ -76,7 +82,7 @@ public class HouseDictMgtService {
     public List<KeywordBean> keywords(String keywords) {
         return keywordService.findContain(keywords,
                 mgtContext.getOperator().getCityId(),
-                Lists.newArrayList(DomainType.COMMUNITY),
+                Lists.newArrayList(DomainType.XIAO_QU),
                 10);
     }
 }

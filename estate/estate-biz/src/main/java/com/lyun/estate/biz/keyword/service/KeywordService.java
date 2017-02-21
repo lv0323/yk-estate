@@ -90,8 +90,6 @@ public class KeywordService {
             return keywordRepository.loadStation(cityId);
         } else if (domainType == DomainType.XIAO_QU) {
             return keywordRepository.loadXiaoQu(cityId);
-        } else if (domainType == DomainType.COMMUNITY) {
-            return keywordRepository.loadCommunity(cityId);
         } else {
             return new ArrayList<>();
         }

@@ -38,7 +38,4 @@ public interface KeywordRepository {
     @Cacheable(cacheNames = {"keywords-station"})
     List<KeywordBean> loadStation(@Param("cityId") Long cityId);
 
-    @Select("SELECT  id,  'COMMUNITY' AS domain_type, name , alias, name_kw AS keyword FROM t_community WHERE city_id = #{cityId} ORDER BY id;")
-    @Cacheable(cacheNames = {"keywords-community"})
-    List<KeywordBean> loadCommunity(@Param("cityId") Long cityId);
 }

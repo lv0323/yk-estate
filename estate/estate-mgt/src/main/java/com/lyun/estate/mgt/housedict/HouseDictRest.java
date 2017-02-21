@@ -27,13 +27,13 @@ public class HouseDictRest {
     }
 
     @PostMapping("building")
-    public Building createBuilding(@RequestParam Long communityId,
+    public Building createBuilding(@RequestParam Long xiaoQuId,
                                    @RequestParam String name,
                                    @RequestParam Integer floors,
                                    @RequestParam Integer stairs,
                                    @RequestParam Integer houses,
                                    @RequestParam String description) {
-        return houseDictMgtService.createBuilding(communityId,
+        return houseDictMgtService.createBuilding(xiaoQuId,
                 name,
                 floors,
                 stairs,
@@ -48,8 +48,8 @@ public class HouseDictRest {
     }
 
     @GetMapping("buildings")
-    public List<Building> findBuildingsByCommunityId(@RequestParam Long communityId) {
-        return houseDictMgtService.findBuildingsByCommunityId(communityId);
+    public List<Building> findBuildingsByXiaoQuId(@RequestParam Long xiaoQuId) {
+        return houseDictMgtService.findBuildingsByXiaoQuId(xiaoQuId);
     }
 
     @GetMapping("buildings/{id}")

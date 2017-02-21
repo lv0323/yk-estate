@@ -10,7 +10,6 @@ public enum DomainType {
     LINE("地铁线"),
     STATION("地铁站"),
     XIAO_QU("小区"),
-    COMMUNITY("楼盘"),
     FANG("房"),
     EMPLOYEE("员工"),
     DEPARTMENT("部门"),

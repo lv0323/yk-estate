@@ -3,6 +3,8 @@ package com.lyun.estate.biz.housedict.service;
 import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.entity.BuildingUnit;
 import com.lyun.estate.biz.housedict.repository.HouseDictRepo;
+import com.lyun.estate.biz.xiaoqu.entity.XiaoQu;
+import com.lyun.estate.biz.xiaoqu.service.MgtXiaoQuService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,18 +23,25 @@ public class HouseDictService {
     @Autowired
     private HouseDictRepo houseDictRepo;
 
+    @Autowired
+    private MgtXiaoQuService mgtXiaoQuService;
 
-    public Building createBuilding(Long communityId, String name, Integer floors, Integer stairs, Integer houses,
+
+    public Building createBuilding(Long xiaoQuId, String name, Integer floors, Integer stairs, Integer houses,
                                    String description, Long operatorId) {
-        ExceptionUtil.checkNotNull("楼盘编号", communityId);
+        ExceptionUtil.checkNotNull("小区编号", xiaoQuId);
         ExceptionUtil.checkIllegal(!StringUtils.isEmpty(name), "楼栋名", name);
         ExceptionUtil.checkIllegal(floors != null && floors > 0, "总楼层", floors);
         ExceptionUtil.checkIllegal(stairs != null && stairs > 0, "梯数", stairs);
         ExceptionUtil.checkIllegal(houses != null && houses > 0, "户数", houses);
         ExceptionUtil.checkNotNull("操作者编号", operatorId);
+        XiaoQu xiaoQu = mgtXiaoQuService.findOne(xiaoQuId);
+        if (xiaoQu == null) {
+            throw new EstateException(ExCode.CREATE_FAIL, "楼栋", "小区编号:" + xiaoQuId);
+        }
 
         Building building = new Building()
-                .setCommunityId(communityId)
+                .setCommunityId(xiaoQu.getCommunityId())
                 .setName(name)
                 .setFloors(floors)
                 .setStairs(stairs)
@@ -41,7 +51,7 @@ public class HouseDictService {
         if (houseDictRepo.saveBuilding(building) > 0) {
             return findBuilding(building.getId());
         } else {
-            throw new EstateException(ExCode.CREATE_FAIL, "楼栋", "楼盘编号:" + communityId);
+            throw new EstateException(ExCode.CREATE_FAIL, "楼栋", "小区编号:" + xiaoQuId);
         }
 
     }
@@ -63,9 +73,13 @@ public class HouseDictService {
         }
     }
 
-    public List<Building> findBuildingsByCommunityId(Long communityId) {
-        ExceptionUtil.checkNotNull("楼盘编号", communityId);
-        List<Building> buildings = houseDictRepo.findBuildingByCommunityId(communityId);
+    public List<Building> findBuildingsByXiaoQuId(Long xiaoQuId) {
+        ExceptionUtil.checkNotNull("小区编号", xiaoQuId);
+        XiaoQu xiaoQu = mgtXiaoQuService.findOne(xiaoQuId);
+        if (xiaoQu == null) {
+            return new ArrayList<>();
+        }
+        List<Building> buildings = houseDictRepo.findBuildingByCommunityId(xiaoQu.getCommunityId());
         if (buildings != null) {
             buildings.forEach(b -> b.setUnits(houseDictRepo.findBuildingUnitByBuildingId(b.getId())));
         }
