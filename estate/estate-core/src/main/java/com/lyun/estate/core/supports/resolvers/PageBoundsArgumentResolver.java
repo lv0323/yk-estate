@@ -17,7 +17,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-//import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +24,14 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 /**
  * Created by Jeffrey on 16/5/26.
  */
 @ControllerAdvice
 public class PageBoundsArgumentResolver implements HandlerMethodArgumentResolver, Formatter<PageBounds> {
 
-    private static final String DEFAULT_HEADER_NAME = "X-PAGING";
+    public static final String PAGE_HEADER = "X-PAGING";
 
     private static final int DEFAULT_LIMIT = 10;
 
@@ -117,7 +117,7 @@ public class PageBoundsArgumentResolver implements HandlerMethodArgumentResolver
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        String text = webRequest.getHeader(DEFAULT_HEADER_NAME);
+        String text = webRequest.getHeader(PAGE_HEADER);
 //        if (!StringUtils.hasText(text)) {
 //            text = webRequest.getNativeRequest(HttpServletRequest.class).getQueryString();
 //        }

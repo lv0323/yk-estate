@@ -92,7 +92,7 @@ public class EmployeeRest {
 
     @GetMapping("avatar")
     public Object avatar() {
-        return new RestResponse().add("url", service.getAvatar());
+        return new RestResponse().add("url", service.getAvatar()).get();
     }
 
     @PostMapping("avatar")
@@ -114,6 +114,11 @@ public class EmployeeRest {
     @PostMapping("reset-password")
     public Object resetPassword(Long employeeId, String newPassword) {
         return new RestResponse().add("ret", service.resetPassword(employeeId, newPassword));
+    }
+
+    @GetMapping("self")
+    public Employee get() {
+        return service.self();
     }
 
 }
