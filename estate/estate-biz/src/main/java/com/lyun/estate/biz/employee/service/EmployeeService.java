@@ -183,8 +183,8 @@ public class EmployeeService {
         return sugar;
     }
 
-    public Boolean changePassword(Long id, String sugaredPassword, String newPassword) {
-        ExceptionUtil.checkIllegal(ValidateUtil.isPassword(newPassword), "密码", "");
+    public Boolean changePassword(Long id, String sugaredPassword, String saltedNewPassword) {
+        ExceptionUtil.checkIllegal(ValidateUtil.isPassword(saltedNewPassword), "密码", "");
         Employee employee = repo.selectById(id);
         if (employee == null) {
             throw new EstateException(ExCode.EMPLOYEE_NOT_FOUND);
@@ -199,7 +199,7 @@ public class EmployeeService {
             throw new EstateException(ExCode.EMPLOYEE_WRONG_PASSWORD);
         } else {
             cache.evict(CHANGE_PSWD_SUGAR_PREFIX + id);
-            return repo.updatePassword(new Employee().setId(id).setPassword(hmac(employee.getSalt(), newPassword))) > 1;
+            return repo.updatePassword(new Employee().setId(id).setPassword(saltedNewPassword)) >1;
         }
     }
 

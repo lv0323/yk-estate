@@ -102,8 +102,8 @@ public class EmployeeRest {
     }
 
     @PostMapping("change-password")
-    public Object changePassword(@RequestParam String sugaredPassword, @RequestParam String newPassword) {
-        return new RestResponse().add("ret", service.changePassword(sugaredPassword, newPassword)).get();
+    public Object changePassword(@RequestParam String sugaredPassword, @RequestParam String saltedNewPassword) {
+        return new RestResponse().add("ret", service.changePassword(sugaredPassword, saltedNewPassword)).get();
     }
 
     @GetMapping("change-password-salt-sugar")

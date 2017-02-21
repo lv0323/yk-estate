@@ -1,6 +1,40 @@
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
 
+<!-- Modal changeMyPasswordDialog -->
+<div class="modal fade" id="changeMyPasswordDialog" tabindex="-1" role="dialog" aria-labelledby="changeMyPasswordLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title" id="changeMyPasswordLabel">修改密码</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">旧密码：</label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="password" id="myOldPassword" class="form-control pull-right" placeholder="请输入旧密码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">新密码：</label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="password" id="myNewPassword" class="form-control pull-right" placeholder="请输入新密码">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmChangeMyPasswordBtn">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <section class="content-header">
@@ -49,24 +83,23 @@
                                                     <tbody>
                                                         <tr>
                                                             <td class="text-right text-muted">用户名</td>
-                                                            <td class="text-left">张三</td>
+                                                            <td id="username" class="text-left"></td>
                                                             <td class="text-right text-muted">密码</td>
                                                             <td class="text-left">
-                                                                <input style="border:0;outline:0;background:#FFF;" type="password">
-                                                                <a id="changePswBtn" class="btn">
+                                                                <a id="changePswBtn" class="btn" data-toggle="modal" data-target="#changeMyPasswordDialog">
                                                                     <i class="fa fa-pencil" aria-hidden="true"></i>修改密码
                                                                 </a>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td class="text-right text-muted">手机号</td>
-                                                            <td class="text-left">13064759545</td>
+                                                            <td id="mobile" class="text-left"></td>
                                                             <td class="text-right text-muted">入职日期</td>
-                                                            <td class="text-left">2016-12-13</td>
+                                                            <td id="entryDate" class="text-left"></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="text-right text-muted">微信</td>
-                                                            <td class="text-left"></td>
+                                                            <td id="wechat" class="text-left"></td>
 
                                                         </tr>
                                                     </tbody>
@@ -85,3 +118,4 @@
 
 </div>
 <#include "/common/footer.ftl" />
+<script src="${contextPath!}/js/app/tool/myProfile.js"></script>
