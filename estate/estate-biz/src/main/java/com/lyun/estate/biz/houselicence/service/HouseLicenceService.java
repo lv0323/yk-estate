@@ -2,6 +2,8 @@ package com.lyun.estate.biz.houselicence.service;
 
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.housedict.entity.Building;
+import com.lyun.estate.biz.housedict.service.HouseDictService;
 import com.lyun.estate.biz.houselicence.def.LicenceStatus;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.houselicence.repository.HouseLicenceRepo;
@@ -10,6 +12,7 @@ import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -20,8 +23,11 @@ public class HouseLicenceService {
 
     private HouseLicenceRepo repo;
 
-    public HouseLicenceService(HouseLicenceRepo repo) {
+    private HouseDictService houseDictService;
+
+    public HouseLicenceService(HouseLicenceRepo repo, HouseDictService houseDictService) {
         this.repo = repo;
+        this.houseDictService = houseDictService;
     }
 
     public HouseLicence register(Long communityId, BizType bizType, Long buildingId, Long buildingUnitId,
@@ -32,6 +38,17 @@ public class HouseLicenceService {
         ExceptionUtil.checkNotNull("楼栋号", buildingId);
         ExceptionUtil.checkNotNull("单元号", buildingUnitId);
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(houseNo), "房号", houseNo);
+
+        Building building = houseDictService.findBuilding(buildingId);
+        if (!Objects.equals(building.getCommunityId(), communityId)) {
+            throw new EstateException(ExCode.LICENCE_LOCATION_ERROR);
+        }
+        boolean unitExisted = houseDictService.findBuildingUnitsByBuildingId(buildingId)
+                .stream()
+                .anyMatch(t -> Objects.equals(t.getId(), buildingUnitId));
+        if (!unitExisted) {
+            throw new EstateException(ExCode.LICENCE_LOCATION_ERROR);
+        }
         HouseLicence active = findActive(communityId, bizType, buildingId, buildingUnitId, houseNo);
         if (active != null) {
             throw new EstateException(ExCode.LICENCE_HOUSE_EXISTED, active.getId());
@@ -42,7 +59,7 @@ public class HouseLicenceService {
             if (repo.save(houseLicence) > 0) {
                 return repo.findOne(houseLicence.getId());
             } else {
-                throw new EstateException(ExCode.CREATE_FAIL, "房源授权", "");
+                throw new EstateException(ExCode.CREATE_FAIL, "房源授权", houseLicence.toString());
             }
         }
     }

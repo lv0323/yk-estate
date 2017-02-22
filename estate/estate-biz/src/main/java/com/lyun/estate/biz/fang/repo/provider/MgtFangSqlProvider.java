@@ -1,7 +1,9 @@
 package com.lyun.estate.biz.fang.repo.provider;
 
 import com.lyun.estate.biz.fang.entity.Fang;
+import com.lyun.estate.biz.fang.entity.FangContact;
 import com.lyun.estate.biz.fang.entity.FangExt;
+import com.lyun.estate.biz.fang.entity.FangInfoOwner;
 import com.lyun.estate.core.repo.SQL;
 
 import java.util.Objects;
@@ -68,6 +70,27 @@ public class MgtFangSqlProvider {
                     .VALUES("over_years", "#{overYears}")
                     .VALUES_IF("mortgage", "#{mortgage}", Objects.nonNull(fangExt.getMortgage()))
                     .VALUES_IF("note", "#{note}", Objects.nonNull(fangExt.getNote()));
+        }}.toString();
+    }
+
+    public String saveFangContact(FangContact fangContact) {
+        return new SQL() {{
+            INSERT_INTO("t_fang_contact")
+                    .VALUES("fang_id", "#{fangId}")
+                    .VALUES("owner_name", "#{ownerName}")
+                    .VALUES("contact_type", "#{contactType}")
+                    .VALUES("contact_info", "#{contactInfo}");
+        }}.toString();
+    }
+
+    public String saveFangInfoOwner(FangInfoOwner fangInfoOwner) {
+        return new SQL() {{
+            INSERT_INTO("t_fang_info_owner")
+                    .VALUES("fang_id", "#{fangId}")
+                    .VALUES("company_id", "#{companyId}")
+                    .VALUES("department_id", "#{departmentId}")
+                    .VALUES("employee_id", "#{employeeId}")
+                    .VALUES("reason", "#{reason}");
         }}.toString();
     }
 }

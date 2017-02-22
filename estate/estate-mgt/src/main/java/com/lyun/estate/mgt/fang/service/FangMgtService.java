@@ -1,6 +1,5 @@
 package com.lyun.estate.mgt.fang.service;
 
-import com.google.common.base.Strings;
 import com.lyun.estate.biz.audit.def.AuditSubject;
 import com.lyun.estate.biz.audit.entity.Audit;
 import com.lyun.estate.biz.audit.service.AuditService;
@@ -18,7 +17,6 @@ import com.lyun.estate.biz.xiaoqu.service.MgtXiaoQuService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
-import com.lyun.estate.core.utils.ValidateUtil;
 import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.context.Operator;
 import org.springframework.stereotype.Service;
@@ -27,6 +25,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -88,7 +87,10 @@ public class FangMgtService {
         mgtFangService.createFangExt(fangExt);
 
         //fangContact
-        contacts.forEach(mgtFangService::createFangContact);
+        contacts.forEach(c -> {
+            c.setFangId(result.getId());
+            mgtFangService.createFangContact(c);
+        });
 
         //fangInfoOwner
         Operator operator = mgtContext.getOperator();
@@ -105,38 +107,28 @@ public class FangMgtService {
                 .setTargetId(result.getId())
                 .setDomainType(DomainType.FANG)
                 .setContent("【" + operator.getDepartmentName() + "--" + operator
-                        .getName() + "】创建了编号为【" + licence.getId() + "】的房源")
+                        .getName() + "】创建了授权编号为【" + licence.getId() + "】的房源")
         );
         return result;
     }
 
     private void checkFangContact(List<FangContact> contacts) {
-        contacts.forEach(c -> {
-            boolean flag = true;
-            switch (c.getContactType()) {
-                case MOBILE:
-                    flag = ValidateUtil.isMobile(c.getContactInfo());
-                    break;
-                case QQ:
-                    flag = !Strings.isNullOrEmpty(c.getContactInfo());
-                    break;
-                case WECHAT:
-                    flag = !Strings.isNullOrEmpty(c.getContactInfo());
-                    break;
-                case PHONE:
-                    flag = !Strings.isNullOrEmpty(c.getContactInfo());
-                    break;
-                case EMAIL:
-                    flag = ValidateUtil.isEmail(c.getContactInfo());
-                    break;
+        List<FangContact> checkFaileds = new ArrayList<>();
+        contacts.forEach(t -> {
+            if (!mgtFangService.checkFangContact(t)) {
+                checkFaileds.add(t);
             }
-            ExceptionUtil.checkIllegal(flag, c.getContactType().getLabel(), c.getContactInfo());
         });
+        ExceptionUtil.checkIllegal(CollectionUtils.isEmpty(checkFaileds), "联系方式", checkFaileds);
     }
 
 
     private void buildFang(Fang fang) {
         fang.setProcess(HouseProcess.DELEGATE);
+
+        if (fang.getRealArea() == null) {
+            fang.setRealArea(fang.getEstateArea());
+        }
 
         fang.setFloorType(calculateFloorType(fang.getFloor(), fang.getFloorCounts()));
 

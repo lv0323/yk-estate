@@ -109,4 +109,20 @@ public class HouseLicence {
         isDeleted = deleted;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "HouseLicence{" +
+                "id=" + id +
+                ", bizType=" + bizType +
+                ", status=" + status +
+                ", communityId=" + communityId +
+                ", buildingId=" + buildingId +
+                ", buildingUnitId=" + buildingUnitId +
+                ", houseNo='" + houseNo + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", isDeleted=" + isDeleted +
+                '}';
+    }
 }

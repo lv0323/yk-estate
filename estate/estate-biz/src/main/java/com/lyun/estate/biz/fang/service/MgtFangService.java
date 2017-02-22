@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.fang.service;
 
+import com.google.common.base.Strings;
 import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.entity.FangContact;
 import com.lyun.estate.biz.fang.entity.FangExt;
@@ -7,6 +8,8 @@ import com.lyun.estate.biz.fang.entity.FangInfoOwner;
 import com.lyun.estate.biz.fang.repo.MgtFangRepository;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
+import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
+import com.lyun.estate.core.utils.ValidateUtil;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,11 +39,46 @@ public class MgtFangService {
 
     }
 
-    public void createFangContact(FangContact fangContact) {
-
+    public FangContact createFangContact(FangContact fangContact) {
+        boolean flag = checkFangContact(fangContact);
+        ExceptionUtil.checkIllegal(flag, "联系方式", fangContact.toString());
+        if (mgtFangRepository.saveFangContact(fangContact) > 0) {
+            return mgtFangRepository.findFangContact(fangContact.getId());
+        }
+        throw new EstateException(ExCode.CREATE_FAIL, "联系方式", fangContact.toString());
     }
 
-    public void createFangInfoOwner(FangInfoOwner fangInfoOwner) {
+    public boolean checkFangContact(FangContact fangContact) {
+        ExceptionUtil.checkNotNull("联系信息", fangContact);
+        boolean flag = true;
+        switch (fangContact.getContactType()) {
+            case MOBILE:
+                flag = ValidateUtil.isMobile(fangContact.getContactInfo());
+                break;
+            case QQ:
+                flag = !Strings.isNullOrEmpty(fangContact.getContactInfo());
+                break;
+            case WECHAT:
+                flag = !Strings.isNullOrEmpty(fangContact.getContactInfo());
+                break;
+            case PHONE:
+                flag = !Strings.isNullOrEmpty(fangContact.getContactInfo());
+                break;
+            case EMAIL:
+                flag = ValidateUtil.isEmail(fangContact.getContactInfo());
+                break;
+            default:
+                flag = false;
+                break;
+        }
+        return flag;
+    }
+
+    public FangInfoOwner createFangInfoOwner(FangInfoOwner fangInfoOwner) {
+        if (mgtFangRepository.saveFangInfoOwner(fangInfoOwner) > 0) {
+            return mgtFangRepository.findFangInfoOwner(fangInfoOwner.getId());
+        }
+        throw new EstateException(ExCode.CREATE_FAIL, "联系方式", fangInfoOwner.toString());
 
     }
 }

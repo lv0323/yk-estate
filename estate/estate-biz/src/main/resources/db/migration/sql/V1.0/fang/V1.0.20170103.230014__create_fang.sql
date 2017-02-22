@@ -22,17 +22,17 @@ CREATE TABLE t_fang (
   bottom_price   NUMERIC(28, 5), --底价
   resident       VARCHAR(1), --是否可落户
   process        VARCHAR(20)         NOT NULL, --流程状态
-  floor          INT                 NOT NULL  DEFAULT 0, --总层高
+  floor          INT                 NOT NULL      DEFAULT 0, --总层高
   floor_counts   INT                 NOT NULL, --总层高
   floor_type     VARCHAR(10)         NOT NULL, --层高类型
   structure_type VARCHAR(10), --结构
   build_year     INT, --建造时间
   heating_type   VARCHAR(15), --供暖类型
   has_elevator   VARCHAR(1), --是否有电梯
-  create_time    TIMESTAMP, --创建时间
-  update_time    TIMESTAMP, --更新时间
+  create_time    TIMESTAMP           NOT NULL      DEFAULT CURRENT_TIMESTAMP, --创建时间
+  update_time    TIMESTAMP           NOT NULL      DEFAULT CURRENT_TIMESTAMP, --更新时间
   publish_time   TIMESTAMP, --挂牌时间
-  is_deleted     BOOLEAN             NOT NULL  DEFAULT FALSE,
+  is_deleted     BOOLEAN             NOT NULL      DEFAULT FALSE,
   name_kw        VARCHAR(200)
 );
 
@@ -46,10 +46,10 @@ CREATE TABLE t_fang_ext (
   delegate_end       TIMESTAMP, --委托结束时间
   status             VARCHAR(20)    NOT NULL, --现状
   source             VARCHAR(15)    NOT NULL, --来源
-  certif_type        VARCHAR(10)    NOT NULL, --产证类型
-  certif_adress      VARCHAR(100), --房产地址
+  certif_type        VARCHAR(20), --产证类型
+  certif_address     VARCHAR(100), --房产地址
   certif_no          VARCHAR(50), --房产证号
-  property_type      VARCHAR(10)    NOT NULL, --交易权属
+  property_type      VARCHAR(20), --交易权属
   taxes_willing      VARCHAR(15), --税费
   commission_willing VARCHAR(15), --佣金
   purchase_price     NUMERIC(28, 5), --购入价格
@@ -87,7 +87,7 @@ CREATE TABLE t_fang_descr (
 CREATE TABLE t_fang_contact (
   id           BIGSERIAL PRIMARY KEY,
   fang_id      BIGINT NOT NULL,
-  ower_name    VARCHAR(20), --业主姓名
+  owner_name   VARCHAR(20), --业主姓名
   contact_type VARCHAR(10), --联系类别
   contact_info VARCHAR(50) --联系方式
 );
