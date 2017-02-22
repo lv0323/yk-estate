@@ -16,6 +16,14 @@ define(contextPath + '/js/service/employee-service.js',
             return requestService.get('/api/employee/avatar', data, header);
         };
 
+        EmployeeService.changePassword = function (params, header) {
+            return requestService.post('/api/employee/change-password', params, header);
+        };
+
+        EmployeeService.getSaltSugar = function (header) {
+            return requestService.get('/api/employee/change-password-salt-sugar', null, header);
+        };
+
         EmployeeService.getEmployee = function (params, header) {
             return requestService.get('/api/employee/query', params, header);
         };

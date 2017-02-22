@@ -101,8 +101,8 @@ public class EmployeeMgtService {
         return employeeService.createAvatar(mgtContext.getOperator().getId(), inputStream, suffix);
     }
 
-    public Boolean changePassword(String sugaredPassword, String newPassword) {
-        return employeeService.changePassword(mgtContext.getOperator().getId(), sugaredPassword, newPassword);
+    public Boolean changePassword(String sugaredPassword, String saltedNewPassword) {
+        return employeeService.changePassword(mgtContext.getOperator().getId(), sugaredPassword, saltedNewPassword);
     }
 
     @Transactional

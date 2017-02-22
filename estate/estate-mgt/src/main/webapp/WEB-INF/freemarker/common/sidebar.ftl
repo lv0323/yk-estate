@@ -78,11 +78,12 @@
         <div class="user-panel">
             <div class="pull-left image">
                 <div class="user-panelImg">
-                    <i class="fa fa-user-circle fa-3x" aria-hidden="true"></i>
+                    <i class="fa fa-user-circle fa-3x" aria-hidden="true" style="display: inline-block;"></i>
+                    <img style="width:42px; height:42px; border-radius:50%; display: none;">
                 </div>
             </div>
             <div class="pull-left info">
-                <p>User Name</p>
+                <p class="username"></p>
                 <a href="#"><i class="fa fa-circle text-success"></i>在线</a>
             </div>
         </div>
