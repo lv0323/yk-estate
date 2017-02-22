@@ -73,17 +73,18 @@ public class FangRest {
                            @RequestParam HouseStatus status,
                            @RequestParam HouseSource source,
                            @RequestParam(required = false) CertifType certifType,
-                           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date purchaseDate,
+                           @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date purchaseDate,
                            @RequestParam(required = false) PropertyType propertyType,
                            @RequestParam Decorate decorate,
                            @RequestParam HeatingType heatingType,
                            @RequestParam YN hasElevator,
                            @RequestParam TaxesWilling taxesWilling,
                            @RequestParam CommissionWilling commissionWilling,
-                           @RequestParam BigDecimal purchasePrice,
-                           @RequestParam String note) {
+                           @RequestParam(required = false) BigDecimal purchasePrice,
+                           @RequestParam(required = false) YN mortgage,
+                           @RequestParam(required = false) String note) {
 
-        HouseLicence houseLicence = new HouseLicence().setType(bizType)
+        HouseLicence houseLicence = new HouseLicence().setBizType(bizType)
                 .setBuildingId(buildingId)
                 .setBuildingUnitId(buildingUnitId)
                 .setHouseNo(houseNo);
@@ -102,7 +103,7 @@ public class FangRest {
                 .setDelegateEnd(delegateEnd).setShowing(showing).setSource(source).setStatus(status)
                 .setCertifType(certifType).setPurchaseDate(purchaseDate).setPropertyType(propertyType)
                 .setTaxesWilling(taxesWilling).setCommissionWilling(commissionWilling).setPurchasePrice(purchasePrice)
-                .setNote(note);
+                .setMortgage(mortgage).setNote(note);
 
         List<FangContact> contacts = mobiles.stream().map(m ->
                 new FangContact().setContactType(ContactType.MOBILE).setOwnerName(ownerName).setContactInfo(m))

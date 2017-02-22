@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.housedict.service;
 
+import com.lyun.estate.biz.housedict.domain.XiaoQuOption;
 import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.entity.BuildingUnit;
 import com.lyun.estate.biz.housedict.repository.HouseDictRepo;
@@ -103,4 +104,7 @@ public class HouseDictService {
         return houseDictRepo.findBuildingUnitByBuildingId(buildingId);
     }
 
+    public List<XiaoQuOption> xiaoQuOptions(Long cityId) {
+        return houseDictRepo.findXiaoQuOptions(cityId);
+    }
 }

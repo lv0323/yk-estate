@@ -1,12 +1,13 @@
 CREATE TABLE t_fang_info_owner (
   id            BIGSERIAL PRIMARY KEY,
-  fang_id       BIGINT  NOT NULL,
-  company_id    BIGINT  NOT NULL,
-  department_id BIGINT  NOT NULL,
-  employee_id   BIGINT  NOT NULL,
-  is_deleted    BOOLEAN NOT NULL  DEFAULT FALSE,
-  create_time   TIMESTAMP         DEFAULT CURRENT_TIMESTAMP,
-  update_time   TIMESTAMP         DEFAULT CURRENT_TIMESTAMP
+  fang_id       BIGINT      NOT NULL,
+  company_id    BIGINT      NOT NULL,
+  department_id BIGINT      NOT NULL,
+  employee_id   BIGINT      NOT NULL,
+  reason        VARCHAR(20) NOT NULL,
+  is_deleted    BOOLEAN     NOT NULL  DEFAULT FALSE,
+  create_time   TIMESTAMP             DEFAULT CURRENT_TIMESTAMP,
+  update_time   TIMESTAMP             DEFAULT CURRENT_TIMESTAMP
 );
 
 

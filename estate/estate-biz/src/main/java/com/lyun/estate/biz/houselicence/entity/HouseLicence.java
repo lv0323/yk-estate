@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class HouseLicence {
     private Long id;
-    private BizType type;
+    private BizType bizType;
     private LicenceStatus status;
     private Long communityId;
     private Long buildingId;
@@ -29,12 +29,12 @@ public class HouseLicence {
         return this;
     }
 
-    public BizType getType() {
-        return type;
+    public BizType getBizType() {
+        return bizType;
     }
 
-    public HouseLicence setType(BizType type) {
-        this.type = type;
+    public HouseLicence setBizType(BizType bizType) {
+        this.bizType = bizType;
         return this;
     }
 

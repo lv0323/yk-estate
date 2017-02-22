@@ -4,10 +4,7 @@ import com.google.common.base.Strings;
 import com.lyun.estate.biz.audit.def.AuditSubject;
 import com.lyun.estate.biz.audit.entity.Audit;
 import com.lyun.estate.biz.audit.service.AuditService;
-import com.lyun.estate.biz.fang.def.BizType;
-import com.lyun.estate.biz.fang.def.FloorType;
-import com.lyun.estate.biz.fang.def.HouseProcess;
-import com.lyun.estate.biz.fang.def.PriceUnit;
+import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.entity.FangContact;
 import com.lyun.estate.biz.fang.entity.FangExt;
@@ -72,14 +69,15 @@ public class FangMgtService {
 
         //register houseLicence
         XiaoQu xiaoQu = mgtXiaoQuService.findOne(fang.getXiaoQuId());
+        if (xiaoQu == null) {
+            throw new EstateException(ExCode.NOT_FOUND, fang.getXiaoQuId(), "小区");
+        }
+
         HouseLicence licence = houseLicenceService.register(xiaoQu.getCommunityId(),
-                houseLicence.getType(),
+                houseLicence.getBizType(),
                 houseLicence.getBuildingId(),
                 houseLicence.getBuildingUnitId(),
                 houseLicence.getHouseNo());
-        if (licence == null) {
-            throw new EstateException(ExCode.LICENCE_NULL);
-        }
 
         //fang
         fang.setLicenceId(licence.getId());
@@ -96,7 +94,7 @@ public class FangMgtService {
         Operator operator = mgtContext.getOperator();
         mgtFangService.createFangInfoOwner(new FangInfoOwner().setFangId(result.getId())
                 .setCompanyId(operator.getCompanyId()).setDepartmentId(operator.getDepartmentId())
-                .setEmployeeId(operator.getId()));
+                .setEmployeeId(operator.getId()).setReason(InfoOwnerReason.CREATE));
 
         //audit
         auditService.save(new Audit()
