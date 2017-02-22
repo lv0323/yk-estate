@@ -14,9 +14,12 @@ CREATE TABLE t_user (
   hash         VARCHAR(64),
   email        VARCHAR(32),
   mobile       VARCHAR(16),
+  avatar_id    BIGINT,
   description  VARCHAR(64),
   client_id    INT
 );
+
+ALTER SEQUENCE t_user_id_seq RESTART WITH 10000;
 
 CREATE TABLE T_TOKEN (
   ID            BIGSERIAL PRIMARY KEY,

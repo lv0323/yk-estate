@@ -28,7 +28,11 @@ public class MgtFangService {
         throw new EstateException(ExCode.CREATE_FAIL, "房", fang.toString());
     }
 
-    public void createFangExt(FangExt fangExt) {
+    public FangExt createFangExt(FangExt fangExt) {
+        if (mgtFangRepository.saveFangExt(fangExt) > 0) {
+            return mgtFangRepository.findFangExt(fangExt.getId());
+        }
+        throw new EstateException(ExCode.CREATE_FAIL, "房扩展信息", fangExt.toString());
 
     }
 

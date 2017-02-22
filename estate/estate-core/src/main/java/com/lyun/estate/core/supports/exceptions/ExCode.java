@@ -36,7 +36,8 @@ public enum ExCode {
     DEPT_ILLEGAL_PARENT("父部门不合法"),
     DEPT_INVALID_PARENT("父部门不能调整为自身子部门的下级部门，请重新选择调整的部门数据"),
     //licence
-    LICENCE_NULL("字典编号为空"),
+    LICENCE_NULL("授权编号为空"),
+    LICENCE_HOUSE_EXISTED("该房源已存在,授权编号：{}"),
 
 
     //json
