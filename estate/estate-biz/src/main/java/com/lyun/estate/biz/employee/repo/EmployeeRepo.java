@@ -15,11 +15,14 @@ public interface EmployeeRepo {
     int insert(Employee employee);
 
     @Update("update t_employee set " +
-            "department_id = #{departmentId}, position_id = #{positionId}, " +
+            "department_id = #{departmentId}, position_id = #{positionId}, is_agent = #{isAgent}," +
             "mobile = #{mobile}, name = #{name}, gender = #{gender}, " +
-            "idcard_number = #{idcardNumber}, wechat = #{wechat}, status = #{status}, " +
+            "idcard_number = #{idcardNumber}, wechat = #{wechat}, status = #{status}, entry_date=#{entryDate}, " +
             "update_time = CURRENT_TIMESTAMP where id = #{id}")
     int update(Employee employee);
+
+    @Update("update t_employee set password = #{password} where id = #{id}")
+    int updatePassword(Employee employee);
 
     @Update("update t_employee set avatar_id = #{avatarId} where id = #{id}")
     int avatar(@Param("id") Long id, @Param("avatarId") Long avatarId);
@@ -31,10 +34,9 @@ public interface EmployeeRepo {
     PageList<Employee> selectByCompanyIdAndDeptIds(@Param("companyId") Long companyId,
                                                    @Param("deptIds") Collection<Long> deptIds, PageBounds pageBounds);
 
-    @Select("select * from t_employee where company_id = #{companyId} and is_boss = true")
-    Employee selectBossByCompanyId(Long companyId);
-
-    @Select("select * from t_employee where id = #{id}")
+    @Select("SELECT e.*,p.name as position_name, d.city_id, d.name as department_name  FROM t_employee e\n" +
+            " LEFT JOIN t_position p on e.position_id = p.id LEFT JOIN t_department d on e.department_id = d.id\n" +
+            " WHERE e.id = #{id}")
     Employee selectById(Long id);
 
     @Update("update t_employee set password = #{1}, salt = #{2} where mobile = #{0} and quit = false and password isnull and " +
@@ -42,9 +44,9 @@ public interface EmployeeRepo {
             "(select company_id from t_employee where mobile = #{0} and quit = false)) = #{3}")
     int active(String mobile, String password, String salt, String secretKey);
 
-    @Select("select * from t_employee where mobile = #{mobile} and quit = false")
+    @Select("SELECT e.*,p.name as position_name, d.city_id, d.name as department_name  FROM t_employee e " +
+            " LEFT JOIN t_position p on e.position_id = p.id LEFT JOIN t_department d on e.department_id = d.id " +
+            " WHERE e.mobile = #{mobile} and e.quit = false")
     Employee selectByMobile(String mobile);
 
-    @Select("select count(*) from t_employee where position_id = #{id} and quit = false")
-    int countByPositionId(Long id);
 }

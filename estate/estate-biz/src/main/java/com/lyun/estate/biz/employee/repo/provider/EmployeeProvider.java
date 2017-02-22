@@ -29,11 +29,13 @@ public class EmployeeProvider {
     public String selectByCompanyIdAndDeptIds(Map<String, Object> params) {
         Collection<Long> deptIds = (Collection<Long>) params.get("deptIds");
         return new SQL() {{
-            SELECT("*")
-                    .FROM("t_employee")
-                    .WHERE("company_id = #{companyId}");
+            SELECT("e.*, p.name as position_name, d.name as department_name")
+                    .FROM("t_employee e")
+                    .LEFT_OUTER_JOIN("t_position p on e.position_id = p.id")
+                    .LEFT_OUTER_JOIN("t_department d on e.department_id = d.id")
+                    .WHERE("e.company_id = #{companyId}");
             if (SqlSupport.hasNotNullElement(deptIds)) {
-                WHERE("department_id IN (" + Joiner.on(",").skipNulls().join(deptIds) + ")");
+                WHERE("e.department_id IN (" + Joiner.on(",").skipNulls().join(deptIds) + ")");
             }
         }}.toString();
     }

@@ -1,8 +1,12 @@
 package com.lyun.estate.biz.audit.def;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+
 /**
  * Created by Jeffrey on 2017-02-15.
  */
+@JsonSerialize(using = LabelEnumSerializer.class)
 public enum AuditSubject {
     LOGIN_OUT("登录/登出日志"),
     FANG_A_R("增加/删除房源"),
@@ -17,5 +21,8 @@ public enum AuditSubject {
 
     AuditSubject(String label) {
         this.label = label;
+    }
+    public String getLabel() {
+        return label;
     }
 }

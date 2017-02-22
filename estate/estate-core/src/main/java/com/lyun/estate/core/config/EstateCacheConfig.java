@@ -17,7 +17,7 @@ public class EstateCacheConfig {
 
     public static final String MANAGER_10_5K = "MANAGER_10_5K";
 
-    public static final String MANAGER_60_5K = "MANAGER_60_5K";
+    public static final String MANAGER_360_5K = "MANAGER_360_5K";
 
 
     public static final String CAPTCHA_CACHE = "CAPTCHA_CACHE";
@@ -42,12 +42,12 @@ public class EstateCacheConfig {
         return caffeineCacheManager;
     }
 
-    @Bean(MANAGER_60_5K)
+    @Bean(MANAGER_360_5K)
     CacheManager manager_60_5K() {
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
         caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
                 .maximumSize(5000)
-                .expireAfterWrite(60, TimeUnit.MINUTES));
+                .expireAfterWrite(360, TimeUnit.MINUTES));
         return caffeineCacheManager;
     }
 

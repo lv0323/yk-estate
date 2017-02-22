@@ -11,6 +11,10 @@ define(contextPath + '/js/service/position-service.js',
             return RequestService.get('/api/position/query', null, header);
         };
 
+        PositionService.getAllPosition = function (header) {
+            return RequestService.get('/api/position/query-all', null, header);
+        };
+
         PositionService.addPosition = function (params, header) {
             return RequestService.post('/api/position/add', params.data, header);
         };

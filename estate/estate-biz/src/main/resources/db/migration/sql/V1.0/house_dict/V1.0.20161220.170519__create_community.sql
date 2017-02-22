@@ -23,7 +23,7 @@ CREATE TABLE t_district (--地区
   rent_house_count INTEGER        DEFAULT 0, --小区出租房源数量
   create_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
   update_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
-  name_kw     VARCHAR(200)
+  name_kw          VARCHAR(200)
 );
 
 CREATE TABLE t_sub_district (--地区
@@ -39,7 +39,7 @@ CREATE TABLE t_sub_district (--地区
   rent_house_count INTEGER        DEFAULT 0, --小区出租房源数量
   create_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
   update_time      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
-  name_kw     VARCHAR(200)
+  name_kw          VARCHAR(200)
 );
 
 CREATE TABLE t_district_rel (
@@ -122,6 +122,9 @@ CREATE TABLE t_community (
   alias_kw               VARCHAR(200)
 );
 
+CREATE INDEX ON t_community (latitude);
+CREATE INDEX ON t_community (longitude);
+
 CREATE TABLE t_community_station_rel (
   id           BIGSERIAL PRIMARY KEY, --id
   community_id BIGINT NOT NULL, --小区id
@@ -141,15 +144,20 @@ CREATE TABLE t_building (
   houses       INT, --户
   description  VARCHAR(128),
   create_by_id BIGINT,
-  create_time  TIMESTAMP,
+  create_time  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
   update_by_id BIGINT,
-  update_time  TIMESTAMP,
-  is_deleted   CHAR(1) DEFAULT 'N',
+  update_time  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+  is_deleted   BOOLEAN NOT NULL DEFAULT FALSE,
   VERSION      INT
 );
 
 CREATE TABLE t_building_unit (
-  id          BIGSERIAL PRIMARY KEY,
-  building_id BIGINT,
-  unit_name   VARCHAR(30) --单元名
+  id           BIGSERIAL PRIMARY KEY,
+  building_id  BIGINT,
+  unit_name    VARCHAR(30), --单元名
+  create_by_id BIGINT,
+  create_time  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+  update_by_id BIGINT,
+  update_time  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+  is_deleted   BOOLEAN NOT NULL DEFAULT FALSE
 );

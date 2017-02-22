@@ -34,7 +34,7 @@ public class DepartmentService {
     public Department create(Department department) {
         ExceptionUtil.checkNotNull("部门", department);
         ExceptionUtil.checkNotNull("公司编号", department.getCompanyId());
-        ExceptionUtil.checkIllegal(Strings.isNullOrEmpty(department.getName()), "部门名称", department.getName());
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(department.getName()), "部门名称", department.getName());
 
         repo.insert(department);
 
@@ -54,8 +54,6 @@ public class DepartmentService {
         if (Objects.equals(department.getParentId(), 0L)) {
             throw new EstateException(ExCode.DEPT_IS_PRIMARY, id);
         }
-
-        Set<Long> childIds = findChildIds(department.getCompanyId(), department.getId());
 
         if (findChildIds(department.getCompanyId(), id).size() > 1) {
             throw new EstateException(ExCode.DEPT_HAS_CHILD, id);
@@ -79,7 +77,7 @@ public class DepartmentService {
     public Set<Long> findChildIds(Long companyId, Long departmentId) {
         List<Department> departmentList = repo.listAllByCompanyId(companyId);
         Set<Long> childIds = new HashSet<>();
-        if (departmentList.stream().anyMatch(d->Objects.equals(d.getId(),departmentId))){
+        if (departmentList.stream().anyMatch(d -> Objects.equals(d.getId(), departmentId))) {
             childIds.add(departmentId);
         }
         int lastAdd;
@@ -134,15 +132,9 @@ public class DepartmentService {
         ExceptionUtil.checkNotNull("公司编号", companyId);
         PageList<Department> departments = repo.selectByCompanyId(companyId, pageBounds);
         Map<Long, Integer> deptLevel = findDeptLevel(companyId);
-        List<DepartmentDTO> deptDTOs = departments.stream().map(department -> {
-            DepartmentDTO dto = new DepartmentDTO();
-            BeanUtils.copyProperties(department, dto);
-            dto.setPrimary(Objects.equals(dto.getParentId(), 0L));
-            dto.setHasChild(findChildIds(department.getCompanyId(), department.getId()).size() > 1);
-            dto.setLevel(deptLevel.get(department.getId()));
-            return dto;
-        }).collect(Collectors.toList());
-
+        List<DepartmentDTO> deptDTOs = departments.stream()
+                .map(department -> mapDepartment(department, deptLevel))
+                .collect(Collectors.toList());
         return new PageList<>(deptDTOs, departments.getPaginator());
     }
 
@@ -150,14 +142,35 @@ public class DepartmentService {
         ExceptionUtil.checkNotNull("公司编号", companyId);
         List<Department> departments = repo.listAllByCompanyId(companyId);
         Map<Long, Integer> deptLevel = findDeptLevel(companyId);
-        return departments.stream().map(department -> {
-            DepartmentDTO dto = new DepartmentDTO();
-            BeanUtils.copyProperties(department, dto);
-            dto.setPrimary(Objects.equals(dto.getParentId(), 0L));
-            dto.setHasChild(findChildIds(department.getCompanyId(), department.getId()).size() > 1);
-            dto.setLevel(deptLevel.get(department.getId()));
-            return dto;
-        }).collect(Collectors.toList());
+        List<DepartmentDTO> dtos = departments.stream()
+                .map(department -> mapDepartment(department, deptLevel))
+                .collect(Collectors.toList());
+        return sortedDTOs(dtos);
+    }
+
+    private List<DepartmentDTO> sortedDTOs(List<DepartmentDTO> dtos) {
+        List<DepartmentDTO> result = new ArrayList<>();
+        Set<Long> addedIds = new HashSet<>();
+        Optional<DepartmentDTO> first = dtos.stream().filter(DepartmentDTO::getPrimary).findFirst();
+        first.ifPresent(departmentDTO -> addResult(departmentDTO, addedIds, dtos, result));
+        return result;
+    }
+
+    private void addResult(DepartmentDTO dto, Set<Long> addedIds, List<DepartmentDTO> dtos,
+                           List<DepartmentDTO> result) {
+        result.add(dto);
+        addedIds.add(dto.getId());
+        dtos.stream().filter(d -> (Objects.equals(d.getParentId(), dto.getId())) && !addedIds.contains(d.getId()))
+                .forEach(d1 -> addResult(d1, addedIds, dtos, result));
+    }
+
+    private DepartmentDTO mapDepartment(Department department, Map<Long, Integer> deptLevel) {
+        DepartmentDTO dto = new DepartmentDTO();
+        BeanUtils.copyProperties(department, dto);
+        dto.setPrimary(Objects.equals(dto.getParentId(), 0L));
+        dto.setHasChild(findChildIds(department.getCompanyId(), department.getId()).size() > 1);
+        dto.setLevel(deptLevel.get(department.getId()));
+        return dto;
     }
 
     public Department selectById(Long departmentId) {

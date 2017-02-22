@@ -20,27 +20,27 @@ public class DepartmentPage {
     public ModelAndView department() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("message", "message");
-        return new ModelAndView("/org/department", params);
+        return new ModelAndView("/org/department/department", params);
     }
 
     @GetMapping("/addDepartment")
     public ModelAndView addDepartment() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("message", "message");
-        return new ModelAndView("/org/addDepartment", params);
+        return new ModelAndView("/org/department/addDepartment", params);
     }
 
     @GetMapping("/departmentDetail")
     public ModelAndView departmentDetail() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("message", "message");
-        return new ModelAndView("/org/departmentDetail", params);
+        return new ModelAndView("/org/department/departmentDetail", params);
     }
 
     @GetMapping("/editDepartmentDetail")
     public ModelAndView editDepartmentDetail() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("message", "message");
-        return new ModelAndView("/org/editDepartmentDetail", params);
+        return new ModelAndView("/org/department/editDepartmentDetail", params);
     }
 }

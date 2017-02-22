@@ -12,7 +12,7 @@ public enum HouseTypeFilter {
     ZZ("住宅", Lists.newArrayList(HouseType.ZZ)),
     GY("公寓", Lists.newArrayList(HouseType.GY)),
     BS("别墅", Lists.newArrayList(HouseType.BS)),
-    QT("其他", Lists.newArrayList(HouseType.SP, HouseType.XZL, HouseType.CW, HouseType.OTHER)),;
+    QT("其他", Lists.newArrayList(HouseType.SZ, HouseType.SP, HouseType.XZL, HouseType.CW, HouseType.OTHER)),;
 
     private final String label;
     private final List<HouseType> types;

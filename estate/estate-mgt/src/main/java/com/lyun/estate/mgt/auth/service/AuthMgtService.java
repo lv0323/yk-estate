@@ -39,7 +39,7 @@ public class AuthMgtService {
     public SaltSugar saltSugar(String mobile) {
         Employee employee = employeeService.selectByMobile(mobile);
         if (employee == null) {
-            throw new EstateException(ExCode.EMPLOYEE_NO_SALT);
+            throw new EstateException(ExCode.EMPLOYEE_NOT_FOUND);
         }
         return new SaltSugar()
                 .setSalt(employee.getSalt())
@@ -73,5 +73,15 @@ public class AuthMgtService {
                         .setContent("从IP:" + mgtContext.getUserAddress() + "登出成功")
         );
         return true;
+    }
+
+    public SaltSugar saltSugarById(Long id) {
+        Employee employee = employeeService.selectById(id);
+        if (employee == null) {
+            throw new EstateException(ExCode.EMPLOYEE_NOT_FOUND);
+        }
+        return new SaltSugar()
+                .setSalt(employee.getSalt())
+                .setSugar(employeeService.sugarById(id));
     }
 }

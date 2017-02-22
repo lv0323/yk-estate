@@ -111,7 +111,7 @@ define(contextPath + '/js/service/util-service.js',
         }else{
             return true;
         }
-    }
+    };
     UtilService.characterTransformation=function (str) {
         var result="";
         if(str==null||str==""){
@@ -138,6 +138,13 @@ define(contextPath + '/js/service/util-service.js',
         return result; 
         
 
-    }
+    };
+
+    UtilService.getUrlParam = function (name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    };
     return UtilService;
 });

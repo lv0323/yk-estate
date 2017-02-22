@@ -7,7 +7,8 @@ define(contextPath + '/js/service/employee-service.js',
 
         var EmployeeService = {
             quitEmployee:[],
-            nonQuitEmployee:[]
+            nonQuitEmployee:[],
+            allEmployee:[]
         };
 
         EmployeeService.getAvatar = function (params, header) {
@@ -15,8 +16,16 @@ define(contextPath + '/js/service/employee-service.js',
             return requestService.get('/api/employee/avatar', data, header);
         };
 
-        EmployeeService.getEmployee = function (header) {
-            return requestService.get('/api/employee/query', null, header);
+        EmployeeService.changePassword = function (params, header) {
+            return requestService.post('/api/employee/change-password', params, header);
+        };
+
+        EmployeeService.getSaltSugar = function (header) {
+            return requestService.get('/api/employee/change-password-salt-sugar', null, header);
+        };
+
+        EmployeeService.getEmployee = function (params, header) {
+            return requestService.get('/api/employee/query', params, header);
         };
 
         EmployeeService.addEmployee = function (params, header) {
@@ -30,15 +39,6 @@ define(contextPath + '/js/service/employee-service.js',
         EmployeeService.editEmployee = function (params, header) {
             return requestService.post('/api/employee/edit', params.data, header);
         };
-
-        EmployeeService.getDepartment = function (header) {
-            return DepartmentService.getDepartment(header);
-        };
-
-        EmployeeService.getPosition = function (header) {
-            return PositionService.getPosition(header);
-        };
-
 
         return EmployeeService;
     });

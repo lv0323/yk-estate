@@ -17,8 +17,9 @@ public enum ExCode {
     OSS_EXCEPTION("OSS错误"),
     //employee
     EMPLOYEE_IS_BOSS("该用户为Boss,不能删除"),
-    EMPLOYEE_NOT_ACTIVE("未激活"),
-    EMPLOYEE_NO_SALT("获取Salt失败"),
+    EMPLOYEE_NOT_FOUND("无效用户"),
+    EMPLOYEE_ACTIVE("该用户已激活"),
+    EMPLOYEE_NOT_ACTIVE("该用户未激活"),
     EMPLOYEE_NO_SUGAR("找不到Sugar"),
     EMPLOYEE_WRONG_PASSWORD("密码错误"),
     EMPLOYEE_LOGIN_FAIL("登录失败"),
@@ -34,6 +35,10 @@ public enum ExCode {
     DEPT_NULL_PARENT("父部门不能为空"),
     DEPT_ILLEGAL_PARENT("父部门不合法"),
     DEPT_INVALID_PARENT("父部门不能调整为自身子部门的下级部门，请重新选择调整的部门数据"),
+    //licence
+    LICENCE_NULL("字典编号为空"),
+
+
     //json
     JSON_ERROR("JSON对象{},转换错误:{}"),;
 

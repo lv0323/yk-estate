@@ -54,13 +54,16 @@ public class AuthRest {
         session.setAttribute(Constant.SESSION_OPERATOR, new Operator()
                 .setId(employee.getId())
                 .setCompanyId(employee.getCompanyId())
+                .setCityId(employee.getCityId())
                 .setDepartmentId(employee.getDepartmentId())
                 .setPositionId(employee.getPositionId())
                 .setBoss(employee.getBoss())
                 .setAgent(employee.getAgent())
                 .setGender(employee.getGender())
                 .setName(employee.getName())
-                .setMobile(employee.getMobile()));
+                .setMobile(employee.getMobile())
+                .setPositionName(employee.getPositionName())
+                .setDepartmentName(employee.getDepartmentName()));
         return new RestResponse().add("ret", true).add("user", employee).get();
     }
 

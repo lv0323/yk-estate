@@ -9,8 +9,11 @@ public class Employee {
 
     private Long id;
     private Long companyId;
+    private Long cityId;
     private Long departmentId;
+    private String departmentName;
     private Long positionId;
+    private String positionName;
     private Boolean isBoss;
     private Boolean isAgent;
     private Long avatarId;
@@ -42,6 +45,15 @@ public class Employee {
 
     public Employee setCompanyId(Long companyId) {
         this.companyId = companyId;
+        return this;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public Employee setCityId(Long cityId) {
+        this.cityId = cityId;
         return this;
     }
 
@@ -195,6 +207,24 @@ public class Employee {
 
     public Employee setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public Employee setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+        return this;
+    }
+
+    public String getPositionName() {
+        return positionName;
+    }
+
+    public Employee setPositionName(String positionName) {
+        this.positionName = positionName;
         return this;
     }
 }

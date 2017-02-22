@@ -1,6 +1,6 @@
 <!-- DataTables -->
 <#--<link rel="stylesheet" href="${contextPath}/js/plugins/datatables/dataTables.bootstrap.css">-->
-<link href="${contextPath}/css/org/orgnization.css" rel="stylesheet">
+<link href="${contextPath}/css/app/org/orgnization.css" rel="stylesheet">
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
 
@@ -127,4 +127,4 @@
 
 
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/franchisee/company.js"></script>
+<script src="${contextPath!}/js/app/franchisee/company.js"></script>

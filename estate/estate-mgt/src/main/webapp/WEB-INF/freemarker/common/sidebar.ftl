@@ -22,13 +22,13 @@
                 <li class="dropdown user user-menu">
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                        <#--<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">-->
                         <span class="hidden-xs username"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
                         <li class="user-header">
-                            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                            <#--<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">-->
 
                             <p>
                                 <span class="username"></span>
@@ -78,11 +78,12 @@
         <div class="user-panel">
             <div class="pull-left image">
                 <div class="user-panelImg">
-                    <i class="fa fa-user-circle fa-3x" aria-hidden="true"></i>
+                    <i class="fa fa-user-circle fa-3x" aria-hidden="true" style="display: inline-block;"></i>
+                    <img style="width:42px; height:42px; border-radius:50%; display: none;">
                 </div>
             </div>
             <div class="pull-left info">
-                <p>User Name</p>
+                <p class="username"></p>
                 <a href="#"><i class="fa fa-circle text-success"></i>在线</a>
             </div>
         </div>
@@ -91,18 +92,48 @@
         <ul class="sidebar-menu">
             <li class="header">主导航</li>
             <!-- Optionally, you can add icons to the links -->
-            <li><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
             <li><a href="/mgt/franchisee/company.ftl"><i class="fa fa-link"></i> <span>加盟商管理</span></a></li>
-            <li class="treeview active">
+            <li class="treeview house">
+                <a href="#"><i class="fa fa-link"></i> <span>房源管理</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/mgt/houseManage/houseList.ftl?target=.house">房源列表</a></li>
+
+                </ul>
+            </li>
+            <li class="treeview org">
                 <a href="#"><i class="fa fa-link"></i> <span>组织机构</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/org/department.ftl">部门列表</a></li>
-                    <li><a href="/mgt/org/employee.ftl">员工管理</a></li>
-                    <li><a href="/mgt/org/position.ftl">岗位管理</a></li>
+                    <li><a href="/mgt/org/department.ftl?target=.org">部门列表</a></li>
+                    <li><a href="/mgt/org/employee.ftl?target=.org">员工管理</a></li>
+                    <li><a href="/mgt/org/position.ftl?target=.org">岗位管理</a></li>
+                </ul>
+            </li>
+            <li class="treeview tool">
+                <a href="#"><i class="fa fa-link"></i> <span>实用工具</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/mgt/tool/myProfile.ftl?target=.tool">个人中心</a></li>
+                </ul>
+            </li>
+            <li class="treeview sys">
+                <a href="#"><i class="fa fa-link"></i> <span>系统设置</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/mgt/system/operationLog.ftl?target=.sys">操作日志</a></li>
                 </ul>
             </li>
         </ul>

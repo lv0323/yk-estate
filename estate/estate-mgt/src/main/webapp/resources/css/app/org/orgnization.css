@@ -1,0 +1,7 @@
+#departmentTree{
+    min-height: 500px;
+}
+#example thead>tr>th{
+    color: #5b6885;
+    font-size: 0.93em;
+}

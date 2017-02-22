@@ -8,7 +8,7 @@ import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
  */
 @JsonSerialize(using = LabelEnumSerializer.class)
 public enum HouseProcess {
-    DELEGATE("委托"),
+    DELEGATE("审核中"),
     PUBLISH("上架"),
     UN_PUBLISH("下架"),
     SUCCESS("成交"),;
