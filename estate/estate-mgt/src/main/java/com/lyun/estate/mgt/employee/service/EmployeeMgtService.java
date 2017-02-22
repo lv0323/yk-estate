@@ -106,6 +106,7 @@ public class EmployeeMgtService {
     }
 
     @Transactional
+    @Deprecated
     public Boolean resetPassword(Long employeeId, String newPassword) {
         //todo::权限校验
         Employee employee = employeeService.selectById(employeeId);

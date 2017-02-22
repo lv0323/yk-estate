@@ -47,11 +47,13 @@ public class AppConfigService {
             Region region = new Region();
             BeanUtils.copyProperties(district, region);
             region.setType(DomainType.DISTRICT);
+            region.setRegionBound(district.getViewRegion());
             region.setSubs(cityService.findOrderedSubDistricts(district.getId()).stream().map(
                     subDistrict -> {
                         Region r = new Region();
                         BeanUtils.copyProperties(subDistrict, r);
                         r.setType(DomainType.SUB_DISTRICT);
+                        r.setRegionBound(subDistrict.getViewRegion());
                         return r;
                     }
             ).collect(Collectors.toList()));
