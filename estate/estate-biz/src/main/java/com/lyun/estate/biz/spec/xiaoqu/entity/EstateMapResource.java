@@ -16,7 +16,6 @@ public class EstateMapResource {
     private BigDecimal latitude;
     private DomainType domainType;
     private String buildingCounts;
-    private String positionBorder;
 
     public Long getId() {
         return id;
@@ -74,13 +73,6 @@ public class EstateMapResource {
         this.buildingCounts = buildingCounts;
     }
 
-    public String getPositionBorder() {
-        return positionBorder;
-    }
-
-    public void setPositionBorder(String positionBorder) {
-        this.positionBorder = positionBorder;
-    }
 
     @Override
     public String toString() {
@@ -92,7 +84,6 @@ public class EstateMapResource {
                 ", latitude=" + latitude +
                 ", domainType=" + domainType +
                 ", buildingCounts='" + buildingCounts + '\'' +
-                ", positionBorder='" + positionBorder + '\'' +
                 '}';
     }
 }
