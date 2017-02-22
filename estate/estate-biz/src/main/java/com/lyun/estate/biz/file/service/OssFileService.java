@@ -6,6 +6,7 @@ import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.file.def.FileProcess;
+import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.def.Target;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.utils.settings.def.NameSpace;
@@ -17,6 +18,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
@@ -48,6 +51,18 @@ public class OssFileService extends AbstractFileService {
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(suffix), "suffix", suffix);
         if (!suffix.startsWith("."))
             suffix = '.' + suffix;
+
+        if (entity.getFileType() == FileType.IMAGE) {
+            try {
+                BufferedImage test = ImageIO.read(inputStream);
+                if (test == null) {
+                    throw new EstateException(ExCode.OSS_FILE_NOT_IMAGE);
+                }
+            } catch (IOException e) {
+                ExceptionUtil.catching(e);
+                throw new EstateException(ExCode.OSS_FILE_NOT_IMAGE);
+            }
+        }
 
         int process = 0;
         if (entity.getFileProcess() != null)
