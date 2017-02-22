@@ -111,10 +111,6 @@ public class EmployeeRest {
         return service.changePasswordSaltSugar();
     }
 
-    @PostMapping("reset-password")
-    public Object resetPassword(Long employeeId, String newPassword) {
-        return new RestResponse().add("ret", service.resetPassword(employeeId, newPassword));
-    }
 
     @GetMapping("self")
     public Employee get() {

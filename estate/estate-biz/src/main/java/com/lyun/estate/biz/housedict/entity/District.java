@@ -11,6 +11,7 @@ public class District {
     private String name;
     private BigDecimal longitude;
     private BigDecimal latitude;
+    private String viewRegion;
     private String nameKw;
 
     public Long getId() {
@@ -73,5 +74,14 @@ public class District {
 
     public void setNameKw(String nameKw) {
         this.nameKw = nameKw;
+    }
+
+    public String getViewRegion() {
+        return viewRegion;
+    }
+
+    public District setViewRegion(String viewRegion) {
+        this.viewRegion = viewRegion;
+        return this;
     }
 }
