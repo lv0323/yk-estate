@@ -27,5 +27,5 @@ public interface HouseLicenceRepo {
     HouseLicence findActive(Long communityId, BizType bizType, Long buildingId, Long buildingUnitId, String houseNo);
 
     @Update("update t_house_licence set status = 'INVALID' where id = #{id} and is_deleted =FALSE")
-    HouseLicence invalid(Long id);
+    int invalid(Long id);
 }

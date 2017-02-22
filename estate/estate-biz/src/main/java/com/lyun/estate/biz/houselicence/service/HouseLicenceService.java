@@ -42,14 +42,18 @@ public class HouseLicenceService {
             if (repo.save(houseLicence) > 0) {
                 return repo.findOne(houseLicence.getId());
             } else {
-                throw new EstateException(ExCode.CREATE_FAIL, "授权", "");
+                throw new EstateException(ExCode.CREATE_FAIL, "房源授权", "");
             }
         }
     }
 
     public HouseLicence invalid(Long id) {
-        ExceptionUtil.checkNotNull("授权编号", id);
-        return repo.invalid(id);
+        ExceptionUtil.checkNotNull("房源授权编号", id);
+        if (repo.invalid(id) > 0) {
+            return repo.findOne(id);
+        } else {
+            throw new EstateException(ExCode.UPDATE_FAIL, "房源授权", "id:" + id);
+        }
     }
 
     public HouseLicence findActive(Long communityId, BizType bizType, Long buildingId, Long buildingUnitId,
