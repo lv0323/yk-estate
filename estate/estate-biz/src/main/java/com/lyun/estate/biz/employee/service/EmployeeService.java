@@ -166,6 +166,7 @@ public class EmployeeService {
     }
 
     public FileDescription createAvatar(Long id, InputStream avatarIS, String suffix) {
+        
         FileDescription fileDescription = fileService.save(new FileDescription()
                 .setOwnerId(id)
                 .setOwnerType(DomainType.EMPLOYEE)

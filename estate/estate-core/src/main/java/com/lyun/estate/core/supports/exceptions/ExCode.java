@@ -15,6 +15,7 @@ public enum ExCode {
     EXISTED_ERROR("{}已经存在,{}"),
     //oss
     OSS_EXCEPTION("OSS错误"),
+    OSS_FILE_NOT_IMAGE("文件不是图片类型"),
     //employee
     EMPLOYEE_IS_BOSS("该用户为Boss,不能删除"),
     EMPLOYEE_NOT_FOUND("无效用户"),
