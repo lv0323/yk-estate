@@ -40,7 +40,8 @@ public class FangController {
 
     @GetMapping("/keywords")
     public List<KeywordResp> keywords(@RequestParam Long cityId,
-                                      @RequestParam String keyword) {
+                                      @RequestParam String keyword,
+                                      @RequestParam BizType bizType) {
         return keywordService.decorate(keywordService.findContain(keyword, cityId,
                 Lists.newArrayList(DomainType.DISTRICT,
                         DomainType.SUB_DISTRICT,

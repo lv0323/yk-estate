@@ -56,4 +56,15 @@ public class FangContact {
         this.contactInfo = contactInfo;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "FangContact{" +
+                "id=" + id +
+                ", fangId=" + fangId +
+                ", ownerName='" + ownerName + '\'' +
+                ", contactType=" + contactType +
+                ", contactInfo='" + contactInfo + '\'' +
+                '}';
+    }
 }

@@ -57,7 +57,7 @@ public class FangRest {
                            @RequestParam(required = false) BigDecimal realArea,
                            @RequestParam BigDecimal publishPrice,
                            @RequestParam PriceUnit priceUnit,
-                           @RequestParam BigDecimal unitPrice,
+                           @RequestParam(required = false) BigDecimal unitPrice,
                            @RequestParam(required = false) BigDecimal transferPrice,
                            @RequestParam(required = false) BigDecimal bottomPrice,
                            @RequestParam(required = false) YN resident,
