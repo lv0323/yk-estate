@@ -101,7 +101,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="/mgt/houseManage/houseList.ftl?target=.house">房源列表</a></li>
-
+                    <li><a href="/mgt/houseManage/addHouse.ftl?target=.house">新增住宅</a></li>
                 </ul>
             </li>
             <li class="treeview org">

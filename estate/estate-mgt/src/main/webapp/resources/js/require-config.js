@@ -1,7 +1,7 @@
 requirejs.config({
     baseUrl: contextPath+'/js',
     paths: {
-        'jquery': 'libs/jquery-2.2.0.min',
+        'jquery': 'libs/jquery-2.1.4.min',
         'bootstrap': 'libs/bootstrap.min',
         'cryptojs.core': 'libs/cryptojs/core-min',
         'cryptojs.hmac': 'libs/cryptojs/hmac',

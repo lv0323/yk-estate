@@ -21,7 +21,6 @@
      <link rel="stylesheet" href="${contextPath}/css/plugins/datepicker/datepicker3.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/datepicker/bootstrap-datetimepicker.min.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/dropdown/index.css">
-     <link rel="stylesheet" href="${contextPath}/css/plugins/selector/bootstrap-select.min.css">
      <!-- AdminLTE-->
      <link rel="stylesheet" href="${contextPath}/css/index.css">
      <link rel="stylesheet" href="${contextPath}/css/skins/skin-blue.min.css">

@@ -242,8 +242,9 @@
 }
 .bootstrap-select.show-menu-arrow.open > .dropdown-toggle:before,
 .bootstrap-select.show-menu-arrow.open > .dropdown-toggle:after {
-    display: block;
+    /*display: block;*/
 }
+
 .bs-searchbox,
 .bs-actionsbox,
 .bs-donebutton {
