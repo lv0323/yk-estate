@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.file.service;
+package com.lyun.estate.biz.file.service.impl;
 
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.file.def.CustomType;
@@ -6,11 +6,11 @@ import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.Target;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.repository.FileRepository;
-import com.lyun.estate.biz.spec.common.DomainType;
-import com.lyun.estate.biz.spec.file.service.FileService;
-import com.lyun.estate.biz.utils.settings.SettingProvider;
-import com.lyun.estate.biz.utils.settings.def.NameSpace;
-import com.lyun.estate.biz.utils.settings.entity.Setting;
+import com.lyun.estate.biz.file.service.FileService;
+import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.biz.support.settings.SettingProvider;
+import com.lyun.estate.biz.support.settings.def.NameSpace;
+import com.lyun.estate.biz.support.settings.entity.Setting;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;

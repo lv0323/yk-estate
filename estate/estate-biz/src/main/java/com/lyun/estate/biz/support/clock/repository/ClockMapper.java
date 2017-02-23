@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.utils.clock.repository;
+package com.lyun.estate.biz.support.clock.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

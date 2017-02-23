@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.spec.common;
+package com.lyun.estate.biz.support.def;
 
 /**
  * Created by Jeffrey on 2017-01-03.

@@ -12,7 +12,7 @@ import com.lyun.estate.biz.message.entity.Message;
 import com.lyun.estate.biz.message.entity.MessageResource;
 import com.lyun.estate.biz.message.entity.MessageSummaryResource;
 import com.lyun.estate.biz.message.repository.MessageRepository;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.biz.spec.fang.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.service.FangService;
 import com.lyun.estate.core.supports.context.RestContext;
@@ -28,7 +28,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.UUID;
 
-import static com.lyun.estate.biz.spec.common.DomainType.REPORT;
+import static com.lyun.estate.biz.support.def.DomainType.REPORT;
 import static com.lyun.estate.core.supports.exceptions.ExCode.*;
 
 /**

@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.appconfig.entity;
 
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 
 import java.util.List;
 

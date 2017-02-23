@@ -11,7 +11,7 @@ import com.lyun.estate.biz.fang.entity.FangInfoOwner;
 import com.lyun.estate.biz.fang.service.MgtFangService;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQu;
 import com.lyun.estate.biz.xiaoqu.service.MgtXiaoQuService;
 import com.lyun.estate.core.supports.exceptions.EstateException;

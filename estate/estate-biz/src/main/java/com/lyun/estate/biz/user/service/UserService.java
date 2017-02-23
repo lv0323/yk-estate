@@ -11,7 +11,6 @@ import com.lyun.estate.biz.user.resources.*;
 import com.lyun.estate.biz.user.service.validator.ChangePasswordResourceValidator;
 import com.lyun.estate.biz.user.service.validator.LoginResourceValidator;
 import com.lyun.estate.biz.user.service.validator.RegisterResourceValidator;
-import com.lyun.estate.biz.utils.clock.ClockTools;
 import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.EasyCodeException;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
@@ -35,8 +34,6 @@ public class UserService {
     TokenMapper tokenMapper;
     @Autowired
     TokenProvider tokenProvider;
-    @Autowired
-    ClockTools clockTools;
     @Autowired
     Environment environment;
     @Autowired

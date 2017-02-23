@@ -1,9 +1,9 @@
-package com.lyun.estate.biz.spec.file.service;
+package com.lyun.estate.biz.file.service;
 
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 
 import java.io.InputStream;
 import java.util.List;

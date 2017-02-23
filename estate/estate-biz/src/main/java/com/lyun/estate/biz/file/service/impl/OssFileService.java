@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.file.service;
+package com.lyun.estate.biz.file.service.impl;
 
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.IOUtils;
@@ -10,7 +10,7 @@ import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.def.Target;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.utils.settings.def.NameSpace;
+import com.lyun.estate.biz.support.settings.def.NameSpace;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;

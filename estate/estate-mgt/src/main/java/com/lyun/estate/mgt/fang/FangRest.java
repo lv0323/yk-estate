@@ -7,7 +7,7 @@ import com.lyun.estate.biz.fang.domian.MgtFangSummary;
 import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.entity.FangContact;
 import com.lyun.estate.biz.fang.entity.FangExt;
-import com.lyun.estate.biz.housedict.def.StructureType;
+import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.spec.fang.def.HouseTypeFilter;
 import com.lyun.estate.biz.spec.fang.entity.FangSummaryOrder;

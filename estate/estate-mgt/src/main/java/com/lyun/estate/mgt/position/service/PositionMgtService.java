@@ -7,7 +7,7 @@ import com.lyun.estate.biz.audit.entity.Audit;
 import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.biz.position.entity.Position;
 import com.lyun.estate.biz.position.service.PositionService;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.mgt.context.MgtContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

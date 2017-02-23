@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.favorite.entity;
 
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 
 import java.util.Date;
 

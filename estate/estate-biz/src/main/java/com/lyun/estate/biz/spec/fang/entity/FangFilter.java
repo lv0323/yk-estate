@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.spec.fang.entity;
 
 import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.biz.housedict.def.StructureType;
+import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.spec.fang.def.ElevatorFilter;
 import com.lyun.estate.biz.spec.fang.def.HouseTypeFilter;
 import com.lyun.estate.biz.spec.fang.def.IntPair;

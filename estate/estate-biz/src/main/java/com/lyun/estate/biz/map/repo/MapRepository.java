@@ -1,15 +1,18 @@
-package com.lyun.estate.biz.housedict.repository;
+package com.lyun.estate.biz.map.repo;
 
-import com.lyun.estate.biz.spec.xiaoqu.entity.EstateMapResource;
+import com.lyun.estate.biz.map.repo.provider.MapSqlProvider;
+import com.lyun.estate.biz.map.domain.EstateMapResource;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * Created by Jeffrey on 2017-01-10.
  */
-public interface HouseRepository {
+public interface MapRepository {
 
 
     @Select("select district.id,district.name,district.sell_avg_price as avg_price,district.longitude,district.latitude,'DISTRICT' as domain_type,district.sell_house_count as building_counts" +
@@ -33,4 +36,18 @@ public interface HouseRepository {
             " join t_district district on district.id = rel.district_id" +
             " where district.city_id = #{cityId}")
     List<EstateMapResource> findAllRentSubDistrictListByMap(@Param("cityId") int cityId);
+
+    @SelectProvider(type = MapSqlProvider.class, method = "findSellCommunityListByMap")
+    List<EstateMapResource> findSellCommunityListByMap(@Param("minLongitude") BigDecimal minLongitude,
+                                                       @Param("maxLongitude") BigDecimal maxLongitude,
+                                                       @Param("minLatitude") BigDecimal minLatitude,
+                                                       @Param("maxLatitude") BigDecimal maxLatitude,
+                                                       @Param("cityId") Integer cityId);
+
+    @SelectProvider(type = MapSqlProvider.class, method = "findRentCommunityListByMap")
+    List<EstateMapResource> findRentCommunityListByMap(@Param("minLongitude") BigDecimal minLongitude,
+                                                       @Param("maxLongitude") BigDecimal maxLongitude,
+                                                       @Param("minLatitude") BigDecimal minLatitude,
+                                                       @Param("maxLatitude") BigDecimal maxLatitude,
+                                                       @Param("cityId") Integer cityId);
 }

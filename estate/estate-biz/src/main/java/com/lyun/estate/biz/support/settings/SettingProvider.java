@@ -1,8 +1,8 @@
-package com.lyun.estate.biz.utils.settings;
+package com.lyun.estate.biz.support.settings;
 
-import com.lyun.estate.biz.utils.settings.def.NameSpace;
-import com.lyun.estate.biz.utils.settings.entity.Setting;
-import com.lyun.estate.biz.utils.settings.repository.SettingRepository;
+import com.lyun.estate.biz.support.settings.def.NameSpace;
+import com.lyun.estate.biz.support.settings.entity.Setting;
+import com.lyun.estate.biz.support.settings.repository.SettingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
