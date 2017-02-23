@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.favorite.repository;
 
 import com.lyun.estate.biz.favorite.entity.Follow;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

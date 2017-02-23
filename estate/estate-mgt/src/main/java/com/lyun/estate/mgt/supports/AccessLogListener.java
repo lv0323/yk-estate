@@ -1,7 +1,6 @@
 package com.lyun.estate.mgt.supports;
 
 import com.google.common.base.Strings;
-import com.lyun.estate.biz.utils.clock.ClockTools;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.core.utils.CommonUtil;
 import com.lyun.estate.mgt.context.MgtContext;
@@ -35,9 +34,6 @@ public class AccessLogListener implements ApiListener {
 
     @Autowired
     private MgtContext mgtContext;
-
-    @Autowired
-    private ClockTools clockTools;
 
     @Autowired
     private Environment environment;

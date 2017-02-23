@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.housedict.def;
+package com.lyun.estate.biz.fang.def;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Joiner;

@@ -2,7 +2,7 @@ package com.lyun.estate.biz.file.repository.provider;
 
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 import org.apache.ibatis.jdbc.SQL;
 
 public class FileSqlProvider {

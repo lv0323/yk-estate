@@ -8,7 +8,7 @@ import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.entity.DepartmentDTO;
 import com.lyun.estate.biz.department.service.DepartmentService;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.mgt.context.MgtContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,8 +73,8 @@ public class DepartmentMgtService {
         return departmentService.selectByCompanyId(mgtContext.getOperator().getCompanyId(), pageBounds);
     }
 
-    public List<DepartmentDTO> listAll() {
-        return departmentService.listAllByCompanyId(mgtContext.getOperator().getCompanyId());
+    public List<DepartmentDTO> listSorted() {
+        return departmentService.listSortedByCompanyId(mgtContext.getOperator().getCompanyId());
     }
 
     @Transactional

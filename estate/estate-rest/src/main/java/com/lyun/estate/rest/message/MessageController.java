@@ -9,7 +9,7 @@ import com.lyun.estate.biz.message.service.MessageService;
 import com.lyun.estate.biz.mq.consumer.MessageConsumer;
 import com.lyun.estate.biz.mq.producer.MessageProducer;
 import com.lyun.estate.biz.report.engine.ReportEngine;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

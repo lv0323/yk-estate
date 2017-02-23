@@ -227,7 +227,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 'idcardNumber': $('#addEmployeeID').val(),
                 'wechat': $('#addEmployeeWechat').val(),
                 'status':$('#addEmployeeStatus option:selected').val(),
-                'entryDate': $('#addEmployeeEntryDate').val()
+                'entryDate':new FormData( $('#addEmployeeEntryDate').val())
             };
 
             EmployeeService.addEmployee({data:toAddData},header)

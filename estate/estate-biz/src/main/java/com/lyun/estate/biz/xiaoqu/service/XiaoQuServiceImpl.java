@@ -10,17 +10,17 @@ import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.housedict.def.StructureType;
+import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
 import com.lyun.estate.biz.housedict.entity.Line;
 import com.lyun.estate.biz.housedict.entity.SubDistrict;
 import com.lyun.estate.biz.housedict.service.CityService;
-import com.lyun.estate.biz.housedict.service.HouseService;
+import com.lyun.estate.biz.map.service.MapService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
-import com.lyun.estate.biz.spec.common.DomainType;
-import com.lyun.estate.biz.spec.file.service.FileService;
+import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
 import com.lyun.estate.biz.spec.xiaoqu.entity.*;
 import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
@@ -59,7 +59,7 @@ public class XiaoQuServiceImpl implements XiaoQuService {
     private FileService fileService;
 
     @Autowired
-    private HouseService houseService;
+    private MapService mapService;
 
     @Autowired
     private CityService cityService;
@@ -216,46 +216,6 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         return stationRels;
     }
 
-    @Override
-    public List<EstateMapResource> findAllDistrictListByMap(int cityId, BizType bizType) {
-        if (bizType == BizType.SELL) {
-            return houseService.findAllSellDistrictListByMap(cityId);
-        } else if (bizType == BizType.RENT) {
-            return houseService.findAllRentDistrictListByMap(cityId);
-        }
-        return null;
-    }
-
-    @Override
-    public List<EstateMapResource> findAllSubDistrictListByMap(int cityId, BizType bizType) {
-        if (bizType == BizType.SELL) {
-            return houseService.findAllSellSubDistrictListByMap(cityId);
-        } else if (bizType == BizType.RENT) {
-            return houseService.findAllRentSubDistrictListByMap(cityId);
-        }
-        return null;
-    }
-
-    @Override
-    public List<EstateMapResource> findCommunityListByMap(BigDecimal minLongitude, BigDecimal maxLongitude,
-                                                          BigDecimal minLatitude, BigDecimal maxLatitude,
-                                                          BizType bizType, Integer cityId) {
-        //TODO 缓存处理
-        if (bizType == BizType.SELL) {
-            return xiaoQuRepository.findSellCommunityListByMap(minLongitude,
-                    maxLongitude,
-                    minLatitude,
-                    maxLatitude,
-                    cityId);
-        } else if (bizType == BizType.RENT) {
-            return xiaoQuRepository.findRentCommunityListByMap(minLongitude,
-                    maxLongitude,
-                    minLatitude,
-                    maxLatitude,
-                    cityId);
-        }
-        return null;
-    }
 
     @Override
     public List<Community> findAllCommunity() {

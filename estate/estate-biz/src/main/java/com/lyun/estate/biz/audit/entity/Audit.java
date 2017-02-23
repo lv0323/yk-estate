@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.audit.entity;
 
 import com.lyun.estate.biz.audit.def.AuditSubject;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 
 import java.util.Date;
 

@@ -1,11 +1,9 @@
 package com.lyun.estate.mgt.housedict.service;
 
-import com.google.common.collect.Lists;
 import com.lyun.estate.biz.housedict.domain.XiaoQuOption;
 import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.entity.BuildingUnit;
 import com.lyun.estate.biz.housedict.service.HouseDictService;
-import com.lyun.estate.biz.spec.common.DomainType;
 import com.lyun.estate.mgt.context.MgtContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

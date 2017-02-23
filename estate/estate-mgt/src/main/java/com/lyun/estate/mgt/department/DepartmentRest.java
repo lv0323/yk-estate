@@ -44,7 +44,7 @@ public class DepartmentRest {
 
     @GetMapping("query-all")
     public List<DepartmentDTO> query() {
-        return service.listAll();
+        return service.listSorted();
     }
 
     @GetMapping("changeParent")

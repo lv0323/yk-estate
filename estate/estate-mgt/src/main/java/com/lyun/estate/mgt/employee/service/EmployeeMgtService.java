@@ -8,7 +8,7 @@ import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.mgt.auth.def.SaltSugar;
 import com.lyun.estate.mgt.context.MgtContext;
 import org.springframework.stereotype.Service;

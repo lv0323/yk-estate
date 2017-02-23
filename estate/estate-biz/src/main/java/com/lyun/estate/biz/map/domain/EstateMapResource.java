@@ -1,9 +1,8 @@
-package com.lyun.estate.biz.spec.xiaoqu.entity;
+package com.lyun.estate.biz.map.domain;
 
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * Created by siminglun on 2017-01-18.

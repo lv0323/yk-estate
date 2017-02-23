@@ -3,7 +3,7 @@ package com.lyun.estate.biz.file.entity;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.def.Target;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 
 public class FileDescription implements Cloneable {

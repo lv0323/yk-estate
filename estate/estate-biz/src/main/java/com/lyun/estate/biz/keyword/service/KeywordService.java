@@ -10,10 +10,9 @@ import com.lyun.estate.biz.housedict.service.CityService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.entity.KeywordResp;
 import com.lyun.estate.biz.keyword.repository.KeywordRepository;
-import com.lyun.estate.biz.spec.common.DomainType;
-import com.lyun.estate.biz.spec.fang.service.FangService;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.biz.xiaoqu.entity.Community;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,9 +44,6 @@ public class KeywordService {
 
     @Autowired
     private XiaoQuService xiaoQuService;
-
-    @Autowired
-    private FangService fangService;
 
 
     public KeywordService(KeywordRepository keywordRepository) {

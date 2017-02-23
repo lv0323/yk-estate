@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.spec.xiaoqu.entity;
 
-import com.lyun.estate.biz.housedict.def.StructureType;
+import com.lyun.estate.biz.fang.def.StructureType;
 
 /**
  * Created by Jeffrey on 2017-01-09.

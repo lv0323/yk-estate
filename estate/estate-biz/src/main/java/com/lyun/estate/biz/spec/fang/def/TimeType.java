@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.fang.domian;
+package com.lyun.estate.biz.spec.fang.def;
 
 /**
  * Created by Jeffrey on 2017-02-23.

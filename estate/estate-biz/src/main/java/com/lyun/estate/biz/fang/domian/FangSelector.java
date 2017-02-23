@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.fang.domian;
 
 import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.biz.housedict.def.StructureType;
+import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.spec.fang.def.IntPair;
 import com.lyun.estate.core.supports.types.YN;
 
