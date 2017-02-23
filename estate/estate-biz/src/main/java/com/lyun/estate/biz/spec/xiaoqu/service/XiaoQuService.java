@@ -3,6 +3,8 @@ package com.lyun.estate.biz.spec.xiaoqu.service;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.file.def.CustomType;
+import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
 import com.lyun.estate.biz.spec.xiaoqu.entity.*;
 import com.lyun.estate.biz.xiaoqu.entity.Community;
@@ -57,4 +59,6 @@ public interface XiaoQuService {
     int updateKeyword(Long id, String keyword);
 
     List<Community> findAllCommunity();
+
+    List<FileDescription> files(Long xiaoQuId, CustomType customType);
 }

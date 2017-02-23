@@ -6,8 +6,8 @@ import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.domian.FangSelector;
+import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.entity.FangTag;
 import com.lyun.estate.biz.fang.repo.FangRepository;
 import com.lyun.estate.biz.file.def.CustomType;
@@ -348,6 +348,15 @@ public class FangServiceImpl implements FangService {
     @Override
     public List<Fang> findAllFang() {
         return fangRepository.findAllFang();
+    }
+
+    @Override
+    public List<FileDescription> files(Long ownerId, CustomType customType) {
+        customType = Optional.ofNullable(customType).orElse(CustomType.SHI_JING);
+        if (Lists.newArrayList(CustomType.SHI_JING, CustomType.HU_XING).contains(customType)) {
+            return fileService.find(ownerId, DomainType.FANG, customType, FileProcess.WATERMARK);
+        }
+        return new ArrayList<>();
     }
 
 }
