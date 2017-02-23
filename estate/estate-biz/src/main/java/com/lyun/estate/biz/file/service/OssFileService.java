@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.file.service;
 
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.common.utils.IOUtils;
 import com.aliyun.oss.model.GetObjectRequest;
 import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.PutObjectRequest;
@@ -20,8 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -52,50 +55,63 @@ public class OssFileService extends AbstractFileService {
         if (!suffix.startsWith("."))
             suffix = '.' + suffix;
 
+        byte[] bytes;
+        try {
+            bytes = IOUtils.readStreamAsByteArray(inputStream);
+        } catch (IOException e) {
+            throw new EstateException(ExCode.OSS_EXCEPTION);
+        }
+
         if (entity.getFileType() == FileType.IMAGE) {
-            try {
-                BufferedImage test = ImageIO.read(inputStream);
-                if (test == null) {
+            try (ByteArrayInputStream testImageIS = new ByteArrayInputStream(bytes)) {
+                BufferedImage testImage = ImageIO.read(testImageIS);
+                if (testImage == null) {
                     throw new EstateException(ExCode.OSS_FILE_NOT_IMAGE);
                 }
             } catch (IOException e) {
-                ExceptionUtil.catching(e);
-                throw new EstateException(ExCode.OSS_FILE_NOT_IMAGE);
-            }
-        }
-
-        int process = 0;
-        if (entity.getFileProcess() != null)
-            process = entity.getFileProcess();
-        entity.setFileProcess(0);
-        entity.setTarget(Target.OSS);
-        entity.setPath(UUID.randomUUID().toString().toLowerCase() + suffix);
-
-        client.putObject(new PutObjectRequest(BUCKET_NAME, entity.getPath(), inputStream));
-        repository.insert(entity);
-
-        if (process == FileProcess.WATERMARK.getFlag()) {
-            GetObjectRequest request = new GetObjectRequest(BUCKET_NAME, entity.getPath());
-            request.setProcess(WATERMARK_STYLE);
-            OSSObject object = client.getObject(request);
-
-            FileDescription wmEntity = entity.clone();
-            wmEntity.setFileProcess(FileProcess.WATERMARK.getFlag());
-            wmEntity.setPath(UUID.randomUUID().toString().toLowerCase() + suffix);
-
-            try (InputStream is = object.getObjectContent()) {
-                client.putObject(new PutObjectRequest(BUCKET_NAME, wmEntity.getPath(), is));
-            } catch (IOException e) {
                 throw new EstateException(ExCode.OSS_EXCEPTION);
             }
-            repository.insert(wmEntity);
+        }
 
-            FileDescription result = repository.findOne(wmEntity.getId());
+        try (InputStream fileIS = new ByteArrayInputStream(bytes)) {
+            int process = Optional.ofNullable(entity.getFileProcess()).orElse(0);
+
+            entity.setFileProcess(0);
+            entity.setTarget(Target.OSS);
+            entity.setPath(UUID.randomUUID().toString().toLowerCase() + suffix);
+
+            client.putObject(new PutObjectRequest(BUCKET_NAME,
+                    entity.getPath(),
+                    fileIS));
+            repository.insert(entity);
+
+            if (process == FileProcess.WATERMARK.getFlag()) {
+                GetObjectRequest request = new GetObjectRequest(BUCKET_NAME, entity.getPath());
+                request.setProcess(WATERMARK_STYLE);
+                OSSObject object = client.getObject(request);
+
+                FileDescription wmEntity = entity.clone();
+                wmEntity.setFileProcess(FileProcess.WATERMARK.getFlag());
+                wmEntity.setPath(UUID.randomUUID().toString().toLowerCase() + suffix);
+
+                try (InputStream is = object.getObjectContent()) {
+                    client.putObject(new PutObjectRequest(BUCKET_NAME, wmEntity.getPath(), is));
+                } catch (IOException e) {
+                    throw new EstateException(ExCode.OSS_EXCEPTION);
+                }
+                repository.insert(wmEntity);
+
+                FileDescription result = repository.findOne(wmEntity.getId());
+                result.setFileURI(getFileURI(result.getPath(), result.getTarget()));
+                return result;
+            }
+            FileDescription result = repository.findOne(entity.getId());
             result.setFileURI(getFileURI(result.getPath(), result.getTarget()));
             return result;
+        } catch (IOException e) {
+            throw new EstateException(ExCode.OSS_EXCEPTION);
         }
-        FileDescription result = repository.findOne(entity.getId());
-        result.setFileURI(getFileURI(result.getPath(), result.getTarget()));
-        return result;
+
+
     }
 }
