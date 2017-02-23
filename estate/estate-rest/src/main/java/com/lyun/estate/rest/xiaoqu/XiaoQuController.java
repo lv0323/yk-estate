@@ -3,10 +3,14 @@ package com.lyun.estate.rest.xiaoqu;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.collect.Lists;
+import com.lyun.estate.biz.file.def.CustomType;
+import com.lyun.estate.biz.file.def.FileProcess;
+import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.housedict.def.StructureType;
 import com.lyun.estate.biz.keyword.entity.KeywordResp;
 import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.spec.file.service.FileService;
 import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuFilter;
@@ -15,6 +19,7 @@ import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +35,9 @@ public class XiaoQuController {
 
     @Autowired
     private KeywordService keywordService;
+
+    @Autowired
+    private FileService fileService;
 
 
     @GetMapping("/keywords")
@@ -84,5 +92,15 @@ public class XiaoQuController {
     @GetMapping("/updateAllKeyword")
     public boolean updateAllKeyword() {
         return keywordService.updateAllKeyword();
+    }
+
+    @GetMapping("/files")
+    public List<FileDescription> file(@RequestParam Long ownerId,
+                                      @RequestParam CustomType customType) {
+        if (Lists.newArrayList(CustomType.SHI_JING, CustomType.HU_XING).contains(customType)) {
+            return fileService.find(ownerId, DomainType.XIAO_QU, customType, FileProcess.WATERMARK);
+        }
+        return new ArrayList<>();
+
     }
 }
