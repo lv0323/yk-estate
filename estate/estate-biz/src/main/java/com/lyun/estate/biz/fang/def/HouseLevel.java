@@ -8,11 +8,9 @@ import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
  */
 @JsonSerialize(using = LabelEnumSerializer.class)
 public enum HouseLevel {
-    A("A"),
-    B("B"),
-    C("C"),
-    D("D"),;
-
+    JU("聚焦房"),
+    YOU("优质房"),
+    PU("普通房");
     private final String label;
 
     HouseLevel(String label) {

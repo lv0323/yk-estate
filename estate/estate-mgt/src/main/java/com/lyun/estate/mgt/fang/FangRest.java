@@ -1,19 +1,21 @@
 package com.lyun.estate.mgt.fang;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.def.*;
+import com.lyun.estate.biz.fang.domian.MgtFangSummary;
 import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.entity.FangContact;
 import com.lyun.estate.biz.fang.entity.FangExt;
 import com.lyun.estate.biz.housedict.def.StructureType;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
+import com.lyun.estate.biz.spec.fang.def.HouseTypeFilter;
+import com.lyun.estate.biz.spec.fang.entity.FangSummaryOrder;
 import com.lyun.estate.core.supports.types.YN;
 import com.lyun.estate.mgt.fang.service.FangMgtService;
 import com.lyun.estate.mgt.supports.CommonResp;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -67,7 +69,7 @@ public class FangRest {
                            @RequestParam Integer overYears,
                            @RequestParam HouseLevel level,
                            @RequestParam DelegateType delegateType,
-                           @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date delegateStart,
+                           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date delegateStart,
                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date delegateEnd,
                            @RequestParam Showing showing,
                            @RequestParam HouseStatus status,
@@ -123,6 +125,35 @@ public class FangRest {
                 buildingId,
                 buildingUnitId,
                 houseNo) ? CommonResp.succeed() : CommonResp.failed();
+    }
+
+    @GetMapping("list")
+    public PageList<MgtFangSummary> getMgtFangSummary(@RequestParam Long cityId,
+                                                      @RequestParam(required = false) BizType bizType,
+                                                      @RequestParam(required = false) Long districtId,
+                                                      @RequestParam(required = false) Long subDistrictId,
+                                                      @RequestParam(required = false) HouseType houseType,
+                                                      @RequestParam(required = false) Integer minArea,
+                                                      @RequestParam(required = false) Integer maxArea,
+                                                      @RequestParam(required = false) Integer minPrice,
+                                                      @RequestParam(required = false) Integer maxPrice,
+                                                      @RequestParam(required = false) Integer sCounts,
+                                                      @RequestParam(required = false) List<HouseTag> hts,
+                                                      @RequestParam(required = false) List<Decorate> ds,
+                                                      @RequestParam(required = false) FangSummaryOrder order,
+                                                      @RequestParam(required = false) List<HouseTypeFilter> htfs,
+                                                      @RequestParam(required = false) Long departmentId,
+                                                      @RequestParam(required = false) Long employeeId,
+                                                      @RequestParam(required = false) Boolean inclueChildren,
+                                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startTime,
+                                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endTime,
+                                                      @RequestParam(required = false) DelegateType delegateType,
+                                                      @RequestParam(required = false) Decorate decorate,
+                                                      @RequestParam(required = false) PropertyType propertyType,
+                                                      @RequestParam(required = false) CertifType certifType,
+                                                      @RequestParam(required = false) YN resident,
+                                                      @RequestHeader("X-PAGING") PageBounds pageBounds) {
+        return null;
     }
 
 }

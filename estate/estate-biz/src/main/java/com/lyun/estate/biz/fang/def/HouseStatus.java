@@ -1,8 +1,12 @@
 package com.lyun.estate.biz.fang.def;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+
 /**
  * Created by Jeffrey on 2017-01-22.
  */
+@JsonSerialize(using = LabelEnumSerializer.class)
 public enum HouseStatus {
     SELL_EMPTY("出售(空房)"),
     SELL_RESIDE("出售(业主住)"),
