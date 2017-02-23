@@ -161,12 +161,16 @@ public class EmployeeService {
     }
 
     public String getAvatar(Long id) {
-        FileDescription fd = fileService.findFirst(id, DomainType.EMPLOYEE, CustomType.AVATAR, FileProcess.NONE);
-        return fd != null ? fd.getFileURI() : null;
+        Employee employee = repo.selectById(id);
+        if (employee != null && employee.getAvatarId() != null) {
+            return fileService.findOne(employee.getAvatarId()).getFileURI();
+        } else {
+            return null;
+        }
     }
 
     public FileDescription createAvatar(Long id, InputStream avatarIS, String suffix) {
-        
+
         FileDescription fileDescription = fileService.save(new FileDescription()
                 .setOwnerId(id)
                 .setOwnerType(DomainType.EMPLOYEE)
