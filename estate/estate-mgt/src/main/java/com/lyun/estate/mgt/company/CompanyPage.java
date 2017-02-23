@@ -1,6 +1,8 @@
 package com.lyun.estate.mgt.company;
 
 import com.lyun.estate.biz.fang.def.HouseTag;
+import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,17 +17,22 @@ import java.util.HashMap;
 @Controller
 @RequestMapping("/franchisee")
 public class CompanyPage {
+    @Autowired
+    private EmployeeMgtService service;
 
     @GetMapping("/company")
     public ModelAndView company() {
         HashMap<String, String> params = new HashMap<>();
-        params.put("message", "message");
+        params.put("avatarUrl",service.getAvatar());
+        params.put("username",service.getUsername());
         return new ModelAndView("/franchisee/company", params);
     }
 
     @GetMapping("/addCompany")
     public ModelAndView addCompany() {
         HashMap<String, Object> params = new HashMap<>();
+        params.put("avatarUrl",service.getAvatar());
+        params.put("username",service.getUsername());
 //        params.put("platformList", Arrays.asList(HouseTag.values()));
         return new ModelAndView("/franchisee/addCompany", params);
     }
@@ -33,12 +40,16 @@ public class CompanyPage {
     @GetMapping("/companyDetail")
     public ModelAndView companyDetail() {
         HashMap<String, Object> params = new HashMap<>();
+        params.put("avatarUrl",service.getAvatar());
+        params.put("username",service.getUsername());
         return new ModelAndView("/franchisee/companyDetail", params);
     }
 
     @GetMapping("/editCompanyDetail")
     public ModelAndView editCompanyDetail() {
         HashMap<String, Object> params = new HashMap<>();
+        params.put("avatarUrl",service.getAvatar());
+        params.put("username",service.getUsername());
         return new ModelAndView("/franchisee/editCompanyDetail", params);
     }
 }

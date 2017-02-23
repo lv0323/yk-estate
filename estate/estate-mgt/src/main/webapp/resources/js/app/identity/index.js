@@ -1,8 +1,9 @@
 require(['main-app', 
     contextPath + '/js/service/identity-service.js', 
     contextPath + '/js/service/validation-service.js',
-    contextPath + '/js/service/util-service.js'],
-    function (mainApp, IdentityService, ValidationService, UtilService) {
+    contextPath + '/js/service/util-service.js',
+        contextPath + '/js/service/employee-service.js'],
+    function (mainApp, IdentityService, ValidationService, UtilService, EmployeeService) {
 
         var LoginModule=angular.module('LoginModule',[]);
         LoginModule.controller("LoginCtrl", ['$scope','$timeout', '$interval','$window','$location', function($scope, $timeout, $interval, $window, $location) {
@@ -55,6 +56,7 @@ require(['main-app',
                     return;
                 }
                 IdentityService.loginAction({mobile:$scope.loginData.mobile,password:$scope.loginData.password}, {clientId:clientId, code:$scope.loginData.captcha,id:$scope.captchaId}).done(function(response){
+                    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
                     $window.location=contextPath+'/org/department.ftl';
                 }).fail(function(response){
                     show({title:'提示',content:response&&response.message});

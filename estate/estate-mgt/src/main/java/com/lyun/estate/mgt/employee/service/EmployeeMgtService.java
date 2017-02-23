@@ -97,6 +97,10 @@ public class EmployeeMgtService {
         return employeeService.getAvatar(mgtContext.getOperator().getId());
     }
 
+    public String getUsername() {
+        return mgtContext.getOperator().getName();
+    }
+
     public FileDescription createAvatar(InputStream inputStream, String suffix) {
         return employeeService.createAvatar(mgtContext.getOperator().getId(), inputStream, suffix);
     }

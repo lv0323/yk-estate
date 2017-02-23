@@ -35,6 +35,8 @@
      <link rel="stylesheet" href="${contextPath}/css/plugins/zTree/iconSkin.css">
      <!-- common -->
      <link rel="stylesheet" href="${contextPath}/css/app/common/common.css">
+     <!-- croppie -->
+     <link rel="stylesheet" href="${contextPath}/css/plugins/croppie/croppie.css">
      <!--[if lt IE 9]>
    <script src="http://cdn.bootcss.com/html5shiv/r29/html5.js"></script>
    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>

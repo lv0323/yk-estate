@@ -11,9 +11,12 @@ define(contextPath + '/js/service/employee-service.js',
             allEmployee:[]
         };
 
-        EmployeeService.getAvatar = function (params, header) {
-            var data = {id: params.id};
-            return requestService.get('/api/employee/avatar', data, header);
+        EmployeeService.getAvatar = function (header) {
+            return requestService.get('/api/employee/avatar', null, header);
+        };
+
+        EmployeeService.uploadAvatar = function (params, header) {
+            return requestService.postMultipart('/api/employee/avatar', params, header);
         };
 
         EmployeeService.changePassword = function (params, header) {
@@ -22,6 +25,10 @@ define(contextPath + '/js/service/employee-service.js',
 
         EmployeeService.getSaltSugar = function (header) {
             return requestService.get('/api/employee/change-password-salt-sugar', null, header);
+        };
+
+        EmployeeService.getSelf = function (header) {
+            return requestService.get('/api/employee/self', null, header);
         };
 
         EmployeeService.getEmployee = function (params, header) {
