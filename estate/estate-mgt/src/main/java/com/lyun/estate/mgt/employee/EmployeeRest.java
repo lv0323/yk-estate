@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 
 @RestController
@@ -97,8 +98,10 @@ public class EmployeeRest {
 
     @PostMapping("avatar")
     public FileDescription avatar(@RequestParam MultipartFile avatar) throws IOException {
-        return service.createAvatar(avatar.getInputStream(),
-                avatar.getOriginalFilename().substring(avatar.getOriginalFilename().lastIndexOf('.')));
+        try (InputStream avatarIS = avatar.getInputStream()) {
+            return service.createAvatar(avatarIS,
+                    avatar.getOriginalFilename().substring(avatar.getOriginalFilename().lastIndexOf('.')));
+        }
     }
 
     @PostMapping("change-password")
