@@ -2,7 +2,7 @@
 <link href="${contextPath}/css/app/houseManage/addHouse.css" rel="stylesheet">
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
-<div class="content-wrapper" id="addHouse" ng-controller="AddHouseCtrl as ctrl" ng-cloak>
+<div class="content-wrapper" id="addHouse" ng-controller="AddHouseCtrl as ctrl">
         <style type="text/css">
             .tip.active{
                 background-color:#169bd5;
@@ -59,9 +59,9 @@
                                                 </div>
                                                 <input type="hidden" value="9880"/>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select id="houseType" name="houseType" class="selectpicker show-menu-arrow form-control sel-news" ng-model="ctrl.data.type" ng-change="ctrl.log()">
+                                                    <select id="houseType" select-picker class="selectpicker show-menu-arrow form-control sel-news" ng-model="ctrl.data.type" ng-change="ctrl.log()">
                                                         <option value="">住宅类型</option>
-                                                        <option ng-repeat="type in ctrl.typeList" repeat-done="ctrl.initSelectPicker('#houseType')" ng-value="type.value">{{type.name}}</option>
+                                                        <option ng-repeat="type in ctrl.typeList" ng-value="type.value">{{type.name}}</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-4 col-md-4  col-sm-4 text-right">
@@ -71,12 +71,14 @@
                                             <div class="form-group clearfix">
                                                 <label class="control-label">物业地址</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select id="houseEstate" name="houseEstate" class="chosen-select" reg="^\S+$" ng-model="ctrl.data.estate" ng-change="ctrl.log()">
-                                                        <option value="" >楼盘字典</option>
+                                                    <select id="houseEstate" data-placeholder="楼盘字典" class="chosen-select"
+                                                            name="houseEstate" reg="^\S+$">
+                                                        <option ng-value="">楼盘字典</option>
                                                     <#--<#list xiaoQuOptions?if_exists as xq>
                                                         <option type="radio" value="${xq.getXiaoQuId()}">${xq.getXiaoQuName()}</option>
                                                     </#list>-->
-                                                     <option ng-repeat="estate in ctrl.houseEstateList" repeat-done="ctrl.initChosen('#houseEstate', 'estate')" ng-value="estate.value">{{estate.name}}</option>
+                                                            <#--<option value="" header="">栋座</option>-->
+                                                     <option ng-repeat="estate in ctrl.estateList" repeat-done="ctrl.initChosen('#houseEstate', 'estate')" ng-value="estate.value">{{estate.name}}</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-3 col-md-3 col-sm-3 no-padding">
@@ -102,8 +104,11 @@
                                                 <div class="col-lg-1 col-md-1 col-sm-1">
                                                     <input type="text" name="houseFloorAll" reg="^\S+$" class="form-control" placeholder="总层" ng-model="ctrl.data.floorAll"/>
                                                 </div>
-                                                <div class="pull-left m-l-5">
-                                                    <button type="button" class="btn btn-primary" id="changes" onclick="applyAddEstate();">申请添加楼盘</button>
+                                                <div class="pull-left m-l-5" ng-show="ctrl.data.estate&&!ctrl.data.build">
+                                                    <button type="button" class="btn btn-primary" id="changes">申请添加栋座</button>
+                                                </div>
+                                                <div class="pull-left m-l-5" ng-show="ctrl.data.estate&&ctrl.data.build">
+                                                    <button type="button" class="btn btn-primary" id="changes">申请添加单元</button>
                                                 </div>
                                             </div>
                                             <div class="form-group clearfix">
@@ -118,9 +123,9 @@
                                             <div class="form-group clearfix">
                                                 <label class="control-label">类型</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select id="houseConstruct" class="selectpicker show-menu-arrow form-control bs-select-hidden sel-news" name="fyHouseConstruct" ng-model="ctrl.data.construct">
+                                                    <select id="houseConstruct" select-picker class="selectpicker show-menu-arrow form-control bs-select-hidden sel-news" name="fyHouseConstruct" ng-model="ctrl.data.construct">
                                                         <option value="">结构类型</option>
-                                                        <option ng-repeat="construct in ctrl.houseConstructList" repeat-done="ctrl.initSelectPicker('#houseConstruct')" ng-value="construct.value">{{construct.name}}</option>
+                                                        <option ng-repeat="construct in ctrl.houseConstructList" ng-value="construct.value">{{construct.name}}</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
@@ -146,9 +151,9 @@
                                             <div class="form-group clearfix">
                                                 <label class="control-label">朝向</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select id="houseDirection" class="selectpicker show-menu-arrow form-control bs-select-hidden" name="fyHouseDirection" ng-model="ctrl.data.direction" ng-change="ctrl.log()">
+                                                    <select id="houseDirection" select-picker class="selectpicker show-menu-arrow form-control" name="houseDirection" ng-model="ctrl.data.direction" ng-change="ctrl.log()">
                                                         <option value="">--请选择--</option>
-                                                        <option ng-repeat="direction in ctrl.directionList" repeat-done="ctrl.initSelectPicker('#houseDirection')" ng-value="direction.value">{{direction.name}}</option>
+                                                        <option ng-repeat="direction in ctrl.directionList" ng-value="direction.value">{{direction.name}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -187,7 +192,7 @@
                                                     <input type="text" name="housePrice" reg="^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$" class="form-control" placeholder="总价" strName="总价" ng-model="ctrl.data.price"/>
                                                 </div>
                                                 <div class="col-lg-1 col-md-2 col-sm-2" class="pull-left" id="rent" style="display:block" ng-show="ctrl.data.bizType === 'rent'">
-                                                    <select class="selectpicker show-menu-arrow form-control sel-news" name="rentPriceUnit" id="rentPriceUnit" ng-model="ctrl.data.rentPriceUnit">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control sel-news" name="rentPriceUnit" id="rentPriceUnit" ng-model="ctrl.data.rentPriceUnit">
                                                         <option value="9929" info="ty51">元</option>
                                                         <option value="9930" info="ty52">元/天</option>
                                                         <option value="9931" info="ty53">元/月</option>
@@ -196,7 +201,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-1 col-md-2 col-sm-2" id="sale" ng-show="ctrl.data.bizType === 'sell'">
-                                                    <select class="selectpicker show-menu-arrow form-control sel-news" id="sellPriceUnit" ng-model="ctrl.data.sellPriceUnit">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control sel-news" id="sellPriceUnit" ng-model="ctrl.data.sellPriceUnit">
                                                         <option value="9935" info="ty56">万元</option>
                                                         <option value="9936" info="ty57">元</option>
                                                     </select>
@@ -214,7 +219,7 @@
                                                     待开发
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2" ng-show="ctrl.data.bizType === 'sell'">
-                                                    <select class="selectpicker show-menu-arrow form-control sel-news" name="housetailFirper" id="housetailFirper" ng-model="ctrl.data.downPayPer">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control sel-news" name="housetailFirper" id="housetailFirper" ng-model="ctrl.data.downPayPer">
                                                         <option value="">首付比例</option>
                                                         <option value="10128">10%</option>
                                                         <option value="10129">20%</option>
@@ -225,12 +230,12 @@
                                                 <label class="control-label">落户</label>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 form-inline m-t-7">
                                                     <div class="radio radio-nice" >
-                                                        <input type="radio" name="houseSettle" ng-value="1" ng-model="ctrl.data.settle"/>
-                                                        <label for="yes">是</label>
+                                                        <input type="radio" name="houseSettle" id="settleYes" ng-value="1" ng-model="ctrl.data.settle"/>
+                                                        <label for="settleYes">是</label>
                                                     </div>
                                                     <div class="radio radio-nice" >
-                                                        <input type="radio" name="houseSettle" ng-value="0" ng-model="ctrl.data.settle"/>
-                                                        <label for="no">否</label>
+                                                        <input type="radio" name="houseSettle" id="settleNo" ng-value="0" ng-model="ctrl.data.settle"/>
+                                                        <label for="settleNo">否</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -266,31 +271,31 @@
                                                 <label class="control-label">特性</label>
                                                 <div class="pull-left col-lg-5 col-md-5 col-sm-5" id="tx3">
                                                     <div class="checkbox checkbox-nice checkbox-inline">
-                                                        <input type="checkbox" name="houseVO.fyHouseCharacter" value="10140" iteminfo="fy19"/>
-                                                        <label for="10140">唯一住房</label>
+                                                        <input type="checkbox" name="houseCharacter" id="character10140" ng-model="ctrl.data.character.unique" ng-change="ctrl.log()"/>
+                                                        <label for="character10140">唯一住房</label>
                                                     </div>
                                                     <div class="checkbox checkbox-nice checkbox-inline">
-                                                        <input type="checkbox" name="houseVO.fyHouseCharacter" value="10141" iteminfo="fy20"/>
-                                                        <label for="10141">满五年</label>
+                                                        <input type="checkbox" name="houseCharacter" id="character10141" ng-model="ctrl.data.character.fiveYears" ng-change="ctrl.log()"/>
+                                                        <label for="character10141">满五年</label>
                                                     </div>
                                                     <div class="checkbox checkbox-nice checkbox-inline">
-                                                        <input type="checkbox" name="houseVO.fyHouseCharacter" value="10142" iteminfo="fy21"/>
-                                                        <label for="10142">满两年</label>
+                                                        <input type="checkbox" name="houseCharacter" id="character10142" ng-model="ctrl.data.character.twoYears" ng-change="ctrl.log()"/>
+                                                        <label for="character10142">满两年</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select class="selectpicker show-menu-arrow form-control"  name="houseGrade" id="houseGrade">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control"  name="houseGrade" id="houseGrade">
                                                         <option value="">等级</option>
-                                                        <option ng-repeat="grade in ctrl.gradeList" ng-value="grade.value" repeat-done="ctrl.initSelectPicker('#houseGrade')">{{grade.name}}</option>
+                                                        <option ng-repeat="grade in ctrl.gradeList" ng-value="grade.value">{{grade.name}}</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="form-group clearfix">
                                                 <label class="control-label">委托</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select class="selectpicker show-menu-arrow form-control"  reg="^\S+$"  name="houseEntrustWay" id="houseEntrustWay">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control"  reg="^\S+$"  name="houseEntrustWay" id="houseEntrustWay" ng-model="ctrl.data.entrustWay"  ng-change="ctrl.log()">
                                                         <option value="">--请选择--</option>
-                                                        <option ng-repeat="entrustWay in ctrl.entrustWayList" ng-value="entrustWay.value" repeat-done="ctrl.initSelectPicker('#houseEntrustWay')">{{entrustWay.name}}</option>
+                                                        <option ng-repeat="entrustWay in ctrl.entrustWayList" ng-value="entrustWay.value">{{entrustWay.name}}</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
@@ -309,37 +314,37 @@
                                             <div class="form-group clearfix">
                                                 <label class="control-label">看房</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select class="selectpicker show-menu-arrow form-control bs-select-hidden" id="fyHouseLook" onchange="selectkey(this,'fy57')" name="houseVO.fyHouseLook" >
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control"  id="houseLook" ng-model="ctrl.data.look" name="houseLook" ng-change="ctrl.log()">
                                                         <option value="">--请选择--</option>
-                                                        <option value="10184" iteminfo = "fy56">预约</option>
-                                                        <option value="10185" iteminfo = "fy57">有钥</option>
-                                                        <option value="10186" iteminfo = "fy58">借钥</option>
-                                                        <option value="10187" iteminfo = "fy59">直接</option>
+                                                        <option value="10184">预约</option>
+                                                        <option value="10185">有钥</option>
+                                                        <option value="10186">借钥</option>
+                                                        <option value="10187">直接</option>
                                                     </select>
                                                 </div>
-                                                <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <!-- BUG #9269 新增钥匙号后，显示钥匙号，增加span标签 -->
+                                                <#--<div class="col-lg-2 col-md-2 col-sm-2">
+                                                    <!-- BUG #9269 新增钥匙号后，显示钥匙号，增加span标签 &ndash;&gt;
                                                     <span id="showHouseKey"></span>
                                                     <a onclick="addHousekey();" style="display:none;" id="yybh">钥匙编号</a>
-                                                </div>
+                                                </div>-->
                                             </div>
                                             <div class="form-group clearfix">
                                                 <label class="control-label">现状</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select class="selectpicker show-menu-arrow form-control bs-select-hidden"  name="houseVO.fyHousePresentsituation" id="fyHousePresentsituation">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control"  name="presentSituation" id="presentSituation" ng-model="ctrl.data.presentSituation"  ng-change="ctrl.log()">
                                                         <option value="">--请选择--</option>
-                                                        <option value="10239">出售(空房)</option>
-                                                        <option value="10240">出售(业主住)</option>
-                                                        <option value="10241">出售(租客住)</option>
-                                                        <option value="10242">出售(空房)</option>
-                                                        <option value="10243">出租(租客住)</option>
-                                                        <option value="10244">自住</option>
-                                                        <option value="10245">全新</option>
-                                                        <option value="10246">未知</option>
+                                                        <option ng-value="10239">出售(空房)</option>
+                                                        <option ng-value="10240">出售(业主住)</option>
+                                                        <option ng-value="10241">出售(租客住)</option>
+                                                        <option ng-value="10242">出售(空房)</option>
+                                                        <option ng-value="10243">出租(租客住)</option>
+                                                        <option ng-value="10244">自住</option>
+                                                        <option ng-value="10245">全新</option>
+                                                        <option ng-value="10246">未知</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select class="selectpicker show-menu-arrow form-control bs-select-hidden"  name="houseVO.fyHouseSource" id="fyHouseSource">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control"  name="houseSource" id="houseSource" ng-model="ctrl.data.source" ng-change="ctrl.log()">
                                                         <option value="">来源</option>
                                                         <option value="10249">来电</option>
                                                         <option value="10250">来访</option>
@@ -353,7 +358,7 @@
                                             <div class="form-group clearfix">
                                                 <label class="control-label">证件</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select class="selectpicker show-menu-arrow form-control bs-select-hidden" name="houseVO.fyHouseProvetype" id="fyHouseProvetype">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control" name="houseProveType" id="houseProveType" ng-model="ctrl.data.proveType">
                                                         <option value="">--请选择--</option>
                                                         <option value="10163">房产证</option>
                                                         <option value="10164">购房合同</option>
@@ -373,21 +378,21 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select class="selectpicker show-menu-arrow form-control bs-select-hidden"  name="houseVO.fyHousePtype" id="fyHousePtype">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control" name="housePType" id="housePType" ng-model="ctrl.data.pType" ng-change="ctrl.log()">
                                                         <option value="">产权类型</option>
-                                                        <option value="10189">经济适用房</option>
-                                                        <option value="10190">房改房</option>
-                                                        <option value="10191">商品房</option>
-                                                        <option value="10192">集体房</option>
-                                                        <option value="10193">限价房</option>
-                                                        <option value="10194">军产房</option>
+                                                        <option ng-value="10189">经济适用房</option>
+                                                        <option ng-value="10190">房改房</option>
+                                                        <option ng-value="10191">商品房</option>
+                                                        <option ng-value="10192">集体房</option>
+                                                        <option ng-value="10193">限价房</option>
+                                                        <option ng-value="10194">军产房</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="form-group clearfix">
                                                 <label class="control-label">装修</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select class="selectpicker show-menu-arrow form-control bs-select-hidden"  name="houseVO.fyHouseDecorate" id="fyHouseDecorate">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control" name="houseDecorate" id="houseDecorate" ng-model="ctrl.data.decorate" ng-change="ctrl.log()">
                                                         <option value="">--请选择--</option>
                                                         <option value="9898">毛坯</option>
                                                         <option value="9899">简装</option>
@@ -399,9 +404,29 @@
                                                 </div>
                                             </div>
                                             <div class="form-group clearfix">
+                                                <label class="control-label">供暖类型</label>
+                                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control" name="houseHeating"  ng-model="ctrl.data.heating" ng-change="ctrl.log()">
+                                                        <option value="">--请选择--</option>
+                                                        <option value="9898">地暖</option>
+                                                        <option value="9899">集中供暖</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label class="control-label">电梯</label>
+                                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control" name="houseLift"  ng-model="ctrl.data.lift" ng-change="ctrl.log()">
+                                                        <option value="">--请选择--</option>
+                                                        <option value="9898">有</option>
+                                                        <option value="9899">无</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
                                                 <label class="control-label">税款</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select class="selectpicker show-menu-arrow form-control bs-select-hidden" name="houseVO.fyHouseTax" id="fyHouseTax">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control " name="houseTax" ng-model="ctrl.data.tax" ng-change="ctrl.log()">
                                                         <option value="">--请选择--</option>
                                                         <option value="10215">全包</option>
                                                         <option value="10216">包税费</option>
@@ -409,7 +434,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select class="selectpicker show-menu-arrow form-control bs-select-hidden minusHeight" name="housetailVO.fyHousetailPaycommission" id="fyHousetailPaycommission">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control minusHeight" name="houseCommission" ng-model="ctrl.data.commission" ng-change="ctrl.log()">
                                                         <option value="">付佣</option>
                                                         <option value="10173">商议</option>
                                                         <option value="10174">全佣</option>
@@ -424,7 +449,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <input type="text" name="housetailVO.fyHousetailPurchase" id="fyHousetailPurchase" class="form-control" placeholder="原购价" />
+                                                    <input type="text" name="housePurchase" class="form-control" placeholder="原购价" ng-model="ctrl.data.purchase" ng-change="ctrl.log()"/>
                                                 </div>
                                                 <div class="pull-left m-t-7 p-l-0" id="yuangou">
                                                     元
@@ -433,15 +458,15 @@
                                             <div class="form-group clearfix">
                                                 <label class="control-label">备注</label>
                                                 <div class="col-lg-9 col-md-9 col-sm-9">
-                                                    <textarea name="housetailVO.fyHousetailRemark" id="fyHousetailRemark" cols="30" rows="3" class="form-control"></textarea>
+                                                    <textarea name="houseRemark" cols="30" rows="3" class="form-control" ng-model="ctrl.data.remark" ng-change="ctrl.log()"></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group border0">
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <div class="btn_nav  pull-right">
                                                         <button type="button" class="prev btn btn-primary" ng-click="ctrl.prevStep()"><i class="fa fa-chevron-left"></i>上一步</button>
-                                                        <button type="button" class="next btn btn-primary" onclick="savehouse()"><i class="fa fa-save"></i>保存</button>
-                                                        <button type="button" class="btn btn-default" onclick="quxiao();"><i class="fa fa-times" style="border-color: #aaa"></i>取消</button>
+                                                        <button type="button" class="next btn btn-primary"><i class="fa fa-save"></i>保存</button>
+                                                        <button type="button" class="btn btn-default" style="border-color: #aaa"><i class="fa fa-times"></i>取消</button>
                                                     </div>
                                                 </div>
                                             </div>

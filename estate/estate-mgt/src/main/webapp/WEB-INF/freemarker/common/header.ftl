@@ -24,8 +24,8 @@
      <!-- AdminLTE-->
      <link rel="stylesheet" href="${contextPath}/css/index.css">
      <link rel="stylesheet" href="${contextPath}/css/skins/skin-blue.min.css">
-     <link rel="stylesheet" href="${contextPath}/css/skins/skin-black.min.css">
-     <link rel="stylesheet" href="${contextPath}/css/skins/_all-skins.min.css">
+<#--     <link rel="stylesheet" href="${contextPath}/css/skins/skin-black.min.css">
+     <link rel="stylesheet" href="${contextPath}/css/skins/_all-skins.min.css">-->
      <link rel="stylesheet" href="${contextPath}/css/app/sidebar/sidebar.css">
      <!--dataTables-->
      <link rel="stylesheet" href="${contextPath}/css/plugins/datatables/dataTables.bootstrap.css">
@@ -45,6 +45,7 @@
 
  </head>
  <body class="hold-transition skin-blue sidebar-mini">
+ <div class="wrapper">
 
 
 
