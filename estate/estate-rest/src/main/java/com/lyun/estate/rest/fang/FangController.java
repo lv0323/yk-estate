@@ -72,8 +72,8 @@ public class FangController {
                                          @RequestParam(required = false) List<String> yips,
                                          @RequestParam(required = false) List<String> aips,
                                          @RequestParam(required = false) String keyword,
-                                         @RequestParam(required = false) FangSummaryOrder order,
                                          @RequestParam(required = false) List<HouseTypeFilter> htfs,
+                                         @RequestParam(required = false) FangSummaryOrder order,
                                          @RequestHeader("X-PAGING") PageBounds pageBounds) {
 
         FangFilter fangFilter = new FangFilter();
