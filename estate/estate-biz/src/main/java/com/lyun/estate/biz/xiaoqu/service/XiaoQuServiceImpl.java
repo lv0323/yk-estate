@@ -31,7 +31,6 @@ import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSummaryBean;
 import com.lyun.estate.biz.xiaoqu.repository.XiaoQuRepository;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.apache.commons.lang.math.RandomUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -261,6 +260,17 @@ public class XiaoQuServiceImpl implements XiaoQuService {
     @Override
     public List<Community> findAllCommunity() {
         return xiaoQuRepository.findAllCommunity();
+    }
+
+    @Override
+    public List<FileDescription> files(Long xiaoQuId, CustomType customType) {
+        customType = Optional.ofNullable(customType).orElse(CustomType.SHI_JING);
+        if (Lists.newArrayList(CustomType.SHI_JING, CustomType.HU_XING).contains(customType)) {
+            return fileService.find(xiaoQuId, DomainType.XIAO_QU, customType, FileProcess.WATERMARK);
+        } else {
+            return new ArrayList<>();
+        }
+
     }
 
     @Override

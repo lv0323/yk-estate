@@ -5,7 +5,6 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.file.def.CustomType;
-import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.housedict.def.StructureType;
 import com.lyun.estate.biz.keyword.entity.KeywordResp;
@@ -20,11 +19,9 @@ import com.lyun.estate.biz.spec.fang.entity.FangFilter;
 import com.lyun.estate.biz.spec.fang.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.entity.FangSummaryOrder;
 import com.lyun.estate.biz.spec.fang.service.FangService;
-import com.lyun.estate.biz.spec.file.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -43,8 +40,6 @@ public class FangController {
     @Autowired
     private KeywordService keywordService;
 
-    @Autowired
-    private FileService fileService;
 
     @GetMapping("/keywords")
     public List<KeywordResp> keywords(@RequestParam Long cityId,
@@ -133,12 +128,9 @@ public class FangController {
 
     @GetMapping("/files")
     public List<FileDescription> file(@RequestParam Long ownerId,
-                                      @RequestParam CustomType customType) {
+                                      @RequestParam(required = false) CustomType customType) {
 
-        if (Lists.newArrayList(CustomType.SHI_JING, CustomType.HU_XING).contains(customType)) {
-            return fileService.find(ownerId, DomainType.XIAO_QU, customType, FileProcess.WATERMARK);
-        }
-        return new ArrayList<>();
+        return fangService.files(ownerId, customType);
     }
 
 }

@@ -4,6 +4,8 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.fang.entity.Fang;
+import com.lyun.estate.biz.file.def.CustomType;
+import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.spec.fang.entity.FangDetail;
 import com.lyun.estate.biz.spec.fang.entity.FangFilter;
 import com.lyun.estate.biz.spec.fang.entity.FangSummary;
@@ -31,4 +33,6 @@ public interface FangService {
     int updateKeyword(Long fangId, String keyword);
 
     List<Fang> findAllFang();
+
+    List<FileDescription> files(Long ownerId, CustomType customType);
 }
