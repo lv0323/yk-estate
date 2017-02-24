@@ -1,7 +1,6 @@
 package com.lyun.estate.biz.fang.domian;
 
 import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.spec.fang.rest.def.IntPair;
 import com.lyun.estate.core.supports.types.YN;
 
@@ -10,7 +9,7 @@ import java.util.List;
 /**
  * Created by Jeffrey on 2017-01-24.
  */
-public class FangSelector {
+public class FangSelector extends TagSelector {
     private Long cityId;
     private BizType bizType;
     private Long districtId;
@@ -20,16 +19,11 @@ public class FangSelector {
     private List<Integer> sCounts;
     private List<Orientation> orientations;
     private List<FloorType> floorTypes;
-    private List<Decorate> decorates;
     private YN hasElevator;
     private List<StructureType> structureTypes;
     private List<Long> xiaoQuIds;
     private List<Long> excludeIds;
-    private List<Showing> showings;
-    private YN isOnly;
-    private YN nearLine;
     private HouseProcess process;
-    private Integer overYears;
     private Integer minPrice;
     private Integer maxPrice;
     private List<IntPair> areas;
@@ -117,15 +111,6 @@ public class FangSelector {
         return this;
     }
 
-    public List<Decorate> getDecorates() {
-        return decorates;
-    }
-
-    public FangSelector setDecorates(List<Decorate> decorates) {
-        this.decorates = decorates;
-        return this;
-    }
-
     public YN getHasElevator() {
         return hasElevator;
     }
@@ -159,42 +144,6 @@ public class FangSelector {
 
     public FangSelector setExcludeIds(List<Long> excludeIds) {
         this.excludeIds = excludeIds;
-        return this;
-    }
-
-    public List<Showing> getShowings() {
-        return showings;
-    }
-
-    public FangSelector setShowings(List<Showing> showings) {
-        this.showings = showings;
-        return this;
-    }
-
-    public YN getIsOnly() {
-        return isOnly;
-    }
-
-    public FangSelector setIsOnly(YN isOnly) {
-        this.isOnly = isOnly;
-        return this;
-    }
-
-    public YN getNearLine() {
-        return nearLine;
-    }
-
-    public FangSelector setNearLine(YN nearLine) {
-        this.nearLine = nearLine;
-        return this;
-    }
-
-    public Integer getOverYears() {
-        return overYears;
-    }
-
-    public FangSelector setOverYears(Integer overYears) {
-        this.overYears = overYears;
         return this;
     }
 

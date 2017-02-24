@@ -32,13 +32,13 @@ public class AuditRest {
 
     @GetMapping("")
     public PageList<Audit> listBySubject(@RequestParam AuditSubject subject,
-                                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startTime,
-                                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endTime,
+                                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
                                          @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
         return auditService.findBySubject(mgtContext.getOperator().getCompanyId(),
                 subject,
-                startTime,
-                Optional.ofNullable(endTime)
+                startDate,
+                Optional.ofNullable(endDate)
                         .map(time -> Date.from(time.toInstant().plusSeconds(LocalTime.MAX.toSecondOfDay())))
                         .orElse(null),
                 pageBounds);

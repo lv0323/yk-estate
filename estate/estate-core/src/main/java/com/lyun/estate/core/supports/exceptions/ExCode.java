@@ -40,6 +40,9 @@ public enum ExCode {
     LICENCE_NULL("授权编号为空"),
     LICENCE_LOCATION_ERROR("楼盘信息错误"),
     LICENCE_HOUSE_EXISTED("该房源已存在,授权编号：{}"),
+    //fang_mgt
+    FANG_MGT_ERROR_DEPT("所选部门不合法"),
+    FANG_MGT_ERROR_EMPLOYEE("所选员工不合法"),
 
 
     //json
