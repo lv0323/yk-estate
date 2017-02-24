@@ -23,7 +23,6 @@ import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.spec.xiaoqu.rest.def.XQSummaryOrder;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.*;
 import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService;
-import com.lyun.estate.biz.xiaoqu.entity.Community;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuDetailBean;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSummaryBean;
@@ -33,7 +32,6 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -216,11 +214,6 @@ public class XiaoQuServiceImpl implements XiaoQuService {
 
 
     @Override
-    public List<Community> findAllCommunity() {
-        return xiaoQuRepository.findAllCommunity();
-    }
-
-    @Override
     public List<FileDescription> files(Long xiaoQuId, CustomType customType) {
         customType = Optional.ofNullable(customType).orElse(CustomType.SHI_JING);
         if (Lists.newArrayList(CustomType.SHI_JING, CustomType.HU_XING).contains(customType)) {
@@ -231,9 +224,4 @@ public class XiaoQuServiceImpl implements XiaoQuService {
 
     }
 
-    @Override
-    @Transactional
-    public int updateKeyword(Long id, String keyword) {
-        return xiaoQuRepository.updateCommunityKeyword(id, keyword);
-    }
 }
