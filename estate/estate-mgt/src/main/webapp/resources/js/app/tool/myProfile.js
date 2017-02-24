@@ -19,13 +19,6 @@ require(['main-app',
             var entryDate = UtilService.timeStamp2Date(data.entryDate);
             $('#entryDate').text(entryDate);
             $('#wechat').text(data.wechat);
-
-            if(data.avatarId!==null){
-                $('#myProfile i').hide();
-                EmployeeService.getAvatar(header).done(function (res) {
-                    $('#myProfile img').attr('src',res.url).show();
-                });
-            }
         };
         EmployeeService.getSelf(header).done(function (data) {
             loadPage(data, header);
@@ -46,25 +39,20 @@ require(['main-app',
         function readFile(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-
                 reader.onload = function (e) {
                     $('.previewImg').addClass('ready');
                     $uploadCrop.croppie('bind', {
                         url: e.target.result
                     }).then(function(){
-                        console.log('jQuery bind complete');
+                        //console.log('jQuery bind complete');
                     });
-
-                }
-
+                };
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
         $('#toUplImgFileInput').on('change',function () {
-
             readFile(this);
-
         });
 
         $('#confirmChangeAvatarBtn').on('click',function () {

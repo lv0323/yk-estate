@@ -83,3 +83,4 @@
 
 </div>
 <#include "/common/footer.ftl" />
+<script src="${contextPath!}/js/app/system/operationLog.js"></script>
