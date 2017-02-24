@@ -104,7 +104,7 @@ public class HouseDictService {
         return houseDictRepo.findBuildingUnitByBuildingId(buildingId);
     }
 
-    public List<XiaoQuOption> xiaoQuOptions(Long cityId) {
-        return houseDictRepo.findXiaoQuOptions(cityId);
+    public List<XiaoQuOption> top20XiaoQuOptions(Long cityId) {
+        return houseDictRepo.findTop20XiaoQuOptions(cityId);
     }
 }
