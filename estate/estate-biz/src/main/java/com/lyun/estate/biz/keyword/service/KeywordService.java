@@ -13,7 +13,6 @@ import com.lyun.estate.biz.keyword.repository.KeywordRepository;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService;
 import com.lyun.estate.biz.support.def.DomainType;
-import com.lyun.estate.biz.housedict.entity.Community;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +52,19 @@ public class KeywordService {
     public List<KeywordBean> findContain(String keyword, Long cityId, ArrayList<DomainType> scopes, Integer limit) {
         List<KeywordBean> results = new ArrayList<>();
         limit = Optional.ofNullable(limit).orElse(Integer.MAX_VALUE);
+        keyword = stringFilter(keyword);
+        String keywordPinyin = null;
+        String shortPinyin = null;
+        List<String> chinesChars = findChinese(keyword);
+        try {
+            keywordPinyin = PinyinHelper.convertToPinyinString(keyword, "", PinyinFormat.WITHOUT_TONE);
+            if (!CollectionUtils.isEmpty(chinesChars)) {
+                shortPinyin = PinyinHelper.getShortPinyin(keyword);
+            }
+        } catch (PinyinException e) {
+            logger.warn("查询关键词[{}]转换发生错误[{}],忽略", keyword, e.getMessage());
+        }
+
         if (scopes == null || Strings.isNullOrEmpty(keyword) || limit <= 0) {
             return results;
         }
@@ -66,7 +78,7 @@ public class KeywordService {
                 if (count >= limit) {
                     break;
                 }
-                if (keywordMatch(keywordBean, keyword)) {
+                if (keywordMatch(keywordBean, keyword, chinesChars, keywordPinyin, shortPinyin)) {
                     results.add(keywordBean);
                     count++;
                 }
@@ -94,6 +106,19 @@ public class KeywordService {
     public List<KeywordBean> findNameMatch(String keyword, Long cityId, ArrayList<DomainType> scopes, Integer limit) {
         List<KeywordBean> results = new ArrayList<>();
         limit = Optional.ofNullable(limit).orElse(Integer.MAX_VALUE);
+        keyword = stringFilter(keyword);
+        List<String> chinesChars = findChinese(keyword);
+        String keywordPinyin = null;
+        String shortPinyin = null;
+        try {
+            keywordPinyin = PinyinHelper.convertToPinyinString(keyword, "", PinyinFormat.WITHOUT_TONE);
+            if (!CollectionUtils.isEmpty(chinesChars)) {
+                shortPinyin = PinyinHelper.getShortPinyin(keyword);
+            }
+        } catch (PinyinException e) {
+            logger.warn("查询关键词[{}]转换发生错误[{}],忽略", keyword, e.getMessage());
+        }
+
         if (scopes == null || Strings.isNullOrEmpty(keyword) || limit <= 0) {
             return results;
         }
@@ -107,7 +132,7 @@ public class KeywordService {
                 if (count >= limit) {
                     break;
                 }
-                if (keywordMatch(keywordBean, keyword)) {
+                if (keywordMatch(keywordBean, keyword, chinesChars, keywordPinyin, shortPinyin)) {
                     results.add(keywordBean);
                     count++;
                 }
@@ -263,14 +288,10 @@ public class KeywordService {
      * @param target
      * @return
      */
-    private boolean keywordMatch(KeywordBean keywordBean, String target) {
-        if (keywordBean == null || StringUtils.isEmpty(keywordBean.getKeyword()) || StringUtils.isEmpty(target)) {
+    private boolean keywordMatch(KeywordBean keywordBean, String target, List<String> chineseChars, String targetPinyin,
+                                 String shortPinyin) {
+        if (keywordBean == null || StringUtils.isEmpty(keywordBean.getKeyword())) {
             logger.warn("存储关键词[{}]不合法或者查询关键词[{}]为空,忽略", keywordBean, target);
-            return false;
-        }
-        target = stringFilter(target);
-        if (StringUtils.isEmpty(target)) {
-            logger.warn("查询关键词[{}]为空,忽略", target);
             return false;
         }
 
@@ -282,32 +303,17 @@ public class KeywordService {
         if (contains(keywordBean.getAlias(), target)) {
             return true;
         }
-        /* 关键词包含 */
-        String pinyin = null;
-        try {
-            pinyin = PinyinHelper.convertToPinyinString(target, "", PinyinFormat.WITHOUT_TONE);
-            if (StringUtils.isEmpty(pinyin)) {
-                logger.warn("查询关键词[{}]转换后为空,忽略", target);
-                return false;
-            }
-            if (contains(keywordBean.getKeyword(), pinyin)) {
-                return true;
-            }
-        } catch (PinyinException e) {
-            logger.warn("查询关键词[{}]转换发生错误[{}],忽略", target, e.getMessage());
-            return false;
+
+        /* 全拼匹配 */
+        if (!StringUtils.isEmpty(targetPinyin) && contains(keywordBean.getKeyword(), targetPinyin)) {
+            return true;
         }
-        /* 不包含汉字进行首字母匹配 */
-        List<String> chineseList = containsChinese(target);
-        if (CollectionUtils.isEmpty(chineseList)) {
-            /* 首字母匹配 */
-            try {
-                String shortPinyin = PinyinHelper.getShortPinyin(target);
-                if (contains(keywordBean.getKeyword(), shortPinyin)) {
-                    return true;
-                }
-            } catch (PinyinException e) {
-                return false;
+
+        /* 简拼匹配，且含中文 */
+        if (!StringUtils.isEmpty(shortPinyin) && contains(keywordBean.getKeyword(), shortPinyin)) {
+            String nameAlias = keywordBean.getName() + Strings.nullToEmpty(keywordBean.getAlias());
+            if (chineseChars.stream().allMatch(t -> contains(nameAlias, t))) {
+                return true;
             }
         }
 
@@ -321,6 +327,7 @@ public class KeywordService {
      * @param target
      * @return
      */
+
     private boolean contains(String src, String target) {
         if (StringUtils.isEmpty(src) || StringUtils.isEmpty(target)) {
             return false;
@@ -346,7 +353,7 @@ public class KeywordService {
         return m.replaceAll("").trim();
     }
 
-    private List<String> containsChinese(String src) {
+    private List<String> findChinese(String src) {
         List<String> chineseList = new ArrayList<String>();
         for (String s : src.split("")) {
             if (ChineseHelper.isChinese(s.charAt(0)) || s.charAt(0) == CHINESE_LING) {

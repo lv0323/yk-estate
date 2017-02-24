@@ -1,5 +1,6 @@
 package com.lyun.estate.mgt.housedict;
 
+import com.lyun.estate.biz.housedict.domain.XiaoQuOption;
 import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.entity.BuildingUnit;
 import com.lyun.estate.mgt.housedict.service.HouseDictMgtService;
@@ -54,6 +55,11 @@ public class HouseDictRest {
     @GetMapping("building-unit")
     public List<BuildingUnit> findBuildingUnitsByBuildingId(@RequestParam Long buildingId) {
         return houseDictMgtService.findBuildingUnitsByBuildingId(buildingId);
+    }
+
+    @GetMapping("xiao-qu-option")
+    public List<XiaoQuOption> keywords(@RequestParam String keyword) {
+        return houseDictMgtService.xiaoQuOptions(keyword);
     }
 
 }

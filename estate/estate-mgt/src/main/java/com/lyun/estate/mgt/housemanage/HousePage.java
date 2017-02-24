@@ -1,6 +1,5 @@
 package com.lyun.estate.mgt.housemanage;
 
-import com.lyun.estate.biz.housedict.service.HouseDictService;
 import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
 import com.lyun.estate.mgt.housedict.service.HouseDictMgtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +25,17 @@ public class HousePage {
     @GetMapping("/houseList")
     public ModelAndView houseList() {
         HashMap<String, Object> params = new HashMap<>();
-        params.put("avatarUrl",service.getAvatar());
-        params.put("username",service.getUsername());
+        params.put("avatarUrl", service.getAvatar());
+        params.put("username", service.getUsername());
         return new ModelAndView("/houseManage/houseList", params);
     }
+
     @GetMapping("/addHouse")
     public ModelAndView addHouse() {
         HashMap<String, Object> params = new HashMap<>();
-        params.put("avatarUrl",service.getAvatar());
-        params.put("username",service.getUsername());
-        params.put("xiaoQuOptions",houseDictMgtService.xiaoQuOptions());
+        params.put("avatarUrl", service.getAvatar());
+        params.put("username", service.getUsername());
+        params.put("xiaoQuOptions", houseDictMgtService.xiaoQuOptions(null));
         return new ModelAndView("/houseManage/addHouse", params);
     }
 }
