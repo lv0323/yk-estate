@@ -10,13 +10,13 @@ public enum WorkingStatus {
     LEAVING("请假"),
     INTERN("实习");
 
-    private String status;
+    private String label;
 
-    WorkingStatus(String status) {
-        this.status = status;
+    WorkingStatus(String label) {
+        this.label = label;
     }
 
-    public String getStatus() {
-        return status;
+    public String getLabel() {
+        return label;
     }
 }
