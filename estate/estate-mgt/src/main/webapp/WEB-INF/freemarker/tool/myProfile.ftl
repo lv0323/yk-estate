@@ -48,13 +48,13 @@
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">旧密码：</label>
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">旧密码</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="password" id="myOldPassword" class="form-control pull-right" placeholder="请输入旧密码">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">新密码：</label>
+                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">新密码</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="password" id="myNewPassword" class="form-control pull-right" placeholder="请输入新密码">
                         </div>
@@ -103,8 +103,11 @@
                                         </a>
                                     </div>
                                     <div id="myProfile" style="max-width:300px; margin:0 auto;">
-                                        <i class="fa fa-user-o fa-5x" style="margin-top:30px;" aria-hidden="true"></i>
-                                        <img src="" style="width:120px; height:160px; border:2px solid #d2d6de; display: none;">
+                                        <#if avatarUrl??>
+                                            <img src="${avatarUrl}" style="width:120px; height:160px;display: inline-block;">
+                                            <#else>
+                                                <img src="${contextPath!}/img/common/avatar-default.png" style="width:120px; height:160px; border:2px solid #d2d6de;">
+                                        </#if>
                                         <h5 class="clearfix" id="myProfileUsername"></h5>
                                     </div>
                                 </div>

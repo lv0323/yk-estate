@@ -78,9 +78,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             })
             $.fn.zTree.init($("#departmentTree"), zTreeSetting, departments);
         }
-        DepartmentService.getAllDepartment().done(function(data){
-           departmentTree(data);
-        });
+
        /* end部门树*/
 
         var displayFilteredEmployee = function (data) {
@@ -153,7 +151,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 totalCounts:dataTotal,
                 pageSize: pageConfig.limit,
                 onChange: function (num, type) {
-                    filterEmployee((num-1)*pageConfig.limit, pageConfig.limit);
+                    filterEmployee(null, (num-1)*pageConfig.limit, pageConfig.limit);
                 }
             };
             pagingPlugin.init(config);
@@ -183,6 +181,9 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                     displayFilteredEmployee(EmployeeService.allEmployee);
                 }
                 pagination(data.total);
+                DepartmentService.getAllDepartment().done(function(data){
+                    departmentTree(data);
+                });
             });
         }
 
