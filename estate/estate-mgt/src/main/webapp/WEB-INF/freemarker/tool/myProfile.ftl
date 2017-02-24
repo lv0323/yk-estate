@@ -1,6 +1,41 @@
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
 
+<!-- Modal changeAvatarDialog -->
+<div class="modal fade" id="changeAvatarDialog" tabindex="-1" role="dialog" aria-labelledby="changeAvatarLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title" id="changeAvatarLabel">修改头像</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" enctype="multipart/form-data">
+                    <div class="form-group previewImg">
+                        <div class="col-lg-9 col-md-9 col-sm-9 pull-right">
+                            <div id="previewImg" style="width: 300px; height: 300px;"></div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <a class="btn btn-file btn-primary">
+                                <span>上传图片</span>
+                                <input type="file" id="toUplImgFileInput">
+                            </a>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmChangeAvatarBtn">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Modal changeMyPasswordDialog -->
 <div class="modal fade" id="changeMyPasswordDialog" tabindex="-1" role="dialog" aria-labelledby="changeMyPasswordLabel">
     <div class="modal-dialog" role="document">
@@ -63,14 +98,14 @@
                             <div class="box-body no-padding text-center">
                                 <div class="col-md-3 col-sm-3">
                                     <div class="clearfix">
-                                        <a class="btn pull-right">
+                                        <a id="changeAvatarBtn" data-toggle="modal" data-target="#changeAvatarDialog" class="btn pull-right">
                                             <i class="fa fa-pencil" aria-hidden="true"></i>
                                             修改头像
                                         </a>
                                     </div>
-                                    <div style="max-width:300px; margin:0 auto;">
+                                    <div id="myProfile" style="max-width:300px; margin:0 auto;">
                                         <i class="fa fa-user-o fa-5x" style="margin-top:30px;" aria-hidden="true"></i>
-                                        <img style="width:150px; height:150px; border:2px solid #d2d6de; display: none;">
+                                        <img src="" style="width:120px; height:160px; border:2px solid #d2d6de; display: none;">
                                         <h5 class="clearfix" id="myProfileUsername"></h5>
                                     </div>
                                 </div>

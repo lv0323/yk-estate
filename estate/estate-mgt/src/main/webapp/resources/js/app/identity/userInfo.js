@@ -9,15 +9,16 @@ require(['main-app',
 
 
         if(userInfo && userInfo.id && user.length>0){
-            $('.navbar-custom-menu .username').text(userInfo.name);
-            $('.user-panel .info .username').text(userInfo.name);
-            EmployeeService.getAvatar({id:userInfo.id}).then(function(response){
+            //$('.navbar-custom-menu .username').text(userInfo.name);
+            //$('.user-panel .info .username').text(userInfo.name);
+            /*EmployeeService.getAvatar({id:userInfo.id}).then(function(response){
                 if(response && response.url){
                  $('.user-menu .user-image,.user-menu .img-circle').attr('src',response.url).show(0);
                  $('.user-panel .user-panelImg >i').css('display','none');
                     $('.user-panel .user-panelImg >img').attr('src',response.url).show(0);
                 }
-            });
+            });*/
+
             $('body').on('click', '.btn-logout', function(){
                 IdentityService.logout().done(function(response){
                     window.location.replace('/mgt/index');

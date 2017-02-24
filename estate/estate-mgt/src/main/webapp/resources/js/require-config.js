@@ -21,7 +21,8 @@ requirejs.config({
         'jqPaginator': 'plugins/pagination/jqPaginator',
         'locationUtil': 'utils/location-util',
         'adminLTE': 'app/AdminLTE/index',
-        'adminLTEdemo': 'app/AdminLTE/demo'
+        'adminLTEdemo': 'app/AdminLTE/demo',
+        'Croppie': 'plugins/croppie/croppie.min'
     },
     shim: {
         'bootstrap': ['jquery'],
@@ -55,6 +56,10 @@ requirejs.config({
         'locationUtil':{
             deps: ['jquery'],
             exports: 'locationUtil'
+        },
+        'Croppie':{
+            deps: ['jquery'],
+            exports: 'Croppie'
         }
     },
     waitSeconds: 0,

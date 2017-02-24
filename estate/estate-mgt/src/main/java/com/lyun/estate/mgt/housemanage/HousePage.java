@@ -1,6 +1,7 @@
 package com.lyun.estate.mgt.housemanage;
 
 import com.lyun.estate.biz.housedict.service.HouseDictService;
+import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
 import com.lyun.estate.mgt.housedict.service.HouseDictMgtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,17 +19,22 @@ import java.util.HashMap;
 public class HousePage {
     @Autowired
     private HouseDictMgtService houseDictMgtService;
+    @Autowired
+    private EmployeeMgtService service;
 
 
     @GetMapping("/houseList")
     public ModelAndView houseList() {
-        HashMap<String, String> params = new HashMap<>();
-        params.put("message", "message");
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("avatarUrl",service.getAvatar());
+        params.put("username",service.getUsername());
         return new ModelAndView("/houseManage/houseList", params);
     }
     @GetMapping("/addHouse")
     public ModelAndView addHouse() {
         HashMap<String, Object> params = new HashMap<>();
+        params.put("avatarUrl",service.getAvatar());
+        params.put("username",service.getUsername());
         params.put("xiaoQuOptions",houseDictMgtService.xiaoQuOptions());
         return new ModelAndView("/houseManage/addHouse", params);
     }
