@@ -3,7 +3,7 @@ package com.lyun.estate.rest.user;
 import com.lyun.estate.biz.auth.token.CheckToken;
 import com.lyun.estate.biz.auth.token.JWTToken;
 import com.lyun.estate.biz.support.def.DomainType;
-import com.lyun.estate.biz.favorite.service.FollowService;
+import com.lyun.estate.biz.follow.service.FollowService;
 import com.lyun.estate.rest.supports.resources.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

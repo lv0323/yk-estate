@@ -1,6 +1,6 @@
-package com.lyun.estate.biz.favorite.repository;
+package com.lyun.estate.biz.follow.repository;
 
-import com.lyun.estate.biz.favorite.entity.Follow;
+import com.lyun.estate.biz.follow.entity.Follow;
 import com.lyun.estate.biz.support.def.DomainType;
 import org.apache.ibatis.annotations.*;
 

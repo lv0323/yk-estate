@@ -9,7 +9,6 @@ import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuFilter;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuStationRel;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuSummary;
-import com.lyun.estate.biz.xiaoqu.entity.Community;
 
 import java.util.List;
 
@@ -28,10 +27,6 @@ public interface XiaoQuService {
     PageList<XiaoQuSummary> findNearbyXiaoQu(Long id);
 
     List<XiaoQuStationRel> findStations(Long xiaoQuId);
-
-    int updateKeyword(Long id, String keyword);
-
-    List<Community> findAllCommunity();
 
     List<FileDescription> files(Long xiaoQuId, CustomType customType);
 }

@@ -1,7 +1,7 @@
-package com.lyun.estate.biz.favorite.service;
+package com.lyun.estate.biz.follow.service;
 
-import com.lyun.estate.biz.favorite.entity.Follow;
-import com.lyun.estate.biz.favorite.repository.FollowMapper;
+import com.lyun.estate.biz.follow.entity.Follow;
+import com.lyun.estate.biz.follow.repository.FollowMapper;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.EasyCodeException;

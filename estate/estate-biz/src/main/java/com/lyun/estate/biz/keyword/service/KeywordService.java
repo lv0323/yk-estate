@@ -13,7 +13,7 @@ import com.lyun.estate.biz.keyword.repository.KeywordRepository;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService;
 import com.lyun.estate.biz.support.def.DomainType;
-import com.lyun.estate.biz.xiaoqu.entity.Community;
+import com.lyun.estate.biz.housedict.entity.Community;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -229,7 +229,7 @@ public class KeywordService {
                 });
             });
         });
-        List<Community> allCommunity = xiaoQuService.findAllCommunity();
+        List<Community> allCommunity = cityService.findAllCommunity();
         allCommunity.forEach(c -> {
             String communityName = stringFilter(c.getName());
             String communityAlias = stringFilter(c.getAlias());
@@ -247,7 +247,7 @@ public class KeywordService {
                                 .append(PINYIN_SPLIT)
                                 .append(PinyinHelper.getShortPinyin(communityAlias));
                     }
-                    xiaoQuService.updateKeyword(c.getId(), keyword.toString());
+                    cityService.updateKeyword(c.getId(), keyword.toString());
                 } catch (PinyinException e) {
                     logger.warn("汉字[{}]转换成拼音发生异常[{}]", c.getName(), e.getMessage());
                 }

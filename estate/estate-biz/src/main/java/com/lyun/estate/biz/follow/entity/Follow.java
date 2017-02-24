@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.favorite.entity;
+package com.lyun.estate.biz.follow.entity;
 
 import com.lyun.estate.biz.support.def.DomainType;
 

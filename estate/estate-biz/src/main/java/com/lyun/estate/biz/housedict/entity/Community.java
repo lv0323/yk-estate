@@ -1,8 +1,4 @@
-package com.lyun.estate.biz.xiaoqu.entity;
-
-import com.lyun.estate.core.supports.types.YN;
-
-import java.math.BigDecimal;
+package com.lyun.estate.biz.housedict.entity;
 
 /**
  * Created by Jeffrey on 2017-01-12.
