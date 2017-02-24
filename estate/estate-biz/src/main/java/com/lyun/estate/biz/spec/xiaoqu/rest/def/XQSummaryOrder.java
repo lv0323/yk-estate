@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.spec.xiaoqu.def;
+package com.lyun.estate.biz.spec.xiaoqu.rest.def;
 
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.google.common.collect.Lists;

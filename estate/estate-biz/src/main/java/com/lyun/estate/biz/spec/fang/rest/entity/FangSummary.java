@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.spec.fang.entity;
+package com.lyun.estate.biz.spec.fang.rest.entity;
 
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.core.supports.types.YN;

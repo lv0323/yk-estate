@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.spec.fang.service;
+package com.lyun.estate.biz.spec.fang.rest.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
@@ -6,10 +6,10 @@ import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.spec.fang.entity.FangDetail;
-import com.lyun.estate.biz.spec.fang.entity.FangFilter;
-import com.lyun.estate.biz.spec.fang.entity.FangSummary;
-import com.lyun.estate.biz.spec.fang.entity.FangSummaryOrder;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangDetail;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangFilter;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangSummaryOrder;
 
 import java.util.List;
 

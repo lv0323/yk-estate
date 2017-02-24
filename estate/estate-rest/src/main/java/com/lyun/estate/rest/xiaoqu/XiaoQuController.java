@@ -9,11 +9,11 @@ import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.keyword.entity.KeywordResp;
 import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.support.def.DomainType;
-import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuFilter;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuSummary;
-import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
+import com.lyun.estate.biz.spec.xiaoqu.rest.def.XQSummaryOrder;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuDetail;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuFilter;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuSummary;
+import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

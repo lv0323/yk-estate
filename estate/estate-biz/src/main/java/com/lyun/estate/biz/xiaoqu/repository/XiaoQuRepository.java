@@ -2,7 +2,7 @@ package com.lyun.estate.biz.xiaoqu.repository;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuStationRel;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuStationRel;
 import com.lyun.estate.biz.xiaoqu.entity.Community;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuDetailBean;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;

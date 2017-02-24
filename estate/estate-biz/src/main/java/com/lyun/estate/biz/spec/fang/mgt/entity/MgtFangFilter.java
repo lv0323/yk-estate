@@ -1,18 +1,17 @@
-package com.lyun.estate.biz.spec.fang.entity;
+package com.lyun.estate.biz.spec.fang.mgt.entity;
 
 import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.biz.fang.def.StructureType;
-import com.lyun.estate.biz.spec.fang.def.ElevatorFilter;
-import com.lyun.estate.biz.spec.fang.def.HouseTypeFilter;
-import com.lyun.estate.biz.spec.fang.def.IntPair;
-import com.lyun.estate.biz.spec.fang.def.ShiCountsFilter;
+import com.lyun.estate.biz.spec.fang.rest.def.ElevatorFilter;
+import com.lyun.estate.biz.spec.fang.rest.def.HouseTypeFilter;
+import com.lyun.estate.biz.spec.fang.rest.def.IntPair;
+import com.lyun.estate.biz.spec.fang.rest.def.ShiCountsFilter;
 
 import java.util.List;
 
 /**
  * Created by Jeffrey on 2017-01-09.
  */
-public class FangFilter {
+public class MgtFangFilter {
     private Long cityId;
     private BizType bizType;
     private Long districtId;
@@ -37,7 +36,7 @@ public class FangFilter {
         return cityId;
     }
 
-    public FangFilter setCityId(Long cityId) {
+    public MgtFangFilter setCityId(Long cityId) {
         this.cityId = cityId;
         return this;
     }
@@ -46,7 +45,7 @@ public class FangFilter {
         return bizType;
     }
 
-    public FangFilter setBizType(BizType bizType) {
+    public MgtFangFilter setBizType(BizType bizType) {
         this.bizType = bizType;
         return this;
     }
@@ -55,7 +54,7 @@ public class FangFilter {
         return districtId;
     }
 
-    public FangFilter setDistrictId(Long districtId) {
+    public MgtFangFilter setDistrictId(Long districtId) {
         this.districtId = districtId;
         return this;
     }
@@ -64,7 +63,7 @@ public class FangFilter {
         return subDistrictId;
     }
 
-    public FangFilter setSubDistrictId(Long subDistrictId) {
+    public MgtFangFilter setSubDistrictId(Long subDistrictId) {
         this.subDistrictId = subDistrictId;
         return this;
     }
@@ -73,7 +72,7 @@ public class FangFilter {
         return lineId;
     }
 
-    public FangFilter setLineId(Long lineId) {
+    public MgtFangFilter setLineId(Long lineId) {
         this.lineId = lineId;
         return this;
     }
@@ -82,7 +81,7 @@ public class FangFilter {
         return stationId;
     }
 
-    public FangFilter setStationId(Long stationId) {
+    public MgtFangFilter setStationId(Long stationId) {
         this.stationId = stationId;
         return this;
     }
@@ -91,7 +90,7 @@ public class FangFilter {
         return shiCountsFilters;
     }
 
-    public FangFilter setShiCountsFilters(
+    public MgtFangFilter setShiCountsFilters(
             List<ShiCountsFilter> shiCountsFilters) {
         this.shiCountsFilters = shiCountsFilters;
         return this;
@@ -101,7 +100,7 @@ public class FangFilter {
         return orientations;
     }
 
-    public FangFilter setOrientations(List<Orientation> orientations) {
+    public MgtFangFilter setOrientations(List<Orientation> orientations) {
         this.orientations = orientations;
         return this;
     }
@@ -110,7 +109,7 @@ public class FangFilter {
         return houseTags;
     }
 
-    public FangFilter setHouseTags(List<HouseTag> houseTags) {
+    public MgtFangFilter setHouseTags(List<HouseTag> houseTags) {
         this.houseTags = houseTags;
         return this;
     }
@@ -119,7 +118,7 @@ public class FangFilter {
         return floorTypes;
     }
 
-    public FangFilter setFloorTypes(List<FloorType> floorTypes) {
+    public MgtFangFilter setFloorTypes(List<FloorType> floorTypes) {
         this.floorTypes = floorTypes;
         return this;
     }
@@ -128,7 +127,7 @@ public class FangFilter {
         return decorates;
     }
 
-    public FangFilter setDecorates(List<Decorate> decorates) {
+    public MgtFangFilter setDecorates(List<Decorate> decorates) {
         this.decorates = decorates;
         return this;
     }
@@ -137,7 +136,7 @@ public class FangFilter {
         return elevatorFilters;
     }
 
-    public FangFilter setElevatorFilters(List<ElevatorFilter> elevatorFilters) {
+    public MgtFangFilter setElevatorFilters(List<ElevatorFilter> elevatorFilters) {
         this.elevatorFilters = elevatorFilters;
         return this;
     }
@@ -146,7 +145,7 @@ public class FangFilter {
         return structureTypes;
     }
 
-    public FangFilter setStructureTypes(List<StructureType> structureTypes) {
+    public MgtFangFilter setStructureTypes(List<StructureType> structureTypes) {
         this.structureTypes = structureTypes;
         return this;
     }
@@ -155,7 +154,7 @@ public class FangFilter {
         return minPrice;
     }
 
-    public FangFilter setMinPrice(Integer minPrice) {
+    public MgtFangFilter setMinPrice(Integer minPrice) {
         this.minPrice = minPrice;
         return this;
     }
@@ -164,7 +163,7 @@ public class FangFilter {
         return maxPrice;
     }
 
-    public FangFilter setMaxPrice(Integer maxPrice) {
+    public MgtFangFilter setMaxPrice(Integer maxPrice) {
         this.maxPrice = maxPrice;
         return this;
     }
@@ -173,7 +172,7 @@ public class FangFilter {
         return keyword;
     }
 
-    public FangFilter setKeyword(String keyword) {
+    public MgtFangFilter setKeyword(String keyword) {
         this.keyword = keyword;
         return this;
     }
@@ -182,7 +181,7 @@ public class FangFilter {
         return areas;
     }
 
-    public FangFilter setAreas(List<IntPair> areas) {
+    public MgtFangFilter setAreas(List<IntPair> areas) {
         this.areas = areas;
         return this;
     }
@@ -191,7 +190,7 @@ public class FangFilter {
         return years;
     }
 
-    public FangFilter setYears(List<IntPair> years) {
+    public MgtFangFilter setYears(List<IntPair> years) {
         this.years = years;
         return this;
     }
@@ -200,7 +199,7 @@ public class FangFilter {
         return houseTypeFilters;
     }
 
-    public FangFilter setHouseTypeFilters(
+    public MgtFangFilter setHouseTypeFilters(
             List<HouseTypeFilter> houseTypeFilters) {
         this.houseTypeFilters = houseTypeFilters;
         return this;
