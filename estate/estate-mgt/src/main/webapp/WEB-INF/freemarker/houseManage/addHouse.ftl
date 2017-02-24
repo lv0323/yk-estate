@@ -12,7 +12,7 @@
         <section class="content-header">
             <ol class="breadcrumb">
                 <li><i class="fa fa-home fa-lg"></i><a href="#">房源管理</a></li>
-                <li class="active"><span>{{ctrl.desc.pageName}}</span></li>
+                <li class="active"><span ng-bind="ctrl.desc.pageName"></span></li>
             </ol>
         </section>
         <!-- Main content -->
@@ -21,7 +21,7 @@
             <!-- Main row -->
             <div class="row animated fadeInRight">
                 <div class="col-lg-12">
-                    <div class="box box-solid">
+                    <div class="box box-solid" ng-cloak>
                         <div class="box-header with-border">
                             <h3 class="box-title">新增住宅</h3>
                         </div>
@@ -48,7 +48,6 @@
                                     <ul id="status">
                                         <li ng-class="{active:ctrl.currentStep === ctrl.stepConfig.step1}"><strong>1.</strong>基本信息<span class="chevron"></span></li>
                                         <li ng-class="{active:ctrl.currentStep === ctrl.stepConfig.step2}"><strong>2.</strong>配套信息<span class="chevron"></span></li>
-                                        <!--<li><strong>3.</strong>勘察信息<span class="chevron"></span></li>-->
                                     </ul>
                                     <div class="items" ng-class="{'step2': ctrl.currentStep === ctrl.stepConfig.step2}">
                                         <div class="page" id="page1">
@@ -68,7 +67,7 @@
                                                     <label class="mt7">编号：自动生成</label>
                                                 </div>
                                             </div>
-                                            <div class="form-group clearfix">
+                                            <div class="form-group clearfix" id="estateContainer">
                                                 <label class="control-label">物业地址</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
                                                     <select id="houseEstate" data-placeholder="楼盘字典" class="chosen-select"
@@ -77,8 +76,7 @@
                                                     <#--<#list xiaoQuOptions?if_exists as xq>
                                                         <option type="radio" value="${xq.getXiaoQuId()}">${xq.getXiaoQuName()}</option>
                                                     </#list>-->
-                                                            <#--<option value="" header="">栋座</option>-->
-                                                     <option ng-repeat="estate in ctrl.estateList" repeat-done="ctrl.initChosen('#houseEstate', 'estate')" ng-value="estate.value">{{estate.name}}</option>
+                                                   <option ng-repeat="estate in ctrl.estateList" repeat-done="ctrl.chosenInitEstate('#houseEstate', 'estate')" ng-value="estate.value">{{estate.name}}</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-3 col-md-3 col-sm-3 no-padding">
@@ -104,10 +102,10 @@
                                                 <div class="col-lg-1 col-md-1 col-sm-1">
                                                     <input type="text" name="houseFloorAll" reg="^\S+$" class="form-control" placeholder="总层" ng-model="ctrl.data.floorAll"/>
                                                 </div>
-                                                <div class="pull-left m-l-5" ng-show="ctrl.data.estate&&!ctrl.data.build">
+                                                <div class="pull-left m-l-5" ng-show="ctrl.data.estate&&!ctrl.data.build" data-toggle="modal" data-target="#addBuildModel" ng-click="ctrl.addBuildInit()">
                                                     <button type="button" class="btn btn-primary" id="changes">申请添加栋座</button>
                                                 </div>
-                                                <div class="pull-left m-l-5" ng-show="ctrl.data.estate&&ctrl.data.build">
+                                                <div class="pull-left m-l-5" ng-show="ctrl.data.estate&&ctrl.data.build" data-toggle="modal" data-target="#addUnitModel" ng-click="ctrl.addUnitInit()">
                                                     <button type="button" class="btn btn-primary" id="changes">申请添加单元</button>
                                                 </div>
                                             </div>
@@ -144,7 +142,15 @@
                                                         <input type="hidden" name="houseVO.fyHouseCountt" class="fyHousetailCountt"/>
                                                         <input type="hidden" name="houseVO.fyHouseCountw" class="fyHousetailCountw"/>
                                                         <input type="hidden" name="houseVO.fyHouseCounty" class="fyHousetailCounty"/>
-                                                        <a class="houseHold" href="#"  class="m-l-30"><i class="fa fa-th-list"></i>选择户型</a>
+                                                        <a class="houseHold" data-toggle="modal" data-target="#layoutModel" href="#"  class="m-l-30" ng-click="ctrl.layoutDialogShow()">
+                                                            <i class="fa fa-th-list"></i>
+                                                            <span ng-bind="(ctrl.data.layout.shi || ctrl.data.layout.ting || ctrl.data.layout.chu || ctrl.data.layout.wei || ctrl.data.layout.yangtai) ?
+                                                            (ctrl.data.layout.shi? ctrl.data.layout.shi+'室':'') +
+                                                            (ctrl.data.layout.ting ? ctrl.data.layout.ting+'厅':'') +
+                                                            (ctrl.data.layout.chu?ctrl.data.layout.chu+'厨':'') +
+                                                            (ctrl.data.layout.wei?ctrl.data.layout.wei+'卫':'') +
+                                                            (ctrl.data.layout.yangtai?ctrl.data.layout.yangtai+'阳台':'') :'选择户型'"></span>
+                                                        </a>
                                                     </p>
                                                 </div>
                                             </div>
@@ -471,125 +477,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--<div class="page">
-                                                <div class="form-group clearfix">
-                                                    <label class="col-lg-2 control-label">配套</label>
-                                                    <div class="col-lg-8 col-md-8">
-                                                        <input type="text" id="fyHousetailMatch" name="housetailVO.fyHousetailMatch" class="form-control" placeholder="地下室、小房、、、" />
-                                                    </div>
-                                                </div>
-                                                <div class="form-group clearfix">
-                                                    <label class="col-lg-2 control-label">家具</label>
-                                                    <div class="col-lg-8 col-md-8">
-                                                        <input type="text" name="housetailVO.fyHousetailFurnit" class="form-control" placeholder="双人床1张、单人床2张、橱柜、餐桌、电脑桌、、、" />
-                                                    </div>
-                                                </div>
-                                                <div class="form-group clearfix">
-                                                    <label class="col-lg-2 control-label">家电</label>
-                                                    <div class="col-lg-8 col-md-8">
-                                                        <input type="text" name="housetailVO.fyHousetailElectri" class="form-control" placeholder="电视、冰箱、空调、微波炉、、、" />
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <h5>选择户型图</h5>
-                                                    <div class="row">
-                                                        <div class="col-lg-2 col-sm-6 col-md-3">
-                                                            <div class="thumbnail">
-                                                                <label class="control-label pull-right text-right" style="margin-bottom:5px">
-                                                                    <input type="checkbox" name="r3" class="flat-red" checked/> 选择
-                                                                </label>
-                                                                <img src="../images/house.jpg">
-                                                                <div class="caption clearfix">
-                                                                    <div class="clearfix m-b-15">
-                                                                        <span class="pull-left">2室2厅1卫2阳台</span>
-                                                                        <span class="pull-right">128平米</span>
-                                                                    </div>
-                                                                    <label class="label label-success">住宅</label>
-                                                                    <label class="label label-info">南北通透</label>
-                                                                    <label class="label label-danger">车位</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-2 col-sm-6 col-md-3">
-                                                            <div class="thumbnail">
-                                                                <label class="control-label pull-right text-right" style="margin-bottom:5px">
-                                                                    <input type="checkbox" name="r3" class="flat-red" checked/> 选择
-                                                                </label>
-                                                                <img src="../images/house.jpg">
-                                                                <div class="caption clearfix">
-                                                                    <div class="clearfix m-b-15">
-                                                                        <span class="pull-left">2室2厅1卫2阳台</span>
-                                                                        <span class="pull-right">128平米</span>
-                                                                    </div>
-                                                                    <label class="label label-success">住宅</label>
-                                                                    <label class="label label-info">南北通透</label>
-                                                                    <label class="label label-danger">车位</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-2 col-sm-6 col-md-3">
-                                                            <div class="thumbnail">
-                                                                <label class="control-label pull-right text-right" style="margin-bottom:5px">
-                                                                    <input type="checkbox" name="r3" class="flat-red" checked/> 选择
-                                                                </label>
-                                                                <img src="../images/house.jpg">
-                                                                <div class="caption clearfix">
-                                                                    <div class="clearfix m-b-15">
-                                                                        <span class="pull-left">2室2厅1卫2阳台</span>
-                                                                        <span class="pull-right">128平米</span>
-                                                                    </div>
-                                                                    <label class="label label-success">住宅</label>
-                                                                    <label class="label label-info">南北通透</label>
-                                                                    <label class="label label-danger">车位</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-2 col-sm-6 col-md-3">
-                                                            <div class="thumbnail">
-                                                                <label class="control-label pull-right text-right" style="margin-bottom:5px">
-                                                                    <input type="checkbox" name="r3" class="flat-red" checked/> 选择
-                                                                </label>
-                                                                <img src="../images/house.jpg">
-                                                                <div class="caption clearfix">
-                                                                    <div class="clearfix m-b-15">
-                                                                        <span class="pull-left">2室2厅1卫2阳台</span>
-                                                                        <span class="pull-right">128平米</span>
-                                                                    </div>
-                                                                    <label class="label label-success">住宅</label>
-                                                                    <label class="label label-info">南北通透</label>
-                                                                    <label class="label label-danger">车位</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-2 col-sm-6 col-md-3">
-                                                            <div class="thumbnail">
-                                                                <label class="control-label pull-right text-right" style="margin-bottom:5px">
-                                                                    <input type="checkbox" name="r3" class="flat-red" checked/> 选择
-                                                                </label>
-                                                                <img src="../images/house.jpg">
-                                                                <div class="caption clearfix">
-                                                                    <div class="clearfix m-b-15">
-                                                                        <span class="pull-left">2室2厅1卫2阳台</span>
-                                                                        <span class="pull-right">128平米</span>
-                                                                    </div>
-                                                                    <label class="label label-success">住宅</label>
-                                                                    <label class="label label-info">南北通透</label>
-                                                                    <label class="label label-danger">车位</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group border0">
-                                                <div class="col-lg-12">
-                                                    <div class="btn_nav  pull-right">
-                                                        <button type="button" class="prev btn btn-primary"><i class="iconfont">&#xe643;</i>上一步</button>
-                                                        <button type="button" class="next btn btn-primary" onclick="savehouse()"><i class="icon iconfont">&#xe644;</i>保存</button>
-                                                        <button type="button" class="btn btn-default"><i class="iconfont">&#xe641;</i>取消</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                                        </div>-->
                                     </div>
                                 </div>
                             </div>
@@ -599,88 +486,153 @@
             </div>
             <!-- /.row (main row) -->
         </section>
-        <!-- ./wrapper -->
-        <div id="modal" class="tip-box form-horizontal" style="display:none;">
-            <div class="clearfix">
-                <label class="pull-left control-label">室</label>
-                <div class="pull-left m-t-7">
-                    <span class="tip tip-info fyHouseCountf" value="1">1室</span>
-                    <span class="tip tip-info fyHouseCountf" value="2">2室</span>
-                    <span class="tip tip-info fyHouseCountf" value="3">3室</span>
-                    <span class="tip tip-info fyHouseCountf" value="4">4室</span>
-                    <span class="tip tip-info fyHouseCountf" value="5">5室</span>
-                    <span class="tip tip-info fyHouseCountf" value="6">6室</span>
-                    <span class="tip tip-info fyHouseCountf" value="7">7室</span>
+    <div class="modal fade layout-dialog" id="layoutModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">户型</h4>
                 </div>
-            </div>
-            <div class="clearfix">
-                <label class="pull-left control-label">厅</label>
-                <div class="pull-left m-t-7">
-                    <span class="tip tip-info fyHousetailCountt" value="1">1厅</span>
-                    <span class="tip tip-info fyHousetailCountt" value="2">2厅</span>
-                    <span class="tip tip-info fyHousetailCountt" value="3">3厅</span>
-                    <span class="tip tip-info fyHousetailCountt" value="4">4厅</span>
-                    <span class="tip tip-info fyHousetailCountt" value="5">5厅</span>
-                    <span class="tip tip-info fyHousetailCountt" value="6">6厅</span>
-                    <span class="tip tip-info fyHousetailCountt" value="7">7厅</span>
+                <div class="modal-body">
+                    <div class="tip-box form-horizontal">
+                        <div class="clearfix">
+                            <label class="pull-left control-label">室</label>
+                            <div class="pull-left m-t-7">
+                                <span ng-repeat="shi in ctrl.layoutList.shi" class="tip tip-info" value="{{shi.value}}"
+                                      ng-class="{'active':shi.value == ctrl.currentLayout.shi}" ng-click="ctrl.setLayout('shi', shi.value)">{{shi.value?shi.name+'室':shi.name}}</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label class="pull-left control-label">厅</label>
+                            <div class="pull-left m-t-7">
+                                <span ng-repeat="ting in ctrl.layoutList.ting" class="tip tip-info" value="{{ting.value}}"
+                                      ng-class="{'active':ting.value == ctrl.currentLayout.ting}" ng-click="ctrl.setLayout('ting', ting.value)">{{ting.value? ting.name+'厅' :ting.name}}</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label class="pull-left control-label">厨</label>
+                            <div class="pull-left m-t-7">
+                                <span ng-repeat="chu in ctrl.layoutList.chu" class="tip tip-info" value="{{chu.value}}"
+                                      ng-class="{'active':chu.value == ctrl.currentLayout.chu}" ng-click="ctrl.setLayout('chu', chu.value)">{{chu.value?chu.name+'厨':chu.name}}</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label class="pull-left control-label">卫</label>
+                            <div class="pull-left m-t-7">
+                                <span ng-repeat="wei in ctrl.layoutList.wei" class="tip tip-info" value="{{wei.value}}"
+                                      ng-class="{'active':wei.value == ctrl.currentLayout.wei}" ng-click="ctrl.setLayout('wei', wei.value)">{{wei.value ? wei.name+'卫':wei.name}}</span>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <label class="pull-left control-label">阳台</label>
+                            <div class="pull-left m-t-7">
+                                <span ng-repeat="yangtai in ctrl.layoutList.yangtai" class="tip tip-info" value="{{yangtai.value}}"
+                                      ng-class="{'active':yangtai.value == ctrl.currentLayout.yangtai}" ng-click="ctrl.setLayout('yangtai', yangtai.value)">{{yangtai.value? yangtai.name+'阳台':yangtai.name}}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="clearfix">
-                <label class="pull-left control-label">卫</label>
-                <div class="pull-left m-t-7">
-                    <span class="tip tip-info fyHousetailCountw" value="1">1卫</span>
-                    <span class="tip tip-info fyHousetailCountw" value="2">2卫</span>
-                    <span class="tip tip-info fyHousetailCountw" value="3">3卫</span>
-                    <span class="tip tip-info fyHousetailCountw" value="4">4卫</span>
-                    <span class="tip tip-info fyHousetailCountw" value="5">5卫</span>
-                    <span class="tip tip-info fyHousetailCountw" value="6">6卫</span>
-                    <span class="tip tip-info fyHousetailCountw" value="7">7卫</span>
-                </div>
-            </div>
-            <div class="clearfix">
-                <label class="pull-left control-label">阳台</label>
-                <div class="pull-left m-t-7">
-                    <span class="tip tip-info fyHousetailCounty" value="1">1阳台</span>
-                    <span class="tip tip-info fyHousetailCounty" value="2">2阳台</span>
-                    <span class="tip tip-info fyHousetailCounty" value="3">3阳台</span>
-                    <span class="tip tip-info fyHousetailCounty" value="4">4阳台</span>
-                    <span class="tip tip-info fyHousetailCounty" value="5">5阳台</span>
-                    <span class="tip tip-info fyHousetailCounty" value="6">6阳台</span>
-                    <span class="tip tip-info fyHousetailCounty" value="7">7阳台</span>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#layoutModel" ng-click="ctrl.layoutConfirm()">确认</button>
                 </div>
             </div>
         </div>
-       <#-- <script>
-            $(function() {
-                $(".tip-box span").click(function(){
-                    $(this).addClass("active").siblings().removeClass("active");
-                });
-                layer.ready(function() {
-                    $(document).on('click', '.houseHold', function() {
-                        var obj=$(this);
-                        $(".tip-box span").removeClass("active");
-                        layer.open({
-                            type: 1,
-                            title: '户型',
-                            area: ['500px', '300px'],
-                            content: $("#modal"),
-                            btn: ['确定', '取消'],
-                            closeBtn: 1,
-                            shadeClose: true,
-                            yes: function(index, layero){
-                                obj.parent().find(".stwy").text($(".tip-box span.active").text());
-                                obj.parent().find(".fyHouseCountf").val($(".tip-box span.active.fyHouseCountf").attr("value"));
-                                obj.parent().find(".fyHousetailCountt").val($(".tip-box span.active.fyHousetailCountt").attr("value"));
-                                obj.parent().find(".fyHousetailCountw").val($(".tip-box span.active.fyHousetailCountw").attr("value"));
-                                obj.parent().find(".fyHousetailCounty").val($(".tip-box span.active.fyHousetailCounty").attr("value"));
-                                obj.parent().find(".fyHousetailCharacter").val($(".tip-box span.active.fyHousetailCharacter").attr("value"));
-                                layer.close(index);
-                            }
-                        });
-                    });
-                });
-            });
-        </script>-->
+    </div>
+    <div class="modal fade" id="addBuildModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">户型</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="form" class="form-horizontal">
+                        <input id="glBuildingId" name="glBuildingVO.glBuildingId" value="" type="hidden">
+                        <input id="glEstateId" name="glBuildingVO.glEstateId" value="85718" type="hidden">
+                        <input id="glBuildingVerify" name="glBuildingVO.glBuildingVerify" value="true" type="hidden">
+                        <div class="form-group clearfix">
+                            <label class="control-label">楼盘名称</label>
+                            <div class="col-xs-8 mt7">艾东小区</div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label">楼盘地址</label>
+                            <div class="col-xs-8 mt7"> 杨高南路2451弄</div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label">栋座名称</label>
+                            <div class="col-xs-9">
+                                <input id="glBuildingName" name="glBuildingVO.glBuildingName" reg="^\S+$" class="form-control" placeholder="栋座名称" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label">栋座楼层</label>
+                            <div class="col-xs-3">
+                                <input id="glBuildingFloorall" name="glBuildingVO.glBuildingFloorall" reg="^\S+$" class="form-control" placeholder="总层" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label class="control-label">梯/户数</label>
+                            <div class="col-xs-3">
+                                <input id="glBuildingCountt" name="glBuildingVO.glBuildingCountt" class="form-control" placeholder="梯数" type="text">
+                            </div>
+                            <div class="col-xs-3">
+                                <input id="glBuildingCounth" name="glBuildingVO.glBuildingCounth" class="form-control" placeholder="户数" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label">描述说明</label>
+                            <div class="col-xs-9">
+                                <textarea id="glBuildingRemark" name="glBuildingVO.glBuildingRemark" cols="30" rows="5" class="form-control" placeholder="备注"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBuildModel" ng-click="ctrl.addBuildConfirm()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addUnitModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">户型</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="form" class="form-horizontal">
+                        <input id="glBuildingId" name="glBuildingVO.glBuildingId" value="588309" type="hidden">
+                        <div class="form-group clearfix">
+                            <label class="control-label">栋座名称</label>
+                            <div class="col-xs-8 mt7">2号楼</div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label">单元名称</label>
+                            <div class="col-xs-3">
+                                <input name="glBuildingVO.buildingUnits" class="form-control" reg="^\S+$" placeholder="单元名称" is_tip_null="yes" type="text">
+                            </div>
+                            <div class="col-xs-1 mt7"><a class="text-red"><i class="fa fa-plus-circle"></i></a></div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label">单元名称</label>
+                            <div class="col-xs-3">
+                                <input name="glBuildingVO.buildingUnits" class="form-control" reg="^\S+$" placeholder="单元名称" is_tip_null="yes" type="text">
+                            </div>
+                            <div class="col-xs-1 mt7"><a class="text-red"><i class="fa fa-minus-circle"></i></a></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUnitModel" ng-click="ctrl.addUnitConfirm()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 <!-- /.content-wrapper -->
 

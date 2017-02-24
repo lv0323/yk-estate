@@ -99,7 +99,21 @@ require(['main-app',
                 step1: 1,
                 step2: 2
             };
-            _this.currentStep = _this.stepConfig.step1,
+            _this.layoutList={
+                shi:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:'',name:'无'}],
+                ting:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:'',name:'无'}],
+                chu:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:'',name:'无'}],
+                wei:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:'',name:'无'}],
+                yangtai:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:'',name:'无'}]
+            };
+            _this.currentStep = _this.stepConfig.step1;
+            _this.currentLayout ={
+                shi:'',
+                ting:'',
+                chu:'',
+                wei:'',
+                yangtai:''
+            },
             _this.data ={
                 allSqm: '',
                 bizType: 'sell',
@@ -120,6 +134,13 @@ require(['main-app',
                 floor: '',
                 floorAll: '',
                 heating: '',
+                layout:{
+                    shi:'',
+                    ting:'',
+                    chu:'',
+                    wei:'',
+                    yangtai:''
+                },
                 lift:'',
                 look: '',
                 minPrice: '',
@@ -233,6 +254,20 @@ require(['main-app',
                 {name:'限时', value: '9879'},
                 {name:'托管', value: '9870'}
             ];
+
+            /*function*/
+            _this.addBuildInit = function(){
+                console.log('init Build');
+            };
+            _this.addBUnitInit = function(){
+                console.log('init Unit');
+            };
+            _this.addBuildConfirm = function(){
+                console.log('add Build');
+            };
+            _this.addUnitConfirm = function () {
+
+            };
             _this.nextStep = function () {
             //检查数据的完整性和正确性
                 _this.currentStep = _this.stepConfig.step2;
@@ -256,14 +291,38 @@ require(['main-app',
                     });
                     _this.log();
                 });
+                /*$timeout(function(){
+                    console.log('chosen:updated');
+                    $('#houseEstate_chosen input').val('多');
+                    $(id).trigger('chosen:updated');
+
+                },3000)*/
+
             };
+            _this.chosenInitEstate = function(id,key){
+                _this.initChosen(id, key);
+                $('#estateContainer').on('input','.search-field-input',function(e){
+                    
+                });
+            };
+            _this.initChosen('#houseEstate', 'estate');
             _this.setBuildDate = function(){
-                console.log(_this.data);
-            }
+                _this.log();
+            };
             _this.setDate = function(key, value){
                 _this.data[key] = value;
-                console.log( _this.data);
+                _this.log();
             };
+            _this.setLayout = function(type, value){
+                _this.currentLayout[type] = value;
+            };
+            _this.layoutDialogShow = function(){
+                angular.copy(_this.data.layout, _this.currentLayout);
+            };
+            _this.layoutConfirm = function(){
+                angular.copy(_this.currentLayout, _this.data.layout);
+                _this.log();
+            }
             _this.log = function(){
                 console.log( _this.data);
             };

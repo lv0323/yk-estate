@@ -1,4 +1,17 @@
 <#include "/common/header.ftl" />
+<style>
+    .main-footer{
+        width: 100%;
+        background: transparent;
+        border:0;
+        margin:0 auto;
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+        color: #fff;
+
+    }
+</style>
 <link href="${contextPath}/css/app/identity/index.css?vn=${bts!}" rel="stylesheet">
 <div class="login-box"  id="loginBox" data-angular>
     <div class="login-logo">
@@ -78,5 +91,22 @@
 </div>
     <!-- /.login-box-body -->
 </div>
-<#include "/common/footer.ftl" />
+<input hidden="hidden" id="contextPath" value="${contextPath!}"/>
+<input hidden="hidden" id="clientId" value="${clientId!}"/>
+<input hidden="hidden" id="vn" value="${bts!}"/>
+<footer class="main-footer">
+    Copyright &copy; 2014-2016 <a href="#">Yingke Estate</a>.All rights
+    reserved.
+</footer>
+</div>
+<script type="text/javascript">
+    var contextPath = document.getElementById('contextPath').value;
+    var clientId = document.getElementById('clientId').value;
+    var vn = document.getElementById('vn').value;
+</script>
+<script src="${contextPath}/js/libs/require.min.js?vn=${bts!}"></script>
+<script src="${contextPath!}/js/require-config.js?vn=${bts!}"></script>
+<script src="${contextPath}/js/app/identity/userInfo.js"></script>
 <script src="${contextPath!}/js/app/identity/index.js?vn=${bts!}"></script>
+</body>
+</html>

@@ -1128,3 +1128,6 @@ a.btn-collapse:hover{
     padding-left: 0;
     padding-right: 20px;
 }
+.tip-box .tip-info{
+    margin-right: 4px;
+}
