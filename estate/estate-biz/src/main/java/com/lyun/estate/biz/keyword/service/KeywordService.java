@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -107,17 +108,6 @@ public class KeywordService {
         List<KeywordBean> results = new ArrayList<>();
         limit = Optional.ofNullable(limit).orElse(Integer.MAX_VALUE);
         keyword = stringFilter(keyword);
-        List<String> chinesChars = findChinese(keyword);
-        String keywordPinyin = null;
-        String shortPinyin = null;
-        try {
-            keywordPinyin = PinyinHelper.convertToPinyinString(keyword, "", PinyinFormat.WITHOUT_TONE);
-            if (!CollectionUtils.isEmpty(chinesChars)) {
-                shortPinyin = PinyinHelper.getShortPinyin(keyword);
-            }
-        } catch (PinyinException e) {
-            logger.warn("查询关键词[{}]转换发生错误[{}],忽略", keyword, e.getMessage());
-        }
 
         if (scopes == null || Strings.isNullOrEmpty(keyword) || limit <= 0) {
             return results;
@@ -132,7 +122,7 @@ public class KeywordService {
                 if (count >= limit) {
                     break;
                 }
-                if (keywordMatch(keywordBean, keyword, chinesChars, keywordPinyin, shortPinyin)) {
+                if (nameMatch(keywordBean, keyword)) {
                     results.add(keywordBean);
                     count++;
                 }
@@ -315,6 +305,24 @@ public class KeywordService {
             if (chineseChars.stream().allMatch(t -> contains(nameAlias, t))) {
                 return true;
             }
+        }
+
+        return false;
+    }
+
+
+    private boolean nameMatch(KeywordBean keywordBean, String target) {
+        if (keywordBean == null || StringUtils.isEmpty(keywordBean.getKeyword())) {
+            logger.warn("存储关键词[{}]不合法或者查询关键词[{}]为空,忽略", keywordBean, target);
+            return false;
+        }
+        /* 名称相同 */
+        if (Objects.equals(keywordBean.getName(), target)) {
+            return true;
+        }
+        /* 别名相同 */
+        if (Objects.equals(keywordBean.getAlias(), target)) {
+            return true;
         }
 
         return false;
