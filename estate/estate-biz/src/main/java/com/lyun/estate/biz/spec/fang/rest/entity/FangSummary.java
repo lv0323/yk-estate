@@ -1,15 +1,17 @@
 package com.lyun.estate.biz.spec.fang.rest.entity;
 
-import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.core.supports.types.YN;
+import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.fang.def.HouseProcess;
+import com.lyun.estate.biz.fang.def.Orientation;
+import com.lyun.estate.biz.fang.def.PriceUnit;
+import com.lyun.estate.biz.spec.fang.domain.FangForTag;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * Created by Jeffrey on 2017-01-20.
  */
-public class FangSummary {
+public class FangSummary extends FangForTag {
     private Long id;
     private Long cityId;
     private Long subDistrictId;
@@ -22,15 +24,9 @@ public class FangSummary {
     private Integer tCounts;
     private BigDecimal estateArea;
     private Orientation orientation;
-    private List<HouseTag> tags;
     private String xiaoQuName;
     private HouseProcess process;
     private String imageURI;
-    private YN isOnly;
-    private Integer overYears;
-    private Showing showing;
-    private YN nearLine;
-    private Decorate decorate;
 
     public Long getId() {
         return id;
@@ -140,15 +136,6 @@ public class FangSummary {
         return this;
     }
 
-    public List<HouseTag> getTags() {
-        return tags;
-    }
-
-    public FangSummary setTags(List<HouseTag> tags) {
-        this.tags = tags;
-        return this;
-    }
-
     public String getXiaoQuName() {
         return xiaoQuName;
     }
@@ -173,51 +160,6 @@ public class FangSummary {
 
     public FangSummary setProcess(HouseProcess process) {
         this.process = process;
-        return this;
-    }
-
-    public YN getIsOnly() {
-        return isOnly;
-    }
-
-    public FangSummary setIsOnly(YN isOnly) {
-        this.isOnly = isOnly;
-        return this;
-    }
-
-    public Integer getOverYears() {
-        return overYears;
-    }
-
-    public FangSummary setOverYears(Integer overYears) {
-        this.overYears = overYears;
-        return this;
-    }
-
-    public Showing getShowing() {
-        return showing;
-    }
-
-    public FangSummary setShowing(Showing showing) {
-        this.showing = showing;
-        return this;
-    }
-
-    public YN getNearLine() {
-        return nearLine;
-    }
-
-    public FangSummary setNearLine(YN nearLine) {
-        this.nearLine = nearLine;
-        return this;
-    }
-
-    public Decorate getDecorate() {
-        return decorate;
-    }
-
-    public FangSummary setDecorate(Decorate decorate) {
-        this.decorate = decorate;
         return this;
     }
 }

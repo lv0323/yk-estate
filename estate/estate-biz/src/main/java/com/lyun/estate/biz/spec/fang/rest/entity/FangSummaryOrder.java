@@ -5,18 +5,21 @@ import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 
+import static com.github.miemiedev.mybatis.paginator.domain.Order.Direction.DESC;
+import static com.lyun.estate.core.repo.SqlSupport.buildOrder;
+
 /**
  * Created by Jeffrey on 2017-01-11.
  */
 public enum FangSummaryOrder {
-    DEFAULT("默认排序", Lists.newArrayList(new Order("ranking", Order.Direction.DESC, null))),
-    TIME_DESC("最新发布", Lists.newArrayList(new Order("publish_time", Order.Direction.DESC, null))),
-    PUBLISH_PRICE_UP("总价由低到高", Lists.newArrayList(new Order("publish_price", Order.Direction.ASC, null))),
-    PUBLISH_PRICE_DOWN("总价由高到低", Lists.newArrayList(new Order("publish_price", Order.Direction.DESC, null))),
-    UNIT_PRICE_UP("单价价由低到高", Lists.newArrayList(new Order("unit_price", Order.Direction.ASC, null))),
-    UNIT_PRICE_DOWN("单价由高到低", Lists.newArrayList(new Order("unit_price", Order.Direction.DESC, null))),
-    AREA_UP("面积由小到大", Lists.newArrayList(new Order("estate_area", Order.Direction.ASC, null))),
-    AREA_DOWN("面积由大到小", Lists.newArrayList(new Order("estate_area", Order.Direction.DESC, null))),;
+    DEFAULT("默认排序", Lists.newArrayList(buildOrder("ranking", DESC))),
+    TIME_DESC("最新发布", Lists.newArrayList(buildOrder("publish_time", DESC))),
+    PUBLISH_PRICE_UP("总价由低到高", Lists.newArrayList(buildOrder("publish_price", Order.Direction.ASC))),
+    PUBLISH_PRICE_DOWN("总价由高到低", Lists.newArrayList(buildOrder("publish_price", DESC))),
+    UNIT_PRICE_UP("单价价由低到高", Lists.newArrayList(buildOrder("unit_price", Order.Direction.ASC))),
+    UNIT_PRICE_DOWN("单价由高到低", Lists.newArrayList(buildOrder("unit_price", DESC))),
+    AREA_UP("面积由小到大", Lists.newArrayList(buildOrder("estate_area", Order.Direction.ASC))),
+    AREA_DOWN("面积由大到小", Lists.newArrayList(buildOrder("estate_area", DESC))),;
 
     private final String label;
     private final ArrayList<Order> orders;

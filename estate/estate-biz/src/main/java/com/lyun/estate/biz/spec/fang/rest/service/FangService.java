@@ -4,6 +4,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.fang.entity.Fang;
+import com.lyun.estate.biz.fang.entity.FangTag;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangDetail;

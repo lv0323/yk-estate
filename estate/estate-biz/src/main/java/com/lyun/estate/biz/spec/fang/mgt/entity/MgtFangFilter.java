@@ -1,11 +1,10 @@
 package com.lyun.estate.biz.spec.fang.mgt.entity;
 
 import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.biz.spec.fang.rest.def.ElevatorFilter;
-import com.lyun.estate.biz.spec.fang.rest.def.HouseTypeFilter;
-import com.lyun.estate.biz.spec.fang.rest.def.IntPair;
-import com.lyun.estate.biz.spec.fang.rest.def.ShiCountsFilter;
+import com.lyun.estate.biz.spec.fang.mgt.def.TimeType;
+import com.lyun.estate.core.supports.types.YN;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,21 +15,25 @@ public class MgtFangFilter {
     private BizType bizType;
     private Long districtId;
     private Long subDistrictId;
-    private Long lineId;
-    private Long stationId;
-    private List<ShiCountsFilter> shiCountsFilters;
-    private List<Orientation> orientations;
+    private HouseType houseType;
+    private Integer minArea;
+    private Integer maxArea;
+    private Integer sCounts;
     private List<HouseTag> houseTags;
-    private List<FloorType> floorTypes;
-    private List<Decorate> decorates;
-    private List<ElevatorFilter> elevatorFilters;
-    private List<StructureType> structureTypes;
+    private Long departmentId;
+    private Long employeeId;
+    private Boolean includeChildren;
+    private TimeType timeType;
+    private Date startTime;
+    private Date endTime;
+    private DelegateType delegateType;
+    private Decorate decorate;
+    private PropertyType propertyType;
+    private CertifType certifType;
+    private YN resident;
     private Integer minPrice;
     private Integer maxPrice;
-    private String keyword;
-    private List<IntPair> areas;
-    private List<IntPair> years;
-    private List<HouseTypeFilter> houseTypeFilters;
+    private HouseProcess process;
 
     public Long getCityId() {
         return cityId;
@@ -68,40 +71,39 @@ public class MgtFangFilter {
         return this;
     }
 
-    public Long getLineId() {
-        return lineId;
+    public HouseType getHouseType() {
+        return houseType;
     }
 
-    public MgtFangFilter setLineId(Long lineId) {
-        this.lineId = lineId;
+    public MgtFangFilter setHouseType(HouseType houseType) {
+        this.houseType = houseType;
         return this;
     }
 
-    public Long getStationId() {
-        return stationId;
+    public Integer getMinArea() {
+        return minArea;
     }
 
-    public MgtFangFilter setStationId(Long stationId) {
-        this.stationId = stationId;
+    public MgtFangFilter setMinArea(Integer minArea) {
+        this.minArea = minArea;
         return this;
     }
 
-    public List<ShiCountsFilter> getShiCountsFilters() {
-        return shiCountsFilters;
+    public Integer getMaxArea() {
+        return maxArea;
     }
 
-    public MgtFangFilter setShiCountsFilters(
-            List<ShiCountsFilter> shiCountsFilters) {
-        this.shiCountsFilters = shiCountsFilters;
+    public MgtFangFilter setMaxArea(Integer maxArea) {
+        this.maxArea = maxArea;
         return this;
     }
 
-    public List<Orientation> getOrientations() {
-        return orientations;
+    public Integer getsCounts() {
+        return sCounts;
     }
 
-    public MgtFangFilter setOrientations(List<Orientation> orientations) {
-        this.orientations = orientations;
+    public MgtFangFilter setsCounts(Integer sCounts) {
+        this.sCounts = sCounts;
         return this;
     }
 
@@ -114,39 +116,102 @@ public class MgtFangFilter {
         return this;
     }
 
-    public List<FloorType> getFloorTypes() {
-        return floorTypes;
+    public Long getDepartmentId() {
+        return departmentId;
     }
 
-    public MgtFangFilter setFloorTypes(List<FloorType> floorTypes) {
-        this.floorTypes = floorTypes;
+    public MgtFangFilter setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
         return this;
     }
 
-    public List<Decorate> getDecorates() {
-        return decorates;
+    public Long getEmployeeId() {
+        return employeeId;
     }
 
-    public MgtFangFilter setDecorates(List<Decorate> decorates) {
-        this.decorates = decorates;
+    public MgtFangFilter setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
         return this;
     }
 
-    public List<ElevatorFilter> getElevatorFilters() {
-        return elevatorFilters;
+    public Boolean getIncludeChildren() {
+        return includeChildren;
     }
 
-    public MgtFangFilter setElevatorFilters(List<ElevatorFilter> elevatorFilters) {
-        this.elevatorFilters = elevatorFilters;
+    public MgtFangFilter setIncludeChildren(Boolean includeChildren) {
+        this.includeChildren = includeChildren;
         return this;
     }
 
-    public List<StructureType> getStructureTypes() {
-        return structureTypes;
+    public TimeType getTimeType() {
+        return timeType;
     }
 
-    public MgtFangFilter setStructureTypes(List<StructureType> structureTypes) {
-        this.structureTypes = structureTypes;
+    public MgtFangFilter setTimeType(TimeType timeType) {
+        this.timeType = timeType;
+        return this;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public MgtFangFilter setStartTime(Date startTime) {
+        this.startTime = startTime;
+        return this;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public MgtFangFilter setEndTime(Date endTime) {
+        this.endTime = endTime;
+        return this;
+    }
+
+    public DelegateType getDelegateType() {
+        return delegateType;
+    }
+
+    public MgtFangFilter setDelegateType(DelegateType delegateType) {
+        this.delegateType = delegateType;
+        return this;
+    }
+
+    public Decorate getDecorate() {
+        return decorate;
+    }
+
+    public MgtFangFilter setDecorate(Decorate decorate) {
+        this.decorate = decorate;
+        return this;
+    }
+
+    public PropertyType getPropertyType() {
+        return propertyType;
+    }
+
+    public MgtFangFilter setPropertyType(PropertyType propertyType) {
+        this.propertyType = propertyType;
+        return this;
+    }
+
+    public CertifType getCertifType() {
+        return certifType;
+    }
+
+    public MgtFangFilter setCertifType(CertifType certifType) {
+        this.certifType = certifType;
+        return this;
+    }
+
+    public YN getResident() {
+        return resident;
+    }
+
+    public MgtFangFilter setResident(YN resident) {
+        this.resident = resident;
         return this;
     }
 
@@ -168,40 +233,12 @@ public class MgtFangFilter {
         return this;
     }
 
-    public String getKeyword() {
-        return keyword;
+    public HouseProcess getProcess() {
+        return process;
     }
 
-    public MgtFangFilter setKeyword(String keyword) {
-        this.keyword = keyword;
-        return this;
-    }
-
-    public List<IntPair> getAreas() {
-        return areas;
-    }
-
-    public MgtFangFilter setAreas(List<IntPair> areas) {
-        this.areas = areas;
-        return this;
-    }
-
-    public List<IntPair> getYears() {
-        return years;
-    }
-
-    public MgtFangFilter setYears(List<IntPair> years) {
-        this.years = years;
-        return this;
-    }
-
-    public List<HouseTypeFilter> getHouseTypeFilters() {
-        return houseTypeFilters;
-    }
-
-    public MgtFangFilter setHouseTypeFilters(
-            List<HouseTypeFilter> houseTypeFilters) {
-        this.houseTypeFilters = houseTypeFilters;
+    public MgtFangFilter setProcess(HouseProcess process) {
+        this.process = process;
         return this;
     }
 }

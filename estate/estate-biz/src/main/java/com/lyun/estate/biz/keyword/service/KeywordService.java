@@ -294,9 +294,12 @@ public class KeywordService {
             return true;
         }
 
-        /* 全拼匹配 */
+        /* 全拼匹配，且含中文 */
         if (!StringUtils.isEmpty(targetPinyin) && contains(keywordBean.getKeyword(), targetPinyin)) {
-            return true;
+            String nameAlias = keywordBean.getName() + Strings.nullToEmpty(keywordBean.getAlias());
+            if (chineseChars.stream().allMatch(t -> contains(nameAlias, t))) {
+                return true;
+            }
         }
 
         /* 简拼匹配，且含中文 */

@@ -1,32 +1,29 @@
 package com.lyun.estate.biz.spec.fang.mgt.entity;
 
-import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.core.supports.types.YN;
+import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.fang.def.HouseProcess;
+import com.lyun.estate.biz.fang.def.Orientation;
+import com.lyun.estate.biz.fang.def.PriceUnit;
+import com.lyun.estate.biz.spec.fang.domain.FangForTag;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Jeffrey on 2017-02-23.
  */
-public class MgtFangSummary {
+public class MgtFangSummary extends FangForTag {
     private Long id;
     private BizType bizType;
     private Long licenceId;
     private String head;
     private Long subDistrictId;
-    private String title;
     private BigDecimal publishPrice;
     private PriceUnit priceUnit;
     private BigDecimal unitPrice;
     private Long xiaoQuId;
     private String xiaoQuName;
     private BigDecimal estateArea;
-    private YN isOnly;
-    private Integer overYears;
-    private Showing showing;
-    private YN nearLine;
     private HouseProcess process;
     private Integer sCounts;//室
     private Integer tCounts;//厅
@@ -36,11 +33,9 @@ public class MgtFangSummary {
     private Integer floor;//总层高
     private Integer floorCounts;//总层高
     private Orientation orientation;
-    private Decorate decorate;
     private Date createTime;
     private Date delegateStart;
     private String imageURI;
-    private List<HouseTag> tags;
 
     public Long getId() {
         return id;
@@ -84,15 +79,6 @@ public class MgtFangSummary {
 
     public MgtFangSummary setSubDistrictId(Long subDistrictId) {
         this.subDistrictId = subDistrictId;
-        return this;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public MgtFangSummary setTitle(String title) {
-        this.title = title;
         return this;
     }
 
@@ -147,42 +133,6 @@ public class MgtFangSummary {
 
     public MgtFangSummary setEstateArea(BigDecimal estateArea) {
         this.estateArea = estateArea;
-        return this;
-    }
-
-    public YN getIsOnly() {
-        return isOnly;
-    }
-
-    public MgtFangSummary setIsOnly(YN isOnly) {
-        this.isOnly = isOnly;
-        return this;
-    }
-
-    public Integer getOverYears() {
-        return overYears;
-    }
-
-    public MgtFangSummary setOverYears(Integer overYears) {
-        this.overYears = overYears;
-        return this;
-    }
-
-    public Showing getShowing() {
-        return showing;
-    }
-
-    public MgtFangSummary setShowing(Showing showing) {
-        this.showing = showing;
-        return this;
-    }
-
-    public YN getNearLine() {
-        return nearLine;
-    }
-
-    public MgtFangSummary setNearLine(YN nearLine) {
-        this.nearLine = nearLine;
         return this;
     }
 
@@ -267,15 +217,6 @@ public class MgtFangSummary {
         return this;
     }
 
-    public Decorate getDecorate() {
-        return decorate;
-    }
-
-    public MgtFangSummary setDecorate(Decorate decorate) {
-        this.decorate = decorate;
-        return this;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -303,12 +244,4 @@ public class MgtFangSummary {
         return this;
     }
 
-    public List<HouseTag> getTags() {
-        return tags;
-    }
-
-    public MgtFangSummary setTags(List<HouseTag> tags) {
-        this.tags = tags;
-        return this;
-    }
 }

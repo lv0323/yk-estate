@@ -1,8 +1,14 @@
 package com.lyun.estate.mgt.fang.service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.audit.def.AuditSubject;
 import com.lyun.estate.biz.audit.entity.Audit;
 import com.lyun.estate.biz.audit.service.AuditService;
+import com.lyun.estate.biz.department.entity.Department;
+import com.lyun.estate.biz.department.service.DepartmentService;
+import com.lyun.estate.biz.employee.entity.Employee;
+import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.entity.FangContact;
@@ -10,6 +16,9 @@ import com.lyun.estate.biz.fang.entity.FangExt;
 import com.lyun.estate.biz.fang.entity.FangInfoOwner;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
+import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
+import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
+import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.service.MgtXiaoQuService;
 import com.lyun.estate.biz.support.def.DomainType;
@@ -27,6 +36,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static java.util.Objects.nonNull;
 
 /**
  * Created by Jeffrey on 2017-02-21.
@@ -44,14 +56,21 @@ public class FangMgtService {
 
     private AuditService auditService;
 
+    private DepartmentService departmentService;
+
+    private EmployeeService employeeService;
+
     public FangMgtService(HouseLicenceService houseLicenceService,
                           MgtXiaoQuService mgtXiaoQuService, MgtFangService mgtFangService, MgtContext mgtContext,
-                          AuditService auditService) {
+                          AuditService auditService, DepartmentService departmentService,
+                          EmployeeService employeeService) {
         this.houseLicenceService = houseLicenceService;
         this.mgtXiaoQuService = mgtXiaoQuService;
         this.mgtFangService = mgtFangService;
         this.mgtContext = mgtContext;
         this.auditService = auditService;
+        this.departmentService = departmentService;
+        this.employeeService = employeeService;
     }
 
     @Transactional
@@ -165,5 +184,25 @@ public class FangMgtService {
                 buildingUnitId,
                 houseNo);
         return licence == null;
+    }
+
+    public PageList<MgtFangSummary> listSummary(MgtFangFilter filter, MgtFangSummaryOrder order,
+                                                PageBounds pageBounds) {
+
+        if (nonNull(filter.getDepartmentId())) {
+            Department department = departmentService.selectById(filter.getDepartmentId());
+            if (nonNull(department) &&
+                    !Objects.equals(department.getCompanyId(), mgtContext.getOperator().getCompanyId())) {
+                throw new EstateException(ExCode.FANG_MGT_ERROR_DEPT);
+            }
+        }
+        if (nonNull(filter.getEmployeeId())) {
+            Employee employee = employeeService.selectById(filter.getCityId());
+            if (!Objects.equals(employee.getCompanyId(), mgtContext.getOperator().getCompanyId())) {
+                throw new EstateException(ExCode.FANG_MGT_ERROR_EMPLOYEE);
+            }
+        }
+
+        return mgtFangService.listSummary(filter, order, pageBounds);
     }
 }

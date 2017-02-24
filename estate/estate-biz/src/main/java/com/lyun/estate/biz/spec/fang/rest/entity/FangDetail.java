@@ -2,7 +2,7 @@ package com.lyun.estate.biz.spec.fang.rest.entity;
 
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.entity.FangDescr;
-import com.lyun.estate.biz.fang.def.StructureType;
+import com.lyun.estate.biz.spec.fang.domain.FangForTag;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuStationRel;
 import com.lyun.estate.core.supports.types.YN;
 
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Jeffrey on 2017-01-20.
  */
-public class FangDetail {
+public class FangDetail extends FangForTag {
     private Long id;
     private Long cityId;
     private Long licenceId;
@@ -31,24 +31,18 @@ public class FangDetail {
     private BigDecimal estateArea;
     private BigDecimal realArea;
     private Orientation orientation;
-    private List<HouseTag> tags;
     private BigDecimal unitPrice; //单价
     private HouseProcess process;
     private BigDecimal transferPrice;
     private YN resident;
     private Integer floorCounts;//总层高
     private FloorType floorType;
-    private Decorate decorate;
     private StructureType structureType;
     private Integer buildYear;
-    private Showing showing;
     private HeatingType heatingType;
     private Boolean hasElevator;
     private Date purchaseDate;
     private List<XiaoQuStationRel> stations;
-    private YN isOnly;
-    private YN nearLine;
-    private Integer overYears;
     private String district;
     private String subDistrict;
     private Long xiaoQuId;
@@ -203,15 +197,6 @@ public class FangDetail {
         return this;
     }
 
-    public List<HouseTag> getTags() {
-        return tags;
-    }
-
-    public FangDetail setTags(List<HouseTag> tags) {
-        this.tags = tags;
-        return this;
-    }
-
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
@@ -275,15 +260,6 @@ public class FangDetail {
         return this;
     }
 
-    public Decorate getDecorate() {
-        return decorate;
-    }
-
-    public FangDetail setDecorate(Decorate decorate) {
-        this.decorate = decorate;
-        return this;
-    }
-
     public StructureType getStructureType() {
         return structureType;
     }
@@ -302,14 +278,6 @@ public class FangDetail {
         return this;
     }
 
-    public Showing getShowing() {
-        return showing;
-    }
-
-    public FangDetail setShowing(Showing showing) {
-        this.showing = showing;
-        return this;
-    }
 
     public HeatingType getHeatingType() {
         return heatingType;
@@ -389,33 +357,6 @@ public class FangDetail {
 
     public FangDetail setDescr(FangDescr descr) {
         this.descr = descr;
-        return this;
-    }
-
-    public YN getIsOnly() {
-        return isOnly;
-    }
-
-    public FangDetail setIsOnly(YN isOnly) {
-        this.isOnly = isOnly;
-        return this;
-    }
-
-    public YN getNearLine() {
-        return nearLine;
-    }
-
-    public FangDetail setNearLine(YN nearLine) {
-        this.nearLine = nearLine;
-        return this;
-    }
-
-    public Integer getOverYears() {
-        return overYears;
-    }
-
-    public FangDetail setOverYears(Integer overYears) {
-        this.overYears = overYears;
         return this;
     }
 

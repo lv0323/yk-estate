@@ -3,14 +3,14 @@ package com.lyun.estate.mgt.fang;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.entity.FangContact;
 import com.lyun.estate.biz.fang.entity.FangExt;
-import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
-import com.lyun.estate.biz.spec.fang.rest.def.HouseTypeFilter;
-import com.lyun.estate.biz.spec.fang.rest.entity.FangSummaryOrder;
+import com.lyun.estate.biz.spec.fang.mgt.def.TimeType;
+import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
+import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
+import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
 import com.lyun.estate.core.supports.types.YN;
 import com.lyun.estate.mgt.fang.service.FangMgtService;
 import com.lyun.estate.mgt.supports.CommonResp;
@@ -18,8 +18,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -133,27 +135,57 @@ public class FangRest {
                                                       @RequestParam(required = false) Long districtId,
                                                       @RequestParam(required = false) Long subDistrictId,
                                                       @RequestParam(required = false) HouseType houseType,
+                                                      @RequestParam(required = false) HouseProcess process,
                                                       @RequestParam(required = false) Integer minArea,
                                                       @RequestParam(required = false) Integer maxArea,
                                                       @RequestParam(required = false) Integer minPrice,
                                                       @RequestParam(required = false) Integer maxPrice,
                                                       @RequestParam(required = false) Integer sCounts,
                                                       @RequestParam(required = false) List<HouseTag> hts,
-                                                      @RequestParam(required = false) List<Decorate> ds,
-                                                      @RequestParam(required = false) FangSummaryOrder order,
-                                                      @RequestParam(required = false) List<HouseTypeFilter> htfs,
                                                       @RequestParam(required = false) Long departmentId,
                                                       @RequestParam(required = false) Long employeeId,
-                                                      @RequestParam(required = false) Boolean inclueChildren,
-                                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startTime,
-                                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endTime,
+                                                      @RequestParam(required = false) Boolean includeChildren,
+                                                      @RequestParam(required = false) TimeType timeType,
+                                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
                                                       @RequestParam(required = false) DelegateType delegateType,
                                                       @RequestParam(required = false) Decorate decorate,
                                                       @RequestParam(required = false) PropertyType propertyType,
                                                       @RequestParam(required = false) CertifType certifType,
                                                       @RequestParam(required = false) YN resident,
+                                                      @RequestParam MgtFangSummaryOrder order,
                                                       @RequestHeader("X-PAGING") PageBounds pageBounds) {
-        return null;
+        MgtFangFilter filter = new MgtFangFilter().setCityId(cityId)
+                .setBizType(bizType)
+                .setDistrictId(districtId)
+                .setSubDistrictId(subDistrictId)
+                .setHouseType(houseType)
+                .setProcess(process)
+                .setMinArea(minArea)
+                .setMaxArea(maxArea)
+                .setMinPrice(minPrice)
+                .setMaxPrice(maxPrice)
+                .setsCounts(sCounts)
+                .setHouseTags(hts)
+                .setDecorate(decorate)
+                .setDepartmentId(departmentId)
+                .setEmployeeId(employeeId)
+                .setIncludeChildren(includeChildren)
+                .setTimeType(timeType)
+                .setStartTime(startDate)
+                .setEndTime(Optional.ofNullable(endDate)
+                        .map(time -> Date.from(time.toInstant().plusSeconds(LocalTime.MAX.toSecondOfDay())))
+                        .orElse(null))
+                .setDelegateType(delegateType)
+                .setPropertyType(propertyType)
+                .setCertifType(certifType)
+                .setResident(resident);
+        return fangMgtService.listSummary(filter, order, pageBounds);
+    }
+
+    @GetMapping("sub-types")
+    public List<HouseSubType> subTypes(@RequestParam HouseType houseType) {
+        return houseType.getSubTypes();
     }
 
 }
