@@ -8,13 +8,13 @@ public enum Gender {
     M("男"),
     F("女");
 
-    private String gender;
+    private String label;
 
-    Gender(String gender) {
-        this.gender = gender;
+    Gender(String label) {
+        this.label = label;
     }
 
-    public String getGender() {
-        return gender;
+    public String getLabel() {
+        return label;
     }
 }

@@ -28,7 +28,7 @@
                         <#--<input type="radio" value="M" checked="checked">男
                         <input type="radio" value="F">女-->
                         <#list gender?if_exists as gd>
-                            <input type="radio" value="${gd.name()}">${gd.getGender()}
+                            <input type="radio" value="${gd.name()}">${gd.getLabel()}
                         </#list>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <select id="addEmployeeStatus" class="form-control btn-group dropup">
                                 <#list workingStatusList?if_exists as ws>
-                                    <option value="${ws.name()}">${ws.getStatus()}</option>
+                                    <option value="${ws.name()}">${ws.getLabel()}</option>
                                 </#list>
                             </select>
                         </div>
@@ -125,7 +125,7 @@
                             <#--<input type="radio" value="M" checked="checked">男
                             <input type="radio" value="F">女-->
                             <#list gender?if_exists as gd>
-                                <input type="radio" value="${gd.name()}">${gd.getGender()}
+                                <input type="radio" value="${gd.name()}">${gd.getLabel()}
                             </#list>
                         </div>
                     </div>
@@ -169,7 +169,7 @@
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <select id="editEmployeeStatus" class="form-control btn-group dropup">
                             <#list workingStatusList?if_exists as ws>
-                                <option value="${ws.name()}">${ws.getStatus()}</option>
+                                <option value="${ws.name()}">${ws.getLabel()}</option>
                             </#list>
                             </select>
                         </div>
