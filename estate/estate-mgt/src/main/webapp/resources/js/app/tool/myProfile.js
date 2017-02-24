@@ -46,7 +46,6 @@ require(['main-app',
         function readFile(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-
                 reader.onload = function (e) {
                     $('.previewImg').addClass('ready');
                     $uploadCrop.croppie('bind', {
@@ -54,17 +53,13 @@ require(['main-app',
                     }).then(function(){
                         console.log('jQuery bind complete');
                     });
-
-                }
-
+                };
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
         $('#toUplImgFileInput').on('change',function () {
-
             readFile(this);
-
         });
 
         $('#confirmChangeAvatarBtn').on('click',function () {

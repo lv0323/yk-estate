@@ -23,7 +23,6 @@
                                 <input type="file" id="toUplImgFileInput">
                             </a>
                         </div>
-
                     </div>
                 </form>
             </div>
