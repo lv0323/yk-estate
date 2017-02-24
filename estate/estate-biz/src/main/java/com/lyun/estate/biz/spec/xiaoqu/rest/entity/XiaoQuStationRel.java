@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.spec.xiaoqu.entity;
+package com.lyun.estate.biz.spec.xiaoqu.rest.entity;
 
 /**
  * Created by Jeffrey on 2017-02-07.

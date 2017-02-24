@@ -1,14 +1,14 @@
-package com.lyun.estate.biz.spec.xiaoqu.service;
+package com.lyun.estate.biz.spec.xiaoqu.rest.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuDetail;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuFilter;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuStationRel;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuSummary;
+import com.lyun.estate.biz.spec.xiaoqu.rest.def.XQSummaryOrder;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuDetail;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuFilter;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuStationRel;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuSummary;
 import com.lyun.estate.biz.xiaoqu.entity.Community;
 
 import java.util.List;

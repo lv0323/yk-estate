@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.spec.xiaoqu.entity;
+package com.lyun.estate.biz.spec.xiaoqu.rest.entity;
 
 import com.lyun.estate.core.supports.types.YN;
 

@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.fang.domian;
+package com.lyun.estate.biz.spec.fang.mgt.entity;
 
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.google.common.collect.Lists;

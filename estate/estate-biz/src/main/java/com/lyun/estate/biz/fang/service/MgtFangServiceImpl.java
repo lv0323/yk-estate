@@ -6,6 +6,7 @@ import com.lyun.estate.biz.fang.entity.FangContact;
 import com.lyun.estate.biz.fang.entity.FangExt;
 import com.lyun.estate.biz.fang.entity.FangInfoOwner;
 import com.lyun.estate.biz.fang.repo.MgtFangRepository;
+import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
@@ -16,14 +17,15 @@ import org.springframework.stereotype.Service;
  * Created by Jeffrey on 2017-02-21.
  */
 @Service
-public class MgtFangService {
+public class MgtFangServiceImpl implements MgtFangService {
 
     private MgtFangRepository mgtFangRepository;
 
-    public MgtFangService(MgtFangRepository mgtFangRepository) {
+    public MgtFangServiceImpl(MgtFangRepository mgtFangRepository) {
         this.mgtFangRepository = mgtFangRepository;
     }
 
+    @Override
     public Fang createFang(Fang fang) {
         if (mgtFangRepository.saveFang(fang) > 0) {
             return mgtFangRepository.findFang(fang.getId());
@@ -31,6 +33,7 @@ public class MgtFangService {
         throw new EstateException(ExCode.CREATE_FAIL, "房", fang.toString());
     }
 
+    @Override
     public FangExt createFangExt(FangExt fangExt) {
         if (mgtFangRepository.saveFangExt(fangExt) > 0) {
             return mgtFangRepository.findFangExt(fangExt.getId());
@@ -39,6 +42,7 @@ public class MgtFangService {
 
     }
 
+    @Override
     public FangContact createFangContact(FangContact fangContact) {
         boolean flag = checkFangContact(fangContact);
         ExceptionUtil.checkIllegal(flag, "联系方式", fangContact.toString());
@@ -48,9 +52,10 @@ public class MgtFangService {
         throw new EstateException(ExCode.CREATE_FAIL, "联系方式", fangContact.toString());
     }
 
+    @Override
     public boolean checkFangContact(FangContact fangContact) {
         ExceptionUtil.checkNotNull("联系信息", fangContact);
-        boolean flag = true;
+        boolean flag;
         switch (fangContact.getContactType()) {
             case MOBILE:
                 flag = ValidateUtil.isMobile(fangContact.getContactInfo());
@@ -74,6 +79,7 @@ public class MgtFangService {
         return flag;
     }
 
+    @Override
     public FangInfoOwner createFangInfoOwner(FangInfoOwner fangInfoOwner) {
         if (mgtFangRepository.saveFangInfoOwner(fangInfoOwner) > 0) {
             return mgtFangRepository.findFangInfoOwner(fangInfoOwner.getId());
