@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.auth.token;
 
 import com.lyun.estate.biz.auth.token.repository.TokenMapper;
+import com.lyun.estate.biz.support.clock.Clock;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,47 +12,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 
 @Component
 public class TokenProvider {
 
+    private static final long TOKEN_EXPIRE_DAY = 1L;
+    private static final long REFRESH_TOKEN_EXPIRE_DAY = 14L;
+    private static final long REFRESH_TOKEN_END_DAY = 30L;
     private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
     @Value("${token.secret.key}")
     private String secretKey;
-
     @Value("${token.refresh.key}")
     private String refreshKey;
-
     @Autowired
     private TokenMapper tokenMapper;
+    @Autowired
+    private Clock clock;
 
-    private static final long defaultTokenHour = 2;
-    private static final long defaultRefreshTokenHour = 7 * 24;
-    private static final long hourInMills = 60 * 60 * 1000;
-
-    public JWTToken generate(String subject, int clientId) {
-        return generate(subject, clientId, defaultTokenHour);
-    }
-
-    public JWTToken generate(String subject, int clientId, long hour) {
-        return generate(subject, clientId, hour, null);
-    }
 
     public JWTToken generate(String subject, int clientId, HashMap<String, Object> claims) {
-        return generate(subject, clientId, defaultTokenHour, claims);
-    }
 
-    public JWTToken generate(String subject, int clientId, long hour, HashMap<String, Object> claims) {
-        long now = (new Date()).getTime();
-        hour = checkHour(hour);
-        Date validity = new Date(now + hour * hourInMills);
-        Date refreshValidity = new Date(now + (defaultRefreshTokenHour + hour) * hourInMills);
-        String token = generateToken(subject, validity, claims);
-        String refreshToken = generateRefreshToken(subject, refreshValidity);
-        tokenMapper.createToken(new TokenEntity(subject, clientId, token, validity, refreshToken));
+        Instant now = clock.nowInstant();
+        Date expireTime = Date.from(now.plus(TOKEN_EXPIRE_DAY, ChronoUnit.DAYS));
+        Date refreshExpireTime = Date.from(now.plus(REFRESH_TOKEN_EXPIRE_DAY, ChronoUnit.DAYS));
+        Date refreshEndTime = Date.from(now.plus(REFRESH_TOKEN_END_DAY, ChronoUnit.DAYS));
+        String token = generateToken(subject, expireTime, claims);
+        String refreshToken = generateRefreshToken(subject, refreshExpireTime);
+        tokenMapper.createToken(new Token().setUserId(subject)
+                .setRefreshFrom(0L)
+                .setClientId(clientId)
+                .setToken(token)
+                .setExpiredTime(expireTime)
+                .setRefreshToken(refreshToken)
+                .setRefreshExpiredTime(refreshExpireTime)
+                .setRefreshEndTime(refreshEndTime));
         return new JWTToken(token, refreshToken);
     }
 
@@ -73,12 +72,6 @@ public class TokenProvider {
                 .setSubject(subject)
                 .signWith(SignatureAlgorithm.HS512, refreshKey)
                 .setExpiration(refreshValidity).compact();
-    }
-
-    private long checkHour(long hour) {
-        if (hour <= 0) hour = 2;
-        if (hour >= 168) hour = 168;
-        return hour;
     }
 
     public boolean validate(String token) {

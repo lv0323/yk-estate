@@ -15,10 +15,11 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.Objects;
 
 @ControllerAdvice
 public class JWTToeknArgumentResolver implements HandlerMethodArgumentResolver, Formatter<JWTToken> {
-    public final static String AUTH_HEADER = "AUTH";
+    public final static String AUTH_HEADER = "auth";
     public final static String TOKEN = "token";
     public final static String REFRESH_TOKEN = "refreshToken";
 
@@ -42,8 +43,12 @@ public class JWTToeknArgumentResolver implements HandlerMethodArgumentResolver, 
         }
         MultiValueMap<String, String> map = QueryStringUtil.parse(text);
         String token = map.getFirst(TOKEN);
-        String refreshToken = map.getFirst(REFRESH_TOKEN);
-        return new JWTToken(token, refreshToken);
+        if (Objects.nonNull(token)) {
+            return new JWTToken(token);
+        } else {
+            String refreshToken = map.getFirst(REFRESH_TOKEN);
+            return new JWTToken().setRefreshToken(refreshToken);
+        }
     }
 
     @Override

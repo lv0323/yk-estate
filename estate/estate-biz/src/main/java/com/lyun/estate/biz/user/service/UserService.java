@@ -1,9 +1,11 @@
 package com.lyun.estate.biz.user.service;
 
+import com.google.common.base.Strings;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.token.JWTToken;
 import com.lyun.estate.biz.auth.token.TokenProvider;
-import com.lyun.estate.biz.auth.token.repository.TokenMapper;
+import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.sms.def.SmsType;
 import com.lyun.estate.biz.user.domain.User;
 import com.lyun.estate.biz.user.repository.UserMapper;
@@ -16,7 +18,6 @@ import com.lyun.estate.core.supports.exceptions.EasyCodeException;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -24,6 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -31,17 +33,12 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
     @Autowired
-    TokenMapper tokenMapper;
-    @Autowired
     TokenProvider tokenProvider;
     @Autowired
-    Environment environment;
-    @Autowired
     RestContext restContext;
+    @Autowired
+    FileService fileService;
 
-    private int getDefaultValidDays() {
-        return Integer.valueOf(environment.getRequiredProperty("register.login.default.valid.days"));
-    }
 
     @Transactional
     public RegisterResponse register(RegisterResource registerResource, SmsCode smsCode) {
@@ -68,8 +65,7 @@ public class UserService {
         }
         if (registerResource.isLogin()) {
             registerResponse
-                    .setToken(getLoginToken(userMapper.findUserByMobile(smsCode.getMobile()),
-                            getDefaultValidDays()).getToken());
+                    .setToken(getLoginToken(userMapper.findUserByMobile(smsCode.getMobile())).getToken());
         }
         return registerResponse;
     }
@@ -95,7 +91,7 @@ public class UserService {
             }
             User loginUser = userMapper.loginUser(loginResource);
             if (isPasswordRight(loginResource, loginUser)) {
-                return getLoginToken(loginUser, loginResource.getValidDays() * 24);
+                return getLoginToken(loginUser);
             } else {
                 throw new ValidateException("user.login.error", "用户名或密码错误");
             }
@@ -103,7 +99,7 @@ public class UserService {
             if (smsCode.getType() != SmsType.LOGIN) {
                 throw new ValidateException("sms.type.illegal", "短信验证码类型应为'LOGIN'");
             }
-            return getLoginToken(userMapper.findUserByMobile(smsCode.getMobile()), getDefaultValidDays());
+            return getLoginToken(userMapper.findUserByMobile(smsCode.getMobile()));
         }
     }
 
@@ -113,9 +109,9 @@ public class UserService {
                 return CommonUtil.isSha256Equal(user.getSalt() + loginResource.getPassword(), user.getHash());
             } else {
                 StringBuffer stringBuffer = new StringBuffer();
-                stringBuffer.append(nullToEmptyStr(loginResource.getMobile()))
-                        .append(nullToEmptyStr(loginResource.getEmail()))
-                        .append(nullToEmptyStr(loginResource.getUserName()))
+                stringBuffer.append(Strings.nullToEmpty(loginResource.getMobile()))
+                        .append(Strings.nullToEmpty(loginResource.getEmail()))
+                        .append(Strings.nullToEmpty(loginResource.getUserName()))
                         .append(user.getHash());
                 return CommonUtil.isSha256Equal(stringBuffer.toString(), loginResource.getSignature());
             }
@@ -124,21 +120,20 @@ public class UserService {
         }
     }
 
-    private String nullToEmptyStr(String str) {
-        return StringUtils.isEmpty(str) ? "" : str;
-    }
-
-    private TokenResponse getLoginToken(User user, int defaultValidDays) {
-        JWTToken jwtToken = tokenProvider.generate(String.valueOf(user.getId()),
+    private TokenResponse getLoginToken(User user) {
+        JWTToken token = tokenProvider.generate(String.valueOf(user.getId()),
                 Integer.valueOf(restContext.getClientId()),
-                defaultValidDays * 24,
                 new HashMap<String, Object>() {{
                     put("clientId", restContext.getClientId());
-                    put("browserName", restContext.getBrowserName());
-                    put("osName", restContext.getOsName());
-                    put("userAddress", restContext.getUserAddress());
+                    put("avatarURI",
+                            Optional.ofNullable(user.getAvatorId())
+                                    .map(t -> Optional.ofNullable(
+                                            fileService.findOne(t))
+                                            .map(FileDescription::getFileURI)
+                                            .orElse(null))
+                                    .orElse(null));
                 }});
-        return new TokenResponse().setToken(jwtToken.getToken());
+        return new TokenResponse().setToken(token.getToken()).setRefreshToken(token.getRefreshToken());
     }
 
     @Transactional
@@ -169,7 +164,7 @@ public class UserService {
         }
         tokenProvider.invalidAllUserToken(String.valueOf(loginUser[0].getId()));
         if (changePasswordResource.isLogin()) {
-            return getLoginToken(loginUser[0], getDefaultValidDays());
+            return getLoginToken(loginUser[0]);
         }
         return new TokenResponse();
     }
@@ -191,5 +186,7 @@ public class UserService {
         }
     }
 
-
+    public TokenResponse refreshToken(JWTToken token) {
+        return null;
+    }
 }
