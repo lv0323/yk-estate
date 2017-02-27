@@ -34,7 +34,7 @@ require(['main-app',contextPath + '/js/service/department-service.js',
                             },
                             {
                                 attr: {class: 'btn reDeployDepartBtn'},
-                                data: {index: index, id: item.id, pid: item.parentId, toggle: 'modal', target: '#renewCompanyDialog'},
+                                data: {index: index, id: item.id, pid: item.parentId, toggle: 'modal', target: '#reDeployDepartDialog'},
                                 text: '调动'
                             }]
                     }

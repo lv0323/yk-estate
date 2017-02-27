@@ -243,13 +243,13 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             var time = UtilService.timeStamp2Date(employee["entryDate"]);
             $('#editEmployeeName').val(employee["name"]);
             $('#editEmployeeId').val(employee["id"]);
-            $('#editEmployeeGender').find('input[value='+employee["gender"]+']').prop('checked',true);
-            $('#editEmployeeGender').find('input[value!='+employee["gender"]+']').prop('checked',false);
+            $('#editEmployeeGender').find('input[value='+employee.gender["name"]+']').prop('checked',true);
+            $('#editEmployeeGender').find('input[value!='+employee.gender["name"]+']').prop('checked',false);
             $('#editEmployeeMobile').val(employee["mobile"]);
             $('#editEmployeeID').val(employee["idcardNumber"]);
             $('#editEmployeeWechat').val(employee["wechat"]);
             $('#editEmployeeIsAgent').prop('checked',employee["agent"]);
-            $('#editEmployeeStatus').val(employee["status"]);
+            $('#editEmployeeStatus').val(employee.status["name"]);
             $('#editEmployeeEntryDate').val(time);
 
         });
