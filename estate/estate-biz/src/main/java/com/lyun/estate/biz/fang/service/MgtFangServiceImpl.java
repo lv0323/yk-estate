@@ -15,6 +15,11 @@ import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.FileService;
+import com.lyun.estate.biz.housedict.entity.Building;
+import com.lyun.estate.biz.housedict.entity.BuildingUnit;
+import com.lyun.estate.biz.housedict.service.HouseDictService;
+import com.lyun.estate.biz.houselicence.entity.HouseLicence;
+import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
@@ -25,6 +30,9 @@ import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.core.utils.ValidateUtil;
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +50,8 @@ import static java.util.Objects.nonNull;
 @Service
 public class MgtFangServiceImpl implements MgtFangService {
 
+    private Logger logger = LoggerFactory.getLogger(MgtFangServiceImpl.class);
+
     private MgtFangRepository mgtFangRepository;
 
     private DepartmentService departmentService;
@@ -50,12 +60,19 @@ public class MgtFangServiceImpl implements MgtFangService {
 
     private FileService fileService;
 
+    private HouseLicenceService licenceService;
+
+    private HouseDictService houseDictService;
+
     public MgtFangServiceImpl(MgtFangRepository mgtFangRepository, DepartmentService departmentService,
-                              FangRepository fangRepository, FileService fileService) {
+                              FangRepository fangRepository, FileService fileService,
+                              HouseLicenceService licenceService, HouseDictService houseDictService) {
         this.mgtFangRepository = mgtFangRepository;
         this.departmentService = departmentService;
         this.fangRepository = fangRepository;
         this.fileService = fileService;
+        this.licenceService = licenceService;
+        this.houseDictService = houseDictService;
     }
 
     @Override
@@ -180,7 +197,10 @@ public class MgtFangServiceImpl implements MgtFangService {
         PageList<MgtFangSummary> summaries = mgtFangRepository.listSummary(selector, pageBounds);
 
         summaries.forEach(summary -> {
+                    ExceptionUtil.checkNotNull("房源编号：" + summary.getId() + "的授权编号", summary.getLicenceId());
+                    summary.setHead(buildHead(summary.getXiaoQuName(), summary.getLicenceId()));
                     List<FangTag> fangTags = fangRepository.findTags(summary.getId());
+
                     summary.setTags(fangTags.stream().map(FangTag::getHouseTag).collect(Collectors.toList()));
                     summary.decorateTags();
                     summary.setImageURI(Optional.ofNullable(
@@ -193,5 +213,26 @@ public class MgtFangServiceImpl implements MgtFangService {
         );
         return summaries;
 
+    }
+
+    private String buildHead(String xiaoQuName, Long licenceId) {
+        StringBuilder headBuilder = new StringBuilder(xiaoQuName);
+        HouseLicence licence = licenceService.findOne(licenceId);
+        if (licence == null) {
+            logger.error("房源授权未找到，编号：" + licenceId);
+        } else {
+            Building building = houseDictService.findBuildingAndUnit(licence.getBuildingId(),
+                    licence.getBuildingUnitId());
+            if (building == null) {
+                logger.error("房源授权楼栋信息未找到，编号：" + licenceId);
+            } else if (CollectionUtils.isEmpty(building.getUnits())) {
+                logger.error("房源授权单元信息未找到，编号：" + licenceId);
+            } else {
+                headBuilder.append(" ").append(building.getName()).append(" ")
+                        .append(building.getUnits().stream().findAny().map(BuildingUnit::getUnitName).orElse(""))
+                        .append(" ").append(licence.getHouseNo());
+            }
+        }
+        return headBuilder.toString();
     }
 }

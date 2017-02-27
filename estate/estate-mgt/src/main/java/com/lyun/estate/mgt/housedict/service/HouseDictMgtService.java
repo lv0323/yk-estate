@@ -69,7 +69,7 @@ public class HouseDictMgtService {
 
 
     public Building findBuilding(Long buildingId) {
-        return houseDictService.findBuilding(buildingId);
+        return houseDictService.findBuildingAndUnits(buildingId);
     }
 
     public List<BuildingUnit> findBuildingUnitsByBuildingId(Long buildingId) {

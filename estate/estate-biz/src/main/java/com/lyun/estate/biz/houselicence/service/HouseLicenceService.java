@@ -39,12 +39,11 @@ public class HouseLicenceService {
         ExceptionUtil.checkNotNull("单元号", buildingUnitId);
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(houseNo), "房号", houseNo);
 
-        Building building = houseDictService.findBuilding(buildingId);
+        Building building = houseDictService.findBuildingAndUnits(buildingId);
         if (!Objects.equals(building.getCommunityId(), communityId)) {
             throw new EstateException(ExCode.LICENCE_LOCATION_ERROR);
         }
-        boolean unitExisted = houseDictService.findBuildingUnitsByBuildingId(buildingId)
-                .stream()
+        boolean unitExisted = building.getUnits().stream()
                 .anyMatch(t -> Objects.equals(t.getId(), buildingUnitId));
         if (!unitExisted) {
             throw new EstateException(ExCode.LICENCE_LOCATION_ERROR);
@@ -82,5 +81,10 @@ public class HouseLicenceService {
         ExceptionUtil.checkNotNull("单元号", buildingUnitId);
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(houseNo), "房号", houseNo);
         return repo.findActive(communityId, bizType, buildingId, buildingUnitId, houseNo);
+    }
+
+    public HouseLicence findOne(Long id) {
+        ExceptionUtil.checkNotNull("房源授权编号", id);
+        return repo.findOne(id);
     }
 }
