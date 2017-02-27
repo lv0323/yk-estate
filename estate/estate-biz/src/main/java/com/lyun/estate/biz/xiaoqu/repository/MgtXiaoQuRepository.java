@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface MgtXiaoQuRepository {
-    @Select("select xq.*,c.address from t_xiao_qu xq left join t_community c on xq.community_id = c.id where id =#{id}")
+    @Select("select xq.*,c.address from t_xiao_qu xq left join t_community c on xq.community_id = c.id where xq.id =#{id}")
     XiaoQu findOne(Long id);
 }
