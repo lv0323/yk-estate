@@ -2,6 +2,8 @@ package com.lyun.estate.biz.auth.token;
 
 import com.lyun.estate.biz.auth.token.repository.TokenMapper;
 import com.lyun.estate.biz.support.clock.Clock;
+import com.lyun.estate.core.supports.exceptions.EstateException;
+import com.lyun.estate.core.supports.exceptions.ExCode;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -85,7 +88,7 @@ public class TokenProvider {
     }
 
     public int invalidToken(String token) {
-        int rows = tokenMapper.invalidToken(token);
+        int rows = tokenMapper.invalidTokenByToken(token);
         logger.info("invalid token {}, update {} row(s)", token, rows);
         return rows;
     }
@@ -104,4 +107,35 @@ public class TokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get(claim);
     }
 
+    public Token checkRefreshToken(String refreshToken) {
+        Token token = tokenMapper.findTokenByRefreshToken(refreshToken);
+        if (token == null) {
+            throw new EstateException(ExCode.TOKEN_REFRESH_INVALID);
+        }
+        if (clock.nowInstant().isAfter(token.getRefreshEndTime().toInstant())) {
+            throw new EstateException(ExCode.TOKEN_REFRESH_END);
+        }
+        return token;
+    }
+
+    @Transactional
+    public JWTToken refresh(Long id, String subject, HashMap<String, Object> claims) {
+        Token oldToken = tokenMapper.findOne(id);
+        Instant now = clock.nowInstant();
+        Date expireTime = Date.from(now.plus(TOKEN_EXPIRE_DAY, ChronoUnit.DAYS));
+        Date refreshExpireTime = Date.from(now.plus(REFRESH_TOKEN_EXPIRE_DAY, ChronoUnit.DAYS));
+        Date refreshEndTime = oldToken.getRefreshEndTime();
+        String token = generateToken(subject, expireTime, claims);
+        String refreshToken = generateRefreshToken(subject, refreshExpireTime);
+        tokenMapper.invalidToken(id);
+        tokenMapper.createToken(new Token().setUserId(subject)
+                .setRefreshFrom(id)
+                .setClientId(oldToken.getClientId())
+                .setToken(token)
+                .setExpiredTime(expireTime)
+                .setRefreshToken(refreshToken)
+                .setRefreshExpiredTime(refreshExpireTime)
+                .setRefreshEndTime(refreshEndTime));
+        return new JWTToken(token, refreshToken);
+    }
 }

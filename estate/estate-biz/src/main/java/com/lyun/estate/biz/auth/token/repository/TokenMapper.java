@@ -14,10 +14,18 @@ public interface TokenMapper {
     @Select("SELECT * FROM T_TOKEN WHERE TOKEN = #{token} AND EXPIRED_TIME > NOW() LIMIT 1")
     Token findToken(String token);
 
-    @Update("UPDATE T_TOKEN SET EXPIRED_TIME = NOW() WHERE TOKEN = #{token}")
-    int invalidToken(String token);
+    @Update("UPDATE T_TOKEN SET EXPIRED_TIME = NOW(), REFRESH_EXPIRED_TIME = NOW() WHERE TOKEN = #{token}")
+    int invalidTokenByToken(String token);
 
-    @Update("UPDATE T_TOKEN SET EXPIRED_TIME = NOW() WHERE USER_ID = #{userId}")
+    @Update("UPDATE T_TOKEN SET EXPIRED_TIME = NOW(), REFRESH_EXPIRED_TIME = NOW() WHERE id = #{id}")
+    int invalidToken(Long id);
+
+    @Update("UPDATE T_TOKEN SET EXPIRED_TIME = NOW(), REFRESH_EXPIRED_TIME = NOW() WHERE USER_ID = #{userId}")
     int invalidAllUserTokens(String userId);
 
+    @Select("SELECT * FROM T_TOKEN WHERE REFRESH_TOKEN = #{refreshToken} AND REFRESH_EXPIRED_TIME > NOW() LIMIT 1")
+    Token findTokenByRefreshToken(String refreshToken);
+
+    @Select("SELECT * FROM T_TOKEN WHERE ID = #{id}")
+    Token findOne(Long id);
 }
