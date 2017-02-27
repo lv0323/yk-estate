@@ -9,9 +9,10 @@ public class XiaoQu {
     private Long id;
     private Long communityId;
     private BigDecimal ranking;
-    private Integer abgPrice;
+    private Integer avgPrice;
     private Integer sellHouseCount;
     private Integer rentHouseCount;
+    private String address;
 
     public Long getId() {
         return id;
@@ -40,12 +41,12 @@ public class XiaoQu {
         return this;
     }
 
-    public Integer getAbgPrice() {
-        return abgPrice;
+    public Integer getAvgPrice() {
+        return avgPrice;
     }
 
-    public XiaoQu setAbgPrice(Integer abgPrice) {
-        this.abgPrice = abgPrice;
+    public XiaoQu setAvgPrice(Integer avgPrice) {
+        this.avgPrice = avgPrice;
         return this;
     }
 
@@ -64,6 +65,15 @@ public class XiaoQu {
 
     public XiaoQu setRentHouseCount(Integer rentHouseCount) {
         this.rentHouseCount = rentHouseCount;
+        return this;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public XiaoQu setAddress(String address) {
+        this.address = address;
         return this;
     }
 }

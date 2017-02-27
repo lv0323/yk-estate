@@ -5,6 +5,9 @@ public class JWTToken {
     private String token;
     private String refreshToken;
 
+    public JWTToken() {
+    }
+
     public JWTToken(String token) {
         this.token = token;
     }
@@ -15,18 +18,20 @@ public class JWTToken {
     }
 
     public String getToken() {
-        return this.token;
+        return token;
     }
 
-    public void setToken(String token) {
+    public JWTToken setToken(String token) {
         this.token = token;
+        return this;
     }
 
     public String getRefreshToken() {
         return refreshToken;
     }
 
-    public void setRefreshToken(String refreshToken) {
+    public JWTToken setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+        return this;
     }
 }

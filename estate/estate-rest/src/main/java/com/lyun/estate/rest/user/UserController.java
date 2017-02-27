@@ -8,6 +8,7 @@ import com.lyun.estate.biz.auth.sms.CheckSmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
 import com.lyun.estate.biz.auth.token.CheckToken;
+import com.lyun.estate.biz.auth.token.JWTToeknArgumentResolver;
 import com.lyun.estate.biz.auth.token.JWTToken;
 import com.lyun.estate.biz.sms.def.SmsType;
 import com.lyun.estate.biz.user.resources.*;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @PostMapping(value = "/register", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     @CheckSmsCode
@@ -69,7 +70,7 @@ public class UserController {
                                         @RequestParam(required = false) String salt,
                                         @RequestParam(required = false) String hash,
                                         @RequestParam(required = false) boolean login,
-                                        @RequestHeader("auth") JWTToken token) {
+                                        @RequestHeader(JWTToeknArgumentResolver.AUTH_HEADER) JWTToken token) {
         return userService.changePassword(new ChangePasswordResource().setOldPassword(oldPassword)
                         .setSignature(signature).setPassword(password).setSalt(salt).setHash(hash).setLogin(login),
                 null,
@@ -91,7 +92,13 @@ public class UserController {
 
     @PostMapping("/is-login")
     @CheckToken
-    public CommonResponse isLogin(@RequestHeader("auth") JWTToken token) {
+    public CommonResponse isLogin(@RequestHeader(JWTToeknArgumentResolver.AUTH_HEADER) JWTToken token) {
         return new CommonResponse().setSuccess(true);
+    }
+
+
+    @GetMapping("refresh-token")
+    public TokenResponse refreshToken(@RequestHeader(JWTToeknArgumentResolver.AUTH_HEADER) JWTToken token) {
+        return userService.refreshToken(token);
     }
 }
