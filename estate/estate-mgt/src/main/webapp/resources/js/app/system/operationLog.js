@@ -34,8 +34,8 @@ require(['main-app',
             var dataSet = data.map(function (item, index) {
                 return {
                     createTime: UtilService.timeStamp2Date(item.createTime),
-                    departmentId: item.departmentId,
-                    operatorId: item.operatorId,
+                    departmentName: item.departmentName,
+                    operatorName: item.operatorName,
                     content: item.content
                 }
             });
@@ -50,8 +50,8 @@ require(['main-app',
                     autoWidth: false,
                     columns: [
                         {title: "操作时间", data: 'createTime'},
-                        {title: "部门", data: 'departmentId', defaultContent: ""},
-                        {title: "操作者", data: 'operatorId', defaultContent: ""},
+                        {title: "部门", data: 'departmentName', defaultContent: ""},
+                        {title: "操作者", data: 'operatorName', defaultContent: ""},
                         {title: "操作内容", data: 'content', defaultContent: ""}
                     ]
                 });
@@ -80,7 +80,7 @@ require(['main-app',
         };
 
         var getAndDisplayOperationLog = function (params, offset, limit) {
-            AuditService.getAudit({subject:params.subject, startTime: params.startTime, endTime: params.endTime},{'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
+            AuditService.getAudit({subject:params.subject, startDate: params.startDate, endDate: params.endDate},{'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
                 .done(function (data) {
                     displayOperationLog(data.items);
                     if(data.total !== 0){
@@ -130,10 +130,10 @@ require(['main-app',
         });
 
         $('#confirmFilterOperationLogBtn').on('click',function () {
-            var startTime = $('#logStartDate').val();
-            var endTime = $('#logEndDate').val();
+            var startDate = $('#logStartDate').val();
+            var endDate = $('#logEndDate').val();
             var subject = $('.nav-pills').find('li.active a').data('name');
-            initTabTable({subject:subject, startTime:startTime, endTime: endTime});
+            initTabTable({subject:subject, startDate:startDate, endDate: endDate});
         });
 
 
