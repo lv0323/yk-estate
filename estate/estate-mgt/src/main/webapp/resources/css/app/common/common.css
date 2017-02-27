@@ -1,14 +1,11 @@
 /*底部*/
 .main-footer{
-    margin: 0 auto;
-    width: 100%;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    background: transparent;
-    border: none;
-    color: #fff;
+    background: #fff;
+    padding: 15px;
+    color: #444;
+    border-top: 1px solid #d2d6de;
 }
+
 
 .list{
     min-height: 130px;

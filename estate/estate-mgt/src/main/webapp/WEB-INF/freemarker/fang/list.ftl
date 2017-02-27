@@ -4,7 +4,7 @@
 <#include "/common/sidebar.ftl" />
 
 <!-- -->
-<div class="content-wrapper" id="houseListWrapper" ng-controller="HouseListCtrl" ng-cloak>
+<div class="content-wrapper" id="houseListWrapper" ng-controller="HouseListCtrl">
     <section class="content-header">
         <ol class="breadcrumb">
             <li>
@@ -23,7 +23,7 @@
         <div class="animated fadeInRight">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="box box-solid form-inline">
+                    <div class="box box-solid form-inline" ng-cloak>
                         <div class="box-header with-border">
                             <h3 class="box-title pull-left">房源列表</h3>
                             <div class="box-tools">
@@ -387,4 +387,4 @@
 <!-- /.content-wrapper -->
 
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/app/houseManage/houseList.js?vn=${bts!}"></script>
+<script src="${contextPath!}/js/app/fang/list.js?vn=${bts!}"></script>

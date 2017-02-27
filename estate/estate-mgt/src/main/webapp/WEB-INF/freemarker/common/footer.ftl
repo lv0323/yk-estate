@@ -5,6 +5,7 @@
     Copyright &copy; 2014-2016 <a href="#">Yingke Estate</a>.All rights
     reserved.
 </footer>
+</div>
 <script type="text/javascript">
     var contextPath = document.getElementById('contextPath').value;
     var clientId = document.getElementById('clientId').value;

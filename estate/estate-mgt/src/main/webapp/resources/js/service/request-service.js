@@ -13,7 +13,8 @@ define(contextPath+'/js/service/request-service.js', ['main-app'], function(main
                 type: method,
                 data: data,
                 headers: header,
-                dataType: 'json'
+                dataType: 'json',
+                traditional: true
             }).done(function(response){
             defer.resolve(response);
         }).fail(function(jqXHR, textStatus, errorThrown){

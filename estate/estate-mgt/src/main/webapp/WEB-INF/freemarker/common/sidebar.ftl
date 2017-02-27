@@ -97,15 +97,15 @@
             <li class="header">主导航</li>
             <!-- Optionally, you can add icons to the links -->
             <li><a href="/mgt/franchisee/company.ftl"><i class="fa fa-link"></i> <span>加盟商管理</span></a></li>
-            <li class="treeview house">
+            <li class="treeview fang">
                 <a href="#"><i class="fa fa-link"></i> <span>房源管理</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/houseManage/houseList.ftl?target=.house">房源列表</a></li>
-                    <li><a href="/mgt/houseManage/addHouse.ftl?target=.house">新增住宅</a></li>
+                    <li><a href="/mgt/fangManage/list.ftl?target=.fang">房源列表</a></li>
+                    <li><a href="/mgt/fangManage/add.ftl?target=.fang">新增住宅</a></li>
                 </ul>
             </li>
             <li class="treeview org">
