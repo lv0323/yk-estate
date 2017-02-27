@@ -1,6 +1,9 @@
 package com.lyun.estate.rest.message;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.lyun.estate.biz.auth.token.CheckToken;
+import com.lyun.estate.biz.auth.token.JWTToeknArgumentResolver;
+import com.lyun.estate.biz.auth.token.JWTToken;
 import com.lyun.estate.biz.message.entity.EventMessage;
 import com.lyun.estate.biz.message.entity.Message;
 import com.lyun.estate.biz.message.entity.MessageResource;
@@ -41,13 +44,17 @@ public class MessageController {
     private ReportEngine reportEngine;
 
     @GetMapping("/summary")
-    List<MessageSummaryResource> getMessageCounter() {
+    @CheckToken
+    List<MessageSummaryResource> getMessageCounter(
+            @RequestHeader(JWTToeknArgumentResolver.AUTH_HEADER) JWTToken jwtToken) {
         return messageService.getMessageSummary();
     }
 
     @GetMapping("/show")
+    @CheckToken
     List<MessageResource> getMessage(@RequestParam(required = true) Long senderId,
                                      @RequestParam(required = true) Long lastMessageId,
+                                     @RequestHeader(JWTToeknArgumentResolver.AUTH_HEADER) JWTToken jwtToken,
                                      @RequestHeader("X-PAGING") PageBounds pageBounds) {
         return messageService.getMessage(senderId, lastMessageId, pageBounds);
     }
@@ -67,8 +74,11 @@ public class MessageController {
 
     //TODO 不在rest提供API
     @PostMapping("/produce/direct")
-    boolean produceMessage(@RequestParam(required = true) String title, @RequestParam(required = false) String summary, @RequestParam(required = true) Long domainId,
-                           @RequestParam(required = true) DomainType domainType, @RequestParam(required = true) Long senderId, @RequestParam(required = true) Long receiverId) {
+    boolean produceMessage(@RequestParam(required = true) String title, @RequestParam(required = false) String summary,
+                           @RequestParam(required = true) Long domainId,
+                           @RequestParam(required = true) DomainType domainType,
+                           @RequestParam(required = true) Long senderId,
+                           @RequestParam(required = true) Long receiverId) {
         Message message = new Message();
         message.setTitle(title);
         message.setSummary(summary);
@@ -90,7 +100,7 @@ public class MessageController {
     //TODO 不在rest提供API
     @PostMapping("/produce/xiaoQu")
     boolean produceXiaoQuMessage(@RequestParam(required = true) Long xiaoQuId,
-                               @RequestParam(required = true) String title) {
+                                 @RequestParam(required = true) String title) {
         EventMessage message = messageService.generateSimpleXiaoQuEventMessage(xiaoQuId, title);
         return messageProducer.send(message);
     }
@@ -116,19 +126,22 @@ public class MessageController {
 //    }
 
     @GetMapping("/report/test")
-    String reportTest(@RequestParam(required = true) String reportName, Map param) throws SQLException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+    String reportTest(@RequestParam(required = true) String reportName,
+                      Map param) throws SQLException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
         param.put("receiverId", 3);
         return reportEngine.report(reportName, null, param);
     }
 
     @GetMapping("/report/test2")
-    void reportTest2(@RequestParam(required = true) String reportName, Map param, HttpServletResponse response) throws SQLException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+    void reportTest2(@RequestParam(required = true) String reportName, Map param,
+                     HttpServletResponse response) throws SQLException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
         param.put("receiverId", 3);
         reportEngine.report(reportName, null, param, response.getOutputStream());
     }
 
     @GetMapping("/report/test3")
-    void reportTest3(@RequestParam(required = true) String reportName, Map param, HttpServletResponse response) throws SQLException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+    void reportTest3(@RequestParam(required = true) String reportName, Map param,
+                     HttpServletResponse response) throws SQLException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
 //        response.setContentType("text/csv");
 //        response.setHeader("Content-Disposition", "attachment; filename=\""
 //                + URLEncoder.encode("测试", "UTF-8") + ".csv\"");
