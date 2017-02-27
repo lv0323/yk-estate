@@ -3,29 +3,19 @@
  */
 require(['main-app',
         contextPath + '/js/service/identity-service.js',
+        contextPath+'/js/service/house-service.js',
         contextPath + '/js/service/validation-service.js',
         contextPath + '/js/service/department-service.js',
         contextPath + '/js/service/util-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         'jqPaginator', 'select', 'chosen', 'datetimepicker.zh-cn'],
-    function (mainApp, IdentityService, ValidationService, DepartmentService, UtilService, pagingPlugin) {
-        var pageConfig = {
-            limit: 8,
-            init: false
-        };
-
-        /*$('#rentPriceUnit').selectpicker({
-            style: 'btn-default',
-            dropupAuto:false,
-            size: 8,
-        });*/
-        /*$('.chosen-select').chosen();*/
+    function (mainApp, IdentityService, HouseService, ValidationService, DepartmentService, UtilService, pagingPlugin) {
         var AddHouseModule=angular.module('AddHouseModule',[]);
         AddHouseModule.directive('datetimepicker', function () {
             return {
                 restrict: 'A',
-                controller: AddHouseCtrl,
-                controllerAs: 'ctrl',
+                /*controller: AddHouseCtrl,
+                controllerAs: 'ctrl',*/
                 link : function (scope, element, attrs) {
                     $(element).datetimepicker({
                         format: 'yyyy-mm-dd',
@@ -46,8 +36,8 @@ require(['main-app',
         AddHouseModule.directive('selectPicker', ['$timeout',function ($timeout) {
             return {
                 restrict: 'A',
-                controller: AddHouseCtrl,
-                controllerAs: 'ctrl',
+                /*controller: AddHouseCtrl,
+                controllerAs: 'ctrl',*/
                 link : function (scope, element, attrs) {
                     $timeout(function(){
                         $(element).selectpicker({
@@ -62,8 +52,8 @@ require(['main-app',
         AddHouseModule.directive('chosenSelect', ['$timeout',function ($timeout) {
             return {
                 restrict: 'A',
-                controller: AddHouseCtrl,
-                controllerAs: 'ctrl',
+                /*controller: AddHouseCtrl,
+                controllerAs: 'ctrl',*/
                 link : function (scope, element, attrs) {
                     $timeout(function(){
                         $(element).chosen("destroy");
@@ -77,7 +67,6 @@ require(['main-app',
                 }
             }
         }]);
-
         AddHouseModule.directive('repeatDone',['$timeout', function($timeout){
             return {
                 link: function(scope,element,attrs){
@@ -92,13 +81,33 @@ require(['main-app',
 
         function AddHouseCtrl($scope, $timeout, $interval, $window) {
             var _this = this;
-            _this.desc ={
-                pageName:"新增住宅"
+            var config = {
+                estate:{
+                    init: false,
+                    value:'',
+                    timer:null
+                },
+                build:{
+                    init:false
+                },
+                unit:{
+                    init:false
+                },
             };
-            _this.stepConfig ={
+            _this.stepConfig = {
                 step1: 1,
                 step2: 2
             };
+            _this.bizTypeConfig = {
+                rent: 'RENT',
+                sell: 'SELL'
+            }
+            /*页面相关内容*/
+            _this.page ={
+                name: "新增住宅",
+                currentStep: _this.stepConfig.step1
+            };
+            /*户型选择*/
             _this.layoutList={
                 shi:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:'',name:'无'}],
                 ting:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:'',name:'无'}],
@@ -106,28 +115,49 @@ require(['main-app',
                 wei:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:'',name:'无'}],
                 yangtai:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:'',name:'无'}]
             };
-            _this.currentStep = _this.stepConfig.step1;
+            /*新建栋座*/
+            _this.newBuilding = {
+                id:'',
+                floorAll:'',
+                countT:'',
+                countH:'',
+                remark:'',
+                estate: {
+                    id: '',
+                    name: '',
+                    address: '',
+                }
+            };
+            /*新建单元*/
+            _this.newUnit = {
+                build: {
+                    id: '',
+                    name: ''
+                },
+                unit: []
+            };
+            /*户型*/
             _this.currentLayout ={
                 shi:'',
                 ting:'',
                 chu:'',
                 wei:'',
                 yangtai:''
-            },
+            };
+            /*房屋信息*/
             _this.data ={
                 allSqm: '',
-                bizType: 'sell',
+                bizType: 'SELL',
                 build: '',
                 buildDate: '',
                 character:{
-                    unique:false,
+                    isOnly:false,
                     fiveYears:false,
                     twoYears:false
                 },
                 commission: '',
                 construct: '',
                 decorate: '',
-                direction: '',
                 downPayPer: '',
                 entrustWay: '',
                 estate: '',
@@ -141,9 +171,11 @@ require(['main-app',
                     wei:'',
                     yangtai:''
                 },
+                level: '',
                 lift:'',
                 look: '',
                 minPrice: '',
+                orientation: '',
                 owName: '',
                 owPhone1: '',
                 owPhone2: '',
@@ -158,51 +190,25 @@ require(['main-app',
                 pType: '',
                 purchase: '',
                 remark: '',
-                rentPriceUnit: '9929',
+                rentPriceUnit: 'YUAN',
                 room: '',
-                sellPriceUnit: '9935',
-                settle: '0',
+                sellPriceUnit: 'YUAN',
+                settle: '',
                 source: '',
                 startDate: '',
+                subType: '',
                 endDate: '',
                 tax: '',
                 type: '',
                 unit: '',
                 unitPrice: ''
             };
-            _this.typeList = [
-                {name:'多层',value :'1'},
-                {name:'高层',value :'2'},
-                {name:'小高层',value :'3'},
-                {name:'多层复式',value :'4'},
-                {name:'高层复式',value :'5'},
-                {name:'多层跃式',value :'6'},
-                {name:'高层跃式',value :'7'},
-                {name:'裙楼',value :'8'},
-                {name:'四合院',value :'9'}
-            ];
-            _this.estateList = [
-                {name:'多层',value :1},
-                {name:'高层',value :2},
-                {name:'小高层',value :3},
-                {name:'多层复式',value :4},
-                {name:'高层复式',value :5},
-                {name:'多层跃式',value :6},
-                {name:'高层跃式',value :7},
-                {name:'裙楼',value :8},
-                {name:'四合院',value :9}
-            ];
-            _this.houseBuildList = [
-                {name:'多层',value :'1'},
-                {name:'高层',value :'2'},
-                {name:'小高层',value :'3'},
-                {name:'多层复式',value :'4'},
-                {name:'高层复式',value :'5'},
-                {name:'多层跃式',value :'6'},
-                {name:'高层跃式',value :'7'},
-                {name:'裙楼',value :'8'},
-                {name:'四合院',value :'9'}
-            ];
+            /*住宅类型*/
+            _this.subTypeList = [];
+            /*地址*/
+            _this.estateList = [];
+            _this.buildList = [{name:'',value:''}];
+            _this.unitList = [{name:'',value:''}];
             _this.houseConstructList = [
                 {name:'塔房',value :'1'},
                 {name:'板房',value :'2'},
@@ -211,18 +217,7 @@ require(['main-app',
 
 
             ];
-            _this.houseUnitList = [
-                {name:'多层',value :'1'},
-                {name:'高层',value :'2'},
-                {name:'小高层',value :'3'},
-                {name:'多层复式',value :'4'},
-                {name:'高层复式',value :'5'},
-                {name:'多层跃式',value :'6'},
-                {name:'高层跃式',value :'7'},
-                {name:'裙楼',value :'8'},
-                {name:'四合院',value :'9'}
-            ];
-            _this.directionList =[
+            _this.orientationList =[
                 {name:'东', value:'9887'},
                 {name:'南', value:'9888'},
                 {name:'西', value:'9889'},
@@ -254,8 +249,71 @@ require(['main-app',
                 {name:'限时', value: '9879'},
                 {name:'托管', value: '9870'}
             ];
-
-            /*function*/
+            /*获得小区信息*/
+            function estateGet(key){
+                HouseService.xiaoquOption({keyword: key}).done(function (response) {
+                    $scope.$apply(function(){
+                        _this.estateList = response.map(function(item, index){
+                            return {
+                                name: item.xiaoQuName,
+                                value: item.xiaoQuId
+                            }
+                        });
+                    });
+                });
+            }
+            estateGet('a');
+            /*获得栋座信息*/
+            function buildingsGet(key){
+                HouseService.buildings({xiaoQuId: key}).done(function (response) {
+                    $scope.$apply(function(){
+                        if(response && response.length>0){
+                            _this.buildList = response.map(function(item, index){
+                                return {
+                                    name: item.name,
+                                    value: item.id
+                                }
+                            });
+                        }else{
+                            _this.buildList =[{name:'',value:''}];
+                        }
+                    });
+                });
+            }
+            /*获得单元信息*/
+            function unitsGet(key){
+                HouseService.buildingUnit({buildingId: key}).done(function (response) {
+                    $scope.$apply(function(){
+                        if(response && response.length>0){
+                            _this.unitList = response.map(function(item, index){
+                                return {
+                                    name: item.unitName,
+                                    value: item.id
+                                }
+                            });
+                        }else{
+                            _this.unitList =[{name:'',value:''}];
+                        }
+                    });
+                });
+            }
+            /*获取子类型*/
+            _this.typeChange = function(){
+                _this.subTypeList = [
+                    {name:'多层',value :'1'},
+                    {name:'高层',value :'2'},
+                    {name:'小高层',value :'3'},
+                    {name:'多层复式',value :'4'},
+                    {name:'高层复式',value :'5'},
+                    {name:'多层跃式',value :'6'},
+                    {name:'高层跃式',value :'7'},
+                    {name:'裙楼',value :'8'},
+                    {name:'四合院',value :'9'}
+                ];
+            };
+            _this.subTypeRefresh = function(id){
+                $(id).selectpicker('refresh')
+            }
             _this.addBuildInit = function(){
                 console.log('init Build');
             };
@@ -268,13 +326,24 @@ require(['main-app',
             _this.addUnitConfirm = function () {
 
             };
+            function chosenChange(id, key, value){
+                if(value === ""){
+                    return;
+                }
+                console.log(key);
+                if(key === 'estate'){
+                    buildingsGet(value);
+                }else if(key === 'build'){
+                    unitsGet(value)
+                }
+            }
             _this.nextStep = function () {
             //检查数据的完整性和正确性
-                _this.currentStep = _this.stepConfig.step2;
+                _this.page.currentStep = _this.stepConfig.step2;
             };
             _this.prevStep = function () {
             //检查数据的完整性和正确性
-                _this.currentStep = _this.stepConfig.step1;
+                _this.page.currentStep = _this.stepConfig.step1;
             };
             _this.initSelectPicker = function(id){
                $(id).selectpicker({
@@ -285,12 +354,18 @@ require(['main-app',
             };
             _this.initChosen = function(id, key){
                 $(id).chosen("destroy");
-                $(id).chosen().change(function(e, result){
-                    $scope.$apply(function(){
-                        _this.data[key] = result.selected;
+                if(!config[key].init){
+                    config[key].init = !config[key].init;
+                    $(id).chosen().change(function(e, result){
+                        $scope.$apply(function(){
+                            _this.data[key] = result.selected;
+                            chosenChange(id, key, result.selected)
+                        });
                     });
-                    _this.log();
-                });
+                    return;
+                }
+                $(id).chosen();
+                $(id).trigger('chosen:updated');
                 /*$timeout(function(){
                     console.log('chosen:updated');
                     $('#houseEstate_chosen input').val('多');
@@ -299,13 +374,31 @@ require(['main-app',
                 },3000)*/
 
             };
-            _this.chosenInitEstate = function(id,key){
-                _this.initChosen(id, key);
-                $('#estateContainer').on('input','.search-field-input',function(e){
-                    
-                });
+            var stateInputChange = function(e){
+                $timeout.cancel(config.estate.timer)
+                config.estate.timer = $timeout(function(){
+                    config.estate.value = $(e.target).val().trim();
+                    if(config.estate.value === ""){
+                        return;
+                    }
+                    estateGet(config.estate.value);
+                },800);
+            }
+            _this.chosenEstate = function(id,key){
+
+                if(!config.estate.init){
+                    _this.initChosen(id, key);
+                    config.estate.init = true;
+                }else{
+                    $(id).trigger('chosen:updated');
+                    if( $('#houseEstate_chosen .search-field-input').val().trim() == ''){
+                        $('#houseEstate_chosen .search-field-input').val(config.estate.value);
+                    }
+                }
+                $('#estateContainer').off('input','.search-field-input', stateInputChange);
+                $('#estateContainer').on('input','.search-field-input', stateInputChange);
             };
-            _this.initChosen('#houseEstate', 'estate');
+            /*_this.initChosen('#houseEstate', 'estate');*/
             _this.setBuildDate = function(){
                 _this.log();
             };
@@ -334,6 +427,8 @@ require(['main-app',
             _this.initSelectPicker('#houseSource');
             _this.initSelectPicker('#houseProveType');
             _this.initSelectPicker('.init-select-picker');*/
+
+
         }
         AddHouseCtrl.$inject = ['$scope', '$timeout', '$interval', '$window'];
         AddHouseModule.controller("AddHouseCtrl", AddHouseCtrl);

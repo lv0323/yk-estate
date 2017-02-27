@@ -387,4 +387,4 @@
 <!-- /.content-wrapper -->
 
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/app/houseManage/houseList.js?vn=${bts!}"></script>
+<script src="${contextPath!}/js/app/fang/list.js?vn=${bts!}"></script>
