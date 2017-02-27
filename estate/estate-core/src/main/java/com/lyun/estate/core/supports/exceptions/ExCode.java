@@ -13,6 +13,9 @@ public enum ExCode {
     UPDATE_FAIL("{}更新失败,{}"),
     NOT_FOUND("根据{}未找到{}"),
     EXISTED_ERROR("{}已经存在,{}"),
+    //token
+    TOKEN_REFRESH_INVALID("无效的刷新令牌"),
+    TOKEN_REFRESH_END("刷新令牌已到结束时间"),
     //oss
     OSS_EXCEPTION("OSS错误"),
     OSS_FILE_NOT_IMAGE("文件不是图片类型"),

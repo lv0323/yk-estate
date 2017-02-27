@@ -3,6 +3,7 @@ package com.lyun.estate.biz.user.service;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.token.JWTToken;
+import com.lyun.estate.biz.auth.token.Token;
 import com.lyun.estate.biz.auth.token.TokenProvider;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.FileService;
@@ -186,7 +187,21 @@ public class UserService {
         }
     }
 
-    public TokenResponse refreshToken(JWTToken token) {
-        return null;
+    public TokenResponse refreshToken(JWTToken jwtToken) {
+        Token oldToken = tokenProvider.checkRefreshToken(jwtToken.getRefreshToken());
+        User user = userMapper.findUserById(Long.valueOf(oldToken.getUserId()));
+        JWTToken newJWTToken = tokenProvider.refresh(oldToken.getId(),
+                String.valueOf(user.getId()),
+                new HashMap<String, Object>() {{
+                    put("clientId", restContext.getClientId());
+                    put("avatarURI",
+                            Optional.ofNullable(user.getAvatorId())
+                                    .map(t -> Optional.ofNullable(
+                                            fileService.findOne(t))
+                                            .map(FileDescription::getFileURI)
+                                            .orElse(null))
+                                    .orElse(null));
+                }});
+        return new TokenResponse().setToken(newJWTToken.getToken()).setRefreshToken(newJWTToken.getRefreshToken());
     }
 }
