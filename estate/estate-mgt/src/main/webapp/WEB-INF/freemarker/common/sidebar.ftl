@@ -105,7 +105,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="/mgt/fangManage/list.ftl?target=.fang">房源列表</a></li>
-                    <li><a href="/mgt/fangManage/add.ftl?target=.fang">新增住宅</a></li>
+                    <li><a href="/mgt/fangManage/create.ftl?target=.fang">新增住宅</a></li>
                 </ul>
             </li>
             <li class="treeview org">

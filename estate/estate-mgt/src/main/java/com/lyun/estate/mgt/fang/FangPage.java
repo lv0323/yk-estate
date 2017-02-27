@@ -32,7 +32,7 @@ public class FangPage {
         return new ModelAndView("/fang/list", params);
     }
 
-    @GetMapping("/add")
+    @GetMapping("/create")
     public ModelAndView addHouse() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("avatarUrl", service.getAvatar());
@@ -53,6 +53,6 @@ public class FangPage {
         params.put("taxesWilling", Arrays.asList(TaxesWilling.values()));
         params.put("commissionWilling", Arrays.asList(CommissionWilling.values()));
         params.put("username", service.getUsername());
-        return new ModelAndView("/fang/add", params);
+        return new ModelAndView("/fang/create", params);
     }
 }

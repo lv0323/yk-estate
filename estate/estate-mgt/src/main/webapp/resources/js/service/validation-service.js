@@ -3,7 +3,7 @@ define(contextPath+'/js/service/validation-service.js', ['main-app'], function(m
     var ValidationService = {
     };
     ValidationService.isValidPhoneNumber = function(value) {
-        var reg = /^(13|15|17|18|14)\d{9}(~)?$/;
+        var reg = /^1\d{10}$|^\d{3}-\d{8}$|^\d{4}-\d{7}$|^0\d{11}$|^\d{4}-\d{8}$/;
         return (reg.test(value));
     }
 

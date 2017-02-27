@@ -1,14 +1,8 @@
-<link href="${contextPath}/css/app/houseManage/index.css" rel="stylesheet">
-<link href="${contextPath}/css/app/houseManage/addHouse.css" rel="stylesheet">
+<link href="${contextPath}/css/app/fang/index.css" rel="stylesheet">
+<link href="${contextPath}/css/app/fang/addHouse.css" rel="stylesheet">
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
 <div class="content-wrapper" id="addHouse" ng-controller="AddHouseCtrl as ctrl">
-        <style type="text/css">
-            .tip.active{
-                background-color:#169bd5;
-                color:#fff;
-            }
-        </style>
         <section class="content-header">
             <ol class="breadcrumb">
                 <li><i class="fa fa-home fa-lg"></i><a href="#">房源管理</a></li>
@@ -26,7 +20,7 @@
                             <h3 class="box-title">新增住宅</h3>
                         </div>
 
-                        <form id="addForm" class="form-horizontal">
+                        <form id="createForm" class="form-horizontal" name="houseForm">
                             <div class="box-body">
                                 <div id="wizard">
                                     <ul id="status">
@@ -38,12 +32,11 @@
                                             <div class="form-group clearfix">
                                                 <label class="control-label">用途</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select id="houseType" select-picker class="selectpicker show-menu-arrow form-control sel-news" ng-model="ctrl.data.type" ng-change="ctrl.typeChange()">
+                                                    <select id="houseType" select-picker class="selectpicker show-menu-arrow form-control sel-news" ng-model="ctrl.data.type" ng-change="ctrl.typeChange(e)">
                                                         <option value="">房源类型</option>
                                                     <#list houseTypes?if_exists as type>
                                                         <option value="${type.name()}">${type.getLabel()}</option>
                                                     </#list>
-                                                        <#--<option ng-repeat="type in ctrl.typeList" ng-value="type.value">{{type.name}}</option>-->
                                                     </select>
                                                 </div>
                                                 <input type="hidden" value="9880"/>
@@ -60,42 +53,94 @@
                                             <div class="form-group clearfix">
                                                 <label class="control-label">物业地址</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2" id="estateContainer">
-                                                    <select id="houseEstate" data-placeholder="楼盘字典" class="chosen-select" name="houseEstate" reg="^\S+$">
-                                                        <option ng-value="">楼盘字典</option>
-                                                    <#--<#list xiaoQuOptions?if_exists as xq>
-                                                        <option type="radio" value="${xq.getXiaoQuId()}">${xq.getXiaoQuName()}</option>
-                                                    </#list>-->
-                                                   <option ng-repeat="estate in ctrl.estateList" repeat-done="ctrl.chosenEstate('#houseEstate', 'estate')" ng-value="estate.value">{{estate.name}}</option>
+                                                    <select id="houseEstate" data-placeholder="楼盘字典" class="chosen-select" name="houseEstate">
+                                                        <option ng-value="-111">楼盘字典</option>
+                                                        <option ng-repeat="estate in ctrl.estateList" repeat-done="ctrl.chosenEstate('#houseEstate', 'xiaoquId')" ng-value="estate.value">{{estate.name}}</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-3 col-md-3 col-sm-3 no-padding">
                                                     <div class="col-xs-6">
-                                                        <select name="fyHouseBuildid" id="houseBuild" class="chosen-select" reg="^\S+$">
+                                                        <select name="houseBuild" id="houseBuild" class="chosen-select" reg="^\S+$">
                                                             <option value="" header="">栋座</option>
-                                                            <option ng-repeat="build in ctrl.buildList" repeat-done="ctrl.initChosen('#houseBuild', 'build')" ng-value="build.value">{{build.name}}</option>
+                                                            <option ng-repeat="build in ctrl.buildList" repeat-done="ctrl.initChosen('#houseBuild', 'buildingId')" ng-value="build.value">{{build.name}}</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-xs-6">
-                                                        <select name="fyHouseUnitid" id="houseUnit" class="chosen-select" reg="^\S+$">
+                                                        <select name="houseUnit" id="houseUnit" class="chosen-select" reg="^\S+$">
                                                             <option value="" header="">单元</option>
-                                                            <option ng-repeat="unit in ctrl.unitList" repeat-done="ctrl.initChosen('#houseUnit', 'unit')" ng-value="unit.value">{{unit.name}}</option>
+                                                            <option ng-repeat="unit in ctrl.unitList" repeat-done="ctrl.initChosen('#houseUnit', 'buildingUnitId')" ng-value="unit.value">{{unit.name}}</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-1 col-md-1 col-sm-1">
-                                                    <input name="houseRoom" placeholder="房号" type="text" class="addfy_input bitian form-control" ng-model="ctrl.data.room" reg="^\S+$"/>
+                                                    <input name="houseNo" placeholder="房号" type="text" class="addfy_input bitian form-control" ng-model="ctrl.data.houseNo" reg="^\S+$" required/>
                                                 </div>
                                                 <div class="col-lg-1 col-md-1 col-sm-1">
-                                                    <input type="text" name="houseFloor"  reg="^\S+$"  class="form-control" placeholder="楼层" ng-model="ctrl.data.floor"/>
+                                                    <input type="text" name="floor"  reg="^\S+$"  class="form-control" placeholder="楼层" ng-model="ctrl.data.floor" required/>
                                                 </div>
                                                 <div class="col-lg-1 col-md-1 col-sm-1">
-                                                    <input type="text" name="houseFloorAll" reg="^\S+$" class="form-control" placeholder="总层" ng-model="ctrl.data.floorAll"/>
+                                                    <input type="text" name="floorCounts" reg="^\S+$" class="form-control" placeholder="总层" ng-model="ctrl.data.floorCounts" required/>
                                                 </div>
                                                 <div class="pull-left m-l-5" ng-show="ctrl.data.estate&&!ctrl.data.build" data-toggle="modal" data-target="#addBuildModel" ng-click="ctrl.addBuildInit()">
                                                     <button type="button" class="btn btn-primary" id="changes">申请添加栋座</button>
                                                 </div>
                                                 <div class="pull-left m-l-5" ng-show="ctrl.data.estate&&ctrl.data.build" data-toggle="modal" data-target="#addUnitModel" ng-click="ctrl.addUnitInit()">
                                                     <button type="button" class="btn btn-primary" id="changes">申请添加单元</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label class="control-label">交易</label>
+                                                <div class="col-lg-9 col-md-9 col-sm-9 form-inline m-t-7" id="jiaoyi">
+                                                    <div class="radio radio-nice">
+                                                        <input type="radio" name="houseVO.fyHouseTratype" ng-value="'RENT'" ng-model="ctrl.data.bizType" id="fy75" />
+                                                        <label for="fy75">出租</label>
+                                                    </div>
+                                                    <div class="radio radio-nice">
+                                                        <input type="radio" name="houseVO.fyHouseTratype" ng-value="'SELL'" ng-model="ctrl.data.bizType" id="fy76"/>
+                                                        <label for="fy76">出售</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label class="control-label">价格</label>
+                                                <div class="col-lg-1 col-md-2 col-sm-2">
+                                                    <input type="text" name="publishPrice" required class="form-control" placeholder="总价" strName="总价" ng-model="ctrl.data.publishPrice" ng-pattern="/^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$/"/>
+                                                </div>
+                                                <div class="col-lg-1 col-md-2 col-sm-2" class="pull-left" id="rent" style="display:block" ng-show="ctrl.data.bizType === ctrl.bizTypeConfig.rent">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control sel-news" name="rentPriceUnit" id="rentPriceUnit" ng-model="ctrl.data.rentPriceUnit">
+                                                    <#list rentPriceUnit ?if_exists as unit>
+                                                        <option value="${unit.name()}">${unit.getLabel()}</option>
+                                                    </#list>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-1 col-md-2 col-sm-2" id="sale" ng-show="ctrl.data.bizType === ctrl.bizTypeConfig.sell">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control sel-news" id="sellPriceUnit" ng-model="ctrl.data.sellPriceUnit">
+                                                    <#list sellPriceUnit ?if_exists as unit>
+                                                        <option value="${unit.name()}">${unit.getLabel()}</option>
+                                                    </#list>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-1 col-md-2 col-sm-2">
+                                                    <input type="text" name="housePriceunit" strName="单价" class="form-control" ng-model="ctrl.data.unitPrice" placeholder="单价" ng-pattern="/^0\.\d{1,2}$|/^[1-9]\d{0,8}\.\d{1,2}$/|/^[1-9]\d{0,8}$/|/^0$/|/^$/"/>
+                                                </div>
+                                                <div class="pull-left m-t-7 p-l-0" id="danwei">
+                                                <#list rentPriceUnit ?if_exists as unit>
+                                                    <span ng-show="ctrl.data.bizType === ctrl.bizTypeConfig.rent && ctrl.data.rentPriceUnit === '${unit.name()}'">${unit.getLabel()}</span>
+                                                </#list>
+                                                <#list sellPriceUnit ?if_exists as unit>
+                                                    <span ng-show="ctrl.data.bizType === ctrl.bizTypeConfig.sell && ctrl.data.sellPriceUnit === '${unit.name()}'">${unit.getLabel()}</span>
+                                                </#list>/㎡
+                                                </div>
+                                                <div class="col-lg-1 col-md-2 col-sm-2">
+                                                    <input type="text" name="housePriceMin" ng-model="ctrl.data.minPrice" class="form-control" placeholder="底价" strName="底价" ng-pattern="/^0\.\d{1,2}$|/^[1-9]\d{0,8}\.\d{1,2}$/|/^[1-9]\d{0,8}$/|/^0$/|/^$/"/>
+                                                </div>
+                                                <div class="pull-left m-t-7 p-l-0" id="danwei">
+                                                <#list rentPriceUnit ?if_exists as unit>
+                                                    <span ng-show="ctrl.data.bizType === ctrl.bizTypeConfig.rent && ctrl.data.rentPriceUnit === '${unit.name()}'">${unit.getLabel()}</span>
+                                                </#list>
+                                                <#list sellPriceUnit ?if_exists as unit>
+                                                    <span ng-show="ctrl.data.bizType === ctrl.bizTypeConfig.sell && ctrl.data.sellPriceUnit === '${unit.name()}'">${unit.getLabel()}</span>
+                                                </#list>/㎡
                                                 </div>
                                             </div>
                                             <div class="form-group clearfix">
@@ -115,12 +160,11 @@
                                                     <#list structureType?if_exists as type>
                                                         <option value="${type.name()}">${type.getLabel()}</option>
                                                     </#list>
-                                                        <#--<option ng-repeat="construct in ctrl.houseConstructList" ng-value="construct.value">{{construct.name}}</option>-->
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
                                                     <div class="input-group date form_date" datetimepicker key="buildDate" change="setDate">
-                                                        <input class="form-control" size="16" placeholder="建造日期" type="text" ng-model="ctrl.data.startDate" ng-change="ctrl.setBuildDate()" >
+                                                        <input class="form-control" size="16" placeholder="建造日期" type="text" ng-model="ctrl.data.startDate" ng-change="ctrl.setBuildDate()" ng-pattern="/\d{4}-\d{2}-\d{2}$/">
                                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                     </div>
                                                 </div>
@@ -136,12 +180,7 @@
                                                         <input type="hidden" name="houseVO.fyHouseCounty" class="fyHousetailCounty"/>
                                                         <a class="houseHold" data-toggle="modal" data-target="#layoutModel" href="#"  class="m-l-30" ng-click="ctrl.layoutDialogShow()">
                                                             <i class="fa fa-th-list"></i>
-                                                            <span ng-bind="(ctrl.data.layout.shi || ctrl.data.layout.ting || ctrl.data.layout.chu || ctrl.data.layout.wei || ctrl.data.layout.yangtai) ?
-                                                            (ctrl.data.layout.shi? ctrl.data.layout.shi+'室':'') +
-                                                            (ctrl.data.layout.ting ? ctrl.data.layout.ting+'厅':'') +
-                                                            (ctrl.data.layout.chu?ctrl.data.layout.chu+'厨':'') +
-                                                            (ctrl.data.layout.wei?ctrl.data.layout.wei+'卫':'') +
-                                                            (ctrl.data.layout.yangtai?ctrl.data.layout.yangtai+'阳台':'') :'选择户型'"></span>
+                                                            <span ng-bind="ctrl.page.layoutString||'选择户型'"></span>
                                                         </a>
                                                     </p>
                                                 </div>
@@ -154,79 +193,22 @@
                                                     <#list orientation?if_exists as ortation>
                                                         <option value="${ortation.name()}">${ortation.getLabel()}</option>
                                                     </#list>
-                                                       <#-- <option ng-repeat="orientation in ctrl.orientationList" ng-value="orientation.value">{{orientation.name}}</option>-->
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="form-group clearfix">
                                                 <label class="control-label">面积</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <input type="text" name="houseAllsqm"  reg="^\d{1,4}([.]\d{1,2})*$" class="form-control" placeholder="建筑面积" ng-model="ctrl.data.allSqm"/>
+                                                    <input type="text" name="estateArea" class="form-control" required placeholder="建筑面积" ng-model="ctrl.data.estateArea" ng-pattern="/^\d{1,5}([.]\d{1,2})*$/" required ng-blur="ctrl.checkArea()"/>
                                                 </div>
                                                 <div class="pull-left m-t-7 p-l-0">
                                                     ㎡
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <!-- BUG #9501 面积必填项增加套内面积必填 -->
-                                                    <input type="text" name="houseVO.fyHousePartsqm" class="form-control" placeholder="套内面积" id="fyHousePartsqm" onblur="checkArea();" ng-model="ctrl.data.partSqm"/>
+                                                    <input type="text" name="housePartsqm" class="form-control" placeholder="套内面积" ng-model="ctrl.data.realArea" ng-pattern="/^\d{1,5}([.]\d{1,2})*$/" ng-blur="ctrl.checkArea()"/>
                                                 </div>
                                                 <div class="pull-left m-t-7 p-l-0">
                                                     ㎡
-                                                </div>
-                                            </div>
-                                            <div class="form-group clearfix">
-                                                <label class="control-label">交易</label>
-                                                <div class="col-lg-9 col-md-9 col-sm-9 form-inline m-t-7" id="jiaoyi">
-                                                    <div class="radio radio-nice">
-                                                        <input type="radio" name="houseVO.fyHouseTratype" ng-value="'RENT'" ng-model="ctrl.data.bizType" id="fy75" />
-                                                        <label for="fy75">出租</label>
-                                                    </div>
-                                                    <div class="radio radio-nice">
-                                                        <input type="radio" name="houseVO.fyHouseTratype" ng-value="'SELL'" ng-model="ctrl.data.bizType" id="fy76"/>
-                                                        <label for="fy76">出售</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group clearfix">
-                                                <label class="control-label">价格</label>
-                                                <div class="col-lg-1 col-md-2 col-sm-2">
-                                                    <input type="text" name="housePrice" reg="^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$" class="form-control" placeholder="总价" strName="总价" ng-model="ctrl.data.price"/>
-                                                </div>
-                                                <div class="col-lg-1 col-md-2 col-sm-2" class="pull-left" id="rent" style="display:block" ng-show="ctrl.data.bizType === ctrl.bizTypeConfig.rent">
-                                                    <select select-picker class="selectpicker show-menu-arrow form-control sel-news" name="rentPriceUnit" id="rentPriceUnit" ng-model="ctrl.data.rentPriceUnit">
-                                                        <#list rentPriceUnit ?if_exists as unit>
-                                                            <option value="${unit.name()}">${unit.getLabel()}</option>
-                                                        </#list>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-1 col-md-2 col-sm-2" id="sale" ng-show="ctrl.data.bizType === ctrl.bizTypeConfig.sell">
-                                                    <select select-picker class="selectpicker show-menu-arrow form-control sel-news" id="sellPriceUnit" ng-model="ctrl.data.sellPriceUnit">
-                                                    <#list sellPriceUnit ?if_exists as unit>
-                                                        <option value="${unit.name()}">${unit.getLabel()}</option>
-                                                    </#list>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-1 col-md-2 col-sm-2">
-                                                    <input type="text" name="housePriceunit" strName="单价" class="form-control" ng-model="ctrl.data.unitPrice" placeholder="单价" reg="^0\.\d{1,2}$|^[1-9]\d{0,8}\.\d{1,2}$|^[1-9]\d{0,8}$|^0$|^$"/>
-                                                </div>
-                                                <div class="pull-left m-t-7 p-l-0" id="danwei">
-                                                <#list rentPriceUnit ?if_exists as unit>
-                                                    <span ng-show="ctrl.data.bizType === ctrl.bizTypeConfig.rent && ctrl.data.rentPriceUnit === '${unit.name()}'">${unit.getLabel()}</span>
-                                                </#list>
-                                                <#list sellPriceUnit ?if_exists as unit>
-                                                    <span ng-show="ctrl.data.bizType === ctrl.bizTypeConfig.sell && ctrl.data.sellPriceUnit === '${unit.name()}'">${unit.getLabel()}</span>
-                                                </#list>/㎡
-                                                </div>
-                                                <div class="col-lg-1 col-md-2 col-sm-2">
-                                                    <input type="text" name="housePriceMin" ng-model="ctrl.data.minPrice" class="form-control" placeholder="底价" strName="底价" reg="^0\.\d{1,2}$|^[1-9]\d{0,8}\.\d{1,2}$|^[1-9]\d{0,8}$|^0$|^$" />
-                                                </div>
-                                                <div class="pull-left m-t-7 p-l-0" id="danwei">
-                                                <#list rentPriceUnit ?if_exists as unit>
-                                                    <span ng-show="ctrl.data.bizType === ctrl.bizTypeConfig.rent && ctrl.data.rentPriceUnit === '${unit.name()}'">${unit.getLabel()}</span>
-                                                </#list>
-                                                <#list sellPriceUnit ?if_exists as unit>
-                                                    <span ng-show="ctrl.data.bizType === ctrl.bizTypeConfig.sell && ctrl.data.sellPriceUnit === '${unit.name()}'">${unit.getLabel()}</span>
-                                                </#list>/㎡
                                                 </div>
                                             </div>
                                             <div class="form-group clearfix" id="fyHouseSettle">
@@ -245,19 +227,19 @@
                                             <div class="form-group clearfix">
                                                 <label class="control-label">业主</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <input type="text" name="houseOwname" reg="^\S+$" class="form-control" placeholder="业主姓名" ng-model="ctrl.data.owName"/>
+                                                    <input type="text" name="houseOwname" reg="^\S+$" class="form-control" placeholder="业主姓名" required ng-model="ctrl.data.owName"/>
                                                 </div>
                                             </div>
                                             <div class="form-group clearfix">
                                                 <label class="control-label">手机</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <input type="text" name="houseOwphone" class="form-control" placeholder="业主手机1" ng-model="ctrl.data.owPhone1" reg="^1\d{10}$|^\d{3}-\d{8}$|^\d{4}-\d{7}$|^0\d{11}$|^\d{4}-\d{8}$"/>
+                                                    <input type="text" name="houseOwphone" required st-mobile-phone class="form-control" placeholder="业主手机1" ng-model="ctrl.data.owPhone1"/>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <input type="text" name="houseOwphone" class="form-control" placeholder="业主手机2" ng-model="ctrl.data.owPhone2" reg="^1\d{10}$|^\d{3}-\d{8}$|^\d{4}-\d{7}$|^0\d{11}$|^\d{4}-\d{8}$|^$"/>
+                                                    <input type="text" name="houseOwphone" st-mobile-phone class="form-control" placeholder="业主手机2" ng-model="ctrl.data.owPhone2"/>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <input type="text" name="houseOwphone" class="form-control" placeholder="业主手机3" ng-model="ctrl.data.owPhone3" reg="^1\d{10}$|^\d{3}-\d{8}$|^\d{4}-\d{7}$|^0\d{11}$|^\d{4}-\d{8}$|^$"/>
+                                                    <input type="text" name="houseOwphone" st-mobile-phone class="form-control" placeholder="业主手机3" ng-model="ctrl.data.owPhone3"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -279,19 +261,6 @@
                                                         <label for="level${level.name()}">${level.getLabel()}</label>
                                                     </div>
                                                 </#list>
-
-                                                    <#--<div class="radio radio-inline" style="padding-top:0px">
-                                                        <input name="houseVO.fyHouseQuali" ng-value="" ng-model="ctrl.data.houseLevel" id="fy12" type="radio">
-                                                        <label for="fy12">优质房</label>
-                                                    </div>
-                                                    <div class="radio radio-inline" style="padding-top:0px">
-                                                        <input name="houseVO.fyHouseQuali" value="10132" id="fy13" checked="" type="radio">
-                                                        <label for="fy13">普通房</label>
-                                                    </div>
-                                                    <div class="radio radio-inline" style="padding-top:0px">
-                                                        <input name="houseVO.fyHouseQuali" value="10133" id="fy14" type="radio">
-                                                        <label for="fy14">聚焦房</label>
-                                                    </div>-->
                                                 </div>
                                                 <span class="opt-gap pull-left" style="margin-top:10px;"></span>
                                                 <div class="pull-left col-lg-5 col-md-5 col-sm-5" id="tx3">
@@ -308,12 +277,6 @@
                                                         <label for="character10142">满两年</label>
                                                     </div>
                                                 </div>
-                                                <#--<div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select select-picker class="selectpicker show-menu-arrow form-control"  name="houseGrade" id="houseGrade">
-                                                        <option value="">等级</option>
-                                                        <option ng-repeat="grade in ctrl.gradeList" ng-value="grade.value">{{grade.name}}</option>
-                                                    </select>
-                                                </div>-->
                                             </div>
                                             <div class="form-group clearfix">
                                                 <label class="control-label">委托</label>
@@ -323,7 +286,6 @@
                                                     <#list delegateType ?if_exists as type>
                                                         <option value="${type.name()}">${type.getLabel()}</option>
                                                     </#list>
-                                                        <#--<option ng-repeat="entrustWay in ctrl.entrustWayList" ng-value="entrustWay.value">{{entrustWay.name}}</option>-->
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
@@ -349,11 +311,6 @@
                                                         </#list>
                                                     </select>
                                                 </div>
-                                                <#--<div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <!-- BUG #9269 新增钥匙号后，显示钥匙号，增加span标签 &ndash;&gt;
-                                                    <span id="showHouseKey"></span>
-                                                    <a onclick="addHousekey();" style="display:none;" id="yybh">钥匙编号</a>
-                                                </div>-->
                                             </div>
                                             <div class="form-group clearfix">
                                                 <label class="control-label">现状</label>
@@ -466,7 +423,7 @@
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <div class="btn_nav  pull-right">
                                                         <button type="button" class="prev btn btn-primary" ng-click="ctrl.prevStep()"><i class="fa fa-chevron-left"></i>上一步</button>
-                                                        <button type="button" class="next btn btn-primary"><i class="fa fa-save"></i>保存</button>
+                                                        <button type="button" class="next btn btn-primary" ng-click="ctrl.submit()"><i class="fa fa-save"></i>保存</button>
                                                         <button type="button" class="btn btn-default" style="border-color: #aaa"><i class="fa fa-times"></i>取消</button>
                                                     </div>
                                                 </div>
@@ -494,35 +451,35 @@
                             <label class="pull-left control-label">室</label>
                             <div class="pull-left m-t-7">
                                 <span ng-repeat="shi in ctrl.layoutList.shi" class="tip tip-info" value="{{shi.value}}"
-                                      ng-class="{'active':shi.value == ctrl.currentLayout.shi}" ng-click="ctrl.setLayout('shi', shi.value)">{{shi.value?shi.name+'室':shi.name}}</span>
+                                      ng-class="{'active':shi.value == ctrl.currentLayout.sCounts}" ng-click="ctrl.setLayout('sCounts', shi.value)">{{shi.value?shi.name+'室':shi.name}}</span>
                             </div>
                         </div>
                         <div class="clearfix">
                             <label class="pull-left control-label">厅</label>
                             <div class="pull-left m-t-7">
                                 <span ng-repeat="ting in ctrl.layoutList.ting" class="tip tip-info" value="{{ting.value}}"
-                                      ng-class="{'active':ting.value == ctrl.currentLayout.ting}" ng-click="ctrl.setLayout('ting', ting.value)">{{ting.value? ting.name+'厅' :ting.name}}</span>
+                                      ng-class="{'active':ting.value == ctrl.currentLayout.tCounts}" ng-click="ctrl.setLayout('tCounts', ting.value)">{{ting.value? ting.name+'厅' :ting.name}}</span>
                             </div>
                         </div>
                         <div class="clearfix">
                             <label class="pull-left control-label">厨</label>
                             <div class="pull-left m-t-7">
                                 <span ng-repeat="chu in ctrl.layoutList.chu" class="tip tip-info" value="{{chu.value}}"
-                                      ng-class="{'active':chu.value == ctrl.currentLayout.chu}" ng-click="ctrl.setLayout('chu', chu.value)">{{chu.value?chu.name+'厨':chu.name}}</span>
+                                      ng-class="{'active':chu.value == ctrl.currentLayout.cCounts}" ng-click="ctrl.setLayout('cCounts', chu.value)">{{chu.value?chu.name+'厨':chu.name}}</span>
                             </div>
                         </div>
                         <div class="clearfix">
                             <label class="pull-left control-label">卫</label>
                             <div class="pull-left m-t-7">
                                 <span ng-repeat="wei in ctrl.layoutList.wei" class="tip tip-info" value="{{wei.value}}"
-                                      ng-class="{'active':wei.value == ctrl.currentLayout.wei}" ng-click="ctrl.setLayout('wei', wei.value)">{{wei.value ? wei.name+'卫':wei.name}}</span>
+                                      ng-class="{'active':wei.value == ctrl.currentLayout.wCounts}" ng-click="ctrl.setLayout('wCounts', wei.value)">{{wei.value ? wei.name+'卫':wei.name}}</span>
                             </div>
                         </div>
                         <div class="clearfix">
                             <label class="pull-left control-label">阳台</label>
                             <div class="pull-left m-t-7">
                                 <span ng-repeat="yangtai in ctrl.layoutList.yangtai" class="tip tip-info" value="{{yangtai.value}}"
-                                      ng-class="{'active':yangtai.value == ctrl.currentLayout.yangtai}" ng-click="ctrl.setLayout('yangtai', yangtai.value)">{{yangtai.value? yangtai.name+'阳台':yangtai.name}}</span>
+                                      ng-class="{'active':yangtai.value == ctrl.currentLayout.ytCounts}" ng-click="ctrl.setLayout('ytCounts', yangtai.value)">{{yangtai.value? yangtai.name+'阳台':yangtai.name}}</span>
                             </div>
                         </div>
                     </div>
@@ -557,13 +514,13 @@
                         <div class="form-group clearfix">
                             <label class="control-label">栋座名称</label>
                             <div class="col-xs-9">
-                                <input id="glBuildingName" name="buildingName" reg="^\S+$" class="form-control" placeholder="栋座名称" type="text" ng-model="ctrl.newBuilding.name">
+                                <input id="glBuildingName" name="buildingName" required reg="^\S+$" class="form-control" required placeholder="栋座名称" type="text" ng-model="ctrl.newBuilding.name">
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label">栋座楼层</label>
                             <div class="col-xs-3">
-                                <input id="glBuildingFloorall" name="buildingFloorall" reg="^\S+$" class="form-control" placeholder="总层" type="text" ng-model="ctrl.newBuilding.floorAll">
+                                <input id="glBuildingFloorall" name="buildingFloorall" required reg="^\S+$" class="form-control" placeholder="总层" type="text" ng-model="ctrl.newBuilding.floorAll">
                             </div>
                         </div>
 
@@ -628,8 +585,27 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="warnModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel" ng-bind="ctrl.page.warn.title">
+
+                    </h4>
+                </div>
+                <div class="modal-body" ng-bind="ctrl.page.warn.content">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">确定
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 <!-- /.content-wrapper -->
 
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/app/fang/add.js?vn=${bts!}"></script>
+<script src="${contextPath!}/js/app/fang/create.js?vn=${bts!}"></script>
