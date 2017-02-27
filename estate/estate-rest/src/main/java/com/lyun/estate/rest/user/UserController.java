@@ -9,23 +9,13 @@ import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
 import com.lyun.estate.biz.auth.token.CheckToken;
 import com.lyun.estate.biz.auth.token.JWTToken;
-import com.lyun.estate.biz.user.resources.ChangePasswordResource;
-import com.lyun.estate.biz.user.resources.LoginResource;
-import com.lyun.estate.biz.user.resources.RegisterResource;
-import com.lyun.estate.biz.user.resources.RegisterResponse;
-import com.lyun.estate.biz.user.resources.SaltResource;
-import com.lyun.estate.biz.user.resources.SaltResponse;
-import com.lyun.estate.biz.user.resources.TokenResponse;
-import com.lyun.estate.biz.user.service.UserService;
 import com.lyun.estate.biz.sms.def.SmsType;
+import com.lyun.estate.biz.user.resources.*;
+import com.lyun.estate.biz.user.service.UserService;
 import com.lyun.estate.rest.supports.resources.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -58,11 +48,10 @@ public class UserController {
                                @RequestParam(required = false) String email,
                                @RequestParam(required = false) String mobile,
                                @RequestParam(required = false) String password,
-                               @RequestParam(required = false, defaultValue = "7") int validDays,
                                @RequestParam(required = false) String signature,
                                @RequestHeader(CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {
         return userService.login(new LoginResource().setUserName(userName).setEmail(email)
-                .setMobile(mobile).setPassword(password).setValidDays(validDays).setSignature(signature), null);
+                .setMobile(mobile).setPassword(password).setSignature(signature), null);
     }
 
     @PostMapping("/sms-login")
@@ -82,7 +71,9 @@ public class UserController {
                                         @RequestParam(required = false) boolean login,
                                         @RequestHeader("auth") JWTToken token) {
         return userService.changePassword(new ChangePasswordResource().setOldPassword(oldPassword)
-                .setSignature(signature).setPassword(password).setSalt(salt).setHash(hash).setLogin(login), null, token);
+                        .setSignature(signature).setPassword(password).setSalt(salt).setHash(hash).setLogin(login),
+                null,
+                token);
     }
 
     @PostMapping(value = "forget-password", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
