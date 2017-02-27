@@ -24,21 +24,15 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             target:null
         };
 
-        var positionStatus = {
-            true: true,
-            false: false
-        };
         var quitPosition = 'false'; //init nonQuit Employee by default
 
         $.fn.datepicker.defaults.language = "zh-CN";
         $('#addEmployeeEntryDate').datepicker({
             todayHighlight:true,
-            startDate: '+0d',
             autoclose: true
         });
         $('#editEmployeeEntryDate').datepicker({
             todayHighlight:true,
-            startDate: '+0d',
             autoclose: true
         });
 
@@ -151,7 +145,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 totalCounts:dataTotal,
                 pageSize: pageConfig.limit,
                 onChange: function (num, type) {
-                    filterEmployee(null, (num-1)*pageConfig.limit, pageConfig.limit);
+                    filterEmployee(quitPosition, (num-1)*pageConfig.limit, pageConfig.limit);
                 }
             };
             pagingPlugin.init(config);

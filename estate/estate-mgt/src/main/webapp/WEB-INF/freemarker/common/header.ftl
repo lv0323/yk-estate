@@ -15,6 +15,7 @@
      <link rel="stylesheet" href="${contextPath}/css/lib/ionicons.min.css">
      <!--plugins-->
      <link rel="stylesheet" href="${contextPath}/css/plugins/bootstrap-select.css">
+     <link rel="stylesheet" href="${contextPath}/css/plugins/selector/bootstrap-select.min.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/chosen/chosen.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/bootstrap-submenu.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/bootstrap-submenu.css">

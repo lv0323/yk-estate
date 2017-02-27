@@ -17,8 +17,8 @@ public class AuditSqlProvider {
                     .LEFT_OUTER_JOIN("t_employee e on a.operator_id = e.id")
                     .WHERE("a.company_id =#{companyId}")
                     .WHERE("a.subject =#{subject}")
-                    .WHERE_IF("create_time >= #{startTime} ", params.get("startTime") != null)
-                    .WHERE_IF("create_time < #{endTime}", params.get("endTime") != null);
+                    .WHERE_IF("a.create_time >= #{startTime} ", params.get("startTime") != null)
+                    .WHERE_IF("a.create_time < #{endTime}", params.get("endTime") != null);
         }}.toString();
     }
 }

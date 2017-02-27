@@ -10,8 +10,8 @@ define(contextPath+'/js/service/audit-service.js',
     AuditService.getAudit = function (params, header) {
         var data = {
             subject: params.subject,
-            startTime: params.startTime,
-            endTime: params.endTime
+            startDate: params.startDate,
+            endDate: params.endDate
         };
 
         return RequestService.get('/', data, header);

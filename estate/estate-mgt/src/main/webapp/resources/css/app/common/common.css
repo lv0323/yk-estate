@@ -44,10 +44,23 @@ span.opt-gap{
 
 .box .nav-stacked > li{
     border-bottom: 1px solid #f4f4f4;
+    cursor: pointer;
 }
 
-.nav-stacked > li.active > a{
+.nav-stacked > li > a{
     border-top: 0;
-    border-left-color: #3c8dbc;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+}
+
+.nav-stacked > li.active{
+    background-color: #3c8dbc;
+}
+
+.nav-stacked > li.active a, .nav-stacked > li.active a:hover{
+    border-top: 0;
+    border-left-color:#3c8dbc;
     font-weight: 600;
+    color: #fff;
+    cursor: pointer;
 }

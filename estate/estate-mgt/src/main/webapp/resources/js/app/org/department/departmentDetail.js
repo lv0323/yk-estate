@@ -3,7 +3,7 @@
  */
 require(['main-app',
         contextPath + '/js/app/org/department/departCommon.js',
-        contextPath + '/js/service/department-service.js'],
+        contextPath + '/js/service/department-service.js', 'select'],
     function (mainApp, DepartCommon, DepartmentService) {
 
         var header = {};
@@ -14,10 +14,16 @@ require(['main-app',
         function loadDepart(depart, city_id, district_id) {
             DepartCommon.reloadDistrict(city_id).done(function () {
                 $('#departDid').find('option[id='+depart["districtId"]+']').attr('selected','selected');
+                DepartCommon.reloadSubDistrict(district_id).done(function () {
+                    $('#departSDid').find('option[id='+depart["subDistrictId"]+']').attr('selected','selected');
+                    $('.selectpicker').selectpicker({
+                        style: 'btn-default',
+                        dropupAuto:false,
+                        size: 8
+                    });
+                });
             });
-            DepartCommon.reloadSubDistrict(district_id).done(function () {
-                $('#departSDid').find('option[id='+depart["subDistrictId"]+']').attr('selected','selected');
-            });
+
 
             $('#departId').val(depart["id"]);
             $('#departName').val(depart["name"]);
