@@ -2,9 +2,9 @@ package com.lyun.estate.biz.fang.repo;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.fang.domian.FangSelector;
 import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.entity.FangDescr;
-import com.lyun.estate.biz.fang.domian.FangSelector;
 import com.lyun.estate.biz.fang.entity.FangTag;
 import com.lyun.estate.biz.fang.repo.provider.FangSqlProvider;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangDetail;
@@ -13,12 +13,14 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by Jeffrey on 2017-01-23.
  */
+@Repository
 public interface FangRepository {
 
     @SelectProvider(type = FangSqlProvider.class, method = "findSummaryById")

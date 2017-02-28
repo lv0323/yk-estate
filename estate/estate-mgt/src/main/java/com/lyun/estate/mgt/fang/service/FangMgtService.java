@@ -2,6 +2,7 @@ package com.lyun.estate.mgt.fang.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.google.common.base.Strings;
 import com.lyun.estate.biz.audit.def.AuditSubject;
 import com.lyun.estate.biz.audit.entity.Audit;
 import com.lyun.estate.biz.audit.service.AuditService;
@@ -10,10 +11,12 @@ import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.biz.fang.entity.Fang;
-import com.lyun.estate.biz.fang.entity.FangContact;
-import com.lyun.estate.biz.fang.entity.FangExt;
-import com.lyun.estate.biz.fang.entity.FangInfoOwner;
+import com.lyun.estate.biz.fang.entity.*;
+import com.lyun.estate.biz.file.def.CustomType;
+import com.lyun.estate.biz.file.def.FileProcess;
+import com.lyun.estate.biz.file.def.FileType;
+import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
@@ -32,6 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -60,10 +64,12 @@ public class FangMgtService {
 
     private EmployeeService employeeService;
 
+    private FileService fileService;
+
     public FangMgtService(HouseLicenceService houseLicenceService,
                           MgtXiaoQuService mgtXiaoQuService, MgtFangService mgtFangService, MgtContext mgtContext,
                           AuditService auditService, DepartmentService departmentService,
-                          EmployeeService employeeService) {
+                          EmployeeService employeeService, FileService fileService) {
         this.houseLicenceService = houseLicenceService;
         this.mgtXiaoQuService = mgtXiaoQuService;
         this.mgtFangService = mgtFangService;
@@ -71,6 +77,7 @@ public class FangMgtService {
         this.auditService = auditService;
         this.departmentService = departmentService;
         this.employeeService = employeeService;
+        this.fileService = fileService;
     }
 
     @Transactional
@@ -116,6 +123,11 @@ public class FangMgtService {
         mgtFangService.createFangInfoOwner(new FangInfoOwner().setFangId(result.getId())
                 .setCompanyId(operator.getCompanyId()).setDepartmentId(operator.getDepartmentId())
                 .setEmployeeId(operator.getId()).setReason(InfoOwnerReason.CREATE));
+
+        //fangDescr
+        mgtFangService.createFangDescr(new FangDescr()
+                .setFangId(result.getId())
+                .setTitle(mgtFangService.buildHead(xiaoQu.getName(), licence.getId())));
 
         //audit
         auditService.save(new Audit()
@@ -204,5 +216,89 @@ public class FangMgtService {
         }
 
         return mgtFangService.listSummary(filter, order, pageBounds);
+    }
+
+    @Transactional
+    public List<FangContact> getContacts(Long fangId) {
+
+        List<FangContact> result = mgtFangService.getContacts(fangId);
+
+        Operator operator = mgtContext.getOperator();
+        auditService.save(new Audit()
+                .setCompanyId(operator.getCompanyId())
+                .setDepartmentId(operator.getDepartmentId())
+                .setOperatorId(operator.getId())
+                .setSubject(AuditSubject.FANG_OWNER)
+                .setTargetId(fangId)
+                .setDomainType(DomainType.FANG)
+                .setContent("【" + operator.getDepartmentName() + "--" + operator
+                        .getName() + "】查看了房源编号为【" + fangId + "】的房东联系方式")
+        );
+
+        return result;
+    }
+
+    public List<FangInfoOwner> getInfoOwners(Long fangId) {
+        return mgtFangService.getInfoOwners(fangId);
+    }
+
+    public FangFollow createFollow(Long fangId, FollowType followType, String content) {
+        Operator operator = mgtContext.getOperator();
+
+        return mgtFangService.createFollow(
+                new FangFollow().setFangId(fangId)
+                        .setFollowType(followType).setContent(content).setEmployeeId(operator.getId())
+        );
+    }
+
+    public PageList<FangFollow> getFollows(Long fangId, PageBounds pageBounds) {
+        return mgtFangService.getFollows(fangId, pageBounds);
+    }
+
+    public FangCheck createCheck(Long fangId, String advantage, String disAdvantage) {
+        Operator operator = mgtContext.getOperator();
+
+        return mgtFangService.createCheck(
+                new FangCheck().setFangId(fangId).setEmployeeId(operator.getId())
+                        .setAdvantage(advantage)
+                        .setDisAdvantage(disAdvantage)
+        );
+    }
+
+    public PageList<FangCheck> getChecks(Long fangId, PageBounds pageBounds) {
+        return mgtFangService.getChecks(fangId, pageBounds);
+    }
+
+    public FileDescription createImage(Long fangId, CustomType customType, InputStream inputStream, String suffix) {
+        ExceptionUtil.checkNotNull("房源编号", fangId);
+        ExceptionUtil.checkNotNull("文件业务类型", fangId);
+        ExceptionUtil.checkNotNull("文件输入流", inputStream);
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(suffix), "文件后缀名", suffix);
+        if (customType == CustomType.SHI_JING || customType == CustomType.HU_XING || customType == CustomType.CERTIF) {
+            FileDescription fileDescription = new FileDescription()
+                    .setOwnerId(fangId)
+                    .setOwnerType(DomainType.FANG)
+                    .setFileType(FileType.IMAGE)
+                    .setFileProcess(FileProcess.WATERMARK.getFlag())
+                    .setCustomType(customType)
+                    .setExt("operator=" + mgtContext.getOperator().getId());
+            return fileService.save(fileDescription, inputStream, suffix);
+        }
+        throw new EstateException(ExCode.CUSTOM_TYPE_NOT_SUPPORTED, customType);
+    }
+
+    public List<FileDescription> getImages(Long fangId, CustomType customType) {
+        ExceptionUtil.checkNotNull("房源编号", fangId);
+        ExceptionUtil.checkNotNull("房源编号", customType);
+
+        return fileService.find(fangId, DomainType.FANG, customType, FileProcess.WATERMARK);
+    }
+
+    public FangDescr updateDesc(FangDescr fangDescr) {
+        return mgtFangService.updateDesc(fangDescr);
+    }
+
+    public FangDescr findDescr(Long fangId) {
+        return mgtFangService.findDescr(fangId);
     }
 }

@@ -10,8 +10,8 @@ import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.biz.file.service.FileService;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.core.config.EstateCacheConfig;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
@@ -172,11 +172,12 @@ public class EmployeeService {
     public FileDescription createAvatar(Long id, InputStream avatarIS, String suffix) {
 
         FileDescription fileDescription = fileService.save(new FileDescription()
-                .setOwnerId(id)
-                .setOwnerType(DomainType.EMPLOYEE)
-                .setCustomType(CustomType.AVATAR)
-                .setFileType(FileType.IMAGE)
-                .setFileProcess(FileProcess.NONE.getFlag()), avatarIS, suffix);
+                        .setOwnerId(id)
+                        .setOwnerType(DomainType.EMPLOYEE)
+                        .setCustomType(CustomType.AVATAR)
+                        .setFileType(FileType.IMAGE)
+                        .setFileProcess(FileProcess.NONE.getFlag())
+                , avatarIS, suffix);
 
         repo.avatar(id, fileDescription.getId());
         return fileService.findOne(fileDescription.getId());
