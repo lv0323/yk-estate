@@ -36,7 +36,7 @@ select.sel-news {
     appearance: none;
     -moz-appearance: none;
     -webkit-appearance: none;
-    background: url("../images/crm-arrow.png") no-repeat scroll right center #fff;
+    background: url("../../../img/common/crm-arrow.png") no-repeat scroll right center #fff;
     padding: 7px 16px 7px 4px;
     font-size: 12px;
 }
@@ -269,11 +269,7 @@ select.sel-news {
 }
 
 .chevron::before {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: transparent -moz-use-text-color transparent #ededed;
+    border-color: transparent #d4d4d4 transparent #ededed;
     border-image: none;
     border-style: solid none solid solid;
     border-width: 24px 0 24px 14px;
@@ -285,11 +281,7 @@ select.sel-news {
 }
 
 .chevron {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: transparent -moz-use-text-color transparent #d4d4d4;
+    border-color: transparent #d4d4d4 transparent #d4d4d4;
     border-image: none;
     border-style: solid none solid solid;
     border-width: 24px 0 24px 14px;
@@ -1126,4 +1118,8 @@ a.btn-collapse:hover{
     display: block;
     height: 20px;
 
+}
+.tip.active{
+    background-color:#169bd5;
+    color:#fff;
 }

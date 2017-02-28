@@ -1,4 +1,4 @@
-<link href="${contextPath}/css/app/houseManage/index.css" rel="stylesheet">
+<link href="${contextPath}/css/app/fang/index.css" rel="stylesheet">
 
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
