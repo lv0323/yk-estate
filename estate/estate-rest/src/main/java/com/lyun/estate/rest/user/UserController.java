@@ -98,7 +98,7 @@ public class UserController {
 
 
     @GetMapping("refresh-token")
-    public TokenResponse refreshToken(@RequestHeader(JWTToeknArgumentResolver.AUTH_HEADER) JWTToken token) {
-        return userService.refreshToken(token);
+    public TokenResponse refreshToken(@RequestHeader(JWTToeknArgumentResolver.AUTH_HEADER) String refreshToken) {
+        return userService.refreshToken(refreshToken);
     }
 }

@@ -187,8 +187,8 @@ public class UserService {
         }
     }
 
-    public TokenResponse refreshToken(JWTToken jwtToken) {
-        Token oldToken = tokenProvider.checkRefreshToken(jwtToken.getRefreshToken());
+    public TokenResponse refreshToken(String refreshToken) {
+        Token oldToken = tokenProvider.checkRefreshToken(refreshToken);
         User user = userMapper.findUserById(Long.valueOf(oldToken.getUserId()));
         JWTToken newJWTToken = tokenProvider.refresh(oldToken.getId(),
                 String.valueOf(user.getId()),
