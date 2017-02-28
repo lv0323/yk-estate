@@ -3,6 +3,7 @@ requirejs.config({
     paths: {
         'jquery': 'libs/jquery-2.1.4.min',
         'bootstrap': 'libs/bootstrap.min',
+        'angular': 'libs/angular.min',
         'cryptojs.core': 'libs/cryptojs/core-min',
         'cryptojs.hmac': 'libs/cryptojs/hmac',
         'cryptojs.md5': 'libs/cryptojs/md5',
@@ -26,6 +27,11 @@ requirejs.config({
     },
     shim: {
         'bootstrap': ['jquery'],
+        'angular': {
+            deps: ['jquery'],
+
+            exports: 'angular'
+        },
         'adminLTE': ['jquery', 'bootstrap'],
         'adminLTEdemo':['jquery', 'bootstrap'],
         'cryptojs.hmac': ['cryptojs.core'],
