@@ -47,6 +47,8 @@ public enum ExCode {
     FANG_MGT_ERROR_DEPT("所选部门不合法"),
     FANG_MGT_ERROR_EMPLOYEE("所选员工不合法"),
 
+    //image
+    CUSTOM_TYPE_NOT_SUPPORTED("业务类型:{} 不支持"),
 
     //json
     JSON_ERROR("JSON对象{},转换错误:{}"),;

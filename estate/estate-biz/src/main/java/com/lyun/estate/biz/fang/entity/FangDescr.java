@@ -11,10 +11,12 @@ public class FangDescr {
     private String huXing;
     private String quanShu;
     private String shuiFei;
+    private String xueQu;
     private String zhuangXiu;
     private String jiaoTong;
     private String xiaoQu;
     private String touZi;
+    private String peiTao;
 
     public Long getId() {
         return id;
@@ -112,6 +114,24 @@ public class FangDescr {
 
     public FangDescr setTouZi(String touZi) {
         this.touZi = touZi;
+        return this;
+    }
+
+    public String getXueQu() {
+        return xueQu;
+    }
+
+    public FangDescr setXueQu(String xueQu) {
+        this.xueQu = xueQu;
+        return this;
+    }
+
+    public String getPeiTao() {
+        return peiTao;
+    }
+
+    public FangDescr setPeiTao(String peiTao) {
+        this.peiTao = peiTao;
         return this;
     }
 }

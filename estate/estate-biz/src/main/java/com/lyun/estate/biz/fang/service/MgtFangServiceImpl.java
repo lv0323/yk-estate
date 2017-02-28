@@ -9,8 +9,7 @@ import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.biz.fang.domian.MgtFangSelector;
 import com.lyun.estate.biz.fang.entity.*;
-import com.lyun.estate.biz.fang.repo.FangRepository;
-import com.lyun.estate.biz.fang.repo.MgtFangRepository;
+import com.lyun.estate.biz.fang.repo.*;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.entity.FileDescription;
@@ -64,15 +63,32 @@ public class MgtFangServiceImpl implements MgtFangService {
 
     private HouseDictService houseDictService;
 
+    private FangContactRepo fangContactRepo;
+
+    private FangInfoOwnerRepo fangInfoOwnerRepo;
+
+    private FangFollowRepo fangFollowRepo;
+
+    private FangCheckRepo fangCheckRepo;
+
+    private FangDescrRepo fangDescrRepo;
+
     public MgtFangServiceImpl(MgtFangRepository mgtFangRepository, DepartmentService departmentService,
                               FangRepository fangRepository, FileService fileService,
-                              HouseLicenceService licenceService, HouseDictService houseDictService) {
+                              HouseLicenceService licenceService, HouseDictService houseDictService,
+                              FangContactRepo fangContactRepo, FangInfoOwnerRepo fangInfoOwnerRepo,
+                              FangFollowRepo fangFollowRepo, FangCheckRepo fangCheckRepo, FangDescrRepo fangDescrRepo) {
         this.mgtFangRepository = mgtFangRepository;
         this.departmentService = departmentService;
         this.fangRepository = fangRepository;
         this.fileService = fileService;
         this.licenceService = licenceService;
         this.houseDictService = houseDictService;
+        this.fangContactRepo = fangContactRepo;
+        this.fangInfoOwnerRepo = fangInfoOwnerRepo;
+        this.fangFollowRepo = fangFollowRepo;
+        this.fangCheckRepo = fangCheckRepo;
+        this.fangDescrRepo = fangDescrRepo;
     }
 
     @Override
@@ -215,7 +231,72 @@ public class MgtFangServiceImpl implements MgtFangService {
 
     }
 
-    private String buildHead(String xiaoQuName, Long licenceId) {
+    @Override
+    public List<FangContact> getContacts(Long fangId) {
+        ExceptionUtil.checkNotNull("房源编号", fangId);
+        return fangContactRepo.findByFangId(fangId);
+    }
+
+    @Override
+    public List<FangInfoOwner> getInfoOwners(Long fangId) {
+        ExceptionUtil.checkNotNull("房源编号", fangId);
+        return fangInfoOwnerRepo.findByFangId(fangId);
+    }
+
+    @Override
+    public FangFollow createFollow(FangFollow fangFollow) {
+        ExceptionUtil.checkNotNull("fangFollow", fangFollow);
+        ExceptionUtil.checkNotNull("房源编号", fangFollow.getFangId());
+        ExceptionUtil.checkNotNull("跟进方式", fangFollow.getFollowType());
+        ExceptionUtil.checkNotNull("跟进人", fangFollow.getEmployeeId());
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(fangFollow.getContent())
+                        && fangFollow.getContent().length() > 10,
+                "跟进内容不满10个字", fangFollow.getContent());
+
+        if (fangFollowRepo.save(fangFollow) > 0) {
+            return fangFollowRepo.findOne(fangFollow.getId());
+        }
+        throw new EstateException(ExCode.CREATE_FAIL, "跟进记录", fangFollow.toString());
+    }
+
+    @Override
+    public PageList<FangFollow> getFollows(Long fangId, PageBounds pageBounds) {
+        ExceptionUtil.checkNotNull("房源编号", fangId);
+        return fangFollowRepo.findByFangId(fangId, pageBounds);
+    }
+
+    @Override
+    public FangCheck createCheck(FangCheck fangCheck) {
+        ExceptionUtil.checkNotNull("fangCheck", fangCheck);
+        ExceptionUtil.checkNotNull("房源编号", fangCheck.getFangId());
+        ExceptionUtil.checkNotNull("跟进人", fangCheck.getEmployeeId());
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(fangCheck.getAdvantage())
+                        && fangCheck.getAdvantage().length() > 10,
+                "勘查内容不满10个字", fangCheck.getAdvantage());
+
+        if (fangCheckRepo.save(fangCheck) > 0) {
+            return fangCheckRepo.findOne(fangCheck.getId());
+        }
+        throw new EstateException(ExCode.CREATE_FAIL, "勘查记录", fangCheck.toString());
+    }
+
+    @Override
+    public PageList<FangCheck> getChecks(Long fangId, PageBounds pageBounds) {
+        ExceptionUtil.checkNotNull("房源编号", fangId);
+        return fangCheckRepo.findByFangId(fangId, pageBounds);
+    }
+
+    @Override
+    public FangDescr createFangDescr(FangDescr fangDescr) {
+        ExceptionUtil.checkNotNull("fangDescr", fangDescr);
+        ExceptionUtil.checkNotNull("房源编号", fangDescr.getFangId());
+        if (fangDescrRepo.save(fangDescr) > 0) {
+            return fangDescrRepo.findOne(fangDescr.getId());
+        }
+        throw new EstateException(ExCode.CREATE_FAIL, "房源描述", fangDescr.toString());
+    }
+
+    public String buildHead(String xiaoQuName, Long licenceId) {
         StringBuilder headBuilder = new StringBuilder(xiaoQuName);
         HouseLicence licence = licenceService.findOne(licenceId);
         if (licence == null) {
@@ -234,5 +315,21 @@ public class MgtFangServiceImpl implements MgtFangService {
             }
         }
         return headBuilder.toString();
+    }
+
+    @Override
+    public FangDescr updateDesc(FangDescr fangDescr) {
+        ExceptionUtil.checkNotNull("fangDescr", fangDescr);
+        ExceptionUtil.checkNotNull("房源编号", fangDescr.getFangId());
+        if (fangDescrRepo.update(fangDescr) > 0) {
+            return fangDescrRepo.findByFangId(fangDescr.getFangId());
+        }
+        throw new EstateException(ExCode.UPDATE_FAIL, "房源描述", fangDescr.toString());
+    }
+
+    @Override
+    public FangDescr findDescr(Long fangId) {
+        ExceptionUtil.checkNotNull("房源编号", fangId);
+        return fangDescrRepo.findByFangId(fangId);
     }
 }

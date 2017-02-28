@@ -2,21 +2,26 @@ package com.lyun.estate.mgt.fang;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.google.common.base.Strings;
 import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.biz.fang.entity.Fang;
-import com.lyun.estate.biz.fang.entity.FangContact;
-import com.lyun.estate.biz.fang.entity.FangExt;
+import com.lyun.estate.biz.fang.entity.*;
+import com.lyun.estate.biz.file.def.CustomType;
+import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.spec.fang.mgt.def.TimeType;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
+import com.lyun.estate.core.supports.resolvers.PageBoundsArgumentResolver;
 import com.lyun.estate.core.supports.types.YN;
 import com.lyun.estate.mgt.fang.service.FangMgtService;
 import com.lyun.estate.mgt.supports.CommonResp;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.Date;
@@ -41,14 +46,14 @@ public class FangRest {
     public Fang createFang(@RequestParam BizType bizType,
                            @RequestParam HouseType houseType,
                            @RequestParam HouseSubType houseSubType,
-                           @RequestParam Long xiaoquId,
+                           @RequestParam Long xiaoQuId,
                            @RequestParam Long buildingId,
                            @RequestParam Long buildingUnitId,
                            @RequestParam String houseNo,
                            @RequestParam Integer floor,
                            @RequestParam Integer floorCounts,
                            @RequestParam StructureType structureType,
-                           @RequestParam Integer builYear,
+                           @RequestParam Integer buildYear,
                            @RequestParam String address,
                            @RequestParam(required = false) String certifNo,
                            @RequestParam Integer sCounts,
@@ -94,11 +99,11 @@ public class FangRest {
                 .setHouseNo(houseNo);
 
         Fang fang = new Fang().setBizType(bizType).setHouseType(houseType).setHouseSubType(houseSubType)
-                .setXiaoQuId(xiaoquId).setFloor(floor).setFloorCounts(floorCounts).setsCounts(sCounts)
+                .setXiaoQuId(xiaoQuId).setFloor(floor).setFloorCounts(floorCounts).setsCounts(sCounts)
                 .settCounts(tCounts).setcCounts(cCounts).setwCounts(wCounts).setYtCounts(ytCounts)
                 .setOrientation(orientation).setEstateArea(estateArea).setRealArea(realArea)
                 .setPublishPrice(publishPrice).setPriceUnit(priceUnit).setUnitPrice(unitPrice)
-                .setTransferPrice(transferPrice).setStructureType(structureType).setBuildYear(builYear)
+                .setTransferPrice(transferPrice).setStructureType(structureType).setBuildYear(buildYear)
                 .setHeatingType(heatingType).setHasElevator(hasElevator)
                 .setBottomPrice(bottomPrice).setResident(resident).setDecorate(decorate);
 
@@ -109,7 +114,7 @@ public class FangRest {
                 .setTaxesWilling(taxesWilling).setCommissionWilling(commissionWilling).setPurchasePrice(purchasePrice)
                 .setMortgage(mortgage).setNote(note);
 
-        List<FangContact> contacts = mobiles.stream().map(m ->
+        List<FangContact> contacts = mobiles.stream().filter(t -> !Strings.isNullOrEmpty(t)).map(m ->
                 new FangContact().setContactType(ContactType.MOBILE).setOwnerName(ownerName).setContactInfo(m))
                 .collect(Collectors.toList());
 
@@ -117,12 +122,12 @@ public class FangRest {
     }
 
     @PostMapping("pre-check-licence")
-    public CommonResp preCheck(@RequestParam Long xiaoquId,
+    public CommonResp preCheck(@RequestParam Long xiaoQuId,
                                @RequestParam BizType bizType,
                                @RequestParam Long buildingId,
                                @RequestParam Long buildingUnitId,
                                @RequestParam String houseNo) {
-        return fangMgtService.preCheckLicence(xiaoquId,
+        return fangMgtService.preCheckLicence(xiaoQuId,
                 bizType,
                 buildingId,
                 buildingUnitId,
@@ -187,5 +192,110 @@ public class FangRest {
     public List<HouseSubType> subTypes(@RequestParam HouseType houseType) {
         return houseType.getSubTypes();
     }
+
+    @GetMapping("detail")
+    public List<Fang> getDetail(@RequestParam Long fangId) {
+        return null;
+    }
+
+    @GetMapping("contact")
+    public List<FangContact> getContacts(@RequestParam Long fangId) {
+        return fangMgtService.getContacts(fangId);
+    }
+
+    @GetMapping("info-owner")
+    public List<FangInfoOwner> getInfoOwners(@RequestParam Long fangId) {
+        return fangMgtService.getInfoOwners(fangId);
+    }
+
+    @PostMapping("change-base")
+    public Fang changeBase(@RequestParam Long fangId) {
+        return null;
+    }
+
+    @PostMapping("change-ext")
+    public FangExt changeExt(@RequestParam Long fangId) {
+        return null;
+    }
+
+    @PostMapping("follow")
+    public FangFollow createFollow(@RequestParam Long fangId,
+                                   @RequestParam FollowType followType,
+                                   @RequestParam String content) {
+        return fangMgtService.createFollow(fangId, followType, content);
+    }
+
+    @GetMapping("follow")
+    public PageList<FangFollow> getFollows(@RequestParam Long fangId,
+                                           @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
+        return fangMgtService.getFollows(fangId, pageBounds);
+    }
+
+    @PostMapping("check")
+    public FangCheck createCheck(@RequestParam Long fangId,
+                                 @RequestParam String advantage,
+                                 @RequestParam(required = false) String disAdvantage) {
+        return fangMgtService.createCheck(fangId, advantage, disAdvantage);
+    }
+
+    @GetMapping("check")
+    public PageList<FangCheck> getChecks(Long fangId,
+                                         @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
+        return fangMgtService.getChecks(fangId, pageBounds);
+    }
+
+    @PostMapping("image")
+    public FileDescription createImage(@RequestParam Long fangId,
+                                       @RequestParam CustomType customType,
+                                       @RequestParam MultipartFile image) throws IOException {
+        try (InputStream inputStream = image.getInputStream()) {
+            return fangMgtService.createImage(fangId,
+                    customType,
+                    inputStream,
+                    image.getOriginalFilename().substring(image.getOriginalFilename().lastIndexOf(".")));
+        }
+    }
+
+    @GetMapping("image")
+    public List<FileDescription> getImages(@RequestParam Long fangId,
+                                           @RequestParam CustomType customType) {
+        return fangMgtService.getImages(fangId, customType);
+    }
+
+
+    @PostMapping("descr")
+    public FangDescr updateDesc(@RequestParam Long fangId,
+                                @RequestParam String title,
+                                @RequestParam String core,
+                                @RequestParam(required = false) String huXing,
+                                @RequestParam(required = false) String quanShu,
+                                @RequestParam(required = false) String shuiFei,
+                                @RequestParam(required = false) String xueQu,
+                                @RequestParam(required = false) String zhuangXiu,
+                                @RequestParam(required = false) String jiaoTong,
+                                @RequestParam(required = false) String xiaoQu,
+                                @RequestParam(required = false) String peiTao,
+                                @RequestParam(required = false) String touZi) {
+        FangDescr descr = new FangDescr().setFangId(fangId)
+                .setTitle(title)
+                .setCore(core)
+                .setHuXing(huXing)
+                .setQuanShu(quanShu)
+                .setShuiFei(shuiFei)
+                .setXueQu(xueQu)
+                .setZhuangXiu(zhuangXiu)
+                .setJiaoTong(jiaoTong)
+                .setXiaoQu(xiaoQu)
+                .setPeiTao(peiTao)
+                .setTouZi(touZi);
+
+        return fangMgtService.updateDesc(descr);
+    }
+
+    @GetMapping("descr")
+    public FangDescr getDescr(@RequestParam Long fangId) {
+        return fangMgtService.findDescr(fangId);
+    }
+
 
 }

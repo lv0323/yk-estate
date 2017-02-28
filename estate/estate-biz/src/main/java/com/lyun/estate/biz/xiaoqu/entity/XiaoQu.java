@@ -13,6 +13,7 @@ public class XiaoQu {
     private Integer sellHouseCount;
     private Integer rentHouseCount;
     private String address;
+    private String name;
 
     public Long getId() {
         return id;
@@ -74,6 +75,15 @@ public class XiaoQu {
 
     public XiaoQu setAddress(String address) {
         this.address = address;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public XiaoQu setName(String name) {
+        this.name = name;
         return this;
     }
 }
