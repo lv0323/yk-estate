@@ -4,10 +4,7 @@ import com.lyun.estate.biz.auth.token.repository.TokenMapper;
 import com.lyun.estate.biz.support.clock.Clock;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +105,11 @@ public class TokenProvider {
     }
 
     public Token checkRefreshToken(String refreshToken) {
+        try {
+            Jwts.parser().setSigningKey(refreshKey).parseClaimsJws(refreshToken).getBody().getSubject();
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException | SignatureException e) {
+            throw new EstateException(ExCode.TOKEN_REFRESH_INVALID);
+        }
         Token token = tokenMapper.findTokenByRefreshToken(refreshToken);
         if (token == null) {
             throw new EstateException(ExCode.TOKEN_REFRESH_INVALID);

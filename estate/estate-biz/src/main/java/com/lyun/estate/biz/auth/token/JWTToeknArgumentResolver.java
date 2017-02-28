@@ -2,10 +2,8 @@ package com.lyun.estate.biz.auth.token;
 
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
-import com.lyun.estate.core.utils.QueryStringUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.format.Formatter;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -15,7 +13,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.text.ParseException;
 import java.util.Locale;
-import java.util.Objects;
 
 @ControllerAdvice
 public class JWTToeknArgumentResolver implements HandlerMethodArgumentResolver, Formatter<JWTToken> {
@@ -41,14 +38,7 @@ public class JWTToeknArgumentResolver implements HandlerMethodArgumentResolver, 
         if (StringUtils.isEmpty(text)) {
             throw new ValidateException(AUTH_HEADER + ".header.isNull", "AUTH头缺失");
         }
-        MultiValueMap<String, String> map = QueryStringUtil.parse(text);
-        String token = map.getFirst(TOKEN);
-        if (Objects.nonNull(token)) {
-            return new JWTToken(token);
-        } else {
-            String refreshToken = map.getFirst(REFRESH_TOKEN);
-            return new JWTToken().setRefreshToken(refreshToken);
-        }
+        return new JWTToken(text);
     }
 
     @Override
