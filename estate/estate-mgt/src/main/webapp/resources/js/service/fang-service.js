@@ -13,8 +13,17 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.buildings = function (params, header) {
             return RequestService.get('/buildings', params, header);
         };
+        FangService.buildingInfo = function (params, header) {
+            return RequestService.get('/buildings/'+ params.id, params, header);
+        };
+        FangService.buildingPost = function (params, header) {
+            return RequestService.post('/building', params, header);
+        };
         FangService.buildingUnit = function (params, header) {
             return RequestService.get('/building-unit', params, header);
+        };
+        FangService.buildingUnitPost = function (params, header) {
+            return RequestService.post('/building-unit', params, header);
         };
         FangService.subType = function (params, header) {
             return RequestService.get('/fang/sub-types', params, header);

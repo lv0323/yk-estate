@@ -27,7 +27,7 @@ public class HouseDictRest {
                                    @RequestParam Integer floors,
                                    @RequestParam Integer stairs,
                                    @RequestParam Integer houses,
-                                   @RequestParam String description) {
+                                   @RequestParam(required = false) String description) {
         return houseDictMgtService.createBuilding(xiaoQuId,
                 name,
                 floors,

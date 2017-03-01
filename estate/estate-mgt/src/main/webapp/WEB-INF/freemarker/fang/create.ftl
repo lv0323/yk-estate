@@ -94,10 +94,10 @@
                                                 <div class="col-lg-1 col-md-1 col-sm-1">
                                                     <input type="text" name="floorCounts" reg="^\S+$" class="form-control" placeholder="总层" ng-model="ctrl.data.floorCounts" required ng-blur="ctrl.floorCountCheck()"/>
                                                 </div>
-                                                <div class="pull-left m-l-5" ng-show="ctrl.data.estate&&!ctrl.data.build" data-toggle="modal" data-target="#addBuildModel" ng-click="ctrl.addBuildInit()">
+                                                <div class="pull-left m-l-5" ng-show="ctrl.data.xiaoQuId&&!ctrl.data.buildingId" ng-click="ctrl.addBuildInit()">
                                                     <button type="button" class="btn btn-primary" id="changes">申请添加栋座</button>
                                                 </div>
-                                                <div class="pull-left m-l-5" ng-show="ctrl.data.estate&&ctrl.data.build" data-toggle="modal" data-target="#addUnitModel" ng-click="ctrl.addUnitInit()">
+                                                <div class="pull-left m-l-5" ng-show="ctrl.data.xiaoQuId&&ctrl.data.buildingId" ng-click="ctrl.addUnitInit()">
                                                     <button type="button" class="btn btn-primary" id="changes">申请添加单元</button>
                                                 </div>
                                             </div>
@@ -513,54 +513,54 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">户型</h4>
+                    <h4 class="modal-title">添加楼栋</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="form" class="form-horizontal">
+                    <form class="form-horizontal" name="newBuildForm">
                         <input id="glBuildingId" name="glBuildingVO.glBuildingId" value="" type="hidden">
                         <input id="glEstateId" name="glBuildingVO.glEstateId" value="85718" type="hidden">
                         <input id="glBuildingVerify" name="glBuildingVO.glBuildingVerify" value="true" type="hidden">
                         <div class="form-group clearfix">
                             <label class="control-label">楼盘名称</label>
-                            <div class="col-xs-8 mt7" ng-bind=""></div>
+                            <div class="col-xs-8 mt7" ng-bind="ctrl.newBuilding.xiaoqu.name"></div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label">楼盘地址</label>
-                            <div class="col-xs-8 mt7"> 杨高南路2451弄</div>
+                            <div class="col-xs-8 mt7" ng-bind="ctrl.newBuilding.xiaoqu.address"></div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label">栋座名称</label>
                             <div class="col-xs-9">
-                                <input id="glBuildingName" name="buildingName" required reg="^\S+$" class="form-control" required placeholder="栋座名称" type="text" ng-model="ctrl.newBuilding.name">
+                                <input id="glBuildingName" name="buildingName" required reg="^\S+$" class="form-control" placeholder="栋座名称" type="text" ng-model="ctrl.newBuilding.name">
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label">栋座楼层</label>
                             <div class="col-xs-3">
-                                <input id="glBuildingFloorall" name="buildingFloorall" required reg="^\S+$" class="form-control" placeholder="总层" type="text" ng-model="ctrl.newBuilding.floorCounts">
+                                <input id="glBuildingFloorall" name="buildingFloors" required reg="^\S+$" class="form-control" placeholder="总层" type="text" ng-model="ctrl.newBuilding.floors">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label class="control-label">梯/户数</label>
                             <div class="col-xs-3">
-                                <input id="glBuildingCountt" name="buildingCountt" class="form-control" placeholder="梯数" type="text" ng-model="ctrl.newBuilding.countT">
+                                <input id="buildingCounth" required name="buildingStairs" class="form-control" placeholder="梯数" type="text" ng-model="ctrl.newBuilding.stairs">
                             </div>
                             <div class="col-xs-3">
-                                <input id="glBuildingCounth" name="buildingCounth" class="form-control" placeholder="户数" type="text" ng-model="ctrl.newBuilding.countH">
+                                <input id="buildingCounth" required name="buildingHouses" class="form-control" placeholder="户数" type="text" ng-model="ctrl.newBuilding.houses">
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label">描述说明</label>
                             <div class="col-xs-9">
-                                <textarea id="glBuildingRemark" name="buildingRemark" cols="30" rows="5" class="form-control" placeholder="备注" ng-model="ctrl.newBuilding.remark"></textarea>
+                                <textarea id="glBuildingRemark" name="buildingRemark" cols="30" rows="5" class="form-control" placeholder="备注" ng-model="ctrl.newBuilding.description"></textarea>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBuildModel" ng-click="ctrl.addBuildConfirm()">确认</button>
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.addBuildConfirm()">确认</button>
                 </div>
             </div>
         </div>
@@ -570,34 +570,44 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">户型</h4>
+                    <h4 class="modal-title">添加单元</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="form" class="form-horizontal">
+                    <form id="form" class="form-horizontal" name="addUnitForm">
                         <input id="glBuildingId" name="glBuildingVO.glBuildingId" value="588309" type="hidden">
                         <div class="form-group clearfix">
                             <label class="control-label">栋座名称</label>
-                            <div class="col-xs-8 mt7">2号楼</div>
+                            <div class="col-xs-8 mt7" ng-bind="ctrl.newUnit.buildingName"></div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label">已有单元</label>
+                            <div class="col-xs-8 mt7">
+                                <div class="col-xs-6" ng-repeat=" item in ctrl.unitList">{{item.name}}</div>
+                            </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label">单元名称</label>
                             <div class="col-xs-3">
-                                <input name="glBuildingVO.buildingUnits" class="form-control" reg="^\S+$" placeholder="单元名称" is_tip_null="yes" type="text">
+                                <input name="buildingUnits0" class="form-control" ng-model="ctrl.newUnit.unitNames[0]" placeholder="单元名称" type="text">
                             </div>
-                            <div class="col-xs-1 mt7"><a class="text-red"><i class="fa fa-plus-circle"></i></a></div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label">单元名称</label>
                             <div class="col-xs-3">
-                                <input name="glBuildingVO.buildingUnits" class="form-control" reg="^\S+$" placeholder="单元名称" is_tip_null="yes" type="text">
+                                <input name="buildingUnits1" class="form-control" ng-model="ctrl.newUnit.unitNames[1]" placeholder="单元名称" type="text">
                             </div>
-                            <div class="col-xs-1 mt7"><a class="text-red"><i class="fa fa-minus-circle"></i></a></div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label">单元名称</label>
+                            <div class="col-xs-3">
+                                <input name="buildingUnits2" class="form-control" ng-model="ctrl.newUnit.unitNames[2]" placeholder="单元名称" type="text">
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUnitModel" ng-click="ctrl.addUnitConfirm()">确认</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" ng-click="ctrl.addUnitConfirm()">确认</button>
                 </div>
             </div>
         </div>
