@@ -86,11 +86,26 @@ require(['main-app',
                 DepartmentService.editDepartment({data:toEditDepart},header)
                     .done(function(){
                         // location.reload(true);
-                        window.location.href="/mgt/org/department.ftl";
+                        // window.location.href="/mgt/org/department.ftl";
+                        swal({
+                            title: "操作成功!",
+                            type: "success",
+                            confirmButtonText: "确定",
+                            confirmButtonColor: "#3c8dbc"
+                        },
+                        function(){
+                            window.location.href="/mgt/org/department.ftl";
+                        });
                     })
                     .fail(function (res) {
-                        // var res = JSON.parse(data.responseText);
-                        alert(res["message"]); //in case parent depart to be arranged under its child
+                        // alert(res["message"]);
+                        swal({
+                            title: "错误!",
+                            text: res["message"],
+                            type: "error",
+                            confirmButtonText: "确定",
+                            confirmButtonColor: "#3c8dbc"
+                        });
 
                     });
             }

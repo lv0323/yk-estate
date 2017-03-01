@@ -146,9 +146,25 @@ require(['main-app',contextPath + '/js/service/department-service.js',
             var departId_request = parseInt($('#delDepartId').val(),10);
             DepartmentService.deleteDepartment({data:{id:departId_request}},header)
                 .done(function(){
-                    location.reload(true);
+                    // location.reload(true);
+                    swal({
+                            title: "操作成功!",
+                            type: "success",
+                            confirmButtonText: "确定",
+                            confirmButtonColor: "#3c8dbc"
+                        },
+                        function(){
+                            location.reload(true);
+                        });
                 }).fail(function (res) {
-                    alert(res["message"]);
+                // alert(res["message"]);
+                swal({
+                    title: "错误!",
+                    text: res["message"],
+                    type: "error",
+                    confirmButtonText: "确定",
+                    confirmButtonColor: "#3c8dbc"
+                });
             });
         });
 
@@ -166,10 +182,26 @@ require(['main-app',contextPath + '/js/service/department-service.js',
             var departPId = parseInt($('.duoji-dropdown').attr('selectedvalue'),10);
             DepartmentService.changeParent({data:{departmentId:departId,parentId: departPId}},header)
                 .done(function(){
-                    location.reload(true);
+                    // location.reload(true);
+                    swal({
+                            title: "操作成功!",
+                            type: "success",
+                            confirmButtonText: "确定",
+                            confirmButtonColor: "#3c8dbc"
+                        },
+                        function(){
+                            location.reload(true);
+                        });
                 })
                 .fail(function (res) {
-                    alert(res["message"]);
+                    // alert(res["message"]);
+                    swal({
+                        title: "错误!",
+                        text: res["message"],
+                        type: "error",
+                        confirmButtonText: "确定",
+                        confirmButtonColor: "#3c8dbc"
+                    });
                 });
         });
 

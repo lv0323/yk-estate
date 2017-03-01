@@ -23,7 +23,14 @@ require(['main-app',
         EmployeeService.getSelf(header).done(function (data) {
             loadPage(data, header);
         }).fail(function (res) {
-            alert(res["message"]);
+            // alert(res["message"]);
+            swal({
+                title: "错误!",
+                text: res["message"],
+                type: "error",
+                confirmButtonText: "确定",
+                confirmButtonColor: "#3c8dbc"
+            });
         });
         /*load page end*/
 
@@ -65,10 +72,26 @@ require(['main-app',
                 fileData.append("avatar",resp,fileName);
                 EmployeeService.uploadAvatar(fileData, header)
                     .done(function () {
-                        alert("头像上传成功");
-                        location.reload(true);
+                        // alert("头像上传成功");
+                        // location.reload(true);
+                        swal({
+                                title: "头像上传成功!",
+                                type: "success",
+                                confirmButtonText: "确定",
+                                confirmButtonColor: "#3c8dbc"
+                            },
+                            function(){
+                                location.reload(true);
+                            });
                     }).fail(function (res) {
-                    alert(res["message"]);
+                    // alert(res["message"]);
+                    swal({
+                        title: "错误!",
+                        text: res["message"],
+                        type: "error",
+                        confirmButtonText: "确定",
+                        confirmButtonColor: "#3c8dbc"
+                    });
                 });
             });
         });
@@ -79,8 +102,26 @@ require(['main-app',
 
             ProfileService.changePassword({oldPassword:oldPassword, newPassword:newPassword}, header)
                 .done(function () {
-                    alert("密码修改成功");
-                    location.reload(true);
+                    // alert("密码修改成功");
+                    // location.reload(true);
+                    swal({
+                            title: "密码修改成功!",
+                            type: "success",
+                            confirmButtonText: "确定",
+                            confirmButtonColor: "#3c8dbc"
+                        },
+                        function(){
+                            location.reload(true);
+                        });
+                })
+                .fail(function (res) {
+                    swal({
+                        title: "错误!",
+                        text: res["message"],
+                        type: "error",
+                        confirmButtonText: "确定",
+                        confirmButtonColor: "#3c8dbc"
+                    });
                 });
         })
 
