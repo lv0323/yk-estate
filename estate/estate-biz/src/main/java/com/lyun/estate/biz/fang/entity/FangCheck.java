@@ -8,6 +8,8 @@ import java.util.Date;
 public class FangCheck {
     private Long id;
     private Long fangId;
+    private Long companyId;
+    private Long departmentId;
     private Long employeeId;
     private String advantage;
     private String disAdvantage;
@@ -30,6 +32,24 @@ public class FangCheck {
 
     public FangCheck setFangId(Long fangId) {
         this.fangId = fangId;
+        return this;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public FangCheck setCompanyId(Long companyId) {
+        this.companyId = companyId;
+        return this;
+    }
+
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public FangCheck setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
         return this;
     }
 

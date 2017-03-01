@@ -88,7 +88,9 @@ public class FangMgtService {
         ExceptionUtil.checkNotNull("扩展信息", fangExt);
         ExceptionUtil.checkIllegal(!CollectionUtils.isEmpty(contacts), "联系方式", fangExt);
 
-        buildFang(fang);
+        fillFang(fang);
+
+        fang.setProcess(HouseProcess.DELEGATE);
 
         checkFangContact(contacts);
 
@@ -138,7 +140,7 @@ public class FangMgtService {
                 .setTargetId(result.getId())
                 .setDomainType(DomainType.FANG)
                 .setContent("【" + operator.getDepartmentName() + "--" + operator
-                        .getName() + "】创建了授权编号为【" + licence.getId() + "】的房源")
+                        .getName() + "】创建了房源编号为【" + result.getId() + "】的房源")
         );
         return result;
     }
@@ -154,8 +156,7 @@ public class FangMgtService {
     }
 
 
-    private void buildFang(Fang fang) {
-        fang.setProcess(HouseProcess.DELEGATE);
+    private Fang fillFang(Fang fang) {
 
         if (fang.getRealArea() == null) {
             fang.setRealArea(fang.getEstateArea());
@@ -169,6 +170,8 @@ public class FangMgtService {
         }
 
         fang.setUnitPrice(publishPrice.divide(fang.getEstateArea(), 2, RoundingMode.HALF_UP));
+
+        return fang;
     }
 
     private FloorType calculateFloorType(int floor, int floorCounts) {
@@ -247,7 +250,11 @@ public class FangMgtService {
 
         return mgtFangService.createFollow(
                 new FangFollow().setFangId(fangId)
-                        .setFollowType(followType).setContent(content).setEmployeeId(operator.getId())
+                        .setCompanyId(operator.getCompanyId())
+                        .setDepartmentId(operator.getDepartmentId())
+                        .setEmployeeId(operator.getId())
+                        .setFollowType(followType)
+                        .setContent(content)
         );
     }
 
@@ -259,7 +266,10 @@ public class FangMgtService {
         Operator operator = mgtContext.getOperator();
 
         return mgtFangService.createCheck(
-                new FangCheck().setFangId(fangId).setEmployeeId(operator.getId())
+                new FangCheck().setFangId(fangId)
+                        .setCompanyId(operator.getCompanyId())
+                        .setDepartmentId(operator.getDepartmentId())
+                        .setEmployeeId(operator.getId())
                         .setAdvantage(advantage)
                         .setDisAdvantage(disAdvantage)
         );
@@ -294,11 +304,74 @@ public class FangMgtService {
         return fileService.find(fangId, DomainType.FANG, customType, FileProcess.WATERMARK);
     }
 
+    @Transactional
     public FangDescr updateDesc(FangDescr fangDescr) {
-        return mgtFangService.updateDesc(fangDescr);
+        FangDescr result = mgtFangService.updateDesc(fangDescr);
+
+        Operator operator = mgtContext.getOperator();
+        auditService.save(new Audit()
+                .setCompanyId(operator.getCompanyId())
+                .setDepartmentId(operator.getDepartmentId())
+                .setOperatorId(operator.getId())
+                .setSubject(AuditSubject.FANG_M)
+                .setTargetId(fangDescr.getFangId())
+                .setDomainType(DomainType.FANG)
+                .setContent("【" + operator.getDepartmentName() + "--" + operator
+                        .getName() + "】修改了房源编号为【" + fangDescr.getFangId() + "】的描述为：【" + fangDescr.toString() + "】")
+        );
+        return result;
     }
 
     public FangDescr findDescr(Long fangId) {
         return mgtFangService.findDescr(fangId);
+    }
+
+    @Transactional
+    public Fang changeFangBase(Fang fang) {
+        Fang needUpdate = mgtFangService.getFangBase(fang.getId());
+
+        fang.setBizType(needUpdate.getBizType());
+        fillFang(fang);
+
+        Fang result = mgtFangService.updateFangBase(fang);
+
+        Operator operator = mgtContext.getOperator();
+        auditService.save(new Audit()
+                .setCompanyId(operator.getCompanyId())
+                .setDepartmentId(operator.getDepartmentId())
+                .setOperatorId(operator.getId())
+                .setSubject(AuditSubject.FANG_M)
+                .setTargetId(fang.getId())
+                .setDomainType(DomainType.FANG)
+                .setContent("【" + operator.getDepartmentName() + "--" + operator
+                        .getName() + "】修改了房源编号为【" + fang.getId() + "】的基本信息为：【" + fang.toString() + "】")
+        );
+        return result;
+    }
+
+    @Transactional
+    public FangExt changeFangExt(FangExt fangExt) {
+        FangExt result = mgtFangService.updateFangExt(fangExt);
+
+        Operator operator = mgtContext.getOperator();
+        auditService.save(new Audit()
+                .setCompanyId(operator.getCompanyId())
+                .setDepartmentId(operator.getDepartmentId())
+                .setOperatorId(operator.getId())
+                .setSubject(AuditSubject.FANG_M)
+                .setTargetId(fangExt.getFangId())
+                .setDomainType(DomainType.FANG)
+                .setContent("【" + operator.getDepartmentName() + "--" + operator
+                        .getName() + "】修改了房源编号为【" + fangExt.getFangId() + "】的扩展信息为：【" + fangExt.toString() + "】")
+        );
+        return result;
+    }
+
+    public Fang getFangBase(Long fangId) {
+        return mgtFangService.getFangBase(fangId);
+    }
+
+    public FangExt getFangExt(Long fangId) {
+        return mgtFangService.getFangExt(fangId);
     }
 }

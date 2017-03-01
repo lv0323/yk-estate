@@ -10,6 +10,8 @@ import java.util.Date;
 public class FangFollow {
     private Long id;
     private Long fangId;
+    private Long companyId;
+    private Long departmentId;
     private Long employeeId;
     private FollowType followType;
     private String content;
@@ -32,6 +34,24 @@ public class FangFollow {
 
     public FangFollow setFangId(Long fangId) {
         this.fangId = fangId;
+        return this;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public FangFollow setCompanyId(Long companyId) {
+        this.companyId = companyId;
+        return this;
+    }
+
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public FangFollow setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
         return this;
     }
 

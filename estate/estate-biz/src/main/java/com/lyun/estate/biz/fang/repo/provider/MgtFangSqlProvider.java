@@ -64,7 +64,7 @@ public class MgtFangSqlProvider {
                     .VALUES("status", "#{status}")
                     .VALUES("source", "#{source}")
                     .VALUES("certif_type", "#{certifType}")
-                    .VALUES("certif_address", "#{certifAdress}")
+                    .VALUES("certif_address", "#{certifAddress}")
                     .VALUES_IF("certif_no", "#{certifNo}", nonNull(fangExt.getCertifNo()))
                     .VALUES("property_type", "#{propertyType}")
                     .VALUES("taxes_willing", "#{taxesWilling}")
@@ -139,8 +139,8 @@ public class MgtFangSqlProvider {
             WHERE_IF("fe.certif_type  = #{certifType}", nonNull(selector.getCertifType()));
             WHERE_IF("f.create_time >= #{minCreateTime}", nonNull(selector.getMinCreateTime()));
             WHERE_IF("f.create_time < #{maxCreateTime}", nonNull(selector.getMaxCreateTime()));
-            WHERE_IF("fe.delegate_time >= #{minDelegateTime}", nonNull(selector.getMinDelegateTime()));
-            WHERE_IF("fe.delegate_time < #{maxDelegateTime}", nonNull(selector.getMaxDelegateTime()));
+            WHERE_IF("fe.delegate_start >= #{minDelegateTime}", nonNull(selector.getMinDelegateTime()));
+            WHERE_IF("fe.delegate_end < #{maxDelegateTime}", nonNull(selector.getMaxDelegateTime()));
             WHERE_IF("f.publish_time >= #{minPublishTime}", nonNull(selector.getMinPublishTime()));
             WHERE_IF("f.publish_time < #{maxPublishTime}", nonNull(selector.getMaxPublishTime()));
             WHERE_IF("t_ff.max_follow_time >= #{minFollowTime}", nonNull(selector.getMinFollowTime()));

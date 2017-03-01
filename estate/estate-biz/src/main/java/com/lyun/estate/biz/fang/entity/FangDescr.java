@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.fang.entity;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * Created by Jeffrey on 2017-01-23.
  */
@@ -133,5 +135,24 @@ public class FangDescr {
     public FangDescr setPeiTao(String peiTao) {
         this.peiTao = peiTao;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("fangId", fangId)
+                .add("title", title)
+                .add("core", core)
+                .add("huXing", huXing)
+                .add("quanShu", quanShu)
+                .add("shuiFei", shuiFei)
+                .add("xueQu", xueQu)
+                .add("zhuangXiu", zhuangXiu)
+                .add("jiaoTong", jiaoTong)
+                .add("xiaoQu", xiaoQu)
+                .add("touZi", touZi)
+                .add("peiTao", peiTao)
+                .toString();
     }
 }

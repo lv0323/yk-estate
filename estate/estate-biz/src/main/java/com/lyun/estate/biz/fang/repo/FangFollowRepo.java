@@ -15,8 +15,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FangFollowRepo {
 
-    @Insert("INSERT INTO t_fang_follow (fang_id, employee_id, follow_type, content) VALUES " +
-            "(#{fangId}, #{employeeId}, #{followType}, #{content});")
+    @Insert("INSERT INTO t_fang_follow (fang_id,company_id, department_id, employee_id, follow_type, content) VALUES " +
+            "(#{fangId}, #{companyId}, #{departmentId}, #{employeeId}, #{followType}, #{content});")
     @Options(useGeneratedKeys = true)
     int save(FangFollow fangFollow);
 

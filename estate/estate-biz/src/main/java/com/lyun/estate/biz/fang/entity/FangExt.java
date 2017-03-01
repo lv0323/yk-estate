@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.fang.entity;
 
+import com.google.common.base.MoreObjects;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.core.supports.types.YN;
 
@@ -20,7 +21,7 @@ public class FangExt {
     private HouseStatus status;
     private HouseSource source;
     private CertifType certifType;
-    private String certifAdress;//证件地址
+    private String certifAddress;//证件地址
     private String certifNo;//证件编号
     private PropertyType propertyType;
     private TaxesWilling taxesWilling;
@@ -122,12 +123,12 @@ public class FangExt {
         return this;
     }
 
-    public String getCertifAdress() {
-        return certifAdress;
+    public String getCertifAddress() {
+        return certifAddress;
     }
 
-    public FangExt setCertifAdress(String certifAdress) {
-        this.certifAdress = certifAdress;
+    public FangExt setCertifAddress(String certifAddress) {
+        this.certifAddress = certifAddress;
         return this;
     }
 
@@ -219,5 +220,33 @@ public class FangExt {
     public FangExt setNote(String note) {
         this.note = note;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("id", id)
+                .add("fangId", fangId)
+                .add("level", level)
+                .add("showing", showing)
+                .add("delegateType", delegateType)
+                .add("delegateStart", delegateStart)
+                .add("delegateEnd", delegateEnd)
+                .add("status", status)
+                .add("source", source)
+                .add("certifType", certifType)
+                .add("certifAddress", certifAddress)
+                .add("certifNo", certifNo)
+                .add("propertyType", propertyType)
+                .add("taxesWilling", taxesWilling)
+                .add("commissionWilling", commissionWilling)
+                .add("purchasePrice", purchasePrice)
+                .add("purchaseDate", purchaseDate)
+                .add("isOnly", isOnly)
+                .add("overYears", overYears)
+                .add("mortgage", mortgage)
+                .add("note", note)
+                .toString();
     }
 }

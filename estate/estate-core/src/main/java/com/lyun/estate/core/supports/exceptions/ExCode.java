@@ -46,7 +46,7 @@ public enum ExCode {
     //fang_mgt
     FANG_MGT_ERROR_DEPT("所选部门不合法"),
     FANG_MGT_ERROR_EMPLOYEE("所选员工不合法"),
-
+    FANG_MGT_DELETED("所选房源不存在或者已删除"),
     //image
     CUSTOM_TYPE_NOT_SUPPORTED("业务类型:{} 不支持"),
 

@@ -51,7 +51,7 @@ public class HouseDictMgtService {
     public Integer createBuildingUnit(Long buildingId, List<String> unitNames) {
         final Integer[] count = {0};
         if (unitNames != null) {
-            unitNames.forEach(unitName -> {
+            unitNames.stream().filter(t -> !Strings.isNullOrEmpty(t)).forEach(unitName -> {
                         houseDictService.createBuildingUnit(buildingId,
                                 unitName,
                                 mgtContext.getOperator().getId());
