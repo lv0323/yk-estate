@@ -34,6 +34,9 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.checkLicence = function (params, header) {
             return RequestService.post('/fang/pre-check-licence', params, header);
         };
+        FangService.list = function (params, header) {
+            return RequestService.get('/fang/list', params, header);
+        };
 
         return FangService;
     });

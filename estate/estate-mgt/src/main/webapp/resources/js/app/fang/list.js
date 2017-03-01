@@ -4,20 +4,18 @@
 require(['main-app',
         contextPath + '/js/service/identity-service.js',
         contextPath + '/js/service/validation-service.js',
+        contextPath + '/js/service/city-service.js',
         contextPath + '/js/service/department-service.js',
+        contextPath + '/js/service/employee-service.js',
+        contextPath + '/js/service/fang-service.js',
         contextPath + '/js/service/util-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         'jqPaginator', 'select', 'chosen', 'datetimepicker.zh-cn'],
-    function (mainApp, IdentityService, ValidationService, DepartmentService, UtilService, pagingPlugin) {
+    function (mainApp, IdentityService, ValidationService, CityService, DepartmentService, EmployeeService, FangService, UtilService, pagingPlugin) {
         var pageConfig = {
             limit: 8,
-            init: false
+            init: false,
         };
-        $('.selectpicker').selectpicker({
-            style: 'btn-default',
-            dropupAuto:false,
-            size: 8,
-        });
         var HouseListModule=angular.module('HouseListModule',[]);
         HouseListModule.directive('datetimepicker', function () {
             return {
@@ -39,6 +37,22 @@ require(['main-app',
                 }
             }
         });
+        HouseListModule.directive('selectPicker', ['$timeout', function ($timeout) {
+            return {
+                restrict: 'A',
+                /*controller: AddHouseCtrl,
+                 controllerAs: 'ctrl',*/
+                link: function (scope, element, attrs) {
+                    $timeout(function () {
+                        $(element).selectpicker({
+                            style: 'btn-default',
+                            dropupAuto: false,
+                            size: 8,
+                        });
+                    }, 0);
+                }
+            }
+        }]);
         HouseListModule.directive('repeatDone',['$timeout', function($timeout){
             return {
                 link: function(scope,element,attrs){
@@ -51,116 +65,159 @@ require(['main-app',
             }
         }]);
         HouseListModule.controller("HouseListCtrl", ['$scope','$timeout', '$interval','$window','$location', function($scope, $timeout, $interval, $window) {
+            var config = {
+                departmentId: {
+                    init: false
+                },
+                employeeId: {
+                    init: false
+                },
+            };
+            /*页面相关内容*/
+            $scope.page ={
+                name: "房源列表",
+                warn: {
+                    title:'提示',
+                    content:''
+                },
+                layoutString:''
+            };
             $scope.filter ={
-                area:{
-                    type:'',
-                    ceil:'',
-                    floor:''
-                },
-                countf: '',
-                character:{
-                    unique:false,
-                    fiveYears: false,
-                    towYears: false
-                },
-                date:{
-                    dateType: '',
-                    startDate: '',
-                    endDate: ''
-
-                },
-                depExp:{
-                    lowerLevel: false
-                },
-                depId:'',
-                distract: '',
-                quality:'',
-                sort:{
-                    item:'default',
-                    type:''
-
-                },
-                tradeStatus: '',
-                tradeType:'',
-                usage: '',
+                cityId:1,
+                bizType:'',
+                districtId: '',
+                subDistrictId:'',
+                houseType:'',
+                process:'',
+                minArea:'',
+                maxArea:'',
+                areaType:'',
+                sCounts:'',
+                hts:[],
+                htsObj:{},
+                departmentId:'',
+                employeeId:'',
+                includeChildren: false,
+                timeType: '',
+                startDate: '',
+                endDate: '',
+                resident: '',
+                decorate: '',
+                propertyType: '',
+                certifType: '',
+                delegateType: '',
                 xuanxiang: '',
-                xuanxiangExp:{
-                    entrustWay: '',
-                    price: '',
-                    grade: '',
-                    decorate: '',
-                    imageBool: '',
-                    pType : '',
-                    proveType: '',
-                    settle: ''
+                order:'DEFAULT',
+                orderType:''
+            };
+            $scope.districtList =[];
+            $scope.subDistrictList =[];
+            $scope.employeeList =[{name:'',id:''}];
+            /*弹出框*/
+            $scope.showWarn = function(param){
+                $('#warnModel').modal('show');
+                $timeout(function(){
+                    $scope.page.warn.title= param.title;
+                    $scope.page.warn.content= param.content;
+                    $scope.page.warn.closeF= param.closeF;
+                },30)
+            };
+            /*区域*/
+            CityService.getDistrict().then(function(response){
+                $scope.districtList = response.map(function(item){
+                    return {
+                        name: item.name,
+                        id: item.id
+                    }
+                });
+            });
+            $scope.getSubDistrict= function(id) {
+                if (id == "") {
+                    $scope.filter.subDistrictId = '';
+                    $scope.subDistrictList = [];
+                    return;
+                }
+                CityService.getSubDistrict({id: id}).then(function (response) {
+                    $scope.$apply(function(){
+                        $scope.subDistrictList = response.map(function(item){
+                            return {
+                                name: item.name,
+                                id: item.id
+                            }
+                        });
+                    });
+
+                })
+            };
+            $scope.setDistrict = function(id){
+                $scope.setFilterType('districtId', id);
+                $scope.getSubDistrict(id);
+            };
+            $scope.getEmployee = function(key){
+                $scope.employeeList =[{name:'',id:''}];
+                $scope.filter.employeeId = '';
+                if(key === ''){
+                    return;
+                }
+                EmployeeService.getAllEmployee({departmentId: key}).done(function (response) {
+                    $scope.$apply(function(){
+                        if(response && response.items && response.items.length>0){
+                            $scope.employeeList = response.items.map(function(item){
+                                return {
+                                    name: item.name,
+                                    id: item.id
+                                }
+                            });
+                        }else{
+                            $scope.employeeList =[{name:'',id:''}];
+                        }
+                    });
+                }).fail(function(){
+                    $scope.employeeList =[{name:'',id:''}];
+                });
+            };
+            $scope.includeChildrenCheck = function(){
+                if($scope.filter.departmentId){
+                    $scope.list();
+                };
+            };
+            $scope.chosenChange = function(id, key, value){
+                if(key === 'departmentId'){
+                    $scope.getEmployee(value);
                 }
             };
-            /*面积*/
-            $scope.setAreaType = function(type){
-                $scope.filter.area.type = type;
-            }
-            /*区域*/
-            $scope.distractList =[
-                {name: '不限', value: ''},
-                {name: '浦东', value: '4440'},
-                {name: '宝山', value: '4441'},
-                {name: '普陀', value: '4442'},
-                {name: '静安', value: '4443'},
-                {name: '杨浦', value: '4444'},
-                {name: '奉贤', value: '4445'},
-                {name: '青浦', value: '4446'},
-                {name: '闵行', value: '4447'},
-                {name: '长宁', value: '4448'}
-            ];
-            $scope.setDistract = function(value){
-                $scope.filter.distract = value;
+            $scope.initChosen = function(id, key){
+                $(id).chosen("destroy");
+                if(!config[key].init){
+                    config[key].init = !config[key].init;
+                    $(id).chosen().change(function(e, result){
+                        $scope.$apply(function(){
+                            $scope.filter[key] = result.selected;
+                            $scope.chosenChange(id, key, result.selected);
+                            $scope.list();
+                        });
+                    });
+                    return;
+                }
+                $(id).chosen();
+                $(id).trigger('chosen:updated');
             };
-            /*用途*/
-            $scope.usageList =[
-                {name: '不限', value: ''},
-                {name: '住宅', value: '9880'},
-                {name: '商铺', value: '9881'},
-                {name: '写字楼', value: '9882'},
-                {name: '车位', value: '9883'},
-                {name: '公寓', value: '9884'},
-                {name: '其他', value: '9885'}
-            ];
-            $scope.setUsage = function(value){
-                $scope.filter.usage = value;
-                console.log(value);
+            $scope.setDistract = function(value){
+                $scope.filter.distractId = value;
+            };
+            $scope.setFilterType = function(key,value){
+                $scope.filter[key]=value;
+                $scope.list();
             };
             /*户型*/
-            $scope.countfList =[
+            $scope.sCountsList =[
                 {name: '不限', value: ''},
                 {name: '1室', value: '1'},
                 {name: '2室', value: '2'},
                 {name: '3室', value: '3'},
                 {name: '4室', value: '4'},
-                {name: '5室', value: '5'}
-            ];
-            $scope.setCountf = function(value){
-                $scope.filter.countf = value;
-                console.log(value);
-            };
-            /*状态*/
-            $scope.tradeStatusList =[
-                {name: '不限', value: ''},
-                {name: '有效', value: '10223'},
-                {name: '已售', value: '10224'},
-                {name: '我租', value: '10225'},
-                {name: '我售', value: '10226'},
-                {name: '未知', value: '10227'}
-            ];
-            $scope.setTradeStatus = function(value){
-                $scope.filter.tradeStatus = value;
-                console.log(value);
-            };
-
-            $scope.qualityList =[
-                {name :'不限', value:''},
-                {name :'优质房', value:'10131'},
-                {name :'普通房', value:'10132'},
-                {name :'聚焦房', value: '10133'}
+                {name: '5室', value: '5'},
+                {name: '6室', value: '6'}
             ];
             $scope.setQuality = function(value){
                 console.log($scope.filter.quality);
@@ -180,52 +237,46 @@ require(['main-app',
                 console.log($scope.filter.depId);
             };
             $scope.depExpList=[
-                {name :'含下级', value:'10142', key:'lowerLevel'},
+                {name :'含下级', value:'true', key:'includeChildren'},
             ];
-            $scope.setDepExp = function(e){
-                console.log($scope.filter.depExp);
-            };
-            $scope.dateTypeList =[
-                {name :'--请选择--', value:''},
-                {name :'录入日期', value:'1'},
-                {name :'最后跟进日', value:'2'},
-                {name :'勘察日期', value: '4'}
-            ];
-
-            $scope.setDateType = function(e){
-                console.log($scope.filter.date);
+            $scope.timeCheck = function(e){
+                if(!$scope.filter.timeType){
+                    return;
+                }
+                $scope.list();
             };
             $scope.setDate = function(key, value){
-                $scope.filter.date[key] = value;
-                console.log($scope.filter.date);
+                $scope.filter[key] = value;
+                $scope.timeCheck()
             };
             $scope.setXuanxiang = function(){
                 console.log($scope.filter.xuanxiang);
             };
             $scope.fySortlist = [
-                {name: '系统默认', value: 'default'},
-                {name: '楼盘名称', value: '1'},
-                {name: '栋座名称', value: '2'},
-                {name: '房源楼层', value: '3'},
-                {name: '房源总价', value: '4'},
-                {name: '房源单价', value: '5'},
-                {name: '建筑面积', value: '6'},
-                {name: '最后跟进日期', value: '7'}
+                {name: '系统默认', value: 'DEFAULT'},
+              /*  {name: '楼盘名称', value: '1'},
+                {name: '栋座名称', value: '2'},*/
+                {name: '房源楼层', value: 'FLOOR'},
+                {name: '房源总价', value: 'PUBLISH_PRICE'},
+                {name: '房源单价', value: 'UNIT_PRICE'},
+                {name: '建筑面积', value: 'AREA'},
+                {name: '最后跟进日期', value: 'FOLLOW_TIME'}
             ];
             $scope.setSort = function(item){
-                if(item == 'default'){
-                    if(item == $scope.filter.sort.item){
+                if(item == 'DEFAULT'){
+                    if(item == $scope.filter.order){
                         return;
                     }
-                    $scope.filter.sort.item = item;
-                    $scope.filter.sort.type = '';
+                    $scope.filter.order = item;
+                    $scope.filter.orderType = '';
 
-                } else if(item == $scope.filter.sort.item){
-                    $scope.filter.sort.type = $scope.filter.sort.type=='ASC'?'DESC':'ASC'
+                } else if(item == $scope.filter.order){
+                    $scope.filter.orderType = $scope.filter.orderType=='UP'?'DOWN':'UP'
                 }else{
-                    $scope.filter.sort.item = item;
-                    $scope.filter.sort.type = 'DESC'
+                    $scope.filter.order = item;
+                    $scope.filter.orderType = 'DOWN'
                 }
+                $scope.list();
             };
             $scope.ddCount = function(){
                 console.log('count');
@@ -242,14 +293,18 @@ require(['main-app',
                        name: indent+ item.name,
                    }
                 });
-                console.log($scope.depList);
             });
-            $scope.initDepList = function(){
-                $('.chosen-select-dep').chosen();
+
+            $scope.checkArea = function(key){
+                if($scope.filter.minArea && $scope.filter.maxArea && $scope.filter.minArea > $scope.filter.maxArea ){
+                    $scope.showWarn({title:'提示',content:'最小面积不能大于最大面积'});
+                    $scope.filter[key] = '';
+                    return;
+                }
+                $scope.filter.areaType = 'custom'
+                $scope.list();
             };
-            /*$('.chosen-select-dep').chosen();*/
-            /*员工*/
-            $('.chosen-select-emp').chosen();
+
             /*分页*/
             var pagination = function(dataTotal) {
                 $scope.state ={
@@ -279,7 +334,31 @@ require(['main-app',
             $scope.triggerCollapse = function(){
                 $scope.state.collapse = !$scope.state.collapse;
             };
-
+            $scope.list = function(offset){
+                var param ={};
+                for (var key in $scope.filter){
+                    if(!!$scope.filter[key]){
+                        param[key] = $scope.filter[key];
+                    }
+                }
+                param.hts = [];
+                for(var key in param.htsObj){
+                    if(!!param.htsObj[key]){
+                        param.hts.push(key);
+                    }
+                }
+                param.htsObj = '';
+                if(!param.areaType){
+                    param.minArea = '';
+                    param.maxArea = '';
+                }
+                if(param.order &&param.orderType){
+                    param.order = param.order + '_' + param.orderType;
+                }
+                FangService.list(param,{'X-PAGING':'total=true&offset='+(offset||0)+'&limit=8'}).then(function(response){
+                    console.log(response);
+                });
+            };
             $scope.houseList = [
                 {
                     bizType:'sale',
