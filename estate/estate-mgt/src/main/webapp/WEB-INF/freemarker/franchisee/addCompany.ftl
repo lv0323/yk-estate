@@ -37,7 +37,7 @@
                             <div class="box-body" id="addCompanyDialog">
                                 <form id="addCompanyForm" class="form-horizontal" method="post">
                                     <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司名称<span class="required-field">*</span></label>
+                                        <label class="control-label">公司名称<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="addCompanyName" class="form-control" placeholder="公司名称" required>
                                         </div>
@@ -46,25 +46,25 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司许可证<span class="required-field">*</span></label>
+                                        <label class="control-label">公司许可证<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="addCompanyLicense" class="form-control" placeholder="公司许可证">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司地址<span class="required-field">*</span></label>
+                                        <label class="control-label">公司地址<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="addCompanyAddress" class="form-control" placeholder="公司地址">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司说明</label>
+                                        <label class="control-label">公司说明</label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="addCompanyNote" class="form-control" placeholder="公司说明">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">加盟有效时期<span class="required-field">*</span></label>
+                                        <label class="control-label">加盟时期<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <div class="input-group date">
                                                 <div class="input-group-addon">
@@ -83,7 +83,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人姓名<span class="required-field">*</span></label>
+                                        <label class="control-label">法人姓名<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-3 col-sm-3">
                                             <input type="text" id="companyRepName" class="form-control" placeholder="法人姓名">
                                         </div>
@@ -95,19 +95,19 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人电话<span class="required-field">*</span></label>
+                                        <label class="control-label">法人电话<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="companyRepMobile" class="form-control" placeholder="法人电话">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人身份证<span class="required-field">*</span></label>
+                                        <label class="control-label">法人身份证<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="companyRepID" class="form-control" placeholder="法人身份证">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">法人微信</label>
+                                        <label class="control-label">法人微信</label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="companyRepWechat" class="form-control" placeholder="法人微信">
                                         </div>

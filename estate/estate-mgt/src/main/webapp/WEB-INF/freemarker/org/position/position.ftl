@@ -17,13 +17,13 @@
             <div class="modal-body">
                 <form id="addPositionForm" class="form-horizontal" method="post">
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">岗位名称</label>
+                        <label class="control-label">岗位名称</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
                             <input type="text" id="addPositionName" class="form-control" placeholder="岗位名称">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">岗位性质</label>
+                        <label class="control-label">岗位性质</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
                             <select id="addPositionType" class="form-control btn-group dropup">
                             <#list positionTypeList?if_exists as pt>
@@ -33,8 +33,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">岗位说明</label>
-                        <div class="col-lg-3 col-md-4 col-sm-4">
+                        <label class="control-label">岗位说明</label>
+                        <div class="col-lg-5 col-md-6 col-sm-6">
                             <input type="text" id="addPositionNote" class="form-control" placeholder="岗位说明">
                         </div>
                     </div>
@@ -61,14 +61,14 @@
             <div class="modal-body">
                 <form id="editPositionForm" class="form-horizontal" method="post">
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">岗位名称</label>
+                        <label class="control-label">岗位名称</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
                             <input type="text" id="editPositionName" class="form-control" placeholder="岗位名称">
                             <input id="editPositionId" class="hidden">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">岗位性质</label>
+                        <label class="control-label">岗位性质</label>
                         <div class="col-lg-3 col-md-4 col-sm-4">
                             <select id="editPositionType" class="form-control btn-group dropup">
                             <#list positionTypeList?if_exists as pt>
@@ -78,8 +78,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 col-md-2 col-sm-2 control-label">岗位说明</label>
-                        <div class="col-lg-3 col-md-4 col-sm-4">
+                        <label class="control-label">岗位说明</label>
+                        <div class="col-lg-5 col-md-6 col-sm-6">
                             <input type="text" id="editPositionNote" class="form-control" placeholder="岗位说明">
                         </div>
                     </div>

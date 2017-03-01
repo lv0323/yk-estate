@@ -65,7 +65,7 @@
                                     <div class="form-group">
                                         <label class="control-label">部门地址</label>
                                         <div class="col-lg-2 col-md-2 col-sm-2">
-                                            <select id="departCid" class="form-control"> <#--selectpicker show-menu-arrow bs-select-hidden form-control-->
+                                            <select id="departCid" class="form-control"> <#--selectpicker show-menu-arrow bs-select-hidden-->
                                                 <option value="">请选择</option>
                                             </select>
                                         </div>

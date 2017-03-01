@@ -167,7 +167,7 @@
                 <input id="renewCompanyId" class="hidden">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">加盟截止时期延至</label>
+                        <label class="control-label">加盟截止至</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="input-group date">
                                 <div class="input-group-addon">

@@ -27,7 +27,11 @@ define(contextPath+'/js/app/org/department/departCommon.js',
                         currentId:currentDepartPId
                     });
                 }else {
-                    $('.form-group').has('.superiorDepart .dropdown-yk').css('display','none');
+                    $(".superiorDepart .dropdown-yk").duojiDropdown({
+                        data: dropdownData,
+                        currentId:currentDepartPId
+                    });
+                    $('#editDepartDialog .form-group').has('.superiorDepart .dropdown-yk').css('display','none');
                 }
             });
         };
