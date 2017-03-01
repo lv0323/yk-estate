@@ -3,13 +3,13 @@
  */
 require(['main-app',
         contextPath + '/js/service/identity-service.js',
-        contextPath+'/js/service/fang-service.js',
+        contextPath + '/js/service/fang-service.js',
         contextPath + '/js/service/validation-service.js',
-        contextPath + '/js/service/department-service.js',
+        contextPath + '/js/service/xiaoqu-service.js',
         contextPath + '/js/service/util-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         'jqPaginator', 'select', 'chosen', 'datepicker.zh-cn', 'datetimepicker.zh-cn'],
-    function (mainApp,  IdentityService, FangService, ValidationService, DepartmentService, UtilService, pagingPlugin) {
+    function (mainApp,  IdentityService, FangService, ValidationService, XiaoquService, UtilService, pagingPlugin) {
 
         var AddHouseModule = angular.module('AddHouseModule', []);
         AddHouseModule.directive('datetimepicker', function () {
@@ -154,9 +154,9 @@ require(['main-app',
                 $(id).siblings('.btn-default').removeClass('invalid-input');
                 return true;
             };
-            _this.commonInputWarn = function(name){
-                $scope.houseForm[name].$setDirty();
-                $scope.houseForm[name].$setValidity('required', false);
+            _this.commonInputWarn = function(name, formName){
+                $scope[formName||'houseForm'][name].$setDirty();
+                $scope[formName||'houseForm'][name].$setValidity('required', false);
             };
             _this.stepConfig = {
                 step1: 1,
@@ -186,11 +186,12 @@ require(['main-app',
             };
             /*新建栋座*/
             _this.newBuilding = {
-                id:'',
-                floorCounts:'',
-                countT:'',
-                countH:'',
-                remark:'',
+                xiaoQuId:'',
+                name:'',
+                floors:'',
+                stairs:'',
+                houses:'',
+                description:'',
                 xiaoqu: {
                     id: '',
                     name: '',
@@ -199,11 +200,9 @@ require(['main-app',
             };
             /*新建单元*/
             _this.newUnit = {
-                build: {
-                    id: '',
-                    name: ''
-                },
-                unit: []
+                buildingId:'',
+                buildingName:'',
+                unitNames: []
             };
             /*户型*/
             _this.currentLayout ={
@@ -225,7 +224,6 @@ require(['main-app',
                 delegateEnd:'',
                 delegateStart:'',
                 delegateType: '',
-                downPayPer: '',
                 estateArea: '',
                 floor: '',
                 floorCounts: '',
@@ -371,7 +369,7 @@ require(['main-app',
                     $('#houseEstate_chosen>.chosen-single').removeClass('invalid-input');
                 }else if(key === 'buildingId'){
                     _this.floorCountsSet(value);
-                    _this.unitsGet(value)
+                    _this.unitsGet(value);
                 }
                 if(value === ""){
                     return;
@@ -397,18 +395,64 @@ require(['main-app',
                     _this.page.warn.closeF= param.closeF;
                 },30)
             };
-            /*获取子类型*/
             _this.addBuildInit = function(){
-                console.log('init Build');
+                XiaoquService.getXiaoquInfo({id: _this.data.xiaoQuId}).then(function(response){
+                    if(!response){
+                        return;
+                    }
+                    $('#addBuildModel').modal('show');
+                    _this.newBuilding.xiaoQuId = _this.data.xiaoQuId;
+                    $timeout(function(){
+                        _this.newBuilding.xiaoqu={
+                            id:_this.data.xiaoQuId,
+                            name: response.name,
+                            address : response.address
+                        };
+                    },30);
+                });
             };
             _this.addBuildConfirm = function(){
-                console.log('add Build');
+                if($scope.newBuildForm.$invalid||!$scope.newBuildForm.$dirty){
+                    if (!_this.newBuilding.name) {
+                        _this.commonInputWarn('buildingName','newBuildForm');
+                    }
+                    if (!_this.newBuilding.floors) {
+                        _this.commonInputWarn('buildingFloors','newBuildForm');
+                    }
+                    if (!_this.newBuilding.stairs) {
+                        _this.commonInputWarn('buildingStairs','newBuildForm');
+                    }
+                    if (!_this.newBuilding.houses) {
+                        _this.commonInputWarn('buildingHouses','newBuildForm');
+                    }
+                    return;
+                }
+                FangService.buildingPost(_this.newBuilding).then(function(){
+                    $('#addBuildModel').modal('hide');
+                    _this.buildingsGet(_this.newBuilding.xiaoQuId);
+                });
             };
             _this.addUnitInit = function(){
-                console.log('init Unit');
+                FangService.buildingInfo({id: _this.data.buildingId}).then(function(response){
+                    if(!response){
+                        return;
+                    }
+                    $('#addUnitModel').modal('show');
+                    _this.newUnit.buildingId = _this.data.buildingId;
+                    $timeout(function(){
+                        _this.newUnit.buildingName= response.name;
+                    },30);
+                });
             };
             _this.addUnitConfirm = function () {
-
+                    if (!_this.newUnit.unitNames[0]&&!_this.newUnit.unitNames[1]&&!_this.newUnit.unitNames[2]&&!_this.newUnit.unitNames[3]&&!_this.newUnit.unitNames[4]) {
+                        _this.commonInputWarn('buildingUnits0','addUnitForm');
+                        return;
+                    }
+                FangService.buildingUnitPost(_this.newUnit).then(function(){
+                    $('#addUnitModel').modal('hide');
+                    _this.unitsGet(_this.data.buildingId);
+                });
             };
             /*楼层检查*/
             _this.floorCountCheck = function(){
@@ -649,11 +693,9 @@ require(['main-app',
                     return;
                 }
                 _this.data.priceUnit = _this.data.houseType ===_this.bizTypeConfig.rent? _this.data.rentPriceUnit: _this.data.sellPriceUnit;
-                FangService.create(_this.data).then(function(response){
-                    console.log(response);
-                }).then(function(){
+                _this.data.isOnly = _this.data.isOnly ?'Y':'N';
+                FangService.create(_this.data).then(function(){
                     _this.showWarn({title:'提示',content:'新增房源完成',closeF:_this.goList});
-
                 });
 
             };
