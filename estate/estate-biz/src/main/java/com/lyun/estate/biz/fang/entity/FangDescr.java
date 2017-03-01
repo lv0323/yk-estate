@@ -140,6 +140,7 @@ public class FangDescr {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
+                .omitNullValues()
                 .add("id", id)
                 .add("fangId", fangId)
                 .add("title", title)

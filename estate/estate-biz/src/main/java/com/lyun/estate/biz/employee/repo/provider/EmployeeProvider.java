@@ -32,11 +32,13 @@ public class EmployeeProvider {
             SELECT("e.*, p.name as position_name, d.name as department_name")
                     .FROM("t_employee e")
                     .LEFT_OUTER_JOIN("t_position p on e.position_id = p.id")
-                    .LEFT_OUTER_JOIN("t_department d on e.department_id = d.id")
-                    .WHERE("e.company_id = #{companyId}");
+                    .LEFT_OUTER_JOIN("t_department d on e.department_id = d.id");
             if (SqlSupport.hasNotNullElement(deptIds)) {
                 WHERE("e.department_id IN (" + Joiner.on(",").skipNulls().join(deptIds) + ")");
             }
+            WHERE("e.company_id = #{companyId} ")
+                    .ORDER_BY("e.id");
+
         }}.toString();
     }
 }
