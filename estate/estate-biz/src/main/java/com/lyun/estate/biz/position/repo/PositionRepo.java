@@ -26,7 +26,7 @@ public interface PositionRepo {
     @Select("select * from t_position where id=#{id} and is_deleted = false")
     Position selectById(Long id);
 
-    @Select("select * from t_position where company_id=#{companyId} and is_deleted = false")
+    @Select("select * from t_position where company_id=#{companyId} and is_deleted = false order by id")
     PageList<Position> selectByCompanyId(Long companyId, PageBounds pageBounds);
 
     @Select("select * from t_position where company_id=#{companyId} and is_deleted = false")

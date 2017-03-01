@@ -30,7 +30,7 @@ public interface DepartmentRepo {
     @Select("select * from t_department where id=#{id} and is_deleted = false for update")
     Department selectForUpdate(Long id);
 
-    @Select("select * from t_department where company_id=#{companyId} and is_deleted = false")
+    @Select("select * from t_department where company_id=#{companyId} and is_deleted = false order by id")
     PageList<Department> selectByCompanyId(Long companyId, PageBounds pageBounds);
 
     @Update("update t_department set parent_id = #{parentId} where id = #{id} ")
