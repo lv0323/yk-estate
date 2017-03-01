@@ -44,8 +44,6 @@
    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
      <![endif]-->
      <script src="${contextPath!}/js/libs/angular.min.js"></script>
-     <script src="${contextPath!}/js/plugins/SweetAlert/sweetalert.min.js"></script>
-
  </head>
  <body class="hold-transition skin-blue sidebar-mini">
  <div class="wrapper">

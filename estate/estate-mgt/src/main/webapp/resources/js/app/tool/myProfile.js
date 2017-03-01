@@ -4,7 +4,7 @@
 require(['main-app',
         contextPath + '/js/service/profile-service.js',
         contextPath + '/js/service/employee-service.js',
-        contextPath + '/js/service/util-service.js', 'Croppie'],
+        contextPath + '/js/service/util-service.js', 'Croppie','sweetalert'],
     function (mainApp, ProfileService, EmployeeService, UtilService) {
 
         var header = {};

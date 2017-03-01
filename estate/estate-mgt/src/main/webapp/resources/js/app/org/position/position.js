@@ -4,7 +4,7 @@
 require(['main-app',
         contextPath + '/js/service/position-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
-        contextPath + '/js/utils/dataTableHelp.js'],
+        contextPath + '/js/utils/dataTableHelp.js','sweetalert'],
     function (mainApp,PositionService,pagingPlugin, dataTableHelp) {
 
         var header = {};

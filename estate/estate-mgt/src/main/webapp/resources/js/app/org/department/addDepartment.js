@@ -3,7 +3,7 @@
  */
 require(['main-app',
         contextPath + '/js/app/org/department/departCommon.js',
-        contextPath + '/js/service/department-service.js'],
+        contextPath + '/js/service/department-service.js','sweetalert'],
 
     function (mainApp,DepartCommon, DepartmentService){
 

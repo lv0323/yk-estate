@@ -64,3 +64,7 @@ span.opt-gap{
     color: #fff;
     cursor: pointer;
 }
+
+textarea.noresize{
+    resize: none;
+}

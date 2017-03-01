@@ -8,7 +8,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         contextPath+'/js/app/org/department/departCommon.js',
         contextPath+'/js/app/org/position/positionCommon.js',
         contextPath+'/js/service/util-service.js',
-    'datatables', 'zTree','datatablesBootstrap', 'datepicker.zh-cn'],
+    'datatables', 'zTree','datatablesBootstrap', 'datepicker.zh-cn','sweetalert'],
     function (mainApp, EmployeeService, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon, PositionCommon, UtilService) {
         var header = {};
 

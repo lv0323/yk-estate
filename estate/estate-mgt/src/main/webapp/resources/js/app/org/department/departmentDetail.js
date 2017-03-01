@@ -3,7 +3,7 @@
  */
 require(['main-app',
         contextPath + '/js/app/org/department/departCommon.js',
-        contextPath + '/js/service/department-service.js', 'select'],
+        contextPath + '/js/service/department-service.js', 'select','sweetalert'],
     function (mainApp, DepartCommon, DepartmentService) {
 
         var header = {};

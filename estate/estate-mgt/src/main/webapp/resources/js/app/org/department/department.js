@@ -4,7 +4,7 @@
 require(['main-app',contextPath + '/js/service/department-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath + '/js/utils/dataTableHelp.js',
-        contextPath+'/js/app/org/department/departCommon.js'],
+        contextPath+'/js/app/org/department/departCommon.js','sweetalert'],
     function (mainApp, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon) {
         var header = {};
 
