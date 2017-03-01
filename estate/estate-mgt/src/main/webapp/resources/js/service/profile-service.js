@@ -50,11 +50,9 @@ define(contextPath + '/js/service/profile-service.js',
                         defer.resolve(response);
                     }).fail(function (res) {
                         defer.reject(res);
-                        alert(res["message"]);
                     });
             }).fail(function (res) {
                 defer.reject(res);
-                alert(res["message"]); //加密参数生成失败
             });
 
             return defer.promise();

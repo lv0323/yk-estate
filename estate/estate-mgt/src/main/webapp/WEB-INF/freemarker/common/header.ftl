@@ -22,6 +22,7 @@
      <link rel="stylesheet" href="${contextPath}/css/plugins/datepicker/datepicker3.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/datepicker/bootstrap-datetimepicker.min.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/dropdown/index.css">
+     <link rel="stylesheet" href="${contextPath}/css/plugins/SweetAlert/sweetalert.css">
      <!-- AdminLTE-->
      <link rel="stylesheet" href="${contextPath}/css/index.css">
      <link rel="stylesheet" href="${contextPath}/css/skins/skin-blue.min.css">
@@ -43,7 +44,6 @@
    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
      <![endif]-->
      <script src="${contextPath!}/js/libs/angular.min.js"></script>
-
  </head>
  <body class="hold-transition skin-blue sidebar-mini">
  <div class="wrapper">

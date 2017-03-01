@@ -78,8 +78,14 @@
                                                 <option value="">请选择</option>
                                             </select>
                                         </div>
-                                        <div class="col-lg-5 col-md-5 col-sm-5">
-                                            <input type="text" id="departAddress" class="form-control" placeholder="请输入详细地址" disabled>
+                                    <#-- <div class="col-lg-5 col-md-5 col-sm-5">
+                                        <input type="text" id="departAddress" class="form-control" placeholder="请输入详细地址">
+                                    </div>-->
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" style="visibility: hidden"></label>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <textarea id="departAddress" class="form-control noresize" rows="2" placeholder="请输入详细地址" disabled></textarea>
                                         </div>
                                     </div>
                                 </form>

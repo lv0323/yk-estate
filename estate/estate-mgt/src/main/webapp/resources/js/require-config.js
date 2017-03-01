@@ -23,7 +23,8 @@ requirejs.config({
         'locationUtil': 'utils/location-util',
         'adminLTE': 'app/AdminLTE/index',
         'adminLTEdemo': 'app/AdminLTE/demo',
-        'Croppie': 'plugins/croppie/croppie.min'
+        'Croppie': 'plugins/croppie/croppie.min',
+        'sweetalert':'plugins/SweetAlert/sweetalert.min'
     },
     shim: {
         'bootstrap': ['jquery'],
@@ -66,6 +67,10 @@ requirejs.config({
         'Croppie':{
             deps: ['jquery'],
             exports: 'Croppie'
+        },
+        'sweetalert':{
+            deps: ['jquery'],
+            exports: 'sweetalert'
         }
     },
     waitSeconds: 0,

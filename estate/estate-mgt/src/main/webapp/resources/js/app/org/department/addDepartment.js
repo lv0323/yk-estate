@@ -3,7 +3,7 @@
  */
 require(['main-app',
         contextPath + '/js/app/org/department/departCommon.js',
-        contextPath + '/js/service/department-service.js'],
+        contextPath + '/js/service/department-service.js','sweetalert'],
 
     function (mainApp,DepartCommon, DepartmentService){
 
@@ -28,10 +28,26 @@ require(['main-app',
             DepartmentService.addDepartment({data:toAddDepart},header)
                 .done(function(){
                     // location.reload(true);
-                    window.location.href="/mgt/org/department.ftl";
+                    // window.location.href="/mgt/org/department.ftl";
+                    swal({
+                            title: "操作成功!",
+                            type: "success",
+                            confirmButtonText: "确定",
+                            confirmButtonColor: "#3c8dbc"
+                        },
+                        function(){
+                            window.location.href="/mgt/org/department.ftl";
+                        });
                 })
                 .fail(function (res) {
-                    alert(res["message"]);
+                    // alert(res["message"]);
+                    swal({
+                        title: "错误!",
+                        text: res["message"],
+                        type: "error",
+                        confirmButtonText: "确定",
+                        confirmButtonColor: "#3c8dbc"
+                    });
                 });
         });
 
