@@ -107,12 +107,25 @@ public class FangRest {
                 .setHeatingType(heatingType).setHasElevator(hasElevator)
                 .setBottomPrice(bottomPrice).setResident(resident).setDecorate(decorate);
 
-        FangExt fangExt = new FangExt().setCertifAdress(address).setCertifNo(certifNo).setIsOnly(isOnly)
-                .setOverYears(overYears).setLevel(level).setDelegateType(delegateType).setDelegateStart(delegateStart)
-                .setDelegateEnd(delegateEnd).setShowing(showing).setSource(source).setStatus(status)
-                .setCertifType(certifType).setPurchaseDate(purchaseDate).setPropertyType(propertyType)
-                .setTaxesWilling(taxesWilling).setCommissionWilling(commissionWilling).setPurchasePrice(purchasePrice)
-                .setMortgage(mortgage).setNote(note);
+        FangExt fangExt = new FangExt().setCertifAddress(address)
+                .setCertifNo(certifNo)
+                .setIsOnly(isOnly)
+                .setOverYears(Optional.ofNullable(overYears).orElse(0))
+                .setLevel(level)
+                .setDelegateType(delegateType)
+                .setDelegateStart(delegateStart)
+                .setDelegateEnd(delegateEnd)
+                .setShowing(showing)
+                .setSource(source)
+                .setStatus(status)
+                .setCertifType(certifType)
+                .setPurchaseDate(purchaseDate)
+                .setPropertyType(propertyType)
+                .setTaxesWilling(taxesWilling)
+                .setCommissionWilling(commissionWilling)
+                .setPurchasePrice(purchasePrice)
+                .setMortgage(mortgage)
+                .setNote(note);
 
         List<FangContact> contacts = mobiles.stream().filter(t -> !Strings.isNullOrEmpty(t)).map(m ->
                 new FangContact().setContactType(ContactType.MOBILE).setOwnerName(ownerName).setContactInfo(m))
@@ -193,9 +206,14 @@ public class FangRest {
         return houseType.getSubTypes();
     }
 
-    @GetMapping("detail")
-    public List<Fang> getDetail(@RequestParam Long fangId) {
-        return null;
+    @GetMapping("base")
+    public Fang getFangBase(@RequestParam Long fangId) {
+        return fangMgtService.getFangBase(fangId);
+    }
+
+    @GetMapping("ext")
+    public FangExt getFangExt(@RequestParam Long fangId) {
+        return fangMgtService.getFangExt(fangId);
     }
 
     @GetMapping("contact")
@@ -209,13 +227,82 @@ public class FangRest {
     }
 
     @PostMapping("change-base")
-    public Fang changeBase(@RequestParam Long fangId) {
-        return null;
+    public Fang changeBase(@RequestParam Long fangId,
+                           @RequestParam HouseSubType houseSubType,
+                           @RequestParam Integer sCounts,
+                           @RequestParam Integer tCounts,
+                           @RequestParam Integer wCounts,
+                           @RequestParam Integer cCounts,
+                           @RequestParam Integer ytCounts,
+                           @RequestParam Orientation orientation,
+                           @RequestParam Decorate decorate,
+                           @RequestParam BigDecimal estateArea,
+                           @RequestParam BigDecimal realArea,
+                           @RequestParam BigDecimal publishPrice,
+                           @RequestParam PriceUnit priceUnit,
+                           @RequestParam(required = false) BigDecimal transferPrice,
+                           @RequestParam(required = false) BigDecimal bottomPrice,
+                           @RequestParam(required = false) YN resident,
+                           @RequestParam Integer floor,
+                           @RequestParam Integer floorCounts,
+                           @RequestParam StructureType structureType,
+                           @RequestParam Integer buildYear,
+                           @RequestParam HeatingType heatingType,
+                           @RequestParam YN hasElevator) {
+        Fang fang = new Fang().setId(fangId).setHouseSubType(houseSubType)
+                .setsCounts(sCounts).settCounts(tCounts).setwCounts(wCounts)
+                .setcCounts(cCounts).setYtCounts(ytCounts).setOrientation(orientation)
+                .setDecorate(decorate).setEstateArea(estateArea).setRealArea(realArea)
+                .setPublishPrice(publishPrice).setPriceUnit(priceUnit)
+                .setTransferPrice(transferPrice).setBottomPrice(bottomPrice).setResident(resident)
+                .setFloor(floor).setFloorCounts(floorCounts).setStructureType(structureType)
+                .setBuildYear(buildYear).setHeatingType(heatingType).setHasElevator(hasElevator);
+        return fangMgtService.changeFangBase(fang);
     }
 
     @PostMapping("change-ext")
-    public FangExt changeExt(@RequestParam Long fangId) {
-        return null;
+    public FangExt changeExt(@RequestParam Long fangId,
+                             @RequestParam HouseLevel level,
+                             @RequestParam Showing showing,
+                             @RequestParam DelegateType delegateType,
+                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date delegateStart,
+                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date delegateEnd,
+                             @RequestParam HouseStatus status,
+                             @RequestParam HouseSource source,
+                             @RequestParam String address,
+                             @RequestParam(required = false) CertifType certifType,
+                             @RequestParam(required = false) PropertyType propertyType,
+                             @RequestParam(required = false) String certifNo,
+                             @RequestParam TaxesWilling taxesWilling,
+                             @RequestParam CommissionWilling commissionWilling,
+                             @RequestParam(required = false) BigDecimal purchasePrice,
+                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date purchaseDate,
+                             @RequestParam YN isOnly,
+                             @RequestParam Integer overYears,
+                             @RequestParam(required = false) YN mortgage,
+                             @RequestParam(required = false) String note) {
+        FangExt fangExt = new FangExt().setFangId(fangId)
+                .setLevel(level)
+                .setShowing(showing)
+                .setDelegateType(delegateType)
+                .setDelegateStart(delegateStart)
+                .setDelegateEnd(delegateEnd)
+                .setStatus(status)
+                .setSource(source)
+                .setCertifType(certifType)
+                .setCertifAddress(address)
+                .setCertifNo(certifNo)
+                .setPropertyType(propertyType)
+                .setTaxesWilling(taxesWilling)
+                .setCommissionWilling(commissionWilling)
+                .setPurchasePrice(purchasePrice)
+                .setPurchaseDate(purchaseDate)
+                .setIsOnly(isOnly)
+                .setOverYears(Optional.ofNullable(overYears).orElse(0))
+                .setMortgage(mortgage)
+                .setNote(note);
+
+        return fangMgtService.changeFangExt(fangExt);
     }
 
     @PostMapping("follow")

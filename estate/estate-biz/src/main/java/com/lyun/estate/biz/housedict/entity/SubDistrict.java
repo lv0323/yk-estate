@@ -1,6 +1,8 @@
 package com.lyun.estate.biz.housedict.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 
 public class SubDistrict {
@@ -10,7 +12,9 @@ public class SubDistrict {
     private String name;
     private BigDecimal longitude;
     private BigDecimal latitude;
+    @JsonIgnore
     private String viewRegion;
+    @JsonIgnore
     private String nameKw;
 
     public Long getId() {

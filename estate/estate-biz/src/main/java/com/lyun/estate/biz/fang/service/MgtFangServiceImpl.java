@@ -2,7 +2,6 @@ package com.lyun.estate.biz.fang.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.department.entity.Department;
@@ -23,7 +22,6 @@ import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
-import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
@@ -34,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -164,10 +163,6 @@ public class MgtFangServiceImpl implements MgtFangService {
 
         pageBounds.getOrders().clear();
         pageBounds.getOrders().addAll(order.getOrders());
-
-        PageList<FangSummary> empty = new PageList<>(Lists.newArrayList(),
-                new Paginator(pageBounds.getPage(), pageBounds.getLimit(), 0));
-
 
         MgtFangSelector selector = new MgtFangSelector();
 
@@ -331,5 +326,49 @@ public class MgtFangServiceImpl implements MgtFangService {
     public FangDescr findDescr(Long fangId) {
         ExceptionUtil.checkNotNull("房源编号", fangId);
         return fangDescrRepo.findByFangId(fangId);
+    }
+
+    @Override
+    public Fang updateFangBase(Fang fang) {
+        ExceptionUtil.checkNotNull("fang", fang);
+        ExceptionUtil.checkNotNull("房源编号", fang.getId());
+        ExceptionUtil.checkNotNull("房源子类型", fang.getHouseSubType());
+        Fang needUpdate = fangRepository.findFang(fang.getId());
+        if (needUpdate == null || needUpdate.getDeleted()) {
+            throw new EstateException(ExCode.FANG_MGT_ERROR_EMPLOYEE);
+        }
+        if (fangRepository.updateFang(fang) > 0) {
+            return fangRepository.findFang(fang.getId());
+        }
+        throw new EstateException(ExCode.UPDATE_FAIL, "房源基本信息", fang.toString());
+    }
+
+    @Override
+    @Transactional
+    public FangExt updateFangExt(FangExt fangExt) {
+        ExceptionUtil.checkNotNull("fangExt", fangExt);
+        ExceptionUtil.checkNotNull("房源编号", fangExt.getFangId());
+        Fang needUpdate = fangRepository.findFang(fangExt.getFangId());
+        if (needUpdate == null || needUpdate.getDeleted()) {
+            throw new EstateException(ExCode.FANG_MGT_ERROR_EMPLOYEE);
+        }
+        if (fangRepository.updateFangExtByFangId(fangExt) > 0) {
+            fangRepository.updateTime(fangExt.getFangId());
+            return fangRepository.findFangExtByFangId(fangExt.getFangId());
+        }
+        throw new EstateException(ExCode.UPDATE_FAIL, "房源扩展信息", fangExt.toString());
+    }
+
+    @Override
+    public Fang getFangBase(Long fangId) {
+        ExceptionUtil.checkNotNull("房源编号", fangId);
+        return fangRepository.findFang(fangId);
+    }
+
+    @Override
+    public FangExt getFangExt(Long fangId) {
+        ExceptionUtil.checkNotNull("房源编号", fangId);
+        return fangRepository.findFangExtByFangId(fangId);
+
     }
 }

@@ -5,6 +5,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.domian.FangSelector;
 import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.entity.FangDescr;
+import com.lyun.estate.biz.fang.entity.FangExt;
 import com.lyun.estate.biz.fang.entity.FangTag;
 import com.lyun.estate.biz.fang.repo.provider.FangSqlProvider;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangDetail;
@@ -43,4 +44,28 @@ public interface FangRepository {
 
     @Select("SELECT * FROM T_FANG")
     List<Fang> findAllFang();
+
+    @Update("UPDATE t_fang SET house_sub_type = #{houseSubType}, s_counts = #{sCounts}  , t_counts= #{tCounts}  ," +
+            " c_counts = #{cCounts}  , w_counts = #{wCounts}  , yt_counts = #{ytCounts}  , orientation  = #{orientation}  , decorate = #{decorate}  ," +
+            " estate_area = #{estateArea}  , real_area  = #{realArea}  , publish_price  = #{publishPrice}  , price_unit = #{priceUnit}  , " +
+            " unit_price = #{unitPrice}  , transfer_price = #{transferPrice}  , bottom_price   = #{bottomPrice}  , resident = #{resident}  , " +
+            " floor = #{floor}  , floor_counts   = #{floorCounts}  , structure_type = #{structureType}  , build_year = #{buildYear}  ," +
+            " heating_type = #{heatingType}, has_elevator = #{hasElevator}, update_time = CURRENT_TIMESTAMP " +
+            " WHERE id = #{id} and is_deleted =false")
+    int updateFang(Fang fang);
+
+    @Select("select * from t_fang where id = #{id}")
+    Fang findFang(Long id);
+
+    @Update("UPDATE t_fang_ext SET level = #{level}, showing = #{showing}, delegate_type = #{delegateType}, delegate_start = #{delegateStart},delegate_end = #{delegateEnd}, " +
+            " status = #{status},source = #{source},certif_type = #{certifType},certif_no = #{certifNo},  certif_address = #{certifAddress}, taxes_willing = #{taxesWilling}, " +
+            " commission_willing = #{commissionWilling}, purchase_price = #{purchasePrice}, purchase_date= #{purchaseDate}, is_only = #{isOnly},over_years= #{overYears}, mortgage =  #{mortgage}, note = #{note}  " +
+            " WHERE fang_id = #{fangId}")
+    int updateFangExtByFangId(FangExt fangExt);
+
+    @Select("select * from t_fang_ext where fang_id = #{fangId}")
+    FangExt findFangExtByFangId(Long fangId);
+
+    @Update("UPDATE t_fang set update_time = CURRENT_TIMESTAMP where id = #{id} and is_deleted = false")
+    int updateTime(Long id);
 }

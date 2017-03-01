@@ -15,8 +15,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FangCheckRepo {
 
-    @Insert("INSERT INTO t_fang_check (fang_id, employee_id, advantage, disadvantage)  VALUES " +
-            "( #{fangId}, #{employeeId}, #{advantage}, #{disAdvantage})")
+    @Insert("INSERT INTO t_fang_check (fang_id,company_id, department_id, employee_id, advantage, disadvantage)  VALUES " +
+            "( #{fangId},#{companyId}, #{departmentId}, #{employeeId}, #{advantage}, #{disAdvantage})")
     @Options(useGeneratedKeys = true)
     int save(FangCheck fangCheck);
 

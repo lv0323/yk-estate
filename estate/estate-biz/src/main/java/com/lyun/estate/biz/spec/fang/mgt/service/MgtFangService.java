@@ -45,4 +45,12 @@ public interface MgtFangService {
     FangDescr updateDesc(FangDescr fangDescr);
 
     FangDescr findDescr(Long fangId);
+
+    Fang updateFangBase(Fang fang);
+
+    FangExt updateFangExt(FangExt fangExt);
+
+    Fang getFangBase(Long fangId);
+
+    FangExt getFangExt(Long fangId);
 }
