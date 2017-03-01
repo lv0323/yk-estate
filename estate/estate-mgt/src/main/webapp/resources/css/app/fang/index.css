@@ -248,7 +248,7 @@ select.sel-news {
     padding: 2px
 }
 
-.page {
+#page1,#page2 {
     padding: 10px;
     float: left;
     margin-right:15px;

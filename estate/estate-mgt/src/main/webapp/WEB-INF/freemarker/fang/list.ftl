@@ -41,21 +41,11 @@
                         </div>
                         <div class="box-body clearfix no-padding">
                             <form id="formlist" class="form-inline">
-                                <input id="fyHouseCityid" value="73" type="hidden">
-                                <input id="fyHouseDsid" name="houseVO.fyHouseDsid" type="hidden">
-                                <input id="fyHousePicid" name="houseVO.fyHousePicid" type="hidden">
-                                <input id="fyHouseUse" name="houseVO.fyHouseUse" type="hidden">
-                                <input id="fyHouseType" name="houseVO.fyHouseType" type="hidden">
-                                <input id="fyHouseStatus" name="houseVO.fyHouseStatus" value="10222" type="hidden">
-                                <input id="orderid" value="0" name="houseVO.orderid" type="hidden">
-                                <input id="ordermark" name="houseVO.ordermark" type="hidden">
                                 <div id="searchList" class="clearfix">
                                     <div class="col-lg-4 col-md-4 col-sm-4">
                                         <div class="input-group" style="width:100%;">
                                             <input placeholder="房源地址、业主姓名、业主电话、房源编号..." class="form-control" name="houseVO.fyHouseEstname" type="text">
-    								<span class="input-group-btn">
-    			                        <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>查询</button>
-    			                    </span>
+    								        <span class="input-group-btn"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>查询</button></span>
                                         </div>
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2" style="position:realtive;">
@@ -81,22 +71,25 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="pull-right" style="position:relative;" ng-if="false">
-                                        <a class="btn" onclick="popverShow1(this);favoritesPage();"><i class="fa fa-star-o" aria-hidden="true"></i>我的收藏</a>
-                                        <div class="popover fade bottom in" style="right:0px;">
-                                            <div class="arrow"></div>
-                                            <div class="popover-content no-padding" style="max-height: 450px; overflow: auto;">
-                                                <div id="favoritesPage"></div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="clearfix"></div>
                                     <div class="collapse-box" ng-show="state.collapse">
                                         <div class="form-group sortlist">
                                             <label class="control-label" style="vertical-align:top;padding-top:5px;">区域</label>
                                             <div class="tj" id="distract">
-                                                <a ng-href="javascript::" ng-repeat="distract in distractList" value="{{distract.value}}" ng-class="{'actived': distract.value == filter.distract}" ng-click="setDistract(distract.value )">
-                                                    {{distract.name}}
+                                                <a ng-href="javascript:" ng-class="{'actived': '' == filter.districtId}" ng-click="setDistrict('')">不限</a>
+                                                <a ng-href="javascript:" ng-repeat="district in districtList" ng-class="{'actived': district.id == filter.districtId}" ng-click="setDistrict(district.id)">
+                                                    {{district.name}}
+                                                </a>
+                                            </div>
+                                            <div class="tj distract-box" id="picearea">
+                                            </div>
+                                        </div>
+                                        <div class="form-group sortlist" ng-show="'' != filter.districtId">
+                                            <label class="control-label" style="vertical-align:top;padding-top:5px;">子区域</label>
+                                            <div class="tj" id="distract">
+                                                <a ng-href="javascript:" ng-class="{'actived': '' == filter.subDistrictId}" ng-click="setFilterType('subDistrictId', '')">不限</a>
+                                                <a ng-href="javascript:" ng-repeat="subDistrict in subDistrictList" ng-class="{'actived': subDistrict.id == filter.subDistrictId}" ng-click="setFilterType('subDistrictId', subDistrict.id)">
+                                                    {{subDistrict.name}}
                                                 </a>
                                             </div>
                                             <div class="tj distract-box" id="picearea">
@@ -105,85 +98,75 @@
                                         <div class="form-group sortlist">
                                             <label class="control-label">用途</label>
                                             <div id="usage" class="tj">
-                                                <a ng-href="javascript::" ng-repeat="usage in usageList" value="{{usage.value}}" ng-class="{'actived': usage.value == filter.usage}" ng-click="setUsage(usage.value)">
-                                                    {{usage.name}}
-                                                </a>
-                                            </div>
-                                            <div id="usageType" class="tj distract-box">
+                                                <a ng-href="javascript::" ng-class="{'actived': '' == filter.houseType}" ng-click="setFilterType('houseTypes' ,'')">不限</a>
+                                            <#list houseTypes?if_exists as type>
+                                                <a ng-href="javascript::" ng-class="{'actived': '${type.name()}' == filter.houseType}" ng-click="setFilterType('houseType' ,'${type.name()}')">
+                                            ${type.getLabel()}</a>
+                                            </#list>
                                             </div>
                                         </div>
                                         <div class="form-group sortlist">
                                             <label class="control-label">面积</label>
                                             <div id="squareMetre" class="tj">
-                                                <a ng-href="javascript:void(0)" ng-class="{'actived':filter.area.type == ''}" ng-click="setAreaType('')">不限</a>
-                                                <a ng-href="javascript:void(0)" ng-class="{'actived':filter.area.type == 'custom'}" ng-click="setAreaType('custom')">自定义</a>
-                                                <input class="form-control" id="minSqure" value="" name="houseVO.minSqure" style="width:100px;">~ <input class="form-control" id="maxSqure" value="" name="houseVO.maxSqure" style="width:100px;">
+                                                <a ng-href="javascript:void(0)" ng-class="{'actived':filter.areaType == ''}" ng-click="setFilterType('areaType', '')">不限</a>
+                                                <a ng-href="javascript:void(0)" ng-class="{'actived':filter.areaType == 'custom'}" ng-click="setFilterType('areaType', 'custom')">自定义</a>
+                                                <input class="form-control" id="minSqure" placeholder="最小面积" name="minSqure" ng-model="filter.minArea" ng-blur="checkArea('minArea')" style="width:100px;">~
+                                                <input class="form-control" id="maxSqure" placeholder="最大面积" name="maxSqure" ng-model="filter.maxArea" ng-blur="checkArea('maxArea')" style="width:100px;">
                                             </div>
                                         </div>
                                         <div class="form-group sortlist">
                                             <label class="control-label">户型</label>
-                                            <div id="countf" class="tj">
-                                                <a ng-href="javascript::" ng-repeat="countf in countfList" value="{{countf.value}}" ng-class="{'actived': countf.value == filter.countf}" ng-click="setCountf(countf.value)">
-                                                    {{countf.name}}
+                                            <div id="sCounts" class="tj">
+                                                <a ng-href="javascript::" ng-repeat="sCounts in sCountsList" value="{{sCounts.value}}" ng-class="{'actived': sCounts.value == filter.sCounts}" ng-click="setFilterType('sCounts' ,sCounts.value)">
+                                                    {{sCounts.name}}
                                                 </a>
-                                                <#--<input id="fyHouseCountfmin" class="form-control" style="width:100px;" name="houseVO.fyHouseCountfmin" value="">
-                                                ~
-                                                <input id="fyHouseCountfmax" class="form-control" style="width:100px;" name="houseVO.fyHouseCountfmax" value="">-->
                                             </div>
                                         </div>
                                         <div class="form-group sortlist">
                                             <label class="control-label">状态</label>
                                             <div id="houseTradeStatus" class="tj">
-                                                <a ng-href="javascript::" ng-repeat="tradeStatus in tradeStatusList" value="{{tradeStatus.value}}" ng-class="{'actived': tradeStatus.value == filter.tradeStatus}" ng-click="setTradeStatus(tradeStatus.value)">
-                                                    {{tradeStatus.name}}
-                                                </a>
+                                            <#list houseProcess?if_exists as process>
+                                                <a ng-href="javascript::" ng-class="{'actived': '${process.name()}' == filter.process}" ng-click="setFilterType('process' ,'${process.name()}')">
+                                                ${process.getLabel()}</a>
+                                            </#list>
+
                                             </div>
                                         </div>
                                         <div class="form-group sortlist">
                                             <label class="control-label">特性</label>
-                                            <div class="pull-left">
-                                                <div class="radio radio-inline" style="padding-top:0px">
-                                                    <span ng-repeat="quality in qualityList">
-                                                        <input name="houseVO.fyHouseQuali" ng-value="quality.value" id="qualityItem{{$index}}" ng-model="filter.quality" ng-click="setQuality(quality.value)" ng-checked="quality.value == filter.quality" type="radio">
-                                                        <label for="qualityItem{{$index}}"> {{quality.name}}</label>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <span class="opt-gap pull-left" style="margin-top:3px;"></span>
                                             <div id="fyHouseCharacter" class="tj">
-                                                <div class="checkbox checkbox-nice" ng-repeat="character in characterList">
-                                                    <input name="houseVO.fyHouseCharacter" id="character{{character.value}}" ng-model="filter.character[character.key]" ng-value="{{character.value}}" ng-click="setCharacter();" type="checkbox">
-                                                    <label for="character{{character.value}}">{{character.name}}</label>
-                                                </div>
+                                                <#list houseTag?if_exists as tag>
+                                                    <div class="checkbox checkbox-nice">
+                                                        <input name="houseCharacter${tag.name()}" id="character${tag.name()}" ng-model="filter.htsObj.${tag.name()}" type="checkbox" ng-change="list()">
+                                                        <label for="character${tag.name()}">${tag.getLabel()}</label>
+                                                    </div>
+                                                </#list>
                                             </div>
                                         </div>
                                         <div class="form-group sortlist">
                                             <label class="control-label">筛选</label>
                                             <div class="col-lg-2 col-md-2 col-sm-3">
-                                                <select name="houseVO.fyHouseTratype" id="fyHouseTratype" class="selectpicker show-menu-arrow form-control bs-select-hidden" ng-model="filter.tradeType" ng-change="setTradeType(e);">
+                                                <select name="houseTratype" id="fouseTratype" select-picker class="selectpicker show-menu-arrow form-control" ng-model="filter.bizType" ng-change="list()">
                                                     <option value="">--请选择--</option>
-                                                    <option value="10206">出租</option>
-                                                    <option value="10207">出售</option>
+                                                    <option value="RENT">出租</option>
+                                                    <option value="SELL">出售</option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3">
-                                                <select id="fyHouseDepid" class="chosen-select-dep" data-placeholder="选择部门"  ng-model="filter.DepId" ng-change="setDepId(e);">
-                                                    <option ng-repeat="dep in depList" value="dep.value" repeat-done="initDepList()">{{dep.name}}</option>
-                                                    <#--<option value="" header="QBBM">全部部门</option>
-                                                    <option value="126" header="RDSFC">瑞迪斯房产</option>
-                                                    <option value="157" header="CW">　财务</option>
-                                                    <option value="128" header="TZYYB">　　唐镇营业部</option>
-                                                    <option value="127" header="CSYYB">　　　川沙营业部</option>
-                                                    <option value="182" header="CS2">　　　　川沙2</option>--></select>
+                                                <select id="douseDepid" class="chosen-select-dep">
+                                                    <option value="">选择部门</option>
+                                                    <option ng-repeat="dep in depList" ng-value="dep.id" repeat-done="initChosen('#douseDepid', 'departmentId')">{{dep.name}}</option>
+                                                    </select>
                                                 </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3">
-                                                <select name="houseVO.fyHouseEmpid" id="fyHouseEmpid" class="chosen-select-emp">
-                                                    <option value="" header="QBYG">全部员工</option>
+                                                <select id="employeeId" class="chosen-select-emp">
+                                                    <option value="">全部员工</option>
+                                                    <option ng-repeat="employee in employeeList" ng-value="employee.id" repeat-done="initChosen('#employeeId', 'employeeId')">{{employee.name}}</option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-4 col-md-4 col-sm-3 m-t-7">
                                                 <div class="checkbox checkbox-nice" ng-repeat="depExp in depExpList">
-                                                    <input name="depExp" id="depExp{{depExp.value}}" ng-model="filter.depExp[depExp.key]" ng-value="{{depExp.value}}" ng-click="setDepExp()" type="checkbox">
+                                                    <input name="depExp" id="depExp{{depExp.value}}" ng-model="filter[depExp.key]"  ng-click="setDepExp()" type="checkbox" ng-change="includeChildrenCheck()">
                                                     <label for="depExp{{depExp.value}}">{{depExp.name}}</label>
                                                 </div>
                                             </div>
@@ -191,112 +174,74 @@
                                         <div class="form-group sortlist form-inline">
                                             <label class="control-label"></label>
                                             <div class="col-lg-2 col-md-2 col-sm-3">
-                                                <select class="select_1 selectpicker show-menu-arrow form-control bs-select-hidden" id="dateType" name="houseVO.dateType" ng-model="filter.date.dateType" ng-change="setDateType(e)">
+                                                <select select-picker class="select_1 selectpicker show-menu-arrow form-control" id="timeType" name="timeType" ng-model="filter.timeType" ng-change="timeCheck()">
                                                     <option value="">--请选择--</option>
-                                                    <option value="1">委托日期 </option>
-                                                    <option value="2">录入日期 </option>
-                                                    <option value="3">最后跟进日 </option>
-                                                    <option value="4">勘察日期 </option>
+                                                <#list timeType?if_exists as type>
+                                                    <option value="${type.name()}">${type.getLabel()}</option>
+                                                </#list>
                                                 </select>
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3">
                                                 <div class="input-group date form_date" datetimepicker key="startDate" change="setDate">
-                                                    <input class="form-control" size="16" placeholder="开始日期" type="text" ng-model="filter.date.startDate" ng-change="setDateType()" >
+                                                    <input class="form-control" size="16" placeholder="开始日期" type="text" ng-model="filter.startDate">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3">
                                                 <div class="input-group date form_date" datetimepicker key="endDate" change="setDate">
-                                                    <input class="form-control" size="16" placeholder="结束时间" type="text" ng-model="filter.date.endDate" ng-change="setDateType()">
+                                                    <input class="form-control" size="16" placeholder="结束时间" type="text" ng-model="filter.endDate">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3">
-                                                <select class="xuanxiang select_1 selectpicker show-menu-arrow form-control bs-select-hidden" ng-model='filter.xuanxiang' ng-change="setXuanxiang()" name="houseVO.otherType" style="padding:2px 0px;width:60px;">
+                                                <select class="xuanxiang select_1 selectpicker show-menu-arrow form-control" select-picker ng-model='filter.xuanxiang' ng-change="setXuanxiang()" style="padding:2px 0px;width:60px;">
                                                     <option value="">--请选择--</option>
-                                                    <option value="entrustWay">委托</option>
-                                                    <!--<option value="price">价格</option>-->
-                                                    <option value="grade">等级</option>
+                                                    <option value="delegateType">委托</option>
                                                     <option value="decorate">装修</option>
-                                                    <!--<option value="imageBool">照片</option>-->
-                                                    <option value="pType">产权</option>
+                                                    <option value="propertyType">产权</option>
                                                     <option value="proveType">证件</option>
-                                                    <option value="settle">落户</option>
+                                                    <option value="resident">落户</option>
                                                 </select>
                                             </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-if="filter.xuanxiang === 'entrustWay'">
-                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden fyHouseEntrustway" id="fyHouseEntrustway" name="houseVO.fyHouseEntrustway" ng-model="filter.xuanxiangExp.entrustWay">
+                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-if="filter.xuanxiang === 'delegateType'">
+                                                <select class="selected_1 selectpicker show-menu-arrow form-control" select-picker id="houseEntrustway" name="houseEntrustway" ng-model="filter.delegateType" ng-change="list()">
                                                     <option value="">--请选择--</option>
-                                                    <option value="9876">独家</option>
-                                                    <option value="9877">签约</option>
-                                                    <option value="9878">未签</option>
-                                                    <option value="9967">限时</option>
-                                                    <option value="9969">托管</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'price'">
-                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden fyHousePrice" style="padding:2px 0px;width:60px;" name="houseVO.fyHousePrice" ng-model="filter.xuanxiangExp.price">
-                                                    <option value="">--请选择--</option>
-                                                    <option value="1">涨价 </option>
-                                                    <option value="2">降价 </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'grade'">
-                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden fyHouseGrade" id="fyHouseGrade" style="padding:2px 0px;width:60px;" name="houseVO.fyHouseGrade" ng-model="filter.xuanxiangExp.grade">
-                                                    <option value="">--请选择--</option>
-                                                    <option value="9872">A级</option>
-                                                    <option value="9873">B级</option>
-                                                    <option value="9874">C级</option>
+                                                <#list delegateType?if_exists as type>
+                                                    <option value="${type.name()}">${type.getLabel()}</option>
+                                                </#list>
                                                 </select>
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'decorate'">
-                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden fyHouseDecorate" style="padding:2px 0px;width:60px;" id="fyHouseDecorate" name="houseVO.fyHouseDecorate" ng-model="filter.xuanxiangExp.decorate">
+                                                <select class="selected_1 selectpicker show-menu-arrow form-control" select-picker style="padding:2px 0px;width:60px;" id="houseDecorate" name="houseDecorate" ng-model="filter.decorate" ng-change="list()">
                                                     <option value="">--请选择--</option>
-                                                    <option value="9898">毛坯</option>
-                                                    <option value="9899">简装</option>
-                                                    <option value="9900">精装</option>
-                                                    <option value="9901">中装</option>
-                                                    <option value="9902">豪装</option>
-                                                    <option value="9903">清水</option>
+                                                <#list decorate?if_exists as type>
+                                                    <option value="${type.name()}">${type.getLabel()}</option>
+                                                </#list>
                                                 </select>
                                             </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'imageBool'">
-                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden imageBool" style="padding:2px 0px;width:60px;" name="houseVO.imageBool" ng-model="filter.xuanxiangExp.imageBool">
+
+                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'propertyType'">
+                                                <select class="selected_1 selectpicker show-menu-arrow form-control" select-picker id="housePtype" style="padding:2px 0px;width:60px;" name="housePtype" ng-model="filter.propertyType" ng-change="list()">
                                                     <option value="">--请选择--</option>
-                                                    <option value="1">有 </option>
-                                                    <option value="2">无 </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'pType'">
-                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden fyHousePtype" id="fyHousePtype" style="padding:2px 0px;width:60px;" name="houseVO.fyHousePtype" ng-model="filter.xuanxiangExp.pType">
-                                                    <option value="">--请选择--</option>
-                                                    <option value="10189">经济适用房</option>
-                                                    <option value="10190">房改房</option>
-                                                    <option value="10191">商品房</option>
-                                                    <option value="10192">集体房</option>
-                                                    <option value="10193">限价房</option>
-                                                    <option value="10194">军产房</option>
+                                                <#list propertyType?if_exists as type>
+                                                    <option value="${type.name()}">${type.getLabel()}</option>
+                                                </#list>
+
                                                 </select>
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'proveType'">
-                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden fyHouseProvetype" style="padding:2px 0px;width:60px;" id="fyHouseProvetype" name="houseVO.fyHouseProvetype" ng-model="filter.xuanxiangExp.proveType">
+                                                <select class="selected_1 selectpicker show-menu-arrow form-control" select-picker style="padding:2px 0px;width:60px;"  name="houseProvetype" ng-model="filter.certifType"  ng-change="list()">
                                                     <option value="">--请选择--</option>
-                                                    <option value="10163">房产证</option>
-                                                    <option value="10164">购房合同</option>
-                                                    <option value="10165">购房发票</option>
-                                                    <option value="10166">抵押合同</option>
-                                                    <option value="10167">认购书</option>
-                                                    <option value="10168">预售合同</option>
-                                                    <option value="10169">回迁协议</option>
-                                                    <option value="10170">收件收据</option>
-                                                    <option value="10171">未出证</option>
+                                                <#list certifType?if_exists as type>
+                                                    <option value="${type.name()}">${type.getLabel()}</option>
+                                                </#list>
                                                 </select>
                                             </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'settle'">
-                                                <select class="selected_1 selectpicker show-menu-arrow form-control bs-select-hidden fyHouseSettle" style="padding:2px 0px;width:60px;" name="houseVO.fyHouseSettle" ng-model="filter.xuanxiangExp.settle">
+                                            <div class="col-lg-2 col-md-2 col-sm-3 sm-mt10" ng-show="filter.xuanxiang === 'resident'">
+                                                <select class="selected_1 selectpicker show-menu-arrow form-control" select-picker style="padding:2px 0px;width:60px;" name="houseSettle" ng-model="filter.resident"  ng-change="list()">
                                                     <option value="">--请选择--</option>
-                                                    <option value="1">是</option>
-                                                    <option value="0">否</option>
+                                                    <option value="Y">是</option>
+                                                    <option value="N">否</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -304,9 +249,10 @@
                                     <div class="form-group sortlist">
                                         <label class="control-label">排序</label>
                                         <div class="tj" id="fySortlist">
-                                            <a ng-repeat="sort in fySortlist" ng-href="javascript:;" ng-click="setSort(sort.value)" ng-class="{'actived': sort.value == filter.sort.item}">
+                                            <a ng-repeat="sort in fySortlist" ng-href="javascript:;" ng-click="setSort(sort.value)" ng-class="{'actived': sort.value == filter.order}">
                                                 {{sort.name}}
-                                                <i ng-if="sort.value == filter.sort.item" class="fa" ng-class="{'fa-arrow-down':filter.sort.type == 'DESC','fa-arrow-up':filter.sort.type == 'ASC' }"></i></a>
+                                                <i ng-if="sort.value == filter.order" class="fa" ng-class="{'fa-arrow-down':filter.orderType == 'DOWN','fa-arrow-up':filter.orderType == 'UP' }"></i>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -383,6 +329,24 @@
             </div>
         </div>
     </section>
+    <div class="modal fade" id="warnModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel" ng-bind="page.warn.title">
+                    </h4>
+                </div>
+                <div class="modal-body" ng-bind="page.warn.content">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="page.warn.closeF()" data-dismiss="modal">确定
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- /.content-wrapper -->
 
