@@ -58,6 +58,11 @@ public class EmployeeRest {
                 pageBounds);
     }
 
+    @GetMapping("query-all")
+    public PageList<Employee> queryAll(@RequestParam(required = false) Long departmentId) {
+        return service.listByCompanyIdDepartmentId(departmentId, null);
+    }
+
     @PostMapping("edit")
     public Object edit(@RequestParam Long id,
                        @RequestParam Long departmentId,

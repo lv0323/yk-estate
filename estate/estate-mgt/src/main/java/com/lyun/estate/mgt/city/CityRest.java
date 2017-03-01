@@ -1,10 +1,13 @@
 package com.lyun.estate.mgt.city;
 
 import com.lyun.estate.biz.housedict.service.CityService;
+import com.lyun.estate.mgt.context.MgtContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/cities/")
@@ -12,8 +15,11 @@ public class CityRest {
 
     private final CityService service;
 
-    public CityRest(CityService service) {
+    private MgtContext mgtContext;
+
+    public CityRest(CityService service, MgtContext mgtContext) {
         this.service = service;
+        this.mgtContext = mgtContext;
     }
 
     @GetMapping
@@ -22,8 +28,10 @@ public class CityRest {
     }
 
     @GetMapping("districts")
-    public Object district(@RequestParam Long id) {
-        return service.findOrderedDistricts(id);
+    public Object district(@RequestParam(required = false) Long id) {
+        return service.findOrderedDistricts(
+                Optional.ofNullable(id).orElse(mgtContext.getOperator().getCityId()
+                ));
     }
 
     @GetMapping("sub-districts")
