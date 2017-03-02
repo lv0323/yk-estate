@@ -10,7 +10,7 @@ import java.util.Map;
 @Mapper
 public interface FollowMapper {
 
-    @Insert("insert into t_follow(target_id,follower_id,create_time) values(#{targetId},#{domainType},#{followerId},current_timestamp)")
+    @Insert("insert into t_follow(target_id,domain_type, follower_id,create_time) values(#{targetId},#{domainType},#{followerId},current_timestamp)")
     int createFollow(@Param("targetId") long targetId, @Param("domainType") DomainType domainType, @Param("followerId") long followerId);
 
     @Delete("delete from t_follow where target_id=#{targetId} and domain_type = #{domainType} and follower_id=#{followerId}")
