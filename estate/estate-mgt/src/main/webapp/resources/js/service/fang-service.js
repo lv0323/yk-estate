@@ -37,6 +37,21 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.list = function (params, header) {
             return RequestService.get('/fang/list', params, header);
         };
+        FangService.summary = function (params, header) {
+            return RequestService.get('/fang/summary', params, header);
+        };
+        FangService.ext = function (params, header) {
+            return RequestService.get('/fang/ext', params, header);
+        };
+        FangService.contact = function (params, header) {
+            return RequestService.get('/fang/contact', params, header);
+        };
+        FangService.descr = function (params, header) {
+            return RequestService.get('/fang/descr', params, header);
+        };
+        FangService.infoOwner = function (params, header) {
+            return RequestService.get('/fang/info-owner', params, header);
+        };
 
         return FangService;
     });

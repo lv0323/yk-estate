@@ -17,6 +17,8 @@ define(contextPath+'/js/plugins/pagination/pagingPlugin.js',
             });
 
         };
-
+        pagingPlugin.update = function(id, option){
+            $(id).jqPaginator('option', option);
+        };
         return pagingPlugin;
 });

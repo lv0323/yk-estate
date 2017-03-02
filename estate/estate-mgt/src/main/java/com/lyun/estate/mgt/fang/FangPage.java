@@ -69,4 +69,12 @@ public class FangPage {
         params.put("username", service.getUsername());
         return new ModelAndView("/fang/create", params);
     }
+
+    @GetMapping("/detail")
+    public ModelAndView detail() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("avatarUrl", service.getAvatar());
+        params.put("username", service.getUsername());
+        return new ModelAndView("/fang/detail", params);
+    }
 }

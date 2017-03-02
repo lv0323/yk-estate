@@ -8,121 +8,11 @@ require(['main-app',
         contextPath + '/js/service/xiaoqu-service.js',
         contextPath + '/js/service/util-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
+        contextPath + '/js/directive/index.js',
         'jqPaginator', 'select', 'chosen', 'datepicker.zh-cn', 'datetimepicker.zh-cn'],
     function (mainApp,  IdentityService, FangService, ValidationService, XiaoquService, UtilService, pagingPlugin) {
 
-        var AddHouseModule = angular.module('AddHouseModule', []);
-        AddHouseModule.directive('datetimepicker', function () {
-            return {
-                restrict: 'A',
-                /*controller: AddHouseCtrl,
-                 controllerAs: 'ctrl',*/
-                link: function (scope, element, attrs) {
-                    if(attrs.format==='yyyy'){
-                        $(element).datetimepicker({
-                            format: 'yyyy',
-                            autoclose: true,
-                            startView: 4,
-                            minView: 4,
-                            pickerPosition: 'bottom-left',
-                            forceParse: false,
-                            language: 'zh-CN'
-                        });
-                    } else{
-                        $(element).datetimepicker({
-                            format: 'yyyy-mm-dd',
-                            weekStart: 1,
-                            autoclose: true,
-                            startView: 2,
-                            minView: 2,
-                            pickerPosition: 'bottom-left',
-                            forceParse: false,
-                            language: 'zh-CN'
-                        });
-                    }
-                    $(element).find('input').change(function () {
-                        scope.ctrl[attrs.change](attrs.key, $(this).val());
-                    });
-                }
-            }
-        });
-        AddHouseModule.directive('selectPicker', ['$timeout', function ($timeout) {
-            return {
-                restrict: 'A',
-                /*controller: AddHouseCtrl,
-                 controllerAs: 'ctrl',*/
-                link: function (scope, element, attrs) {
-                    $timeout(function () {
-                        $(element).selectpicker({
-                            style: 'btn-default',
-                            dropupAuto: false,
-                            size: 8,
-                        });
-                    }, 0);
-                }
-            }
-        }]);
-        AddHouseModule.directive('chosenSelect', ['$timeout', function ($timeout) {
-            return {
-                restrict: 'A',
-                /*controller: AddHouseCtrl,
-                 controllerAs: 'ctrl',*/
-                link: function (scope, element, attrs) {
-                    $timeout(function () {
-                        $(element).chosen("destroy");
-                        $(element).chosen().change(function (e, result) {
-                            scope.$apply(function () {
-                                scope.ctrl.data[attrs.chosenSelect] = result.selected;
-                                scope.ctrl.log();
-                            });
-                        });
-                    }, 0);
-                }
-            }
-        }]);
-        AddHouseModule.directive('repeatDone', ['$timeout', function ($timeout) {
-            return {
-                link: function (scope, element, attrs) {
-                    if (scope.$last) {
-                        $timeout(function () {
-                            scope.$eval(attrs['repeatDone']);   // 执行绑定的表达式
-                        });
-                    }
-                }
-            }
-        }]);
-        AddHouseModule.directive('stMobilePhone', function () {
-            return {
-                restrict: 'A',
-                require: 'ngModel',
-                link: function ($scope, elem, attrs, ctrl) {
-                    ctrl.$parsers.unshift(function (value) {
-                        if (!value || ValidationService.isValidPhoneNumber(value)) {
-                            ctrl.$setValidity('mobilePhone', true);
-                        } else {
-                            ctrl.$setValidity('mobilePhone', false);
-                        }
-                        return value;
-                    });
-                }
-            };
-        });
-        AddHouseModule.directive('stNumber', function () {
-            return {
-                restrict: 'A',
-                require: 'ngModel',
-                link: function ($scope, elem, attrs, ctrl) {
-                    ctrl.$parsers.unshift(function (value) {
-                        if (!value || isValidMoneyAmount(value)) {
-                            ctrl.$setValidity('moneyAmount', true);
-                        } else {
-                            ctrl.$setValidity('moneyAmount', false);
-                        }
-                        return value;
-                    });
-                }
-            };
-        });
+        var AddHouseModule = angular.module('AddHouseModule', ['directiveYk']);
 
         function AddHouseCtrl($scope, $timeout, $interval, $window) {
             var _this = this;
@@ -168,7 +58,7 @@ require(['main-app',
             };
             /*页面相关内容*/
             _this.page ={
-                name: "新增住宅",
+                name: "新增房源",
                 currentStep: _this.stepConfig.step1,
                 warn: {
                     title:'提示',

@@ -10,60 +10,17 @@ require(['main-app',
         contextPath + '/js/service/fang-service.js',
         contextPath + '/js/service/util-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
+        contextPath + '/js/directive/index.js',
         'jqPaginator', 'select', 'chosen', 'datetimepicker.zh-cn'],
     function (mainApp, IdentityService, ValidationService, CityService, DepartmentService, EmployeeService, FangService, UtilService, pagingPlugin) {
         var pageConfig = {
             limit: 8,
+            offset: 0,
+            dataTotal:0,
+            currentPage:1,
             init: false,
         };
-        var HouseListModule=angular.module('HouseListModule',[]);
-        HouseListModule.directive('datetimepicker', function () {
-            return {
-                restrict: 'A',
-                link : function (scope, element, attrs) {
-                    $(element).datetimepicker({
-                        format: 'yyyy-mm-dd',
-                        weekStart: 1,
-                        autoclose: true,
-                        startView: 2,
-                        minView: 2,
-                        pickerPosition:'bottom-left',
-                        forceParse: false,
-                        language: 'zh-CN'
-                    });
-                    $(element).find('input').change(function(){
-                        scope[attrs.change](attrs.key,$(this).val());
-                    });
-                }
-            }
-        });
-        HouseListModule.directive('selectPicker', ['$timeout', function ($timeout) {
-            return {
-                restrict: 'A',
-                /*controller: AddHouseCtrl,
-                 controllerAs: 'ctrl',*/
-                link: function (scope, element, attrs) {
-                    $timeout(function () {
-                        $(element).selectpicker({
-                            style: 'btn-default',
-                            dropupAuto: false,
-                            size: 8,
-                        });
-                    }, 0);
-                }
-            }
-        }]);
-        HouseListModule.directive('repeatDone',['$timeout', function($timeout){
-            return {
-                link: function(scope,element,attrs){
-                    if (scope.$last) {
-                        $timeout(function() {
-                            scope.$eval(attrs['repeatDone']);   // 执行绑定的表达式
-                        });
-                    }
-                }
-            }
-        }]);
+        var HouseListModule=angular.module('HouseListModule',['directiveYk']);
         HouseListModule.controller("HouseListCtrl", ['$scope','$timeout', '$interval','$window','$location', function($scope, $timeout, $interval, $window) {
             var config = {
                 departmentId: {
@@ -80,10 +37,13 @@ require(['main-app',
                     title:'提示',
                     content:''
                 },
-                layoutString:''
+                layoutString:'',
+                collapse:false,
+                now:new Date().getTime()
             };
+            $scope.houseList = [];
             $scope.filter ={
-                cityId:1,
+                cityId:'',
                 bizType:'',
                 districtId: '',
                 subDistrictId:'',
@@ -124,6 +84,8 @@ require(['main-app',
             };
             /*区域*/
             CityService.getDistrict().then(function(response){
+                $scope.filter.cityId = response[0].cityId;
+                $scope.list();
                 $scope.districtList = response.map(function(item){
                     return {
                         name: item.name,
@@ -307,34 +269,37 @@ require(['main-app',
 
             /*分页*/
             var pagination = function(dataTotal) {
-                $scope.state ={
-                    collapse:false
-                };
+                var id = '#houseList_paging';
                 if(pageConfig.init){
+                    pagingPlugin.update(id, {
+                            totalCounts:dataTotal,
+                            currentPage:pageConfig.currentPage
+                        });
                     return;
                 };
                 pageConfig.init = true;
                 var config = {
-                    pagingId:'#houseList_paging',
+                    pagingId: id,
                     totalCounts:dataTotal,
                     pageSize: pageConfig.limit,
                     onChange: function (num, type) {
                         if(type === 'init'){
                             return;
                         }
-                        getCompany((num-1)*pageConfig.limit, pageConfig.limit);
+                        pageConfig.currentPage = num;
+                        $scope.list((num-1)*pageConfig.limit, num);
                     }
                 };
                 pagingPlugin.init(config);
 
             };
-            pagination(100);
+
 
             //筛选
             $scope.triggerCollapse = function(){
-                $scope.state.collapse = !$scope.state.collapse;
+                $scope.page.collapse = !$scope.page.collapse;
             };
-            $scope.list = function(offset){
+            $scope.list = function(offset, currentpage){
                 var param ={};
                 for (var key in $scope.filter){
                     if(!!$scope.filter[key]){
@@ -355,20 +320,21 @@ require(['main-app',
                 if(param.order &&param.orderType){
                     param.order = param.order + '_' + param.orderType;
                 }
-                FangService.list(param,{'X-PAGING':'total=true&offset='+(offset||0)+'&limit=8'}).then(function(response){
-                    console.log(response);
+                if(!currentpage){
+                    pageConfig.currentPage = 1;
+                }
+                FangService.list(param,{'X-PAGING':'total=true&offset='+(offset||pageConfig.offset)+'&limit='+ pageConfig.limit}).then(function(response){
+                    if(response && response.total != pageConfig.dataTotal){
+                        $scope.$apply(function(){
+                            pagination(response.total);
+                            if (response.count > 0) {
+                                $scope.houseList = response.items;
+                            }
+                        });
+
+                    };
                 });
             };
-            $scope.houseList = [
-                {
-                    bizType:'sale',
-                    houseImg:'http://img.12157.top/upload/uploadfile/pic/web/14816115366066107.png',
-                },{
-                    bizType:'rent',
-                    houseImg:'http://img.12157.top/upload/uploadfile/pic/web/14816115366066107.png',
-                }
-            ];
-
         }]);
 
         angular.element(document).ready(function() {

@@ -1573,7 +1573,7 @@ a:focus {
   border-top: 3px solid #d2d6de;
   margin-bottom: 20px;
   width: 100%;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
 }
 .box.box-primary {
   border-top-color: #3c8dbc;
@@ -2505,12 +2505,12 @@ a:focus {
 }
 .nav-tabs-custom > .nav-tabs {
   margin: 0;
-  border-bottom-color: #f4f4f4;
+  border-bottom-color: #eee;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
 }
 .nav-tabs-custom > .nav-tabs > li {
-  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
   margin-bottom: -2px;
   margin-right: 5px;
 }
@@ -2535,7 +2535,7 @@ a:focus {
   border-color: transparent;
 }
 .nav-tabs-custom > .nav-tabs > li.active {
-  border-top-color: #3c8dbc;
+  border-bottom-color: #3c8dbc;
 }
 .nav-tabs-custom > .nav-tabs > li.active > a,
 .nav-tabs-custom > .nav-tabs > li.active:hover > a {
@@ -2674,6 +2674,9 @@ a:focus {
  * Component: Table
  * ----------------
  */
+table{
+  font-size: inherit;
+}
 .table > thead > tr > th,
 .table > tbody > tr > th,
 .table > tfoot > tr > th,

@@ -143,7 +143,7 @@ define(contextPath + '/js/service/util-service.js',
     UtilService.getUrlParam = function (name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
-        if (r != null) return unescape(r[2]);
+        if (r != null) return decodeURI(r[2]);
         return null; //返回参数值
     };
     return UtilService;
