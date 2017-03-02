@@ -1,7 +1,8 @@
 package com.lyun.estate.biz.auth.token;
 
 import com.lyun.estate.core.supports.context.RestContext;
-import com.lyun.estate.core.supports.exceptions.ValidateException;
+import com.lyun.estate.core.supports.exceptions.EstateException;
+import com.lyun.estate.core.supports.exceptions.ExCode;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -29,7 +30,7 @@ public class TokenAspect {
 
     public void authorize(JWTToken token) {
         if (!tokenProvider.validate(token.getToken())) {
-            throw new ValidateException("token.invalid", "token无效");
+            throw new EstateException(ExCode.TOKEN_INVALID);
         }
         restContext.setUserId(Long.valueOf(tokenProvider.getSubject(token.getToken())));
         restContext.setClientId((String) tokenProvider.getClaim(token.getToken(), "clientId"));

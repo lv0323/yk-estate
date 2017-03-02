@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.util.Locale;
 
 @ControllerAdvice
-public class JWTToeknArgumentResolver implements HandlerMethodArgumentResolver, Formatter<JWTToken> {
+public class JWTTokenArgumentResolver implements HandlerMethodArgumentResolver, Formatter<JWTToken> {
     public final static String AUTH_HEADER = "auth";
     public final static String TOKEN = "token";
     public final static String REFRESH_TOKEN = "refreshToken";

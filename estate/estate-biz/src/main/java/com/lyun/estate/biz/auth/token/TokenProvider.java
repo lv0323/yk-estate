@@ -78,7 +78,7 @@ public class TokenProvider {
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
             return tokenMapper.findToken(token) != null;
-        } catch (SignatureException e) {
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException | SignatureException e) {
             logger.info("invalid jwt signature: {}", e.getMessage());
             return false;
         }
