@@ -204,7 +204,10 @@ public class MgtFangServiceImpl implements MgtFangService {
             }
         }
 
+        return findSummaryBySelector(selector, pageBounds);
+    }
 
+    private PageList<MgtFangSummary> findSummaryBySelector(MgtFangSelector selector, PageBounds pageBounds) {
         PageList<MgtFangSummary> summaries = mgtFangRepository.listSummary(selector, pageBounds);
 
         summaries.forEach(summary -> {
@@ -224,7 +227,6 @@ public class MgtFangServiceImpl implements MgtFangService {
                 }
         );
         return summaries;
-
     }
 
     @Override
@@ -371,5 +373,13 @@ public class MgtFangServiceImpl implements MgtFangService {
         ExceptionUtil.checkNotNull("房源编号", fangId);
         return fangRepository.findFangExtByFangId(fangId);
 
+    }
+
+    @Override
+    public MgtFangSummary getFangSummary(Long fangId) {
+        return findSummaryBySelector(new MgtFangSelector().setFangId(fangId), null)
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 }

@@ -53,4 +53,6 @@ public interface MgtFangService {
     Fang getFangBase(Long fangId);
 
     FangExt getFangExt(Long fangId);
+
+    MgtFangSummary getFangSummary(Long fangId);
 }

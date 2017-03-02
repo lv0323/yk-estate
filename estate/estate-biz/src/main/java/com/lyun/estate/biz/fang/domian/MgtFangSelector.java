@@ -10,6 +10,7 @@ import java.util.List;
  * Created by Jeffrey on 2017-01-24.
  */
 public class MgtFangSelector extends TagSelector {
+    private Long fangId;
     private Long cityId;
     private BizType bizType;
     private Long districtId;
@@ -259,6 +260,15 @@ public class MgtFangSelector extends TagSelector {
 
     public MgtFangSelector setProcess(HouseProcess process) {
         this.process = process;
+        return this;
+    }
+
+    public Long getFangId() {
+        return fangId;
+    }
+
+    public MgtFangSelector setFangId(Long fangId) {
+        this.fangId = fangId;
         return this;
     }
 }

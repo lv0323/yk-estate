@@ -12,6 +12,7 @@ import com.lyun.estate.biz.spec.fang.mgt.def.TimeType;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
 import com.lyun.estate.core.supports.resolvers.PageBoundsArgumentResolver;
 import com.lyun.estate.core.supports.types.YN;
 import com.lyun.estate.mgt.fang.service.FangMgtService;
@@ -206,9 +207,9 @@ public class FangRest {
         return houseType.getSubTypes();
     }
 
-    @GetMapping("base")
-    public Fang getFangBase(@RequestParam Long fangId) {
-        return fangMgtService.getFangBase(fangId);
+    @GetMapping("summary")
+    public MgtFangSummary getFangSummary(@RequestParam Long fangId) {
+        return fangMgtService.getFangSummary(fangId);
     }
 
     @GetMapping("ext")

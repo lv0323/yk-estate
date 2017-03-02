@@ -11,6 +11,7 @@ import com.lyun.estate.core.repo.SqlSupport;
 
 import static com.lyun.estate.core.repo.SqlSupport.buildQMEnumsStr;
 import static com.lyun.estate.core.repo.SqlSupport.hasNotNullElement;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 /**
@@ -117,7 +118,9 @@ public class MgtFangSqlProvider {
             }
             LEFT_OUTER_JOIN("( SELECT ff.fang_id,  max(ff.create_time) AS max_follow_time\n" +
                     " FROM t_fang_follow ff WHERE ff.is_deleted = FALSE GROUP BY ff.fang_id ) AS t_ff ON t_ff.fang_id = f.id");
-            WHERE("c.city_id = #{cityId}");
+            if (isNull(selector.getFangId())) {
+                WHERE("c.city_id = #{cityId}");
+            }
             WHERE_IF("f.biz_type = #{bizType}", nonNull(selector.getBizType()));
             WHERE_IF("dr.district_id = #{districtId}", nonNull(selector.getDistrictId()));
             WHERE_IF("c.sub_district_id = #{subDistrictId}", nonNull(selector.getSubDistrictId()));
@@ -153,6 +156,7 @@ public class MgtFangSqlProvider {
                 WHERE("fe.showing IN (" + buildQMEnumsStr(selector.getShowings()) + ")");
             }
             WHERE_IF("f.process =#{process}", nonNull(selector.getProcess()));
+            WHERE_IF("f.id =#{fangId}", nonNull(selector.getFangId()));
 
         }}.toString();
     }
