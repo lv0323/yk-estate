@@ -265,10 +265,6 @@ public class FangServiceImpl implements FangService {
         return fangRepository.updateKeyword(fangId, keyword);
     }
 
-    @Override
-    public List<Fang> findAllFang() {
-        return fangRepository.findAllFang();
-    }
 
     @Override
     public List<FileDescription> files(Long ownerId, CustomType customType) {

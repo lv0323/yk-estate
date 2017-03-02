@@ -42,8 +42,6 @@ public interface FangRepository {
     @Update("UPDATE T_FANG SET NAME_KW=#{keyword} WHERE id=#{fangId}")
     int updateKeyword(@Param("fangId") Long fangId, @Param("keyword") String keyword);
 
-    @Select("SELECT * FROM T_FANG")
-    List<Fang> findAllFang();
 
     @Update("UPDATE t_fang SET house_sub_type = #{houseSubType}, s_counts = #{sCounts}  , t_counts= #{tCounts}  ," +
             " c_counts = #{cCounts}  , w_counts = #{wCounts}  , yt_counts = #{ytCounts}  , orientation  = #{orientation}  , decorate = #{decorate}  ," +
