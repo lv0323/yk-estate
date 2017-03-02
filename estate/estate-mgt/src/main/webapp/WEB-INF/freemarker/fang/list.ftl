@@ -23,7 +23,7 @@
         <div class="animated fadeInRight">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="box box-solid form-inline" ng-cloak>
+                    <div class="box box-solid form-inline" >
                         <div class="box-header with-border">
                             <h3 class="box-title pull-left">房源列表</h3>
                             <div class="box-tools">
@@ -33,22 +33,22 @@
                                 <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增别墅</a>
                                 <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增写字楼</a>
                                 <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增车位</a>-->
-                                <a class="btn" onclick="addHouse()"><i class="fa fa-plus" aria-hidden="true"></i>新增房源</a>
+                                <a class="btn" ng-href="/mgt/fangManage/create.ftl?target=.fang"><i class="fa fa-plus" aria-hidden="true"></i>新增房源</a>
                                 <a class="btn-collapse icon-down btn" ng-click="triggerCollapse()">
-                                    <strong><i class="fa" ng-class="{true:'fa-chevron-up',false:'fa-chevron-down'}[state.collapse]" aria-hidden="true"></i>更多筛选</strong>
+                                    <strong><i class="fa" ng-class="{true:'fa-chevron-up',false:'fa-chevron-down'}[page.collapse]" aria-hidden="true"></i>更多筛选</strong>
                                 </a>
                             </div>
                         </div>
                         <div class="box-body clearfix no-padding">
                             <form id="formlist" class="form-inline">
-                                <div id="searchList" class="clearfix">
+                                <div id="searchList" ng-cloak class="clearfix">
                                     <div class="col-lg-4 col-md-4 col-sm-4">
                                         <div class="input-group" style="width:100%;">
                                             <input placeholder="房源地址、业主姓名、业主电话、房源编号..." class="form-control" name="houseVO.fyHouseEstname" type="text">
     								        <span class="input-group-btn"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>查询</button></span>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2 col-md-2 col-sm-2" style="position:realtive;">
+                                    <#--<div class="col-lg-2 col-md-2 col-sm-2" style="position:realtive;">
                                         <a class="btn text-green" ng-click="getHouseCount = !getHouseCount" ng-init="getHouseCount=false">
                                             <i class="fa fa-bar-chart"></i>房源统计{{count}}
                                         </a>
@@ -70,9 +70,9 @@
                                                 </table>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <div class="clearfix"></div>
-                                    <div class="collapse-box" ng-show="state.collapse">
+                                    <div class="collapse-box" ng-show="page.collapse">
                                         <div class="form-group sortlist">
                                             <label class="control-label" style="vertical-align:top;padding-top:5px;">区域</label>
                                             <div class="tj" id="distract">
@@ -256,65 +256,63 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="getHouseCharPage" class="table-responsive clearfix">
-                                    <!-- 重复提交标识 -->
-                                    <input id="repeatflag" value="false" type="hidden">
-                                    <input value="http://img.12157.top/upload/" id="uploadfileServerURL" type="hidden">
+                                <div id="getHouseCharPage" class="table-responsive clearfix" ng-cloak>
                                     <div class="media clearfix house-item" ng-repeat="house in houseList">
-                                        <img class="flagImg" ng-src="{{house.bizType ==='rent' ? '../img/house/rent.png':'../img/house/sale.png'}}" height="55" width="55">
-                                        <a class="pull-left" href="javascript:void(0)" onclick="houseItem('1639')">
-                                            <img class="media-object" ng-src="{{house.houseImg}}" height="75px" width="100px">
+                                        <img class="flagImg" ng-src="{{house.bizType.name ==='RENT' ? '../img/house/rent.png':'../img/house/sale.png'}}" height="55" width="55">
+                                        <a class="pull-left" href="javascript:void(0)">
+                                            <img class="media-object" ng-src="{{house.imageURI}}" height="75px" width="100px">
                                         </a>
                                         <div class="media-body">
                                             <div class="col-lg-8 col-md-8 col-sm-9">
                                                 <div class="clearfix">
-                                                    <h5 class="media-heading pull-left text-ellipsis" style="width:320px;">
-                                                        <a href="javascript:void(0)" onclick="houseItem('1639')" class="text-muted">
-                                                            <!--BUG #11195 房源列表问题 -->
-                                                            浦东 川沙 上浦小区 1 1 201
-                                                        </a>
+                                                    <h5 class="media-heading pull-left text-ellipsis" style="width:300px;">
+                                                        <a ng-href="{{'/mgt/fangManage/detail?id='+house.id}}" target="_blank" class="text-muted" ng-bind="house.head"></a>
                                                     </h5>
-                                                    <label class="badge badge-success pull-left m-l-20">有效</label>
-                                                    <i class="fa fa-circle text-danger m-l-20" style="font-size:16px;"></i>
-                                                    [<span class="text-danger">53</span>]<span class="text-muted">2016-12-26 <span class="opt-gap"></span>川沙2 ~ 张三</span>
+                                                    <label class="badge badge-success pull-left m-l-20">{{house.process.label}}</label>
+                                                    <i class="fa fa-circle  m-l-20" style="font-size:16px;" ng-class="{true:'text-success', false:'text-danger'}[house.bizType.name == 'RENT']"></i>
+                                                    <span ng-class="{true:'text-success', false:'text-danger'}[house.bizType.name == 'RENT']" ng-show="house.publishTime">[{{(page.now - house.publishTime)/(24*6060*1000)|number:0}}]</span>
+                                                    <span class="text-muted">{{house.publishTime|date:'yyyy-MM-dd'}}<span class="opt-gap"></span>{{house.infoOwner.departmentName}} ~ {{house.infoOwner.employeeName}}</span>
                                                 </div>
                                                 <div class="clearfix m-t-10 text-muted">
-                                                    <span>RDSFC000001</span>
-                                                    <span class="m-l-10">3室4厅2卫2阳台</span>
-                                                    <span class="m-l-10">2/6F</span>
-                                                    <span class="m-l-10">南</span>
-                                                    <span class="m-l-10">简装</span>
-                                                    <span class="m-l-10">2016-12-12</span>
+                                                    <span>编号:{{house.licenceId}}</span>
+                                                    <span class="m-l-10">
+                                                        {{house.sCounts?house.sCounts+'室':''}}
+                                                        {{house.tCounts?house.tCounts+'厅':''}}
+                                                        {{house.wCounts?house.wCounts+'卫':''}}
+                                                        {{house.cCounts?house.cCounts+'厨':''}}
+                                                        {{house.ytCounts?house.ytCounts+'阳台':''}}
+                                                    </span>
+                                                    <span class="m-l-10">{{house.floor}}/{{house.floorCounts}}F</span>
+                                                    <span class="m-l-10">{{house.orientation.label}}</span>
+                                                    <span class="m-l-10">{{house.decorate.label}}</span>
+                                                    <span class="m-l-10">{{house.createTime|date:'yyyy-MM-dd'}}</span>
                                                 </div>
                                                 <div class="clearfix m-t-10">
                                                     <div class="pull-left">
-                                                        <span class="tip tip-success no-margin">公盘</span>
-                                                        <span class="tip tip-danger no-margin">普通房</span>
-                                                        <span class="tip tip-warning no-margin">有钥</span>
-                                                        <span class="tip tip-default no-margin">不包</span>
+                                                        <span class="tip tip-success tag" ng-repeat="tag in house.tags" ng-bind="tag.label"></span>
                                                     </div>
                                                     <div class="btn-add  pull-left m-l-30">
-                                                        <a onclick="saveHouseFollow(1639)" href="javascript:void(0)"><i class="fa fa-pencil"></i>新增跟进</a>
-                                                        <a class="m-l-20" onclick="checkAlike(1639);" href="javascript:void(0)"><i class="fa fa-pencil"></i>新增勘察</a>
-                                                        <a class="m-l-20" onclick="checkApplyReceive('1639','','','')" href="javascript:void(0)"><i class="fa fa-pencil"></i>申请转盘</a>
-                                                        <a class="m-l-20" onclick="checkDelHouse('1639')" href="javascript:void(0)"><i class="fa fa-pencil"></i>删除</a>
+                                                        <a ng-href="{{'/mgt/fangManage/detail?id='+house.id}}" target="_blank"><i class="fa fa-pencil"></i>查看详情</a>
+                                                        <#--<a ng-href="javascript:void(0)"><i class="fa fa-pencil"></i>新增跟进</a>
+                                                        <a class="m-l-20" ng-href="javascript:void(0)"><i class="fa fa-pencil"></i>新增勘察</a>
+                                                        <a class="m-l-20" ng-href="javascript:void(0)"><i class="fa fa-pencil"></i>删除</a>-->
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2 col-md-2 hidden-sm">
-                                                <strong class="f18">74.00</strong>m<sup>2</sup><br><br>
+                                                <p><strong class="f18">{{house.estateArea}}</strong>m<sup>2</sup></p>
                                                 <span class="text-muted">0.00m<sup>2</sup></span>
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3 text-right">
-                                                <p><strong class="text-danger f18">199.00</strong>万元</p>
-                                                <p>26891.89元/m<sup>2</sup></p>
-                                                <a href="javascript:void(0)" id="favorites" style="color:#777;" onclick="favoritesLookOwner('1639','')" class="text-muted mr10 collection ">
+                                                <p><strong class="text-danger f18">{{house.publishPrice}}</strong>{{house.priceUnit.label}}</p>
+                                                <p>{{house.unitPrice}}{{house.priceUnit.label}}/m<sup>2</sup></p>
+                                                <#--<a href="javascript:void(0)" id="favorites" style="color:#777;" onclick="favoritesLookOwner('1639','')" class="text-muted mr10 collection ">
                                                     <i class="fa fa-star-o" aria-hidden="true"></i>收藏
-                                                </a>
-                                                <div class="checkbox checkbox-nice">
+                                                </a>-->
+                                                <#--<div class="checkbox checkbox-nice">
                                                     <input id="house_1639" onclick="setHouseSelected(1639);" type="checkbox">
                                                     <label for="house_1639" style="padding-right:0px">选择</label>
-                                                </div>
+                                                </div>-->
                                             </div>
                                         </div>
                                     </div>

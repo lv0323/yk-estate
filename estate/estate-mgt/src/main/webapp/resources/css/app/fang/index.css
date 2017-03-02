@@ -52,6 +52,9 @@ select.sel-news {
 .p-r-0 {
     padding-right: 0;
 }
+.p-t-3 {
+    padding-top: 3px;
+}
 
 .m-l-5 {
     margin-left: 5px;
@@ -1118,6 +1121,9 @@ a.btn-collapse:hover{
     display: block;
     height: 20px;
 
+}
+.tip.tag{
+    margin-right: 5px;
 }
 .tip.active{
     background-color:#169bd5;
