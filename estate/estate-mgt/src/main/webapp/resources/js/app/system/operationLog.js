@@ -9,7 +9,7 @@ require(['main-app',
     function (mainApp, AuditService, pagingPlugin, UtilService ) {
 
         var pageConfig = {
-            limit: 8,
+            limit: 10,
             init: false
         };
 
