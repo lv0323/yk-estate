@@ -23,6 +23,7 @@ import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.service.MgtXiaoQuService;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQu;
@@ -367,8 +368,8 @@ public class FangMgtService {
         return result;
     }
 
-    public Fang getFangBase(Long fangId) {
-        return mgtFangService.getFangBase(fangId);
+    public MgtFangSummary getFangSummary(Long fangId) {
+        return mgtFangService.getFangSummary(fangId);
     }
 
     public FangExt getFangExt(Long fangId) {
