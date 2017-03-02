@@ -20,10 +20,18 @@ public class propertyVisitPage {
     private EmployeeMgtService service;
 
     @GetMapping("/propertyVisit")
-    public ModelAndView index() {
+    public ModelAndView propertyVisit() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("avatarUrl",service.getAvatar());
         params.put("username",service.getUsername());
         return new ModelAndView("/propertyVisit/propertyVisit", params);
+    }
+
+    @GetMapping("/addPropertyVisit")
+    public ModelAndView addPropertyVisit() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("avatarUrl",service.getAvatar());
+        params.put("username",service.getUsername());
+        return new ModelAndView("/propertyVisit/addPropertyVisit", params);
     }
 }

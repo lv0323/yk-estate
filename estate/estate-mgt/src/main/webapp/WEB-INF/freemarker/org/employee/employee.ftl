@@ -39,6 +39,15 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="control-label">外网电话<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="addEmployeeOpenContactHN" class="form-control" placeholder="外网主机号">
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <input type="text" id="addEmployeeOpenContactEN" class="form-control" placeholder="外网分机号">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="control-label">身份证号<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="addEmployeeID" class="form-control" placeholder="身份证号">
@@ -133,6 +142,15 @@
                         <label class="control-label">手机号<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="editEmployeeMobile" class="form-control" placeholder="手机号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">外网电话<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="editEmployeeOpenContactHN" class="form-control" placeholder="外网主机号">
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <input type="text" id="editEmployeeOpenContactEN" class="form-control" placeholder="外网分机号">
                         </div>
                     </div>
                     <div class="form-group">
@@ -287,7 +305,8 @@
                                             <th><span>姓名</span></th>
                                             <th><span>所属部门</span></th>
                                             <th><span>岗位名称</span></th>
-                                            <th><span>电话</span></th>
+                                            <th><span>手机</span></th>
+                                            <th><span>外网电话</span></th>
                                             <th class="text-right"><span>操作</span></th>
                                         </tr></thead>
                                         <tbody></tbody>
