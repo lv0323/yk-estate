@@ -32,6 +32,7 @@ public class EmployeeRest {
                          @RequestParam Long positionId,
                          @RequestParam Boolean isAgent,
                          @RequestParam String mobile,
+                         @RequestParam(required = false) String openContact,
                          @RequestParam String name,
                          @RequestParam Gender gender,
                          @RequestParam(required = false) String idcardNumber,
@@ -42,6 +43,7 @@ public class EmployeeRest {
                 .setPositionId(positionId)
                 .setAgent(isAgent)
                 .setMobile(mobile)
+                .setOpenContact(openContact)
                 .setName(name)
                 .setGender(gender)
                 .setIdcardNumber(idcardNumber)
@@ -69,6 +71,7 @@ public class EmployeeRest {
                        @RequestParam Long positionId,
                        @RequestParam Boolean isAgent,
                        @RequestParam String mobile,
+                       @RequestParam String openContact,
                        @RequestParam String name,
                        @RequestParam Gender gender,
                        @RequestParam(required = false) String idcardNumber,
@@ -80,6 +83,7 @@ public class EmployeeRest {
                 .setPositionId(positionId)
                 .setAgent(isAgent)
                 .setMobile(mobile)
+                .setOpenContact(openContact)
                 .setName(name)
                 .setGender(gender)
                 .setIdcardNumber(idcardNumber)
