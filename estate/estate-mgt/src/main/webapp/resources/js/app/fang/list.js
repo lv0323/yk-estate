@@ -347,10 +347,10 @@ require(['main-app',
                         param.hts.push(key);
                     }
                 }
-                param.htsObj = '';
+                delete param.htsObj;
                 if(!param.areaType){
-                    param.minArea = '';
-                    param.maxArea = '';
+                    delete param.minArea;
+                    delete param.maxArea;
                 }
                 if(param.order &&param.orderType){
                     param.order = param.order + '_' + param.orderType;
