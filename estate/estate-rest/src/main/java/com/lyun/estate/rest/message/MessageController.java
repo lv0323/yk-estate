@@ -2,7 +2,7 @@ package com.lyun.estate.rest.message;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.lyun.estate.biz.auth.token.CheckToken;
-import com.lyun.estate.biz.auth.token.JWTToeknArgumentResolver;
+import com.lyun.estate.biz.auth.token.JWTTokenArgumentResolver;
 import com.lyun.estate.biz.auth.token.JWTToken;
 import com.lyun.estate.biz.message.entity.EventMessage;
 import com.lyun.estate.biz.message.entity.Message;
@@ -46,7 +46,7 @@ public class MessageController {
     @GetMapping("/summary")
     @CheckToken
     List<MessageSummaryResource> getMessageCounter(
-            @RequestHeader(JWTToeknArgumentResolver.AUTH_HEADER) JWTToken jwtToken) {
+            @RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken jwtToken) {
         return messageService.getMessageSummary();
     }
 
@@ -54,7 +54,7 @@ public class MessageController {
     @CheckToken
     List<MessageResource> getMessage(@RequestParam(required = true) Long senderId,
                                      @RequestParam(required = true) Long lastMessageId,
-                                     @RequestHeader(JWTToeknArgumentResolver.AUTH_HEADER) JWTToken jwtToken,
+                                     @RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken jwtToken,
                                      @RequestHeader("X-PAGING") PageBounds pageBounds) {
         return messageService.getMessage(senderId, lastMessageId, pageBounds);
     }

@@ -62,6 +62,9 @@ public class ExceptionAdvice {
             writeResponse(response, handleEasyCodeException((EasyCodeException) t));
         } else {
             EstateException baseException = writeExceptionLog(t);
+            if (baseException.getExCode() == ExCode.TOKEN_INVALID) {
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            }
             ErrorResource errorResource = new ErrorResource(restContext.getCorrelationId(),
                     baseException.getExCode().name(),
                     baseException.getLocalizedMessage());

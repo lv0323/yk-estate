@@ -1,7 +1,7 @@
 package com.lyun.estate.rest.favorite;
 
 import com.lyun.estate.biz.auth.token.CheckToken;
-import com.lyun.estate.biz.auth.token.JWTToeknArgumentResolver;
+import com.lyun.estate.biz.auth.token.JWTTokenArgumentResolver;
 import com.lyun.estate.biz.auth.token.JWTToken;
 import com.lyun.estate.biz.favorite.service.FavoriteService;
 import com.lyun.estate.biz.support.def.DomainType;
@@ -19,25 +19,25 @@ public class FavoriteController {
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     @CheckToken
-    public CommonResponse follow(@RequestParam long targetId,
-                                 @RequestParam DomainType domainType,
-                                 @RequestHeader(JWTToeknArgumentResolver.AUTH_HEADER) JWTToken jwtToken) {
+    public CommonResponse createFavorite(@RequestParam long targetId,
+                                         @RequestParam DomainType domainType,
+                                         @RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken jwtToken) {
         return new CommonResponse().setSuccess(favoriteService.createFavorite(targetId, domainType));
     }
 
     @PostMapping(value = "/cancel", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     @CheckToken
-    public CommonResponse cancelFollow(@RequestParam long targetId,
+    public CommonResponse cancelFavorite(@RequestParam long targetId,
                                        @RequestParam DomainType domainType,
-                                       @RequestHeader(JWTToeknArgumentResolver.AUTH_HEADER) JWTToken jwtToken) {
+                                       @RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken jwtToken) {
         return new CommonResponse().setSuccess(favoriteService.cancelFavorite(targetId, domainType));
     }
 
     @PostMapping(value = "/is-favorite", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     @CheckToken
-    public CommonResponse isFollow(@RequestParam long targetId,
+    public CommonResponse isFavorite(@RequestParam long targetId,
                                    @RequestParam DomainType domainType,
-                                   @RequestHeader(JWTToeknArgumentResolver.AUTH_HEADER) JWTToken jwtToken) {
+                                   @RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken jwtToken) {
         return new CommonResponse().setSuccess(favoriteService.isFavorite(targetId, domainType));
     }
 }
