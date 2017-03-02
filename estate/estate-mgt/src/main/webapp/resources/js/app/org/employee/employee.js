@@ -84,6 +84,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                         departmentName: item.departmentName,
                         positionName: item.positionName,
                         mobile: item.mobile,
+                        openContact: item.openContact,
                         operation: [
                             {
                                 attr: {class: 'btn editEmployeeBtn'},
@@ -102,6 +103,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                         departmentName: item.departmentName,
                         positionName: item.positionName,
                         mobile: item.mobile,
+                        openContact: item.openContact,
                         operation: '已离职'
                     }
                 }
@@ -116,7 +118,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                     ordering: false,
                     autoWidth: false,
                     columnDefs: [
-                        {className: "text-right", "targets": [3]} /*添加class*/
+                        {className: "text-right", "targets": [5]} /*添加class*/
                     ],
                     columns: [
                         {
@@ -125,7 +127,8 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                         },
                         {title: "所属部门", data: 'departmentName', defaultContent: ""},
                         {title: "岗位名称", data: 'positionName', defaultContent: ""},
-                        {title: "电话", data: 'mobile', defaultContent: ""},
+                        {title: "手机", data: 'mobile', defaultContent: ""},
+                        {title: "外网电话", data: 'openContact', defaultContent: ""},
                         {title: "操作", data: 'operation', "render": dataTableHelp.operationFormat()}
                     ]
                 });
@@ -183,6 +186,40 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
 
         filterEmployee(quitPosition, 0, pageConfig.limit);
 
+        function verifyEmployeeInput(actionType, toSubmitEmployee) {
+            var flag = true;
+            $('.form-group').find('.invalid-input').removeClass('invalid-input');
+            if (toSubmitEmployee.departmentId==="" || typeof(toSubmitEmployee.departmentId)==='undefined') {
+                flag = false;
+                $('#'+actionType+'EmployeeDepart').addClass('invalid-input');
+            }
+            if (toSubmitEmployee.mobile==="" || typeof(toSubmitEmployee.mobile)==='undefined') {
+                flag = false;
+                $('#'+actionType+'EmployeeMobile').addClass('invalid-input');
+            }
+            if (toSubmitEmployee.openContact.split(',')[0]==""|| typeof(toSubmitEmployee.openContact.split(',')[0])==='undefined') {
+                flag = false;
+                $('#'+actionType+'EmployeeOpenContactHN').addClass('invalid-input');
+            }
+            if (toSubmitEmployee.name===""|| typeof(toSubmitEmployee.name)==='undefined') {
+                flag = false;
+                $('#'+actionType+'EmployeeName').addClass('invalid-input');
+            }
+            if (toSubmitEmployee.gender===""|| typeof(toSubmitEmployee.gender)==='undefined') {
+                flag = false;
+                $('#'+actionType+'EmployeeGender').addClass('invalid-input');
+            }
+            if (toSubmitEmployee.idcardNumber===""|| typeof(toSubmitEmployee.idcardNumber)==='undefined') {
+                flag = false;
+                $('#'+actionType+'EmployeeID').addClass('invalid-input');
+            }
+            if (toSubmitEmployee.entryDate===""|| typeof(toSubmitEmployee.entryDate)==='undefined') {
+                flag = false;
+                $('#'+actionType+'EmployeeEntryDate').addClass('invalid-input');
+            }
+            return flag;
+        }
+
         //toggle filter for Employee display
         $('.fadeInRight').on('click','#filterEmployeeBtn',function(){
             if($('#box-filter').css('display')=="none"){
@@ -212,11 +249,15 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
 
         //action for added Employee
         $('#confirmAddEmployeeBtn').on('click', function(){
+            var hostNumber = $('#addEmployeeOpenContactHN').val();
+            var extensionNumber = $('#addEmployeeOpenContactEN').val();
+            var openContact = [hostNumber,extensionNumber];
             var toAddData = {
                 'departmentId': $('#addEmployeeDepart').attr('selectedvalue'),
                 'positionId': $('#addEmployeePosition option:selected').attr("id"),
                 'isAgent': $('#addEmployeeIsAgent').is(':checked'),
                 'mobile': $('#addEmployeeMobile').val(),
+                'openContact': openContact.join(','),
                 'name': $('#addEmployeeName').val(),
                 'gender': $('#addEmployeeGender input:checked').val(),
                 'idcardNumber': $('#addEmployeeID').val(),
@@ -225,35 +266,48 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 'entryDate':$('#addEmployeeEntryDate').val()
             };
 
-            EmployeeService.addEmployee({data:toAddData},header)
-                .done(function(){
-                    // location.reload(true);
-                    swal({
-                            title: "操作成功!",
-                            type: "success",
+            if(verifyEmployeeInput('add',toAddData)){
+                EmployeeService.addEmployee({data:toAddData},header)
+                    .done(function(){
+                        // location.reload(true);
+                        swal({
+                                title: "操作成功!",
+                                type: "success",
+                                confirmButtonText: "确定",
+                                confirmButtonColor: "#3c8dbc"
+                            },
+                            function(){
+                                location.reload(true);
+                            });
+                    })
+                    .fail(function (res) {
+                        // alert(res["message"]);
+                        swal({
+                            title: "错误!",
+                            text: res["message"],
+                            type: "error",
                             confirmButtonText: "确定",
                             confirmButtonColor: "#3c8dbc"
-                        },
-                        function(){
-                            location.reload(true);
                         });
-                })
-                .fail(function (res) {
-                    // alert(res["message"]);
-                    swal({
-                        title: "错误!",
-                        text: res["message"],
-                        type: "error",
-                        confirmButtonText: "确定",
-                        confirmButtonColor: "#3c8dbc"
                     });
+            }else {
+                swal({
+                    title: "错误!",
+                    text: "请填写所有必填字段",
+                    type: "error",
+                    confirmButtonText: "确定",
+                    confirmButtonColor: "#3c8dbc"
                 });
+            }
+
         });
 
         //initialize title and default value in edit Company dialog
         $('#employeeList').on('click','.editEmployeeBtn',function(e) {
             var index = $(e.target).data('index');
             var employee = employeeAllDataRaw[index];
+            var hostNumber = employee["openContact"].split(',')[0];
+            var extensionNumber = employee["openContact"].split(',')[1];
             DepartCommon.initDepartSelector(employee["departmentId"]);
             PositionCommon.initPositionSelector(employee["positionId"]);
             var time = UtilService.timeStamp2Date(employee["entryDate"]);
@@ -262,6 +316,8 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             $('#editEmployeeGender').find('input[value='+employee.gender["name"]+']').prop('checked',true);
             $('#editEmployeeGender').find('input[value!='+employee.gender["name"]+']').prop('checked',false);
             $('#editEmployeeMobile').val(employee["mobile"]);
+            $('#editEmployeeOpenContactHN').val(hostNumber);
+            $('#editEmployeeOpenContactEN').val(extensionNumber);
             $('#editEmployeeID').val(employee["idcardNumber"]);
             $('#editEmployeeWechat').val(employee["wechat"]);
             $('#editEmployeeIsAgent').prop('checked',employee["agent"]);
@@ -273,12 +329,15 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         //action for edit Company dialog
         $('#confirmEditEmployeeBtn').on('click', function() {
             // var entryDate = new Date($('#editEmployeeEntryDate').val());
-
+            var hostNumber = $('#editEmployeeOpenContactHN').val();
+            var extensionNumber = $('#editEmployeeOpenContactEN').val();
+            var openContact = [hostNumber,extensionNumber];
             var toEditData = {
                 id: $('#editEmployeeId').val(),
                 departmentId: $('#editEmployeeDepart').attr("selectedvalue"),
                 positionId: $('#editEmployeePosition option:selected').attr("id"),
                 mobile: $('#editEmployeeMobile').val(),
+                openContact: openContact.join(','),
                 name: $('#editEmployeeName').val(),
                 gender: $('#editEmployeeGender input:checked').val(),
                 idcardNumber: $('#editEmployeeID').val(),
@@ -288,29 +347,40 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 entryDate: $('#editEmployeeEntryDate').val()
             };
 
-            EmployeeService.editEmployee({data:toEditData},header)
-                .done(function(){
-                    // location.reload(true);
-                    swal({
-                            title: "操作成功!",
-                            type: "success",
+            if(verifyEmployeeInput('edit',toEditData)){
+                EmployeeService.editEmployee({data:toEditData},header)
+                    .done(function(){
+                        // location.reload(true);
+                        swal({
+                                title: "操作成功!",
+                                type: "success",
+                                confirmButtonText: "确定",
+                                confirmButtonColor: "#3c8dbc"
+                            },
+                            function(){
+                                location.reload(true);
+                            });
+                    })
+                    .fail(function (res) {
+                        // alert(res["message"]);
+                        swal({
+                            title: "错误!",
+                            text: res["message"],
+                            type: "error",
                             confirmButtonText: "确定",
                             confirmButtonColor: "#3c8dbc"
-                        },
-                        function(){
-                            location.reload(true);
                         });
-                })
-                .fail(function (res) {
-                    // alert(res["message"]);
-                    swal({
-                        title: "错误!",
-                        text: res["message"],
-                        type: "error",
-                        confirmButtonText: "确定",
-                        confirmButtonColor: "#3c8dbc"
                     });
+            }else {
+                swal({
+                    title: "错误!",
+                    text: "请填写所有必填字段",
+                    type: "error",
+                    confirmButtonText: "确定",
+                    confirmButtonColor: "#3c8dbc"
                 });
+            }
+
         });
 
         //set employeeId in quit dialog

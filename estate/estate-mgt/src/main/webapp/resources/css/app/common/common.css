@@ -6,7 +6,7 @@
     border-top: 1px solid #d2d6de;
 }
 
-
+/*展示列表的table*/
 .list{
     min-height: 130px;
 }
@@ -42,6 +42,7 @@ span.opt-gap{
     padding-bottom: 1em;
 }
 
+/*导航列表栈列*/
 .box .nav-stacked > li{
     border-bottom: 1px solid #f4f4f4;
     cursor: pointer;
@@ -67,4 +68,8 @@ span.opt-gap{
 
 textarea.noresize{
     resize: none;
+}
+
+.invalid-input{
+    border: 1px solid #FF0000;
 }

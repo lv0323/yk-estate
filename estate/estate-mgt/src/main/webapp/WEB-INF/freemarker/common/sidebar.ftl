@@ -120,6 +120,16 @@
                     <li><a href="/mgt/org/position.ftl?target=.org">岗位管理</a></li>
                 </ul>
             </li>
+            <li class="treeview propertyVisit">
+                <a href="#"><i class="fa fa-link"></i> <span>房源带看</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/mgt/propertyVisit/propertyVisit.ftl?target=.propertyVisit">带看列表</a></li>
+                </ul>
+            </li>
             <li class="treeview tool">
                 <a href="#"><i class="fa fa-link"></i> <span>实用工具</span>
                     <span class="pull-right-container">
