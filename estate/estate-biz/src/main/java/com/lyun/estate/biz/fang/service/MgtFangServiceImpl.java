@@ -220,6 +220,7 @@ public class MgtFangServiceImpl implements MgtFangService {
                                     CustomType.SHI_JING,
                                     FileProcess.WATERMARK)).
                             map(FileDescription::getFileURI).orElse(null));
+                    summary.setInfoOwner(mgtFangRepository.findLastFangInfoOwner(summary.getId()));
                 }
         );
         return summaries;

@@ -3,10 +3,7 @@ package com.lyun.estate.biz.fang.repo;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.domian.MgtFangSelector;
-import com.lyun.estate.biz.fang.entity.Fang;
-import com.lyun.estate.biz.fang.entity.FangContact;
-import com.lyun.estate.biz.fang.entity.FangExt;
-import com.lyun.estate.biz.fang.entity.FangInfoOwner;
+import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.fang.repo.provider.MgtFangSqlProvider;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -52,4 +49,9 @@ public interface MgtFangRepository {
 
     @SelectProvider(type = MgtFangSqlProvider.class, method = "listSummary")
     PageList<MgtFangSummary> listSummary(MgtFangSelector selector, PageBounds pageBounds);
+
+    @Select("SELECT fio.*, d.name as department_name, e.name as employee_name" +
+            " FROM t_fang_info_owner fio LEFT JOIN t_department d ON fio.department_id = d.id LEFT JOIN t_employee e ON fio.employee_id = e.id" +
+            " WHERE fio.fang_id = #{fangId} AND fio.is_deleted = FALSE ORDER BY fio.id DESC LIMIT 1")
+    FangInfoOwnerDTO findLastFangInfoOwner(Long fangId);
 }

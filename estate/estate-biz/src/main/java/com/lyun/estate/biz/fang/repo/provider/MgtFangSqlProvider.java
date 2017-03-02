@@ -101,7 +101,7 @@ public class MgtFangSqlProvider {
 
     public String listSummary(MgtFangSelector selector) {
         return new SQL() {{
-            SELECT(" f.id,  f.biz_type,  f.licence_id,  f.publish_price,  f.price_unit, f.unit_price, f.estate_area,  f.process")
+            SELECT(" f.id,  f.biz_type,  f.licence_id,  f.publish_price,  f.price_unit, f.unit_price, f.estate_area,  f.process, f.publish_time")
                     .SELECT("  f.s_counts,  f.t_counts,  f.c_counts,  f.w_counts,  f.yt_counts,  f.floor,  f.floor_counts, f.decorate, f.orientation,  f.create_time")
                     .SELECT("  xq.id  AS xiao_qu_id,  c.sub_district_id,  c.name AS xiao_qu_name,  c.near_line,  fe.delegate_start,  fe.is_only,  fe.over_years,  fe.showing")
                     .SELECT("  CASE WHEN t_ff.max_follow_time ISNULL THEN 1 ELSE 0 END AS mftn, t_ff.max_follow_time");

@@ -4,6 +4,7 @@ import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.fang.def.HouseProcess;
 import com.lyun.estate.biz.fang.def.Orientation;
 import com.lyun.estate.biz.fang.def.PriceUnit;
+import com.lyun.estate.biz.fang.entity.FangInfoOwnerDTO;
 import com.lyun.estate.biz.spec.fang.domain.FangForTag;
 
 import java.math.BigDecimal;
@@ -34,8 +35,10 @@ public class MgtFangSummary extends FangForTag {
     private Integer floorCounts;//总层高
     private Orientation orientation;
     private Date createTime;
+    private Date publishTime;
     private Date delegateStart;
     private String imageURI;
+    private FangInfoOwnerDTO infoOwner;
 
     public Long getId() {
         return id;
@@ -244,4 +247,21 @@ public class MgtFangSummary extends FangForTag {
         return this;
     }
 
+    public Date getPublishTime() {
+        return publishTime;
+    }
+
+    public MgtFangSummary setPublishTime(Date publishTime) {
+        this.publishTime = publishTime;
+        return this;
+    }
+
+    public FangInfoOwnerDTO getInfoOwner() {
+        return infoOwner;
+    }
+
+    public MgtFangSummary setInfoOwner(FangInfoOwnerDTO infoOwner) {
+        this.infoOwner = infoOwner;
+        return this;
+    }
 }
