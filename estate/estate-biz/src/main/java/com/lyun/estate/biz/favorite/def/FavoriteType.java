@@ -1,0 +1,23 @@
+package com.lyun.estate.biz.favorite.def;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+
+/**
+ * Created by Jeffrey on 2017-03-02.
+ */
+@JsonSerialize(using = LabelEnumSerializer.class)
+public enum FavoriteType {
+    XIAO_QU("小区"),
+    FANG_SELL("二手房"),
+    FANG_RENT("租房"),;
+    private final String label;
+
+    FavoriteType(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+}

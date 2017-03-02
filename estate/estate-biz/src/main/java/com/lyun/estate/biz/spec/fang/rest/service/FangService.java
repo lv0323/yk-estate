@@ -33,7 +33,5 @@ public interface FangService {
 
     int updateKeyword(Long fangId, String keyword);
 
-    List<Fang> findAllFang();
-
     List<FileDescription> files(Long ownerId, CustomType customType);
 }

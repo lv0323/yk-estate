@@ -49,6 +49,8 @@ public enum ExCode {
     FANG_MGT_DELETED("所选房源不存在或者已删除"),
     //image
     CUSTOM_TYPE_NOT_SUPPORTED("业务类型:{} 不支持"),
+    //favorite
+    FAVORITE_TYPE_NOT_SUPPORTED("关注实体类型不支持"),
 
     //json
     JSON_ERROR("JSON对象{},转换错误:{}"),;
