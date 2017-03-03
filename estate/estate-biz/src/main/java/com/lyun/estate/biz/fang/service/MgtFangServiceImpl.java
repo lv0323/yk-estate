@@ -297,7 +297,7 @@ public class MgtFangServiceImpl implements MgtFangService {
         throw new EstateException(ExCode.CREATE_FAIL, "房源描述", fangDescr.toString());
     }
 
-    public String buildHead(String xiaoQuName, Long licenceId) {
+    private String buildHead(String xiaoQuName, Long licenceId) {
         StringBuilder headBuilder = new StringBuilder(xiaoQuName);
         HouseLicence licence = licenceService.findOne(licenceId);
         if (licence == null) {
