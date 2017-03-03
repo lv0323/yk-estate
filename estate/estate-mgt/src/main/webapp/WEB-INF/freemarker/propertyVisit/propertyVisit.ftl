@@ -39,7 +39,7 @@
                                         <th><span>带看员工</span></th>
                                         <th><span>带看客户</span></th>
                                         <th><span>带看房源</span></th>
-                                        <th class="text-right"><span>操作</span></th>
+                                        <th><span>状态</span></th>
                                     </tr></thead>
                                     <tbody></tbody>
                                 </table>

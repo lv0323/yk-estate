@@ -8,6 +8,8 @@ require(['main-app',contextPath + '/js/service/department-service.js',
     function (mainApp, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon) {
         var header = {};
 
+        var departAllDataRaw = {};
+
         var tableConfig ={
             init: false,
             target:null
@@ -19,7 +21,7 @@ require(['main-app',contextPath + '/js/service/department-service.js',
         };
 
         var displayTable = function (data) {
-            //departAllDataRaw = data.items;
+            departAllDataRaw = data.items;
             var dataSet = data.items.map(function (item, index) {
                 if(item.primary){
                     return {
@@ -172,7 +174,10 @@ require(['main-app',contextPath + '/js/service/department-service.js',
         $('#departList').on('click', '.reDeployDepartBtn', function(e){
             var departId = parseInt($(e.target).data('id'),10);
             var departPId = parseInt($(e.target).data('pid'),10);
+            var index = $(e.target).data('index');
+            var depart = departAllDataRaw[index];
             $('#reDeployDepartId').val(departId);
+            $('#reDeployDepartName').val(depart["name"]);
             DepartCommon.initDepartSelector(departPId);
         });
 

@@ -33,7 +33,7 @@ require(['main-app',
         function displayOperationLog(data) {
             var dataSet = data.map(function (item, index) {
                 return {
-                    createTime: UtilService.timeStamp2Date(item.createTime),
+                    createTime: UtilService.timeStamp2Datetime(item.createTime),
                     departmentName: item.departmentName,
                     operatorName: item.operatorName,
                     content: item.content

@@ -279,11 +279,11 @@
                                             <i class="fa fa-plus" aria-hidden="true"></i>
                                             新增员工
                                         </a>
-                                        <span class="opt-gap"></span>
+                                        <#--<span class="opt-gap"></span>
                                         <a class="btn" id="filterEmployeeBtn">
                                             <i class="fa fa-filter" aria-hidden="true"></i>
                                             筛选
-                                        </a>
+                                        </a>-->
                                     </div>
                                 </div>
                                 <div class="box-body">
