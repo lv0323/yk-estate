@@ -10,7 +10,7 @@ require(['main-app',
         contextPath + '/js/app/fang/tools.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath + '/js/directive/index.js',
-        'jqPaginator', 'select', 'chosen', 'datepicker.zh-cn', 'datetimepicker.zh-cn'],
+        'jqPaginator', 'select', 'chosen', 'datepicker.zh-cn', 'datetimepicker.zh-cn', 'sweetalert'],
     function (mainApp,  IdentityService, FangService, ValidationService, XiaoquService, UtilService, Tools) {
         function ceilCheck(ceilValue, value) {
             if (ceilValue && value && parseFloat(ceilValue) < parseFloat(value)) {
@@ -35,6 +35,8 @@ require(['main-app',
             };
             _this.summary = {};
             _this.ext = {};
+            _this.description = {};
+            _this.descrUpdateInfo = {};
             _this.setInfoOwner = function(response){
 
             };
@@ -62,14 +64,45 @@ require(['main-app',
             _this.getInfoOwner();
             _this.getExt = function(){
                 FangService.ext({fangId:fangId}).then(function(response){
-                    _this.ext= response;
-                    console.log(response);
+                    $scope.$apply(function(){
+                        _this.ext= response;
+                    });
                 });
             };
             _this.getExt();
-
-
-
+            /*外部描述*/
+            _this.descrGet = function(){
+                FangService.descr({fangId:fangId}).then(function(response){
+                    $scope.$apply(function(){
+                        _this.description = response;
+                    });
+                })
+            };
+            _this.descrGet();
+            _this.descrUpdateInit = function(){
+                angular.copy(_this.description, _this.descrUpdateInfo);
+                $('#descrModel').modal('show');
+            }
+            _this.descrUpdate = function(){
+                FangService.updateDescr(_this.descrUpdateInfo).then(function(response){
+                    $('#descrModel').modal('hide');
+                    _this.descrGet();
+                    swal({
+                            title: "操作成功!",
+                            type: "success",
+                            confirmButtonText: "确定",
+                            confirmButtonColor: "#3c8dbc"
+                        });
+                }).fail(function(res){
+                    swal({
+                        title: "错误!",
+                        text: res["message"],
+                        type: "error",
+                        confirmButtonText: "确定",
+                        confirmButtonColor: "#3c8dbc"
+                    });
+                });
+            };
         }
         InfoCtrl.$inject = ['$scope', '$timeout', '$interval', '$window'];
         module.controller("InfoCtrl", InfoCtrl);

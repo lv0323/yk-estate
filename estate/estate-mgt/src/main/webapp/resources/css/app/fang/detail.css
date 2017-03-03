@@ -1,7 +1,7 @@
 #detailInfo table.table-bordered th:last-child,#detailInfo table.table-bordered td:last-child{
     border-right-width: 1px;
 }
-#detailInfo .main-footer{
+.main-footer{
     display: none;
 }
 #detailInfo .label{
@@ -25,6 +25,9 @@
 #detailInfo .table tr td .progress {
     margin-top: 5px;
 }
+#detailInfo .form-inline .form-control {
+    width: 100%;
+}
 #detailInfo .table-bordered {
     border: 1px solid #ddd;
 }
@@ -35,4 +38,17 @@
 #detailInfo .table-bordered > tbody > tr > td,
 #detailInfo .table-bordered > tfoot > tr > td {
     border: 1px solid #ddd;
+}
+#detailInfo .form-inline .form-group {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+}
+#descrModel .form-group{
+    margin-bottom: 5px;
+}
+#descrModel .modal-dialog{
+    width: auto;
+    min-width: 600px;
+    max-width: 860px;
 }
