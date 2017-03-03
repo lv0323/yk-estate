@@ -38,8 +38,8 @@ public class EmployeeProvider {
                 WHERE("e.department_id IN (" + Joiner.on(",").skipNulls().join(deptIds) + ")");
             }
             WHERE("e.company_id = #{companyId} ")
+                    .WHERE("e.quit = FALSE")
                     .ORDER_BY("e.id");
-
         }}.toString();
     }
 }

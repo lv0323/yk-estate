@@ -31,11 +31,11 @@ public class AuditRest {
     }
 
     @GetMapping("")
-    public PageList<AuditDTO> listBySubject(@RequestParam AuditSubject subject,
-                                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
-                                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
-                                            @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
-        return auditService.findBySubject(mgtContext.getOperator().getCompanyId(),
+    public PageList<AuditDTO> listBySubjectIdDescOrdered(@RequestParam AuditSubject subject,
+                                                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                                                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+                                                         @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
+        return auditService.findBySubjectIdDescOrdered(mgtContext.getOperator().getCompanyId(),
                 subject,
                 startDate,
                 Optional.ofNullable(endDate)

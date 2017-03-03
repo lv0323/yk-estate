@@ -22,8 +22,8 @@ public interface AuditRepo {
     @Select("SELECT * FROM t_audit WHERE id = #{id}")
     Audit findOne(Long id);
 
-    @SelectProvider(type = AuditSqlProvider.class, method = "findBySubject")
-    PageList<AuditDTO> findBySubject(@Param("companyId") Long companyId, @Param("subject") AuditSubject subject,
-                                     @Param("startTime") Date startTime,
-                                     @Param("endTime") Date endTime, PageBounds pageBounds);
+    @SelectProvider(type = AuditSqlProvider.class, method = "findBySubjectIdDesc")
+    PageList<AuditDTO> findBySubjectIdDescOrdered(@Param("companyId") Long companyId, @Param("subject") AuditSubject subject,
+                                                  @Param("startTime") Date startTime,
+                                                  @Param("endTime") Date endTime, PageBounds pageBounds);
 }

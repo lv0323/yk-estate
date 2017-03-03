@@ -64,6 +64,7 @@ public class AuthRest {
                 .setMobile(employee.getMobile())
                 .setPositionName(employee.getPositionName())
                 .setDepartmentName(employee.getDepartmentName()));
+        session.setMaxInactiveInterval(3600 * 4);
         return new RestResponse().add("ret", true).add("user", employee).get();
     }
 
