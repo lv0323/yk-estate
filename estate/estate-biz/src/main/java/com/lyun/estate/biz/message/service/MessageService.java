@@ -6,6 +6,8 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.favorite.entity.Favorite;
 import com.lyun.estate.biz.favorite.service.FavoriteService;
+import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.message.def.MessageStatus;
 import com.lyun.estate.biz.message.entity.EventMessage;
 import com.lyun.estate.biz.message.entity.Message;
@@ -15,6 +17,8 @@ import com.lyun.estate.biz.message.repository.MessageRepository;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.rest.service.FangService;
 import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.biz.user.domain.User;
+import com.lyun.estate.biz.user.service.UserService;
 import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import org.slf4j.Logger;
@@ -26,6 +30,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.lyun.estate.biz.support.def.DomainType.*;
@@ -54,12 +59,30 @@ public class MessageService {
     @Autowired
     private AdminUserUtils adminUserUtils;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private FileService fileService;
+
 
     public List<MessageSummaryResource> getMessageSummary(Long receiverId) {
         if (receiverId == null) {
             throw new EstateException(PARAM_NULL, "receiverId");
         }
-        return messageRepository.getMessageSummaryResource(receiverId);
+        List<MessageSummaryResource> summaryResourceList = messageRepository.getMessageSummaryResource(receiverId);
+        summaryResourceList.forEach(
+                t -> {
+                    User sender = userService.findUserById(t.getSenderId());
+                    if (Objects.nonNull(sender.getAvatarId())) {
+                        FileDescription file = fileService.findOne(sender.getAvatarId());
+                        if (Objects.nonNull(file)) {
+                            t.setSenderImgUrl(file.getFileURI());
+                        }
+                    }
+                }
+        );
+        return summaryResourceList;
     }
 
     public List<MessageSummaryResource> getMessageSummary() {

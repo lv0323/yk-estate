@@ -18,9 +18,9 @@ import java.util.List;
 @Repository
 public interface MessageRepository {
 
-    @Select("select message.receiver_id,message.sender_id,message.real_name,message.unread_count,message.max_id as last_message_id,lastMessage.title as last_message_title\n" +
+    @Select("select message.receiver_id,message.sender_id,message.sender_name,message.unread_count,message.max_id as last_message_id,lastMessage.title as last_message_title\n" +
             "from (\n" +
-            "       select ms.receiver_id,ms.sender_id,sender.real_name,sum(case when message.status='UNREAD' then 1 else 0 end) as unread_count,max(message.id) as max_id\n" +
+            "       select ms.receiver_id,ms.sender_id,sender.real_name as sender_name,sum(case when message.status='UNREAD' then 1 else 0 end) as unread_count,max(message.id) as max_id\n" +
             "       from (\n" +
             "              SELECT DISTINCT sender_id, message.receiver_id\n" +
             "              FROM t_message message\n" +
