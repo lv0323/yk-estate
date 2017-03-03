@@ -2,17 +2,17 @@ package com.lyun.estate.rest.message;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.lyun.estate.biz.auth.token.CheckToken;
-import com.lyun.estate.biz.auth.token.JWTTokenArgumentResolver;
 import com.lyun.estate.biz.auth.token.JWTToken;
+import com.lyun.estate.biz.auth.token.JWTTokenArgumentResolver;
 import com.lyun.estate.biz.message.entity.EventMessage;
 import com.lyun.estate.biz.message.entity.Message;
 import com.lyun.estate.biz.message.entity.MessageResource;
 import com.lyun.estate.biz.message.entity.MessageSummaryResource;
 import com.lyun.estate.biz.message.service.MessageService;
-import com.lyun.estate.biz.mq.consumer.MessageConsumer;
 import com.lyun.estate.biz.mq.producer.MessageProducer;
 import com.lyun.estate.biz.report.engine.ReportEngine;
 import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.rest.mq.consumer.MessageConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

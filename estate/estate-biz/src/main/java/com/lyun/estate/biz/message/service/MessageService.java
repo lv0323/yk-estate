@@ -12,9 +12,9 @@ import com.lyun.estate.biz.message.entity.Message;
 import com.lyun.estate.biz.message.entity.MessageResource;
 import com.lyun.estate.biz.message.entity.MessageSummaryResource;
 import com.lyun.estate.biz.message.repository.MessageRepository;
-import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.rest.service.FangService;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.UUID;
 
-import static com.lyun.estate.biz.support.def.DomainType.REPORT;
+import static com.lyun.estate.biz.support.def.DomainType.*;
 import static com.lyun.estate.core.supports.exceptions.ExCode.*;
 
 /**
@@ -50,6 +50,9 @@ public class MessageService {
 
     @Autowired
     private RestContext restContext;
+
+    @Autowired
+    private AdminUserUtils adminUserUtils;
 
 
     public List<MessageSummaryResource> getMessageSummary(Long receiverId) {
@@ -309,7 +312,7 @@ public class MessageService {
                             null,
                             eventMessage.getDomainId(),
                             eventMessage.getDomainType(),
-                            1L/* TODO指定发送者 */,
+                            adminUserUtils.getSenderIdByDomainType(FANG),
                             t.getFollowerId());
                 });
                 return true;
@@ -325,7 +328,7 @@ public class MessageService {
                             null,
                             eventMessage.getDomainId(),
                             eventMessage.getDomainType(),
-                            2L/* TODO指定发送者 */,
+                            adminUserUtils.getSenderIdByDomainType(XIAO_QU),
                             t.getFollowerId());
                 });
                 return true;

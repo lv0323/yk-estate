@@ -1,7 +1,6 @@
 package com.lyun.estate.biz.report.engine;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -72,8 +71,17 @@ public class ReportEngine {
         Assert.notNull(reportInfo, "未找到[" + region + ":" + reportName + "]报表信息");
 
         String sql = assembleSql(reportInfo.getSql(), param);
-        ResultSet rs = executeSql(sql);
-        return resultSetHandler(rs);
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            ResultSet rs = executeSql(connection, sql);
+            return resultSetHandler(rs);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
     }
 
     /**
@@ -92,8 +100,18 @@ public class ReportEngine {
         Assert.notNull(reportInfo, "未找到[" + region + ":" + reportName + "]报表信息");
 
         String sql = assembleSql(reportInfo.getSql(), param);
-        ResultSet rs = executeSql(sql);
-        return resultSetHandler(rs, resultClass);
+
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            ResultSet rs = executeSql(connection, sql);
+            return resultSetHandler(rs, resultClass);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+
     }
 
     /**
@@ -114,8 +132,17 @@ public class ReportEngine {
         Assert.notNull(reportInfo, "未找到[" + region + ":" + reportName + "]报表信息");
 
         String sql = assembleSql(reportInfo.getSql(), param);
-        ResultSet rs = executeSql(sql);
-        resultSetReportHandler(rs, os);
+
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            ResultSet rs = executeSql(connection, sql);
+            resultSetReportHandler(rs, os);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
     }
 
     /**
@@ -136,8 +163,17 @@ public class ReportEngine {
         Assert.notNull(reportInfo, "未找到[" + region + ":" + reportName + "]报表信息");
 
         String sql = assembleSql(reportInfo.getSql(), param);
-        ResultSet rs = executeSql(sql);
-        resultSetReportHandler(rs, os, classType);
+
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            ResultSet rs = executeSql(connection, sql);
+            resultSetReportHandler(rs, os, classType);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
     }
 
     /**
@@ -158,8 +194,17 @@ public class ReportEngine {
         Assert.notNull(reportInfo, "未找到[" + region + ":" + reportName + "]报表信息");
 
         String sql = assembleSql(reportInfo.getSql(), param);
-        ResultSet rs = executeSql(sql);
-        resultSetExportHandler(rs, reportInfo, os, classType);
+
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            ResultSet rs = executeSql(connection, sql);
+            resultSetExportHandler(rs, reportInfo, os, classType);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
     }
 
 
@@ -190,8 +235,7 @@ public class ReportEngine {
         return sql;
     }
 
-    private ResultSet executeSql(String sql) throws SQLException {
-        Connection connection = DataSourceUtils.getConnection(dataSource);
+    private ResultSet executeSql(Connection connection, String sql) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         statement.setFetchSize(50);
         return statement.executeQuery();
@@ -216,7 +260,7 @@ public class ReportEngine {
                 } else {
                     Class<?> fieldClass = Class.forName(field.getGenericType().getTypeName());
                     Object value = getResultFromResultSet(rs, field.getName(), fieldClass);
-                    if (fieldClass == java.util.Date.class) {
+                    if (fieldClass == Date.class) {
                         value = ((Date) value).getTime();
                     }
                     sb.append(field.getName()).append(":").append(value).append(",");
@@ -273,7 +317,7 @@ public class ReportEngine {
                 } else {
                     Class<?> fieldClass = Class.forName(field.getGenericType().getTypeName());
                     Object value = getResultFromResultSet(rs, field.getName(), fieldClass);
-                    if (fieldClass == java.util.Date.class) {
+                    if (fieldClass == Date.class) {
                         value = ((Date) value).getTime();
                     }
                     sb.append(field.getName()).append(":").append(value).append(",");
@@ -339,7 +383,7 @@ public class ReportEngine {
                 } else {
                     Class<?> fieldClass = Class.forName(field.getGenericType().getTypeName());
                     Object value = getResultFromResultSet(rs, field.getName(), fieldClass);
-                    if (fieldClass == java.util.Date.class) {
+                    if (fieldClass == Date.class) {
                         value = reportUtils.format((Date) value);
                     }
                     tempLineList.add(formatCsvString(value));
@@ -373,7 +417,7 @@ public class ReportEngine {
             } catch (NoSuchMethodException e) {
                 return resultSet.getString(columnName);
             }
-        } else if (classType == java.util.Date.class || classType == java.sql.Timestamp.class) {
+        } else if (classType == Date.class || classType == Timestamp.class) {
             try {
                 return resultSet.getTimestamp(columnName);
             } catch (SQLException e) {
