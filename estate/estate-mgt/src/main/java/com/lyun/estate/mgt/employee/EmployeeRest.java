@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/employee")
@@ -61,7 +62,7 @@ public class EmployeeRest {
     }
 
     @GetMapping("query-all")
-    public PageList<Employee> queryAll(@RequestParam(required = false) Long departmentId) {
+    public List<Employee> queryAll(@RequestParam(required = false) Long departmentId) {
         return service.listByCompanyIdDepartmentId(departmentId, null);
     }
 

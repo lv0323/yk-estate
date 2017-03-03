@@ -26,13 +26,14 @@ public class AuditService {
         return auditRepo.findOne(audit.getId());
     }
 
-    public PageList<AuditDTO> findBySubject(Long companyId, AuditSubject subject, Date startTime, Date endTime,
-                                            PageBounds pageBounds) {
+    public PageList<AuditDTO> findBySubjectIdDescOrdered(Long companyId, AuditSubject subject, Date startTime,
+                                                         Date endTime,
+                                                         PageBounds pageBounds) {
 
         ExceptionUtil.checkNotNull("公司编号", companyId);
         ExceptionUtil.checkNotNull("主题", subject);
 
-        return auditRepo.findBySubject(companyId, subject, startTime, endTime, pageBounds);
+        return auditRepo.findBySubjectIdDescOrdered(companyId, subject, startTime, endTime, pageBounds);
     }
 
 }
