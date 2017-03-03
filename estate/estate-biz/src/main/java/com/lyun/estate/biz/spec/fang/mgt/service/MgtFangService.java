@@ -2,7 +2,9 @@ package com.lyun.estate.biz.spec.fang.mgt.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.fang.domian.FangFollowDTO;
 import com.lyun.estate.biz.fang.entity.*;
+import com.lyun.estate.biz.spec.fang.mgt.entity.FangFollowFilter;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
@@ -55,4 +57,6 @@ public interface MgtFangService {
     FangExt getFangExt(Long fangId);
 
     MgtFangSummary getFangSummary(Long fangId);
+
+    PageList<FangFollowDTO> listFollow(FangFollowFilter filter, PageBounds pageBounds);
 }

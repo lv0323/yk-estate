@@ -4,7 +4,7 @@ import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.fang.def.HouseProcess;
 import com.lyun.estate.biz.fang.def.Orientation;
 import com.lyun.estate.biz.fang.def.PriceUnit;
-import com.lyun.estate.biz.fang.entity.FangInfoOwnerDTO;
+import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
 import com.lyun.estate.biz.spec.fang.domain.FangForTag;
 
 import java.math.BigDecimal;
@@ -25,6 +25,7 @@ public class MgtFangSummary extends FangForTag {
     private Long xiaoQuId;
     private String xiaoQuName;
     private BigDecimal estateArea;
+    private BigDecimal realArea;
     private HouseProcess process;
     private Integer sCounts;//室
     private Integer tCounts;//厅
@@ -262,6 +263,15 @@ public class MgtFangSummary extends FangForTag {
 
     public MgtFangSummary setInfoOwner(FangInfoOwnerDTO infoOwner) {
         this.infoOwner = infoOwner;
+        return this;
+    }
+
+    public BigDecimal getRealArea() {
+        return realArea;
+    }
+
+    public MgtFangSummary setRealArea(BigDecimal realArea) {
+        this.realArea = realArea;
         return this;
     }
 }

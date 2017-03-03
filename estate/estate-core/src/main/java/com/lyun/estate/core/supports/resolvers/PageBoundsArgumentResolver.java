@@ -35,7 +35,7 @@ public class PageBoundsArgumentResolver implements HandlerMethodArgumentResolver
 
     private static final int DEFAULT_LIMIT = 10;
 
-    private static final int MAX_LIMIT = 10000;
+    private static final int MAX_LIMIT = 100;
 
     private static final String PAGE = "page";
 

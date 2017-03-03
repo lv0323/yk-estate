@@ -2,6 +2,7 @@ package com.lyun.estate.biz.fang.repo;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
 import com.lyun.estate.biz.fang.domian.MgtFangSelector;
 import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.fang.repo.provider.MgtFangSqlProvider;

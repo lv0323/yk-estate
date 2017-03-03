@@ -4,15 +4,16 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.fang.def.*;
+import com.lyun.estate.biz.fang.domian.FangFollowDTO;
 import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.spec.fang.mgt.def.TimeType;
+import com.lyun.estate.biz.spec.fang.mgt.entity.FangFollowFilter;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
-import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
 import com.lyun.estate.core.supports.resolvers.PageBoundsArgumentResolver;
 import com.lyun.estate.core.supports.types.YN;
 import com.lyun.estate.mgt.fang.service.FangMgtService;
@@ -383,6 +384,33 @@ public class FangRest {
     @GetMapping("descr")
     public FangDescr getDescr(@RequestParam Long fangId) {
         return fangMgtService.findDescr(fangId);
+    }
+
+    @GetMapping("list-follow")
+    public PageList<FangFollowDTO> listFollow(@RequestParam(required = false) FollowType followType,
+                                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date minFollowDate,
+                                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxFollowDate,
+                                              @RequestParam(required = false) Long departmentId,
+                                              @RequestParam(required = false) Boolean children,
+                                              @RequestParam(required = false) Long employeeId,
+                                              @RequestParam(required = false) Long ioDepartmentId,
+                                              @RequestParam(required = false) Boolean ioChildren,
+                                              @RequestParam(required = false) Long ioEmployeeId,
+                                              @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
+
+        FangFollowFilter filter = new FangFollowFilter().setFollowType(followType)
+                .setMinFollowTime(minFollowDate)
+                .setMaxFollowTime(Optional.of(maxFollowDate)
+                        .map(t -> Date.from(t.toInstant().plusSeconds(LocalTime.MAX.toSecondOfDay())))
+                        .orElse(null))
+                .setDepartmentId(departmentId)
+                .setChildren(children)
+                .setEmployeeId(employeeId)
+                .setIoDepartmentId(ioDepartmentId)
+                .setIoChildren(ioChildren)
+                .setIoEmployeeId(ioEmployeeId);
+
+        return fangMgtService.listFollow(filter, pageBounds);
     }
 
 
