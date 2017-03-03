@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.appconfig.service;
 
+import com.lyun.estate.biz.appconfig.entity.AndroidVersion;
 import com.lyun.estate.biz.appconfig.entity.Region;
 import com.lyun.estate.biz.appconfig.entity.RegionConfig;
 import com.lyun.estate.biz.appconfig.repository.AppConfigRepository;
@@ -8,6 +9,7 @@ import com.lyun.estate.biz.housedict.entity.District;
 import com.lyun.estate.biz.housedict.entity.Line;
 import com.lyun.estate.biz.housedict.service.CityService;
 import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.biz.support.settings.SettingProvider;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.lyun.estate.biz.support.settings.def.NameSpace.ANDROID_VERSION;
 
 /**
  * Created by Jeffrey on 2017-01-16.
@@ -27,6 +31,9 @@ public class AppConfigService {
 
     @Autowired
     private CityService cityService;
+
+    @Autowired
+    private SettingProvider settingProvider;
 
     public RegionConfig findCities() {
         List<City> cities = cityService.findCities();
@@ -83,5 +90,16 @@ public class AppConfigService {
 
         Date lastUpdatedTime = repository.findLineRelLastUpdatedTime(cityId);
         return new RegionConfig().setRegions(regions).setLastUpdatedTime(lastUpdatedTime);
+    }
+
+    public AndroidVersion getAndroidLastVersion() {
+        String version = settingProvider.find(ANDROID_VERSION, "VERSION").getValue();
+        boolean forceUpdate = Boolean.parseBoolean(settingProvider.find(ANDROID_VERSION, "FORCE_UPDATE").getValue());
+        String url = settingProvider.find(ANDROID_VERSION, "URL").getValue();
+        return new AndroidVersion() {{
+            setVersion(version);
+            setForceUpdate(forceUpdate);
+            setUrl(url);
+        }};
     }
 }

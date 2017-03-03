@@ -1,5 +1,6 @@
 package com.lyun.estate.rest.appconfig;
 
+import com.lyun.estate.biz.appconfig.entity.AndroidVersion;
 import com.lyun.estate.biz.appconfig.entity.RegionConfig;
 import com.lyun.estate.biz.appconfig.service.AppConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,11 @@ public class AppConfigController {
     @GetMapping("lines")
     public RegionConfig getStations(@RequestParam Long cityId) {
         return appConfigService.findLineRel(cityId);
+    }
+
+    @GetMapping("android-last-version")
+    public AndroidVersion getLastVersion() {
+        return appConfigService.getAndroidLastVersion();
     }
 
 }
