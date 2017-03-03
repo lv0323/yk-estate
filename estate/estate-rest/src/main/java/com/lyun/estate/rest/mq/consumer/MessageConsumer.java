@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.mq.consumer;
+package com.lyun.estate.rest.mq.consumer;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
