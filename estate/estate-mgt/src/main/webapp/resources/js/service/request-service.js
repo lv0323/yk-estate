@@ -1,31 +1,34 @@
-define(contextPath+'/js/service/request-service.js', ['main-app'], function(mainApp) {
+define(contextPath + '/js/service/request-service.js', ['main-app'], function (mainApp) {
 
-    var RequestService = {
-    };
+    var RequestService = {};
 
-   var sendRequest = function (url, method, data, header) {
-       header['Cache-Control'] = 'no-cache';
-       header['x-auth-token'] = getToken();
-       var defer =$.Deferred();
+    var sendRequest = function (url, method, data, header) {
+        header['Cache-Control'] = 'no-cache';
+        header['x-auth-token'] = getToken();
+        var defer = $.Deferred();
         $.ajax(
             {
-                url: contextPath+url,
+                url: contextPath + url,
                 type: method,
                 data: data,
                 headers: header,
                 dataType: 'json',
                 traditional: true
-            }).done(function(response){
+            }).done(function (response) {
             defer.resolve(response);
-        }).fail(function(jqXHR, textStatus, errorThrown){
-            if(jqXHR.responseText){
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.getResponseHeader("X-PAGE-FLAG") !== null) {
+                window.location.href = contextPath + jqXHR.getResponseHeader("X-PAGE-FLAG");
+            }
+
+            if (jqXHR.responseText) {
                 var reponse = JSON.parse(jqXHR.responseText);
                 defer.reject(reponse);
-            }else{
-                defer.reject({ex_code:'request-service.js',message:'未知错误'});
+            } else {
+                defer.reject({ex_code: 'request-service.js', message: '未知错误'});
             }
         });
-       return defer.promise();
+        return defer.promise();
     };
 
     RequestService.get = function (url, data, header) {
@@ -61,17 +64,17 @@ define(contextPath+'/js/service/request-service.js', ['main-app'], function(main
 
     var sendFileRequest = function (url, method, data) {
         return $.ajax(
-                {
-                    url: contextPath+url,
-                    type: method,
-                    data: data,
-                    processData: false,
-                    contentType: false
-                });
+            {
+                url: contextPath + url,
+                type: method,
+                data: data,
+                processData: false,
+                contentType: false
+            });
     };
 
-    RequestService.postMultipart = function (url,data) {
-        return sendFileRequest(url,'POST',data);
+    RequestService.postMultipart = function (url, data) {
+        return sendFileRequest(url, 'POST', data);
     };
     function updateToken(token) {
         if (localStorage.getItem("userInfo")) {
@@ -80,12 +83,14 @@ define(contextPath+'/js/service/request-service.js', ['main-app'], function(main
             localStorage.setItem("userInfo", JSON.stringify(userInfo));
         }
     }
+
     function getToken() {
         if (localStorage.getItem("userInfo")) {
             var userInfo = JSON.parse(localStorage.getItem("userInfo"));
             return userInfo && userInfo.tokenSecret;
         }
     }
+
     return RequestService;
 });
 
