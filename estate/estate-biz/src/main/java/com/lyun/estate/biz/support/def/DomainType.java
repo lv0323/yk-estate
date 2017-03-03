@@ -16,7 +16,8 @@ public enum DomainType {
     POSITION("岗位"),
     NOTICE("公告"),
     REPORT("月报"),
-    MESSAGE("消息"),;
+    MESSAGE("消息"),
+    USER("用户"),;
 
     private final String label;
 
