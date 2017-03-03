@@ -422,6 +422,7 @@ public class FangMgtService {
         }
 
         filter.setCompanyId(operator.getCompanyId());
+
         return mgtFangService.listFollow(filter, pageBounds);
     }
 

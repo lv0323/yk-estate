@@ -33,7 +33,7 @@ public class Fang {
     private BigDecimal bottomPrice;
     private HouseProcess process;
     private YN resident;
-    private Integer floor;//总层高
+    private Integer floor;//层高
     private Integer floorCounts;//总层高
     private FloorType floorType;
     private StructureType structureType;

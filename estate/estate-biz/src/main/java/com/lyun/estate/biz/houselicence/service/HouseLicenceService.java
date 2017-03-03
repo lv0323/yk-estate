@@ -6,6 +6,7 @@ import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.service.HouseDictService;
 import com.lyun.estate.biz.houselicence.def.LicenceStatus;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
+import com.lyun.estate.biz.houselicence.entity.HouseLicenceDTO;
 import com.lyun.estate.biz.houselicence.repository.HouseLicenceRepo;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
@@ -83,8 +84,8 @@ public class HouseLicenceService {
         return repo.findActive(communityId, bizType, buildingId, buildingUnitId, houseNo);
     }
 
-    public HouseLicence findOne(Long id) {
+    public HouseLicenceDTO findOne(Long id) {
         ExceptionUtil.checkNotNull("房源授权编号", id);
-        return repo.findOne(id);
+        return repo.findDTOById(id);
     }
 }
