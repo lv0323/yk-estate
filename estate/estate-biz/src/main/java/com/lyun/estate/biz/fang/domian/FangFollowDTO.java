@@ -2,8 +2,6 @@ package com.lyun.estate.biz.fang.domian;
 
 import com.lyun.estate.biz.fang.def.FollowType;
 
-import java.util.Date;
-
 /**
  * Created by Jeffrey on 2017-02-28.
  */
@@ -12,12 +10,12 @@ public class FangFollowDTO {
     private Long fangId;
     private Long companyId;
     private Long departmentId;
+    private String departmentName;
     private Long employeeId;
+    private String employeeName;
     private FollowType followType;
     private String content;
-    private Boolean isDeleted;
-    private Date createTime;
-    private Date updateTime;
+    private MgtFangTiny fangTiny;
 
     public Long getId() {
         return id;
@@ -55,12 +53,30 @@ public class FangFollowDTO {
         return this;
     }
 
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public FangFollowDTO setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+        return this;
+    }
+
     public Long getEmployeeId() {
         return employeeId;
     }
 
     public FangFollowDTO setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
+        return this;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public FangFollowDTO setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
         return this;
     }
 
@@ -82,44 +98,12 @@ public class FangFollowDTO {
         return this;
     }
 
-    public Boolean getDeleted() {
-        return isDeleted;
+    public MgtFangTiny getFangTiny() {
+        return fangTiny;
     }
 
-    public FangFollowDTO setDeleted(Boolean deleted) {
-        isDeleted = deleted;
+    public FangFollowDTO setFangTiny(MgtFangTiny fangTiny) {
+        this.fangTiny = fangTiny;
         return this;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public FangFollowDTO setCreateTime(Date createTime) {
-        this.createTime = createTime;
-        return this;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public FangFollowDTO setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-        return this;
-    }
-
-    @Override
-    public String toString() {
-        return "FangFollow{" +
-                "id=" + id +
-                ", fangId=" + fangId +
-                ", employeeId=" + employeeId +
-                ", followType=" + followType +
-                ", content='" + content + '\'' +
-                ", isDeleted=" + isDeleted +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
     }
 }

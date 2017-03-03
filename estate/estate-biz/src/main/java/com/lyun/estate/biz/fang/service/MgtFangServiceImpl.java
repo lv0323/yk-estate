@@ -9,6 +9,7 @@ import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.biz.fang.domian.FangFollowDTO;
 import com.lyun.estate.biz.fang.domian.FangFollowSelector;
 import com.lyun.estate.biz.fang.domian.MgtFangSelector;
+import com.lyun.estate.biz.fang.domian.MgtFangTiny;
 import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.fang.repo.*;
 import com.lyun.estate.biz.file.def.CustomType;
@@ -18,7 +19,7 @@ import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.entity.BuildingUnit;
 import com.lyun.estate.biz.housedict.service.HouseDictService;
-import com.lyun.estate.biz.houselicence.entity.HouseLicence;
+import com.lyun.estate.biz.houselicence.entity.HouseLicenceDTO;
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
 import com.lyun.estate.biz.spec.fang.mgt.entity.FangFollowFilter;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
@@ -299,7 +300,7 @@ public class MgtFangServiceImpl implements MgtFangService {
 
     private String buildHead(String xiaoQuName, Long licenceId) {
         StringBuilder headBuilder = new StringBuilder(xiaoQuName);
-        HouseLicence licence = licenceService.findOne(licenceId);
+        HouseLicenceDTO licence = licenceService.findOne(licenceId);
         if (licence == null) {
             logger.error("房源授权未找到，编号：" + licenceId);
         } else {
@@ -387,6 +388,15 @@ public class MgtFangServiceImpl implements MgtFangService {
     }
 
     @Override
+    public MgtFangTiny getFangTiny(Long fangId) {
+        Fang fang = fangRepository.findFang(fangId);
+        MgtFangTiny tiny = new MgtFangTiny();
+        BeanUtils.copyProperties(fang, tiny);
+        tiny.setHouseLicence(licenceService.findOne(tiny.getLicenceId()));
+        return tiny;
+    }
+
+    @Override
     public PageList<FangFollowDTO> listFollow(FangFollowFilter filter, PageBounds pageBounds) {
 
         FangFollowSelector selector = new FangFollowSelector();
@@ -420,7 +430,10 @@ public class MgtFangServiceImpl implements MgtFangService {
             }
         }
 
+        PageList<FangFollowDTO> result = fangFollowRepo.listBySelector(selector, pageBounds);
 
-        return fangFollowRepo.listBySelector(selector, pageBounds);
+        result.forEach(t -> t.setFangTiny(getFangTiny(t.getFangId())));
+
+        return result;
     }
 }

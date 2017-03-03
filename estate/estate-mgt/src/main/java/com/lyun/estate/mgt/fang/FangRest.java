@@ -406,7 +406,7 @@ public class FangRest {
 
         FangFollowFilter filter = new FangFollowFilter().setFollowType(followType)
                 .setMinFollowTime(minFollowDate)
-                .setMaxFollowTime(Optional.of(maxFollowDate)
+                .setMaxFollowTime(Optional.ofNullable(maxFollowDate)
                         .map(t -> Date.from(t.toInstant().plusSeconds(LocalTime.MAX.toSecondOfDay())))
                         .orElse(null))
                 .setDepartmentId(departmentId)
