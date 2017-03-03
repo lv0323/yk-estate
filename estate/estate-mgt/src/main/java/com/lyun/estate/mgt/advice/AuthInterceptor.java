@@ -3,7 +3,6 @@ package com.lyun.estate.mgt.advice;
 import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.context.Operator;
 import com.lyun.estate.mgt.supports.Constant;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
