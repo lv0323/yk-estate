@@ -16,6 +16,12 @@
             </div>
             <div class="modal-body">
                 <form id="reDeployDepartForm" class="form-horizontal" method="post">
+                    <div class="form-group">
+                        <label class="control-label">当前部门</label>
+                        <div class="col-lg-3 col-md-4 col-sm-4 ">
+                            <input id="reDeployDepartName" class="form-control">
+                        </div>
+                    </div>
                     <div class="form-group parent-department-form-group">
                         <label id="superiorDepartLabel" class="control-label">上级部门</label>
                         <div class="superiorDepart col-lg-3 col-md-4 col-sm-4 ">

@@ -1,5 +1,7 @@
 package com.lyun.estate.mgt.propertyVisit;
 
+import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.fang.def.PriceUnit;
 import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +34,8 @@ public class propertyVisitPage {
         HashMap<String, Object> params = new HashMap<>();
         params.put("avatarUrl",service.getAvatar());
         params.put("username",service.getUsername());
+        params.put("rentPriceUnit", PriceUnit.getByBizType(BizType.RENT));
+        params.put("sellPriceUnit", PriceUnit.getByBizType(BizType.SELL));
         return new ModelAndView("/propertyVisit/addPropertyVisit", params);
     }
 }

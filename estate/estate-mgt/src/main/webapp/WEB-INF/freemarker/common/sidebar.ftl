@@ -96,58 +96,58 @@
         <ul class="sidebar-menu">
             <li class="header">主导航</li>
             <!-- Optionally, you can add icons to the links -->
-            <li><a href="/mgt/franchisee/company.ftl"><i class="fa fa-link"></i> <span>加盟商管理</span></a></li>
+            <li><a href="/mgt/franchisee/company.ftl"><i class="fa fa-users" aria-hidden="true"></i> <span>加盟商管理</span></a></li>
             <li class="treeview fang">
-                <a href="#"><i class="fa fa-link"></i> <span>房源管理</span>
+                <a href="#"><i class="fa fa-home" aria-hidden="true"></i> <span>房源管理</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/fangManage/list.ftl?target=.fang">房源列表</a></li>
-                    <li><a href="/mgt/fangManage/create.ftl?target=.fang">新增房源</a></li>
+                    <li><a href="/mgt/fangManage/list.ftl?target=.fang"><i class="fa fa-circle"></i>房源列表</a></li>
+                    <li><a href="/mgt/fangManage/create.ftl?target=.fang"><i class="fa fa-circle"></i>新增房源</a></li>
                 </ul>
             </li>
             <li class="treeview org">
-                <a href="#"><i class="fa fa-link"></i> <span>组织机构</span>
+                <a href="#"><i class="fa fa-sitemap" aria-hidden="true"></i> <span>组织机构</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/org/department.ftl?target=.org">部门列表</a></li>
-                    <li><a href="/mgt/org/employee.ftl?target=.org">员工管理</a></li>
-                    <li><a href="/mgt/org/position.ftl?target=.org">岗位管理</a></li>
+                    <li><a href="/mgt/org/department.ftl?target=.org"><i class="fa fa-circle"></i>部门列表</a></li>
+                    <li><a href="/mgt/org/employee.ftl?target=.org"><i class="fa fa-circle"></i>员工管理</a></li>
+                    <li><a href="/mgt/org/position.ftl?target=.org"><i class="fa fa-circle"></i>岗位管理</a></li>
                 </ul>
             </li>
-            <li class="treeview propertyVisit">
-                <a href="#"><i class="fa fa-link"></i> <span>房源带看</span>
+            <li class="treeview prtyVisit">
+                <a href="#"><i class="fa fa-key" aria-hidden="true"></i> <span>房源带看</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/propertyVisit/propertyVisit.ftl?target=.propertyVisit">带看列表</a></li>
+                    <li><a href="/mgt/propertyVisit/propertyVisit.ftl?target=.prtyVisit"><i class="fa fa-circle"></i>带看列表</a></li>
                 </ul>
             </li>
             <li class="treeview tool">
-                <a href="#"><i class="fa fa-link"></i> <span>实用工具</span>
+                <a href="#"><i class="fa fa-wrench" aria-hidden="true"></i> <span>实用工具</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/tool/myProfile.ftl?target=.tool">个人中心</a></li>
+                    <li><a href="/mgt/tool/myProfile.ftl?target=.tool"><i class="fa fa-circle"></i>个人中心</a></li>
                 </ul>
             </li>
             <li class="treeview sys">
-                <a href="#"><i class="fa fa-link"></i> <span>系统设置</span>
+                <a href="#"><i class="fa fa-cog" aria-hidden="true"></i> <span>系统设置</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/system/operationLog.ftl?target=.sys">操作日志</a></li>
+                    <li><a href="/mgt/system/operationLog.ftl?target=.sys"><i class="fa fa-circle"></i>操作日志</a></li>
                 </ul>
             </li>
         </ul>
