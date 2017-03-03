@@ -143,7 +143,7 @@ require(['main-app',
                 realArea: '',
                 rentPriceUnit: 'YUAN',
                 sellPriceUnit: 'YUAN',
-                settle: '',
+                resident: '',
                 status: '',
                 source: '',
                 structureType: '',
@@ -584,6 +584,7 @@ require(['main-app',
                 }
                 _this.data.priceUnit = _this.data.houseType ===_this.bizTypeConfig.rent? _this.data.rentPriceUnit: _this.data.sellPriceUnit;
                 _this.data.isOnly = _this.data.isOnly ?'Y':'N';
+                _this.data.resident = _this.data.resident ?'Y':'N';
                 FangService.create(_this.data).then(function(){
                     _this.showWarn({title:'提示',content:'新增房源完成',closeF:_this.goList});
                 });

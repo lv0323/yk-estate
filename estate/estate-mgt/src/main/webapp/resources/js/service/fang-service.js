@@ -37,6 +37,12 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.list = function (params, header) {
             return RequestService.get('/fang/list', params, header);
         };
+        FangService.base = function (params, header) {
+            return RequestService.get('/fang/base', params, header);
+        };
+        FangService.baseChange = function (params, header) {
+            return RequestService.post('/fang/change-base', params, header);
+        };
         FangService.summary = function (params, header) {
             return RequestService.get('/fang/summary', params, header);
         };

@@ -34,13 +34,33 @@ require(['main-app',
                 layoutString:''
             };
             _this.summary = {};
+            _this.baseInfo = {};
             _this.ext = {};
             _this.description = {};
             _this.descrUpdateInfo = {};
+            _this.subTypeList = [];
+            /*户型选择*/
+            _this.layoutList={
+                shi:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:0,name:'无'}],
+                ting:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:0,name:'无'}],
+                chu:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:0,name:'无'}],
+                wei:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:0,name:'无'}],
+                yangtai:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:0,name:'无'}]
+            };
+            _this.setLayout = function(type, value){
+                _this.currentLayout[type] = value;
+            };
             _this.setInfoOwner = function(response){
 
             };
-
+            _this.selectPickerChange = function(id, key) {
+                if(!_this.baseInfo[key]){
+                    $(id).siblings('.btn-default').addClass('invalid-input');
+                    return false;
+                }
+                $(id).siblings('.btn-default').removeClass('invalid-input');
+                return true;
+            };
             /*基本信息*/
             _this.getSummary = function(){
                 FangService.summary({fangId:fangId}).then(function(response){
@@ -82,17 +102,62 @@ require(['main-app',
             _this.descrUpdateInit = function(){
                 angular.copy(_this.description, _this.descrUpdateInfo);
                 $('#descrModel').modal('show');
+
+            };
+            _this.layoutDialogShow = function(){
+                _this.currentLayout = {
+                    sCounts: _this.baseInfo.sCounts,
+                    tCounts: _this.baseInfo.tCounts,
+                    cCounts: _this.baseInfo.cCounts,
+                    wCounts: _this.baseInfo.wCounts,
+                    ytCounts: _this.baseInfo.ytCounts
+                };
+            };
+            _this.layoutConfirm = function(){
+                _this.baseInfo.sCounts = _this.currentLayout.sCounts;
+                _this.baseInfo.tCounts = _this.currentLayout.tCounts;
+                _this.baseInfo.cCounts = _this.currentLayout.cCounts;
+                _this.baseInfo.wCounts = _this.currentLayout.wCounts;
+                _this.baseInfo.ytCounts = _this.currentLayout.ytCounts;
+                _this.baseInfo.layoutString =  Tools.layoutFormat({sCounts: _this.baseInfo.sCounts, tCounts: _this.baseInfo.tCounts, cCounts: _this.baseInfo.cCounts, wCounts: _this.baseInfo.wCounts, ytCounts: _this.baseInfo.ytCounts});
+            };
+            _this.baseInfoInit = function(){
+              FangService.base({fangId:fangId}).then(function(response){
+                  $('#baseModel').modal({'show':true,backdrop:'static'});
+                  var info = response;
+                  info.bizType = response.bizType.name;
+                  info.houseSubType = response.houseSubType.name;
+                  info.decorate = response.decorate.name;
+                  info.orientation = response.orientation.name;
+                  info.priceUnit = response.priceUnit.name;
+                  info.structureType = response.structureType.name;
+                  info.heatingType = response.heatingType.name;
+                  info.layoutString = Tools.layoutFormat({sCounts: info.sCounts, tCounts: info.tCounts, cCounts: info.cCounts, wCounts: info.wCounts, ytCounts: info.ytCounts});
+                  $scope.$apply(function(){
+                      _this.baseInfo = info;
+                  });
+                  $('#houseSubType').selectpicker('refresh');
+                  $('#houseOrientation').selectpicker('refresh');
+                  $('#houseDecorate').selectpicker('refresh');
+                  $('#houseStructureType').selectpicker('refresh');
+                  $('#priceUnit').selectpicker('refresh');
+                  $('#houseHasElevator').selectpicker('refresh');
+                  $('#houseHeatingType').selectpicker('refresh');
+              });
+            };
+            _this.success = function(){
+                swal({
+                    title: "操作成功!",
+                    type: "success",
+                    confirmButtonText: "确定",
+                    confirmButtonColor: "#3c8dbc"
+                });
             }
             _this.descrUpdate = function(){
                 FangService.updateDescr(_this.descrUpdateInfo).then(function(response){
                     $('#descrModel').modal('hide');
                     _this.descrGet();
-                    swal({
-                            title: "操作成功!",
-                            type: "success",
-                            confirmButtonText: "确定",
-                            confirmButtonColor: "#3c8dbc"
-                        });
+                    _this.success();
                 }).fail(function(res){
                     swal({
                         title: "错误!",
@@ -101,6 +166,27 @@ require(['main-app',
                         confirmButtonText: "确定",
                         confirmButtonColor: "#3c8dbc"
                     });
+                });
+            };
+            _this.subTypeRefresh = function(id){
+                $(id).selectpicker('refresh')
+            };
+            _this.datePickChange = function(key, value){
+                $scope.$apply(function(){
+                    _this.baseInfo[key] = value;
+                });
+            };
+            _this.baseInfoUpdate = function(){
+                var info = _this.baseInfo;
+                info.fangId = info.id;
+                delete info.id;
+                delete info.process;
+                delete info.floorType;
+                delete info.layoutString;
+                delete info.houseType;
+                FangService.baseChange(info).then(function(response){
+                    $('#baseModel').modal('hide');
+                    _this.success();
                 });
             };
         }

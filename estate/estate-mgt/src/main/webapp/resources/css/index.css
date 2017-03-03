@@ -2674,9 +2674,7 @@ a:focus {
  * Component: Table
  * ----------------
  */
-table{
-  font-size: inherit;
-}
+id
 .table > thead > tr > th,
 .table > tbody > tr > th,
 .table > tfoot > tr > th,
