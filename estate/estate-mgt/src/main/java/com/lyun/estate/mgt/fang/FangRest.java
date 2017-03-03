@@ -213,6 +213,12 @@ public class FangRest {
         return fangMgtService.getFangSummary(fangId);
     }
 
+    @GetMapping("base")
+    public Fang getFangBase(@RequestParam Long fangId) {
+        return fangMgtService.getFangBase(fangId);
+    }
+
+
     @GetMapping("ext")
     public FangExt getFangExt(@RequestParam Long fangId) {
         return fangMgtService.getFangExt(fangId);

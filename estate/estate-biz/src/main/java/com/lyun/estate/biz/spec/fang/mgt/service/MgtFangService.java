@@ -42,8 +42,6 @@ public interface MgtFangService {
 
     FangDescr createFangDescr(FangDescr fangDescr);
 
-    String buildHead(String xiaoQuName, Long licenceId);
-
     FangDescr updateDesc(FangDescr fangDescr);
 
     FangDescr findDescr(Long fangId);

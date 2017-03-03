@@ -130,9 +130,16 @@ public class FangMgtService {
                 .setEmployeeId(operator.getId()).setReason(InfoOwnerReason.CREATE));
 
         //fangDescr
+        StringBuilder titleBuilder = new StringBuilder();
+        titleBuilder.append(xiaoQu.getName()).append(" ").append(fang.getsCounts()).append("室");
+        if (fang.gettCounts() > 0) {
+            titleBuilder.append(fang.gettCounts()).append("厅");
+        }
+        titleBuilder.append(" ").append(fang.getPublishPrice()).append(fang.getPriceUnit().getLabel());
+
         mgtFangService.createFangDescr(new FangDescr()
                 .setFangId(result.getId())
-                .setTitle(mgtFangService.buildHead(xiaoQu.getName(), licence.getId())));
+                .setTitle(titleBuilder.toString()));
 
         //audit
         auditService.save(new Audit()
@@ -375,6 +382,11 @@ public class FangMgtService {
         return mgtFangService.getFangSummary(fangId);
     }
 
+
+    public Fang getFangBase(Long fangId) {
+        return mgtFangService.getFangBase(fangId);
+    }
+
     public FangExt getFangExt(Long fangId) {
         return mgtFangService.getFangExt(fangId);
     }
@@ -412,4 +424,5 @@ public class FangMgtService {
         filter.setCompanyId(operator.getCompanyId());
         return mgtFangService.listFollow(filter, pageBounds);
     }
+
 }
