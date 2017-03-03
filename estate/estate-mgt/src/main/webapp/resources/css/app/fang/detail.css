@@ -1,8 +1,21 @@
 #detailInfo table.table-bordered th:last-child,#detailInfo table.table-bordered td:last-child{
     border-right-width: 1px;
 }
-#detailInfo .main-footer{
+.main-footer{
     display: none;
+}
+#detailInfo .breadcrumb{
+    padding-top:0;
+    padding-bottom:0;
+    margin-bottom:0;
+}
+#detailInfo .content{
+    padding-top:0;
+}
+#detailInfo .row{
+    padding: 0;
+    margin: 0;
+    width: 100%;
 }
 #detailInfo .label{
     padding: .3em .6em;
@@ -25,6 +38,9 @@
 #detailInfo .table tr td .progress {
     margin-top: 5px;
 }
+#detailInfo .form-inline .form-control {
+    width: 100%;
+}
 #detailInfo .table-bordered {
     border: 1px solid #ddd;
 }
@@ -35,4 +51,29 @@
 #detailInfo .table-bordered > tbody > tr > td,
 #detailInfo .table-bordered > tfoot > tr > td {
     border: 1px solid #ddd;
+}
+#detailInfo .form-inline .form-group {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+}
+#descrModel .form-group{
+    margin-bottom: 5px;
+}
+#descrModel .modal-dialog{
+    width: auto;
+    min-width: 600px;
+    max-width: 860px;
+}
+#baseModel .modal-dialog{
+    width: auto;
+    min-width: 700px;
+    max-width: 860px;
+}
+#layoutModel{
+    z-index: 10001;
+}
+#layoutModel .tip-box .tip-info{
+    margin-right: 4px;
+    cursor: pointer;
 }

@@ -216,11 +216,11 @@
                                                 <label class="control-label">落户</label>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 form-inline m-t-7">
                                                     <div class="radio radio-nice" >
-                                                        <input type="radio" name="houseSettle" id="settleYes" ng-value="'Y'" ng-model="ctrl.data.settle"/>
+                                                        <input type="radio" name="houseSettle" id="settleYes" ng-value="'Y'" ng-model="ctrl.data.resident"/>
                                                         <label for="settleYes">是</label>
                                                     </div>
                                                     <div class="radio radio-nice" >
-                                                        <input type="radio" name="houseSettle" id="settleNo" ng-value="'N'" ng-model="ctrl.data.settle"/>
+                                                        <input type="radio" name="houseSettle" id="settleNo" ng-value="'N'" ng-model="ctrl.data.resident"/>
                                                         <label for="settleNo">否</label>
                                                     </div>
                                                 </div>
