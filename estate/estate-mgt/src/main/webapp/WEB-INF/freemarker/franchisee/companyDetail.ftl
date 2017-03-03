@@ -37,7 +37,7 @@
                             <div class="box-body" id="editCompanyDialog">
                                 <form id="editCompanyForm" class="form-horizontal" method="post">
                                     <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司名称<span class="required-field">*</span></label>
+                                        <label class="control-label">公司名称<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="editCompanyName" class="form-control" placeholder="公司名称" required>
                                             <input id="editCompanyId" class="hidden">
@@ -47,19 +47,19 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司许可证<span class="required-field">*</span></label>
+                                        <label class="control-label">公司许可证<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="editCompanyLicense" class="form-control" placeholder="公司许可证">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司地址<span class="required-field">*</span></label>
+                                        <label class="control-label">公司地址<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="editCompanyAddress" class="form-control" placeholder="公司地址">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">公司说明</label>
+                                        <label class="control-label">公司说明</label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <input type="text" id="editCompanyNote" class="form-control" placeholder="公司说明">
                                         </div>
@@ -68,7 +68,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-lg-2 col-md-2 col-sm-3 control-label">加盟有效时期<span class="required-field">*</span></label>
+                                        <label class="control-label">加盟时期<span class="required-field">*</span></label>
                                         <div class="col-lg-3 col-md-4 col-sm-4">
                                             <div class="input-group date">
                                                 <div class="input-group-addon">

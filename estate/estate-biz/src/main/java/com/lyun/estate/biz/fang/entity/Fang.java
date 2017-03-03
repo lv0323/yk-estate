@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.fang.entity;
 
+import com.google.common.base.MoreObjects;
 import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.biz.housedict.def.StructureType;
 import com.lyun.estate.core.supports.types.YN;
 
 import java.math.BigDecimal;
@@ -354,41 +354,42 @@ public class Fang {
 
     @Override
     public String toString() {
-        return "Fang{" +
-                "id=" + id +
-                ", houseSubType=" + houseSubType +
-                ", bizType=" + bizType +
-                ", houseType=" + houseType +
-                ", licenceId=" + licenceId +
-                ", xiaoQuId=" + xiaoQuId +
-                ", sCounts=" + sCounts +
-                ", tCounts=" + tCounts +
-                ", wCounts=" + wCounts +
-                ", cCounts=" + cCounts +
-                ", ytCounts=" + ytCounts +
-                ", orientation=" + orientation +
-                ", decorate=" + decorate +
-                ", estateArea=" + estateArea +
-                ", realArea=" + realArea +
-                ", publishPrice=" + publishPrice +
-                ", priceUnit=" + priceUnit +
-                ", transferPrice=" + transferPrice +
-                ", unitPrice=" + unitPrice +
-                ", bottomPrice=" + bottomPrice +
-                ", process=" + process +
-                ", resident=" + resident +
-                ", floor=" + floor +
-                ", floorCounts=" + floorCounts +
-                ", floorType=" + floorType +
-                ", structureType=" + structureType +
-                ", buildYear=" + buildYear +
-                ", heatingType=" + heatingType +
-                ", hasElevator=" + hasElevator +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", publishTime=" + publishTime +
-                ", isDeleted=" + isDeleted +
-                ", nameKw='" + nameKw + '\'' +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("id", id)
+                .add("houseSubType", houseSubType)
+                .add("bizType", bizType)
+                .add("houseType", houseType)
+                .add("licenceId", licenceId)
+                .add("xiaoQuId", xiaoQuId)
+                .add("sCounts", sCounts)
+                .add("tCounts", tCounts)
+                .add("wCounts", wCounts)
+                .add("cCounts", cCounts)
+                .add("ytCounts", ytCounts)
+                .add("orientation", orientation)
+                .add("decorate", decorate)
+                .add("estateArea", estateArea)
+                .add("realArea", realArea)
+                .add("publishPrice", publishPrice)
+                .add("priceUnit", priceUnit)
+                .add("transferPrice", transferPrice)
+                .add("unitPrice", unitPrice)
+                .add("bottomPrice", bottomPrice)
+                .add("process", process)
+                .add("resident", resident)
+                .add("floor", floor)
+                .add("floorCounts", floorCounts)
+                .add("floorType", floorType)
+                .add("structureType", structureType)
+                .add("buildYear", buildYear)
+                .add("heatingType", heatingType)
+                .add("hasElevator", hasElevator)
+                .add("createTime", createTime)
+                .add("updateTime", updateTime)
+                .add("publishTime", publishTime)
+                .add("isDeleted", isDeleted)
+                .add("nameKw", nameKw)
+                .toString();
     }
 }

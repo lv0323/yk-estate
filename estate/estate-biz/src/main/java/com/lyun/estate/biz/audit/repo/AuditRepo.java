@@ -4,6 +4,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.audit.def.AuditSubject;
 import com.lyun.estate.biz.audit.entity.Audit;
+import com.lyun.estate.biz.audit.entity.AuditDTO;
 import com.lyun.estate.biz.audit.repo.provider.AuditSqlProvider;
 import org.apache.ibatis.annotations.*;
 
@@ -21,8 +22,8 @@ public interface AuditRepo {
     @Select("SELECT * FROM t_audit WHERE id = #{id}")
     Audit findOne(Long id);
 
-    @SelectProvider(type = AuditSqlProvider.class, method = "findBySubject")
-    PageList<Audit> findBySubject(@Param("companyId") Long companyId, @Param("subject") AuditSubject subject,
-                                  @Param("startTime") Date startTime,
-                                  @Param("endTime") Date endTime, PageBounds pageBounds);
+    @SelectProvider(type = AuditSqlProvider.class, method = "findBySubjectIdDesc")
+    PageList<AuditDTO> findBySubjectIdDescOrdered(@Param("companyId") Long companyId, @Param("subject") AuditSubject subject,
+                                                  @Param("startTime") Date startTime,
+                                                  @Param("endTime") Date endTime, PageBounds pageBounds);
 }

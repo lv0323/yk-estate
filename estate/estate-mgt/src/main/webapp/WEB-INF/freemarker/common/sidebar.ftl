@@ -23,7 +23,7 @@
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <#--<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">-->
-                        <span class="hidden-xs username"></span>
+                        <span class="hidden-xs username">${username}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
@@ -78,12 +78,16 @@
         <div class="user-panel">
             <div class="pull-left image">
                 <div class="user-panelImg">
-                    <i class="fa fa-user-circle fa-3x" aria-hidden="true" style="display: inline-block;"></i>
-                    <img style="width:42px; height:42px; border-radius:50%; display: none;">
+                    <#if avatarUrl??>
+                        <img src="${avatarUrl}" style="width:42px; height:42px;display: inline-block;">
+                        <#else>
+                            <img src="${contextPath!}/img/common/avatar-default.png" style="width:42px; height:42px;display: inline-block;">
+                            <#--<i class="fa fa-user-circle fa-3x" aria-hidden="true" style="display: inline-block;"></i>-->
+                    </#if>
                 </div>
             </div>
             <div class="pull-left info">
-                <p class="username"></p>
+                <p class="username">${username}</p>
                 <a href="#"><i class="fa fa-circle text-success"></i>在线</a>
             </div>
         </div>
@@ -93,15 +97,15 @@
             <li class="header">主导航</li>
             <!-- Optionally, you can add icons to the links -->
             <li><a href="/mgt/franchisee/company.ftl"><i class="fa fa-link"></i> <span>加盟商管理</span></a></li>
-            <li class="treeview house">
+            <li class="treeview fang">
                 <a href="#"><i class="fa fa-link"></i> <span>房源管理</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/houseManage/houseList.ftl?target=.house">房源列表</a></li>
-
+                    <li><a href="/mgt/fangManage/list.ftl?target=.fang">房源列表</a></li>
+                    <li><a href="/mgt/fangManage/create.ftl?target=.fang">新增房源</a></li>
                 </ul>
             </li>
             <li class="treeview org">
@@ -114,6 +118,16 @@
                     <li><a href="/mgt/org/department.ftl?target=.org">部门列表</a></li>
                     <li><a href="/mgt/org/employee.ftl?target=.org">员工管理</a></li>
                     <li><a href="/mgt/org/position.ftl?target=.org">岗位管理</a></li>
+                </ul>
+            </li>
+            <li class="treeview propertyVisit">
+                <a href="#"><i class="fa fa-link"></i> <span>房源带看</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/mgt/propertyVisit/propertyVisit.ftl?target=.propertyVisit">带看列表</a></li>
                 </ul>
             </li>
             <li class="treeview tool">

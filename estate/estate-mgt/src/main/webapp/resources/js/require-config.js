@@ -1,8 +1,9 @@
 requirejs.config({
     baseUrl: contextPath+'/js',
     paths: {
-        'jquery': 'libs/jquery-2.2.0.min',
+        'jquery': 'libs/jquery-2.1.4.min',
         'bootstrap': 'libs/bootstrap.min',
+        'angular': 'libs/angular.min',
         'cryptojs.core': 'libs/cryptojs/core-min',
         'cryptojs.hmac': 'libs/cryptojs/hmac',
         'cryptojs.md5': 'libs/cryptojs/md5',
@@ -21,10 +22,17 @@ requirejs.config({
         'jqPaginator': 'plugins/pagination/jqPaginator',
         'locationUtil': 'utils/location-util',
         'adminLTE': 'app/AdminLTE/index',
-        'adminLTEdemo': 'app/AdminLTE/demo'
+        'adminLTEdemo': 'app/AdminLTE/demo',
+        'Croppie': 'plugins/croppie/croppie.min',
+        'sweetalert':'plugins/SweetAlert/sweetalert.min'
     },
     shim: {
         'bootstrap': ['jquery'],
+        'angular': {
+            deps: ['jquery'],
+
+            exports: 'angular'
+        },
         'adminLTE': ['jquery', 'bootstrap'],
         'adminLTEdemo':['jquery', 'bootstrap'],
         'cryptojs.hmac': ['cryptojs.core'],
@@ -55,6 +63,14 @@ requirejs.config({
         'locationUtil':{
             deps: ['jquery'],
             exports: 'locationUtil'
+        },
+        'Croppie':{
+            deps: ['jquery'],
+            exports: 'Croppie'
+        },
+        'sweetalert':{
+            deps: ['jquery'],
+            exports: 'sweetalert'
         }
     },
     waitSeconds: 0,

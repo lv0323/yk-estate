@@ -5,25 +5,27 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.biz.fang.entity.Fang;
+import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.fang.def.HouseProcess;
+import com.lyun.estate.biz.fang.def.HouseType;
 import com.lyun.estate.biz.fang.domian.FangSelector;
+import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.entity.FangTag;
 import com.lyun.estate.biz.fang.repo.FangRepository;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
-import com.lyun.estate.biz.spec.common.DomainType;
-import com.lyun.estate.biz.spec.fang.def.ElevatorFilter;
-import com.lyun.estate.biz.spec.fang.entity.FangDetail;
-import com.lyun.estate.biz.spec.fang.entity.FangFilter;
-import com.lyun.estate.biz.spec.fang.entity.FangSummary;
-import com.lyun.estate.biz.spec.fang.entity.FangSummaryOrder;
-import com.lyun.estate.biz.spec.fang.service.FangService;
-import com.lyun.estate.biz.spec.file.service.FileService;
-import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
+import com.lyun.estate.biz.spec.fang.rest.def.ElevatorFilter;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangDetail;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangFilter;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangSummaryOrder;
+import com.lyun.estate.biz.spec.fang.rest.service.FangService;
+import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.core.supports.types.YN;
 import org.springframework.beans.BeanUtils;
@@ -31,7 +33,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -102,42 +107,7 @@ public class FangServiceImpl implements FangService {
         }
 
         //houseTags
-        if (filter.getHouseTags() != null && !filter.getHouseTags().isEmpty()) {
-            filter.getHouseTags().forEach(houseTag -> {
-                switch (houseTag) {
-                    case ONLY:
-                        selector.setIsOnly(YN.Y);
-                        break;
-                    case OVER_2:
-                        selector.setOverYears(Math.max(2, Optional.ofNullable(selector.getOverYears()).orElse(0)));
-                        break;
-                    case OVER_5:
-                        selector.setOverYears(Math.max(5, Optional.ofNullable(selector.getOverYears()).orElse(0)));
-                        break;
-                    case DECORATE_JING:
-                        selector.setDecorates(Lists.newArrayList(Decorate.JING, Decorate.HAO));
-                        break;
-                    case HAS_KEY:
-                        if (selector.getShowings() == null) {
-                            selector.setShowings(Lists.newArrayList(Showing.HAS_KEY));
-                        } else {
-                            selector.getShowings().add(Showing.HAS_KEY);
-                        }
-                        break;
-                    case ANY_TIME:
-                        if (selector.getShowings() == null) {
-                            selector.setShowings(Lists.newArrayList(Showing.ANY_TIME));
-                        } else {
-                            selector.getShowings().add(Showing.ANY_TIME);
-                        }
-                        break;
-                    case NEAR_LINE:
-                        selector.setNearLine(YN.Y);
-                        break;
-                }
-            });
-        }
-
+        selector.decorateFromHouseTags(filter.getHouseTags());
 
         // keywords
         if (!Strings.isNullOrEmpty(filter.getKeyword())) {
@@ -202,7 +172,7 @@ public class FangServiceImpl implements FangService {
                     List<FangTag> fangTags = fangRepository.findTags(summary.getId());
                     summary.setTags(fangTags.stream().map(FangTag::getHouseTag).collect(Collectors.toList()));
 
-                    decorateTagsForSummary(summary);
+                    summary.decorateTags();
 
                     summary.setImageURI(Optional.ofNullable(
                             fileService.findFirst(summary.getId(),
@@ -215,56 +185,6 @@ public class FangServiceImpl implements FangService {
         return summaries;
     }
 
-    private void decorateTagsForSummary(FangSummary summary) {
-        Set<HouseTag> tags = new HashSet<>(Optional.ofNullable(summary.getTags()).orElse(new ArrayList<>()));
-
-        if (summary.getIsOnly() == YN.Y) {
-            tags.add(HouseTag.ONLY);
-        }
-        if (Optional.ofNullable(summary.getOverYears()).orElse(0) >= 5) {
-            tags.add(HouseTag.OVER_5);
-        } else if (Optional.ofNullable(summary.getOverYears()).orElse(0) >= 2) {
-            tags.add(HouseTag.OVER_2);
-        }
-        if (summary.getDecorate() == Decorate.JING) {
-            tags.add(HouseTag.DECORATE_JING);
-        }
-        if (summary.getShowing() == Showing.ANY_TIME) {
-            tags.add(HouseTag.ANY_TIME);
-        } else if (summary.getShowing() == Showing.HAS_KEY) {
-            tags.add(HouseTag.HAS_KEY);
-        }
-        if (summary.getNearLine() == YN.Y) {
-            tags.add(HouseTag.NEAR_LINE);
-        }
-        summary.setTags(Lists.newArrayList(tags));
-    }
-
-    private void decorateTagsForDetail(FangDetail detail) {
-        Set<HouseTag> tags = new HashSet<>(Optional.ofNullable(detail.getTags()).orElse(new ArrayList<>()));
-
-        if (detail.getIsOnly() == YN.Y) {
-            tags.add(HouseTag.ONLY);
-        }
-        if (Optional.ofNullable(detail.getOverYears()).orElse(0) >= 5) {
-            tags.add(HouseTag.OVER_5);
-        } else if (Optional.ofNullable(detail.getOverYears()).orElse(0) >= 2) {
-            tags.add(HouseTag.OVER_2);
-        }
-        if (detail.getDecorate() == Decorate.JING) {
-            tags.add(HouseTag.DECORATE_JING);
-        }
-        if (detail.getShowing() == Showing.ANY_TIME) {
-            tags.add(HouseTag.ANY_TIME);
-        } else if (detail.getShowing() == Showing.HAS_KEY) {
-            tags.add(HouseTag.HAS_KEY);
-        }
-        if (detail.getNearLine() == YN.Y) {
-            tags.add(HouseTag.NEAR_LINE);
-        }
-        detail.setTags(Lists.newArrayList(tags));
-    }
-
     @Override
     public FangDetail getDetail(Long id) {
         ExceptionUtil.checkNotNull("房编号", id);
@@ -274,7 +194,7 @@ public class FangServiceImpl implements FangService {
         } else {
             List<FangTag> fangTags = fangRepository.findTags(fangDetail.getId());
             fangDetail.setTags(fangTags.stream().map(FangTag::getHouseTag).collect(Collectors.toList()));
-            decorateTagsForDetail(fangDetail);
+            fangDetail.decorateTags();
             fangDetail.setStations(xiaoQuService.findStations(fangDetail.getXiaoQuId()));
             fangDetail.setDescr(fangRepository.findDescr(id));
             return fangDetail;
@@ -287,7 +207,7 @@ public class FangServiceImpl implements FangService {
         FangSummary summary = fangRepository.findSummary(id);
         List<FangTag> fangTags = fangRepository.findTags(id);
         summary.setTags(fangTags.stream().map(FangTag::getHouseTag).collect(Collectors.toList()));
-        decorateTagsForSummary(summary);
+        summary.decorateTags();
         summary.setImageURI(Optional.ofNullable(fileService.findFirst(id,
                 DomainType.FANG,
                 CustomType.SHI_JING,
@@ -345,9 +265,14 @@ public class FangServiceImpl implements FangService {
         return fangRepository.updateKeyword(fangId, keyword);
     }
 
+
     @Override
-    public List<Fang> findAllFang() {
-        return fangRepository.findAllFang();
+    public List<FileDescription> files(Long ownerId, CustomType customType) {
+        customType = Optional.ofNullable(customType).orElse(CustomType.SHI_JING);
+        if (Lists.newArrayList(CustomType.SHI_JING, CustomType.HU_XING).contains(customType)) {
+            return fileService.find(ownerId, DomainType.FANG, customType, FileProcess.WATERMARK);
+        }
+        return new ArrayList<>();
     }
 
 }

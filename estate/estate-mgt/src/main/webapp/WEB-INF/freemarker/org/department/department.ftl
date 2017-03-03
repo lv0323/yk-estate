@@ -4,7 +4,7 @@
 <#include "/common/sidebar.ftl" />
 
 
-<!-- Modal editDepartDialog -->
+<!-- Modal reDeployDepartDialog -->
 <div class="modal fade" id="reDeployDepartDialog" tabindex="-1" role="dialog" aria-labelledby="reDeployDepartLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -17,8 +17,8 @@
             <div class="modal-body">
                 <form id="reDeployDepartForm" class="form-horizontal" method="post">
                     <div class="form-group parent-department-form-group">
-                        <label id="superiorDepartLabel" class="col-lg-2 col-md-2 col-sm-2 control-label">上级部门</label>
-                        <div class="col-lg-3 col-md-4 col-sm-4 ">
+                        <label id="superiorDepartLabel" class="control-label">上级部门</label>
+                        <div class="superiorDepart col-lg-3 col-md-4 col-sm-4 ">
                             <div class="dropdown-yk">
                             </div>
                             <input id="reDeployDepartId" class="hidden">

@@ -18,6 +18,7 @@ public class Employee {
     private Boolean isAgent;
     private Long avatarId;
     private String mobile;
+    private String openContact;
     private String password;
     private String salt;
     private String name;
@@ -225,6 +226,15 @@ public class Employee {
 
     public Employee setPositionName(String positionName) {
         this.positionName = positionName;
+        return this;
+    }
+
+    public String getOpenContact() {
+        return openContact;
+    }
+
+    public Employee setOpenContact(String openContact) {
+        this.openContact = openContact;
         return this;
     }
 }

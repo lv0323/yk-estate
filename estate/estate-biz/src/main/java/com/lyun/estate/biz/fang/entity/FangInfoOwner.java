@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.fang.entity;
 
+import com.lyun.estate.biz.fang.def.InfoOwnerReason;
+
 import java.util.Date;
 
 /**
@@ -11,6 +13,7 @@ public class FangInfoOwner {
     private Long companyId;
     private Long departmentId;
     private Long employeeId;
+    private InfoOwnerReason reason;
     private Boolean isDeleted;
     private Date createTime;
     private Date updateTime;
@@ -84,6 +87,15 @@ public class FangInfoOwner {
 
     public FangInfoOwner setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
+    }
+
+    public InfoOwnerReason getReason() {
+        return reason;
+    }
+
+    public FangInfoOwner setReason(InfoOwnerReason reason) {
+        this.reason = reason;
         return this;
     }
 }

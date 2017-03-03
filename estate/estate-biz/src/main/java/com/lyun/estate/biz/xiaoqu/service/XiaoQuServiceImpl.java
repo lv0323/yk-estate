@@ -6,38 +6,33 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.lyun.estate.biz.fang.def.BizType;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.housedict.def.StructureType;
+import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
 import com.lyun.estate.biz.housedict.entity.Line;
 import com.lyun.estate.biz.housedict.entity.SubDistrict;
 import com.lyun.estate.biz.housedict.service.CityService;
-import com.lyun.estate.biz.housedict.service.HouseService;
+import com.lyun.estate.biz.map.service.MapService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
-import com.lyun.estate.biz.spec.common.DomainType;
-import com.lyun.estate.biz.spec.file.service.FileService;
-import com.lyun.estate.biz.spec.xiaoqu.def.XQSummaryOrder;
-import com.lyun.estate.biz.spec.xiaoqu.entity.*;
-import com.lyun.estate.biz.spec.xiaoqu.service.XiaoQuService;
-import com.lyun.estate.biz.xiaoqu.entity.Community;
+import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.biz.file.service.FileService;
+import com.lyun.estate.biz.spec.xiaoqu.rest.def.XQSummaryOrder;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.*;
+import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuDetailBean;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSummaryBean;
 import com.lyun.estate.biz.xiaoqu.repository.XiaoQuRepository;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.apache.commons.lang.math.RandomUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -60,7 +55,7 @@ public class XiaoQuServiceImpl implements XiaoQuService {
     private FileService fileService;
 
     @Autowired
-    private HouseService houseService;
+    private MapService mapService;
 
     @Autowired
     private CityService cityService;
@@ -217,55 +212,16 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         return stationRels;
     }
 
+
     @Override
-    public List<EstateMapResource> findAllDistrictListByMap(int cityId, BizType bizType) {
-        if (bizType == BizType.SELL) {
-            return houseService.findAllSellDistrictListByMap(cityId);
-        } else if (bizType == BizType.RENT) {
-            return houseService.findAllRentDistrictListByMap(cityId);
+    public List<FileDescription> files(Long xiaoQuId, CustomType customType) {
+        customType = Optional.ofNullable(customType).orElse(CustomType.SHI_JING);
+        if (Lists.newArrayList(CustomType.SHI_JING, CustomType.HU_XING).contains(customType)) {
+            return fileService.find(xiaoQuId, DomainType.XIAO_QU, customType, FileProcess.WATERMARK);
+        } else {
+            return new ArrayList<>();
         }
-        return null;
+
     }
 
-    @Override
-    public List<EstateMapResource> findAllSubDistrictListByMap(int cityId, BizType bizType) {
-        if (bizType == BizType.SELL) {
-            return houseService.findAllSellSubDistrictListByMap(cityId);
-        } else if (bizType == BizType.RENT) {
-            return houseService.findAllRentSubDistrictListByMap(cityId);
-        }
-        return null;
-    }
-
-    @Override
-    public List<EstateMapResource> findCommunityListByMap(BigDecimal minLongitude, BigDecimal maxLongitude,
-                                                          BigDecimal minLatitude, BigDecimal maxLatitude,
-                                                          BizType bizType, Integer cityId) {
-        //TODO 缓存处理
-        if (bizType == BizType.SELL) {
-            return xiaoQuRepository.findSellCommunityListByMap(minLongitude,
-                    maxLongitude,
-                    minLatitude,
-                    maxLatitude,
-                    cityId);
-        } else if (bizType == BizType.RENT) {
-            return xiaoQuRepository.findRentCommunityListByMap(minLongitude,
-                    maxLongitude,
-                    minLatitude,
-                    maxLatitude,
-                    cityId);
-        }
-        return null;
-    }
-
-    @Override
-    public List<Community> findAllCommunity() {
-        return xiaoQuRepository.findAllCommunity();
-    }
-
-    @Override
-    @Transactional
-    public int updateKeyword(Long id, String keyword) {
-        return xiaoQuRepository.updateCommunityKeyword(id, keyword);
-    }
 }

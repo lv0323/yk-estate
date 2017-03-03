@@ -7,7 +7,7 @@ import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
 import com.lyun.estate.biz.housedict.entity.Line;
 import com.lyun.estate.biz.housedict.service.CityService;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,11 +47,13 @@ public class AppConfigService {
             Region region = new Region();
             BeanUtils.copyProperties(district, region);
             region.setType(DomainType.DISTRICT);
+            region.setRegionBound(district.getViewRegion());
             region.setSubs(cityService.findOrderedSubDistricts(district.getId()).stream().map(
                     subDistrict -> {
                         Region r = new Region();
                         BeanUtils.copyProperties(subDistrict, r);
                         r.setType(DomainType.SUB_DISTRICT);
+                        r.setRegionBound(subDistrict.getViewRegion());
                         return r;
                     }
             ).collect(Collectors.toList()));

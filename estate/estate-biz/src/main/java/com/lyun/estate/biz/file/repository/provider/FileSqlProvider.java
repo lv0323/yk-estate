@@ -2,7 +2,7 @@ package com.lyun.estate.biz.file.repository.provider;
 
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 import org.apache.ibatis.jdbc.SQL;
 
 public class FileSqlProvider {
@@ -18,6 +18,7 @@ public class FileSqlProvider {
                 .VALUES("file_process", "#{fileProcess}")
                 .VALUES("target", "#{target}")
                 .VALUES("path", "#{path}")
+                .VALUES("ext", "#{ext}")
                 .VALUES("priority", "(" + new SQL().SELECT("count(*)").FROM(TABLE_NAME)
                         .WHERE("owner_id = #{ownerId}")
                         .WHERE("owner_type = #{ownerType}")

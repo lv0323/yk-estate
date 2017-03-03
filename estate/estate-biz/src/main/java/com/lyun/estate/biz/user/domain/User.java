@@ -12,6 +12,7 @@ public class User extends BaseEntity {
     private String mobile;
     private int clientId;
     private String description;
+    private Long avatorId;
 
 
     public String getUserName() {
@@ -95,5 +96,12 @@ public class User extends BaseEntity {
         return this;
     }
 
+    public Long getAvatorId() {
+        return avatorId;
+    }
 
+    public User setAvatorId(Long avatorId) {
+        this.avatorId = avatorId;
+        return this;
+    }
 }

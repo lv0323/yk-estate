@@ -4,7 +4,7 @@
 require(['main-app',
         contextPath + '/js/service/position-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
-        contextPath + '/js/utils/dataTableHelp.js'],
+        contextPath + '/js/utils/dataTableHelp.js','sweetalert'],
     function (mainApp,PositionService,pagingPlugin, dataTableHelp) {
 
         var header = {};
@@ -109,10 +109,26 @@ require(['main-app',
             };
             PositionService.addPosition({data:toAddPosition},header)
                 .done(function(){
-                    location.reload(true);
+                    // location.reload(true);
+                    swal({
+                            title: "操作成功!",
+                            type: "success",
+                            confirmButtonText: "确定",
+                            confirmButtonColor: "#3c8dbc"
+                        },
+                        function(){
+                            location.reload(true);
+                        });
                 })
                 .fail(function (res) {
-                    alert(res["message"]);
+                    // alert(res["message"]);
+                    swal({
+                        title: "错误!",
+                        text: res["message"],
+                        type: "error",
+                        confirmButtonText: "确定",
+                        confirmButtonColor: "#3c8dbc"
+                    });
                 });
         });
 
@@ -128,10 +144,26 @@ require(['main-app',
             var positionId_request = parseInt($('#delPositionId').val(),10);
             PositionService.deletePosition({data:{id:positionId_request}},header)
                 .done(function(){
-                    location.reload(true);
+                    // location.reload(true);
+                    swal({
+                            title: "操作成功!",
+                            type: "success",
+                            confirmButtonText: "确定",
+                            confirmButtonColor: "#3c8dbc"
+                        },
+                        function(){
+                            location.reload(true);
+                        });
                 })
                 .fail(function (res) {
-                    alert(res["message"]);
+                    // alert(res["message"]);
+                    swal({
+                        title: "错误!",
+                        text: res["message"],
+                        type: "error",
+                        confirmButtonText: "确定",
+                        confirmButtonColor: "#3c8dbc"
+                    });
                 });
         });
 
@@ -158,10 +190,26 @@ require(['main-app',
 
             PositionService.editPosition({data:toEditPosition},header)
                 .done(function(){
-                    location.reload(true);
+                    // location.reload(true);
+                    swal({
+                            title: "操作成功!",
+                            type: "success",
+                            confirmButtonText: "确定",
+                            confirmButtonColor: "#3c8dbc"
+                        },
+                        function(){
+                            location.reload(true);
+                        });
                 })
                 .fail(function (res) {
-                    alert(res["message"]);
+                    // alert(res["message"]);
+                    swal({
+                        title: "错误!",
+                        text: res["message"],
+                        type: "error",
+                        confirmButtonText: "确定",
+                        confirmButtonColor: "#3c8dbc"
+                    });
                 });
         });
 });

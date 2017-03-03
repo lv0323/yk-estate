@@ -8,7 +8,7 @@ import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.mgt.auth.def.SaltSugar;
 import com.lyun.estate.mgt.context.MgtContext;
 import org.springframework.stereotype.Service;
@@ -97,6 +97,10 @@ public class EmployeeMgtService {
         return employeeService.getAvatar(mgtContext.getOperator().getId());
     }
 
+    public String getUsername() {
+        return mgtContext.getOperator().getName();
+    }
+
     public FileDescription createAvatar(InputStream inputStream, String suffix) {
         return employeeService.createAvatar(mgtContext.getOperator().getId(), inputStream, suffix);
     }
@@ -106,6 +110,7 @@ public class EmployeeMgtService {
     }
 
     @Transactional
+    @Deprecated
     public Boolean resetPassword(Long employeeId, String newPassword) {
         //todo::权限校验
         Employee employee = employeeService.selectById(employeeId);

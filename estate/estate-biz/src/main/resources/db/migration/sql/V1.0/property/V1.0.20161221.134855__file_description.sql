@@ -9,5 +9,6 @@ CREATE TABLE t_file_description (
   target       VARCHAR(16),
   path         VARCHAR(128),
   priority     INT,
-  is_deleted   BOOL NOT NULL DEFAULT FALSE
+  is_deleted   BOOL NOT NULL DEFAULT FALSE,
+  ext          VARCHAR(200)
 );

@@ -15,18 +15,19 @@
      <link rel="stylesheet" href="${contextPath}/css/lib/ionicons.min.css">
      <!--plugins-->
      <link rel="stylesheet" href="${contextPath}/css/plugins/bootstrap-select.css">
+     <link rel="stylesheet" href="${contextPath}/css/plugins/selector/bootstrap-select.min.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/chosen/chosen.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/bootstrap-submenu.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/bootstrap-submenu.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/datepicker/datepicker3.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/datepicker/bootstrap-datetimepicker.min.css">
      <link rel="stylesheet" href="${contextPath}/css/plugins/dropdown/index.css">
-     <link rel="stylesheet" href="${contextPath}/css/plugins/selector/bootstrap-select.min.css">
+     <link rel="stylesheet" href="${contextPath}/css/plugins/SweetAlert/sweetalert.css">
      <!-- AdminLTE-->
      <link rel="stylesheet" href="${contextPath}/css/index.css">
      <link rel="stylesheet" href="${contextPath}/css/skins/skin-blue.min.css">
-     <link rel="stylesheet" href="${contextPath}/css/skins/skin-black.min.css">
-     <link rel="stylesheet" href="${contextPath}/css/skins/_all-skins.min.css">
+<#--     <link rel="stylesheet" href="${contextPath}/css/skins/skin-black.min.css">
+     <link rel="stylesheet" href="${contextPath}/css/skins/_all-skins.min.css">-->
      <link rel="stylesheet" href="${contextPath}/css/app/sidebar/sidebar.css">
      <!--dataTables-->
      <link rel="stylesheet" href="${contextPath}/css/plugins/datatables/dataTables.bootstrap.css">
@@ -36,14 +37,16 @@
      <link rel="stylesheet" href="${contextPath}/css/plugins/zTree/iconSkin.css">
      <!-- common -->
      <link rel="stylesheet" href="${contextPath}/css/app/common/common.css">
+     <!-- croppie -->
+     <link rel="stylesheet" href="${contextPath}/css/plugins/croppie/croppie.css">
      <!--[if lt IE 9]>
    <script src="http://cdn.bootcss.com/html5shiv/r29/html5.js"></script>
    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
      <![endif]-->
      <script src="${contextPath!}/js/libs/angular.min.js"></script>
-
  </head>
  <body class="hold-transition skin-blue sidebar-mini">
+ <div class="wrapper">
 
 
 

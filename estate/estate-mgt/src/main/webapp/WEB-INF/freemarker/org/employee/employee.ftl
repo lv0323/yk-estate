@@ -17,48 +17,57 @@
             <div class="modal-body">
                 <form id="addEmployeeForm" class="form-horizontal" method="post">
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">真实姓名<span class="required-field">*</span></label>
+                        <label class="control-label">真实姓名<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="addEmployeeName" class="form-control" placeholder="真实姓名">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">性别<span class="required-field">*</span></label>
+                        <label class="control-label">性别<span class="required-field">*</span></label>
                         <div id="addEmployeeGender" class="col-lg-3 col-md-3 col-sm-3">
                         <#--<input type="radio" value="M" checked="checked">男
                         <input type="radio" value="F">女-->
                         <#list gender?if_exists as gd>
-                            <input type="radio" value="${gd.name()}">${gd.getGender()}
+                            <input type="radio" value="${gd.name()}">${gd.getLabel()}
                         </#list>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">手机号<span class="required-field">*</span></label>
+                        <label class="control-label">手机号<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="addEmployeeMobile" class="form-control" placeholder="手机号">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">身份证号<span class="required-field">*</span></label>
+                        <label class="control-label">外网电话<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="addEmployeeOpenContactHN" class="form-control" placeholder="外网主机号">
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <input type="text" id="addEmployeeOpenContactEN" class="form-control" placeholder="外网分机号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">身份证号<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="addEmployeeID" class="form-control" placeholder="身份证号">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">微信</label>
+                        <label class="control-label">微信</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="addEmployeeWechat" class="form-control" placeholder="微信">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">部门<span class="required-field">*</span></label>
+                        <label class="control-label">部门<span class="required-field">*</span></label>
                         <div class="superiorDepart col-lg-4 col-md-4 col-sm-4">
                             <div id="addEmployeeDepart" class="dropdown-yk">
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位<span class="required-field">*</span></label>
+                        <label class="control-label">岗位<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <select id="addEmployeePosition" class="employeePosition form-control btn-group dropup">
 
@@ -69,17 +78,17 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位状态<span class="required-field">*</span></label>
+                        <label class="control-label">岗位状态<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <select id="addEmployeeStatus" class="form-control btn-group dropup">
                                 <#list workingStatusList?if_exists as ws>
-                                    <option value="${ws.name()}">${ws.getStatus()}</option>
+                                    <option value="${ws.name()}">${ws.getLabel()}</option>
                                 </#list>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">入职日期<span class="required-field">*</span></label>
+                        <label class="control-label">入职日期<span class="required-field">*</span></label>
                         <div class=" col-lg-4 col-md-4 col-sm-4">
                             <div class="input-group date">
                                 <div class="input-group-addon">
@@ -113,49 +122,58 @@
             <div class="modal-body">
                 <form id="editEmployeeForm" class="form-horizontal" method="post">
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">真实姓名<span class="required-field">*</span></label>
+                        <label class="control-label">真实姓名<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="editEmployeeName" class="form-control" placeholder="真实姓名">
                             <input id="editEmployeeId" class="hidden">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">性别<span class="required-field">*</span></label>
+                        <label class="control-label">性别<span class="required-field">*</span></label>
                         <div id="editEmployeeGender" class="col-lg-3 col-md-3 col-sm-3">
                             <#--<input type="radio" value="M" checked="checked">男
                             <input type="radio" value="F">女-->
                             <#list gender?if_exists as gd>
-                                <input type="radio" value="${gd.name()}">${gd.getGender()}
+                                <input type="radio" value="${gd.name()}">${gd.getLabel()}
                             </#list>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">手机号<span class="required-field">*</span></label>
+                        <label class="control-label">手机号<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="editEmployeeMobile" class="form-control" placeholder="手机号">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">身份证号<span class="required-field">*</span></label>
+                        <label class="control-label">外网电话<span class="required-field">*</span></label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="editEmployeeOpenContactHN" class="form-control" placeholder="外网主机号">
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <input type="text" id="editEmployeeOpenContactEN" class="form-control" placeholder="外网分机号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">身份证号<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="editEmployeeID" class="form-control" placeholder="身份证号">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">微信</label>
+                        <label class="control-label">微信</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="editEmployeeWechat" class="form-control" placeholder="微信">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">部门<span class="required-field">*</span></label>
+                        <label class="control-label">部门<span class="required-field">*</span></label>
                         <div class="superiorDepart col-lg-4 col-md-4 col-sm-4">
                             <div id="editEmployeeDepart" class="dropdown-yk">
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位<span class="required-field">*</span></label>
+                        <label class="control-label">岗位<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <select id="editEmployeePosition" class="employeePosition form-control btn-group dropup">
                             </select>
@@ -165,17 +183,17 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">岗位状态<span class="required-field">*</span></label>
+                        <label class="control-label">岗位状态<span class="required-field">*</span></label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <select id="editEmployeeStatus" class="form-control btn-group dropup">
                             <#list workingStatusList?if_exists as ws>
-                                <option value="${ws.name()}">${ws.getStatus()}</option>
+                                <option value="${ws.name()}">${ws.getLabel()}</option>
                             </#list>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">入职日期<span class="required-field">*</span></label>
+                        <label class="control-label">入职日期<span class="required-field">*</span></label>
                         <div class=" col-lg-4 col-md-4 col-sm-4">
                             <div class="input-group date">
                                 <div class="input-group-addon">
@@ -271,7 +289,7 @@
                                 <div class="box-body">
                                     <div id="box-filter" class="form-horizontal" style="display:none;">
                                         <div class="form-group ">
-                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">在职｜离职： </label>
+                                            <label class="control-label">在职｜离职 </label>
                                             <div class="col-lg-2 col-md-2 col-sm-2">
                                                 <select id="quitPosition" class="form-control btn-group dropup">
                                                     <option value="false">在职</option>
@@ -287,7 +305,8 @@
                                             <th><span>姓名</span></th>
                                             <th><span>所属部门</span></th>
                                             <th><span>岗位名称</span></th>
-                                            <th><span>电话</span></th>
+                                            <th><span>手机</span></th>
+                                            <th><span>外网电话</span></th>
                                             <th class="text-right"><span>操作</span></th>
                                         </tr></thead>
                                         <tbody></tbody>

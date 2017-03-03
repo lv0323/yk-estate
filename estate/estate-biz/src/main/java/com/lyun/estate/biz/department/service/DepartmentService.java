@@ -138,7 +138,7 @@ public class DepartmentService {
         return new PageList<>(deptDTOs, departments.getPaginator());
     }
 
-    public List<DepartmentDTO> listAllByCompanyId(Long companyId) {
+    public List<DepartmentDTO> listSortedByCompanyId(Long companyId) {
         ExceptionUtil.checkNotNull("公司编号", companyId);
         List<Department> departments = repo.listAllByCompanyId(companyId);
         Map<Long, Integer> deptLevel = findDeptLevel(companyId);

@@ -1,9 +1,10 @@
 package com.lyun.estate.biz.file.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.def.Target;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 
 public class FileDescription implements Cloneable {
@@ -17,6 +18,8 @@ public class FileDescription implements Cloneable {
     private Target target;
     private String path;
     private Integer priority;
+    @JsonIgnore
+    private String ext;
     private String fileURI;
 
     public Long getId() {
@@ -128,6 +131,15 @@ public class FileDescription implements Cloneable {
 
     public FileDescription setFileURI(String fileURI) {
         this.fileURI = fileURI;
+        return this;
+    }
+
+    public String getExt() {
+        return ext;
+    }
+
+    public FileDescription setExt(String ext) {
+        this.ext = ext;
         return this;
     }
 }

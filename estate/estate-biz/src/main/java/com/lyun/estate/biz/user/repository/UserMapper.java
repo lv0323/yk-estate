@@ -5,16 +5,7 @@ import com.lyun.estate.biz.user.repository.provider.UserSqlProvider;
 import com.lyun.estate.biz.user.resources.ChangePasswordResource;
 import com.lyun.estate.biz.user.resources.LoginResource;
 import com.lyun.estate.biz.user.resources.RegisterResource;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.UpdateProvider;
-
-import java.util.Map;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserMapper {
@@ -37,4 +28,6 @@ public interface UserMapper {
     @UpdateProvider(type = UserSqlProvider.class, method = "update")
     int updateUser(User user);
 
+    @Select("select * from t_user where id = #{id} and is_deleted='N'")
+    User findUserById(Long aLong);
 }

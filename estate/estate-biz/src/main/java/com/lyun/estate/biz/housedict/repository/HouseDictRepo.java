@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.housedict.repository;
 
+import com.lyun.estate.biz.housedict.domain.XiaoQuOption;
 import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.entity.BuildingUnit;
 import org.apache.ibatis.annotations.Insert;
@@ -36,4 +37,8 @@ public interface HouseDictRepo {
 
     @Select("SELECT * FROM t_building where community_id =#{communityId} AND is_deleted = false")
     List<Building> findBuildingByCommunityId(Long communityId);
+
+    @Select("SELECT xq.id as xiao_qu_id, c.name as xiao_qu_name FROM t_xiao_qu xq LEFT JOIN t_community c on xq.community_id =c.id\n" +
+            "WHERE c.city_id = #{cityId} order by id asc limit 20")
+    List<XiaoQuOption> findTop20XiaoQuOptions(Long cityId);
 }

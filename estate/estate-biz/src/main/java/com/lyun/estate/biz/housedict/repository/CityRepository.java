@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.housedict.repository;
 
 import com.lyun.estate.biz.housedict.entity.*;
+import com.lyun.estate.biz.housedict.entity.Community;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -56,4 +57,10 @@ public interface CityRepository {
 
     @Update("UPDATE T_STATION SET NAME_KW=#{keyword} WHERE id=#{id}")
     int updateStationKeyword(@Param("id") Long id, @Param("keyword") String keyword);
+
+    @Update("UPDATE T_COMMUNITY SET NAME_KW=#{keyword} WHERE id=#{id}")
+    int updateCommunityKeyword(@Param("id") Long id, @Param("keyword") String keyword);
+
+    @Select("SELECT * FROM T_COMMUNITY")
+    List<Community> findAllCommunity();
 }

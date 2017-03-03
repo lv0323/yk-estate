@@ -2,9 +2,7 @@ package com.lyun.estate.biz.xiaoqu.repository;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.lyun.estate.biz.spec.xiaoqu.entity.EstateMapResource;
-import com.lyun.estate.biz.spec.xiaoqu.entity.XiaoQuStationRel;
-import com.lyun.estate.biz.xiaoqu.entity.Community;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuStationRel;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuDetailBean;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSummaryBean;
@@ -12,10 +10,8 @@ import com.lyun.estate.biz.xiaoqu.repository.provider.XiaoQuSqlProvider;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -30,19 +26,7 @@ public interface XiaoQuRepository {
     @SelectProvider(type = XiaoQuSqlProvider.class, method = "findDetail")
     XiaoQuDetailBean findDetail(@Param("id") Long id);
 
-    @SelectProvider(type = XiaoQuSqlProvider.class, method = "findSellCommunityListByMap")
-    List<EstateMapResource> findSellCommunityListByMap(@Param("minLongitude") BigDecimal minLongitude,
-                                                       @Param("maxLongitude") BigDecimal maxLongitude,
-                                                       @Param("minLatitude") BigDecimal minLatitude,
-                                                       @Param("maxLatitude") BigDecimal maxLatitude,
-                                                       @Param("cityId") Integer cityId);
 
-    @SelectProvider(type = XiaoQuSqlProvider.class, method = "findRentCommunityListByMap")
-    List<EstateMapResource> findRentCommunityListByMap(@Param("minLongitude") BigDecimal minLongitude,
-                                                       @Param("maxLongitude") BigDecimal maxLongitude,
-                                                       @Param("minLatitude") BigDecimal minLatitude,
-                                                       @Param("maxLatitude") BigDecimal maxLatitude,
-                                                       @Param("cityId") Integer cityId);
 
     @Select("SELECT xq.id as xiao_qu_id, csr.*, s.name as station_name" +
             "  FROM t_xiao_qu xq" +
@@ -57,9 +41,4 @@ public interface XiaoQuRepository {
             " WHERE xq.id = #{id}")
     XiaoQuSummaryBean findSummary(Long id);
 
-    @Update("UPDATE T_COMMUNITY SET NAME_KW=#{keyword} WHERE id=#{id}")
-    int updateCommunityKeyword(@Param("id") Long id, @Param("keyword") String keyword);
-
-    @Select("SELECT * FROM T_COMMUNITY")
-    List<Community> findAllCommunity();
 }

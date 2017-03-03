@@ -4,17 +4,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.lyun.estate.biz.favorite.entity.Follow;
-import com.lyun.estate.biz.favorite.service.FollowService;
+import com.lyun.estate.biz.favorite.entity.Favorite;
+import com.lyun.estate.biz.favorite.service.FavoriteService;
 import com.lyun.estate.biz.message.def.MessageStatus;
 import com.lyun.estate.biz.message.entity.EventMessage;
 import com.lyun.estate.biz.message.entity.Message;
 import com.lyun.estate.biz.message.entity.MessageResource;
 import com.lyun.estate.biz.message.entity.MessageSummaryResource;
 import com.lyun.estate.biz.message.repository.MessageRepository;
-import com.lyun.estate.biz.spec.common.DomainType;
-import com.lyun.estate.biz.spec.fang.entity.FangSummary;
-import com.lyun.estate.biz.spec.fang.service.FangService;
+import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
+import com.lyun.estate.biz.spec.fang.rest.service.FangService;
 import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.UUID;
 
-import static com.lyun.estate.biz.spec.common.DomainType.REPORT;
+import static com.lyun.estate.biz.support.def.DomainType.REPORT;
 import static com.lyun.estate.core.supports.exceptions.ExCode.*;
 
 /**
@@ -46,7 +46,7 @@ public class MessageService {
     private FangService fangService;
 
     @Autowired
-    private FollowService followService;
+    private FavoriteService favoriteService;
 
     @Autowired
     private RestContext restContext;
@@ -298,7 +298,7 @@ public class MessageService {
         }
         switch (eventMessage.getDomainType()) {
             case FANG:
-                List<Follow> fangFollowers = followService.getFollowers(eventMessage.getDomainType(),
+                List<Favorite> fangFollowers = favoriteService.getFavorite(eventMessage.getDomainType(),
                         eventMessage.getDomainId());
                 if (CollectionUtils.isEmpty(fangFollowers)) {
                     logger.info("房源[{}]没有关注者，不需要发送消息", eventMessage.getDomainId());
@@ -314,7 +314,7 @@ public class MessageService {
                 });
                 return true;
             case XIAO_QU:
-                List<Follow> xiaoQuFollowers = followService.getFollowers(eventMessage.getDomainType(),
+                List<Favorite> xiaoQuFollowers = favoriteService.getFavorite(eventMessage.getDomainType(),
                         eventMessage.getDomainId());
                 if (CollectionUtils.isEmpty(xiaoQuFollowers)) {
                     logger.info("房源[{}]没有关注者，不需要发送消息", eventMessage.getDomainId());

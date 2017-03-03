@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/employee")
@@ -31,6 +33,7 @@ public class EmployeeRest {
                          @RequestParam Long positionId,
                          @RequestParam Boolean isAgent,
                          @RequestParam String mobile,
+                         @RequestParam(required = false) String openContact,
                          @RequestParam String name,
                          @RequestParam Gender gender,
                          @RequestParam(required = false) String idcardNumber,
@@ -41,6 +44,7 @@ public class EmployeeRest {
                 .setPositionId(positionId)
                 .setAgent(isAgent)
                 .setMobile(mobile)
+                .setOpenContact(openContact)
                 .setName(name)
                 .setGender(gender)
                 .setIdcardNumber(idcardNumber)
@@ -57,12 +61,18 @@ public class EmployeeRest {
                 pageBounds);
     }
 
+    @GetMapping("query-all")
+    public List<Employee> queryAll(@RequestParam(required = false) Long departmentId) {
+        return service.listByCompanyIdDepartmentId(departmentId, null);
+    }
+
     @PostMapping("edit")
     public Object edit(@RequestParam Long id,
                        @RequestParam Long departmentId,
                        @RequestParam Long positionId,
                        @RequestParam Boolean isAgent,
                        @RequestParam String mobile,
+                       @RequestParam String openContact,
                        @RequestParam String name,
                        @RequestParam Gender gender,
                        @RequestParam(required = false) String idcardNumber,
@@ -74,6 +84,7 @@ public class EmployeeRest {
                 .setPositionId(positionId)
                 .setAgent(isAgent)
                 .setMobile(mobile)
+                .setOpenContact(openContact)
                 .setName(name)
                 .setGender(gender)
                 .setIdcardNumber(idcardNumber)
@@ -97,8 +108,10 @@ public class EmployeeRest {
 
     @PostMapping("avatar")
     public FileDescription avatar(@RequestParam MultipartFile avatar) throws IOException {
-        return service.createAvatar(avatar.getInputStream(),
-                avatar.getOriginalFilename().substring(avatar.getOriginalFilename().lastIndexOf('.')));
+        try (InputStream avatarIS = avatar.getInputStream()) {
+            return service.createAvatar(avatarIS,
+                    avatar.getOriginalFilename().substring(avatar.getOriginalFilename().lastIndexOf('.')));
+        }
     }
 
     @PostMapping("change-password")
@@ -111,10 +124,6 @@ public class EmployeeRest {
         return service.changePasswordSaltSugar();
     }
 
-    @PostMapping("reset-password")
-    public Object resetPassword(Long employeeId, String newPassword) {
-        return new RestResponse().add("ret", service.resetPassword(employeeId, newPassword));
-    }
 
     @GetMapping("self")
     public Employee get() {

@@ -7,7 +7,7 @@ CREATE TABLE t_audit
   subject       VARCHAR(30) NOT NULL,
   target_id     BIGINT      NOT NULL,
   domain_type   VARCHAR(20) NOT NULL,
-  content       VARCHAR(1000),
+  content       TEXT,
   create_time   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

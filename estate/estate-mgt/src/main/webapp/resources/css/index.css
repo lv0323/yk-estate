@@ -26,7 +26,7 @@ body {
 }
 /* Layout */
 .wrapper {
-  height: 100%;
+  min-height: 100%;
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
@@ -1255,8 +1255,25 @@ a:focus {
  * Component: Form
  * ---------------
  */
+.form-horizontal .control-label{
+  text-align: left;
+  width: 80px;
+  float: left;
+  color: #666;
+}
+.form-horizontal .form-group{
+  margin-bottom: 10px;
+}
+.form-actions {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding: 19px 20px 20px;
+}
+.form-horizontal .form-actions{
+  padding-left: 160px;
+}
 .form-control {
-  border-radius: 0;
+  /*border-radius: 0;*/
   box-shadow: none;
   border-color: #d2d6de;
 }
@@ -1556,7 +1573,7 @@ a:focus {
   border-top: 3px solid #d2d6de;
   margin-bottom: 20px;
   width: 100%;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
 }
 .box.box-primary {
   border-top-color: #3c8dbc;
@@ -1747,7 +1764,7 @@ a:focus {
   position: relative;
 }
 .box-header.with-border {
-  border-bottom: 1px solid #f4f4f4;
+  border-bottom: 1px solid #ddd;
 }
 .collapsed-box .box-header.with-border {
   border-bottom: none;
@@ -2488,12 +2505,12 @@ a:focus {
 }
 .nav-tabs-custom > .nav-tabs {
   margin: 0;
-  border-bottom-color: #f4f4f4;
+  border-bottom-color: #eee;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
 }
 .nav-tabs-custom > .nav-tabs > li {
-  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
   margin-bottom: -2px;
   margin-right: 5px;
 }
@@ -2518,7 +2535,7 @@ a:focus {
   border-color: transparent;
 }
 .nav-tabs-custom > .nav-tabs > li.active {
-  border-top-color: #3c8dbc;
+  border-bottom-color: #3c8dbc;
 }
 .nav-tabs-custom > .nav-tabs > li.active > a,
 .nav-tabs-custom > .nav-tabs > li.active:hover > a {
@@ -2657,6 +2674,9 @@ a:focus {
  * Component: Table
  * ----------------
  */
+table{
+  font-size: inherit;
+}
 .table > thead > tr > th,
 .table > tbody > tr > th,
 .table > tfoot > tr > th,
@@ -5118,4 +5138,163 @@ input[type="radio"] {
 .theme-red .checkbox-nice input[type=checkbox]:checked+label:before{background:#e74c3c;}
 .checkbox-nice input[type=checkbox]:checked+label:after {
   opacity: 1;
+}
+.form-horizontal .form-group {
+  margin-right: 0;
+  margin-left: 0;
+}
+/* backadd*/
+
+.btn-white{
+  border: 1px solid #e7eaec;
+}
+.bor-bottom{
+  border-bottom: 1px solid #d2d6de;
+}
+.box-padd{
+  padding: 0 5px;
+}
+.ml10{
+  margin-left: 10px;
+}
+.mr10{
+  margin-right: 10px;
+}
+.mb10{
+  margin-bottom: 10px;
+}
+.mb15{
+  margin-bottom: 15px;
+}
+.mt10{
+  margin-top: 10px;
+}
+.mt7{
+  margin-top: 7px;
+}
+.mt15{
+  margin-top: 15px;
+}
+.mt20{
+  margin-top: 20px;
+}
+.ml30{
+  margin-left: 30px;
+}
+.sidebar span,.sidebar p{
+  font-size: 14px;
+}
+.padd{
+  padding: 10px;
+}
+.width-5 {
+  width: 5% !important;
+}
+.width-10 {
+  width: 10% !important;
+}
+.width-15 {
+  width: 15% !important;
+}
+.width-20 {
+  width: 20% !important;
+}
+.width-25 {
+  width: 25% !important;
+}
+.width-30 {
+  width: 30% !important;
+}
+.width-35 {
+  width: 35% !important;
+}
+.width-40 {
+  width: 40% !important;
+}
+.width-45 {
+  width: 45% !important;
+}
+.width-50 {
+  width: 50% !important;
+}
+.width-55 {
+  width: 55% !important;
+}
+.width-60 {
+  width: 60% !important;
+}
+.width-65 {
+  width: 65% !important;
+}
+.width-70 {
+  width: 70% !important;
+}
+.width-75 {
+  width: 75% !important;
+}
+.width-80 {
+  width: 80% !important;
+}
+.width-85 {
+  width: 85% !important;
+}
+.width-90 {
+  width: 90% !important;
+}
+.width-95 {
+  width: 95% !important;
+}
+.width-100 {
+  width: 100% !important;
+}
+.main-box .main-box-body{
+  padding: 10px;
+}
+/*profile*/
+dl.profile{
+  display: block;
+  position: relative;
+  min-height: 110px;
+}
+dl.profile dt{
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+dl.profile dt img{
+  width: 100%;
+  height: 100%;
+  border:0px;
+}
+dl.profile dd{
+  display: block;
+  padding: 0 10px 10px 110px;
+}
+/*user-profile*/
+#user-profile .profile-img {
+  background-clip: padding-box;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  width: 110px;
+  height: 110px;
+  border: 3px solid rgba(0, 255, 255, 0.2);
+}
+#user-profile .profile-label {
+  padding: 5px 0;
+  text-align: center;
+}
+#user-profile .profile-stars {
+  color: #faba03;
+  padding: 7px 0;
+  text-align: center;
+}
+#user-profile .profile-since {
+  margin-top: -5px;
+  text-align: center;
+  font-size: 14px;
+}
+#user-profile .profile-detail{
+  text-align: center;
 }

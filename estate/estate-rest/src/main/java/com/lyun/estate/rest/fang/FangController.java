@@ -4,19 +4,21 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.biz.housedict.def.StructureType;
+import com.lyun.estate.biz.file.def.CustomType;
+import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.keyword.entity.KeywordResp;
 import com.lyun.estate.biz.keyword.service.KeywordService;
-import com.lyun.estate.biz.spec.common.DomainType;
-import com.lyun.estate.biz.spec.fang.def.ElevatorFilter;
-import com.lyun.estate.biz.spec.fang.def.HouseTypeFilter;
-import com.lyun.estate.biz.spec.fang.def.IntPair;
-import com.lyun.estate.biz.spec.fang.def.ShiCountsFilter;
-import com.lyun.estate.biz.spec.fang.entity.FangDetail;
-import com.lyun.estate.biz.spec.fang.entity.FangFilter;
-import com.lyun.estate.biz.spec.fang.entity.FangSummary;
-import com.lyun.estate.biz.spec.fang.entity.FangSummaryOrder;
-import com.lyun.estate.biz.spec.fang.service.FangService;
+import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.biz.spec.fang.rest.def.ElevatorFilter;
+import com.lyun.estate.biz.spec.fang.rest.def.HouseTypeFilter;
+import com.lyun.estate.biz.spec.fang.rest.def.IntPair;
+import com.lyun.estate.biz.spec.fang.rest.def.ShiCountsFilter;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangDetail;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangFilter;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
+import com.lyun.estate.biz.spec.fang.rest.entity.FangSummaryOrder;
+import com.lyun.estate.biz.spec.fang.rest.service.FangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,9 +40,11 @@ public class FangController {
     @Autowired
     private KeywordService keywordService;
 
+
     @GetMapping("/keywords")
     public List<KeywordResp> keywords(@RequestParam Long cityId,
-                                      @RequestParam String keyword) {
+                                      @RequestParam String keyword,
+                                      @RequestParam BizType bizType) {
         return keywordService.decorate(keywordService.findContain(keyword, cityId,
                 Lists.newArrayList(DomainType.DISTRICT,
                         DomainType.SUB_DISTRICT,
@@ -68,8 +72,8 @@ public class FangController {
                                          @RequestParam(required = false) List<String> yips,
                                          @RequestParam(required = false) List<String> aips,
                                          @RequestParam(required = false) String keyword,
-                                         @RequestParam(required = false) FangSummaryOrder order,
                                          @RequestParam(required = false) List<HouseTypeFilter> htfs,
+                                         @RequestParam(required = false) FangSummaryOrder order,
                                          @RequestHeader("X-PAGING") PageBounds pageBounds) {
 
         FangFilter fangFilter = new FangFilter();
@@ -120,6 +124,13 @@ public class FangController {
     @GetMapping("/nearby")
     public PageList<FangSummary> nearby(@RequestParam Long fangId) {
         return fangService.findNearbyByFangId(fangId);
+    }
+
+    @GetMapping("/files")
+    public List<FileDescription> file(@RequestParam Long ownerId,
+                                      @RequestParam(required = false) CustomType customType) {
+
+        return fangService.files(ownerId, customType);
     }
 
 }

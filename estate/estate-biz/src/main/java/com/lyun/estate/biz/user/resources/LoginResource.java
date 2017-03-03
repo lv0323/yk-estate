@@ -5,7 +5,6 @@ public class LoginResource {
     private String email;
     private String mobile;
     private String password;
-    private int validDays;
     private String signature;
 
     public String getUserName() {
@@ -41,15 +40,6 @@ public class LoginResource {
 
     public LoginResource setPassword(String password) {
         this.password = password;
-        return this;
-    }
-
-    public int getValidDays() {
-        return validDays;
-    }
-
-    public LoginResource setValidDays(int validDays) {
-        this.validDays = validDays;
         return this;
     }
 

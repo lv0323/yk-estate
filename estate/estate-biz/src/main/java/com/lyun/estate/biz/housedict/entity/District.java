@@ -1,6 +1,8 @@
 package com.lyun.estate.biz.housedict.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 
 public class District {
@@ -11,6 +13,9 @@ public class District {
     private String name;
     private BigDecimal longitude;
     private BigDecimal latitude;
+    @JsonIgnore
+    private String viewRegion;
+    @JsonIgnore
     private String nameKw;
 
     public Long getId() {
@@ -73,5 +78,14 @@ public class District {
 
     public void setNameKw(String nameKw) {
         this.nameKw = nameKw;
+    }
+
+    public String getViewRegion() {
+        return viewRegion;
+    }
+
+    public District setViewRegion(String viewRegion) {
+        this.viewRegion = viewRegion;
+        return this;
     }
 }

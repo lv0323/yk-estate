@@ -2,6 +2,7 @@ package com.lyun.estate.biz.housedict.service;
 
 import com.lyun.estate.biz.housedict.entity.*;
 import com.lyun.estate.biz.housedict.repository.CityRepository;
+import com.lyun.estate.biz.housedict.entity.Community;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +32,7 @@ public class CityService {
         return cityRepository.findOrderedLines(cityId);
     }
 
-    public List<Station> findOrderedStations(Long lineId){
+    public List<Station> findOrderedStations(Long lineId) {
         return cityRepository.findOrderedStations(lineId);
     }
 
@@ -78,5 +79,14 @@ public class CityService {
     @Transactional
     public int updateStationKeyword(Long id, String keyword) {
         return cityRepository.updateStationKeyword(id, keyword);
+    }
+
+    @Transactional
+    public int updateKeyword(Long id, String keyword) {
+        return cityRepository.updateCommunityKeyword(id, keyword);
+    }
+
+    public List<Community> findAllCommunity() {
+        return cityRepository.findAllCommunity();
     }
 }

@@ -1,0 +1,72 @@
+#wizard .items {
+    width: calc(200% + 30px);
+    clear: both;
+    display: flex;
+    position: absolute;
+    transition: all .5s ease-in-out;
+}
+#wizard .items.step2{
+    transform: translate(-50%);
+}
+#wizard .right {
+    float: right;
+}
+
+#wizard #status {
+    height: 49px;
+    background: #f9f9f9;
+    border: 1px solid #d4d4d4;
+    padding-left: 0;
+}
+
+#status li {
+    float: left;
+    color: #afafab;
+    padding: 15px 30px;
+    position: relative;
+    background: #ededed;
+    list-style: none;
+}
+
+#status li.active {
+    background-color: #d9edf7;
+    font-weight: normal;
+    color: #3898db;
+}
+
+.input {
+    width: 240px;
+    height: 18px;
+    margin: 10px auto;
+    line-height: 20px;
+    border: 1px solid #d3d3d3;
+    padding: 2px
+}
+
+.page {
+    box-sizing: border-box;
+    padding: 10px;
+    width: 50%;
+    flex: 1;
+    margin-right: 15px;
+}
+.checkbox-nice.checkbox-inline label{
+    padding-left: 0;
+    padding-right: 20px;
+}
+.tip-box .tip-info{
+    margin-right: 4px;
+    cursor: pointer;
+}
+div.ng-invalid>.btn-default:focus, input.ng-invalid:focus{
+    border-color: #66afe9
+}
+button.btn-default.invalid-input:focus, input.ng-invalid.ng-dirty:focus{
+    border-color: #66afe9
+}
+button.btn-default.invalid-input, input.ng-invalid.ng-dirty{
+    border-color: #FF0000;
+}
+.chosen-container-single .chosen-single.invalid-input{
+    border: 1px solid #FF0000;
+}

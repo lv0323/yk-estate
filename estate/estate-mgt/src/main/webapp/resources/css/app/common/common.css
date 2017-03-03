@@ -1,15 +1,12 @@
 /*底部*/
 .main-footer{
-    margin: 0 auto;
-    width: 100%;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    background: transparent;
-    border: none;
-    color: #fff;
+    background: #fff;
+    padding: 15px;
+    color: #444;
+    border-top: 1px solid #d2d6de;
 }
 
+/*展示列表的table*/
 .list{
     min-height: 130px;
 }
@@ -45,12 +42,34 @@ span.opt-gap{
     padding-bottom: 1em;
 }
 
+/*导航列表栈列*/
 .box .nav-stacked > li{
     border-bottom: 1px solid #f4f4f4;
+    cursor: pointer;
 }
 
-.nav-stacked > li.active > a{
+.nav-stacked > li > a{
     border-top: 0;
-    border-left-color: #3c8dbc;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+}
+
+.nav-stacked > li.active{
+    background-color: #3c8dbc;
+}
+
+.nav-stacked > li.active a, .nav-stacked > li.active a:hover{
+    border-top: 0;
+    border-left-color:#3c8dbc;
     font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+}
+
+textarea.noresize{
+    resize: none;
+}
+
+.invalid-input{
+    border: 1px solid #FF0000;
 }

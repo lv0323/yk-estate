@@ -3,7 +3,7 @@ package com.lyun.estate.mgt.audit;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.audit.def.AuditSubject;
-import com.lyun.estate.biz.audit.entity.Audit;
+import com.lyun.estate.biz.audit.entity.AuditDTO;
 import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.core.supports.resolvers.PageBoundsArgumentResolver;
 import com.lyun.estate.mgt.context.MgtContext;
@@ -31,14 +31,14 @@ public class AuditRest {
     }
 
     @GetMapping("")
-    public PageList<Audit> listBySubject(@RequestParam AuditSubject subject,
-                                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startTime,
-                                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endTime,
-                                         @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
-        return auditService.findBySubject(mgtContext.getOperator().getCompanyId(),
+    public PageList<AuditDTO> listBySubjectIdDescOrdered(@RequestParam AuditSubject subject,
+                                                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                                                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+                                                         @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
+        return auditService.findBySubjectIdDescOrdered(mgtContext.getOperator().getCompanyId(),
                 subject,
-                startTime,
-                Optional.ofNullable(endTime)
+                startDate,
+                Optional.ofNullable(endDate)
                         .map(time -> Date.from(time.toInstant().plusSeconds(LocalTime.MAX.toSecondOfDay())))
                         .orElse(null),
                 pageBounds);

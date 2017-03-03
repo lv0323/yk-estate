@@ -1,10 +1,12 @@
 package com.lyun.estate.biz.housedict.service;
 
+import com.google.common.collect.Lists;
+import com.lyun.estate.biz.housedict.domain.XiaoQuOption;
 import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.entity.BuildingUnit;
 import com.lyun.estate.biz.housedict.repository.HouseDictRepo;
+import com.lyun.estate.biz.spec.xiaoqu.mgt.service.MgtXiaoQuService;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQu;
-import com.lyun.estate.biz.xiaoqu.service.MgtXiaoQuService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
@@ -14,6 +16,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Jeffrey on 2017-02-20.
@@ -49,7 +52,7 @@ public class HouseDictService {
                 .setDescription(description)
                 .setCreateById(operatorId);
         if (houseDictRepo.saveBuilding(building) > 0) {
-            return findBuilding(building.getId());
+            return findBuildingAndUnits(building.getId());
         } else {
             throw new EstateException(ExCode.CREATE_FAIL, "楼栋", "小区编号:" + xiaoQuId);
         }
@@ -87,7 +90,7 @@ public class HouseDictService {
     }
 
 
-    public Building findBuilding(Long buildingId) {
+    public Building findBuildingAndUnits(Long buildingId) {
         ExceptionUtil.checkNotNull("楼栋编号", buildingId);
         Building building = houseDictRepo.findBuilding(buildingId);
         if (building != null) {
@@ -103,4 +106,20 @@ public class HouseDictService {
         return houseDictRepo.findBuildingUnitByBuildingId(buildingId);
     }
 
+    public List<XiaoQuOption> top20XiaoQuOptions(Long cityId) {
+        return houseDictRepo.findTop20XiaoQuOptions(cityId);
+    }
+
+    public Building findBuildingAndUnit(Long buildingId, Long buildingUnitId) {
+        ExceptionUtil.checkNotNull("楼栋编号", buildingId);
+        ExceptionUtil.checkNotNull("单元编号", buildingUnitId);
+        Building building = houseDictRepo.findBuilding(buildingId);
+        if (building != null) {
+            BuildingUnit buildingUnit = houseDictRepo.findBuildingUnit(buildingUnitId);
+            if (buildingUnit != null && Objects.equals(buildingUnit.getBuildingId(), buildingId)) {
+                building.setUnits(Lists.newArrayList(buildingUnit));
+            }
+        }
+        return building;
+    }
 }

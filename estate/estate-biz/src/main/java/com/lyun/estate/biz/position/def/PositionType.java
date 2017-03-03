@@ -8,7 +8,6 @@ import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
  */
 @JsonSerialize(using = LabelEnumSerializer.class)
 public enum PositionType {
-    ADMIN("管理员"),
     BUSINESS("业务"),
     DEPT_M("店管"),
     REGION_M("区管"),

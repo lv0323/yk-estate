@@ -10,8 +10,8 @@ import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.spec.common.DomainType;
-import com.lyun.estate.biz.spec.file.service.FileService;
+import com.lyun.estate.biz.file.service.FileService;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.core.config.EstateCacheConfig;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
@@ -161,17 +161,23 @@ public class EmployeeService {
     }
 
     public String getAvatar(Long id) {
-        FileDescription fd = fileService.findFirst(id, DomainType.EMPLOYEE, CustomType.AVATAR, FileProcess.NONE);
-        return fd != null ? fd.getFileURI() : null;
+        Employee employee = repo.selectById(id);
+        if (employee != null && employee.getAvatarId() != null) {
+            return fileService.findOne(employee.getAvatarId()).getFileURI();
+        } else {
+            return null;
+        }
     }
 
     public FileDescription createAvatar(Long id, InputStream avatarIS, String suffix) {
+
         FileDescription fileDescription = fileService.save(new FileDescription()
-                .setOwnerId(id)
-                .setOwnerType(DomainType.EMPLOYEE)
-                .setCustomType(CustomType.AVATAR)
-                .setFileType(FileType.IMAGE)
-                .setFileProcess(FileProcess.NONE.getFlag()), avatarIS, suffix);
+                        .setOwnerId(id)
+                        .setOwnerType(DomainType.EMPLOYEE)
+                        .setCustomType(CustomType.AVATAR)
+                        .setFileType(FileType.IMAGE)
+                        .setFileProcess(FileProcess.NONE.getFlag())
+                , avatarIS, suffix);
 
         repo.avatar(id, fileDescription.getId());
         return fileService.findOne(fileDescription.getId());
@@ -184,7 +190,7 @@ public class EmployeeService {
     }
 
     public Boolean changePassword(Long id, String sugaredPassword, String saltedNewPassword) {
-        ExceptionUtil.checkIllegal(ValidateUtil.isPassword(saltedNewPassword), "密码", "");
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(saltedNewPassword), "密码", "");
         Employee employee = repo.selectById(id);
         if (employee == null) {
             throw new EstateException(ExCode.EMPLOYEE_NOT_FOUND);
@@ -199,7 +205,7 @@ public class EmployeeService {
             throw new EstateException(ExCode.EMPLOYEE_WRONG_PASSWORD);
         } else {
             cache.evict(CHANGE_PSWD_SUGAR_PREFIX + id);
-            return repo.updatePassword(new Employee().setId(id).setPassword(saltedNewPassword)) >1;
+            return repo.updatePassword(new Employee().setId(id).setPassword(saltedNewPassword)) > 1;
         }
     }
 

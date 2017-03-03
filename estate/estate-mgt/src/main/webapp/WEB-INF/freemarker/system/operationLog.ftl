@@ -51,23 +51,33 @@
                                 <div class="box-body form-inline form-horizontal">
                                     <div id="box-filter" class="form-horizontal" style="display:none;">
                                         <div class="form-group ">
-                                            <label class="col-lg-2 col-md-2 col-sm-2 control-label">在职｜离职： </label>
-                                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                                <select id="quitPosition" class="form-control btn-group dropup">
-                                                    <option value="false">在职</option>
-                                                    <option value="true">离职</option>
-                                                    <option value="-1">全部</option>
-                                                </select>
+                                            <label class="control-label">筛选日期</label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <div class="input-group date">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                    <input type="text" class="form-control pull-right" id="logStartDate" placeholder="开始日期">
+                                                </div>
                                             </div>
+                                            <label class="pull-left" style="margin-top: 5px;">~</label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4">
+                                                <div class="input-group date">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                    <input type="text" class="form-control pull-right" id="logEndDate" placeholder="截止日期">
+                                                </div>
+                                            </div>
+                                            <button id="confirmFilterOperationLogBtn" class="btn btn-primary">查询</button>
                                         </div>
                                     </div>
-                                    <table class="list table table-bordered table-hover">
+                                    <table id="operationLogList" class="list table table-bordered table-hover">
                                         <thead><tr>
                                             <th><span>操作时间</span></th>
                                             <th><span>部门</span></th>
-                                            <th><span>员工</span></th>
+                                            <th><span>操作者</span></th>
                                             <th><span>操作内容</span></th>
-                                            <th class="text-right"><span>操作</span></th>
                                         </tr></thead>
                                         <tbody></tbody>
                                     </table>
@@ -83,3 +93,4 @@
 
 </div>
 <#include "/common/footer.ftl" />
+<script src="${contextPath!}/js/app/system/operationLog.js"></script>

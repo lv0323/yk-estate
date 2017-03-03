@@ -1,8 +1,8 @@
 package com.lyun.estate.mgt.housedict;
 
+import com.lyun.estate.biz.housedict.domain.XiaoQuOption;
 import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.entity.BuildingUnit;
-import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.mgt.housedict.service.HouseDictMgtService;
 import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.web.bind.annotation.*;
@@ -21,18 +21,13 @@ public class HouseDictRest {
         this.houseDictMgtService = houseDictMgtService;
     }
 
-    @GetMapping("keywords")
-    public List<KeywordBean> keywords(@RequestParam String keywords) {
-        return houseDictMgtService.keywords(keywords);
-    }
-
     @PostMapping("building")
     public Building createBuilding(@RequestParam Long xiaoQuId,
                                    @RequestParam String name,
                                    @RequestParam Integer floors,
                                    @RequestParam Integer stairs,
                                    @RequestParam Integer houses,
-                                   @RequestParam String description) {
+                                   @RequestParam(required = false) String description) {
         return houseDictMgtService.createBuilding(xiaoQuId,
                 name,
                 floors,
@@ -60,6 +55,11 @@ public class HouseDictRest {
     @GetMapping("building-unit")
     public List<BuildingUnit> findBuildingUnitsByBuildingId(@RequestParam Long buildingId) {
         return houseDictMgtService.findBuildingUnitsByBuildingId(buildingId);
+    }
+
+    @GetMapping("xiao-qu-option")
+    public List<XiaoQuOption> keywords(@RequestParam String keyword) {
+        return houseDictMgtService.xiaoQuOptions(keyword);
     }
 
 }

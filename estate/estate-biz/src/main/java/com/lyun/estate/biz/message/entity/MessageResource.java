@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.message.entity;
 
 import com.lyun.estate.biz.message.def.MessageStatus;
-import com.lyun.estate.biz.spec.common.DomainType;
+import com.lyun.estate.biz.support.def.DomainType;
 
 import java.util.Date;
 
