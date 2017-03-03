@@ -127,7 +127,7 @@ public class UserService {
                 new HashMap<String, Object>() {{
                     put("clientId", restContext.getClientId());
                     put("avatarURI",
-                            Optional.ofNullable(user.getAvatorId())
+                            Optional.ofNullable(user.getAvatarId())
                                     .map(t -> Optional.ofNullable(
                                             fileService.findOne(t))
                                             .map(FileDescription::getFileURI)
@@ -195,7 +195,7 @@ public class UserService {
                 new HashMap<String, Object>() {{
                     put("clientId", restContext.getClientId());
                     put("avatarURI",
-                            Optional.ofNullable(user.getAvatorId())
+                            Optional.ofNullable(user.getAvatarId())
                                     .map(t -> Optional.ofNullable(
                                             fileService.findOne(t))
                                             .map(FileDescription::getFileURI)
@@ -203,5 +203,9 @@ public class UserService {
                                     .orElse(null));
                 }});
         return new TokenResponse().setToken(newJWTToken.getToken()).setRefreshToken(newJWTToken.getRefreshToken());
+    }
+
+    public User findUserById(Long userId) {
+        return userMapper.findUserById(userId);
     }
 }
