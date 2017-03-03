@@ -2,11 +2,11 @@ package com.lyun.estate.biz.fang.repo;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.fang.domian.FangFollowDTO;
+import com.lyun.estate.biz.fang.domian.FangFollowSelector;
 import com.lyun.estate.biz.fang.entity.FangFollow;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import com.lyun.estate.biz.fang.repo.provider.FangFollowSqlProvider;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -25,4 +25,7 @@ public interface FangFollowRepo {
 
     @Select("SELECT * FROM t_fang_follow WHERE fang_id = #{fangId} AND is_deleted = FALSE ORDER BY id ASC ")
     PageList<FangFollow> findByFangId(@Param("fangId") Long fangId, PageBounds pageBounds);
+
+    @SelectProvider(type = FangFollowSqlProvider.class, method = "listBySelector")
+    PageList<FangFollowDTO> listBySelector(FangFollowSelector selector, PageBounds pageBounds);
 }

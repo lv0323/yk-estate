@@ -8,7 +8,12 @@ import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
  */
 @JsonSerialize(using = LabelEnumSerializer.class)
 public enum FollowType {
-    QQ("QQ");
+    CALL_IN("来电"),
+    CALL_OUT("去电"),
+    QQ("QQ"),
+    WE_CHAT("微信"),
+    EMAIL("邮件"),
+    OTHER("其他"),;
 
     private final String label;
 

@@ -11,6 +11,7 @@ import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.fang.def.*;
+import com.lyun.estate.biz.fang.domian.FangFollowDTO;
 import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
@@ -19,11 +20,11 @@ import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
+import com.lyun.estate.biz.spec.fang.mgt.entity.FangFollowFilter;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
-import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.service.MgtXiaoQuService;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQu;
@@ -43,6 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 /**
@@ -204,17 +206,18 @@ public class FangMgtService {
 
     public PageList<MgtFangSummary> listSummary(MgtFangFilter filter, MgtFangSummaryOrder order,
                                                 PageBounds pageBounds) {
+        Operator operator = mgtContext.getOperator();
 
         if (nonNull(filter.getDepartmentId())) {
             Department department = departmentService.selectById(filter.getDepartmentId());
-            if (nonNull(department) &&
-                    !Objects.equals(department.getCompanyId(), mgtContext.getOperator().getCompanyId())) {
+            if (isNull(department) ||
+                    !Objects.equals(department.getCompanyId(), operator.getCompanyId())) {
                 throw new EstateException(ExCode.FANG_MGT_ERROR_DEPT);
             }
         }
         if (nonNull(filter.getEmployeeId())) {
-            Employee employee = employeeService.selectById(filter.getCityId());
-            if (!Objects.equals(employee.getCompanyId(), mgtContext.getOperator().getCompanyId())) {
+            Employee employee = employeeService.selectById(filter.getEmployeeId());
+            if (!Objects.equals(employee.getCompanyId(), operator.getCompanyId())) {
                 throw new EstateException(ExCode.FANG_MGT_ERROR_EMPLOYEE);
             }
         }
@@ -374,5 +377,39 @@ public class FangMgtService {
 
     public FangExt getFangExt(Long fangId) {
         return mgtFangService.getFangExt(fangId);
+    }
+
+    public PageList<FangFollowDTO> listFollow(FangFollowFilter filter, PageBounds pageBounds) {
+        Operator operator = mgtContext.getOperator();
+
+        if (nonNull(filter.getDepartmentId())) {
+            Department department = departmentService.selectById(filter.getDepartmentId());
+            if (isNull(department) ||
+                    !Objects.equals(department.getCompanyId(), operator.getCompanyId())) {
+                throw new EstateException(ExCode.FANG_MGT_ERROR_DEPT);
+            }
+        }
+        if (nonNull(filter.getIoDepartmentId())) {
+            Department ioDepartment = departmentService.selectById(filter.getIoDepartmentId());
+            if (isNull(ioDepartment) ||
+                    !Objects.equals(ioDepartment.getCompanyId(), operator.getCompanyId())) {
+                throw new EstateException(ExCode.FANG_MGT_ERROR_DEPT);
+            }
+        }
+        if (nonNull(filter.getEmployeeId())) {
+            Employee employee = employeeService.selectById(filter.getEmployeeId());
+            if (!Objects.equals(employee.getCompanyId(), operator.getCompanyId())) {
+                throw new EstateException(ExCode.FANG_MGT_ERROR_EMPLOYEE);
+            }
+        }
+        if (nonNull(filter.getIoEmployeeId())) {
+            Employee ioEmployee = employeeService.selectById(filter.getIoEmployeeId());
+            if (!Objects.equals(ioEmployee.getCompanyId(), operator.getCompanyId())) {
+                throw new EstateException(ExCode.FANG_MGT_ERROR_EMPLOYEE);
+            }
+        }
+
+        filter.setCompanyId(operator.getCompanyId());
+        return mgtFangService.listFollow(filter, pageBounds);
     }
 }

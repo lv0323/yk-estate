@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.fang.entity;
+package com.lyun.estate.biz.fang.domian;
 
 import com.lyun.estate.biz.fang.def.InfoOwnerReason;
 

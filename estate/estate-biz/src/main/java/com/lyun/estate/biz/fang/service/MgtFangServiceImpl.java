@@ -6,6 +6,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.service.DepartmentService;
+import com.lyun.estate.biz.fang.domian.FangFollowDTO;
+import com.lyun.estate.biz.fang.domian.FangFollowSelector;
 import com.lyun.estate.biz.fang.domian.MgtFangSelector;
 import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.fang.repo.*;
@@ -18,6 +20,7 @@ import com.lyun.estate.biz.housedict.entity.BuildingUnit;
 import com.lyun.estate.biz.housedict.service.HouseDictService;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
+import com.lyun.estate.biz.spec.fang.mgt.entity.FangFollowFilter;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
@@ -381,5 +384,43 @@ public class MgtFangServiceImpl implements MgtFangService {
                 .stream()
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public PageList<FangFollowDTO> listFollow(FangFollowFilter filter, PageBounds pageBounds) {
+
+        FangFollowSelector selector = new FangFollowSelector();
+        BeanUtils.copyProperties(filter, selector);
+
+        //department and children
+        if (nonNull(filter.getDepartmentId())) {
+            if (Objects.equals(true, filter.getChildren())) {
+                Department department = departmentService.selectById(filter.getDepartmentId());
+                if (nonNull(department)) {
+                    Set<Long> childIds = departmentService.findChildIds(department.getCompanyId(),
+                            filter.getDepartmentId());
+                    selector.setDepartmentIds(Lists.newArrayList(childIds));
+                }
+            } else {
+                selector.setDepartmentIds(Lists.newArrayList(filter.getDepartmentId()));
+            }
+        }
+
+        //info owner department and children
+        if (nonNull(filter.getIoDepartmentId())) {
+            if (Objects.equals(true, filter.getIoChildren())) {
+                Department ioDepartment = departmentService.selectById(filter.getIoDepartmentId());
+                if (nonNull(ioDepartment)) {
+                    Set<Long> ioChildIds = departmentService.findChildIds(ioDepartment.getCompanyId(),
+                            filter.getDepartmentId());
+                    selector.setIoDepartmentIds(Lists.newArrayList(ioChildIds));
+                }
+            } else {
+                selector.setIoDepartmentIds(Lists.newArrayList(filter.getIoDepartmentId()));
+            }
+        }
+
+
+        return fangFollowRepo.listBySelector(selector, pageBounds);
     }
 }
