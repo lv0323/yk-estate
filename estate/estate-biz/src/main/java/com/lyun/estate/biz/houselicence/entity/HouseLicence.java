@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.houselicence.entity;
 
-import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.houselicence.def.LicenceStatus;
 
 import java.util.Date;

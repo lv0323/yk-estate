@@ -1,6 +1,6 @@
 package com.lyun.estate.rest.map;
 
-import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.map.service.MapService;
 import com.lyun.estate.biz.map.domain.EstateMapResource;
 import org.springframework.beans.factory.annotation.Autowired;

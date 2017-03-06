@@ -1,13 +1,11 @@
 package com.lyun.estate.biz.fang.def;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+import com.lyun.estate.core.supports.labelenum.LabelEnum;
 
 /**
  * Created by Jeffrey on 2017-02-21.
  */
-@JsonSerialize(using = LabelEnumSerializer.class)
-public enum ContactType {
+public enum ContactType implements LabelEnum {
     MOBILE("手机"),
     QQ("QQ"),
     WECHAT("微信"),

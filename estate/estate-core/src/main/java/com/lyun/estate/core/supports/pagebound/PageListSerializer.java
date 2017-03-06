@@ -1,4 +1,4 @@
-package com.lyun.estate.core.supports.resolvers;
+package com.lyun.estate.core.supports.pagebound;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;

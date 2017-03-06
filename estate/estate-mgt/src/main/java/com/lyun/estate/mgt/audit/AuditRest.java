@@ -5,7 +5,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.audit.def.AuditSubject;
 import com.lyun.estate.biz.audit.entity.AuditDTO;
 import com.lyun.estate.biz.audit.service.AuditService;
-import com.lyun.estate.core.supports.resolvers.PageBoundsArgumentResolver;
+import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver;
 import com.lyun.estate.mgt.context.MgtContext;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;

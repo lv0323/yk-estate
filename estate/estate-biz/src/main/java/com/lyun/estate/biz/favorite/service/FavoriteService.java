@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.favorite.service;
 
 import com.google.common.collect.Lists;
-import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.favorite.def.FavoriteType;
 import com.lyun.estate.biz.favorite.entity.Favorite;
 import com.lyun.estate.biz.favorite.repository.FavoriteMapper;

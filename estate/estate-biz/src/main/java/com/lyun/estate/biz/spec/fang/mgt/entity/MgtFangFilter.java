@@ -2,6 +2,7 @@ package com.lyun.estate.biz.spec.fang.mgt.entity;
 
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.spec.fang.mgt.def.TimeType;
+import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.core.supports.types.YN;
 
 import java.util.Date;

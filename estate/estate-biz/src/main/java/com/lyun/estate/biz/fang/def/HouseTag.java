@@ -1,13 +1,11 @@
 package com.lyun.estate.biz.fang.def;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+import com.lyun.estate.core.supports.labelenum.LabelEnum;
 
 /**
  * Created by Jeffrey on 2017-01-18.
  */
-@JsonSerialize(using = LabelEnumSerializer.class)
-public enum HouseTag {
+public enum HouseTag implements LabelEnum {
     ONLY("唯一", false),
     OVER_2("满二年", false),
     OVER_5("满五年", false),

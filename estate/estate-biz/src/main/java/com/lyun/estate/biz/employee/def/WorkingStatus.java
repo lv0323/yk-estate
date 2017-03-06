@@ -1,10 +1,8 @@
 package com.lyun.estate.biz.employee.def;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+import com.lyun.estate.core.supports.labelenum.LabelEnum;
 
-@JsonSerialize(using = LabelEnumSerializer.class)
-public enum WorkingStatus {
+public enum WorkingStatus implements LabelEnum {
     WORKING("正式"),
     TRAINING("试用"),
     LEAVING("请假"),

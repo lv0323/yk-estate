@@ -1,13 +1,11 @@
 package com.lyun.estate.biz.fang.def;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+import com.lyun.estate.core.supports.labelenum.LabelEnum;
 
 /**
  * Created by Jeffrey on 2017-01-22.
  */
-@JsonSerialize(using = LabelEnumSerializer.class)
-public enum HouseStatus {
+public enum HouseStatus implements LabelEnum {
     SELL_EMPTY("出售(空房)"),
     SELL_RESIDE("出售(业主住)"),
     SELL_RENT("出售(租客住)"),
@@ -16,8 +14,7 @@ public enum HouseStatus {
     RENT_RENT("出租(租客住)"),
     RESIDE("自住"),
     NEW("全新"),
-    UNKNOWN("未知"),
-    ;
+    UNKNOWN("未知"),;
 
     private final String label;
 

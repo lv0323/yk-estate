@@ -1,13 +1,11 @@
 package com.lyun.estate.biz.fang.def;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+import com.lyun.estate.core.supports.labelenum.LabelEnum;
 
 /**
  * Created by Jeffrey on 2017-01-22.
  */
-@JsonSerialize(using = LabelEnumSerializer.class)
-public enum PropertyType {
+public enum PropertyType implements LabelEnum {
     SP("商品房"),
     JT("集体房"),
     FG("房改房"),

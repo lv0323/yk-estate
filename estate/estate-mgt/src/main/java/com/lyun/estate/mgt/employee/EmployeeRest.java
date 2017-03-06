@@ -2,7 +2,7 @@ package com.lyun.estate.mgt.employee;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.lyun.estate.biz.employee.def.Gender;
+import com.lyun.estate.biz.support.def.Gender;
 import com.lyun.estate.biz.employee.def.WorkingStatus;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.file.entity.FileDescription;

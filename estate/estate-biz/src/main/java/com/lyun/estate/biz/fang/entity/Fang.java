@@ -2,6 +2,7 @@ package com.lyun.estate.biz.fang.entity;
 
 import com.google.common.base.MoreObjects;
 import com.lyun.estate.biz.fang.def.*;
+import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.core.supports.types.YN;
 
 import java.math.BigDecimal;

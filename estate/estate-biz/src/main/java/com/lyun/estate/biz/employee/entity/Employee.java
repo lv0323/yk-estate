@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.employee.entity;
 
-import com.lyun.estate.biz.employee.def.Gender;
+import com.lyun.estate.biz.support.def.Gender;
 import com.lyun.estate.biz.employee.def.WorkingStatus;
 
 import java.util.Date;

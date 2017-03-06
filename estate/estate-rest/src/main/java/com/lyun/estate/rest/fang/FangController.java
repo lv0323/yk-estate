@@ -9,6 +9,7 @@ import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.keyword.entity.KeywordResp;
 import com.lyun.estate.biz.keyword.service.KeywordService;
+import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.biz.spec.fang.rest.def.ElevatorFilter;
 import com.lyun.estate.biz.spec.fang.rest.def.HouseTypeFilter;

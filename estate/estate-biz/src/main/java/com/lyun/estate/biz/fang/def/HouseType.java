@@ -1,16 +1,14 @@
 package com.lyun.estate.biz.fang.def;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Lists;
-import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+import com.lyun.estate.core.supports.labelenum.LabelEnum;
 
 import java.util.List;
 
 /**
  * Created by Jeffrey on 2017-01-18.
  */
-@JsonSerialize(using = LabelEnumSerializer.class)
-public enum HouseType {
+public enum HouseType implements LabelEnum {
     ZZ("住宅",
             Lists.newArrayList(HouseSubType.DC,
                     HouseSubType.GC,
