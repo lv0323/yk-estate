@@ -321,12 +321,6 @@ public class FangRest {
         return fangMgtService.createFollow(fangId, followType, content);
     }
 
-    @GetMapping("follow")
-    public PageList<FangFollow> getFollows(@RequestParam Long fangId,
-                                           @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
-        return fangMgtService.getFollows(fangId, pageBounds);
-    }
-
     @PostMapping("check")
     public FangCheck createCheck(@RequestParam Long fangId,
                                  @RequestParam String advantage,
@@ -394,7 +388,8 @@ public class FangRest {
     }
 
     @GetMapping("list-follow")
-    public PageList<FangFollowDTO> listFollow(@RequestParam(required = false) FollowType followType,
+    public PageList<FangFollowDTO> listFollow(@RequestParam(required = false) Long fangId,
+                                              @RequestParam(required = false) FollowType followType,
                                               @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date minFollowDate,
                                               @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxFollowDate,
                                               @RequestParam(required = false) Long departmentId,
@@ -405,7 +400,9 @@ public class FangRest {
                                               @RequestParam(required = false) Long ioEmployeeId,
                                               @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
 
-        FangFollowFilter filter = new FangFollowFilter().setFollowType(followType)
+        FangFollowFilter filter = new FangFollowFilter()
+                .setFangId(fangId)
+                .setFollowType(followType)
                 .setMinFollowTime(minFollowDate)
                 .setMaxFollowTime(Optional.ofNullable(maxFollowDate)
                         .map(t -> Date.from(t.toInstant().plusSeconds(LocalTime.MAX.toSecondOfDay())))

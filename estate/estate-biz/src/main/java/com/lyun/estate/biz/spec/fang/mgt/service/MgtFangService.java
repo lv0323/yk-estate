@@ -35,8 +35,6 @@ public interface MgtFangService {
 
     FangFollow createFollow(FangFollow fangFollow);
 
-    PageList<FangFollow> getFollows(Long fangId, PageBounds pageBounds);
-
     FangCheck createCheck(FangCheck fangCheck);
 
     PageList<FangCheck> getChecks(Long fangId, PageBounds pageBounds);

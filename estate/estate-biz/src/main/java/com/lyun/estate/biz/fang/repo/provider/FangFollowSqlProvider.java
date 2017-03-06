@@ -18,6 +18,7 @@ public class FangFollowSqlProvider {
                     .LEFT_OUTER_JOIN("t_fang_info_owner fio ON ff.fang_id = fio.fang_id AND fio.is_deleted = FALSE")
                     .LEFT_OUTER_JOIN("t_department d on ff.department_id = d.id")
                     .LEFT_OUTER_JOIN("t_employee e on ff.employee_id = e.id")
+                    .WHERE_IF("ff.fang_id = #{fangId}", nonNull(selector.getFangId()))
                     .WHERE_IF("ff.follow_type = #{followType}", nonNull(selector.getFollowType()))
                     .WHERE_IF("ff.create_time >= #{minFollowTime}", nonNull(selector.getMinFollowTime()))
                     .WHERE_IF("ff.create_time < #{maxFollowTime}", nonNull(selector.getMaxFollowTime()))

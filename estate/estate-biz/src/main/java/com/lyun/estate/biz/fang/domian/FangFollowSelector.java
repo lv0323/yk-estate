@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Jeffrey on 2017-01-24.
  */
 public class FangFollowSelector {
-
+    private Long fangId;
     private FollowType followType;
     private Date minFollowTime;
     private Date maxFollowTime;
@@ -18,6 +18,15 @@ public class FangFollowSelector {
     private Long employeeId;
     private List<Long> ioDepartmentIds;
     private Long ioEmployeeId;
+
+    public Long getFangId() {
+        return fangId;
+    }
+
+    public FangFollowSelector setFangId(Long fangId) {
+        this.fangId = fangId;
+        return this;
+    }
 
     public FollowType getFollowType() {
         return followType;

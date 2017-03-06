@@ -8,6 +8,7 @@ import java.util.Date;
  * Created by Jeffrey on 2017-01-09.
  */
 public class FangFollowFilter {
+    private Long fangId;
     private FollowType followType;
     private Date minFollowTime;
     private Date maxFollowTime;
@@ -18,6 +19,15 @@ public class FangFollowFilter {
     private Long ioDepartmentId;
     private Boolean ioChildren;
     private Long ioEmployeeId;
+
+    public Long getFangId() {
+        return fangId;
+    }
+
+    public FangFollowFilter setFangId(Long fangId) {
+        this.fangId = fangId;
+        return this;
+    }
 
     public FollowType getFollowType() {
         return followType;
