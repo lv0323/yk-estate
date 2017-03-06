@@ -20,6 +20,21 @@ define(contextPath+'/js/app/org/position/positionCommon.js',
             });
         };
 
+        PositionCommon.verifyPositionInput = function (actionType, toSubmitPosition) {
+            var flag = true;
+            $('.form-group').find('.invalid-input').removeClass('invalid-input');
+            if (toSubmitPosition.name==="" || typeof(toSubmitPosition.name)==='undefined') {
+                flag = false;
+                $('#'+actionType+'PositionName').addClass('invalid-input');
+            }
+            if (toSubmitPosition.type==="" || typeof(toSubmitPosition.type)==='undefined') {
+                flag = false;
+                $('#'+actionType+'PositionType').addClass('invalid-input');
+            }
+
+            return flag;
+        };
+
         return PositionCommon;
 
     });

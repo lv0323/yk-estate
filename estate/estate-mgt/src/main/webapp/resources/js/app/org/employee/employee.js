@@ -78,7 +78,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         var displayFilteredEmployee = function (data) {
             employeeAllDataRaw = data;
             var dataSet = data.map(function (item, index) {
-                if(!item.quit){
+                /*if(!item.quit){
                     return {
                         employeeName: item.name,
                         departmentName: item.departmentName,
@@ -106,6 +106,24 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                         openContact: item.openContact,
                         operation: '已离职'
                     }
+                }*/
+                return {
+                    employeeName: item.name,
+                    departmentName: item.departmentName,
+                    positionName: item.positionName,
+                    mobile: item.mobile,
+                    openContact: item.openContact,
+                    operation: [
+                        {
+                            attr: {class: 'btn editEmployeeBtn'},
+                            data: {index: index, id: item.id, toggle: 'modal', target: '#editEmployeeDialog'},
+                            text: '编辑'
+                        },
+                        {
+                            attr: {class: 'btn quitEmployeeBtn'},
+                            data: {index: index, id: item.id, toggle: 'modal', target: '#quitEmployeeDialog'},
+                            text: '离职'
+                        }]
                 }
             });
 
@@ -148,6 +166,9 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 totalCounts:dataTotal,
                 pageSize: pageConfig.limit,
                 onChange: function (num, type) {
+                    if(type === 'init'){
+                        return;
+                    }
                     filterEmployee(quitPosition, (num-1)*pageConfig.limit, pageConfig.limit);
                 }
             };
@@ -156,12 +177,12 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         };
 
         function filterEmployee(quitPosition, offset, limit) {
-            EmployeeService.quitEmployee = [];
+            /*EmployeeService.quitEmployee = [];
             EmployeeService.nonQuitEmployee = [];
-            EmployeeService.allEmployee = [];
+            EmployeeService.allEmployee = [];*/
             //quitPosition = (quitPosition == 'true')?positionStatus["true"]:positionStatus["false"];
             EmployeeService.getEmployee(null, {'x-paging': 'total=true&offset='+offset+'&limit=' + limit}).done(function (data) {
-                $.each(data.items,function (index, employee) {
+               /* $.each(data.items,function (index, employee) {
                     if(employee["quit"]){
                         EmployeeService.quitEmployee.push(employee);
                     }else {
@@ -176,15 +197,17 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                     displayFilteredEmployee(EmployeeService.quitEmployee);
                 }else if(quitPosition == '-1'){
                     displayFilteredEmployee(EmployeeService.allEmployee);
-                }
+                }*/
+                displayFilteredEmployee(data.items);
                 pagination(data.total);
-                DepartmentService.getAllDepartment().done(function(data){
-                    departmentTree(data);
-                });
             });
         }
 
         filterEmployee(quitPosition, 0, pageConfig.limit);
+
+        DepartmentService.getAllDepartment().done(function(data){
+            departmentTree(data);
+        });
 
         function verifyEmployeeInput(actionType, toSubmitEmployee) {
             var flag = true;

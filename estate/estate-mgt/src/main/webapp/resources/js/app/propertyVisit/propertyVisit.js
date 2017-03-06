@@ -21,6 +21,9 @@ require(['main-app',
                 totalCounts:dataTotal,
                 pageSize: pageConfig.limit,
                 onChange: function (num, type) {
+                    if(type === 'init'){
+                        return;
+                    }
                     getPropertyVisit((num-1)*pageConfig.limit, pageConfig.limit);
                 }
             };

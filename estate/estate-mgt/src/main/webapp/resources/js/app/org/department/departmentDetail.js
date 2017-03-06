@@ -27,7 +27,7 @@ require(['main-app',
 
             $('#departId').val(depart["id"]);
             $('#departName').val(depart["name"]);
-            $('#departSpell').val(depart["shortName"]);
+            //$('#departSpell').val(depart["shortName"]);
             $('#departTel').val(depart["telephone"]);
             $('#departAddress').val(depart["address"]);
         }
@@ -47,13 +47,11 @@ require(['main-app',
             });
 
 
-
-
-
         //action for updated department
         $('#confirmEditDepartBtn').on('click', function(){
             var id = $('#editDepartDialog #departId').val();
-            var parent_id = $('#editDepartDialog .parent').attr('department');
+            // var parent_id = $('#editDepartDialog .parent').attr('department');
+            var parent_id = $('#editDepartDialog .dropdown-yk').attr('selectedvalue');
             var toEditDepart = {};
             if(parent_id){
                 toEditDepart = {
@@ -61,7 +59,7 @@ require(['main-app',
                     address: $('#editDepartDialog #departAddress').val(),
                     name: $('#editDepartDialog #departName').val(),
                     parentId: parseInt(parent_id,10),
-                    shortName: $('#editDepartDialog #departSpell').val(),
+                    //shortName: $('#editDepartDialog #departSpell').val(),
                     telephone: $('#editDepartDialog #departTel').val(),
                     cityId:$('#editDepartDialog #departCid option:selected').attr("id"),
                     districtId:$('#editDepartDialog #departDid option:selected').attr("id"),
@@ -72,30 +70,29 @@ require(['main-app',
                     id: parseInt(id,10),
                     address: $('#editDepartDialog #departAddress').val(),
                     name: $('#editDepartDialog #departName').val(),
-                    parentId: parent_id,
-                    shortName: $('#editDepartDialog #departSpell').val(),
+                    parentId: 0,
+                    //shortName: $('#editDepartDialog #departSpell').val(),
                     telephone: $('#editDepartDialog #departTel').val(),
                     cityId:$('#editDepartDialog #departCid option:selected').attr("id"),
                     districtId:$('#editDepartDialog #departDid option:selected').attr("id"),
                     subDistrictId:$('#editDepartDialog #departSDid option:selected').attr("id")
                 };
             }
-            if(parent_id === id){
-                alert("父部门不能为其本身"); //forbid depart to be arranged under itself
-            }else {
+
+            if(DepartCommon.verifyDepartmentInput(toEditDepart)){
                 DepartmentService.editDepartment({data:toEditDepart},header)
                     .done(function(){
                         // location.reload(true);
                         // window.location.href="/mgt/org/department.ftl";
                         swal({
-                            title: "操作成功!",
-                            type: "success",
-                            confirmButtonText: "确定",
-                            confirmButtonColor: "#3c8dbc"
-                        },
-                        function(){
-                            window.location.href="/mgt/org/department.ftl";
-                        });
+                                title: "操作成功!",
+                                type: "success",
+                                confirmButtonText: "确定",
+                                confirmButtonColor: "#3c8dbc"
+                            },
+                            function(){
+                                window.location.href="/mgt/org/department.ftl";
+                            });
                     })
                     .fail(function (res) {
                         // alert(res["message"]);
@@ -108,7 +105,16 @@ require(['main-app',
                         });
 
                     });
+            }else {
+                swal({
+                    title: "错误!",
+                    text: "请填写所有必填字段",
+                    type: "error",
+                    confirmButtonText: "确定",
+                    confirmButtonColor: "#3c8dbc"
+                });
             }
+
 
         });
 
