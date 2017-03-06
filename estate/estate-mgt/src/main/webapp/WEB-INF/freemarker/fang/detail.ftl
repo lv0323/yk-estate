@@ -186,7 +186,7 @@
                                         <tr>
                                             <td>{{follow.departmentName}}-{{follow.employeeName}}</td>
                                             <td><label class="badge badge-success">{{follow.followType.label}}</label></td>
-                                            <td>2017-02-21</td>
+                                            <td>{{follow.createTime|date:'yyyy-MM-dd'}}</td>
                                             <td><label class="badge badge-danger">{{follow.fangTiny.bizType.label}}</label></td>
                                             <td><label class="badge badge-danger">{{follow.fangTiny.process.label}}</label></td>
                                             <td>{{follow.fangTiny.publishTime|date:'yyyy-MM-dd'}}</td>

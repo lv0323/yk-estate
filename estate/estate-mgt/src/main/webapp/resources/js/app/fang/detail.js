@@ -31,7 +31,8 @@ require(['main-app',
                     dataTotal: 0,
                     currentPage: 1,
                     init: false,
-                    id:'#fellow_paging'
+                    id:'#fellow_paging',
+                    change:'follow'
                 }
             };
             /*页面相关内容*/
@@ -322,7 +323,7 @@ require(['main-app',
                             return;
                         }
                         pageConfig[pageName].currentPage = num;
-                        $scope.list((num-1)*pageConfig[pageName].limit, num);
+                        ((num-1)*pageConfig[pageName].limit, num);
                     }
                 };
                 pagingPlugin.init(config);

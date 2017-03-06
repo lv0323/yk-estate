@@ -110,4 +110,13 @@ public class FangPage {
         }
         return new ModelAndView("/fang/detail", params);
     }
+
+    @GetMapping("/follow")
+    public ModelAndView follow() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("avatarUrl", service.getAvatar());
+        params.put("followType", Arrays.asList(FollowType.values()));
+        params.put("username", service.getUsername());
+        return new ModelAndView("/fang/follow", params);
+    }
 }
