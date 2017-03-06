@@ -136,7 +136,7 @@ public class MessageService {
             }
         });
         //TODO 标记未读为已读
-        if (messageRepository.updateToRead(receiverId, senderId, lastMessageId) <= 0) {
+        if (messageRepository.updateToRead(receiverId, senderId, lastMessageId) < 0) {
             throw new EstateException(UPDATE_FAIL,
                     "message status",
                     "receiver:" + receiverId + ";sender:" + senderId + ";lastMessageId:" + lastMessageId);
