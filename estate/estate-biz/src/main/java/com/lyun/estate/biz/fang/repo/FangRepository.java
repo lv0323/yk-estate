@@ -66,4 +66,7 @@ public interface FangRepository {
 
     @Update("UPDATE t_fang set update_time = CURRENT_TIMESTAMP where id = #{id} and is_deleted = false")
     int updateTime(Long id);
+
+    @Select("select * from t_fang where licence_id = #{licenceId}")
+    Fang findFangByLicenceId(Long licenceId);
 }
