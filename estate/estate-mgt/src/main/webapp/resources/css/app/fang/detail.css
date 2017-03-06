@@ -24,32 +24,24 @@
 #detailInfo table{
     font-size: inherit;
 }
-#detailInfo .table > thead > tr > th,
-#detailInfo .table > tbody > tr > th,
-#detailInfo .table > tfoot > tr > th,
-#detailInfo .table > thead > tr > td,
-#detailInfo .table > tbody > tr > td,
-#detailInfo .table > tfoot > tr > td {
+.table-bordered.table > thead > tr > th,
+.table-bordered.table > tbody > tr > th,
+.table-bordered.table > tfoot > tr > th,
+.table-bordered.table > thead > tr > td,
+.table-bordered.table > tbody > tr > td,
+.table-bordered.table > tfoot > tr > td {
     border-top: 1px solid #ddd;
 }
-#detailInfo .table > thead > tr > th {
+.table-bordered.table > thead > tr > th {
     border-bottom: 2px solid #ddd;
 }
-#detailInfo .table tr td .progress {
+.table-bordered.table tr td .progress {
     margin-top: 5px;
 }
 #detailInfo .form-inline .form-control {
     width: 100%;
 }
 #detailInfo .table-bordered {
-    border: 1px solid #ddd;
-}
-#detailInfo .table-bordered > thead > tr > th,
-#detailInfo .table-bordered > tbody > tr > th,
-#detailInfo .table-bordered > tfoot > tr > th,
-#detailInfo .table-bordered > thead > tr > td,
-#detailInfo .table-bordered > tbody > tr > td,
-#detailInfo .table-bordered > tfoot > tr > td {
     border: 1px solid #ddd;
 }
 #detailInfo .form-inline .form-group {
@@ -70,10 +62,23 @@
     min-width: 700px;
     max-width: 860px;
 }
+#extModel .modal-dialog{
+    width: auto;
+    min-width: 860px;
+    max-width: 1080px;
+}
 #layoutModel{
     z-index: 10001;
 }
 #layoutModel .tip-box .tip-info{
     margin-right: 4px;
     cursor: pointer;
+}
+.table > thead > tr > th {
+    border-bottom: 2px solid #e2e7f4;
+    background-color: #f1f4fb;
+    color: #5b6885;
+    position:relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

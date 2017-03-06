@@ -107,7 +107,7 @@
                                                     <input type="text" name="address" name="address" class="form-control" required placeholder="房产证地址" ng-model="ctrl.data.address"/>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <input name="permitNumber" class="form-control" placeholder="证件编号" type="text" ng-model="ctrl.data.permitNumber">
+                                                    <input name="permitNumber" class="form-control" placeholder="证件编号" type="text" ng-model="ctrl.data.certifNo">
                                                 </div>
                                             </div>
                                             <div class="form-group clearfix">
@@ -346,7 +346,8 @@
                                             <div class="form-group clearfix">
                                                 <label class="control-label">证件</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select select-picker class="selectpicker show-menu-arrow form-control" name="houseProveType" id="houseProveType" ng-model="ctrl.data.certifType">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control" name="houseProveType" id="houseCertifType"
+                                                            ng-model="ctrl.data.certifType" ng-change="ctrl.selectPickerChange('#houseCertifType', 'certifType')">
                                                         <option value="">--请选择--</option>
                                                     <#list certifType ?if_exists as type>
                                                         <option value="${type.name()}">${type.getLabel()}</option>
@@ -355,12 +356,13 @@
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
                                                     <div class="input-group date form_date" datetimepicker key="purchaseDate" change="datePickChange">
-                                                        <input class="form-control " size="16" type="text" id="houseProveDate" ng-model="ctrl.data.proveDate" placeholder="出证日期" name="houseProveDate"/>
+                                                        <input class="form-control " size="16" type="text" id="houseProveDate" ng-model="ctrl.data.purchaseDate" placeholder="出证日期" name="houseProveDate"/>
                                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <select select-picker class="selectpicker show-menu-arrow form-control" name="housePType" id="housePType" ng-model="ctrl.data.pType">
+                                                    <select select-picker class="selectpicker show-menu-arrow form-control" name="housePType" id="housePropertyType"
+                                                            ng-model="ctrl.data.propertyType" ng-change="ctrl.selectPickerChange('#housePropertyType', 'propertyType')">
                                                         <option value="">产权类型</option>
                                                     <#list propertyType ?if_exists as type>
                                                         <option value="${type.name()}">${type.getLabel()}</option>

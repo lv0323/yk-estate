@@ -106,6 +106,7 @@
                 <ul class="treeview-menu">
                     <li><a href="/mgt/fangManage/list.ftl?target=.fang"><i class="fa fa-circle"></i>房源列表</a></li>
                     <li><a href="/mgt/fangManage/create.ftl?target=.fang"><i class="fa fa-circle"></i>新增房源</a></li>
+                    <li><a href="/mgt/fangManage/follow.ftl?target=.fang"><i class="fa fa-circle"></i>房源跟进</a></li>
                 </ul>
             </li>
             <li class="treeview org">

@@ -80,7 +80,7 @@
                                                     <span class="pull-left">手机:</span>
                                                     <div class="m-t-10 m-l-40 p-t-3">******</div>
                                                 </div>
-                                                <a href="javascript:void(0)" class="btn btn-white" style="display:block;" onclick="checkViewcount()">查看业主</a>
+                                                <a href="javascript:void(0)" class="btn btn-white" style="display:block;" ng-click="ctrl.ownerInfoInit()">查看业主</a>
                                             </div>
                                         </div>
                                         <div class="panel">
@@ -103,7 +103,7 @@
                                                 <tbody>
                                                 <tr>
                                                     <th colspan="9">基本信息</th>
-                                                    <th class="text-right"><a ng-click=""><i class="fa fa-pencil"></i>修改</a></th>
+                                                    <th class="text-right"><a ng-click="ctrl.extInfoInit()" ng-href="javascript:;"><i class="fa fa-pencil"></i>修改</a></th>
                                                 </tr>
                                                 <tr>
                                                     <td class="text-muted text-center" style="width:60px;">特性</td>
@@ -141,7 +141,7 @@
                                                     <td class="text-muted text-center">证件</td>
                                                     <td ng-bind="ctrl.ext.certifType.label"></td>
                                                     <td class="text-muted text-center">出证日期</td>
-                                                    <td></td>
+                                                    <td ng-bind="ctrl.ext.purchaseDate"></td>
                                                     <td class="text-muted text-center">产权类型</td>
                                                     <td colspan="5" ng-bind="ctrl.ext.propertyType.label"></td>
                                                 </tr>
@@ -156,7 +156,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="text-muted text-center">备注</td>
-                                                    <td colspan="9"></td>
+                                                    <td colspan="9" ng-bind="ctrl.ext.note"></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -166,15 +166,42 @@
                             </div>
                             <div class="tab-pane" id="follow-info">
                                 <div class="box-tools" style="position:absolute;top:7px;right:10px">
-                                    <a class="btn addAscription pull-right" onclick="saveHouseFollow(2982)" href="javascript:void(0)"><i class="fa fa-plus" aria-hidden="true"></i>新增跟进</a>
+                                    <a class="btn addAscription pull-right" ng-click="ctrl.newFollowInit()" href="javascript:void(0)"><i class="fa fa-plus" aria-hidden="true"></i>新增跟进</a>
                                 </div>
-                                <form id="houseFollowParamId" action="/housemanage/housefollow!getHouseFollowListByHouseid.do">
-                                    <input id="housefollowMethod" name="housefollowVO.fyHouseId" value="2982" type="hidden">
-                                    <!-- 详情页访问跟进记录标记 -->
-                                    <input id="" name="operationType" value="houseDetail" type="hidden">
-                                    <div id="showHouseFollowPageDiv">
-                                    </div>
-                                </form>
+                                <div class="table-responsive contractlist">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>跟进人</th>
+                                            <th>跟进方式</th>
+                                            <th>跟进日期</th>
+                                            <th>交易类型</th>
+                                            <th>房源状态</th>
+                                            <th>发布日期</th>
+                                            <th>发布天数</th>
+                                            <#--<th class="text-right">操作</th>-->
+                                        </tr>
+                                        </thead>
+                                        <tbody ng-repeat="follow in ctrl.followList">
+                                        <tr>
+                                            <td>{{follow.departmentName}}-{{follow.employeeName}}</td>
+                                            <td><label class="badge badge-success">{{follow.followType.label}}</label></td>
+                                            <td>{{follow.createTime|date:'yyyy-MM-dd'}}</td>
+                                            <td><label class="badge badge-danger">{{follow.fangTiny.bizType.label}}</label></td>
+                                            <td><label class="badge badge-danger">{{follow.fangTiny.process.label}}</label></td>
+                                            <td>{{follow.fangTiny.publishTime|date:'yyyy-MM-dd'}}</td>
+                                            <td>{{follow.publishedDay}}</td>
+                                            <#--<td class="text-right">
+                                                <a href="javascript:void(0);" ng-click="ctrl.deleteFollow(follow.id)">删除</a>
+                                            </td>-->
+                                        </tr>
+                                        <tr><td colspan="7">{{follow.content}}</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="pagination-container">
+                                    <ul id="fellow_paging" class="pagination"></ul>
+                                </div>
                             </div>
                             <div class="tab-pane" id="survey-info">
                                 <div id="housesurveyList2"></div>
@@ -536,7 +563,7 @@
                         <div class="pull-left m-t-7 p-l-0" id="danwei">
                             <#list priceUnit ?if_exists as unit>
                                 <span ng-show="ctrl.baseInfo.priceUnit === '${unit.name()}'">${unit.getLabel()}</span>
-                            </#list>/㎡
+                            </#list>
                         </div>
                     </div>
                     <div class="form-group clearfix">
@@ -556,6 +583,271 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" ng-click="ctrl.baseInfoUpdate()">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="modal fade" id="extModel" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">基本信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="extDialogForm">
+                    <div class="form-group clearfix">
+                        <label class="control-label">特性</label>
+                        <div class="pull-left" style="margin-top:8px">
+                        <#list houseLevel ?if_exists as level>
+                            <div class="radio radio-inline" style="padding-top:0px">
+                                <input value="${level.name()}" id="level${level.name()}" ng-model="ctrl.updateExt.level"
+                                       type="radio">
+                                <label for="level${level.name()}">${level.getLabel()}</label>
+                            </div>
+                        </#list>
+                        </div>
+                        <span class="opt-gap pull-left" style="margin-top:10px;"></span>
+                        <div class="pull-left" style="margin-top:8px">
+                            <div class="radio radio-inline" style="padding-top:0px">
+                                <input type="radio" id="character10141" ng-value="5"
+                                       ng-model="ctrl.updateExt.overYears"/>
+                                <label for="character10141">满五年</label>
+                            </div>
+                            <div class="radio radio-inline" style="padding-top:0px">
+                                <input type="radio" id="character10142" ng-value="2"
+                                       ng-model="ctrl.updateExt.overYears"/>
+                                <label for="character10142">满两年</label>
+                            </div>
+                            <div class="radio radio-inline" style="padding-top:0px">
+                                <input type="radio" id="character10143" value="" ng-model="ctrl.updateExt.overYears"/>
+                                <label for="character10143">不满两年</label>
+                            </div>
+                        </div>
+                        <span class="opt-gap pull-left" style="margin-top:10px;"></span>
+                        <div class="pull-left" id="tx3">
+                            <div class="checkbox checkbox-nice checkbox-inline">
+                                <input type="checkbox" name="houseCharacter" id="character10140"
+                                       ng-model="ctrl.updateExt.isOnly"/>
+                                <label for="character10140">唯一住房</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="control-label">证件</label>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <select select-picker class="selectpicker show-menu-arrow form-control" name="houseCertifType" id="houseCertifType"
+                                    ng-model="ctrl.updateExt.certifType" ng-change="ctrl.selectPickerChange('#houseCertifType', 'certifType', 'updateExt')">
+                            <#list certifType ?if_exists as type>
+                                <option value="${type.name()}">${type.getLabel()}</option>
+                            </#list>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="input-group date form_date" datetimepicker key="purchaseDate" change="datePickChange" owner="updateExt">
+                                <input class="form-control " size="16" type="text" id="houseProveDate" ng-model="ctrl.updateExt.purchaseDate" placeholder="出证日期" name="houseProveDate"/>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <select select-picker class="selectpicker show-menu-arrow form-control" name="housePType" id="housePropertyType"
+                                    ng-model="ctrl.updateExt.propertyType" ng-change="ctrl.selectPickerChange('#housePropertyType', 'propertyType', 'updateExt')">
+                            <#list propertyType ?if_exists as type>
+                                <option value="${type.name()}">${type.getLabel()}</option>
+                            </#list>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="control-label">证件地址</label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" name="address" name="address" class="form-control" required placeholder="房产证地址" ng-model="ctrl.updateExt.address"/>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <input name="permitNumber" class="form-control" placeholder="证件编号" type="text" ng-model="ctrl.updateExt.certifNo">
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="control-label">委托</label>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <select select-picker class="selectpicker show-menu-arrow form-control"  reg="^\S+$"  name="delegateType" id="houseDelegateType"
+                                    ng-model="ctrl.updateExt.delegateType"  ng-change="ctrl.selectPickerChange('#houseDelegateType', 'delegateType', 'updateExt')">
+                                <option value="">--请选择--</option>
+                            <#list delegateType ?if_exists as type>
+                                <option value="${type.name()}">${type.getLabel()}</option>
+                            </#list>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="input-group date form_date" datetimepicker key="delegateStart" change="datePickChange" owner="updateExt">
+                                <input class="form-control bgWhite" ng-model="ctrl.updateExt.delegateStart" required ng-pattern="/\d{4}-\d{2}-\d{2}$/" type="text" placeholder="开始日期" name="delegateStart"/>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <div class="input-group date form_date" datetimepicker key="delegateEnd" change="datePickChange" owner="updateExt">
+                                <input class="form-control bgWhite" size="16" type="text" placeholder="到期日期" name="delegateEnd" ng-model="ctrl.updateExt.delegateEnd" ng-change="ctrl.setBuildDate()" id="delegateEnd"/>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="control-label">税款</label>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <select select-picker class="selectpicker show-menu-arrow form-control " name="houseTaxesWilling" id="houseTaxesWilling"
+                                    ng-model="ctrl.updateExt.taxesWilling" ng-change="ctrl.selectPickerChange('#houseTaxesWilling', 'taxesWilling', 'updateExt')">
+                                <option value="">--请选择--</option>
+                            <#list taxesWilling ?if_exists as type>
+                                <option value="${type.name()}">${type.getLabel()}</option>
+                            </#list>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <select select-picker class="selectpicker show-menu-arrow form-control minusHeight" name="houseCommission" id="houseCommissionWilling"
+                                    ng-model="ctrl.updateExt.commissionWilling" ng-change="ctrl.selectPickerChange('#houseCommissionWilling', 'commissionWilling', 'updateExt')">
+                                <option value="">付佣</option>
+                            <#list commissionWilling ?if_exists as type>
+                                <option value="${type.name()}">${type.getLabel()}</option>
+                            </#list>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="control-label">原购价</label>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <input type="text" name="housePurchase" class="form-control" placeholder="原购价" ng-model="ctrl.updateExt.purchasePrice"/>
+                        </div>
+                        <div class="pull-left m-t-7 p-l-0" id="yuangou">
+                            元
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="control-label">看房</label>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <select select-picker class="selectpicker show-menu-arrow form-control" name="houseShowing" id="houseShowing"
+                                    ng-model="ctrl.updateExt.showing" ng-change="ctrl.selectPickerChange('#houseShowing', 'showing', 'updateExt')">
+                                <option value="">--请选择--</option>
+                            <#list showing ?if_exists as type>
+                                <option value="${type.name()}">${type.getLabel()}</option>
+                            </#list>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="control-label">现状</label>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <select select-picker class="selectpicker show-menu-arrow form-control"  name="houseStatus" id="houseStatus"
+                                    ng-model="ctrl.updateExt.status"  ng-change="ctrl.selectPickerChange('#houseStatus', 'status', 'updateExt')">
+                                <option value="">--请选择--</option>
+                            <#list houseStatus ?if_exists as status>
+                                <option value="${status.name()}">${status.getLabel()}</option>
+                            </#list>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <select select-picker class="selectpicker show-menu-arrow form-control"  name="houseSource" id="houseSource"
+                                    ng-model="ctrl.updateExt.source" ng-change="ctrl.selectPickerChange('#houseSource', 'source', 'updateExt')">
+                                <option value="">来源</option>
+                            <#list houseSource ?if_exists as source>
+                                <option value="${source.name()}">${source.getLabel()}</option>
+                            </#list>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="control-label">备注</label>
+                        <div class="col-lg-9 col-md-9 col-sm-9">
+                            <textarea name="note" cols="30" rows="3" class="form-control" ng-model="ctrl.updateExt.note"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.extInfoUpdate()">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="modal fade" id="ownerModel" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">业主信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" name="ownerDialogForm">
+                        <div class="form-group clearfix">
+                            <label class="control-label">业主</label>
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <input type="text" name="houseOwname" reg="^\S+$" class="form-control"
+                                       placeholder="业主姓名" required ng-model="ctrl.updateOwner.ownerName"/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label">手机1</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="houseOwphone1" required st-mobile-phone class="form-control"
+                                       placeholder="业主手机1" ng-model="ctrl.updateOwner.mobiles[0]"/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label">手机2</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="houseOwphone2" st-mobile-phone class="form-control"
+                                       placeholder="业主手机2" ng-model="ctrl.updateOwner.mobiles[1]"/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label">手机3</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="houseOwphone3" st-mobile-phone class="form-control"
+                                       placeholder="业主手机3" ng-model="ctrl.updateOwner.mobiles[2]"/>
+                            </div>
+                    </form>
+                </div>
+            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.ownerInfoUpdate()">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 跟进-->
+<div class="modal fade" id="followModel" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">新增跟进</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="ownerDialogForm">
+                    <div class="form-group clearfix">
+                        <label class="control-label">跟进方式</label>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <select select-picker class="selectpicker show-menu-arrow form-control " name="houseNewFollow" id="houseNewFollow"
+                                    ng-model="ctrl.newFollow.followType" ng-change="ctrl.selectPickerChange('#houseTaxesWilling', 'followType', 'newFollow')">
+                                <option value="">--请选择--</option>
+                            <#list followType ?if_exists as type>
+                                <option value="${type.name()}">${type.getLabel()}</option>
+                            </#list>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="control-label">跟进内容</label>
+                        <div class="col-lg-9 col-md-9 col-sm-9">
+                            <textarea name="note" cols="30" rows="3" class="form-control" ng-model="ctrl.newFollow.content"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.followCreate()">确定</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>
         </div>

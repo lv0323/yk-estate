@@ -49,6 +49,9 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.ext = function (params, header) {
             return RequestService.get('/fang/ext', params, header);
         };
+        FangService.extChange = function (params, header) {
+            return RequestService.post('/fang/change-ext', params, header);
+        };
         FangService.contact = function (params, header) {
             return RequestService.get('/fang/contact', params, header);
         };
@@ -60,6 +63,12 @@ define(contextPath+'/js/service/fang-service.js',
         };
         FangService.infoOwner = function (params, header) {
             return RequestService.get('/fang/info-owner', params, header);
+        };
+        FangService.listFollow = function (params, header) {
+            return RequestService.get('/fang/list-follow', params, header);
+        };
+        FangService.createFollow = function (params, header) {
+            return RequestService.post('/fang/follow', params, header);
         };
 
         return FangService;

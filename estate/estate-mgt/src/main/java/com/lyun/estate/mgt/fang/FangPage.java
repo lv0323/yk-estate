@@ -100,6 +100,7 @@ public class FangPage {
         params.put("heatingType", Arrays.asList(HeatingType.values()));
         params.put("taxesWilling", Arrays.asList(TaxesWilling.values()));
         params.put("commissionWilling", Arrays.asList(CommissionWilling.values()));
+        params.put("followType", Arrays.asList(FollowType.values()));
         params.put("username", service.getUsername());
         if(fang.getBizType().name().equals(BizType.RENT)){
             params.put("priceUnit", PriceUnit.getByBizType(BizType.RENT));
@@ -108,5 +109,14 @@ public class FangPage {
             params.put("priceUnit", PriceUnit.getByBizType(BizType.SELL));
         }
         return new ModelAndView("/fang/detail", params);
+    }
+
+    @GetMapping("/follow")
+    public ModelAndView follow() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("avatarUrl", service.getAvatar());
+        params.put("followType", Arrays.asList(FollowType.values()));
+        params.put("username", service.getUsername());
+        return new ModelAndView("/fang/follow", params);
     }
 }
