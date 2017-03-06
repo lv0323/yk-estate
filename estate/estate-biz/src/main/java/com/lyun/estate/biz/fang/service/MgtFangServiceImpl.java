@@ -383,10 +383,21 @@ public class MgtFangServiceImpl implements MgtFangService {
 
     @Override
     public MgtFangTiny getFangTiny(Long fangId) {
+        ExceptionUtil.checkNotNull("房源编号", fangId);
         Fang fang = fangRepository.findFang(fangId);
         MgtFangTiny tiny = new MgtFangTiny();
         BeanUtils.copyProperties(fang, tiny);
         tiny.setHouseLicence(licenceService.findOne(tiny.getLicenceId()));
+        return tiny;
+    }
+
+    @Override
+    public MgtFangTiny getFangTinyByLicenceId(Long licenceId) {
+        ExceptionUtil.checkNotNull("房源授权编号", licenceId);
+        Fang fang = fangRepository.findFangByLicenceId(licenceId);
+        MgtFangTiny tiny = new MgtFangTiny();
+        BeanUtils.copyProperties(fang, tiny);
+        tiny.setHouseLicence(licenceService.findOne(licenceId));
         return tiny;
     }
 

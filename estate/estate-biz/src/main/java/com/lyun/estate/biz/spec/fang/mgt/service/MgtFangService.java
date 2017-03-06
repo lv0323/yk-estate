@@ -57,5 +57,7 @@ public interface MgtFangService {
 
     MgtFangTiny getFangTiny(Long fangId);
 
+    MgtFangTiny getFangTinyByLicenceId(Long licenceId);
+
     PageList<FangFollowDTO> listFollow(FangFollowFilter filter, PageBounds pageBounds);
 }
