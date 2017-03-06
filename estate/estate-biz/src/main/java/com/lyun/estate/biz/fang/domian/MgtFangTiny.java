@@ -38,7 +38,6 @@ public class MgtFangTiny {
     private Integer floor;
     private Date createTime;
     private Date publishTime;
-    private Date latestFollowTime;
 
     public Long getId() {
         return id;
@@ -247,15 +246,6 @@ public class MgtFangTiny {
         return this;
     }
 
-    public Date getLatestFollowTime() {
-        return latestFollowTime;
-    }
-
-    public MgtFangTiny setLatestFollowTime(Date latestFollowTime) {
-        this.latestFollowTime = latestFollowTime;
-        return this;
-    }
-
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -282,7 +272,6 @@ public class MgtFangTiny {
                 .add("floor", floor)
                 .add("createTime", createTime)
                 .add("publishTime", publishTime)
-                .add("latestFollowTime", latestFollowTime)
                 .toString();
     }
 }

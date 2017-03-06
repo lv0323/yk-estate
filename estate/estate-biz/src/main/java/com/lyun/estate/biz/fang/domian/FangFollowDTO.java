@@ -2,6 +2,8 @@ package com.lyun.estate.biz.fang.domian;
 
 import com.lyun.estate.biz.fang.def.FollowType;
 
+import java.util.Date;
+
 /**
  * Created by Jeffrey on 2017-02-28.
  */
@@ -15,6 +17,7 @@ public class FangFollowDTO {
     private String employeeName;
     private FollowType followType;
     private String content;
+    private Date createTime;
     private MgtFangTiny fangTiny;
 
     public Long getId() {
@@ -95,6 +98,15 @@ public class FangFollowDTO {
 
     public FangFollowDTO setContent(String content) {
         this.content = content;
+        return this;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public FangFollowDTO setCreateTime(Date createTime) {
+        this.createTime = createTime;
         return this;
     }
 
