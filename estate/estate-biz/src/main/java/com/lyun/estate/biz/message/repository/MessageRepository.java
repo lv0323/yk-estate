@@ -33,11 +33,13 @@ public interface MessageRepository {
             "left join t_message lastMessage on lastMessage.id = message.max_id")
     List<MessageSummaryResource> getMessageSummaryResource(@Param("receiverId") Long receiverId);
 
-    @Select("SELECT * FROM t_message message WHERE message.receiver_id=#{receiverId} and message.sender_id=#{senderId} order by message.create_time desc")
-    PageList<MessageResource> getMessage(@Param("receiverId") Long receiverId, @Param("senderId") Long senderId, PageBounds pageBounds);
+    @SelectProvider(type = MessageSqlProvider.class, method = "getMessage")
+    PageList<MessageResource> getMessage(@Param("receiverId") Long receiverId, @Param("senderId") Long senderId,
+                                         @Param("lastMessageId") Long lastMessageId, PageBounds pageBounds);
 
-    @Update("UPDATE t_message message SET status='READ', update_time=now() WHERE message.receiver_id=#{receiverId} and message.sender_id=#{senderId} and message.id <=#{lastMessageId}")
-    int updateToRead(@Param("receiverId") Long receiverId, @Param("senderId") Long senderId, @Param("lastMessageId") Long lastMessageId);
+    @UpdateProvider(type = MessageSqlProvider.class, method = "updateToRead")
+    int updateToRead(@Param("receiverId") Long receiverId, @Param("senderId") Long senderId,
+                     @Param("lastMessageId") Long lastMessageId);
 
     @InsertProvider(type = MessageSqlProvider.class, method = "createMessage")
     @Options(useGeneratedKeys = true)

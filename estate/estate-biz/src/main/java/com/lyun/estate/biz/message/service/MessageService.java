@@ -99,7 +99,10 @@ public class MessageService {
             throw new EstateException(PARAM_NULL, "senderId");
         }
          /*  获取消息 */
-        PageList<MessageResource> messageResourceList = messageRepository.getMessage(receiverId, senderId, pageBounds);
+        PageList<MessageResource> messageResourceList = messageRepository.getMessage(receiverId,
+                senderId,
+                lastMessageId,
+                pageBounds);
         if (CollectionUtils.isEmpty(messageResourceList)) {
             return messageResourceList;
         }
@@ -142,7 +145,7 @@ public class MessageService {
         return messageResourceList;
     }
 
-    public List<MessageResource> getMessage(Long senderId, Long lastMessageId, PageBounds pageBounds) {
+    public PageList<MessageResource> getMessage(Long senderId, Long lastMessageId, PageBounds pageBounds) {
         return getMessage(restContext.getUserId(), senderId, lastMessageId, pageBounds);
     }
 
