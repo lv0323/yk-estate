@@ -72,6 +72,9 @@ require(['main-app',
                 totalCounts:dataTotal,
                 pageSize: pageConfig.limit,
                 onChange: function (num, type) {
+                    if(type === 'init'){
+                        return;
+                    }
                     getAndDisplayOperationLog(params, (num-1)*pageConfig.limit, pageConfig.limit);
                 }
             };

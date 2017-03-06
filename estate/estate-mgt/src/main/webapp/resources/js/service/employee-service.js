@@ -6,9 +6,9 @@ define(contextPath + '/js/service/employee-service.js',
     function (mainApp, utilService, DepartmentService, PositionService, requestService) {
 
         var EmployeeService = {
-            quitEmployee:[],
+           /* quitEmployee:[],
             nonQuitEmployee:[],
-            allEmployee:[]
+            allEmployee:[]*/
         };
 
         EmployeeService.getAvatar = function (header) {

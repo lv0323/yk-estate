@@ -90,7 +90,7 @@
                                 <h3 class="box-title">部门列表</h3>
                                 <div class="box-tools">
                                     <#--<a class="btn" id="addDepartBtn" data-toggle="modal" data-target="#addDepartDialog">-->
-                                     <a class="btn" id="addDepartBtn" href="/mgt/org/addDepartment.ftl">
+                                     <a class="btn" id="addDepartBtn" href="/mgt/org/addDepartment.ftl?target=.org">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                         新增部门
                                     </a>

@@ -105,6 +105,9 @@ require(['main-app',contextPath + '/js/service/department-service.js',
                 totalCounts:dataTotal,
                 pageSize: pageConfig.limit,
                 onChange: function (num, type) {
+                    if(type === 'init'){
+                        return;
+                    }
                     getDepartment((num-1)*pageConfig.limit, pageConfig.limit);
                 }
             };

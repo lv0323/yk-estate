@@ -74,7 +74,7 @@
                                             <div class="col-lg-1 col-md-2 col-sm-2">
                                                 <input id="totalPrice" type="text" name="publishPrice" required class="form-control" placeholder="总价" reg="/^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$/"/>
                                             </div>
-                                            <div class="col-lg-1 col-md-2 col-sm-2">
+                                            <div class="col-lg-2 col-md-3 col-sm-3">
                                                 <select class="form-control">
                                                 <#list sellPriceUnit ?if_exists as unit>
                                                     <option value="${unit.name()}">${unit.getLabel()}</option>
