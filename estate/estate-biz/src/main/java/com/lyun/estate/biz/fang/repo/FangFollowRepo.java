@@ -9,6 +9,8 @@ import com.lyun.estate.biz.fang.repo.provider.FangFollowSqlProvider;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 /**
  * Created by Jeffrey on 2017-02-28.
  */
@@ -28,4 +30,7 @@ public interface FangFollowRepo {
 
     @SelectProvider(type = FangFollowSqlProvider.class, method = "listBySelector")
     PageList<FangFollowDTO> listBySelector(FangFollowSelector selector, PageBounds pageBounds);
+
+    @Select("SELECT max(create_time) FROM t_fang_follow WHERE fang_id = #{fangId} AND is_deleted =FALSE ")
+    Date findLatestFollowTime(Long fangId);
 }

@@ -38,7 +38,7 @@ public class CustomerDefine {
         }
     }
 
-    public enum Status {
+    public enum Status implements LabelEnum {
         ZI_ZU("自租"),
         HE_ZU("合租"),
         JIE_ZHU("借住"),
@@ -82,6 +82,27 @@ public class CustomerDefine {
         private String label;
 
         Purpose(String label) {
+            this.label = label;
+        }
+
+        @Override
+        public String getLabel() {
+            return label;
+        }
+    }
+
+    public enum TimeLimits implements LabelEnum {
+        D_2("2天内"),
+        D_5("5天内"),
+        W_1("1周内"),
+        W_2("2周内"),
+        W_3("3周内"),
+        M_1("1月内"),
+        M_3("3月内"),;
+
+        private String label;
+
+        TimeLimits(String label) {
             this.label = label;
         }
 

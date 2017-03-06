@@ -386,6 +386,7 @@ public class MgtFangServiceImpl implements MgtFangService {
         Fang fang = fangRepository.findFang(fangId);
         MgtFangTiny tiny = new MgtFangTiny();
         BeanUtils.copyProperties(fang, tiny);
+        tiny.setLatestFollowTime(fangFollowRepo.findLatestFollowTime(fangId));
         tiny.setHouseLicence(licenceService.findOne(tiny.getLicenceId()));
         return tiny;
     }

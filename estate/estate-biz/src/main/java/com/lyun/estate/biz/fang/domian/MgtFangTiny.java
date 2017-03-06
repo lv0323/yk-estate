@@ -1,7 +1,10 @@
 package com.lyun.estate.biz.fang.domian;
 
 import com.google.common.base.MoreObjects;
-import com.lyun.estate.biz.fang.def.*;
+import com.lyun.estate.biz.fang.def.HouseProcess;
+import com.lyun.estate.biz.fang.def.HouseSubType;
+import com.lyun.estate.biz.fang.def.HouseType;
+import com.lyun.estate.biz.fang.def.PriceUnit;
 import com.lyun.estate.biz.houselicence.entity.HouseLicenceDTO;
 import com.lyun.estate.biz.support.def.BizType;
 
@@ -35,6 +38,7 @@ public class MgtFangTiny {
     private Integer floor;
     private Date createTime;
     private Date publishTime;
+    private Date latestFollowTime;
 
     public Long getId() {
         return id;
@@ -243,6 +247,15 @@ public class MgtFangTiny {
         return this;
     }
 
+    public Date getLatestFollowTime() {
+        return latestFollowTime;
+    }
+
+    public MgtFangTiny setLatestFollowTime(Date latestFollowTime) {
+        this.latestFollowTime = latestFollowTime;
+        return this;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -269,6 +282,7 @@ public class MgtFangTiny {
                 .add("floor", floor)
                 .add("createTime", createTime)
                 .add("publishTime", publishTime)
+                .add("latestFollowTime", latestFollowTime)
                 .toString();
     }
 }
