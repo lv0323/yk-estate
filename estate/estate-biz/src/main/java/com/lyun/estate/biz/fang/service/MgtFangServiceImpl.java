@@ -262,12 +262,6 @@ public class MgtFangServiceImpl implements MgtFangService {
     }
 
     @Override
-    public PageList<FangFollow> getFollows(Long fangId, PageBounds pageBounds) {
-        ExceptionUtil.checkNotNull("房源编号", fangId);
-        return fangFollowRepo.findByFangId(fangId, pageBounds);
-    }
-
-    @Override
     public FangCheck createCheck(FangCheck fangCheck) {
         ExceptionUtil.checkNotNull("fangCheck", fangCheck);
         ExceptionUtil.checkNotNull("房源编号", fangCheck.getFangId());

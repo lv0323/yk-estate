@@ -270,10 +270,6 @@ public class FangMgtService {
         );
     }
 
-    public PageList<FangFollow> getFollows(Long fangId, PageBounds pageBounds) {
-        return mgtFangService.getFollows(fangId, pageBounds);
-    }
-
     public FangCheck createCheck(Long fangId, String advantage, String disAdvantage) {
         Operator operator = mgtContext.getOperator();
 
