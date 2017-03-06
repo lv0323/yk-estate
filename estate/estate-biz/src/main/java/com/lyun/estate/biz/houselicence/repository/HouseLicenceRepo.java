@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.houselicence.repository;
 
-import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.houselicence.entity.HouseLicenceDTO;
 import org.apache.ibatis.annotations.*;

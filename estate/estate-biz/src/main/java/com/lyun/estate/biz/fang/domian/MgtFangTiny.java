@@ -3,6 +3,7 @@ package com.lyun.estate.biz.fang.domian;
 import com.google.common.base.MoreObjects;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.houselicence.entity.HouseLicenceDTO;
+import com.lyun.estate.biz.support.def.BizType;
 
 import java.math.BigDecimal;
 import java.util.Date;

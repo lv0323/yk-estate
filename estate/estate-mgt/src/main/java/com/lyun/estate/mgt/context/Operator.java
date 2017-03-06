@@ -1,6 +1,6 @@
 package com.lyun.estate.mgt.context;
 
-import com.lyun.estate.biz.employee.def.Gender;
+import com.lyun.estate.biz.support.def.Gender;
 
 public class Operator {
 

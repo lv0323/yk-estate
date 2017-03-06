@@ -1,9 +1,8 @@
 package com.lyun.estate.biz.fang.def;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+import com.lyun.estate.core.supports.labelenum.LabelEnum;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,8 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Jeffrey on 2017-01-03.
  */
-@JsonSerialize(using = LabelEnumSerializer.class)
-public enum StructureType {
+public enum StructureType implements LabelEnum {
     TA("塔楼", 1),
     BAN("板楼", 2),
     TA_BAN("塔板结合", 3),

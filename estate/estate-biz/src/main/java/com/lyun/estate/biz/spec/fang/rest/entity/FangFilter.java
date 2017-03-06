@@ -6,6 +6,7 @@ import com.lyun.estate.biz.spec.fang.rest.def.ElevatorFilter;
 import com.lyun.estate.biz.spec.fang.rest.def.HouseTypeFilter;
 import com.lyun.estate.biz.spec.fang.rest.def.IntPair;
 import com.lyun.estate.biz.spec.fang.rest.def.ShiCountsFilter;
+import com.lyun.estate.biz.support.def.BizType;
 
 import java.util.List;
 

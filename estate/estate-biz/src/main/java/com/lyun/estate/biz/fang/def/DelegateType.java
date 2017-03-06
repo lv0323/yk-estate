@@ -1,13 +1,11 @@
 package com.lyun.estate.biz.fang.def;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+import com.lyun.estate.core.supports.labelenum.LabelEnum;
 
 /**
  * Created by Jeffrey on 2017-01-22.
  */
-@JsonSerialize(using = LabelEnumSerializer.class)
-public enum DelegateType {
+public enum DelegateType implements LabelEnum {
     ONLY("独家"),
     SIGNED("签约"),
     UNSIGNED("未签约"),
@@ -21,7 +19,6 @@ public enum DelegateType {
     }
 
     public String getLabel() {
-
         return label;
     }
 }

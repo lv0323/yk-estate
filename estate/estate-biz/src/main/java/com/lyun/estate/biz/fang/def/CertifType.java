@@ -1,13 +1,11 @@
 package com.lyun.estate.biz.fang.def;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+import com.lyun.estate.core.supports.labelenum.LabelEnum;
 
 /**
  * Created by Jeffrey on 2017-01-22.
  */
-@JsonSerialize(using = LabelEnumSerializer.class)
-public enum CertifType {
+public enum CertifType implements LabelEnum {
     FCZ("房产证"),
     GFHT("购房合同"),
     GFFP("购房发票"),

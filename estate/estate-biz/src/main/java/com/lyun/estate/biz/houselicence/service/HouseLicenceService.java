@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.houselicence.service;
 
 import com.google.common.base.Strings;
-import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.service.HouseDictService;
 import com.lyun.estate.biz.houselicence.def.LicenceStatus;

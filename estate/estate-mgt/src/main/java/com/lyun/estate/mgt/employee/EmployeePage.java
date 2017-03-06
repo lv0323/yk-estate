@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.lyun.estate.biz.position.def.PositionType;
 import com.lyun.estate.biz.employee.def.WorkingStatus;
-import com.lyun.estate.biz.employee.def.Gender;
+import com.lyun.estate.biz.support.def.Gender;
 import java.util.Arrays;
 import java.util.HashMap;
 /**

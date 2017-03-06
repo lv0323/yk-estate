@@ -1,13 +1,11 @@
-package com.lyun.estate.core.supports.resolvers;
+package com.lyun.estate.core.supports.labelenum;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,15 +21,12 @@ public class LabelEnumSerializer extends StdSerializer<Enum> {
 
     @Override
     public void serialize(Enum value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        try {
-            Field labelField = value.getClass().getDeclaredField("label");
-            labelField.setAccessible(true);
+        if (value instanceof LabelEnum) {
             Map<String, Object> map = new HashMap<>();
             map.put("name", value.name());
-            map.put("label", labelField.get(value));
+            map.put("label", ((LabelEnum) value).getLabel());
             mapper.writeValue(gen, map);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            ExceptionUtil.catching(e);
+        } else {
             gen.writeString(value.name());
         }
     }

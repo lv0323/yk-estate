@@ -1,16 +1,15 @@
 package com.lyun.estate.biz.fang.def;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Lists;
-import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+import com.lyun.estate.biz.support.def.BizType;
+import com.lyun.estate.core.supports.labelenum.LabelEnum;
 
 import java.util.List;
 
 /**
  * Created by Jeffrey on 2017-01-18.
  */
-@JsonSerialize(using = LabelEnumSerializer.class)
-public enum PriceUnit {
+public enum PriceUnit implements LabelEnum {
     YUAN("元"),
     WAN("万元"),
     YUAN_D("元/天"),

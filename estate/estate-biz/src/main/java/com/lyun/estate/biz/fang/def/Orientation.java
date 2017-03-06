@@ -1,13 +1,11 @@
 package com.lyun.estate.biz.fang.def;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+import com.lyun.estate.core.supports.labelenum.LabelEnum;
 
 /**
  * Created by Jeffrey on 2017-01-18.
  */
-@JsonSerialize(using = LabelEnumSerializer.class)
-public enum Orientation {
+public enum Orientation implements LabelEnum {
     E("东"),
     S("南"),
     W("西"),

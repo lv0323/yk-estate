@@ -1,13 +1,11 @@
 package com.lyun.estate.biz.favorite.def;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lyun.estate.core.supports.resolvers.LabelEnumSerializer;
+import com.lyun.estate.core.supports.labelenum.LabelEnum;
 
 /**
  * Created by Jeffrey on 2017-03-02.
  */
-@JsonSerialize(using = LabelEnumSerializer.class)
-public enum FavoriteType {
+public enum FavoriteType implements LabelEnum {
     XIAO_QU("小区"),
     FANG_SELL("二手房"),
     FANG_RENT("租房"),;

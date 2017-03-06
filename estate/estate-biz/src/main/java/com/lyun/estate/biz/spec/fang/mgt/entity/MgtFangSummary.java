@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.spec.fang.mgt.entity;
 
-import com.lyun.estate.biz.fang.def.BizType;
+import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.fang.def.HouseProcess;
 import com.lyun.estate.biz.fang.def.Orientation;
 import com.lyun.estate.biz.fang.def.PriceUnit;

@@ -4,6 +4,7 @@ import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.entity.FangDescr;
 import com.lyun.estate.biz.spec.fang.domain.FangForTag;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuStationRel;
+import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.core.supports.types.YN;
 
 import java.math.BigDecimal;
