@@ -1,8 +1,10 @@
 package com.lyun.estate.biz.customer.entity;
 
-import com.lyun.estate.biz.customer.def.CustomerDefine.IdentitySource;
-import com.lyun.estate.biz.customer.def.CustomerDefine.Source;
+
+import com.google.common.base.MoreObjects;
 import com.lyun.estate.biz.support.def.Gender;
+
+import static com.lyun.estate.biz.customer.def.CustomerDefine.*;
 
 /**
  * Created by Jeffrey on 2017-03-06.
@@ -12,6 +14,9 @@ public class Customer {
     private String name;
     private Source source;
     private String mobile;
+    private Long companyId;
+    private Long departmentId;
+    private Long employeeId;
     private String aMobile;
     private String bMobile;
     private String qq;
@@ -21,6 +26,10 @@ public class Customer {
     private String identityNo;
     private Gender gender;
     private String residentAddress;//户籍地址
+    private Status status;
+    private Level level;
+    private Purpose purpose;
+    private TimeLimits timeLimits;
 
     public Long getId() {
         return id;
@@ -55,6 +64,33 @@ public class Customer {
 
     public Customer setMobile(String mobile) {
         this.mobile = mobile;
+        return this;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public Customer setCompanyId(Long companyId) {
+        this.companyId = companyId;
+        return this;
+    }
+
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public Customer setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
+        return this;
+    }
+
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public Customer setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
         return this;
     }
 
@@ -137,5 +173,67 @@ public class Customer {
     public Customer setResidentAddress(String residentAddress) {
         this.residentAddress = residentAddress;
         return this;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public Customer setStatus(Status status) {
+        this.status = status;
+        return this;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public Customer setLevel(Level level) {
+        this.level = level;
+        return this;
+    }
+
+    public Purpose getPurpose() {
+        return purpose;
+    }
+
+    public Customer setPurpose(Purpose purpose) {
+        this.purpose = purpose;
+        return this;
+    }
+
+    public TimeLimits getTimeLimits() {
+        return timeLimits;
+    }
+
+    public Customer setTimeLimits(TimeLimits timeLimits) {
+        this.timeLimits = timeLimits;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("name", name)
+                .add("source", source)
+                .add("mobile", mobile)
+                .add("companyId", companyId)
+                .add("departmentId", departmentId)
+                .add("employeeId", employeeId)
+                .add("aMobile", aMobile)
+                .add("bMobile", bMobile)
+                .add("qq", qq)
+                .add("weChat", weChat)
+                .add("email", email)
+                .add("identitySource", identitySource)
+                .add("identityNo", identityNo)
+                .add("gender", gender)
+                .add("residentAddress", residentAddress)
+                .add("status", status)
+                .add("level", level)
+                .add("purpose", purpose)
+                .add("timeLimits", timeLimits)
+                .toString();
     }
 }
