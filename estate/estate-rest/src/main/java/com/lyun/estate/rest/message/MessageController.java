@@ -1,6 +1,7 @@
 package com.lyun.estate.rest.message;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.auth.token.CheckToken;
 import com.lyun.estate.biz.auth.token.JWTToken;
 import com.lyun.estate.biz.auth.token.JWTTokenArgumentResolver;
@@ -52,10 +53,10 @@ public class MessageController {
 
     @GetMapping("/show")
     @CheckToken
-    List<MessageResource> getMessage(@RequestParam(required = true) Long senderId,
-                                     @RequestParam(required = true) Long lastMessageId,
-                                     @RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken jwtToken,
-                                     @RequestHeader("X-PAGING") PageBounds pageBounds) {
+    PageList<MessageResource> getMessage(@RequestParam Long senderId,
+                                         @RequestParam(required = false) Long lastMessageId,
+                                         @RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken jwtToken,
+                                         @RequestHeader("X-PAGING") PageBounds pageBounds) {
         return messageService.getMessage(senderId, lastMessageId, pageBounds);
     }
 
