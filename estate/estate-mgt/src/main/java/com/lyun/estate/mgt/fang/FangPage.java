@@ -100,6 +100,7 @@ public class FangPage {
         params.put("heatingType", Arrays.asList(HeatingType.values()));
         params.put("taxesWilling", Arrays.asList(TaxesWilling.values()));
         params.put("commissionWilling", Arrays.asList(CommissionWilling.values()));
+        params.put("followType", Arrays.asList(FollowType.values()));
         params.put("username", service.getUsername());
         if(fang.getBizType().name().equals(BizType.RENT)){
             params.put("priceUnit", PriceUnit.getByBizType(BizType.RENT));
