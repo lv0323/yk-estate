@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.showing.entity;
 
 import com.google.common.base.MoreObjects;
+import com.lyun.estate.biz.customer.entity.CustomerTiny;
 import com.lyun.estate.biz.fang.domian.MgtFangTiny;
 import com.lyun.estate.biz.showing.def.ShowingDefine;
 
@@ -18,11 +19,14 @@ public class ShowingDTO {
     private String departmentName;
     private Long employeeId;
     private String employeeName;
+    private Long avatarId;
+    private String avatarURI;
     private Date createTime;
     private Date updateTime;
     private ShowingDefine.Process process;
     private Boolean isDeleted;
     private MgtFangTiny fangTiny;
+    private CustomerTiny customerTiny;
 
     public Long getId() {
         return id;
@@ -141,9 +145,37 @@ public class ShowingDTO {
         return this;
     }
 
+    public Long getAvatarId() {
+        return avatarId;
+    }
+
+    public ShowingDTO setAvatarId(Long avatarId) {
+        this.avatarId = avatarId;
+        return this;
+    }
+
+    public String getAvatarURI() {
+        return avatarURI;
+    }
+
+    public ShowingDTO setAvatarURI(String avatarURI) {
+        this.avatarURI = avatarURI;
+        return this;
+    }
+
+    public CustomerTiny getCustomerTiny() {
+        return customerTiny;
+    }
+
+    public ShowingDTO setCustomerTiny(CustomerTiny customerTiny) {
+        this.customerTiny = customerTiny;
+        return this;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
+                .omitNullValues()
                 .add("id", id)
                 .add("customerId", customerId)
                 .add("fangId", fangId)
@@ -152,11 +184,14 @@ public class ShowingDTO {
                 .add("departmentName", departmentName)
                 .add("employeeId", employeeId)
                 .add("employeeName", employeeName)
+                .add("avatarId", avatarId)
+                .add("avatarURI", avatarURI)
                 .add("createTime", createTime)
                 .add("updateTime", updateTime)
                 .add("process", process)
                 .add("isDeleted", isDeleted)
                 .add("fangTiny", fangTiny)
+                .add("customerTiny", customerTiny)
                 .toString();
     }
 }

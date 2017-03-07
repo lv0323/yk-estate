@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.customer.repo
 
 import com.lyun.estate.biz.customer.entity.Customer
+import com.lyun.estate.biz.customer.entity.CustomerTiny
 import com.lyun.estate.biz.customer.repo.provider.CustomerSqlProvider
 import org.apache.ibatis.annotations.InsertProvider
 import org.apache.ibatis.annotations.Options
@@ -23,4 +24,7 @@ interface CustomerRepo {
     @InsertProvider(type = CustomerSqlProvider.class, method = 'save')
     @Options(useGeneratedKeys = true)
     int save(Customer customer)
+
+    @Select('SELECT id, name, source, mobile FROM t_customer WHERE id = #{id}')
+    CustomerTiny getTiny(Long id)
 }

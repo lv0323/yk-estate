@@ -15,6 +15,8 @@ public class FangFollowDTO {
     private String departmentName;
     private Long employeeId;
     private String employeeName;
+    private Long avatarId;
+    private String avatarURI;
     private FollowType followType;
     private String content;
     private Date createTime;
@@ -116,6 +118,24 @@ public class FangFollowDTO {
 
     public FangFollowDTO setFangTiny(MgtFangTiny fangTiny) {
         this.fangTiny = fangTiny;
+        return this;
+    }
+
+    public Long getAvatarId() {
+        return avatarId;
+    }
+
+    public FangFollowDTO setAvatarId(Long avatarId) {
+        this.avatarId = avatarId;
+        return this;
+    }
+
+    public String getAvatarURI() {
+        return avatarURI;
+    }
+
+    public FangFollowDTO setAvatarURI(String avatarURI) {
+        this.avatarURI = avatarURI;
         return this;
     }
 }
