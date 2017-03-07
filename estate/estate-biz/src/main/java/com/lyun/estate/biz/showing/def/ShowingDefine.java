@@ -9,7 +9,7 @@ public class ShowingDefine {
     public enum Process implements LabelEnum {
         CREATED("新建"),
         CANCEL("取消"),
-        SUCCESS("结束"),;
+        SUCCESS("完成"),;
         private final String label;
 
         Process(String label) {

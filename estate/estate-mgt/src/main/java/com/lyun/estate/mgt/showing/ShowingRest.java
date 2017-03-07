@@ -33,8 +33,9 @@ public class ShowingRest {
 
     @GetMapping("list")
     public PageList<Showing> listShowing(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date minDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date minCreateDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxCreateDate,
+            @RequestParam(required = false) ShowingDefine.Process process,
             @RequestParam(required = false) Long departmentId,
             @RequestParam(required = false) Boolean children,
             @RequestParam(required = false) Long employeeId) {
