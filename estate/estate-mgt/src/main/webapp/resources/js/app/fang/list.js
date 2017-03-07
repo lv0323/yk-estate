@@ -10,10 +10,11 @@ require(['main-app',
         contextPath + '/js/service/fang-service.js',
         contextPath + '/js/service/util-service.js',
         contextPath + '/js/app/fang/tools.js',
+        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath + '/js/directive/index.js',
-        'jqPaginator', 'select', 'chosen', 'datetimepicker.zh-cn'],
-    function (mainApp, IdentityService, ValidationService, CityService, DepartmentService, EmployeeService, FangService, UtilService, Tools, pagingPlugin) {
+        'jqPaginator', 'select', 'chosen', 'datetimepicker.zh-cn', 'sweetalert'],
+    function (mainApp, IdentityService, ValidationService, CityService, DepartmentService, EmployeeService, FangService, UtilService, Tools, SweetAlertHelp, pagingPlugin) {
         var pageConfig = {
             limit: 8,
             offset: 0,
@@ -74,15 +75,12 @@ require(['main-app',
             $scope.districtList =[];
             $scope.subDistrictList =[];
             $scope.employeeList =[{name:'',id:''}];
-            /*弹出框*/
-            $scope.showWarn = function(param){
-                $('#warnModel').modal('show');
-                $timeout(function(){
-                    $scope.page.warn.title= param.title;
-                    $scope.page.warn.content= param.content;
-                    $scope.page.warn.closeF= param.closeF;
-                },30)
-            };
+            function ceilCheck(ceilValue, value) {
+                if (ceilValue && value && parseFloat(ceilValue) < parseFloat(value)) {
+                    return false;
+                }
+                return true;
+            }
             /*区域*/
             CityService.getDistrict().then(function(response){
                 $scope.filter.cityId = response[0].cityId;
@@ -259,8 +257,8 @@ require(['main-app',
             });
 
             $scope.checkArea = function(key){
-                if($scope.filter.minArea && $scope.filter.maxArea && $scope.filter.minArea > $scope.filter.maxArea ){
-                    $scope.showWarn({title:'提示',content:'最小面积不能大于最大面积'});
+                if(!ceilCheck($scope.filter.maxArea, $scope.filter.minArea)){
+                    SweetAlertHelp.fail({message:'最小面积不能大于最大面积'});
                     $scope.filter[key] = '';
                     return;
                 }

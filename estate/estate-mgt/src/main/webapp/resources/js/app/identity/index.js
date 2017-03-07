@@ -2,8 +2,9 @@ require(['main-app',
     contextPath + '/js/service/identity-service.js', 
     contextPath + '/js/service/validation-service.js',
     contextPath + '/js/service/util-service.js',
-        contextPath + '/js/service/employee-service.js'],
-    function (mainApp, IdentityService, ValidationService, UtilService, EmployeeService) {
+        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
+        contextPath + '/js/service/employee-service.js','sweetalert'],
+    function (mainApp, IdentityService, ValidationService, UtilService, SweetAlertHelp, EmployeeService) {
 
         var LoginModule=angular.module('LoginModule',[]);
         LoginModule.controller("LoginCtrl", ['$scope','$timeout', '$interval','$window','$location', function($scope, $timeout, $interval, $window, $location) {
@@ -17,19 +18,24 @@ require(['main-app',
                     sendSMS :true,
                     smsText:'点击获取'
                 };
-                $scope.warn={
-                    title:'提示',
-                    content:'请输入完整信息',
-                };
             }
-            /*弹出框*/
-            function show(param){
-                $('#myModal').modal('show');
-                $timeout(function(){
-                    $scope.warn.title= param.title;
-                    $scope.warn.content= param.content;
-                },30)
+            SweetAlertHelp.success = function(){
+                swal({
+                    title: "操作成功!",
+                    type: "success",
+                    confirmButtonText: "确定",
+                    confirmButtonColor: "#3c8dbc"
+                });
             }
+            SweetAlertHelp.fail = function(res) {
+                swal({
+                    title: "错误!",
+                    text: res["message"],
+                    type: "error",
+                    confirmButtonText: "确定",
+                    confirmButtonColor: "#3c8dbc"
+                });
+            };
             $scope.loadCaptcha =function() {
                 $scope.captchaId = UtilService.generateSalt(8);
                 localStorage.setItem("captchaId", $scope.captchaId);
@@ -45,22 +51,21 @@ require(['main-app',
             /*登录*/
             $scope.submit = function(){
                 if (!$scope.loginData.mobile||!$scope.loginData.password||!$scope.loginData.captcha) {
-                    show({title:'提示',content:'请输入完整信息'})
+                    SweetAlertHelp.fail({message:'请输入完整信息'});
                     return;
                 }
                 $scope.loginData.mobile =$scope.loginData.mobile.trim();
                 $scope.loginData.password =$scope.loginData.password.trim();
                 $scope.loginData.captcha =$scope.loginData.captcha.trim();
                 if(!ValidationService.isValidPhoneNumber($scope.loginData.mobile)){
-                    show({title:'提示',content:'手机号格式不正确'})
+                    SweetAlertHelp.fail({message:'手机号格式不正确'});
                     return;
                 }
                 IdentityService.loginAction({mobile:$scope.loginData.mobile,password:$scope.loginData.password}, {clientId:clientId, code:$scope.loginData.captcha,id:$scope.captchaId}).done(function(response){
                     var userInfo = JSON.parse(localStorage.getItem('userInfo'));
                     $window.location=contextPath+'/org/department.ftl';
                 }).fail(function(response){
-                    show({title:'提示',content:response&&response.message});
-                    $scope.loadCaptcha();
+                    SweetAlertHelp.fail({message:response&&response.message});
                 });
             };
             /*激活图形验证码*/
@@ -103,15 +108,15 @@ require(['main-app',
             /*激活*/
             $scope.activate = function(){
                 if(!$scope.activeData.secretKey || !$scope.activeData.password||!$scope.activeData.passwordAgain||!$scope.activeData.sms){
-                    show({title:'提示',content:'请输入完整信息!'});
+                    SweetAlertHelp.fail({message:'请输入完整信息!'});
                     return;
                 }
                 if($scope.activeData.password.trim().length<8){
-                    show({title:'提示',content:'密码位数不可小于8位'});
+                    SweetAlertHelp.fail({message:'密码位数不可小于8位!'});
                     return;
                 }
                 if($scope.activeData.password.trim() !== $scope.activeData.passwordAgain.trim()){
-                    show({title:'提示',content:'输入的密码不一致'});
+                    SweetAlertHelp.fail({message:'输入的密码不一致!'});
                     return;
                 }
                 IdentityService.activate({password:$scope.activeData.password.trim(), secretKey:$scope.activeData.secretKey},
@@ -120,10 +125,10 @@ require(['main-app',
                     +'&mobile='+$scope.smsData.mobile
                     +'&code=' + $scope.activeData.sms
                     +'&type=REGISTER&clientId='+clientId}).done(function(){
-                    show({title:'提示',content:'激活成功!'});
+                    SweetAlertHelp.success({message:'激活成功!'});
                     resetData();
                 }).fail(function(response){
-                    show({title:'提示',content:response&&response.message});
+                    SweetAlertHelp.fail({message:response&&response.message});
                     $scope.loadActiveCaptcha();
                 });
             }

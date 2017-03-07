@@ -7,10 +7,11 @@ require(['main-app',
         contextPath + '/js/service/validation-service.js',
         contextPath + '/js/service/xiaoqu-service.js',
         contextPath + '/js/service/util-service.js',
+        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath + '/js/directive/index.js',
         'jqPaginator', 'select', 'chosen', 'datepicker.zh-cn', 'datetimepicker.zh-cn'],
-    function (mainApp,  IdentityService, FangService, ValidationService, XiaoquService, UtilService, pagingPlugin) {
+    function (mainApp,  IdentityService, FangService, ValidationService, XiaoquService, UtilService, SweetAlertHelp, pagingPlugin) {
 
         var AddHouseModule = angular.module('AddHouseModule', ['directiveYk']);
 
@@ -248,7 +249,7 @@ require(['main-app',
                     };
                     FangService.checkLicence(data).then(function(response){
                         if(response.result != 'SUCCEED'){
-                            _this.showWarn({title:'提示',content:'已存在该房间记录'});
+                            SweetAlertHelp.fail({message:'已存在该房间记录'});
                         }
                     });
                 }
@@ -276,7 +277,7 @@ require(['main-app',
                     _this.estateGet(config.xiaoQuId.value);
                 },800);
             };
-            /*弹出框*/
+
             _this.showWarn = function(param){
                 $('#warnModel').modal('show');
                 $timeout(function(){
@@ -347,7 +348,7 @@ require(['main-app',
             /*楼层检查*/
             _this.floorCountCheck = function(){
                 if(!ceilCheck(_this.data.floorCounts, _this.data.floor)){
-                    _this.showWarn({title:'提示',content:'楼层数不能大于总层数'});
+                    SweetAlertHelp.fail({message:'楼层数不能大于总层数'});
                     return false;
                 }
                 return true;
@@ -355,7 +356,7 @@ require(['main-app',
             //检查面积
             _this.checkArea = function(){
                 if(!ceilCheck(_this.data.estateArea, _this.data.realArea)){
-                    _this.showWarn({title:'提示',content:'套内面积不能大于建筑面积'});
+                    SweetAlertHelp.fail({message:'套内面积不能大于建筑面积'});
                     return false;
                 }
                 return true;
@@ -371,7 +372,7 @@ require(['main-app',
             };
             _this.bottomPriceCheck = function () {
                 if(!ceilCheck(_this.data.publishPrice, _this.data.bottomPrice)){
-                    _this.showWarn({title: '提示', content: '底价不能大于总价'});
+                    SweetAlertHelp.fail({message:'底价不能大于总价'});
                     return false
                 }
                 return true;
@@ -525,7 +526,7 @@ require(['main-app',
             _this.prevStep = function () {
                 _this.page.currentStep = _this.stepConfig.step1;
             };
-            _this.subTypeRefresh = function(id){
+            _this.subTypeRefresh = function (id) {
                 $(id).selectpicker('refresh')
             };
             _this.setBuildDate = function(){
@@ -538,6 +539,9 @@ require(['main-app',
             };
             _this.setLayout = function(type, value){
                 _this.currentLayout[type] = value;
+            };
+            _this.goList = function(){
+                $window.location ='/mgt/fangManage/list?target=.fang';
             };
             _this.submit = function(){
                 var flag = true;
@@ -586,12 +590,9 @@ require(['main-app',
                 _this.data.isOnly = _this.data.isOnly ?'Y':'N';
                 _this.data.resident = _this.data.resident ?'Y':'N';
                 FangService.create(_this.data).then(function(){
-                    _this.showWarn({title:'提示',content:'新增房源完成',closeF:_this.goList});
+                    SweetAlertHelp.success({message:'新增房源完成'},_this.goList);
                 });
 
-            };
-            _this.goList = function(){
-                $window.location ='/mgt/fangManage/list.ftl?target=.fang';
             };
             _this.houseTypeChange = function(){
                 _this.data.houseSubType = '';

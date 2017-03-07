@@ -69,25 +69,6 @@
         <div class="bottom-content"><a class="to-active" ng-click="changePage('login')">去登录</a></div>
     </form>
     </div>
-    <div class="modal fade bs-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel" ng-bind="warn.title">
-
-                    </h4>
-                </div>
-                <div class="modal-body" ng-bind="warn.content">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">确定
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
     <!-- /.login-box-body -->
 </div>
