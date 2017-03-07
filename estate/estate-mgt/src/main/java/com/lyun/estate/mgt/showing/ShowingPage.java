@@ -26,6 +26,7 @@ public class ShowingPage {
         HashMap<String, Object> params = new HashMap<>();
         params.put("avatarUrl",service.getAvatar());
         params.put("username",service.getUsername());
+        params.put("showingOperation", Arrays.asList(Process.values()));
         return new ModelAndView("/propertyVisit/propertyVisit", params);
     }
 
@@ -34,7 +35,6 @@ public class ShowingPage {
         HashMap<String, Object> params = new HashMap<>();
         params.put("avatarUrl",service.getAvatar());
         params.put("username",service.getUsername());
-        params.put("showingOperation", Arrays.asList(Process.values()));
         params.put("customerSource", Arrays.asList(Source.values()));
         return new ModelAndView("/propertyVisit/addPropertyVisit", params);
     }

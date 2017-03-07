@@ -4,7 +4,7 @@
 require(['main-app',
         contextPath + '/js/service/propertyvisit-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
-        'sweetalert', 'datatables', 'datatablesBootstrap'],
+        'datepicker.zh-cn', 'sweetalert', 'datatables', 'datatablesBootstrap'],
     function (mainApp, PropertyVisitService, pagingPlugin) {
 
         var pageConfig = {
@@ -17,12 +17,24 @@ require(['main-app',
             target:null
         };
 
+        $.fn.datepicker.defaults.language = "zh-CN";
+        $('#minCreateDate').datepicker({
+            todayHighlight:true,
+            autoclose: true
+        });
+        $('#maxCreateDate').datepicker({
+            todayHighlight:true,
+            autoclose: true
+        });
+
         var displayTable = function (data) {
             var dataSet = data.items.map(function (item, index) {
                 return {
                    /* employeeName: item.,
                     customerName: item.,
                     propertyId: item.,
+                    visitStartDate: item.,
+                    visitEndDate: item.,
                     status: item.*/
                 }
             });
@@ -36,12 +48,14 @@ require(['main-app',
                     ordering: false,
                     autoWidth: false,
                     columnDefs: [
-                        {className: "text-right", "targets": [3]} /*添加class*/
+                        {className: "text-right", "targets": [5]} /*添加class*/
                     ],
                     columns: [
                         {title: "带看员工", data: 'employeeName'},
                         {title: "带看客户", data: 'customerName', defaultContent: ""},
                         {title: "带看房源", data: 'propertyId', defaultContent: ""},
+                        {title: "带看生成时间", data: 'visitStartDate', defaultContent: ""},
+                        {title: "带看结束时间", data: 'visitEndDate', defaultContent: ""},
                         {title: "状态", data: 'status', defaultContent: ""}
                     ]
                 });
@@ -80,5 +94,17 @@ require(['main-app',
                     $('#propertyVisitList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
                 });
         }
+
+        getPropertyVisit(0, pageConfig.limit);
+
+        //toggle filter for Employee display
+        $('#filterPropertyVisitBtn').on('click',function () {
+            if($('#box-filter').css('display')=="none"){
+                $('#box-filter').show();
+            }else {
+                $('#box-filter').hide();
+            }
+        });
+
 
     });
