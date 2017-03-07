@@ -5,6 +5,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.domian.FangFollowDTO;
+import com.lyun.estate.biz.fang.domian.MgtFangTiny;
 import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.entity.FileDescription;
@@ -417,5 +418,9 @@ public class FangRest {
         return fangMgtService.listFollow(filter, pageBounds);
     }
 
+    @GetMapping("/tiny")
+    public MgtFangTiny getFangTinyByLicenceId(@RequestParam Long licenceId) {
+        return fangMgtService.getFangTinyByLicenceId(licenceId);
+    }
 
 }
