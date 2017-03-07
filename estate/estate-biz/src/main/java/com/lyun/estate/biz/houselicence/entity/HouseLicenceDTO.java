@@ -1,8 +1,8 @@
 package com.lyun.estate.biz.houselicence.entity;
 
 import com.google.common.base.MoreObjects;
-import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.houselicence.def.LicenceStatus;
+import com.lyun.estate.biz.support.def.BizType;
 
 import java.util.Date;
 
@@ -21,6 +21,7 @@ public class HouseLicenceDTO {
     private String houseNo;
     private Date createTime;
     private Date updateTime;
+    private String location;
     private Boolean isDeleted;
 
     public Long getId() {
@@ -128,6 +129,15 @@ public class HouseLicenceDTO {
 
     public HouseLicenceDTO setDeleted(Boolean deleted) {
         isDeleted = deleted;
+        return this;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public HouseLicenceDTO buildLocation() {
+        this.location = xiaoQuName + " " + buildingName + " " + buildingUnitName + " " + houseNo;
         return this;
     }
 

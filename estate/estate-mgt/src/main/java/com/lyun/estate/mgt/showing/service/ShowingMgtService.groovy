@@ -37,9 +37,12 @@ class ShowingMgtService {
                 .setDepartmentId(operator.getDepartmentId()).setEmployeeId(operator.getId()))
 
         return showingService.create(
-                new Showing().setFangId(fangId).setProcess(ShowingDefine.Process.CREATED)
-                        .setCustomerId(customer.getId()).setCompanyId(operator.getCompanyId())
+                new Showing().setFangId(fangId).setCustomerId(customer.getId()).setCompanyId(operator.getCompanyId())
                         .setDepartmentId(operator.getDepartmentId()).setEmployeeId(operator.getId()))
+    }
+
+    Showing close(Long showingId, ShowingDefine.Process process) {
+        return showingService.close(showingId, process)
     }
 }
 

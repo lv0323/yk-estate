@@ -1,5 +1,6 @@
 package com.lyun.estate.mgt.showing;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.customer.def.CustomerDefine;
 import com.lyun.estate.biz.showing.def.ShowingDefine;
@@ -33,7 +34,7 @@ public class ShowingRest {
     public Showing closeShowing(@RequestParam Long showingId,
                                 @RequestParam ShowingDefine.Process process) {
 
-        return null;
+        return showingMgtService.close(showingId, process);
     }
 
     @GetMapping("list")
@@ -43,7 +44,8 @@ public class ShowingRest {
             @RequestParam(required = false) ShowingDefine.Process process,
             @RequestParam(required = false) Long departmentId,
             @RequestParam(required = false) Boolean children,
-            @RequestParam(required = false) Long employeeId) {
+            @RequestParam(required = false) Long employeeId,
+            PageBounds pageBounds) {
         return null;
     }
 
