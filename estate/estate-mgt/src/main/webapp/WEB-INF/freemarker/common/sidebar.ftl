@@ -79,10 +79,9 @@
             <div class="pull-left image">
                 <div class="user-panelImg">
                     <#if avatarUrl??>
-                        <img src="${avatarUrl}" style="width:42px; height:42px;display: inline-block;">
+                        <img src="${avatarUrl}" style="width:42px; display: inline-block;">
                         <#else>
                             <img src="${contextPath!}/img/common/avatar-default.png" style="width:42px; height:42px;display: inline-block;">
-                            <#--<i class="fa fa-user-circle fa-3x" aria-hidden="true" style="display: inline-block;"></i>-->
                     </#if>
                 </div>
             </div>
