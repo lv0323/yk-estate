@@ -9,10 +9,11 @@ require(['main-app',
         contextPath + '/js/service/employee-service.js',
         contextPath + '/js/service/fang-service.js',
         contextPath + '/js/service/util-service.js',
+        contextPath + '/js/app/fang/tools.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath + '/js/directive/index.js',
         'jqPaginator', 'select', 'chosen', 'datetimepicker.zh-cn'],
-    function (mainApp, IdentityService, ValidationService, CityService, DepartmentService, EmployeeService, FangService, UtilService, pagingPlugin) {
+    function (mainApp, IdentityService, ValidationService, CityService, DepartmentService, EmployeeService, FangService, UtilService, Tools, pagingPlugin) {
         var pageConfig = {
             limit: 8,
             offset: 0,
@@ -328,7 +329,15 @@ require(['main-app',
                         $scope.$apply(function(){
                             pagination(response.total);
                             if (response.count > 0) {
-                                $scope.houseList = response.items;
+                                $scope.houseList = response.items.map(function(item){
+                                    item.layoutFormat = Tools.layoutFormat({
+                                        sCounts:item.sCounts,
+                                        tCounts:item.tCounts,
+                                        cCounts:item.cCounts,
+                                        wCounts:item.wCounts,
+                                        ytCounts:item.ytCounts}) ;
+                                    return item;
+                                });
                             }
                         });
 

@@ -1129,3 +1129,14 @@ a.btn-collapse:hover{
     background-color:#169bd5;
     color:#fff;
 }
+#houseFollowWrapper table{
+    font-size: 12px;
+}
+#houseFollowWrapper .table > thead > tr > th{
+    border-bottom: 2px solid #e2e7f4;
+    background-color: #f1f4fb;
+    color: #5b6885;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

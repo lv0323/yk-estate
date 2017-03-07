@@ -5295,3 +5295,6 @@ dl.profile dd{
 #user-profile .profile-detail{
   text-align: center;
 }
+table{
+  font-size: inherit;
+}

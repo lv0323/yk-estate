@@ -48,23 +48,27 @@ require(['main-app',
                 now:new Date().getTime()
             };
             $scope.followList = [];
-
-            $scope.houseList = [];
-            $scope.filter ={};
-            $scope.depExpList=[
-                {name :'含下级', value:'true', key:'includeChildren'},
-            ];
             $scope.employeeList =[{name:'',id:''}];
-            /*弹出框*/
-            $scope.showWarn = function(param){
-                $('#warnModel').modal('show');
-                $timeout(function(){
-                    $scope.page.warn.title= param.title;
-                    $scope.page.warn.content= param.content;
-                    $scope.page.warn.closeF= param.closeF;
-                },30)
-            };
+            $scope.ioEmployeeList =[{name:'',id:''}];
+            $scope.houseList = [];
+            $scope.filter ={
+                followType:'',
+                minFollowDate:'',
+                maxFollowDate:'',
+                departmentId:'',
+                children:'',
+                employeeId:'',
+                ioDepartmentId:'',
+                ioChildren:'',
+                ioEmployeeId:''
 
+            };
+            $scope.depExpList=[
+                {name :'含下级', value:'true', key:'children'},
+            ];
+            $scope.ioDepExpList=[
+                {name :'含下级', value:'true', key:'ioChildren'},
+            ];
             $scope.getEmployee = function(key){
                 $scope.employeeList =[{name:'',id:''}];
                 $scope.filter.employeeId = '';
@@ -73,8 +77,8 @@ require(['main-app',
                 }
                 EmployeeService.getAllEmployee({departmentId: key}).done(function (response) {
                     $scope.$apply(function(){
-                        if(response && response.items && response.items.length>0){
-                            $scope.employeeList = response.items.map(function(item){
+                        if(response && response && response.length>0){
+                            $scope.employeeList = response.map(function(item){
                                 return {
                                     name: item.name,
                                     id: item.id
@@ -88,14 +92,39 @@ require(['main-app',
                     $scope.employeeList =[{name:'',id:''}];
                 });
             };
-            $scope.includeChildrenCheck = function(){
-                if($scope.filter.departmentId){
+            $scope.getIoEmployee = function(key){
+                $scope.ioEmployeeList =[{name:'',id:''}];
+                $scope.filter.employeeId = '';
+                if(key === ''){
+                    return;
+                }
+                EmployeeService.getAllEmployee({departmentId: key}).done(function (response) {
+                    $scope.$apply(function(){
+                        if(response && response && response.length>0){
+                            $scope.ioEmployeeList = response.map(function(item){
+                                return {
+                                    name: item.name,
+                                    id: item.id
+                                }
+                            });
+                        }else{
+                            $scope.ioEmployeeList =[{name:'',id:''}];
+                        }
+                    });
+                }).fail(function(){
+                    $scope.employeeList =[{name:'',id:''}];
+                });
+            };
+            $scope.includeChildrenCheck = function(key){
+                if(key && $scope.filter[key]){
                     $scope.list();
                 };
             };
             $scope.chosenChange = function(id, key, value){
                 if(key === 'departmentId'){
                     $scope.getEmployee(value);
+                }else if(key === 'ioDepartmentId'){
+                    $scope.getIoEmployee(value);
                 }
             };
             $scope.initChosen = function(id, key){
@@ -115,16 +144,13 @@ require(['main-app',
                 $(id).trigger('chosen:updated');
             };
 
-            $scope.setFilterType = function(key,value){
+            $scope.setFilterType = function(key, value){
                 $scope.filter[key]=value;
                 $scope.list();
             };
-            $scope.setDepId = function(e) {
-                console.log($scope.filter.depId);
-            };
             $scope.setDate = function(key, value){
                 $scope.filter[key] = value;
-                $scope.timeCheck()
+                $scope.list();
             };
 
             /*部门*/
@@ -171,9 +197,18 @@ require(['main-app',
             $scope.triggerCollapse = function(){
                 $scope.page.collapse = !$scope.page.collapse;
             };
-            $scope.list = function(offset){
+            $scope.list = function(offset, currentPage){
                 var now = new Date().getTime() ;
-                FangService.listFollow({},{'X-PAGING':'total=true&offset='+(offset||pageConfig.offset)+'&limit='+ pageConfig.limit}).then(function(response){
+                var param ={};
+                for (var key in $scope.filter){
+                    if(!!$scope.filter[key]){
+                        param[key] = $scope.filter[key];
+                    }
+                }
+                if(!currentPage){
+                    pageConfig.currentPage = 1;
+                }
+                FangService.listFollow(param, {'X-PAGING':'total=true&offset='+(offset||pageConfig.offset)+'&limit='+ pageConfig.limit}).then(function(response){
                     pagination(response.total);
                     $scope.followList = response.items.map(function(item){
                         if(item.publishTime){

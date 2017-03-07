@@ -195,7 +195,7 @@
                                                 <a href="javascript:void(0);" ng-click="ctrl.deleteFollow(follow.id)">删除</a>
                                             </td>-->
                                         </tr>
-                                        <tr><td colspan="7">{{follow.content}}</td></tr>
+                                        <tr><td colspan="7">跟进内容:{{follow.content}}</td></tr>
                                         </tbody>
                                     </table>
                                 </div>

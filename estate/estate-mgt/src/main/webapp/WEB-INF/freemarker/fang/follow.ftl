@@ -28,20 +28,20 @@
                         <div class="box-body clearfix no-padding">
                             <form id="formlist" class="form-inline">
                                 <div id="searchList" ng-cloak class="clearfix">
-                                    <div class="col-lg-4 col-md-4 col-sm-4">
+                                    <#--<div class="col-lg-4 col-md-4 col-sm-4">
                                         <div class="input-group" style="width:100%;">
                                             <input placeholder="房源地址、业主姓名、业主电话、房源编号..." class="form-control" name="houseVO.fyHouseEstname" type="text">
     								        <span class="input-group-btn"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>查询</button></span>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <div class="clearfix"></div>
                                     <div class="collapse-box" ng-show="page.collapse">
                                         <div class="form-group sortlist">
                                             <label class="control-label" style="vertical-align:top;padding-top:5px;">跟进方式</label>
                                             <div class="tj" id="distract">
-                                                <a ng-href="javascript:" ng-class="{'actived': '' == filter.districtId}" ng-click="setDistrict('')">不限</a>
+                                                <a ng-href="javascript:" ng-class="{'actived': '' == filter.followType}" ng-click="setFilterType('followType', '')">不限</a>
                                                 <#list followType?if_exists as type>
-                                                    <a ng-href="javascript:" ng-class="{'actived': district.id == filter.districtId}" ng-click="setDistrict(${type.name()})">
+                                                    <a ng-href="javascript:" ng-class="{'actived': '${type.name()}' == filter.followType}" ng-click="setFilterType('followType', '${type.name()}')">
                                                         ${type.getLabel()}
                                                     </a>
                                                 </#list>
@@ -52,13 +52,13 @@
                                         <div class="form-group sortlist">
                                             <label class="control-label">跟进日期</label>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
-                                                <div class="input-group date form_date" datetimepicker key="startDate" change="setDate">
+                                                <div class="input-group date form_date" datetimepicker key="minFollowDate" change="setDate">
                                                     <input class="form-control" size="16" placeholder="开始日期" type="text" ng-model="filter.startDate">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
-                                                <div class="input-group date form_date" datetimepicker key="endDate" change="setDate">
+                                                <div class="input-group date form_date" datetimepicker key="maxFollowDate" change="setDate">
                                                     <input class="form-control" size="16" placeholder="结束日期" type="text" ng-model="filter.endDate">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 </div>
@@ -67,22 +67,22 @@
                                         <div class="form-group sortlist">
                                             <label class="control-label">部门员工</label>
                                             <div class="col-lg-2 col-md-2 col-sm-3">
-                                                <select id="douseDepid" class="chosen-select-dep">
+                                                <select id="departmentId" class="chosen-select-dep">
                                                     <option value="">选择部门</option>
-                                                    <option ng-repeat="dep in depList" ng-value="dep.id" repeat-done="initChosen('#douseDepid', 'departmentId')">{{dep.name}}</option>
+                                                    <option ng-repeat="dep in depList" ng-value="dep.id" repeat-done="initChosen('#departmentId', 'departmentId')">{{dep.name}}</option>
                                                     </select>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-3 m-t-7">
+                                                <div class="checkbox checkbox-nice" ng-repeat="depExp in depExpList">
+                                                    <input name="depExp" id="depExp{{depExp.value}}" ng-model="filter[depExp.key]"  ng-click="setDepExp()" type="checkbox" ng-change="includeChildrenCheck('departmentId')">
+                                                    <label for="depExp{{depExp.value}}">{{depExp.name}}</label>
                                                 </div>
+                                            </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3">
                                                 <select id="employeeId" class="chosen-select-emp">
                                                     <option value="">全部员工</option>
                                                     <option ng-repeat="employee in employeeList" ng-value="employee.id" repeat-done="initChosen('#employeeId', 'employeeId')">{{employee.name}}</option>
                                                 </select>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-3 m-t-7">
-                                                <div class="checkbox checkbox-nice" ng-repeat="depExp in depExpList">
-                                                    <input name="depExp" id="depExp{{depExp.value}}" ng-model="filter[depExp.key]"  ng-click="setDepExp()" type="checkbox" ng-change="includeChildrenCheck()">
-                                                    <label for="depExp{{depExp.value}}">{{depExp.name}}</label>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group sortlist">
@@ -92,21 +92,20 @@
                                                     <option value="">选择部门</option>
                                                     <option ng-repeat="dep in depList" ng-value="dep.id" repeat-done="initChosen('#ioDepartmentId', 'ioDepartmentId')">{{dep.name}}</option>
                                                     </select>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-3 m-t-7">
+                                                <div class="checkbox checkbox-nice" ng-repeat="depExp in ioDepExpList">
+                                                    <input name="ioDepExp" id="ioDepExp{{depExp.value}}" ng-model="filter[depExp.key]"  ng-click="setDepExp()" type="checkbox" ng-change="includeChildrenCheck('ioDepartmentId')">
+                                                    <label for="ioDepExp{{depExp.value}}">{{depExp.name}}</label>
                                                 </div>
+                                            </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3">
                                                 <select id="ioEmployeeId" class="chosen-select-emp">
                                                     <option value="">全部员工</option>
-                                                    <option ng-repeat="employee in employeeList" ng-value="employee.id" repeat-done="initChosen('#ioEmployeeId', 'ioEmployeeId')">{{employee.name}}</option>
+                                                    <option ng-repeat="employee in ioEmployeeList" ng-value="employee.id" repeat-done="initChosen('#ioEmployeeId', 'ioEmployeeId')">{{employee.name}}</option>
                                                 </select>
                                             </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-3 m-t-7">
-                                                <div class="checkbox checkbox-nice" ng-repeat="depExp in depExpList">
-                                                    <input name="depExp" id="depExp{{depExp.value}}" ng-model="filter[depExp.key]"  ng-click="setDepExp()" type="checkbox" ng-change="includeChildrenCheck()">
-                                                    <label for="depExp{{depExp.value}}">{{depExp.name}}</label>
-                                                </div>
-                                            </div>
                                         </div>
-
                                     </div>
                                 </div>
                                 <div id="getHouseCharPage" class="table-responsive clearfix" ng-cloak>
@@ -137,7 +136,7 @@
                                                 <a href="javascript:void(0);" ng-click="ctrl.deleteFollow(follow.id)">删除</a>
                                             </td>-->
                                             </tr>
-                                            <tr><td colspan="7">{{follow.content}}</td></tr>
+                                            <tr><td colspan="7">跟进内容:{{follow.content}}</td></tr>
                                             </tbody>
                                         </table>
                                     </div>

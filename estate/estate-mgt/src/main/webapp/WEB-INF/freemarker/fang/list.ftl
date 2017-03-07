@@ -276,11 +276,7 @@
                                                 <div class="clearfix m-t-10 text-muted">
                                                     <span>编号:{{house.licenceId}}</span>
                                                     <span class="m-l-10">
-                                                        {{house.sCounts?house.sCounts+'室':''}}
-                                                        {{house.tCounts?house.tCounts+'厅':''}}
-                                                        {{house.wCounts?house.wCounts+'卫':''}}
-                                                        {{house.cCounts?house.cCounts+'厨':''}}
-                                                        {{house.ytCounts?house.ytCounts+'阳台':''}}
+                                                        {{house.layoutFormat}}
                                                     </span>
                                                     <span class="m-l-10">{{house.floor}}/{{house.floorCounts}}F</span>
                                                     <span class="m-l-10">{{house.orientation.label}}</span>
