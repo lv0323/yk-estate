@@ -6,10 +6,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.service.DepartmentService;
-import com.lyun.estate.biz.fang.domian.FangFollowDTO;
-import com.lyun.estate.biz.fang.domian.FangFollowSelector;
-import com.lyun.estate.biz.fang.domian.MgtFangSelector;
-import com.lyun.estate.biz.fang.domian.MgtFangTiny;
+import com.lyun.estate.biz.fang.domian.*;
 import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.fang.repo.*;
 import com.lyun.estate.biz.file.def.CustomType;
@@ -277,9 +274,11 @@ public class MgtFangServiceImpl implements MgtFangService {
     }
 
     @Override
-    public PageList<FangCheck> getChecks(Long fangId, PageBounds pageBounds) {
+    public PageList<FangCheckDTO> getChecks(Long fangId, PageBounds pageBounds) {
         ExceptionUtil.checkNotNull("房源编号", fangId);
-        return fangCheckRepo.findByFangId(fangId, pageBounds);
+        PageList<FangCheckDTO> result = fangCheckRepo.findByFangId(fangId, pageBounds);
+        result.forEach(t -> t.setFangTiny(getFangTiny(t.getFangId())));
+        return result;
     }
 
     @Override

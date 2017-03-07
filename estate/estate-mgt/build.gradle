@@ -33,3 +33,6 @@ dependencies {
 tasks.withType(AbstractCompile) {
     options.encoding = "UTF-8"
 }
+
+sourceSets.main.java.srcDirs = []
+sourceSets.main.groovy.srcDirs = ['src/main/java']
