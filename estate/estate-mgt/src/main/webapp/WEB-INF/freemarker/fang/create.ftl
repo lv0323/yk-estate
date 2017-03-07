@@ -614,25 +614,6 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="warnModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel" ng-bind="ctrl.page.warn.title">
-
-                    </h4>
-                </div>
-                <div class="modal-body" ng-bind="ctrl.page.warn.content">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="ctrl.page.warn.closeF()" data-dismiss="modal">确定
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
     </div>
 <!-- /.content-wrapper -->
 
