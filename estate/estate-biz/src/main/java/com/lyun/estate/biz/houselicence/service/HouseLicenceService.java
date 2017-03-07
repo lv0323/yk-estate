@@ -1,13 +1,13 @@
 package com.lyun.estate.biz.houselicence.service;
 
 import com.google.common.base.Strings;
-import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.service.HouseDictService;
 import com.lyun.estate.biz.houselicence.def.LicenceStatus;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.houselicence.entity.HouseLicenceDTO;
 import com.lyun.estate.biz.houselicence.repository.HouseLicenceRepo;
+import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
@@ -86,6 +86,10 @@ public class HouseLicenceService {
 
     public HouseLicenceDTO findOne(Long id) {
         ExceptionUtil.checkNotNull("房源授权编号", id);
-        return repo.findDTOById(id);
+        HouseLicenceDTO licenceDTO = repo.findDTOById(id);
+        if (Objects.nonNull(licenceDTO)) {
+            licenceDTO.buildLocation();
+        }
+        return licenceDTO;
     }
 }

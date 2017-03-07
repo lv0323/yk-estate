@@ -7,17 +7,23 @@ import com.lyun.estate.core.supports.labelenum.LabelEnum;
  */
 public class ShowingDefine {
     public enum Process implements LabelEnum {
-        CREATED("新建"),
-        CANCEL("取消"),
-        SUCCESS("完成"),;
+        CREATED("新建", false),
+        CANCEL("取消", true),
+        SUCCESS("完成", true),;
         private final String label;
+        private final boolean end;
 
-        Process(String label) {
+        Process(String label, boolean end) {
             this.label = label;
+            this.end = end;
         }
 
         public String getLabel() {
             return label;
+        }
+
+        public boolean isEnd() {
+            return end;
         }
     }
 

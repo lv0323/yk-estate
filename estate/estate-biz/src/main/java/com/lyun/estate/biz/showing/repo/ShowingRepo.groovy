@@ -1,9 +1,8 @@
 package com.lyun.estate.biz.showing.repo
 
+import com.lyun.estate.biz.showing.def.ShowingDefine
 import com.lyun.estate.biz.showing.entity.Showing
-import org.apache.ibatis.annotations.Insert
-import org.apache.ibatis.annotations.Options
-import org.apache.ibatis.annotations.Select
+import org.apache.ibatis.annotations.*
 import org.springframework.stereotype.Repository
 
 /**
@@ -18,4 +17,7 @@ interface ShowingRepo {
 
     @Select('SELECT * FROM t_showing WHERE id = #{id}')
     Showing findOne(Long id)
+
+    @Update("UPDATE t_showing SET process = #{process} WHERE id = #{id} AND process = 'CREATED' AND is_deleted = FALSE ")
+    int close(@Param("id") Long id, @Param("process") ShowingDefine.Process process)
 }
