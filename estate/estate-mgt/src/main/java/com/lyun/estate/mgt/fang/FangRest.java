@@ -12,10 +12,7 @@ import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.spec.fang.mgt.def.TimeType;
-import com.lyun.estate.biz.spec.fang.mgt.entity.FangFollowFilter;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
+import com.lyun.estate.biz.spec.fang.mgt.entity.*;
 import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver;
 import com.lyun.estate.core.supports.types.YN;
@@ -330,10 +327,24 @@ public class FangRest {
         return fangMgtService.createCheck(fangId, advantage, disAdvantage);
     }
 
-    @GetMapping("check")
-    public PageList<FangCheckDTO> getChecks(Long fangId,
-                                            @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
-        return fangMgtService.getChecks(fangId, pageBounds);
+    @GetMapping("list-check")
+    public PageList<FangCheckDTO> listCheck(@RequestParam(required = false) Long fangId,
+                                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date minCreateDate,
+                                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxCreateDate,
+                                             @RequestParam(required = false) Long departmentId,
+                                             @RequestParam(required = false) Boolean children,
+                                             @RequestParam(required = false) Long employeeId,
+                                             @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
+        FangCheckFilter filter = new FangCheckFilter().setFangId(fangId)
+                .setMinCreateTime(minCreateDate)
+                .setMaxCreateTime(Optional.ofNullable(maxCreateDate)
+                        .map(t -> Date.from(t.toInstant().plusSeconds(LocalTime.MAX.toSecondOfDay())))
+                        .orElse(null))
+                .setDepartmentId(departmentId)
+                .setChildren(children)
+                .setEmployeeId(employeeId);
+
+        return fangMgtService.listCheck(filter, pageBounds);
     }
 
     @PostMapping("image")

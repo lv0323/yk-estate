@@ -15,6 +15,8 @@ public class FangCheckDTO {
     private String departmentName;
     private Long employeeId;
     private String employeeName;
+    private Long avatarId;
+    private String avatarURI;
     private String advantage;
     private String disAdvantage;
     private Boolean isDeleted;
@@ -140,9 +142,28 @@ public class FangCheckDTO {
         return this;
     }
 
+    public Long getAvatarId() {
+        return avatarId;
+    }
+
+    public FangCheckDTO setAvatarId(Long avatarId) {
+        this.avatarId = avatarId;
+        return this;
+    }
+
+    public String getAvatarURI() {
+        return avatarURI;
+    }
+
+    public FangCheckDTO setAvatarURI(String avatarURI) {
+        this.avatarURI = avatarURI;
+        return this;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
+                .omitNullValues()
                 .add("id", id)
                 .add("fangId", fangId)
                 .add("companyId", companyId)
@@ -150,6 +171,8 @@ public class FangCheckDTO {
                 .add("departmentName", departmentName)
                 .add("employeeId", employeeId)
                 .add("employeeName", employeeName)
+                .add("avatarId", avatarId)
+                .add("avatarURI", avatarURI)
                 .add("advantage", advantage)
                 .add("disAdvantage", disAdvantage)
                 .add("isDeleted", isDeleted)

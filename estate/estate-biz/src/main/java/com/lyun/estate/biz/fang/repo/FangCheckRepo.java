@@ -3,11 +3,10 @@ package com.lyun.estate.biz.fang.repo;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.domian.FangCheckDTO;
+import com.lyun.estate.biz.fang.domian.FangCheckSelector;
 import com.lyun.estate.biz.fang.entity.FangCheck;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import com.lyun.estate.biz.fang.repo.provider.FangCheckSqlProvider;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -28,4 +27,7 @@ public interface FangCheckRepo {
             "FROM t_fang_check fc  LEFT JOIN t_department d ON fc.department_id = d.id  LEFT JOIN t_employee e ON fc.employee_id = e.id\n" +
             "WHERE fc.fang_id = #{fangId} AND fc.is_deleted = FALSE ORDER BY fc.id ASC")
     PageList<FangCheckDTO> findByFangId(@Param("fangId") Long fangId, PageBounds pageBounds);
+
+    @SelectProvider(type = FangCheckSqlProvider.class, method = "list")
+    PageList<FangCheckDTO> list(FangCheckSelector selector, PageBounds pageBounds);
 }

@@ -6,10 +6,7 @@ import com.lyun.estate.biz.fang.domian.FangCheckDTO;
 import com.lyun.estate.biz.fang.domian.FangFollowDTO;
 import com.lyun.estate.biz.fang.domian.MgtFangTiny;
 import com.lyun.estate.biz.fang.entity.*;
-import com.lyun.estate.biz.spec.fang.mgt.entity.FangFollowFilter;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
+import com.lyun.estate.biz.spec.fang.mgt.entity.*;
 
 import java.util.List;
 
@@ -38,7 +35,7 @@ public interface MgtFangService {
 
     FangCheck createCheck(FangCheck fangCheck);
 
-    PageList<FangCheckDTO> getChecks(Long fangId, PageBounds pageBounds);
+    PageList<FangCheckDTO> listCheck(FangCheckFilter filter, PageBounds pageBounds);
 
     FangDescr createFangDescr(FangDescr fangDescr);
 

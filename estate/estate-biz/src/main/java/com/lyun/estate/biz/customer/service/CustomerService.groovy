@@ -2,6 +2,7 @@ package com.lyun.estate.biz.customer.service
 
 import com.google.common.base.Strings
 import com.lyun.estate.biz.customer.entity.Customer
+import com.lyun.estate.biz.customer.entity.CustomerTiny
 import com.lyun.estate.biz.customer.repo.CustomerRepo
 import com.lyun.estate.core.supports.exceptions.EstateException
 import com.lyun.estate.core.supports.exceptions.ExCode
@@ -37,4 +38,8 @@ class CustomerService {
 
     }
 
+    CustomerTiny getTiny(Long customerId) {
+        ExceptionUtil.checkNotNull("客户编号", customerId)
+        customerRepo.getTiny(customerId)
+    }
 }

@@ -18,10 +18,7 @@ import com.lyun.estate.biz.housedict.entity.BuildingUnit;
 import com.lyun.estate.biz.housedict.service.HouseDictService;
 import com.lyun.estate.biz.houselicence.entity.HouseLicenceDTO;
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
-import com.lyun.estate.biz.spec.fang.mgt.entity.FangFollowFilter;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
+import com.lyun.estate.biz.spec.fang.mgt.entity.*;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.core.supports.exceptions.EstateException;
@@ -274,10 +271,35 @@ public class MgtFangServiceImpl implements MgtFangService {
     }
 
     @Override
-    public PageList<FangCheckDTO> getChecks(Long fangId, PageBounds pageBounds) {
-        ExceptionUtil.checkNotNull("房源编号", fangId);
-        PageList<FangCheckDTO> result = fangCheckRepo.findByFangId(fangId, pageBounds);
-        result.forEach(t -> t.setFangTiny(getFangTiny(t.getFangId())));
+    public PageList<FangCheckDTO> listCheck(FangCheckFilter filter, PageBounds pageBounds) {
+        FangCheckSelector selector = new FangCheckSelector();
+        BeanUtils.copyProperties(filter, selector);
+
+        //department and children
+        if (nonNull(filter.getDepartmentId())) {
+            if (Objects.equals(true, filter.getChildren())) {
+                Department department = departmentService.selectById(filter.getDepartmentId());
+                if (nonNull(department)) {
+                    Set<Long> childIds = departmentService.findChildIds(department.getCompanyId(),
+                            filter.getDepartmentId());
+                    selector.setDepartmentIds(Lists.newArrayList(childIds));
+                }
+            } else {
+                selector.setDepartmentIds(Lists.newArrayList(filter.getDepartmentId()));
+            }
+        }
+
+        PageList<FangCheckDTO> result = fangCheckRepo.list(selector, pageBounds);
+        result.forEach(t -> {
+            t.setAvatarURI(Optional.ofNullable(t.getAvatarId()).
+                    map(it ->
+                            Optional.ofNullable(fileService.findOne(it))
+                                    .map(FileDescription::getFileURI)
+                                    .orElse(null)
+                    ).
+                    orElse(null));
+            t.setFangTiny(getFangTiny(t.getFangId()));
+        });
         return result;
     }
 
@@ -436,7 +458,16 @@ public class MgtFangServiceImpl implements MgtFangService {
 
         PageList<FangFollowDTO> result = fangFollowRepo.listBySelector(selector, pageBounds);
 
-        result.forEach(t -> t.setFangTiny(getFangTiny(t.getFangId())));
+        result.forEach(t -> {
+            t.setAvatarURI(Optional.ofNullable(t.getAvatarId()).
+                    map(it ->
+                            Optional.ofNullable(fileService.findOne(it))
+                                    .map(FileDescription::getFileURI)
+                                    .orElse(null)
+                    ).
+                    orElse(null));
+            t.setFangTiny(getFangTiny(t.getFangId()));
+        });
 
         return result;
     }

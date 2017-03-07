@@ -1,13 +1,27 @@
 package com.lyun.estate.biz.showing.service
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds
+import com.github.miemiedev.mybatis.paginator.domain.PageList
+import com.google.common.collect.Lists
+import com.lyun.estate.biz.customer.service.CustomerService
+import com.lyun.estate.biz.department.entity.Department
+import com.lyun.estate.biz.department.service.DepartmentService
+import com.lyun.estate.biz.file.service.FileService
 import com.lyun.estate.biz.showing.def.ShowingDefine
 import com.lyun.estate.biz.showing.entity.Showing
+import com.lyun.estate.biz.showing.entity.ShowingDTO
+import com.lyun.estate.biz.showing.entity.ShowingFilter
+import com.lyun.estate.biz.showing.entity.ShowingSelector
 import com.lyun.estate.biz.showing.repo.ShowingRepo
+import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService
 import com.lyun.estate.core.supports.exceptions.EstateException
 import com.lyun.estate.core.supports.exceptions.ExCode
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil
+import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+
+import static java.util.Objects.nonNull
 
 /**
  * Created by Jeffrey on 2017-03-07.
@@ -17,6 +31,18 @@ class ShowingService {
 
     @Autowired
     ShowingRepo showingRepo
+
+    @Autowired
+    DepartmentService departmentService
+
+    @Autowired
+    CustomerService customerService
+
+    @Autowired
+    MgtFangService mgtFangService
+
+    @Autowired
+    FileService fileService
 
     Showing create(Showing showing) {
         ExceptionUtil.checkNotNull("带看信息", showing)
@@ -44,5 +70,39 @@ class ShowingService {
                 ExCode.UPDATE_FAIL,
                 "带看",
                 new Showing().setId(showingId).setProcess(process).toString())
+    }
+
+    PageList<ShowingDTO> list(ShowingFilter filter, PageBounds pageBounds) {
+        ShowingSelector selector = new ShowingSelector()
+        BeanUtils.copyProperties(filter, selector)
+
+        //department and children
+        if (nonNull(filter.getDepartmentId())) {
+            if (Objects.equals(true, filter.getChildren())) {
+                Department department = departmentService.selectById(filter.getDepartmentId());
+                if (nonNull(department)) {
+                    Set<Long> childIds = departmentService.findChildIds(department.getCompanyId(),
+                            filter.getDepartmentId());
+                    selector.setDepartmentIds(Lists.newArrayList(childIds));
+                }
+            } else {
+                selector.setDepartmentIds(Lists.newArrayList(filter.getDepartmentId()));
+            }
+        }
+
+        PageList<ShowingDTO> result = showingRepo.list(selector, pageBounds)
+        result.forEach({
+            it.setAvatarURI(
+                    Optional.ofNullable(it.getAvatarId()).
+                            map({
+                                Optional.ofNullable(fileService.findOne(it))
+                                        .map({ it.getFileURI() })
+                                        .orElse(null)
+                            }).
+                            orElse(null))
+            it.setCustomerTiny(customerService.getTiny(it.getCustomerId()))
+            it.setFangTiny(mgtFangService.getFangTiny(it.getFangId()))
+        })
+        return result
     }
 }

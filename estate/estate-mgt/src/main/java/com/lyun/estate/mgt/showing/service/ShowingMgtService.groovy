@@ -1,10 +1,14 @@
 package com.lyun.estate.mgt.showing.service
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds
+import com.github.miemiedev.mybatis.paginator.domain.PageList
 import com.lyun.estate.biz.customer.def.CustomerDefine
 import com.lyun.estate.biz.customer.entity.Customer
 import com.lyun.estate.biz.customer.service.CustomerService
 import com.lyun.estate.biz.showing.def.ShowingDefine
 import com.lyun.estate.biz.showing.entity.Showing
+import com.lyun.estate.biz.showing.entity.ShowingDTO
+import com.lyun.estate.biz.showing.entity.ShowingFilter
 import com.lyun.estate.biz.showing.service.ShowingService
 import com.lyun.estate.mgt.context.MgtContext
 import com.lyun.estate.mgt.context.Operator
@@ -43,6 +47,14 @@ class ShowingMgtService {
 
     Showing close(Long showingId, ShowingDefine.Process process) {
         return showingService.close(showingId, process)
+    }
+
+    PageList<ShowingDTO> list(ShowingFilter filter, PageBounds pageBounds) {
+        filter.setCompanyId(mgtContext.operator.companyId)
+
+        return showingService.list(filter, pageBounds)
+
+
     }
 }
 

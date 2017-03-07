@@ -22,10 +22,7 @@ import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
-import com.lyun.estate.biz.spec.fang.mgt.entity.FangFollowFilter;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangFilter;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
+import com.lyun.estate.biz.spec.fang.mgt.entity.*;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.service.MgtXiaoQuService;
 import com.lyun.estate.biz.support.def.BizType;
@@ -285,8 +282,9 @@ public class FangMgtService {
         );
     }
 
-    public PageList<FangCheckDTO> getChecks(Long fangId, PageBounds pageBounds) {
-        return mgtFangService.getChecks(fangId, pageBounds);
+    public PageList<FangCheckDTO> listCheck(FangCheckFilter filter, PageBounds pageBounds) {
+        filter.setCompanyId(mgtContext.getOperator().getCompanyId());
+        return mgtFangService.listCheck(filter, pageBounds);
     }
 
     public FileDescription createImage(Long fangId, CustomType customType, InputStream inputStream, String suffix) {
