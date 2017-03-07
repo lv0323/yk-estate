@@ -239,7 +239,7 @@
                                 <h3 class="box-title">公司列表</h3>
                                 <div class="box-tools">
                                     <#--<a class="btn" id="addCompanyBtn" data-toggle="modal" data-target="#addCompanyDialog">-->
-                                    <a class="btn" id="addCompanyBtn" href="/mgt/franchisee/addCompany.ftl">
+                                    <a class="btn" id="addCompanyBtn" href="/mgt/franchisee/addCompany">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                         创建公司
                                     </a>
@@ -247,7 +247,7 @@
                             </div>
                             <div class="box-body">
                                 <!-- table -->
-                                <table id="companyList" class="display list table table-bordered table-hover">
+                                <table id="companyList" class="list table table-bordered table-hover">
                                 </table>
                                 <div class="pagination-container">
                                 <ul id="companyList_paging" class="pagination"></ul>

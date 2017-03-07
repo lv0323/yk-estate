@@ -26,7 +26,7 @@
                             <div class="box-header">
                                 <h3 class="box-title">带看列表</h3>
                                 <div class="box-tools">
-                                    <a class="btn" id="addVisitBtn" href="/mgt/propertyVisit/addPropertyVisit.ftl?target=.prtyVisit">
+                                    <a class="btn" id="addVisitBtn" href="/mgt/propertyVisit/addPropertyVisit?target=.prtyVisit">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
                                         新增带看
                                     </a>

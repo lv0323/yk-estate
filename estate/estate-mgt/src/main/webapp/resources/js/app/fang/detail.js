@@ -33,6 +33,15 @@ require(['main-app',
                     init: false,
                     id:'#fellow_paging',
                     change:'follow'
+                },
+                surveyPage: {
+                    limit: 8,
+                    offset: 0,
+                    dataTotal: 0,
+                    currentPage: 1,
+                    init: false,
+                    id:'#survey_paging',
+                    change:'survey'
                 }
             };
             /*页面相关内容*/
@@ -42,7 +51,8 @@ require(['main-app',
                     title:'提示',
                     content:'请输入完整信息'
                 },
-                layoutString:''
+                layoutString:'',
+                now : new Date().getTime()
             };
 
             _this.summary = {};
@@ -53,7 +63,9 @@ require(['main-app',
             _this.descrUpdateInfo = {};
             _this.subTypeList = [];
             _this.followList =[];
+            _this.surveyList =[];
             _this.newFollow = {};
+            _this.newSurvey= {};
             /*户型选择*/
             _this.layoutList={
                 shi:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:0,name:'无'}],
@@ -273,13 +285,12 @@ require(['main-app',
             };
             /*房源跟进*/
             _this.follow = function(offset){
-                var now = new Date().getTime() ;
                 FangService.listFollow({fangId:fangId},{'X-PAGING':'total=true&offset='+(offset||pageConfig.fellowPage.offset)+'&limit='+ pageConfig.fellowPage.limit}).then(function(response){
                     $scope.$apply(function(){
-                    pagination(response.total, 'fellowPage');
+                        pagination(response.total, 'fellowPage');
                         _this.followList= response.items.map(function(item){
-                            if(item.publishTime){
-                                item.publishedDay = (now - item.publishTime)/(24 * 3600 * 1000)
+                            if(item.fangTiny && item.fangTiny.publishTime){
+                                item.publishedDay = Math.floor((_this.page.now - item.fangTiny.publishTime)/(24 * 3600 * 1000));
                             }
                             return item
                         });
@@ -287,9 +298,6 @@ require(['main-app',
                 });
             }
             _this.follow();
-            _this.deleteFollow = function(id){
-                console.log(id);
-            }
             _this.newFollowInit = function(){
                 _this.newFollow = {};
                 $('#followModel').modal({'show':true,backdrop:'static'});
@@ -304,7 +312,40 @@ require(['main-app',
                     _this.success();
                 }).fail(_this.fail);
             };
+            /*end 房源跟进*/
 
+            /*勘察*/
+            _this.survey = function(offset){
+                FangService.checkList({fangId:fangId},{'X-PAGING':'total=true&offset='+(offset||pageConfig.surveyPage.offset)+'&limit='+ pageConfig.surveyPage.limit}).then(function(response){
+                    $scope.$apply(function(){
+                        pagination(response.total, 'surveyPage');
+                        _this.surveyList= response.items.map(function(item){
+                            if(item.fangTiny && item.fangTiny.publishTime){
+                                item.publishedDay = Math.floor((_this.page.now - item.fangTiny.publishTime)/(24 * 3600 * 1000));
+                            }
+                            return item
+                        });
+                    })
+                });
+            };
+            _this.survey();
+            _this.newSurveyInit = function(){
+                _this.newSurvey= {};
+                $('#surveyModel').modal({'show':true,backdrop:'static'});
+            };
+            _this.surveyCreate = function(){
+                if(!_this.newSurvey.advantage){
+                    return;
+                }
+                var info ={};
+                angular.copy(_this.newSurvey, info);
+                info.fangId = fangId;
+                FangService.checkCreate(info).then(function(response){
+                    $('#surveyModel').modal('hide');
+                    _this.survey();
+                    _this.success();
+                }).fail(_this.fail);
+            }
             /*分页*/
             var pagination = function(dataTotal, pageName) {
                 var page = pageConfig[pageName];
@@ -325,7 +366,7 @@ require(['main-app',
                             return;
                         }
                         pageConfig[pageName].currentPage = num;
-                        ((num-1)*pageConfig[pageName].limit, num);
+                        _this[page.change]((num-1)*pageConfig[pageName].limit, num);
                     }
                 };
                 pagingPlugin.init(config);

@@ -325,23 +325,20 @@ require(['main-app',
                     pageConfig.currentPage = 1;
                 }
                 FangService.list(param,{'X-PAGING':'total=true&offset='+(offset||pageConfig.offset)+'&limit='+ pageConfig.limit}).then(function(response){
-                    if(response && response.total != pageConfig.dataTotal){
-                        $scope.$apply(function(){
-                            pagination(response.total);
-                            if (response.count > 0) {
-                                $scope.houseList = response.items.map(function(item){
-                                    item.layoutFormat = Tools.layoutFormat({
-                                        sCounts:item.sCounts,
-                                        tCounts:item.tCounts,
-                                        cCounts:item.cCounts,
-                                        wCounts:item.wCounts,
-                                        ytCounts:item.ytCounts}) ;
-                                    return item;
-                                });
-                            }
+                    $scope.houseList =[];
+                    $scope.$apply(function(){
+                        pagination(response.total);
+                        $scope.houseList = response.items.map(function(item){
+                            item.layoutFormat = Tools.layoutFormat({
+                                sCounts:item.sCounts,
+                                tCounts:item.tCounts,
+                                cCounts:item.cCounts,
+                                wCounts:item.wCounts,
+                                ytCounts:item.ytCounts}) ;
+                            return item;
                         });
 
-                    };
+                    });
                 });
             };
         }]);

@@ -1129,9 +1129,11 @@ a.btn-collapse:hover{
     background-color:#169bd5;
     color:#fff;
 }
+#houseSurveyWrapper table,
 #houseFollowWrapper table{
     font-size: 12px;
 }
+#houseSurveyWrapper .table > thead > tr > th,
 #houseFollowWrapper .table > thead > tr > th{
     border-bottom: 2px solid #e2e7f4;
     background-color: #f1f4fb;

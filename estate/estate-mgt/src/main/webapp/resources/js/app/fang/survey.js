@@ -20,8 +20,8 @@ require(['main-app',
             currentPage:1,
             init: false,
         };
-        var module=angular.module('followModule',['directiveYk']);
-        module.controller("FollowCtrl", ['$scope','$timeout', '$interval','$window','$location', function($scope, $timeout, $interval, $window) {
+        var module=angular.module('surveyModule',['directiveYk']);
+        module.controller("SurveyCtrl", ['$scope','$timeout', '$interval','$window','$location', function($scope, $timeout, $interval, $window) {
             var config = {
                 departmentId: {
                     init: false
@@ -47,11 +47,12 @@ require(['main-app',
                 collapse:false,
                 now:new Date().getTime()
             };
-            $scope.followList = [];
+            $scope.surveyList = [];
             $scope.employeeList =[{name:'',id:''}];
             $scope.ioEmployeeList =[{name:'',id:''}];
             $scope.houseList = [];
             $scope.filter ={
+                fangId:5005,
                 followType:'',
                 minFollowDate:'',
                 maxFollowDate:'',
@@ -207,10 +208,10 @@ require(['main-app',
                 if(!currentPage){
                     pageConfig.currentPage = 1;
                 }
-                FangService.listFollow(param, {'X-PAGING':'total=true&offset='+(offset||pageConfig.offset)+'&limit='+ pageConfig.limit}).then(function(response){
+                FangService.checkList(param, {'X-PAGING':'total=true&offset='+(offset||pageConfig.offset)+'&limit='+ pageConfig.limit}).then(function(response){
                     pagination(response.total);
-                    $scope.followList = response.items.map(function(item){
-                        if(item.fangTiny.publishTime){
+                    $scope.surveyList = response.items.map(function(item){
+                        if(item.fangTiny && item.fangTiny.publishTime){
                             item.publishedDay = Math.floor(($scope.page.now - item.fangTiny.publishTime)/(24 * 3600 * 1000));
                         }
                         return item
@@ -222,6 +223,6 @@ require(['main-app',
         }]);
 
         angular.element(document).ready(function() {
-            angular.bootstrap(document.getElementById("houseFollowWrapper"),["followModule"])
+            angular.bootstrap(document.getElementById("houseSurveyWrapper"),["surveyModule"])
         });
     });
