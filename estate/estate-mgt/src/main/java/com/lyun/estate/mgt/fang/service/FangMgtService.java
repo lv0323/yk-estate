@@ -12,6 +12,7 @@ import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.domian.FangFollowDTO;
+import com.lyun.estate.biz.fang.domian.MgtFangTiny;
 import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
@@ -423,4 +424,7 @@ public class FangMgtService {
         return mgtFangService.listFollow(filter, pageBounds);
     }
 
+    public MgtFangTiny getFangTinyByLicenceId(Long licenceId) {
+        return mgtFangService.getFangTinyByLicenceId(licenceId);
+    }
 }
