@@ -10,94 +10,79 @@ require(['main-app',
         function verifyAddPropertyVisitInput(toSubmitPropertyVisit) {
             var flag = true;
             $('.form-group').find('.invalid-input').removeClass('invalid-input');
-            /*if (toSubmitPropertyVisit.==="" || typeof(toSubmitPropertyVisit.)==='undefined') {
+            if (toSubmitPropertyVisit.fangId==="" || typeof(toSubmitPropertyVisit.fangId)==='undefined') {
                 flag = false;
+                $('#houseLicenceID').addClass('invalid-input');
                 $('#houseDict').addClass('invalid-input');
-            }
-            if (toSubmitPropertyVisit.==="" || typeof(toSubmitPropertyVisit.)==='undefined') {
-                flag = false;
                 $('#building').addClass('invalid-input');
-            }
-            if (toSubmitPropertyVisit.===""|| typeof(toSubmitPropertyVisit.)==='undefined') {
-                flag = false;
                 $('#unit').addClass('invalid-input');
-            }
-            if (toSubmitPropertyVisit.===""|| typeof(toSubmitPropertyVisit.)==='undefined') {
-                flag = false;
                 $('#roomNo').addClass('invalid-input');
-            }
-            if (toSubmitPropertyVisit.===""|| typeof(toSubmitPropertyVisit.)==='undefined') {
-                flag = false;
                 $('#areaSize').addClass('invalid-input');
-            }
-            if (toSubmitPropertyVisit.===""|| typeof(toSubmitPropertyVisit.)==='undefined') {
-                flag = false;
                 $('#totalPrice').addClass('invalid-input');
-            }
-            if (toSubmitPropertyVisit.===""|| typeof(toSubmitPropertyVisit.)==='undefined') {
-                flag = false;
                 $('#unitPrice').addClass('invalid-input');
-            }
-            if (toSubmitPropertyVisit.===""|| typeof(toSubmitPropertyVisit.)==='undefined') {
-                flag = false;
                 $('#bedRoom').addClass('invalid-input');
-            }
-            if (toSubmitPropertyVisit.===""|| typeof(toSubmitPropertyVisit.)==='undefined') {
-                flag = false;
                 $('#livingRoom').addClass('invalid-input');
-            }
-            if (toSubmitPropertyVisit.===""|| typeof(toSubmitPropertyVisit.)==='undefined') {
-                flag = false;
                 $('#kitchen').addClass('invalid-input');
-            }
-            if (toSubmitPropertyVisit.===""|| typeof(toSubmitPropertyVisit.)==='undefined') {
-                flag = false;
                 $('#bathRoom').addClass('invalid-input');
-            }
-            if (toSubmitPropertyVisit.===""|| typeof(toSubmitPropertyVisit.)==='undefined') {
-                flag = false;
                 $('#balcony').addClass('invalid-input');
             }
-            if (toSubmitPropertyVisit.===""|| typeof(toSubmitPropertyVisit.)==='undefined') {
+            if (toSubmitPropertyVisit.customerName===""|| typeof(toSubmitPropertyVisit.customerName)==='undefined') {
                 flag = false;
                 $('#customerName').addClass('invalid-input');
             }
-            if (toSubmitPropertyVisit.===""|| typeof(toSubmitPropertyVisit.)==='undefined') {
+            if (toSubmitPropertyVisit.customerSource===""|| typeof(toSubmitPropertyVisit.customerSource)==='undefined') {
                 flag = false;
                 $('#customerSource').addClass('invalid-input');
             }
-            if (toSubmitPropertyVisit.===""|| typeof(toSubmitPropertyVisit.)==='undefined') {
+            if (toSubmitPropertyVisit.customerMobile===""|| typeof(toSubmitPropertyVisit.customerMobile)==='undefined') {
                 flag = false;
                 $('#customerContact').addClass('invalid-input');
-            }*/
+            }
             return flag;
         }
 
         $('#getHouseInfoBtn').on('click',function () {
-            PropertyVisitService.getPropertyInfo()
-                .done(function () {
-                    $('#houseDict').val();
-                    $('#building').val();
-                    $('#unit').val();
-                    $('#roomNo').val();
-                    $('#areaSize').val();
-                    $('#totalPrice').val();
-                    $('#unitPrice').val();
-                    $('#bedRoom').val();
-                    $('#livingRoom').val();
-                    $('#kitchen').val();
-                    $('#bathRoom').val();
-                    $('#balcony').val();
+            $('.form-group').find('.invalid-input').removeClass('invalid-input');
+            var houseLicenceID = $('#houseLicenceID').val();
+            PropertyVisitService.getPropertyInfo({licenceId:houseLicenceID})
+                .done(function (data) {
+                    var house = data.houseLicence;
+                    $('#fangID').val(data.id);
+                    $('#houseDict').val(house.xiaoQuName);
+                    $('#building').val(house.buildingName);
+                    $('#unit').val(house.buildingUnitName);
+                    $('#roomNo').val(house.houseNo);
+                    $('#areaSize').val(data.estateArea);
+                    $('#totalPrice').val(data.publishPrice);
+                    $('#totalPriceUnit').html(data.priceUnit.label);
+                    $('#unitPrice').val(data.unitPrice);
+                    $('#bedRoom').val(data.sCounts);
+                    $('#livingRoom').val(data.tCounts);
+                    $('#kitchen').val(data.cCounts);
+                    $('#bathRoom').val(data.wCounts);
+                    $('#balcony').val(data.ytCounts);
+                })
+                .fail(function (res) {
+                    swal({
+                        title: "错误!",
+                        text: res["message"],
+                        type: "error",
+                        confirmButtonText: "确定",
+                        confirmButtonColor: "#3c8dbc"
+                    });
                 });
         });
 
         $('#confirmAddPropertyVisitBtn').on('click',function () {
             var toAddPropertyVisit = {
-
+                fangId: $('#fangID').val(),
+                customerName: $('#customerName').val(),
+                customerSource: $('#customerSource option:selected').val(),
+                customerMobile: $('#customerContact').val()
             };
 
-            if(verifyAddPropertyVisitInput){
-                PropertyVisitService.addPropertyVisit()
+            if(verifyAddPropertyVisitInput(toAddPropertyVisit)){
+                PropertyVisitService.addPropertyVisit(toAddPropertyVisit)
                     .done(function () {
                         swal({
                                 title: "操作成功!",
@@ -106,7 +91,7 @@ require(['main-app',
                                 confirmButtonColor: "#3c8dbc"
                             },
                             function(){
-                                window.location.href="/mgt/org/department.ftl";
+                                window.location.href="/mgt/propertyVisit/propertyVisit.ftl";
                             });
                     }).fail(function (res) {
                         swal({

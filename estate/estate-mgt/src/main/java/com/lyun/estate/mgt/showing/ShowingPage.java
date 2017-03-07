@@ -1,7 +1,7 @@
-package com.lyun.estate.mgt.propertyVisit;
+package com.lyun.estate.mgt.showing;
 
-import com.lyun.estate.biz.support.def.BizType;
-import com.lyun.estate.biz.fang.def.PriceUnit;
+import com.lyun.estate.biz.showing.def.ShowingDefine.Process;
+import com.lyun.estate.biz.customer.def.CustomerDefine.Source;
 import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -16,7 +17,7 @@ import java.util.HashMap;
  */
 @Controller
 @RequestMapping("/propertyVisit")
-public class propertyVisitPage {
+public class ShowingPage {
     @Autowired
     private EmployeeMgtService service;
 
@@ -33,8 +34,8 @@ public class propertyVisitPage {
         HashMap<String, Object> params = new HashMap<>();
         params.put("avatarUrl",service.getAvatar());
         params.put("username",service.getUsername());
-        params.put("rentPriceUnit", PriceUnit.getByBizType(BizType.RENT));
-        params.put("sellPriceUnit", PriceUnit.getByBizType(BizType.SELL));
+        params.put("showingOperation", Arrays.asList(Process.values()));
+        params.put("customerSource", Arrays.asList(Source.values()));
         return new ModelAndView("/propertyVisit/addPropertyVisit", params);
     }
 }

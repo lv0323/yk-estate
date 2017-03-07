@@ -40,6 +40,7 @@
                                             <div class="col-sm-5">
                                                 <div class="input-group">
                                                     <input id="houseLicenceID" type="text" class="form-control" placeholder="带看房源授权编号">
+                                                    <input id="fangID" type="text" class="hidden">
                                                     <span class="input-group-btn">
                                                         <a id="getHouseInfoBtn" class="btn btn-primary">
                                                             <i class="fa fa-home fa-lg" aria-hidden="true"></i>获取房源信息
@@ -60,7 +61,10 @@
                                                 <input id="unit" type="text" class="form-control" placeholder="单元">
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-2">
-                                                <input id="roomNo" type="text" class="form-control" placeholder="房号">
+                                                <div class="input-group">
+                                                    <input id="roomNo" type="text" class="form-control" placeholder="房号">
+                                                    <div class="input-group-addon">号房</div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
@@ -71,20 +75,18 @@
                                                     <div class="input-group-addon">㎡</div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-1 col-md-2 col-sm-2">
-                                                <input id="totalPrice" type="text" name="publishPrice" required class="form-control" placeholder="总价" reg="/^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$/"/>
-                                            </div>
-                                            <div class="col-lg-2 col-md-3 col-sm-3">
-                                                <select class="form-control">
-                                                <#list sellPriceUnit ?if_exists as unit>
-                                                    <option value="${unit.name()}">${unit.getLabel()}</option>
-                                                </#list>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-2 col-md-3 col-sm-3">
+                                            <div class="col-lg-3 col-md-4 col-sm-4">
                                                 <div class="input-group">
+                                                    <div class="input-group-addon">总价</div>
+                                                    <input id="totalPrice" type="text" name="publishPrice" required class="form-control" placeholder="总价" reg="/^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$/"/>
+                                                    <div id="totalPriceUnit" class="input-group-addon">元</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-4 col-sm-4">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">单价</div>
                                                     <input id="unitPrice" type="text" class="form-control" placeholder="单价" reg="/^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$/"/>
-                                                    <div class="input-group-addon">万元/㎡</div>
+                                                    <div class="input-group-addon">元/㎡</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -133,10 +135,9 @@
                                             <label class="pull-left control-label">客源来源</label>
                                             <div class="col-sm-3">
                                                 <select id="customerSource" class="btn-group dropup form-control">
-                                                    <option>来访</option>
-                                                    <option>来电</option>
-                                                    <option>网络</option>
-                                                    <option>转介</option>
+                                                <#list customerSource ?if_exists as source>
+                                                    <option value="${source.name()}">${source.getLabel()}</option>
+                                                </#list>
                                                 </select>
                                             </div>
                                         </div>
