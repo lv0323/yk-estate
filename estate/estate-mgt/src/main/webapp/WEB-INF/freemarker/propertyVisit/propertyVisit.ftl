@@ -44,7 +44,7 @@
                                             <label class="control-label">状态</label>
                                             <div class="tj">
                                             <#list showingOperation?if_exists as status>
-                                                <a>${status.getLabel()}</a>
+                                                <a name="visitStatus" id="${status.name()}">${status.getLabel()}</a>
                                             </#list>
                                             </div>
                                         </div>
@@ -86,7 +86,7 @@
                                     <thead><tr>
                                         <th><span>带看员工</span></th>
                                         <th><span>带看客户</span></th>
-                                        <th><span>带看房源</span></th>
+                                        <th><span>带看房源编号</span></th>
                                         <th><span>带看生成时间</span></th>
                                         <th><span>带看结束时间</span></th>
                                         <th><span>状态</span></th>

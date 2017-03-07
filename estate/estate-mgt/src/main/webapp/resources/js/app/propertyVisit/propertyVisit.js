@@ -53,7 +53,7 @@ require(['main-app',
                     columns: [
                         {title: "带看员工", data: 'employeeName'},
                         {title: "带看客户", data: 'customerName', defaultContent: ""},
-                        {title: "带看房源", data: 'propertyId', defaultContent: ""},
+                        {title: "带看房源编号", data: 'propertyId', defaultContent: ""},
                         {title: "带看生成时间", data: 'visitStartDate', defaultContent: ""},
                         {title: "带看结束时间", data: 'visitEndDate', defaultContent: ""},
                         {title: "状态", data: 'status', defaultContent: ""}
@@ -91,7 +91,7 @@ require(['main-app',
                     pagination(data.total);
                 })
                 .fail(function(){
-                    $('#propertyVisitList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
+                    $('#propertyVisitList>tbody').append('<tr><td colspan="6">无法获取数据</td></tr>');
                 });
         }
 

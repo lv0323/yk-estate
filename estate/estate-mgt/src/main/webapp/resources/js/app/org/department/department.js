@@ -131,13 +131,13 @@ require(['main-app',contextPath + '/js/service/department-service.js',
         //open new window for department details
         $('#departList').on('click','.lookDepartBtn',function(e){
             var departId = $(e.target).data('id');
-            window.location.href="/mgt/org/departmentDetail.ftl?"+departId;
+            window.location.href="/mgt/org/departmentDetail?"+departId;
         });
 
         //open new window for department details
         $('#departList').on('click','.editDepartBtn',function(e){
             var departId = $(e.target).data('id');
-            window.location.href="/mgt/org/editDepartmentDetail.ftl?"+departId;
+            window.location.href="/mgt/org/editDepartmentDetail?"+departId;
         });
 
         //initialize index value stored in deleteDepartDialog

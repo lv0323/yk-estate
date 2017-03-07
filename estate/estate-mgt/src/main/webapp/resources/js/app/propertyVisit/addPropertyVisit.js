@@ -10,7 +10,7 @@ require(['main-app',
         function verifyAddPropertyVisitInput(toSubmitPropertyVisit) {
             var flag = true;
             $('.form-group').find('.invalid-input').removeClass('invalid-input');
-            if (toSubmitPropertyVisit.fangId==="" || typeof(toSubmitPropertyVisit.fangId)==='undefined') {
+            if (toSubmitPropertyVisit.fangId === "" || typeof(toSubmitPropertyVisit.fangId) === 'undefined') {
                 flag = false;
                 $('#houseLicenceID').addClass('invalid-input');
                 $('#houseDict').addClass('invalid-input');
@@ -26,15 +26,15 @@ require(['main-app',
                 $('#bathRoom').addClass('invalid-input');
                 $('#balcony').addClass('invalid-input');
             }
-            if (toSubmitPropertyVisit.customerName===""|| typeof(toSubmitPropertyVisit.customerName)==='undefined') {
+            if (toSubmitPropertyVisit.customerName === "" || typeof(toSubmitPropertyVisit.customerName) === 'undefined') {
                 flag = false;
                 $('#customerName').addClass('invalid-input');
             }
-            if (toSubmitPropertyVisit.customerSource===""|| typeof(toSubmitPropertyVisit.customerSource)==='undefined') {
+            if (toSubmitPropertyVisit.customerSource === "" || typeof(toSubmitPropertyVisit.customerSource) === 'undefined') {
                 flag = false;
                 $('#customerSource').addClass('invalid-input');
             }
-            if (toSubmitPropertyVisit.customerMobile===""|| typeof(toSubmitPropertyVisit.customerMobile)==='undefined') {
+            if (toSubmitPropertyVisit.customerMobile === "" || typeof(toSubmitPropertyVisit.customerMobile) === 'undefined') {
                 flag = false;
                 $('#customerContact').addClass('invalid-input');
             }
@@ -91,7 +91,7 @@ require(['main-app',
                                 confirmButtonColor: "#3c8dbc"
                             },
                             function(){
-                                window.location.href="/mgt/propertyVisit/propertyVisit.ftl";
+                                window.location.href="/mgt/propertyVisit/propertyVisit";
                             });
                     }).fail(function (res) {
                         swal({

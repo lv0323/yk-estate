@@ -30,7 +30,7 @@ require(['main-app',
                 DepartmentService.addDepartment({data:toAddDepart},header)
                     .done(function(){
                         // location.reload(true);
-                        // window.location.href="/mgt/org/department.ftl";
+                        // window.location.href="/mgt/org/department";
                         swal({
                                 title: "操作成功!",
                                 type: "success",
@@ -38,7 +38,7 @@ require(['main-app',
                                 confirmButtonColor: "#3c8dbc"
                             },
                             function(){
-                                window.location.href="/mgt/org/department.ftl";
+                                window.location.href="/mgt/org/department";
                             });
                     })
                     .fail(function (res) {
