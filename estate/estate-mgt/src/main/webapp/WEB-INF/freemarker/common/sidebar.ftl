@@ -95,7 +95,7 @@
         <ul class="sidebar-menu">
             <li class="header">主导航</li>
             <!-- Optionally, you can add icons to the links -->
-            <li><a href="/mgt/franchisee/company.ftl"><i class="fa fa-users" aria-hidden="true"></i> <span>加盟商管理</span></a></li>
+            <li><a href="/mgt/franchisee/company"><i class="fa fa-users" aria-hidden="true"></i> <span>加盟商管理</span></a></li>
             <li class="treeview fang">
                 <a href="#"><i class="fa fa-home" aria-hidden="true"></i> <span>房源管理</span>
                     <span class="pull-right-container">
@@ -103,9 +103,10 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/fangManage/list.ftl?target=.fang"><i class="fa fa-circle"></i>房源列表</a></li>
-                    <li><a href="/mgt/fangManage/create.ftl?target=.fang"><i class="fa fa-circle"></i>新增房源</a></li>
-                    <li><a href="/mgt/fangManage/follow.ftl?target=.fang"><i class="fa fa-circle"></i>房源跟进</a></li>
+                    <li><a href="/mgt/fangManage/list?target=.fang"><i class="fa fa-circle"></i>房源列表</a></li>
+                    <li><a href="/mgt/fangManage/create?target=.fang"><i class="fa fa-circle"></i>新增房源</a></li>
+                    <li><a href="/mgt/fangManage/follow?target=.fang"><i class="fa fa-circle"></i>房源跟进</a></li>
+                    <li><a href="/mgt/fangManage/survey?target=.fang"><i class="fa fa-circle"></i>房源勘察</a></li>
                 </ul>
             </li>
             <li class="treeview org">
@@ -115,9 +116,9 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/org/department.ftl?target=.org"><i class="fa fa-circle"></i>部门列表</a></li>
-                    <li><a href="/mgt/org/employee.ftl?target=.org"><i class="fa fa-circle"></i>员工管理</a></li>
-                    <li><a href="/mgt/org/position.ftl?target=.org"><i class="fa fa-circle"></i>岗位管理</a></li>
+                    <li><a href="/mgt/org/department?target=.org"><i class="fa fa-circle"></i>部门列表</a></li>
+                    <li><a href="/mgt/org/employee?target=.org"><i class="fa fa-circle"></i>员工管理</a></li>
+                    <li><a href="/mgt/org/position?target=.org"><i class="fa fa-circle"></i>岗位管理</a></li>
                 </ul>
             </li>
             <li class="treeview prtyVisit">
@@ -127,7 +128,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/propertyVisit/propertyVisit.ftl?target=.prtyVisit"><i class="fa fa-circle"></i>带看列表</a></li>
+                    <li><a href="/mgt/propertyVisit/propertyVisit?target=.prtyVisit"><i class="fa fa-circle"></i>带看列表</a></li>
                 </ul>
             </li>
             <li class="treeview tool">
@@ -137,7 +138,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/tool/myProfile.ftl?target=.tool"><i class="fa fa-circle"></i>个人中心</a></li>
+                    <li><a href="/mgt/tool/myProfile?target=.tool"><i class="fa fa-circle"></i>个人中心</a></li>
                 </ul>
             </li>
             <li class="treeview sys">
@@ -147,7 +148,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/system/operationLog.ftl?target=.sys"><i class="fa fa-circle"></i>操作日志</a></li>
+                    <li><a href="/mgt/system/operationLog?target=.sys"><i class="fa fa-circle"></i>操作日志</a></li>
                 </ul>
             </li>
         </ul>

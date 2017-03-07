@@ -12,7 +12,7 @@ require(['main-app',contextPath + '/js/service/company-service.js',
         var companyAllDataRaw = {};
 
         var pageConfig = {
-            limit: 8,
+            limit: 12,
             init: false
         };
         var tableConfig ={

@@ -4,11 +4,11 @@
 <#include "/common/sidebar.ftl" />
 
 <!-- -->
-<div class="content-wrapper" id="houseFollowWrapper" ng-controller="FollowCtrl">
+<div class="content-wrapper" id="houseSurveyWrapper" ng-controller="SurveyCtrl">
     <section class="content-header">
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-home fa-lg" aria-hidden="true"></i>房源管理</a></li>
-            <li class="active">房源跟进</li>
+            <li class="active">房源勘察</li>
         </ol>
     </section>
     <!--Main content -->
@@ -18,7 +18,7 @@
                 <div class="col-lg-12">
                     <div class="box box-solid form-inline" >
                         <div class="box-header with-border">
-                            <h3 class="box-title pull-left">房源跟进</h3>
+                            <h3 class="box-title pull-left">房源勘察</h3>
                             <div class="box-tools">
                                 <a class="btn-collapse icon-down btn" ng-click="triggerCollapse()">
                                     <strong><i class="fa" ng-class="{true:'fa-chevron-up',false:'fa-chevron-down'}[page.collapse]" aria-hidden="true"></i>更多筛选</strong>
@@ -27,21 +27,10 @@
                         </div>
                         <div class="box-body clearfix no-padding">
                             <form id="formlist" class="form-inline">
-                                <div id="searchList" ng-cloak ng-show="page.collapse">
+                                <div id="searchList" ng-cloak class="clearfix" ng-show="page.collapse">
                                     <div class="collapse-box">
                                         <div class="form-group sortlist">
-                                            <label class="control-label" style="vertical-align:top;padding-top:5px;">跟进方式</label>
-                                            <div class="tj" id="distract">
-                                                <a ng-href="javascript:" ng-class="{'actived': '' == filter.followType}" ng-click="setFilterType('followType', '')">不限</a>
-                                                <#list followType?if_exists as type>
-                                                    <a ng-href="javascript:" ng-class="{'actived': '${type.name()}' == filter.followType}" ng-click="setFilterType('followType', '${type.name()}')">
-                                                        ${type.getLabel()}
-                                                    </a>
-                                                </#list>
-                                            </div>
-                                        </div>
-                                        <div class="form-group sortlist">
-                                            <label class="control-label">跟进日期</label>
+                                            <label class="control-label">勘察日期</label>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
                                                 <div class="input-group date form_date" datetimepicker key="minFollowDate" change="setDate">
                                                     <input class="form-control" size="16" placeholder="开始日期" type="text" ng-model="filter.startDate">
@@ -104,32 +93,29 @@
                                         <table class="table">
                                             <thead>
                                             <tr>
-                                                <th>跟进人</th>
-                                                <th>跟进方式</th>
-                                                <th>跟进日期</th>
+                                                <th>勘察人</th>
+                                                <th>勘察时间</th>
                                                 <th>交易类型</th>
                                                 <th>物业地址</th>
                                                 <th>房源状态</th>
                                                 <th>发布日期</th>
                                                 <th>发布天数</th>
-                                            <#--<th class="text-right">操作</th>-->
                                             </tr>
                                             </thead>
-                                            <tbody ng-repeat="follow in followList">
+                                            <tbody ng-repeat="survey in surveyList">
                                             <tr>
-                                                <td>{{follow.departmentName}}-{{follow.employeeName}}</td>
-                                                <td><label class="badge badge-success">{{follow.followType.label}}</label></td>
-                                                <td>{{follow.createTime|date:'yyyy-MM-dd'}}</td>
-                                                <td><label class="badge badge-danger">{{follow.fangTiny.bizType.label}}</label></td>
-                                                <td><a ng-href="{{'/mgt/fangManage/detail?id='+follow.fangId}}" target="_blank">{{follow.fangTiny.houseLicence &&follow.fangTiny.houseLicence.location}}</a></td>
-                                                <td><label class="badge badge-danger">{{follow.fangTiny.process.label}}</label></td>
-                                                <td>{{follow.fangTiny.publishTime|date:'yyyy-MM-dd'}}</td>
-                                                <td>{{follow.publishedDay}}</td>
-                                            <#--<td class="text-right">
-                                                <a href="javascript:void(0);" ng-click="ctrl.deleteFollow(follow.id)">删除</a>
-                                            </td>-->
+                                                <td>{{survey.departmentName}}- {{survey.employeeName}}</td>
+                                                <td>{{survey.createTime|date:'yyyy-MM-dd'}}</td>
+                                                <td><label class="badge badge-danger">{{survey.fangTiny.bizType.label}}</label></td>
+                                                <td><a ng-href="{{'/mgt/fangManage/detail?id='+survey.fangId}}" target="_blank">{{survey.fangTiny.houseLicence && survey.fangTiny.houseLicence.location}}</a></td>
+                                                <td><label class="badge badge-danger">{{survey.fangTiny.process.label}}</label></td>
+                                                <td>{{survey.fangTiny && survey.fangTiny.publishTime|date:'yyyy-MM-dd'}}</td>
+                                                <td>{{survey.publishedDay}}</td>
                                             </tr>
-                                            <tr><td colspan="7">跟进内容:{{follow.content}}</td></tr>
+                                            <tr>
+                                                <td colspan="3"><span class="text-muted">优势：</span>{{survey.advantage}}</td>
+                                                <td colspan="4"><span class="text-muted">劣势：</span>{{survey.disAdvantage}}</td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -166,4 +152,4 @@
 <!-- /.content-wrapper -->
 
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/app/fang/follow.js?vn=${bts!}"></script>
+<script src="${contextPath!}/js/app/fang/survey.js?vn=${bts!}"></script>

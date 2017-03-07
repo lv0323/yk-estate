@@ -27,13 +27,7 @@
                         <div class="box-header with-border">
                             <h3 class="box-title pull-left">房源列表</h3>
                             <div class="box-tools">
-                               <#-- <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增住宅</a>
-                                <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增公寓</a>
-                                <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增商铺</a>
-                                <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增别墅</a>
-                                <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增写字楼</a>
-                                <a class="btn"><i class="fa fa-plus" aria-hidden="true"></i>新增车位</a>-->
-                                <a class="btn" ng-href="/mgt/fangManage/create.ftl?target=.fang"><i class="fa fa-plus" aria-hidden="true"></i>新增房源</a>
+                                <a class="btn" ng-href="/mgt/fangManage/create?target=.fang"><i class="fa fa-plus" aria-hidden="true"></i>新增房源</a>
                                 <a class="btn-collapse icon-down btn" ng-click="triggerCollapse()">
                                     <strong><i class="fa" ng-class="{true:'fa-chevron-up',false:'fa-chevron-down'}[page.collapse]" aria-hidden="true"></i>更多筛选</strong>
                                 </a>
@@ -42,36 +36,6 @@
                         <div class="box-body clearfix no-padding">
                             <form id="formlist" class="form-inline">
                                 <div id="searchList" ng-cloak class="clearfix">
-                                    <div class="col-lg-4 col-md-4 col-sm-4">
-                                        <div class="input-group" style="width:100%;">
-                                            <input placeholder="房源地址、业主姓名、业主电话、房源编号..." class="form-control" name="houseVO.fyHouseEstname" type="text">
-    								        <span class="input-group-btn"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>查询</button></span>
-                                        </div>
-                                    </div>
-                                    <#--<div class="col-lg-2 col-md-2 col-sm-2" style="position:realtive;">
-                                        <a class="btn text-green" ng-click="getHouseCount = !getHouseCount" ng-init="getHouseCount=false">
-                                            <i class="fa fa-bar-chart"></i>房源统计{{count}}
-                                        </a>
-                                        <div class="popover fade bottom in" ng-show="getHouseCount" style="min-width:120px;">
-                                            <div class="arrow"></div>
-                                            <div class="popover-content no-padding" id="getHouseCount">
-                                                <table class="table table-striped">
-                                                    <tbody>
-                                                    <tr>
-                                                        <td id="zongji"><span>房源总计：<strong></strong>条</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="chushou"><span>出售总计：<strong class="text-danger"></strong>条</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="chuzu"><span>出租总计：<strong class="text-success"></strong>条</span></td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>-->
-                                    <div class="clearfix"></div>
                                     <div class="collapse-box" ng-show="page.collapse">
                                         <div class="form-group sortlist">
                                             <label class="control-label" style="vertical-align:top;padding-top:5px;">区域</label>
@@ -81,8 +45,6 @@
                                                     {{district.name}}
                                                 </a>
                                             </div>
-                                            <div class="tj distract-box" id="picearea">
-                                            </div>
                                         </div>
                                         <div class="form-group sortlist" ng-show="'' != filter.districtId">
                                             <label class="control-label" style="vertical-align:top;padding-top:5px;">子区域</label>
@@ -91,8 +53,6 @@
                                                 <a ng-href="javascript:" ng-repeat="subDistrict in subDistrictList" ng-class="{'actived': subDistrict.id == filter.subDistrictId}" ng-click="setFilterType('subDistrictId', subDistrict.id)">
                                                     {{subDistrict.name}}
                                                 </a>
-                                            </div>
-                                            <div class="tj distract-box" id="picearea">
                                             </div>
                                         </div>
                                         <div class="form-group sortlist">
@@ -297,7 +257,7 @@
                                             </div>
                                             <div class="col-lg-2 col-md-2 hidden-sm">
                                                 <p><strong class="f18">{{house.estateArea}}</strong>m<sup>2</sup></p>
-                                                <span class="text-muted">0.00m<sup>2</sup></span>
+                                                <span class="text-muted">{{house.realArea}}m<sup>2</sup></span>
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3 text-right">
                                                 <p><strong class="text-danger f18">{{house.publishPrice}}</strong>{{house.priceUnit.label}}</p>

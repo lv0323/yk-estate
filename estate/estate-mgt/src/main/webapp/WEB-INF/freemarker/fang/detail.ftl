@@ -42,7 +42,7 @@
                                             </div>
                                             <div class="clearfix m-t-10 text-muted">
                                             <span>
-                                                <strong ng-bind="ctrl.summary.estateArea"></strong>m<sup>2</sup>&nbsp;<strong>0.00</strong>m<sup>2</sup>
+                                                <strong ng-bind="ctrl.summary.estateArea"></strong>m<sup>2</sup>&nbsp;<strong ng-bind="ctrl.summary.realArea"></strong>m<sup>2</sup>
                                                 (<strong class="text-danger"><span ng-bind="ctrl.summary.publishPrice"></strong><span ng-bind="ctrl.summary.priceUnit.label"></span>&nbsp;
                                                 <strong class="text-warning" ng-bind="ctrl.summary.unitPrice"></strong>元/m<sup>2</sup>)
                                             </span>
@@ -62,6 +62,7 @@
                             <li class="active"><a href="#basic-info" data-toggle="tab">基本信息</a></li>
                             <li><a href="#follow-info" data-toggle="tab">跟进记录</a></li>
                             <li><a href="#survey-info" data-toggle="tab">勘察记录</a></li>
+                            <li><a href="#image-info" data-toggle="tab">房源图片</a></li>
                             <li><a href="#descr-info" data-toggle="tab">外网描述</a></li>
                         </ul>
                         <div class="tab-content">
@@ -189,7 +190,7 @@
                                             <td>{{follow.createTime|date:'yyyy-MM-dd'}}</td>
                                             <td><label class="badge badge-danger">{{follow.fangTiny.bizType.label}}</label></td>
                                             <td><label class="badge badge-danger">{{follow.fangTiny.process.label}}</label></td>
-                                            <td>{{follow.fangTiny.publishTime|date:'yyyy-MM-dd'}}</td>
+                                            <td>{{follow.fangTiny && follow.fangTiny.publishTime|date:'yyyy-MM-dd'}}</td>
                                             <td>{{follow.publishedDay}}</td>
                                             <#--<td class="text-right">
                                                 <a href="javascript:void(0);" ng-click="ctrl.deleteFollow(follow.id)">删除</a>
@@ -204,7 +205,88 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="survey-info">
-                                <div id="housesurveyList2"></div>
+                                    <div class="box-tools" style="position:absolute;top:7px;right:10px">
+                                        <a class="btn addAscription pull-right" ng-click="ctrl.newSurveyInit()" href="javascript:void(0)"><i class="fa fa-plus" aria-hidden="true"></i>新增勘察</a>
+                                    </div>
+                                    <div class="table-responsive contractlist" id="houseSurveyList"><div class="table-responsive contractlist">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>勘察人</th>
+                                                <th>勘察时间</th>
+                                                <th>交易类型</th>
+                                                <th>物业地址</th>
+                                                <th>房源状态</th>
+                                                <th>发布日期</th>
+                                                <th>发布天数</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody ng-repeat="survey in ctrl.surveyList">
+                                            <tr>
+                                                <td>川沙2 - 张三</td>
+                                                <td>{{survey.createTime|date:'yyyy-MM-dd'}}</td>
+                                                <td><label class="badge badge-danger">{{survey.fangTiny.bizType.label}}</label></td>
+                                                <td>宝林二村1号楼1201</td>
+                                                <td><label class="badge badge-danger">{{follow.fangTiny.process.label}}</label></td>
+                                                <td>{{survey.fangTiny && survey.fangTiny.publishTime|date:'yyyy-MM-dd'}}</td>
+                                                <td>{{survey.publishedDay}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3"><span class="text-muted">优势：</span>{{survey.advantage}}</td>
+                                                <td colspan="4"><span class="text-muted">劣势：</span>{{survey.disAdvantage}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="pagination-container">
+                                    <ul id="survey_paging" class="pagination"></ul>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="image-info">
+                                <div id="housesurveyList2">
+                                    <div class="box box-solid no-shadow">
+                                        <div class="box-header" style="border-bottom: 1px solid #eee;">
+                                            <h3 class="pull-left box-title">
+                                                房源照片
+                                            </h3>
+                                        </div>
+                                        <div class="box-body surveyImg">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-3 col-sm-6">
+                                                    <div class="thumbnail">
+                                                        <img class="media-object delphoto" src="http://img.12157.top/upload/uploadfile/pic/web/14827284073727940.png" height="75px" width="100px">
+                                                        <div class="caption clearfix">
+                                                            <a href="javascript:void(0);" class="btn btn-warning btn-xs pull-left" onclick="checkAlike('1711')">新增勘察</a>
+                                                            <a class="btn btn-success btn-xs pull-left m-l-30" onclick="checkKcPhoteAll();">查看全部</a>
+                                                            <span class="pull-right" id="housesurveyPhoto"><span>4</span>张</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 col-sm-6">
+                                                    <div class="thumbnail">
+                                                        <img src="../img/house/hxt.jpeg">
+                                                        <div class="caption clearfix">
+                                                            <a class="btn btn-warning btn-xs pull-left" onclick="addLayoutPhoto();">新增户型图</a>
+                                                            <a class="btn btn-success btn-xs pull-left m-l-30" onclick="checkHxPhoto();">查看全部</a>
+                                                            <span class="pull-right">0张</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 col-sm-6">
+                                                    <div class="thumbnail">
+                                                        <img src="../img/house/zjz.jpeg">
+                                                        <div class="caption clearfix">
+                                                            <a class="btn btn-warning btn-xs pull-left" onclick="addIdPhoto();">新增证件照</a>
+                                                            <a class="btn btn-success btn-xs pull-left m-l-30" onclick="checkZjzPhoto();">查看全部</a>
+                                                            <span class="pull-right">0张</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane" id="descr-info">
                                 <div class="row">
@@ -817,7 +899,7 @@
         </div>
     </div>
     <!-- 跟进-->
-<div class="modal fade" id="followModel" role="dialog">
+    <div class="modal fade" id="followModel" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -830,7 +912,7 @@
                         <label class="control-label">跟进方式</label>
                         <div class="col-lg-3 col-md-3 col-sm-3">
                             <select select-picker class="selectpicker show-menu-arrow form-control " name="houseNewFollow" id="houseNewFollow"
-                                    ng-model="ctrl.newFollow.followType" ng-change="ctrl.selectPickerChange('#houseTaxesWilling', 'followType', 'newFollow')">
+                                    ng-model="ctrl.newFollow.followType" ng-change="ctrl.selectPickerChange('#houseNewFollow', 'followType', 'newFollow')">
                                 <option value="">--请选择--</option>
                             <#list followType ?if_exists as type>
                                 <option value="${type.name()}">${type.getLabel()}</option>
@@ -848,6 +930,37 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" ng-click="ctrl.followCreate()">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <!--勘察 -->
+    <div class="modal fade" id="surveyModel" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">新增勘察</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="ownerDialogForm">
+                    <div class="form-group clearfix">
+                        <label class="control-label">优势</label>
+                        <div class="col-lg-9 col-md-9 col-sm-9">
+                            <textarea name="note" cols="30" rows="3" class="form-control" ng-model="ctrl.newSurvey.advantage"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="control-label">劣势</label>
+                        <div class="col-lg-9 col-md-9 col-sm-9">
+                            <textarea name="note" cols="30" rows="3" class="form-control" ng-model="ctrl.newSurvey.disAdvantage"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.surveyCreate()">确定</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>
         </div>
