@@ -38,7 +38,7 @@
 
                         <div class="col-lg-10 col-md-9 col-sm-9">
                             <div class="box box-solid">
-                                <header class="box-header">
+                                <div class="box-header">
                                     <h3 class="box-title">操作日志</h3>
                                     <div class="box-tools">
                                         <a class="btn" id="filterOperationLogBtn">
@@ -46,32 +46,35 @@
                                             筛选
                                         </a>
                                     </div>
-                                </header>
+                                </div>
 
-                                <div class="box-body form-inline form-horizontal">
-                                    <div id="box-filter" class="form-horizontal" style="display:none;">
-                                        <div class="form-group ">
-                                            <label class="control-label">筛选日期</label>
-                                            <div class="col-lg-4 col-md-4 col-sm-4">
-                                                <div class="input-group date">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-calendar"></i>
+                                <div class="box-body">
+                                    <form class="form-inline">
+                                        <div id="box-filter" style="display:none;">
+                                            <div class="form-group sortlist form-inline">
+                                                <label class="control-label">筛选日期</label>
+                                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control pull-right" id="logStartDate" placeholder="开始日期">
                                                     </div>
-                                                    <input type="text" class="form-control pull-right" id="logStartDate" placeholder="开始日期">
                                                 </div>
-                                            </div>
-                                            <label class="pull-left" style="margin-top: 5px;">~</label>
-                                            <div class="col-lg-4 col-md-4 col-sm-4">
-                                                <div class="input-group date">
-                                                    <div class="input-group-addon">
-                                                        <i class="fa fa-calendar"></i>
+                                                <label class="pull-left" style="margin-top: 5px;">~</label>
+                                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control pull-right" id="logEndDate" placeholder="截止日期">
                                                     </div>
-                                                    <input type="text" class="form-control pull-right" id="logEndDate" placeholder="截止日期">
                                                 </div>
+                                                <button id="confirmFilterOperationLogBtn" class="btn btn-primary">查询</button>
                                             </div>
-                                            <button id="confirmFilterOperationLogBtn" class="btn btn-primary">查询</button>
                                         </div>
-                                    </div>
+                                    </form>
+
                                     <table id="operationLogList" class="list table table-bordered table-hover">
                                         <thead><tr>
                                             <th><span>操作时间</span></th>
