@@ -40,7 +40,12 @@
                     });
                 }
                 $(element).find('input').change(function () {
-                    scope.ctrl[attrs.change](attrs.key, $(this).val(), attrs.owner);
+                    if(scope.ctrl){
+                        scope.ctrl[attrs.change](attrs.key, $(this).val(), attrs.owner);
+                    }else{
+                        scope[attrs.change](attrs.key, $(this).val(), attrs.owner);
+                    }
+
                 });
             }
         }

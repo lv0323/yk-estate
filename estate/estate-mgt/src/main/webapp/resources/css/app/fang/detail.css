@@ -30,7 +30,7 @@
 .table-bordered.table > thead > tr > td,
 .table-bordered.table > tbody > tr > td,
 .table-bordered.table > tfoot > tr > td {
-    border-top: 1px solid #ddd;
+    border: 1px solid #ddd;
 }
 .table-bordered.table > thead > tr > th {
     border-bottom: 2px solid #ddd;
@@ -81,4 +81,7 @@
     position:relative;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+#follow-info table{
+    font-size: 12px;
 }

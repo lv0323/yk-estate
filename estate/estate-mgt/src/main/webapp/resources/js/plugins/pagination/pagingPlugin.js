@@ -9,7 +9,7 @@ define(contextPath+'/js/plugins/pagination/pagingPlugin.js',
 
         pagingPlugin.init = function (config) {
             $(config.pagingId).jqPaginator({
-                totalCounts: config.totalCounts,
+                totalCounts: config.totalCounts||1,
                 pageSize: config.pageSize || 10,
                 visiblePages: config.visiblePages || 5,
                 currentPage: config.currentPage || 1,

@@ -275,13 +275,15 @@ require(['main-app',
             _this.follow = function(offset){
                 var now = new Date().getTime() ;
                 FangService.listFollow({fangId:fangId},{'X-PAGING':'total=true&offset='+(offset||pageConfig.fellowPage.offset)+'&limit='+ pageConfig.fellowPage.limit}).then(function(response){
+                    $scope.$apply(function(){
                     pagination(response.total, 'fellowPage');
-                    _this.followList= response.items.map(function(item){
-                        if(item.publishTime){
-                            item.publishedDay = (now - item.publishTime)/(24 * 3600 * 1000)
-                        }
-                        return item
-                    });
+                        _this.followList= response.items.map(function(item){
+                            if(item.publishTime){
+                                item.publishedDay = (now - item.publishTime)/(24 * 3600 * 1000)
+                            }
+                            return item
+                        });
+                    })
                 });
             }
             _this.follow();
