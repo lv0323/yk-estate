@@ -318,8 +318,13 @@ require(['main-app',
                     delete param.minArea;
                     delete param.maxArea;
                 }
-                if(param.order &&param.orderType){
-                    param.order = param.order + '_' + param.orderType;
+                if(param.order && param.orderType){
+                    /*跟进日期排序特殊处理*/
+                    if(param.order === 'FOLLOW_TIME'){
+                        param.order = param.order + '_' + ( param.orderType == 'UP'?'CLOSER' : 'FARTHER');
+                    }else{
+                        param.order = param.order + '_' + param.orderType;
+                    }
                 }
                 if(!currentpage){
                     pageConfig.currentPage = 1;

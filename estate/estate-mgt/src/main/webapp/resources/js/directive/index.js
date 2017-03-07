@@ -10,8 +10,11 @@
         return factory(angular);
     }
 }(angular, function (angular) {
-
-    var module = angular.module('directiveYk', ['directiveYk']);
+    function isValidPhoneNumber(value) {
+        var reg = /^(13|15|17|18|14)\d{9}(~)?$/;
+        return (reg.test(value));
+    }
+    var module = angular.module('directiveYk',[]);
 
     module.directive('datetimepicker', function () {
         return {
@@ -101,7 +104,7 @@
             require: 'ngModel',
             link: function ($scope, elem, attrs, ctrl) {
                 ctrl.$parsers.unshift(function (value) {
-                    if (!value || ValidationService.isValidPhoneNumber(value)) {
+                    if (!value || isValidPhoneNumber(value)) {
                         ctrl.$setValidity('mobilePhone', true);
                     } else {
                         ctrl.$setValidity('mobilePhone', false);
