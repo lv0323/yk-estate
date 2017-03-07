@@ -17,7 +17,7 @@
                 <div class="col-lg-12">
                     <div class="box box-solid" ng-cloak>
                         <div class="box-header with-border">
-                            <h3 class="box-title">新增住宅</h3>
+                            <h3 class="box-title">新增房源</h3>
                         </div>
 
                         <form id="createForm" class="form-horizontal" name="houseForm">
