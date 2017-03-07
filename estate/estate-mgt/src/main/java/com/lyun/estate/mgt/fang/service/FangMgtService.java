@@ -11,6 +11,7 @@ import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.fang.def.*;
+import com.lyun.estate.biz.fang.domian.FangCheckDTO;
 import com.lyun.estate.biz.fang.domian.FangFollowDTO;
 import com.lyun.estate.biz.fang.domian.MgtFangTiny;
 import com.lyun.estate.biz.fang.entity.*;
@@ -284,7 +285,7 @@ public class FangMgtService {
         );
     }
 
-    public PageList<FangCheck> getChecks(Long fangId, PageBounds pageBounds) {
+    public PageList<FangCheckDTO> getChecks(Long fangId, PageBounds pageBounds) {
         return mgtFangService.getChecks(fangId, pageBounds);
     }
 

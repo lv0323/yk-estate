@@ -2,6 +2,7 @@ package com.lyun.estate.biz.fang.repo;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.fang.domian.FangCheckDTO;
 import com.lyun.estate.biz.fang.entity.FangCheck;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
@@ -23,6 +24,8 @@ public interface FangCheckRepo {
     @Select("select * from t_fang_check where id = #{id}")
     FangCheck findOne(Long id);
 
-    @Select("select * from t_fang_check where fang_id =#{fangId}  and is_deleted = false order by id asc")
-    PageList<FangCheck> findByFangId(@Param("fangId") Long fangId, PageBounds pageBounds);
+    @Select("SELECT  fc.*,  d.name AS department_name,  e.name AS employee_name\n" +
+            "FROM t_fang_check fc  LEFT JOIN t_department d ON fc.department_id = d.id  LEFT JOIN t_employee e ON fc.employee_id = e.id\n" +
+            "WHERE fc.fang_id = #{fangId} AND fc.is_deleted = FALSE ORDER BY fc.id ASC")
+    PageList<FangCheckDTO> findByFangId(@Param("fangId") Long fangId, PageBounds pageBounds);
 }

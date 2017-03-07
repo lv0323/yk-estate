@@ -2,6 +2,7 @@ package com.lyun.estate.biz.spec.fang.mgt.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.fang.domian.FangCheckDTO;
 import com.lyun.estate.biz.fang.domian.FangFollowDTO;
 import com.lyun.estate.biz.fang.domian.MgtFangTiny;
 import com.lyun.estate.biz.fang.entity.*;
@@ -37,7 +38,7 @@ public interface MgtFangService {
 
     FangCheck createCheck(FangCheck fangCheck);
 
-    PageList<FangCheck> getChecks(Long fangId, PageBounds pageBounds);
+    PageList<FangCheckDTO> getChecks(Long fangId, PageBounds pageBounds);
 
     FangDescr createFangDescr(FangDescr fangDescr);
 

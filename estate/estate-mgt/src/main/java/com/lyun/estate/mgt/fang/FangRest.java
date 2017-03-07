@@ -4,6 +4,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.fang.def.*;
+import com.lyun.estate.biz.fang.domian.FangCheckDTO;
 import com.lyun.estate.biz.fang.domian.FangFollowDTO;
 import com.lyun.estate.biz.fang.domian.MgtFangTiny;
 import com.lyun.estate.biz.fang.entity.*;
@@ -330,8 +331,8 @@ public class FangRest {
     }
 
     @GetMapping("check")
-    public PageList<FangCheck> getChecks(Long fangId,
-                                         @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
+    public PageList<FangCheckDTO> getChecks(Long fangId,
+                                            @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
         return fangMgtService.getChecks(fangId, pageBounds);
     }
 

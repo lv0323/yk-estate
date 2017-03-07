@@ -2,8 +2,10 @@ package com.lyun.estate.mgt.showing;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.customer.def.CustomerDefine;
-import com.lyun.estate.biz.fang.def.Showing;
 import com.lyun.estate.biz.showing.def.ShowingDefine;
+import com.lyun.estate.biz.showing.entity.Showing;
+import com.lyun.estate.mgt.showing.service.ShowingMgtService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +18,15 @@ import java.util.Date;
 @RequestMapping("showing")
 public class ShowingRest {
 
+    @Autowired
+    ShowingMgtService showingMgtService;
+
     @PostMapping("create")
     public Showing createShowing(@RequestParam Long fangId,
                                  @RequestParam String customerName,
                                  @RequestParam CustomerDefine.Source customerSource,
                                  @RequestParam String customerMobile) {
-        return null;
+        return showingMgtService.create(fangId, customerName, customerSource, customerMobile);
     }
 
     @PostMapping("close")
