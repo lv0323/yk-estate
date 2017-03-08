@@ -118,7 +118,9 @@
                                             <tbody ng-repeat="follow in followList">
                                             <tr>
                                                 <td>
-                                                    <img ng-src="{{follow.avatarURI}}" class="img-circle">
+                                                    <div class="img-circle-container">
+                                                        <img ng-src="{{follow.avatarURI}}" class="img-circle">
+                                                    </div>
                                                     {{follow.departmentName}}-{{follow.employeeName}}</td>
                                                 <td><label class="badge badge-success">{{follow.followType.label}}</label></td>
                                                 <td>{{follow.createTime|date:'yyyy-MM-dd'}}</td>

@@ -76,6 +76,12 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.checkCreate = function (params, header) {
             return RequestService.post('/fang/check', params, header);
         };
+        FangService.image = function (params, header) {
+            return RequestService.get('/fang/image', params, header);
+        };
+        FangService.imageUpload = function (params, header) {
+            return RequestService.postMultipart('/fang/image', params, header);
+        };
 
         return FangService;
     });

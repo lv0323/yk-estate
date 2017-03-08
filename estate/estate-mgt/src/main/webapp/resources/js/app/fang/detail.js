@@ -8,10 +8,11 @@ require(['main-app',
         contextPath + '/js/service/xiaoqu-service.js',
         contextPath + '/js/service/util-service.js',
         contextPath + '/js/app/fang/tools.js',
+        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath + '/js/directive/index.js',
-        'jqPaginator', 'select', 'chosen', 'datepicker.zh-cn', 'datetimepicker.zh-cn', 'sweetalert'],
-    function (mainApp,  IdentityService, FangService, ValidationService, XiaoquService, UtilService, Tools, pagingPlugin) {
+        'jqPaginator', 'select', 'chosen', 'fileupload','datepicker.zh-cn', 'datetimepicker.zh-cn'],
+    function (mainApp,  IdentityService, FangService, ValidationService, XiaoquService, UtilService, Tools, SweetAlertHelp, pagingPlugin) {
         function ceilCheck(ceilValue, value) {
             if (ceilValue && value && parseFloat(ceilValue) < parseFloat(value)) {
                 return false;
@@ -52,7 +53,8 @@ require(['main-app',
                     content:'请输入完整信息'
                 },
                 layoutString:'',
-                now : new Date().getTime()
+                now : new Date().getTime(),
+                uploadTitle:''
             };
 
             _this.summary = {};
@@ -62,10 +64,27 @@ require(['main-app',
             _this.description = {};
             _this.descrUpdateInfo = {};
             _this.subTypeList = [];
-            _this.followList =[];
-            _this.surveyList =[];
+            _this.followList = [];
+            _this.surveyList = [];
             _this.newFollow = {};
-            _this.newSurvey= {};
+            _this.newSurvey = {};
+            _this.showMapList = [];
+            _this.imageTypeList = [
+                {key: 'virtualMap', para :'SHI_JING', addText: '新增勘察图', defaultMap: '../img/house/kct.jpeg'},
+                {key: 'layoutMap', para :'HU_XING', addText: '新增户型图', defaultMap: '../img/house/hxt.jpeg'},
+                {key: 'avatarMap', para :'AVATAR', addText: '新增证件照', defaultMap: '../img/house/zjz.jpeg'}];
+            _this.virtualMap ={
+                list:[],
+                count:0,
+            };
+            _this.layoutMap ={
+                list:[],
+                count:0,
+            };
+            _this.avatarMap ={
+                list:[],
+                count:0,
+            };
             /*户型选择*/
             _this.layoutList={
                 shi:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:0,name:'无'}],
@@ -73,23 +92,6 @@ require(['main-app',
                 chu:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:0,name:'无'}],
                 wei:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:0,name:'无'}],
                 yangtai:[{value:1,name:'1'}, {value:2,name:'2'}, {value:3,name:'3'}, {value:4,name:'4'}, {value:5,name:'5'}, {value:6,name:'6'},{value:7,name:'7'},{value:0,name:'无'}]
-            };
-            _this.success = function(){
-                swal({
-                    title: "操作成功!",
-                    type: "success",
-                    confirmButtonText: "确定",
-                    confirmButtonColor: "#3c8dbc"
-                });
-            }
-            _this.fail = function(res) {
-                swal({
-                    title: "错误!",
-                    text: res["message"],
-                    type: "error",
-                    confirmButtonText: "确定",
-                    confirmButtonColor: "#3c8dbc"
-                });
             };
             _this.setLayout = function(type, value){
                 _this.currentLayout[type] = value;
@@ -175,8 +177,8 @@ require(['main-app',
                 FangService.updateDescr(_this.descrUpdateInfo).then(function(response){
                     $('#descrModel').modal('hide');
                     _this.descrGet();
-                    _this.success();
-                }).fail(_this.fail);
+                    SweetAlertHelp.success();
+                }).fail(SweetAlertHelp.fail);
             };
             _this.layoutDialogShow = function(){
                 _this.currentLayout = {
@@ -232,7 +234,7 @@ require(['main-app',
                 delete info.houseType;
                 FangService.baseChange(info).then(function(response){
                     $('#baseModel').modal('hide');
-                    _this.success();
+                    SweetAlertHelp.success();
                 });
             };
             _this.extInfoInit = function(){
@@ -271,7 +273,7 @@ require(['main-app',
                     FangService.extChange(info).then(function(response){
                         $('#extModel').modal('hide');
                         _this.getExt();
-                        _this.success();
+                        SweetAlertHelp.success();
                     });
                 };
             };
@@ -309,8 +311,8 @@ require(['main-app',
                 FangService.createFollow(info).then(function(response){
                     $('#followModel').modal('hide');
                     _this.follow();
-                    _this.success();
-                }).fail(_this.fail);
+                    SweetAlertHelp.success();
+                }).fail(SweetAlertHelp.fail);
             };
             /*end 房源跟进*/
 
@@ -343,9 +345,52 @@ require(['main-app',
                 FangService.checkCreate(info).then(function(response){
                     $('#surveyModel').modal('hide');
                     _this.survey();
-                    _this.success();
-                }).fail(_this.fail);
+                    SweetAlertHelp.success();
+                }).fail(SweetAlertHelp.fail);
             }
+
+            /*end 勘察*/
+            /*图片*/
+            _this.imageGet = function(type){
+               return FangService.image({fangId:fangId,customType:type});
+            };
+            _this.imageGet('SHI_JING').then(function(response){
+                _this.virtualMap.list = response;
+                _this.virtualMap.count =response.length;
+            });
+            _this.imageGet('HU_XING').then(function(response){
+                _this.layoutMap.list = response;
+                _this.layoutMap.count =response.length;
+            });
+            _this.imageGet('AVATAR').then(function(response){
+                _this.avatarMap.list = response;
+                _this.avatarMap.count =response.length;
+            });
+            function uploadMap(type){
+                var formData = new FormData();
+                formData.append("image", $("#file_upload")[0].files[0]);
+                formData.append("fangId", fangId);
+                formData.append("customType", type);
+                FangService.imageUpload(formData).then(function(){
+
+                }).fail(SweetAlertHelp.fail);
+            }
+            _this.addMap = function(type, title, key){
+                $('#mapModel').modal({'show':true,backdrop:'static'});
+                $('#detailInfo').off('change','#file_upload');
+                var $el = $('#file_upload');
+                    $el.wrap('<form>').closest('form').get(0).reset();
+                    $el.unwrap();
+                $('#detailInfo').on('change','#file_upload',function(){
+                    uploadMap(type);
+                });
+                _this.page.uploadTitle = title;
+                _this.showMapList = _this[key].list;
+            };
+            _this.showAllMap = function(type){
+              console.log(type);
+            };
+            /*end 图片*/
             /*分页*/
             var pagination = function(dataTotal, pageName) {
                 var page = pageConfig[pageName];

@@ -186,7 +186,9 @@
                                         <tbody ng-repeat="follow in ctrl.followList">
                                         <tr>
                                             <td>
-                                                <img ng-src="{{follow.avatarURI}}" class="img-circle">
+                                                <div class="img-circle-container">
+                                                    <img ng-src="{{follow.avatarURI}}" class="img-circle">
+                                                </div>
                                                 {{follow.departmentName}}-{{follow.employeeName}}
                                             </td>
                                             <td><label class="badge badge-success">{{follow.followType.label}}</label></td>
@@ -226,7 +228,9 @@
                                             <tbody ng-repeat="survey in ctrl.surveyList">
                                             <tr>
                                                 <td>
-                                                    <img ng-src="{{survey.avatarURI}}" class="img-circle">
+                                                    <div class="img-circle-container">
+                                                        <img ng-src="{{survey.avatarURI}}" class="img-circle">
+                                                    </div>
                                                     {{survey.departmentName}} - {{survey.employeeName}}</td>
                                                 <td>{{survey.createTime|date:'yyyy-MM-dd'}}</td>
                                                 <td><label class="badge badge-danger">{{survey.fangTiny.bizType.label}}</label></td>
@@ -256,33 +260,13 @@
                                         </div>
                                         <div class="box-body surveyImg">
                                             <div class="row">
-                                                <div class="col-lg-3 col-md-3 col-sm-6">
+                                                <div class="col-lg-3 col-md-3 col-sm-6" ng-repeat="type in ctrl.imageTypeList">
                                                     <div class="thumbnail">
-                                                        <img class="media-object delphoto" src="http://img.12157.top/upload/uploadfile/pic/web/14827284073727940.png" height="75px" width="100px">
+                                                       <img ng-src="{{ctrl[type.key].count > 0? ctrl[type.key].list[0].fileURI : type.defaultMap}}"/>
                                                         <div class="caption clearfix">
-                                                            <a href="javascript:void(0);" class="btn btn-warning btn-xs pull-left" onclick="checkAlike('1711')">新增勘察</a>
-                                                            <a class="btn btn-success btn-xs pull-left m-l-30" onclick="checkKcPhoteAll();">查看全部</a>
-                                                            <span class="pull-right" id="housesurveyPhoto"><span>4</span>张</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-3 col-md-3 col-sm-6">
-                                                    <div class="thumbnail">
-                                                        <img src="../img/house/hxt.jpeg">
-                                                        <div class="caption clearfix">
-                                                            <a class="btn btn-warning btn-xs pull-left" onclick="addLayoutPhoto();">新增户型图</a>
-                                                            <a class="btn btn-success btn-xs pull-left m-l-30" onclick="checkHxPhoto();">查看全部</a>
-                                                            <span class="pull-right">0张</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-3 col-md-3 col-sm-6">
-                                                    <div class="thumbnail">
-                                                        <img src="../img/house/zjz.jpeg">
-                                                        <div class="caption clearfix">
-                                                            <a class="btn btn-warning btn-xs pull-left" onclick="addIdPhoto();">新增证件照</a>
-                                                            <a class="btn btn-success btn-xs pull-left m-l-30" onclick="checkZjzPhoto();">查看全部</a>
-                                                            <span class="pull-right">0张</span>
+                                                            <a class="btn btn-warning btn-xs pull-left" ng-click="ctrl.addMap(type.para, type.addText, type.key);">{{type.addText}}</a>
+                                                            <a class="btn btn-success btn-xs pull-left m-l-30" ng-click="ctrl.showAllMap(type.para);">查看全部</a>
+                                                            <span class="pull-right">{{ctrl[type.key].count}}张</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -961,6 +945,41 @@
                         </div>
                     </div>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="ctrl.surveyCreate()">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- 图片 -->
+    <div class="modal fade" id="mapModel" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" ng-bind="ctrl.page.uploadTitle"></h4>
+            </div>
+            <div class="modal-body">
+                <span class="btn btn-primary fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>上传图片</span>
+                    <input id="file_upload" type="file" name="files[]" multiple="">
+                </span>
+                <div id="uploadedList">
+                    <ul class="photoList m-t-10">
+                    <input value="2" id="attachmentsize" type="hidden">
+                    <input id="housePhotoUrl" type="hidden">
+                    <li ng-repeat="img in ctrl.showMapList">
+                        <img ng-src="{{img.fileURI}}" height="100%" width="100%">
+                        <div class="btn-box">
+                            <a class="pull-left" title="删除"><i class="fa fa-trash" ng-click=""></i></a>
+                            <a class="pull-right" title="设为封面图"><i class="fa fa-file-photo-o"></i></a>
+                        </div>
+                    </li>
+                </ul>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" ng-click="ctrl.surveyCreate()">确定</button>

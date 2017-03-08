@@ -15,6 +15,8 @@ requirejs.config({
         'datetimepicker.zh-cn': 'plugins/datepicker/locales/bootstrap-datetimepicker.zh-CN',
         'datatables': 'plugins/datatables/jquery.dataTables.min',
         'datatablesBootstrap': 'plugins/datatables/dataTables.bootstrap.min',
+        'jquery-ui/ui/widget': 'plugins/fileupload/jquery.ui.widget',
+        'fileupload': 'plugins/fileupload/jquery.fileupload',
         'chosen': 'plugins/chosen/chosen.jquery',
         'select': 'plugins/select/bootstrap-select',
         'submenu': 'plugins/bootstrap-submenu',
@@ -42,6 +44,9 @@ requirejs.config({
         'datepicker': {
             deps: ['jquery', 'bootstrap'],
             exports: '$.fn.datepicker'
+        },
+        'jquery-ui/ui/widget':{
+            deps: ['jquery']
         },
         'datepicker.zh-cn': ['jquery', 'datepicker'],
         'datetimepicker': { deps: ['jquery', 'bootstrap'],

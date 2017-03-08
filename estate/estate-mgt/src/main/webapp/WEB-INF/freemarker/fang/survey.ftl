@@ -84,7 +84,9 @@
                                             <tbody ng-repeat="survey in surveyList">
                                             <tr>
                                                 <td>
-                                                    <img ng-src="{{survey.avatarURI}}" class="img-circle">
+                                                    <div class="img-circle-container">
+                                                        <img ng-src="{{survey.avatarURI}}" class="img-circle">
+                                                    </div>
                                                     {{survey.departmentName}}- {{survey.employeeName}}</td>
                                                 <td>{{survey.createTime|date:'yyyy-MM-dd'}}</td>
                                                 <td><label class="badge badge-danger">{{survey.fangTiny.bizType.label}}</label></td>
