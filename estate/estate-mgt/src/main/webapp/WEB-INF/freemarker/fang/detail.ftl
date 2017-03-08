@@ -265,7 +265,7 @@
                                                        <img ng-src="{{ctrl[type.key].count > 0? ctrl[type.key].list[0].fileURI : type.defaultMap}}"/>
                                                         <div class="caption clearfix">
                                                             <a class="btn btn-warning btn-xs pull-left" ng-click="ctrl.addMap(type.para, type.addText, type.key);">{{type.addText}}</a>
-                                                            <a class="btn btn-success btn-xs pull-left m-l-30" ng-click="ctrl.showAllMap(type.para);">查看全部</a>
+                                                            <a class="btn btn-success btn-xs pull-left m-l-30" ng-click="ctrl.showAllMap(type.para, type.addText, type.key);">查看全部</a>
                                                             <span class="pull-right">{{ctrl[type.key].count}}张</span>
                                                         </div>
                                                     </div>
@@ -961,7 +961,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title" ng-bind="ctrl.page.uploadTitle"></h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body upload-modal-body">
                 <span class="btn btn-primary fileinput-button">
                     <i class="glyphicon glyphicon-plus"></i>
                     <span>上传图片</span>
@@ -971,11 +971,11 @@
                     <ul class="photoList m-t-10">
                     <input value="2" id="attachmentsize" type="hidden">
                     <input id="housePhotoUrl" type="hidden">
-                    <li ng-repeat="img in ctrl.showMapList">
+                    <li ng-repeat="img in ctrl.showMap.list">
                         <img ng-src="{{img.fileURI}}" height="100%" width="100%">
                         <div class="btn-box">
-                            <a class="pull-left" title="删除"><i class="fa fa-trash" ng-click=""></i></a>
-                            <a class="pull-right" title="设为封面图"><i class="fa fa-file-photo-o"></i></a>
+                            <a class="pull-left" title="删除" ng-click="ctrl.deleteImage(img.id)"><i class="fa fa-trash" ng-click=""></i></a>
+                            <a class="pull-right" title="设为封面图" ng-click="ctrl.setFirstImage(img.id)"><i class="fa fa-file-photo-o"></i></a>
                         </div>
                     </li>
                 </ul>
@@ -987,6 +987,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 </div>
 <!-- /.content-wrapper -->

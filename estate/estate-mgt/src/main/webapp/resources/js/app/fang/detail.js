@@ -11,7 +11,7 @@ require(['main-app',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath + '/js/directive/index.js',
-        'jqPaginator', 'select', 'chosen', 'fileupload','datepicker.zh-cn', 'datetimepicker.zh-cn'],
+        'jqPaginator', 'select', 'chosen', 'fancyboxThumbs', 'fileupload','datepicker.zh-cn', 'datetimepicker.zh-cn'],
     function (mainApp,  IdentityService, FangService, ValidationService, XiaoquService, UtilService, Tools, SweetAlertHelp, pagingPlugin) {
         function ceilCheck(ceilValue, value) {
             if (ceilValue && value && parseFloat(ceilValue) < parseFloat(value)) {
@@ -68,7 +68,11 @@ require(['main-app',
             _this.surveyList = [];
             _this.newFollow = {};
             _this.newSurvey = {};
-            _this.showMapList = [];
+            _this.showMap = {
+                list: [],
+                key: '',
+                para: ''
+            };
             _this.imageTypeList = [
                 {key: 'virtualMap', para :'SHI_JING', addText: '新增勘察图', defaultMap: '../img/house/kct.jpeg'},
                 {key: 'layoutMap', para :'HU_XING', addText: '新增户型图', defaultMap: '../img/house/hxt.jpeg'},
@@ -372,7 +376,14 @@ require(['main-app',
                 formData.append("fangId", fangId);
                 formData.append("customType", type);
                 FangService.imageUpload(formData).then(function(){
-
+                    SweetAlertHelp.success();
+                    _this.imageGet(_this.showMap.para).then(function(response) {
+                        $scope.$apply(function () {
+                            _this[_this.showMap.key].list = response;
+                            _this[_this.showMap.key].count = response.length;
+                            _this.showMap.list = response;
+                        });
+                    });
                 }).fail(SweetAlertHelp.fail);
             }
             _this.addMap = function(type, title, key){
@@ -385,10 +396,50 @@ require(['main-app',
                     uploadMap(type);
                 });
                 _this.page.uploadTitle = title;
-                _this.showMapList = _this[key].list;
+                _this.showMap.list= _this[key].list;
+                _this.showMap.key =key;
+                _this.showMap.para =type;
             };
-            _this.showAllMap = function(type){
-              console.log(type);
+            _this.showAllMap = function(type, title, key){
+                var list = _this[key].list.map(function(item){
+                    return{
+                        href:item.fileURI,
+                        title:''
+                    }
+                });
+                $.fancybox.open(list, {
+                    helpers : {
+                        thumbs : {
+                            width: 75,
+                            height: 50
+                        }
+                    }
+                });
+            };
+            _this.deleteImage = function(fileId){
+                FangService.deleteImage({fileId:fileId}).then(function(){
+                    SweetAlertHelp.success();
+                    _this.imageGet(_this.showMap.para).then(function(response){
+                        $scope.$apply(function(){
+                            _this[_this.showMap.key].list = response;
+                            _this[_this.showMap.key].count = response.length;
+                            _this.showMap.list = response;
+                        });
+                    });
+                });
+            };
+            _this.setFirstImage = function(fileId){
+                FangService.setFirstImage({fileId:fileId}).then(function(){
+                    SweetAlertHelp.success();
+                    _this.imageGet(_this.showMap.para).then(function(response){
+                        $scope.$apply(function(){
+                            _this[_this.showMap.key].list = response;
+                            _this[_this.showMap.key].count = response.length;
+                            _this.showMap.list = response;
+                        });
+
+                    });
+                });
             };
             /*end 图片*/
             /*分页*/

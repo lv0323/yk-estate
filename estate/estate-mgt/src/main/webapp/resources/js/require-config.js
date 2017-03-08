@@ -16,6 +16,8 @@ requirejs.config({
         'datatables': 'plugins/datatables/jquery.dataTables.min',
         'datatablesBootstrap': 'plugins/datatables/dataTables.bootstrap.min',
         'jquery-ui/ui/widget': 'plugins/fileupload/jquery.ui.widget',
+        'fancybox': 'plugins/fancybox/jquery.fancybox',
+        'fancyboxThumbs': 'plugins/fancybox/jquery.fancybox-thumbs',
         'fileupload': 'plugins/fileupload/jquery.fileupload',
         'chosen': 'plugins/chosen/chosen.jquery',
         'select': 'plugins/select/bootstrap-select',
@@ -40,6 +42,13 @@ requirejs.config({
         'cryptojs.hmac': ['cryptojs.core'],
         'cryptojs.md5':['cryptojs.core'],
         'parsley': ['jquery'],
+        'fancybox':{
+            deps: ['jquery'],
+            exports: '$.fn.fancybox'
+        },
+        'fancyboxThumbs':{
+            deps: ['jquery','fancybox']
+        },
         'zTree':['jquery'],
         'datepicker': {
             deps: ['jquery', 'bootstrap'],

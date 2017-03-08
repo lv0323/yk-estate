@@ -82,6 +82,11 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.imageUpload = function (params, header) {
             return RequestService.postMultipart('/fang/image', params, header);
         };
-
+        FangService.setFirstImage = function (params, header) {
+            return RequestService.post('/fang/set-first-image', params, header);
+        };
+        FangService.deleteImage = function (params, header) {
+            return RequestService.post('/fang/delete-image', params, header);
+        };
         return FangService;
     });
