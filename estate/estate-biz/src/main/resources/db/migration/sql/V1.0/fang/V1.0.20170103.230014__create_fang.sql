@@ -85,9 +85,16 @@ CREATE TABLE t_fang_descr (
 
 
 CREATE TABLE t_fang_contact (
-  id           BIGSERIAL PRIMARY KEY,
-  fang_id      BIGINT NOT NULL,
-  owner_name   VARCHAR(20), --业主姓名
-  contact_type VARCHAR(10), --联系类别
-  contact_info VARCHAR(50) --联系方式
+  id          BIGSERIAL PRIMARY KEY,
+  fang_id     BIGINT      NOT NULL,
+  name        VARCHAR(20) NOT NULL,
+  mobile      VARCHAR(20) NOT NULL,
+  a_mobile    VARCHAR(20),
+  b_mobile    VARCHAR(20),
+  qq          VARCHAR(20),
+  we_chat     VARCHAR(20),
+  email       VARCHAR(20),
+  create_time TIMESTAMP   NOT NULL      DEFAULT CURRENT_TIMESTAMP, --创建时间
+  update_time TIMESTAMP   NOT NULL      DEFAULT CURRENT_TIMESTAMP, --更新时间
+  is_deleted  BOOLEAN     NOT NULL      DEFAULT FALSE
 );

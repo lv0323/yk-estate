@@ -79,16 +79,6 @@ public class MgtFangSqlProvider {
         }}.toString();
     }
 
-    public String saveFangContact(FangContact fangContact) {
-        return new SQL() {{
-            INSERT_INTO("t_fang_contact")
-                    .VALUES("fang_id", "#{fangId}")
-                    .VALUES("owner_name", "#{ownerName}")
-                    .VALUES("contact_type", "#{contactType}")
-                    .VALUES("contact_info", "#{contactInfo}");
-        }}.toString();
-    }
-
     public String saveFangInfoOwner(FangInfoOwner fangInfoOwner) {
         return new SQL() {{
             INSERT_INTO("t_fang_info_owner")

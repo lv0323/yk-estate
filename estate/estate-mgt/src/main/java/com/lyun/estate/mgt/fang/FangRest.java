@@ -2,7 +2,6 @@ package com.lyun.estate.mgt.fang;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.google.common.base.Strings;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.domian.FangCheckDTO;
 import com.lyun.estate.biz.fang.domian.FangFollowDTO;
@@ -30,7 +29,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Created by Jeffrey on 2017-02-19.
@@ -74,7 +72,9 @@ public class FangRest {
                            @RequestParam(required = false) BigDecimal bottomPrice,
                            @RequestParam(required = false) YN resident,
                            @RequestParam String ownerName,
-                           @RequestParam List<String> mobiles,
+                           @RequestParam String mobile,
+                           @RequestParam(required = false) String aMobile,
+                           @RequestParam(required = false) String bMobile,
                            @RequestParam YN isOnly,
                            @RequestParam Integer overYears,
                            @RequestParam HouseLevel level,
@@ -130,9 +130,11 @@ public class FangRest {
                 .setMortgage(mortgage)
                 .setNote(note);
 
-        List<FangContact> contacts = mobiles.stream().filter(t -> !Strings.isNullOrEmpty(t)).map(m ->
-                new FangContact().setContactType(ContactType.MOBILE).setOwnerName(ownerName).setContactInfo(m))
-                .collect(Collectors.toList());
+        FangContact contacts = new FangContact()
+                .setName(ownerName)
+                .setMobile(mobile)
+                .setaMobile(aMobile)
+                .setbMobile(bMobile);
 
         return fangMgtService.createFang(houseLicence, fang, fangExt, contacts);
     }
@@ -226,8 +228,8 @@ public class FangRest {
     }
 
     @GetMapping("contact")
-    public List<FangContact> getContacts(@RequestParam Long fangId) {
-        return fangMgtService.getContacts(fangId);
+    public FangContact getContact(@RequestParam Long fangId) {
+        return fangMgtService.getContact(fangId);
     }
 
     @GetMapping("info-owner")
@@ -443,9 +445,26 @@ public class FangRest {
         return fangMgtService.listFollow(filter, pageBounds);
     }
 
-    @GetMapping("/tiny")
+    @GetMapping("tiny")
     public MgtFangTiny getFangTinyByLicenceId(@RequestParam Long licenceId) {
         return fangMgtService.getFangTinyByLicenceId(licenceId);
+    }
+
+    @PostMapping("change-contact")
+    public FangContact changeContact(@RequestParam Long fangId,
+                                     @RequestParam String name,
+                                     @RequestParam String mobile,
+                                     @RequestParam(required = false) String aMobile,
+                                     @RequestParam(required = false) String bMobile,
+                                     @RequestParam(required = false) String qq,
+                                     @RequestParam(required = false) String weChat,
+                                     @RequestParam(required = false) String email) {
+        FangContact contact = new FangContact().setFangId(fangId)
+                .setName(name).setMobile(mobile).setaMobile(aMobile)
+                .setbMobile(bMobile).setQq(qq).setWeChat(weChat).setEmail(email);
+        return fangMgtService.updateContact(contact);
+
+
     }
 
 }

@@ -4,7 +4,9 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
 import com.lyun.estate.biz.fang.domian.MgtFangSelector;
-import com.lyun.estate.biz.fang.entity.*;
+import com.lyun.estate.biz.fang.entity.Fang;
+import com.lyun.estate.biz.fang.entity.FangExt;
+import com.lyun.estate.biz.fang.entity.FangInfoOwner;
 import com.lyun.estate.biz.fang.repo.provider.MgtFangSqlProvider;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -32,14 +34,6 @@ public interface MgtFangRepository {
 
     @Select("select * from t_fang_ext where id =#{id}")
     FangExt findFangExt(Long id);
-
-
-    @InsertProvider(type = MgtFangSqlProvider.class, method = "saveFangContact")
-    @Options(useGeneratedKeys = true)
-    int saveFangContact(FangContact fangContact);
-
-    @Select("select * from t_fang_contact where id = #{id}")
-    FangContact findFangContact(Long id);
 
     @InsertProvider(type = MgtFangSqlProvider.class, method = "saveFangInfoOwner")
     @Options(useGeneratedKeys = true)
