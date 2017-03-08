@@ -185,7 +185,10 @@
                                         </thead>
                                         <tbody ng-repeat="follow in ctrl.followList">
                                         <tr>
-                                            <td>{{follow.departmentName}}-{{follow.employeeName}}</td>
+                                            <td>
+                                                <img ng-src="{{follow.avatarURI}}" class="img-circle">
+                                                {{follow.departmentName}}-{{follow.employeeName}}
+                                            </td>
                                             <td><label class="badge badge-success">{{follow.followType.label}}</label></td>
                                             <td>{{follow.createTime|date:'yyyy-MM-dd'}}</td>
                                             <td><label class="badge badge-danger">{{follow.fangTiny.bizType.label}}</label></td>
@@ -215,7 +218,6 @@
                                                 <th>勘察人</th>
                                                 <th>勘察时间</th>
                                                 <th>交易类型</th>
-                                                <th>物业地址</th>
                                                 <th>房源状态</th>
                                                 <th>发布日期</th>
                                                 <th>发布天数</th>
@@ -223,11 +225,12 @@
                                             </thead>
                                             <tbody ng-repeat="survey in ctrl.surveyList">
                                             <tr>
-                                                <td>川沙2 - 张三</td>
+                                                <td>
+                                                    <img ng-src="{{survey.avatarURI}}" class="img-circle">
+                                                    {{survey.departmentName}} - {{survey.employeeName}}</td>
                                                 <td>{{survey.createTime|date:'yyyy-MM-dd'}}</td>
                                                 <td><label class="badge badge-danger">{{survey.fangTiny.bizType.label}}</label></td>
-                                                <td>宝林二村1号楼1201</td>
-                                                <td><label class="badge badge-danger">{{follow.fangTiny.process.label}}</label></td>
+                                                <td><label class="badge badge-danger">{{survey.fangTiny.process.label}}</label></td>
                                                 <td>{{survey.fangTiny && survey.fangTiny.publishTime|date:'yyyy-MM-dd'}}</td>
                                                 <td>{{survey.publishedDay}}</td>
                                             </tr>

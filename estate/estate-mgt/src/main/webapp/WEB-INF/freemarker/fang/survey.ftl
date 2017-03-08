@@ -32,13 +32,13 @@
                                         <div class="form-group sortlist">
                                             <label class="control-label">勘察日期</label>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
-                                                <div class="input-group date form_date" datetimepicker key="minFollowDate" change="setDate">
+                                                <div class="input-group date form_date" datetimepicker key="minCreateDate" change="setDate">
                                                     <input class="form-control" size="16" placeholder="开始日期" type="text" ng-model="filter.startDate">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
-                                                <div class="input-group date form_date" datetimepicker key="maxFollowDate" change="setDate">
+                                                <div class="input-group date form_date" datetimepicker key="maxCreateDate" change="setDate">
                                                     <input class="form-control" size="16" placeholder="结束日期" type="text" ng-model="filter.endDate">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 </div>
@@ -65,27 +65,6 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-group sortlist">
-                                            <label class="control-label">房源归属</label>
-                                            <div class="col-lg-2 col-md-2 col-sm-3">
-                                                <select id="ioDepartmentId" class="chosen-select-dep">
-                                                    <option value="">选择部门</option>
-                                                    <option ng-repeat="dep in depList" ng-value="dep.id" repeat-done="initChosen('#ioDepartmentId', 'ioDepartmentId')">{{dep.name}}</option>
-                                                    </select>
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-3 m-t-7">
-                                                <div class="checkbox checkbox-nice" ng-repeat="depExp in ioDepExpList">
-                                                    <input name="ioDepExp" id="ioDepExp{{depExp.value}}" ng-model="filter[depExp.key]"  ng-click="setDepExp()" type="checkbox" ng-change="includeChildrenCheck('ioDepartmentId')">
-                                                    <label for="ioDepExp{{depExp.value}}">{{depExp.name}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-3">
-                                                <select id="ioEmployeeId" class="chosen-select-emp">
-                                                    <option value="">全部员工</option>
-                                                    <option ng-repeat="employee in ioEmployeeList" ng-value="employee.id" repeat-done="initChosen('#ioEmployeeId', 'ioEmployeeId')">{{employee.name}}</option>
-                                                </select>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <div id="getHouseCharPage" class="table-responsive clearfix" ng-cloak>
@@ -104,7 +83,9 @@
                                             </thead>
                                             <tbody ng-repeat="survey in surveyList">
                                             <tr>
-                                                <td>{{survey.departmentName}}- {{survey.employeeName}}</td>
+                                                <td>
+                                                    <img ng-src="{{survey.avatarURI}}" class="img-circle">
+                                                    {{survey.departmentName}}- {{survey.employeeName}}</td>
                                                 <td>{{survey.createTime|date:'yyyy-MM-dd'}}</td>
                                                 <td><label class="badge badge-danger">{{survey.fangTiny.bizType.label}}</label></td>
                                                 <td><a ng-href="{{'/mgt/fangManage/detail?id='+survey.fangId}}" target="_blank">{{survey.fangTiny.houseLicence && survey.fangTiny.houseLicence.location}}</a></td>

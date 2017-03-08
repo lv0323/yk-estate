@@ -1133,6 +1133,12 @@ a.btn-collapse:hover{
 #houseFollowWrapper table{
     font-size: 12px;
 }
+#detailInfo .img-circle,
+#houseSurveyWrapper .img-circle,
+#houseFollowWrapper .img-circle{
+    height: 45px;
+    width: 45px;
+}
 #houseSurveyWrapper .table > thead > tr > th,
 #houseFollowWrapper .table > thead > tr > th{
     border-bottom: 2px solid #e2e7f4;

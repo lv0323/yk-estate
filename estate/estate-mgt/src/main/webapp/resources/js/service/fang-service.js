@@ -71,7 +71,7 @@ define(contextPath+'/js/service/fang-service.js',
             return RequestService.post('/fang/follow', params, header);
         };
         FangService.checkList = function (params, header) {
-            return RequestService.get('/fang/check', params, header);
+            return RequestService.get('/fang/list-check', params, header);
         };
         FangService.checkCreate = function (params, header) {
             return RequestService.post('/fang/check', params, header);

@@ -8,7 +8,7 @@
     text-align: center;
 }
 
-.main-header .user-image,.img-circle {
+.main-header .user-image, .main-header .img-circle {
     display: none;
 }
 
