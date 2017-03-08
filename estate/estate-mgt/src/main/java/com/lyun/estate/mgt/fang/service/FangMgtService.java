@@ -426,4 +426,45 @@ public class FangMgtService {
     public MgtFangTiny getFangTinyByLicenceId(Long licenceId) {
         return mgtFangService.getFangTinyByLicenceId(licenceId);
     }
+
+    public Boolean deleteImage(Long fileId) {
+        FileDescription fileDescription = fileService.findOne(fileId);
+        if (fileDescription == null || fileDescription.getDeleted()) {
+            throw new EstateException(ExCode.FILE_NOT_EXIST);
+        }
+        if (fileDescription.getOwnerType() != DomainType.FANG) {
+            throw new EstateException("文件归属类型不正确");
+        }
+        Operator operator = mgtContext.getOperator();
+
+        //todo: permission check
+        //员工匹配：employeeId
+        //公司匹配：companyId，员工调动
+        //部门匹配：departmentId，员工离职
+        List<FangInfoOwner> infoOwners = mgtFangService.getInfoOwners(fileDescription.getOwnerId());
+        if (infoOwners.stream().anyMatch(t -> Objects.equals(t.getCompanyId(), operator.getCompanyId()))) {
+            return fileService.delete(fileId);
+        } else {
+            throw new EstateException(ExCode.PERMISSION_ERROR);
+        }
+    }
+
+    public Boolean setFirstImage(Long fileId) {
+        FileDescription fileDescription = fileService.findOne(fileId);
+        if (fileDescription == null || fileDescription.getDeleted()) {
+            throw new EstateException(ExCode.FILE_NOT_EXIST);
+        }
+        if (fileDescription.getOwnerType() != DomainType.FANG) {
+            throw new EstateException("文件归属类型不正确");
+        }
+        Operator operator = mgtContext.getOperator();
+
+        //todo: permission check
+        List<FangInfoOwner> infoOwners = mgtFangService.getInfoOwners(fileDescription.getOwnerId());
+        if (infoOwners.stream().anyMatch(t -> Objects.equals(t.getCompanyId(), operator.getCompanyId()))) {
+            return fileService.setFirst(fileId);
+        } else {
+            throw new EstateException(ExCode.PERMISSION_ERROR);
+        }
+    }
 }

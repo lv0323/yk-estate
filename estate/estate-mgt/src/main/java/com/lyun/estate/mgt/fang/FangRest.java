@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -329,12 +330,12 @@ public class FangRest {
 
     @GetMapping("list-check")
     public PageList<FangCheckDTO> listCheck(@RequestParam(required = false) Long fangId,
-                                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date minCreateDate,
-                                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxCreateDate,
-                                             @RequestParam(required = false) Long departmentId,
-                                             @RequestParam(required = false) Boolean children,
-                                             @RequestParam(required = false) Long employeeId,
-                                             @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
+                                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date minCreateDate,
+                                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxCreateDate,
+                                            @RequestParam(required = false) Long departmentId,
+                                            @RequestParam(required = false) Boolean children,
+                                            @RequestParam(required = false) Long employeeId,
+                                            @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
         FangCheckFilter filter = new FangCheckFilter().setFangId(fangId)
                 .setMinCreateTime(minCreateDate)
                 .setMaxCreateTime(Optional.ofNullable(maxCreateDate)
@@ -363,6 +364,18 @@ public class FangRest {
     public List<FileDescription> getImages(@RequestParam Long fangId,
                                            @RequestParam CustomType customType) {
         return fangMgtService.getImages(fangId, customType);
+    }
+
+    @PostMapping("delete-image")
+    public CommonResp deleteImage(Long fileId) {
+        return Objects.equals(true, fangMgtService.deleteImage(fileId)) ?
+                CommonResp.succeed() : CommonResp.failed();
+    }
+
+    @PostMapping("set-first-image")
+    public CommonResp setFirstImage(Long fileId) {
+        return Objects.equals(true, fangMgtService.setFirstImage(fileId)) ?
+                CommonResp.succeed() : CommonResp.failed();
     }
 
 
