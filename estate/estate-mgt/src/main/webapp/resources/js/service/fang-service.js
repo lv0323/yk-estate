@@ -26,67 +26,67 @@ define(contextPath+'/js/service/fang-service.js',
             return RequestService.post('/building-unit', params, header);
         };
         FangService.subType = function (params, header) {
-            return RequestService.get('/fang/sub-types', params, header);
+            return RequestService.get('/api/fang/sub-types', params, header);
         };
         FangService.create = function (params, header) {
-            return RequestService.post('/fang/create', params, header);
+            return RequestService.post('/api/fang/create', params, header);
         };
         FangService.checkLicence = function (params, header) {
-            return RequestService.post('/fang/pre-check-licence', params, header);
+            return RequestService.post('/api/fang/pre-check-licence', params, header);
         };
         FangService.list = function (params, header) {
-            return RequestService.get('/fang/list', params, header);
+            return RequestService.get('/api/fang/list', params, header);
         };
         FangService.base = function (params, header) {
-            return RequestService.get('/fang/base', params, header);
+            return RequestService.get('/api/fang/base', params, header);
         };
         FangService.baseChange = function (params, header) {
-            return RequestService.post('/fang/change-base', params, header);
+            return RequestService.post('/api/fang/change-base', params, header);
         };
         FangService.summary = function (params, header) {
-            return RequestService.get('/fang/summary', params, header);
+            return RequestService.get('/api/fang/summary', params, header);
         };
         FangService.ext = function (params, header) {
-            return RequestService.get('/fang/ext', params, header);
+            return RequestService.get('/api/fang/ext', params, header);
         };
         FangService.extChange = function (params, header) {
-            return RequestService.post('/fang/change-ext', params, header);
+            return RequestService.post('/api/fang/change-ext', params, header);
         };
         FangService.contact = function (params, header) {
-            return RequestService.get('/fang/contact', params, header);
+            return RequestService.get('/api/fang/contact', params, header);
         };
         FangService.descr = function (params, header) {
-            return RequestService.get('/fang/descr', params, header);
+            return RequestService.get('/api/fang/descr', params, header);
         };
         FangService.updateDescr = function (params, header) {
-            return RequestService.post('/fang/descr', params, header);
+            return RequestService.post('/api/fang/descr', params, header);
         };
         FangService.infoOwner = function (params, header) {
-            return RequestService.get('/fang/info-owner', params, header);
+            return RequestService.get('/api/fang/info-owner', params, header);
         };
         FangService.listFollow = function (params, header) {
-            return RequestService.get('/fang/list-follow', params, header);
+            return RequestService.get('/api/fang/list-follow', params, header);
         };
         FangService.createFollow = function (params, header) {
-            return RequestService.post('/fang/follow', params, header);
+            return RequestService.post('/api/fang/follow', params, header);
         };
         FangService.checkList = function (params, header) {
-            return RequestService.get('/fang/list-check', params, header);
+            return RequestService.get('/api/fang/list-check', params, header);
         };
         FangService.checkCreate = function (params, header) {
-            return RequestService.post('/fang/check', params, header);
+            return RequestService.post('/api/fang/check', params, header);
         };
         FangService.image = function (params, header) {
-            return RequestService.get('/fang/image', params, header);
+            return RequestService.get('/api/fang/image', params, header);
         };
         FangService.imageUpload = function (params, header) {
-            return RequestService.postMultipart('/fang/image', params, header);
+            return RequestService.postMultipart('/api/fang/image', params, header);
         };
         FangService.setFirstImage = function (params, header) {
-            return RequestService.post('/fang/set-first-image', params, header);
+            return RequestService.post('/api/fang/set-first-image', params, header);
         };
         FangService.deleteImage = function (params, header) {
-            return RequestService.post('/fang/delete-image', params, header);
+            return RequestService.post('/api/fang/delete-image', params, header);
         };
         return FangService;
     });
