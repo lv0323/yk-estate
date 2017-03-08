@@ -57,6 +57,8 @@ public enum ExCode {
     //permission
     PERMISSION_ERROR("无权进行该操作"),
 
+    //fang process
+    NOT_PUBLISH("该房源不可见"),
 
     //json
     JSON_ERROR("JSON对象{},转换错误:{}"),;

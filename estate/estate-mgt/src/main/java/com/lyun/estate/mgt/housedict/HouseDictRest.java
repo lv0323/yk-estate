@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Jeffrey on 2017-02-20.
  */
-@RestController("house-dict")
+@RestController("api/house-dict")
 public class HouseDictRest {
 
     private HouseDictMgtService houseDictMgtService;
