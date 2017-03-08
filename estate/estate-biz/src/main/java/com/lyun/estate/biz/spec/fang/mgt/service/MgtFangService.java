@@ -21,13 +21,11 @@ public interface MgtFangService {
 
     FangContact createFangContact(FangContact fangContact);
 
-    boolean checkFangContact(FangContact fangContact);
-
     FangInfoOwner createFangInfoOwner(FangInfoOwner fangInfoOwner);
 
     PageList<MgtFangSummary> listSummary(MgtFangFilter filter, MgtFangSummaryOrder order, PageBounds pageBounds);
 
-    List<FangContact> getContacts(Long fangId);
+    FangContact getContact(Long fangId);
 
     List<FangInfoOwner> getInfoOwners(Long fangId);
 
@@ -58,4 +56,6 @@ public interface MgtFangService {
     MgtFangTiny getFangTinyByLicenceId(Long licenceId);
 
     PageList<FangFollowDTO> listFollow(FangFollowFilter filter, PageBounds pageBounds);
+
+    FangContact updateContact(FangContact contact);
 }

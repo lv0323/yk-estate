@@ -112,39 +112,17 @@ public class MgtFangServiceImpl implements MgtFangService {
 
     @Override
     public FangContact createFangContact(FangContact fangContact) {
-        boolean flag = checkFangContact(fangContact);
-        ExceptionUtil.checkIllegal(flag, "联系方式", fangContact.toString());
-        if (mgtFangRepository.saveFangContact(fangContact) > 0) {
-            return mgtFangRepository.findFangContact(fangContact.getId());
+        ExceptionUtil.checkNotNull("联系方式", fangContact);
+        ExceptionUtil.checkNotNull("房源编号", fangContact.getFangId());
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(fangContact.getName()), "房东姓名", fangContact.getName());
+        ExceptionUtil.checkIllegal(ValidateUtil.isMobile(fangContact.getMobile()), "手机", fangContact.getMobile());
+        ExceptionUtil.checkIllegal(Strings.isNullOrEmpty(fangContact.getEmail()) || ValidateUtil.isEmail(fangContact.getEmail()),
+                "邮箱",
+                fangContact.getEmail());
+        if (fangContactRepo.saveFangContact(fangContact) > 0) {
+            return fangContactRepo.findFangContact(fangContact.getId());
         }
         throw new EstateException(ExCode.CREATE_FAIL, "联系方式", fangContact.toString());
-    }
-
-    @Override
-    public boolean checkFangContact(FangContact fangContact) {
-        ExceptionUtil.checkNotNull("联系信息", fangContact);
-        boolean flag;
-        switch (fangContact.getContactType()) {
-            case MOBILE:
-                flag = ValidateUtil.isMobile(fangContact.getContactInfo());
-                break;
-            case QQ:
-                flag = !Strings.isNullOrEmpty(fangContact.getContactInfo());
-                break;
-            case WECHAT:
-                flag = !Strings.isNullOrEmpty(fangContact.getContactInfo());
-                break;
-            case PHONE:
-                flag = !Strings.isNullOrEmpty(fangContact.getContactInfo());
-                break;
-            case EMAIL:
-                flag = ValidateUtil.isEmail(fangContact.getContactInfo());
-                break;
-            default:
-                flag = false;
-                break;
-        }
-        return flag;
     }
 
     @Override
@@ -233,7 +211,7 @@ public class MgtFangServiceImpl implements MgtFangService {
     }
 
     @Override
-    public List<FangContact> getContacts(Long fangId) {
+    public FangContact getContact(Long fangId) {
         ExceptionUtil.checkNotNull("房源编号", fangId);
         return fangContactRepo.findByFangId(fangId);
     }
@@ -463,5 +441,20 @@ public class MgtFangServiceImpl implements MgtFangService {
         });
 
         return result;
+    }
+
+    @Override
+    public FangContact updateContact(FangContact fangContact) {
+        ExceptionUtil.checkNotNull("联系方式", fangContact);
+        ExceptionUtil.checkNotNull("房源编号", fangContact.getFangId());
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(fangContact.getName()), "房东姓名", fangContact.getName());
+        ExceptionUtil.checkIllegal(ValidateUtil.isMobile(fangContact.getMobile()), "手机", fangContact);
+        ExceptionUtil.checkIllegal(Strings.isNullOrEmpty(fangContact.getEmail()) || ValidateUtil.isEmail(fangContact.getEmail()),
+                "邮箱",
+                fangContact.getEmail());
+        if (fangContactRepo.updateByFangId(fangContact) > 0) {
+            return fangContactRepo.findByFangId(fangContact.getFangId());
+        }
+        throw new EstateException(ExCode.UPDATE_FAIL, "联系方式", fangContact.toString());
     }
 }

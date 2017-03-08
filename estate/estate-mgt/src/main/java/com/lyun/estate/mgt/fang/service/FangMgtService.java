@@ -35,12 +35,10 @@ import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.context.Operator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -84,18 +82,16 @@ public class FangMgtService {
     }
 
     @Transactional
-    public Fang createFang(HouseLicence houseLicence, Fang fang, FangExt fangExt, List<FangContact> contacts) {
+    public Fang createFang(HouseLicence houseLicence, Fang fang, FangExt fangExt, FangContact contact) {
 
         ExceptionUtil.checkNotNull("字典编号", houseLicence);
         ExceptionUtil.checkNotNull("基本信息", fang);
         ExceptionUtil.checkNotNull("扩展信息", fangExt);
-        ExceptionUtil.checkIllegal(!CollectionUtils.isEmpty(contacts), "联系方式", fangExt);
+        ExceptionUtil.checkNotNull("联系方式", fangExt);
 
         fillFang(fang);
 
         fang.setProcess(HouseProcess.DELEGATE);
-
-        checkFangContact(contacts);
 
         //register houseLicence
         XiaoQu xiaoQu = mgtXiaoQuService.findOne(fang.getXiaoQuId());
@@ -118,10 +114,7 @@ public class FangMgtService {
         mgtFangService.createFangExt(fangExt);
 
         //fangContact
-        contacts.forEach(c -> {
-            c.setFangId(result.getId());
-            mgtFangService.createFangContact(c);
-        });
+        mgtFangService.createFangContact(contact.setFangId(result.getId()));
 
         //fangInfoOwner
         Operator operator = mgtContext.getOperator();
@@ -154,17 +147,6 @@ public class FangMgtService {
         );
         return result;
     }
-
-    private void checkFangContact(List<FangContact> contacts) {
-        List<FangContact> checkFaileds = new ArrayList<>();
-        contacts.forEach(t -> {
-            if (!mgtFangService.checkFangContact(t)) {
-                checkFaileds.add(t);
-            }
-        });
-        ExceptionUtil.checkIllegal(CollectionUtils.isEmpty(checkFaileds), "联系方式", checkFaileds);
-    }
-
 
     private Fang fillFang(Fang fang) {
 
@@ -233,9 +215,9 @@ public class FangMgtService {
     }
 
     @Transactional
-    public List<FangContact> getContacts(Long fangId) {
+    public FangContact getContact(Long fangId) {
 
-        List<FangContact> result = mgtFangService.getContacts(fangId);
+        FangContact result = mgtFangService.getContact(fangId);
 
         Operator operator = mgtContext.getOperator();
         auditService.save(new Audit()
@@ -466,5 +448,25 @@ public class FangMgtService {
         } else {
             throw new EstateException(ExCode.PERMISSION_ERROR);
         }
+    }
+
+    @Transactional
+    public FangContact updateContact(FangContact contact) {
+
+        FangContact result = mgtFangService.updateContact(contact);
+
+        Operator operator = mgtContext.getOperator();
+        auditService.save(new Audit()
+                .setCompanyId(operator.getCompanyId())
+                .setDepartmentId(operator.getDepartmentId())
+                .setOperatorId(operator.getId())
+                .setSubject(AuditSubject.FANG_OWNER)
+                .setTargetId(contact.getFangId())
+                .setDomainType(DomainType.FANG)
+                .setContent("【" + operator.getDepartmentName() + "--" + operator
+                        .getName() + "】修改了房源编号为【" + contact.getFangId() + "】的房东联系方式为【" + contact.toString() + "】")
+        );
+
+        return result;
     }
 }
