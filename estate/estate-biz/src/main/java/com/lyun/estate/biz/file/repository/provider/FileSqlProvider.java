@@ -35,6 +35,7 @@ public class FileSqlProvider {
             sql.WHERE("custom_type = #{customType}");
         if (fileProcess != null)
             sql.WHERE("file_process = #{fileProcess}");
+        sql.WHERE("is_deleted = false");
         return sql.ORDER_BY("priority").toString();
     }
 
@@ -47,6 +48,7 @@ public class FileSqlProvider {
             sql.WHERE("custom_type = #{customType}");
         if (fileProcess != null)
             sql.WHERE("file_process = #{fileProcess}");
+        sql.WHERE("is_deleted = false");
         sql.ORDER_BY("priority asc limit 1");
         return sql.toString();
     }

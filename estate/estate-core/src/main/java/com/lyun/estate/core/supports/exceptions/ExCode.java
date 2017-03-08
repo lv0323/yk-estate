@@ -52,6 +52,11 @@ public enum ExCode {
     CUSTOM_TYPE_NOT_SUPPORTED("业务类型:{} 不支持"),
     //favorite
     FAVORITE_TYPE_NOT_SUPPORTED("关注实体类型不支持"),
+    //file
+    FILE_NOT_EXIST("该文件不存在"),
+    //permission
+    PERMISSION_ERROR("无权进行该操作"),
+
 
     //json
     JSON_ERROR("JSON对象{},转换错误:{}"),;

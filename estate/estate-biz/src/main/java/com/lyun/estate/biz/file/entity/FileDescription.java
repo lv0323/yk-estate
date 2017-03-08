@@ -7,6 +7,8 @@ import com.lyun.estate.biz.file.def.Target;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 
+import java.util.Date;
+
 public class FileDescription implements Cloneable {
 
     private Long id;
@@ -20,6 +22,11 @@ public class FileDescription implements Cloneable {
     private Integer priority;
     @JsonIgnore
     private String ext;
+    @JsonIgnore
+    private Boolean isDeleted;
+    private Date createTime;
+    @JsonIgnore
+    private Date updateTime;
     private String fileURI;
 
     public Long getId() {
@@ -140,6 +147,33 @@ public class FileDescription implements Cloneable {
 
     public FileDescription setExt(String ext) {
         this.ext = ext;
+        return this;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public FileDescription setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+        return this;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public FileDescription setCreateTime(Date createTime) {
+        this.createTime = createTime;
+        return this;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public FileDescription setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
         return this;
     }
 }
