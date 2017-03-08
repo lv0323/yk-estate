@@ -94,7 +94,7 @@ require(['main-app',
             };
             $scope.getIoEmployee = function(key){
                 $scope.ioEmployeeList =[{name:'',id:''}];
-                $scope.filter.employeeId = '';
+                $scope.filter.ioEmployeeId = '';
                 if(key === ''){
                     return;
                 }

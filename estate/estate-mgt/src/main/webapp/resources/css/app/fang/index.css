@@ -1133,6 +1133,28 @@ a.btn-collapse:hover{
 #houseFollowWrapper table{
     font-size: 12px;
 }
+#detailInfo .img-circle-container,
+#houseSurveyWrapper .img-circle-container,
+#houseFollowWrapper .img-circle-container{
+    display: inline-block;
+    height:45px;
+    width: 45px;
+    border-radius: 50%;
+    overflow: hidden;
+    vertical-align: middle;
+}
+#detailInfo .img-circle,
+#houseSurveyWrapper .img-circle,
+#houseFollowWrapper .img-circle{
+    width: 45px;
+    border-radius: 0;
+}
+#detailInfo #uploadedList .btn-box a{
+    font-size: 16px;
+}
+#detailInfo .upload-modal-body{
+    min-height: 400px;
+}
 #houseSurveyWrapper .table > thead > tr > th,
 #houseFollowWrapper .table > thead > tr > th{
     border-bottom: 2px solid #e2e7f4;

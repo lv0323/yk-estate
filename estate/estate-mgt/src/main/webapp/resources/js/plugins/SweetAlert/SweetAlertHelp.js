@@ -10,17 +10,17 @@ define(contextPath+'/js/plugins/SweetAlert/SweetAlertHelp.js',
 
         SweetAlertHelp.success = function(res, callback){
             swal({
-                title: res.title || "操作成功!",
+                title: (res && res.title) || "操作成功!",
                 type: "success",
-                text: res["message"] || '',
-                confirmButtonText: res.confirmButtonText || "确定",
-                confirmButtonColor: res.confirmButtonColor ||  "#3c8dbc"
+                text: (res && res["message"]) || '',
+                confirmButtonText: (res && res.confirmButtonText) || "确定",
+                confirmButtonColor: (res && res.confirmButtonColor) ||  "#3c8dbc"
             },callback);
         }
         SweetAlertHelp.fail = function(res, callback) {
             swal({
-                title: res.title || "错误!",
-                text: res["message"] || '',
+                title: (res && res.title)|| "错误!",
+                text: (res && res["message"]) || '',
                 type: "error",
                 confirmButtonText: res.confirmButtonText || "确定",
                 confirmButtonColor: res.confirmButtonColor || "#3c8dbc"

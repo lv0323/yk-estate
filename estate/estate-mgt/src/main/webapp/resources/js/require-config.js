@@ -15,6 +15,10 @@ requirejs.config({
         'datetimepicker.zh-cn': 'plugins/datepicker/locales/bootstrap-datetimepicker.zh-CN',
         'datatables': 'plugins/datatables/jquery.dataTables.min',
         'datatablesBootstrap': 'plugins/datatables/dataTables.bootstrap.min',
+        'jquery-ui/ui/widget': 'plugins/fileupload/jquery.ui.widget',
+        'fancybox': 'plugins/fancybox/jquery.fancybox',
+        'fancyboxThumbs': 'plugins/fancybox/jquery.fancybox-thumbs',
+        'fileupload': 'plugins/fileupload/jquery.fileupload',
         'chosen': 'plugins/chosen/chosen.jquery',
         'select': 'plugins/select/bootstrap-select',
         'submenu': 'plugins/bootstrap-submenu',
@@ -38,10 +42,20 @@ requirejs.config({
         'cryptojs.hmac': ['cryptojs.core'],
         'cryptojs.md5':['cryptojs.core'],
         'parsley': ['jquery'],
+        'fancybox':{
+            deps: ['jquery'],
+            exports: '$.fn.fancybox'
+        },
+        'fancyboxThumbs':{
+            deps: ['jquery','fancybox']
+        },
         'zTree':['jquery'],
         'datepicker': {
             deps: ['jquery', 'bootstrap'],
             exports: '$.fn.datepicker'
+        },
+        'jquery-ui/ui/widget':{
+            deps: ['jquery']
         },
         'datepicker.zh-cn': ['jquery', 'datepicker'],
         'datetimepicker': { deps: ['jquery', 'bootstrap'],

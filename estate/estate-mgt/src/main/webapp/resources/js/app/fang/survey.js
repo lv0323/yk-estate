@@ -52,24 +52,16 @@ require(['main-app',
             $scope.ioEmployeeList =[{name:'',id:''}];
             $scope.houseList = [];
             $scope.filter ={
-                fangId:5005,
-                followType:'',
-                minFollowDate:'',
-                maxFollowDate:'',
+                minCreateDate:'',
+                maxCreateDate:'',
                 departmentId:'',
                 children:'',
                 employeeId:'',
-                ioDepartmentId:'',
-                ioChildren:'',
-                ioEmployeeId:''
-
             };
             $scope.depExpList=[
                 {name :'含下级', value:'true', key:'children'},
             ];
-            $scope.ioDepExpList=[
-                {name :'含下级', value:'true', key:'ioChildren'},
-            ];
+
             $scope.getEmployee = function(key){
                 $scope.employeeList =[{name:'',id:''}];
                 $scope.filter.employeeId = '';
@@ -93,29 +85,6 @@ require(['main-app',
                     $scope.employeeList =[{name:'',id:''}];
                 });
             };
-            $scope.getIoEmployee = function(key){
-                $scope.ioEmployeeList =[{name:'',id:''}];
-                $scope.filter.employeeId = '';
-                if(key === ''){
-                    return;
-                }
-                EmployeeService.getAllEmployee({departmentId: key}).done(function (response) {
-                    $scope.$apply(function(){
-                        if(response && response && response.length>0){
-                            $scope.ioEmployeeList = response.map(function(item){
-                                return {
-                                    name: item.name,
-                                    id: item.id
-                                }
-                            });
-                        }else{
-                            $scope.ioEmployeeList =[{name:'',id:''}];
-                        }
-                    });
-                }).fail(function(){
-                    $scope.employeeList =[{name:'',id:''}];
-                });
-            };
             $scope.includeChildrenCheck = function(key){
                 if(key && $scope.filter[key]){
                     $scope.list();
@@ -124,8 +93,6 @@ require(['main-app',
             $scope.chosenChange = function(id, key, value){
                 if(key === 'departmentId'){
                     $scope.getEmployee(value);
-                }else if(key === 'ioDepartmentId'){
-                    $scope.getIoEmployee(value);
                 }
             };
             $scope.initChosen = function(id, key){
