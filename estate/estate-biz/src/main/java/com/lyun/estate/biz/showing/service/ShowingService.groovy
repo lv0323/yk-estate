@@ -6,7 +6,7 @@ import com.google.common.collect.Lists
 import com.lyun.estate.biz.customer.service.CustomerService
 import com.lyun.estate.biz.department.entity.Department
 import com.lyun.estate.biz.department.service.DepartmentService
-import com.lyun.estate.biz.file.service.FileService
+import com.lyun.estate.biz.employee.service.EmployeeService
 import com.lyun.estate.biz.showing.def.ShowingDefine
 import com.lyun.estate.biz.showing.entity.Showing
 import com.lyun.estate.biz.showing.entity.ShowingDTO
@@ -42,7 +42,7 @@ class ShowingService {
     MgtFangService mgtFangService
 
     @Autowired
-    FileService fileService
+    EmployeeService employeeService
 
     Showing create(Showing showing) {
         ExceptionUtil.checkNotNull("带看信息", showing)
@@ -92,14 +92,7 @@ class ShowingService {
 
         PageList<ShowingDTO> result = showingRepo.list(selector, pageBounds)
         result.forEach({
-            it.setAvatarURI(
-                    Optional.ofNullable(it.getAvatarId()).
-                            map({
-                                Optional.ofNullable(fileService.findOne(it))
-                                        .map({ it.getFileURI() })
-                                        .orElse(null)
-                            }).
-                            orElse(null))
+            it.setAvatarURI(employeeService.getAvatarURI(it.getEmployeeId()))
             it.setCustomerTiny(customerService.getTiny(it.getCustomerId()))
             it.setFangTiny(mgtFangService.getFangTiny(it.getFangId()))
         })

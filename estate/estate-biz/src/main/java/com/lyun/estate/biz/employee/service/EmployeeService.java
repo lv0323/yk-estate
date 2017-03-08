@@ -160,7 +160,7 @@ public class EmployeeService {
         return true;
     }
 
-    public String getAvatar(Long id) {
+    public String getAvatarURI(Long id) {
         Employee employee = repo.selectById(id);
         if (employee != null && employee.getAvatarId() != null) {
             return fileService.findOne(employee.getAvatarId()).getFileURI();
