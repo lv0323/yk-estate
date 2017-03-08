@@ -19,7 +19,6 @@ public class ShowingDTO {
     private String departmentName;
     private Long employeeId;
     private String employeeName;
-    private Long avatarId;
     private String avatarURI;
     private Date createTime;
     private Date updateTime;
@@ -145,15 +144,6 @@ public class ShowingDTO {
         return this;
     }
 
-    public Long getAvatarId() {
-        return avatarId;
-    }
-
-    public ShowingDTO setAvatarId(Long avatarId) {
-        this.avatarId = avatarId;
-        return this;
-    }
-
     public String getAvatarURI() {
         return avatarURI;
     }
@@ -184,7 +174,6 @@ public class ShowingDTO {
                 .add("departmentName", departmentName)
                 .add("employeeId", employeeId)
                 .add("employeeName", employeeName)
-                .add("avatarId", avatarId)
                 .add("avatarURI", avatarURI)
                 .add("createTime", createTime)
                 .add("updateTime", updateTime)

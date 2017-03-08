@@ -14,7 +14,7 @@ class ShowingSqlProvider {
     String list(ShowingSelector selector) {
         return new SQL() {
             {
-                SELECT("s.*,d.name AS department_name, e.name AS employee_name, e.avatar_id")
+                SELECT("s.*,d.name AS department_name, e.name AS employee_name")
                 FROM(" t_showing s")
                 LEFT_OUTER_JOIN("t_department d on s.department_id = d.id")
                 LEFT_OUTER_JOIN("t_employee e on s.employee_id = e.id")

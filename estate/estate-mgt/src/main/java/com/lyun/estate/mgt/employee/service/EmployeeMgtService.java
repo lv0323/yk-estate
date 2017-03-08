@@ -94,7 +94,7 @@ public class EmployeeMgtService {
     }
 
     public String getAvatar() {
-        return employeeService.getAvatar(mgtContext.getOperator().getId());
+        return employeeService.getAvatarURI(mgtContext.getOperator().getId());
     }
 
     public String getUsername() {

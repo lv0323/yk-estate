@@ -13,7 +13,7 @@ import static java.util.Objects.nonNull;
 public class FangFollowSqlProvider {
     public String listBySelector(FangFollowSelector selector) {
         return new SQL() {{
-            SELECT("ff.*,d.name AS department_name, e.name AS employee_name, e.avatar_id")
+            SELECT("ff.*,d.name AS department_name, e.name AS employee_name")
                     .FROM(" t_fang_follow ff")
                     .LEFT_OUTER_JOIN("t_fang_info_owner fio ON ff.fang_id = fio.fang_id AND fio.is_deleted = FALSE")
                     .LEFT_OUTER_JOIN("t_department d on ff.department_id = d.id")

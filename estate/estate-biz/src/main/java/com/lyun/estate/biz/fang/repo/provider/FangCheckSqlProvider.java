@@ -13,7 +13,7 @@ import static java.util.Objects.nonNull;
 public class FangCheckSqlProvider {
     public String list(FangCheckSelector selector) {
         return new SQL() {{
-            SELECT("fc.*,d.name AS department_name, e.name AS employee_name, e.avatar_id")
+            SELECT("fc.*,d.name AS department_name, e.name AS employee_name")
                     .FROM(" t_fang_check fc")
                     .LEFT_OUTER_JOIN("t_department d on fc.department_id = d.id")
                     .LEFT_OUTER_JOIN("t_employee e on fc.employee_id = e.id")

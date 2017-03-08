@@ -6,6 +6,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.service.DepartmentService;
+import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.fang.domian.*;
 import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.fang.repo.*;
@@ -70,11 +71,14 @@ public class MgtFangServiceImpl implements MgtFangService {
 
     private FangDescrRepo fangDescrRepo;
 
+    private EmployeeService employeeService;
+
     public MgtFangServiceImpl(MgtFangRepository mgtFangRepository, DepartmentService departmentService,
                               FangRepository fangRepository, FileService fileService,
                               HouseLicenceService licenceService, HouseDictService houseDictService,
                               FangContactRepo fangContactRepo, FangInfoOwnerRepo fangInfoOwnerRepo,
-                              FangFollowRepo fangFollowRepo, FangCheckRepo fangCheckRepo, FangDescrRepo fangDescrRepo) {
+                              FangFollowRepo fangFollowRepo, FangCheckRepo fangCheckRepo, FangDescrRepo fangDescrRepo,
+                              EmployeeService employeeService) {
         this.mgtFangRepository = mgtFangRepository;
         this.departmentService = departmentService;
         this.fangRepository = fangRepository;
@@ -86,6 +90,7 @@ public class MgtFangServiceImpl implements MgtFangService {
         this.fangFollowRepo = fangFollowRepo;
         this.fangCheckRepo = fangCheckRepo;
         this.fangDescrRepo = fangDescrRepo;
+        this.employeeService = employeeService;
     }
 
     @Override
@@ -291,13 +296,7 @@ public class MgtFangServiceImpl implements MgtFangService {
 
         PageList<FangCheckDTO> result = fangCheckRepo.list(selector, pageBounds);
         result.forEach(t -> {
-            t.setAvatarURI(Optional.ofNullable(t.getAvatarId()).
-                    map(it ->
-                            Optional.ofNullable(fileService.findOne(it))
-                                    .map(FileDescription::getFileURI)
-                                    .orElse(null)
-                    ).
-                    orElse(null));
+            t.setAvatarURI(employeeService.getAvatarURI(t.getEmployeeId()));
             t.setFangTiny(getFangTiny(t.getFangId()));
         });
         return result;
@@ -459,13 +458,7 @@ public class MgtFangServiceImpl implements MgtFangService {
         PageList<FangFollowDTO> result = fangFollowRepo.listBySelector(selector, pageBounds);
 
         result.forEach(t -> {
-            t.setAvatarURI(Optional.ofNullable(t.getAvatarId()).
-                    map(it ->
-                            Optional.ofNullable(fileService.findOne(it))
-                                    .map(FileDescription::getFileURI)
-                                    .orElse(null)
-                    ).
-                    orElse(null));
+            t.setAvatarURI(employeeService.getAvatarURI(t.getEmployeeId()));
             t.setFangTiny(getFangTiny(t.getFangId()));
         });
 
