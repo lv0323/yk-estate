@@ -21,7 +21,7 @@ import java.util.Optional;
  * Created by Jeffrey on 2017-03-07.
  */
 @RestController
-@RequestMapping("showing")
+@RequestMapping("api/showing")
 public class ShowingRest {
 
     @Autowired

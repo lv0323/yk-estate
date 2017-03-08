@@ -5,7 +5,6 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.fang.def.HouseProcess;
 import com.lyun.estate.biz.fang.def.HouseType;
 import com.lyun.estate.biz.fang.domian.FangSelector;
@@ -24,7 +23,10 @@ import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangSummaryOrder;
 import com.lyun.estate.biz.spec.fang.rest.service.FangService;
 import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService;
+import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.core.supports.exceptions.EstateException;
+import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.core.supports.types.YN;
 import org.springframework.beans.BeanUtils;
@@ -189,7 +191,7 @@ public class FangServiceImpl implements FangService {
         ExceptionUtil.checkNotNull("房编号", id);
         FangDetail fangDetail = fangRepository.findDetail(id);
         if (fangDetail == null || fangDetail.getProcess() == HouseProcess.DELEGATE) {
-            return null;
+            throw new EstateException(ExCode.NOT_PUBLISH);
         } else {
             List<FangTag> fangTags = fangRepository.findTags(fangDetail.getId());
             fangDetail.setTags(fangTags.stream().map(FangTag::getHouseTag).collect(Collectors.toList()));

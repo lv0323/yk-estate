@@ -34,7 +34,7 @@ import java.util.Optional;
  * Created by Jeffrey on 2017-02-19.
  */
 @RestController
-@RequestMapping("fang")
+@RequestMapping("api/fang")
 public class FangRest {
 
     private FangMgtService fangMgtService;
