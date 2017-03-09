@@ -17,6 +17,7 @@ import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService
 import com.lyun.estate.core.supports.exceptions.EstateException
 import com.lyun.estate.core.supports.exceptions.ExCode
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil
+import com.lyun.estate.core.utils.ValidateUtil
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -44,7 +45,16 @@ class ContractService {
     MgtFangService mgtFangService
 
     Contract create(Contract contract) {
+        ExceptionUtil.checkIllegal(
+                ValidateUtil.isMobile(contract.getAssignorMobile()), "房东手机", contract.getAssignorMobile())
+        ExceptionUtil.checkIllegal(
+                ValidateUtil.isIdNo(contract.getAssignorIdNo()), "房东身份证", contract.getAssignorIdNo())
+        ExceptionUtil.checkIllegal(
+                ValidateUtil.isMobile(contract.getAssigneeMobile()), "客户手机", contract.getAssigneeMobile())
+        ExceptionUtil.checkIllegal(
+                ValidateUtil.isIdNo(contract.getAssigneeIdNo()), "客户身份证", contract.getAssigneeIdNo())
         contract.setProcess(ContractDefine.Process.CREATED)
+
         if (contractRepo.save(contract) > 0) {
             return contractRepo.findOne(contract.getId())
         }
@@ -90,7 +100,6 @@ class ContractService {
         PageList<ContractDTO> result = contractRepo.list(selector, pageBounds)
         result.forEach({
             it.setAvatarURI(employeeService.getAvatarURI(it.getEmployeeId()))
-            it.setCustomerTiny(customerService.getTiny(it.getCustomerId()))
             it.setFangTiny(mgtFangService.getFangTiny(it.getFangId()))
         })
         return result

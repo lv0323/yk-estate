@@ -2,7 +2,6 @@ package com.lyun.estate.biz.company.entity;
 
 import com.lyun.estate.biz.employee.entity.Employee;
 
-@Deprecated
 public class CreateCompanyEntity {
 
     private Company company;
