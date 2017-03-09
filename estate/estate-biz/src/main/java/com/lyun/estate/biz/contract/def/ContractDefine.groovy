@@ -28,6 +28,5 @@ class ContractDefine {
         Type(String label) {
             this.label = label
         }
-
     }
 }

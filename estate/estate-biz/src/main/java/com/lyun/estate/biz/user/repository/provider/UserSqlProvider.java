@@ -4,8 +4,8 @@ import com.lyun.estate.biz.user.domain.User;
 import com.lyun.estate.biz.user.resources.ChangePasswordResource;
 import com.lyun.estate.biz.user.resources.LoginResource;
 import com.lyun.estate.biz.user.resources.RegisterResource;
-import com.lyun.estate.core.supports.BaseProvider;
 import com.lyun.estate.core.repo.SQL;
+import com.lyun.estate.core.supports.BaseProvider;
 import org.springframework.util.StringUtils;
 
 public class UserSqlProvider extends BaseProvider<User> {
@@ -43,32 +43,27 @@ public class UserSqlProvider extends BaseProvider<User> {
     }
 
     public String findUser(RegisterResource registerResource) {
-        return new SQL() {{
-            SELECT("*");
-            FROM(getEntityTable());
-            WHERE_IF("user_name=#{userName}", !StringUtils.isEmpty(registerResource.getUserName()));
-            WHERE_IF("email=#{email}", !StringUtils.isEmpty(registerResource.getEmail()));
-            WHERE("is_deleted='N'");
-        }}.toString();
+        return new SQL().SELECT("*")
+                .FROM(getEntityTable())
+                .WHERE_IF("user_name=#{userName}", !StringUtils.isEmpty(registerResource.getUserName()))
+                .WHERE_IF("email=#{email}", !StringUtils.isEmpty(registerResource.getEmail()))
+                .WHERE("is_deleted='N'").toString();
     }
 
     public String loginUser(LoginResource loginResource) {
-        return new SQL() {{
-            SELECT("*");
-            FROM(getEntityTable());
-            WHERE_IF("mobile=#{mobile}", !StringUtils.isEmpty(loginResource.getMobile()));
-            WHERE_IF("user_name=#{userName}", !StringUtils.isEmpty(loginResource.getUserName()));
-            WHERE_IF("email=#{email}", !StringUtils.isEmpty(loginResource.getEmail()));
-            WHERE("is_deleted='N'");
-        }}.toString();
+        return new SQL().SELECT("*")
+                .FROM(getEntityTable())
+                .WHERE_IF("mobile=#{mobile}", !StringUtils.isEmpty(loginResource.getMobile()))
+                .WHERE_IF("user_name=#{userName}", !StringUtils.isEmpty(loginResource.getUserName()))
+                .WHERE_IF("email=#{email}", !StringUtils.isEmpty(loginResource.getEmail()))
+                .WHERE("is_deleted='N'")
+                .toString();
     }
 
     public String changePasswordUser(ChangePasswordResource changePasswordResource) {
-        return new SQL() {{
-            SELECT("*");
-            FROM(getEntityTable());
-            WHERE_IF("id=#{userId}", changePasswordResource.getUserId() != 0);
-            WHERE("is_deleted='N'");
-        }}.toString();
+        return new SQL().SELECT("*")
+                .FROM(getEntityTable())
+                .WHERE_IF("id=#{userId}", changePasswordResource.getUserId() != 0)
+                .WHERE("is_deleted='N'").toString();
     }
 }
