@@ -96,10 +96,8 @@ public class AppConfigService {
         String version = settingProvider.find(ANDROID_VERSION, "VERSION").getValue();
         boolean forceUpdate = Boolean.parseBoolean(settingProvider.find(ANDROID_VERSION, "FORCE_UPDATE").getValue());
         String url = settingProvider.find(ANDROID_VERSION, "URL").getValue();
-        return new AndroidVersion() {{
-            setVersion(version);
-            setForceUpdate(forceUpdate);
-            setUrl(url);
-        }};
+        return new AndroidVersion().setVersion(version)
+                .setForceUpdate(forceUpdate)
+                .setUrl(url);
     }
 }

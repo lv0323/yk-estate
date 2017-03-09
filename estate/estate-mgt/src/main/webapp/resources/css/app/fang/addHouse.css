@@ -58,15 +58,3 @@
     margin-right: 4px;
     cursor: pointer;
 }
-div.ng-invalid>.btn-default:focus, input.ng-invalid:focus{
-    border-color: #66afe9
-}
-button.btn-default.invalid-input:focus, input.ng-invalid.ng-dirty:focus{
-    border-color: #66afe9
-}
-button.btn-default.invalid-input, input.ng-invalid.ng-dirty{
-    border-color: #FF0000;
-}
-.chosen-container-single .chosen-single.invalid-input{
-    border: 1px solid #FF0000;
-}

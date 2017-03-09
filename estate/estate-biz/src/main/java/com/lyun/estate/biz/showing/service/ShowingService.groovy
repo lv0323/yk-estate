@@ -62,7 +62,7 @@ class ShowingService {
             return showingRepo.findOne(showingId)
         } else {
             def showing = showingRepo.findOne(showingId)
-            if (Objects.nonNull(showing) && showing.getProcess().isEnd()) {
+            if (nonNull(showing) && showing.getProcess().isEnd()) {
                 return showing
             }
         }

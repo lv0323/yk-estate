@@ -132,7 +132,9 @@ require(['main-app',
                 ytCounts: 0,
                 level: 'PU',
                 showing: '',
-                mobiles:['','',''],
+                mobile:'',
+                aMobile:'',
+                bMobile:'',
                 note: "",
                 orientation: '',
                 ownerName: '',
@@ -507,7 +509,7 @@ require(['main-app',
                     flag = false;
                     _this.commonInputWarn('houseOwname');
                 }
-                if (!_this.data.mobiles[0]) {
+                if (!_this.data.mobile) {
                     flag = false;
                     _this.commonInputWarn('houseOwphone1');
                 }
