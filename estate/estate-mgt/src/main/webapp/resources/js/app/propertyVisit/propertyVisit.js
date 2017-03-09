@@ -6,8 +6,9 @@ require(['main-app',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath+'/js/service/util-service.js',
         contextPath + '/js/utils/dataTableHelp.js',
-        'datepicker.zh-cn', 'sweetalert', 'datatables', 'datatablesBootstrap'],
-    function (mainApp, PropertyVisitService, pagingPlugin, UtilService, dataTableHelp) {
+        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
+        'datepicker.zh-cn', 'datatables', 'datatablesBootstrap'],
+    function (mainApp, PropertyVisitService, pagingPlugin, UtilService, dataTableHelp, SweetAlertHelp) {
 
         var pageConfig = {
             limit: 8,
@@ -129,10 +130,12 @@ require(['main-app',
 
             PropertyVisitService.closePropertyVisit(toUpdateData)
                 .done(function () {
-                    location.reload(true);
+                    SweetAlertHelp.success({}, function () {
+                        location.reload(true);
+                    });
                 })
-                .fail(function () {
-
+                .fail(function (res) {
+                    SweetAlertHelp.fail(res);
                 });
         });
 
@@ -152,10 +155,13 @@ require(['main-app',
 
             PropertyVisitService.closePropertyVisit(toUpdateData)
                 .done(function () {
-                    location.reload(true);
-                })
-                .fail(function () {
+                    SweetAlertHelp.success({}, function () {
+                        location.reload(true);
+                    });
 
+                })
+                .fail(function (res) {
+                    SweetAlertHelp.fail(res);
                 });
         });
 

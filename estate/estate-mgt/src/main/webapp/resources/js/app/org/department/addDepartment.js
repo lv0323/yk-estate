@@ -3,9 +3,10 @@
  */
 require(['main-app',
         contextPath + '/js/app/org/department/departCommon.js',
-        contextPath + '/js/service/department-service.js','sweetalert'],
+        contextPath + '/js/service/department-service.js',
+        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js'],
 
-    function (mainApp,DepartCommon, DepartmentService){
+    function (mainApp,DepartCommon, DepartmentService, SweetAlertHelp){
 
         var header = {};
 
@@ -29,36 +30,15 @@ require(['main-app',
             if(DepartCommon.verifyDepartmentInput(toAddDepart)){
                 DepartmentService.addDepartment({data:toAddDepart},header)
                     .done(function(){
-                        // location.reload(true);
-                        // window.location.href="/mgt/org/department";
-                        swal({
-                                title: "操作成功!",
-                                type: "success",
-                                confirmButtonText: "确定",
-                                confirmButtonColor: "#3c8dbc"
-                            },
-                            function(){
-                                window.location.href="/mgt/org/department";
-                            });
+                        SweetAlertHelp.success({}, function () {
+                            window.location.href="/mgt/org/department";
+                        });
                     })
                     .fail(function (res) {
-                        // alert(res["message"]);
-                        swal({
-                            title: "错误!",
-                            text: res["message"],
-                            type: "error",
-                            confirmButtonText: "确定",
-                            confirmButtonColor: "#3c8dbc"
-                        });
+                        SweetAlertHelp.fail(res);
                     });
             }else {
-                swal({
-                    title: "错误!",
-                    text: "请填写所有必填字段",
-                    type: "error",
-                    confirmButtonText: "确定",
-                    confirmButtonColor: "#3c8dbc"
-                });
+                SweetAlertHelp.fail({message:"请填写所有必填字段"});
             }
 
 
