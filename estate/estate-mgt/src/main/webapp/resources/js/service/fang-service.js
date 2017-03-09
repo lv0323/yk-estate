@@ -8,22 +8,22 @@ define(contextPath+'/js/service/fang-service.js',
         var FangService = {};
 
         FangService.xiaoquOption = function (params, header) {
-            return RequestService.get('/xiao-qu-option', params, header);
+            return RequestService.get('/api/house-dict/xiao-qu-option', params, header);
         };
         FangService.buildings = function (params, header) {
-            return RequestService.get('/buildings', params, header);
+            return RequestService.get('/api/house-dict/buildings', params, header);
         };
         FangService.buildingInfo = function (params, header) {
-            return RequestService.get('/buildings/'+ params.id, params, header);
+            return RequestService.get('/api/house-dict/buildings/'+ params.id, params, header);
         };
         FangService.buildingPost = function (params, header) {
-            return RequestService.post('/building', params, header);
+            return RequestService.post('/api/house-dict/building', params, header);
         };
         FangService.buildingUnit = function (params, header) {
-            return RequestService.get('/building-unit', params, header);
+            return RequestService.get('/api/house-dict/building-unit', params, header);
         };
         FangService.buildingUnitPost = function (params, header) {
-            return RequestService.post('/building-unit', params, header);
+            return RequestService.post('/api/house-dict/building-unit', params, header);
         };
         FangService.subType = function (params, header) {
             return RequestService.get('/api/fang/sub-types', params, header);

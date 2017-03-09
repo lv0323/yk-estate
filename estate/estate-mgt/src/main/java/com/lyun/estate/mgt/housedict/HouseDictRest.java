@@ -12,7 +12,8 @@ import java.util.List;
 /**
  * Created by Jeffrey on 2017-02-20.
  */
-@RestController("api/house-dict")
+@RestController
+@RequestMapping("api/house-dict")
 public class HouseDictRest {
 
     private HouseDictMgtService houseDictMgtService;
