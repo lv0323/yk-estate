@@ -29,8 +29,7 @@ dependencies {
     compile lib.caffeine
     compile lib.jjwt
     compile lib.hibernate_validator
-    compile name: 'amqp-spec'
-    compile name: 'amqp-client'
+    compile name: 'sms-client'
     compile lib.jpinyin
 }
 

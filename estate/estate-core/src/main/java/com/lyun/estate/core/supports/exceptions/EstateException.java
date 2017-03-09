@@ -15,6 +15,10 @@ public class EstateException extends RuntimeException {
         super(message);
     }
 
+    public EstateException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     public EstateException(ExCode exCode, Object... args) {
         super(ExceptionUtil.format(exCode, args));
         this.exCode = exCode;
