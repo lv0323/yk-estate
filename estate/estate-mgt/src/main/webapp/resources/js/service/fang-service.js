@@ -88,5 +88,11 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.deleteImage = function (params, header) {
             return RequestService.post('/api/fang/delete-image', params, header);
         };
+        FangService.contact = function (params, header) {
+            return RequestService.get('/api/fang/contact', params, header);
+        };
+        FangService.contactChange = function (params, header) {
+            return RequestService.post('/api/fang/change-contact', params, header);
+        };
         return FangService;
     });

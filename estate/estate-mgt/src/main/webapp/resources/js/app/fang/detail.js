@@ -66,6 +66,7 @@ require(['main-app',
             _this.subTypeList = [];
             _this.followList = [];
             _this.surveyList = [];
+            _this.updateContact = {};
             _this.newFollow = {};
             _this.newSurvey = {};
             _this.showMap = {
@@ -282,12 +283,27 @@ require(['main-app',
                 };
             };
             /*业主信息*/
-            _this.ownerInfoInit = function(){
-                _this.updateOwner = {};
-                $('#ownerModel').modal({'show':true,backdrop:'static'});
+            _this.contactInfoInit = function(){
+                _this.updateContact = {};
+                $('#contactModel').modal({'show':true,backdrop:'static'});
+                FangService.contact({fangId:fangId}).then(function(response){
+                    $scope.$apply(function(){
+                        _this.updateContact =  response;
+                    });
+
+                });
             }
             _this.ownerInfoUpdate = function(){
                 //$('#ownerModel').modal('hide');
+                if($scope.contactDialogForm.$invalid || !_this.updateContact.mobile){
+                    return;
+                }
+                FangService.contactChange(_this.updateContact).then(function(){
+                    SweetAlertHelp.success();
+                    $('#contactModel').modal('hide');
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
+                });
             };
             /*房源跟进*/
             _this.follow = function(offset){

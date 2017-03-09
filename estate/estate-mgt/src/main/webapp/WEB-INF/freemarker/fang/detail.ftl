@@ -81,7 +81,7 @@
                                                     <span class="pull-left">手机:</span>
                                                     <div class="m-t-10 m-l-40 p-t-3">******</div>
                                                 </div>
-                                                <a href="javascript:void(0)" class="btn btn-white" style="display:block;" ng-click="ctrl.ownerInfoInit()">查看业主</a>
+                                                <a href="javascript:void(0)" class="btn btn-white" style="display:block;" ng-click="ctrl.contactInfoInit()">查看业主</a>
                                             </div>
                                         </div>
                                         <div class="panel">
@@ -839,7 +839,7 @@
         </div>
     </div>
 </div>
-    <div class="modal fade" id="ownerModel" role="dialog">
+    <div class="modal fade" id="contactModel" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -847,34 +847,34 @@
                     <h4 class="modal-title">业主信息</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" name="ownerDialogForm">
+                    <form class="form-horizontal" name="contactDialogForm">
                         <div class="form-group clearfix">
                             <label class="control-label">业主</label>
                             <div class="col-lg-3 col-md-3 col-sm-3">
                                 <input type="text" name="houseOwname" reg="^\S+$" class="form-control"
-                                       placeholder="业主姓名" required ng-model="ctrl.updateOwner.ownerName"/>
+                                       placeholder="业主姓名" required ng-model="ctrl.updateContact.name"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label">手机1</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="houseOwphone1" required st-mobile-phone class="form-control"
-                                       placeholder="业主手机1" ng-model="ctrl.updateOwner.mobiles[0]"/>
+                                       placeholder="业主手机1" ng-model="ctrl.updateContact.mobile"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label">手机2</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="houseOwphone2" st-mobile-phone class="form-control"
-                                       placeholder="业主手机2" ng-model="ctrl.updateOwner.mobiles[1]"/>
+                                       placeholder="业主手机2" ng-model="ctrl.updateContact.aMobile"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label">手机3</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="houseOwphone3" st-mobile-phone class="form-control"
-                                       placeholder="业主手机3" ng-model="ctrl.updateOwner.mobiles[2]"/>
-                            </div>
+                                       placeholder="业主手机3" ng-model="ctrl.updateContact.bMobile"/>
+                        </div>
                     </form>
                 </div>
             </div>
