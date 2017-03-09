@@ -13,6 +13,11 @@ public class ValidateException extends EstateException {
         this.code = code;
     }
 
+    public ValidateException(String code, String message, Throwable cause) {
+        super(message, cause);
+        this.code = code;
+    }
+
     public ValidateException(String code, List<ObjectError> objectErrors) {
         this.code = code;
         this.objectErrors = objectErrors;

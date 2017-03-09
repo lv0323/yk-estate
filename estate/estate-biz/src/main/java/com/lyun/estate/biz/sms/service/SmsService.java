@@ -11,9 +11,11 @@ import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.supports.types.YN;
 import com.lyun.estate.core.utils.CommonUtil;
 import com.lyun.estate.core.utils.ValidateUtil;
-import com.lyun.layer.amqp.client.clients.SmsAmqpClient;
+import com.lyun.sms.client.SmsClient;
+import com.lyun.sms.client.exceptions.SmsClientException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.core.env.Environment;
@@ -35,7 +37,9 @@ public class SmsService {
     @Autowired
     RestContext restContext;
     @Autowired
-    SmsAmqpClient smsAmqpClient;
+    SmsClient smsClient;
+    @Value("${service.sms.check.code.template.id}")
+    Long templateId;
 
     private boolean isDefaultSend() {
         return YN.Y == YN.valueOf(environment.getProperty("message.sms.send.enable"));
@@ -51,13 +55,17 @@ public class SmsService {
         }
         String smsCode = "100000";
         String serial = "01";
+        String smsId = CommonUtil.getUuid();
         if (isDefaultSend()) {
             serial = CommonUtil.randomNumberSeq(2);
-            smsAmqpClient.sendMessage(new com.lyun.layer.amqp.spec.pojos.SmsCode()
-                            .setCode(smsCode).setMobile(smsResource.getMobile()).setSerial(serial),
-                    restContext.getCorrelationId());
+            try {
+                if (!smsId.equals(smsClient.sendSms(smsId, smsResource.getMobile(), templateId, smsCode, serial))) {
+                    throw new ValidateException("error.sms.send", "短信发送失败");
+                }
+            } catch (SmsClientException e) {
+                throw new ValidateException(e.getCode(), e.getMessage(), e);
+            }
         }
-        String smsId = CommonUtil.getUuid();
         String smsKv = smsId + ":" + smsResource.getMobile() + ":" + smsCode + ":" + serial + ":" + smsResource.getType() + ":" + restContext
                 .getClientId();
         cacheManager.getCache(EstateCacheConfig.SMS_CACHE).put(smsKv, smsKv);
