@@ -1,6 +1,50 @@
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
 
+<!-- Modal completeVisitDialog -->
+<div class="modal fade" id="completeVisitDialog" tabindex="-1" role="dialog" aria-labelledby="completeVisitLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title" id="completeVisitLabel">完成带看</h4>
+            </div>
+            <input id="completeVisitId" class="hidden">
+            <div class="modal-body">
+                确定执行完成带看操作吗？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmCompleteVisitBtn">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal cancelVisitDialog -->
+<div class="modal fade" id="cancelVisitDialog" tabindex="-1" role="dialog" aria-labelledby="cancelVisitLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title" id="cancelVisitLabel">取消带看</h4>
+            </div>
+            <input id="cancelVisitId" class="hidden">
+            <div class="modal-body">
+                确定执行取消带看操作吗？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmCancelVisitBtn">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <section class="content-header">
@@ -44,7 +88,7 @@
                                             <label class="control-label">状态</label>
                                             <div class="tj">
                                             <#list showingOperation?if_exists as status>
-                                                <a>${status.getLabel()}</a>
+                                                <a name="visitStatus" id="${status.name()}">${status.getLabel()}</a>
                                             </#list>
                                             </div>
                                         </div>
@@ -86,10 +130,11 @@
                                     <thead><tr>
                                         <th><span>带看员工</span></th>
                                         <th><span>带看客户</span></th>
-                                        <th><span>带看房源</span></th>
+                                        <th><span>带看房源地址</span></th>
                                         <th><span>带看生成时间</span></th>
-                                        <th><span>带看结束时间</span></th>
+                                        <th><span>带看更新时间</span></th>
                                         <th><span>状态</span></th>
+                                        <th><span>操作</span></th>
                                     </tr></thead>
                                     <tbody></tbody>
                                 </table>

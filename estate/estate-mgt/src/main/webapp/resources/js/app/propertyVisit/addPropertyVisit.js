@@ -2,15 +2,16 @@
  * Created by yanghong on 3/2/17.
  */
 require(['main-app',
-        contextPath + '/js/service/propertyvisit-service.js', 'sweetalert'],
-    function (mainApp, PropertyVisitService) {
+        contextPath + '/js/service/propertyvisit-service.js',
+        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js'],
+    function (mainApp, PropertyVisitService, SweetAlertHelp) {
 
         // var houseLicenceID = window.location.href.split('?')[1];
 
         function verifyAddPropertyVisitInput(toSubmitPropertyVisit) {
             var flag = true;
             $('.form-group').find('.invalid-input').removeClass('invalid-input');
-            if (toSubmitPropertyVisit.fangId==="" || typeof(toSubmitPropertyVisit.fangId)==='undefined') {
+            if (toSubmitPropertyVisit.fangId === "" || typeof(toSubmitPropertyVisit.fangId) === 'undefined') {
                 flag = false;
                 $('#houseLicenceID').addClass('invalid-input');
                 $('#houseDict').addClass('invalid-input');
@@ -26,15 +27,15 @@ require(['main-app',
                 $('#bathRoom').addClass('invalid-input');
                 $('#balcony').addClass('invalid-input');
             }
-            if (toSubmitPropertyVisit.customerName===""|| typeof(toSubmitPropertyVisit.customerName)==='undefined') {
+            if (toSubmitPropertyVisit.customerName === "" || typeof(toSubmitPropertyVisit.customerName) === 'undefined') {
                 flag = false;
                 $('#customerName').addClass('invalid-input');
             }
-            if (toSubmitPropertyVisit.customerSource===""|| typeof(toSubmitPropertyVisit.customerSource)==='undefined') {
+            if (toSubmitPropertyVisit.customerSource === "" || typeof(toSubmitPropertyVisit.customerSource) === 'undefined') {
                 flag = false;
                 $('#customerSource').addClass('invalid-input');
             }
-            if (toSubmitPropertyVisit.customerMobile===""|| typeof(toSubmitPropertyVisit.customerMobile)==='undefined') {
+            if (toSubmitPropertyVisit.customerMobile === "" || typeof(toSubmitPropertyVisit.customerMobile) === 'undefined') {
                 flag = false;
                 $('#customerContact').addClass('invalid-input');
             }
@@ -63,13 +64,7 @@ require(['main-app',
                     $('#balcony').val(data.ytCounts);
                 })
                 .fail(function (res) {
-                    swal({
-                        title: "错误!",
-                        text: res["message"],
-                        type: "error",
-                        confirmButtonText: "确定",
-                        confirmButtonColor: "#3c8dbc"
-                    });
+                    SweetAlertHelp.fail(res);
                 });
         });
 
@@ -84,33 +79,15 @@ require(['main-app',
             if(verifyAddPropertyVisitInput(toAddPropertyVisit)){
                 PropertyVisitService.addPropertyVisit(toAddPropertyVisit)
                     .done(function () {
-                        swal({
-                                title: "操作成功!",
-                                type: "success",
-                                confirmButtonText: "确定",
-                                confirmButtonColor: "#3c8dbc"
-                            },
-                            function(){
-                                window.location.href="/mgt/propertyVisit/propertyVisit.ftl";
-                            });
-                    }).fail(function (res) {
-                        swal({
-                            title: "错误!",
-                            text: res["message"],
-                            type: "error",
-                            confirmButtonText: "确定",
-                            confirmButtonColor: "#3c8dbc"
+                        SweetAlertHelp.success({}, function () {
+                            window.location.href="/mgt/propertyVisit/propertyVisit";
                         });
+                    }).fail(function (res) {
+                        SweetAlertHelp.fail(res);
                     });
 
             }else {
-                swal({
-                    title: "错误!",
-                    text: "请填写所有必填字段",
-                    type: "error",
-                    confirmButtonText: "确定",
-                    confirmButtonColor: "#3c8dbc"
-                });
+                SweetAlertHelp.fail({message:"请填写所有必填字段"});
             }
 
         });

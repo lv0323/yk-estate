@@ -8,8 +8,9 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         contextPath+'/js/app/org/department/departCommon.js',
         contextPath+'/js/app/org/position/positionCommon.js',
         contextPath+'/js/service/util-service.js',
-    'datatables', 'zTree','datatablesBootstrap', 'datepicker.zh-cn','sweetalert'],
-    function (mainApp, EmployeeService, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon, PositionCommon, UtilService) {
+        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
+    'datatables', 'zTree','datatablesBootstrap', 'datepicker.zh-cn'],
+    function (mainApp, EmployeeService, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon, PositionCommon, UtilService, SweetAlertHelp) {
         var header = {};
 
         var employeeAllDataRaw = {};
@@ -292,35 +293,15 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             if(verifyEmployeeInput('add',toAddData)){
                 EmployeeService.addEmployee({data:toAddData},header)
                     .done(function(){
-                        // location.reload(true);
-                        swal({
-                                title: "操作成功!",
-                                type: "success",
-                                confirmButtonText: "确定",
-                                confirmButtonColor: "#3c8dbc"
-                            },
-                            function(){
-                                location.reload(true);
-                            });
+                        SweetAlertHelp.success({}, function () {
+                            location.reload(true);
+                        });
                     })
                     .fail(function (res) {
-                        // alert(res["message"]);
-                        swal({
-                            title: "错误!",
-                            text: res["message"],
-                            type: "error",
-                            confirmButtonText: "确定",
-                            confirmButtonColor: "#3c8dbc"
-                        });
+                        SweetAlertHelp.fail(res);
                     });
             }else {
-                swal({
-                    title: "错误!",
-                    text: "请填写所有必填字段",
-                    type: "error",
-                    confirmButtonText: "确定",
-                    confirmButtonColor: "#3c8dbc"
-                });
+                SweetAlertHelp.fail({message:"请填写所有必填字段"});
             }
 
         });
@@ -373,35 +354,15 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             if(verifyEmployeeInput('edit',toEditData)){
                 EmployeeService.editEmployee({data:toEditData},header)
                     .done(function(){
-                        // location.reload(true);
-                        swal({
-                                title: "操作成功!",
-                                type: "success",
-                                confirmButtonText: "确定",
-                                confirmButtonColor: "#3c8dbc"
-                            },
-                            function(){
-                                location.reload(true);
-                            });
+                        SweetAlertHelp.success({}, function () {
+                            location.reload(true);
+                        });
                     })
                     .fail(function (res) {
-                        // alert(res["message"]);
-                        swal({
-                            title: "错误!",
-                            text: res["message"],
-                            type: "error",
-                            confirmButtonText: "确定",
-                            confirmButtonColor: "#3c8dbc"
-                        });
+                        SweetAlertHelp.fail(res);
                     });
             }else {
-                swal({
-                    title: "错误!",
-                    text: "请填写所有必填字段",
-                    type: "error",
-                    confirmButtonText: "确定",
-                    confirmButtonColor: "#3c8dbc"
-                });
+                SweetAlertHelp.fail({message:"请填写所有必填字段"});
             }
 
         });
@@ -417,26 +378,12 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             var employeeId = $('#quitEmployeeId').val();
             EmployeeService.quitEmployeeAction({data:{id:employeeId}}, header)
                 .done(function () {
-                    // location.reload(true);
-                    swal({
-                            title: "操作成功!",
-                            type: "success",
-                            confirmButtonText: "确定",
-                            confirmButtonColor: "#3c8dbc"
-                        },
-                        function(){
-                            location.reload(true);
-                        });
+                    SweetAlertHelp.success({}, function () {
+                        location.reload(true);
+                    });
                 })
                 .fail(function (res) {
-                    // alert(res["message"]);
-                    swal({
-                        title: "错误!",
-                        text: res["message"],
-                        type: "error",
-                        confirmButtonText: "确定",
-                        confirmButtonColor: "#3c8dbc"
-                    });
+                    SweetAlertHelp.fail(res);
                 });
         });
 

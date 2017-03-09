@@ -14,8 +14,8 @@ define(contextPath + '/js/service/propertyvisit-service.js',
             return RequestService.get('/api/showing/list', params, header||{});
         };
 
-        PropertyVisitService.getPropertyVisitOperation = function (params, header) {
-            return RequestService.get('/api/showing/close', params, header||{});
+        PropertyVisitService.closePropertyVisit = function (params, header) {
+            return RequestService.post('/api/showing/close', params, header||{});
         };
 
         PropertyVisitService.addPropertyVisit = function (params, header) {

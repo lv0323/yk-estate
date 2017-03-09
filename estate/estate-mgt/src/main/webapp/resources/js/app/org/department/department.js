@@ -4,8 +4,9 @@
 require(['main-app',contextPath + '/js/service/department-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath + '/js/utils/dataTableHelp.js',
-        contextPath+'/js/app/org/department/departCommon.js','sweetalert'],
-    function (mainApp, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon) {
+        contextPath+'/js/app/org/department/departCommon.js',
+        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js'],
+    function (mainApp, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon, SweetAlertHelp) {
         var header = {};
 
         var departAllDataRaw = {};
@@ -131,13 +132,13 @@ require(['main-app',contextPath + '/js/service/department-service.js',
         //open new window for department details
         $('#departList').on('click','.lookDepartBtn',function(e){
             var departId = $(e.target).data('id');
-            window.location.href="/mgt/org/departmentDetail.ftl?"+departId;
+            window.location.href="/mgt/org/departmentDetail?"+departId;
         });
 
         //open new window for department details
         $('#departList').on('click','.editDepartBtn',function(e){
             var departId = $(e.target).data('id');
-            window.location.href="/mgt/org/editDepartmentDetail.ftl?"+departId;
+            window.location.href="/mgt/org/editDepartmentDetail?"+departId;
         });
 
         //initialize index value stored in deleteDepartDialog
@@ -151,26 +152,12 @@ require(['main-app',contextPath + '/js/service/department-service.js',
             var departId_request = parseInt($('#delDepartId').val(),10);
             DepartmentService.deleteDepartment({data:{id:departId_request}},header)
                 .done(function(){
-                    // location.reload(true);
-                    swal({
-                            title: "操作成功!",
-                            type: "success",
-                            confirmButtonText: "确定",
-                            confirmButtonColor: "#3c8dbc"
-                        },
-                        function(){
-                            location.reload(true);
-                        });
+                    SweetAlertHelp.success({}, function () {
+                        location.reload(true);
+                    });
                 }).fail(function (res) {
-                // alert(res["message"]);
-                swal({
-                    title: "错误!",
-                    text: res["message"],
-                    type: "error",
-                    confirmButtonText: "确定",
-                    confirmButtonColor: "#3c8dbc"
+                    SweetAlertHelp.fail(res);
                 });
-            });
         });
 
         //initialize index value stored in reDeployDepartDialog
@@ -190,26 +177,12 @@ require(['main-app',contextPath + '/js/service/department-service.js',
             var departPId = parseInt($('.duoji-dropdown').attr('selectedvalue'),10);
             DepartmentService.changeParent({data:{departmentId:departId,parentId: departPId}},header)
                 .done(function(){
-                    // location.reload(true);
-                    swal({
-                            title: "操作成功!",
-                            type: "success",
-                            confirmButtonText: "确定",
-                            confirmButtonColor: "#3c8dbc"
-                        },
-                        function(){
-                            location.reload(true);
-                        });
+                    SweetAlertHelp.success({}, function () {
+                        location.reload(true);
+                    });
                 })
                 .fail(function (res) {
-                    // alert(res["message"]);
-                    swal({
-                        title: "错误!",
-                        text: res["message"],
-                        type: "error",
-                        confirmButtonText: "确定",
-                        confirmButtonColor: "#3c8dbc"
-                    });
+                    SweetAlertHelp.fail(res);
                 });
         });
 

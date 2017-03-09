@@ -4,8 +4,9 @@
 require(['main-app',
         contextPath + '/js/service/profile-service.js',
         contextPath + '/js/service/employee-service.js',
-        contextPath + '/js/service/util-service.js', 'Croppie','sweetalert'],
-    function (mainApp, ProfileService, EmployeeService, UtilService) {
+        contextPath + '/js/service/util-service.js',
+        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js', 'Croppie'],
+    function (mainApp, ProfileService, EmployeeService, UtilService, SweetAlertHelp) {
 
         var header = {};
         var fileData = new FormData();
@@ -23,14 +24,7 @@ require(['main-app',
         EmployeeService.getSelf(header).done(function (data) {
             loadPage(data, header);
         }).fail(function (res) {
-            // alert(res["message"]);
-            swal({
-                title: "错误!",
-                text: res["message"],
-                type: "error",
-                confirmButtonText: "确定",
-                confirmButtonColor: "#3c8dbc"
-            });
+            SweetAlertHelp.fail(res);
         });
         /*load page end*/
 
@@ -72,26 +66,11 @@ require(['main-app',
                 fileData.append("avatar",resp,fileName);
                 EmployeeService.uploadAvatar(fileData, header)
                     .done(function () {
-                        // alert("头像上传成功");
-                        // location.reload(true);
-                        swal({
-                                title: "头像上传成功!",
-                                type: "success",
-                                confirmButtonText: "确定",
-                                confirmButtonColor: "#3c8dbc"
-                            },
-                            function(){
-                                location.reload(true);
-                            });
+                        SweetAlertHelp.success({title:"头像上传成功!"}, function () {
+                            location.reload(true);
+                        });
                     }).fail(function (res) {
-                    // alert(res["message"]);
-                    swal({
-                        title: "错误!",
-                        text: res["message"],
-                        type: "error",
-                        confirmButtonText: "确定",
-                        confirmButtonColor: "#3c8dbc"
-                    });
+                        SweetAlertHelp.fail(res);
                 });
             });
         });
@@ -102,26 +81,12 @@ require(['main-app',
 
             ProfileService.changePassword({oldPassword:oldPassword, newPassword:newPassword}, header)
                 .done(function () {
-                    // alert("密码修改成功");
-                    // location.reload(true);
-                    swal({
-                            title: "密码修改成功!",
-                            type: "success",
-                            confirmButtonText: "确定",
-                            confirmButtonColor: "#3c8dbc"
-                        },
-                        function(){
-                            location.reload(true);
-                        });
+                    SweetAlertHelp.success({title:"密码修改成功!"}, function () {
+                        location.reload(true);
+                    });
                 })
                 .fail(function (res) {
-                    swal({
-                        title: "错误!",
-                        text: res["message"],
-                        type: "error",
-                        confirmButtonText: "确定",
-                        confirmButtonColor: "#3c8dbc"
-                    });
+                    SweetAlertHelp.fail(res);
                 });
         })
 
