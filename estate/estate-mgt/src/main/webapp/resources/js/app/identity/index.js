@@ -19,23 +19,6 @@ require(['main-app',
                     smsText:'点击获取'
                 };
             }
-            SweetAlertHelp.success = function(){
-                swal({
-                    title: "操作成功!",
-                    type: "success",
-                    confirmButtonText: "确定",
-                    confirmButtonColor: "#3c8dbc"
-                });
-            }
-            SweetAlertHelp.fail = function(res) {
-                swal({
-                    title: "错误!",
-                    text: res["message"],
-                    type: "error",
-                    confirmButtonText: "确定",
-                    confirmButtonColor: "#3c8dbc"
-                });
-            };
             $scope.loadCaptcha =function() {
                 $scope.captchaId = UtilService.generateSalt(8);
                 localStorage.setItem("captchaId", $scope.captchaId);
@@ -84,7 +67,7 @@ require(['main-app',
                 $scope.activeData.captcha =$scope.activeData.captcha.trim();
 
                 if(!ValidationService.isValidPhoneNumber($scope.activeData.mobile)){
-                    show({title:'提示',content:'手机号格式不正确'});
+                    SweetAlertHelp.fail({message:'手机号格式不正确'});
                     return;
                 }
                 $scope.activeData.sendSMS = false;

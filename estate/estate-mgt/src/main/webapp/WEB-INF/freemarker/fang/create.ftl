@@ -234,13 +234,13 @@
                                             <div class="form-group clearfix">
                                                 <label class="control-label">手机</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <input type="text" name="houseOwphone1" required st-mobile-phone class="form-control" placeholder="业主手机1" ng-model="ctrl.data.mobiles[0]"/>
+                                                    <input type="text" name="houseOwphone1" required st-mobile-phone class="form-control" placeholder="业主手机1" ng-model="ctrl.data.mobile"/>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <input type="text" name="houseOwphone2" st-mobile-phone class="form-control" placeholder="业主手机2" ng-model="ctrl.data.mobiles[1]"/>
+                                                    <input type="text" name="houseOwphone2" st-mobile-phone class="form-control" placeholder="业主手机2" ng-model="ctrl.data.aMobile"/>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <input type="text" name="houseOwphone3" st-mobile-phone class="form-control" placeholder="业主手机3" ng-model="ctrl.data.mobiles[2]"/>
+                                                    <input type="text" name="houseOwphone3" st-mobile-phone class="form-control" placeholder="业主手机3" ng-model="ctrl.data.bMobile"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">

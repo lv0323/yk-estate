@@ -279,7 +279,8 @@ require(['main-app',
                 pageConfig.init = true;
                 var config = {
                     pagingId: id,
-                    totalCounts:dataTotal,
+                    totalCounts: dataTotal,
+                    visiblePages: 10,
                     pageSize: pageConfig.limit,
                     onChange: function (num, type) {
                         if(type === 'init'){
