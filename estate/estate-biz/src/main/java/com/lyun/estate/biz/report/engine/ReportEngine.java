@@ -93,7 +93,8 @@ public class ReportEngine {
      * @return
      * @throws SQLException
      */
-    public <T> String report(String reportName, String region, Map param, Class<T> resultClass) throws SQLException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+    public <T> String report(String reportName, String region, Map param,
+                             Class<T> resultClass) throws SQLException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
         Assert.notNull(reportName);
 
         ReportInfo reportInfo = reportDataSourceUtils.getReportInfo(reportName, region);
@@ -124,7 +125,8 @@ public class ReportEngine {
      * @throws SQLException
      * @throws UnsupportedEncodingException
      */
-    public void report(String reportName, String region, Map param, OutputStream os) throws SQLException, UnsupportedEncodingException {
+    public void report(String reportName, String region, Map param,
+                       OutputStream os) throws SQLException, UnsupportedEncodingException {
         Assert.notNull(reportName);
         Assert.notNull(os);
 
@@ -155,7 +157,8 @@ public class ReportEngine {
      * @throws SQLException
      * @throws UnsupportedEncodingException
      */
-    public <T> void report(String reportName, String region, Map param, OutputStream os, Class<T> classType) throws SQLException, UnsupportedEncodingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+    public <T> void report(String reportName, String region, Map param, OutputStream os,
+                           Class<T> classType) throws SQLException, UnsupportedEncodingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
         Assert.notNull(reportName);
         Assert.notNull(os);
 
@@ -186,7 +189,8 @@ public class ReportEngine {
      * @throws SQLException
      * @throws UnsupportedEncodingException
      */
-    public <T> void exportCsv(String reportName, String region, Map param, OutputStream os, Class<T> classType) throws SQLException, UnsupportedEncodingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+    public <T> void exportCsv(String reportName, String region, Map param, OutputStream os,
+                              Class<T> classType) throws SQLException, UnsupportedEncodingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
         Assert.notNull(reportName);
         Assert.notNull(os);
 
@@ -208,6 +212,7 @@ public class ReportEngine {
     }
 
 
+    @SuppressWarnings("unchecked")
     private String assembleSql(String sql, Map param) {
         Assert.hasLength(sql, "SQL不能为空");
         if (CollectionUtils.isEmpty(param)) {
@@ -223,7 +228,8 @@ public class ReportEngine {
             String regex = "(#\\{" + entry.getKey() + "\\})";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(sql);
-            if (Integer.class.isInstance(entry.getValue()) || Long.class.isInstance(entry.getValue()) || Float.class.isInstance(entry.getValue()) || BigDecimal.class.isInstance(entry.getValue())) {
+            if (Integer.class.isInstance(entry.getValue()) || Long.class.isInstance(entry.getValue()) || Float.class.isInstance(
+                    entry.getValue()) || BigDecimal.class.isInstance(entry.getValue())) {
                 sql = matcher.replaceAll(entry.getValue().toString());
             } else {
                 sql = matcher.replaceAll("'" + entry.getValue().toString() + "'");
@@ -236,12 +242,15 @@ public class ReportEngine {
     }
 
     private ResultSet executeSql(Connection connection, String sql) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        PreparedStatement statement = connection.prepareStatement(sql,
+                ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_READ_ONLY);
         statement.setFetchSize(50);
         return statement.executeQuery();
     }
 
-    private <T> String resultSetHandler(ResultSet rs, Class<T> classType) throws SQLException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+    private <T> String resultSetHandler(ResultSet rs,
+                                        Class<T> classType) throws SQLException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
         List<String> columns = getResultRestColumnList(rs);
         Field[] fields = classType.getDeclaredFields();
         Map<String, Field> fieldMap = Arrays.stream(fields).collect(Collectors.toMap(k -> k.getName(), v -> v));
@@ -293,7 +302,8 @@ public class ReportEngine {
         return sb.toString();
     }
 
-    private <T> void resultSetReportHandler(ResultSet rs, OutputStream os, Class<T> classType) throws SQLException, UnsupportedEncodingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+    private <T> void resultSetReportHandler(ResultSet rs, OutputStream os,
+                                            Class<T> classType) throws SQLException, UnsupportedEncodingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
         PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(os, "UTF-8"), true);
         printWriter.flush();
 
@@ -331,7 +341,8 @@ public class ReportEngine {
         printWriter.flush();
     }
 
-    private void resultSetReportHandler(ResultSet rs, OutputStream os) throws SQLException, UnsupportedEncodingException {
+    private void resultSetReportHandler(ResultSet rs,
+                                        OutputStream os) throws SQLException, UnsupportedEncodingException {
         PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(os, "GB18030"), true);
         printWriter.flush();
 
@@ -357,7 +368,8 @@ public class ReportEngine {
         printWriter.flush();
     }
 
-    private <T> void resultSetExportHandler(ResultSet rs, ReportInfo reportInfo, OutputStream os, Class<T> classType) throws SQLException, UnsupportedEncodingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+    private <T> void resultSetExportHandler(ResultSet rs, ReportInfo reportInfo, OutputStream os,
+                                            Class<T> classType) throws SQLException, UnsupportedEncodingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
 //        PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(os, "GB18030"), true);
         PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(os, "UTF-8"), true);
         printWriter.flush();
@@ -406,7 +418,8 @@ public class ReportEngine {
         return columns;
     }
 
-    private <T> Object getResultFromResultSet(ResultSet resultSet, String name, Class<T> classType) throws SQLException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    private <T> Object getResultFromResultSet(ResultSet resultSet, String name,
+                                              Class<T> classType) throws SQLException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String columnName = getActColumnNameFromResultSet(resultSet, name);
         if (classType.isEnum()) {
             Method method = classType.getMethod("valueOf", String.class);
