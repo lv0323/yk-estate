@@ -44,14 +44,14 @@ public class MessageController {
     @Autowired
     private ReportEngine reportEngine;
 
-    @GetMapping("/summary")
+    @GetMapping("/conversation")
     @CheckToken
     List<MessageSummaryResource> getMessageCounter(
             @RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken jwtToken) {
         return messageService.getMessageSummary();
     }
 
-    @GetMapping("/show")
+    @GetMapping("/messages")
     @CheckToken
     PageList<MessageResource> getMessage(@RequestParam Long senderId,
                                          @RequestParam(required = false) Long lastMessageId,
