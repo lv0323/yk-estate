@@ -2,6 +2,7 @@ package com.lyun.estate.biz.fang.repo;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.fang.def.HouseProcess;
 import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
 import com.lyun.estate.biz.fang.domian.MgtFangSelector;
 import com.lyun.estate.biz.fang.entity.Fang;
@@ -9,10 +10,7 @@ import com.lyun.estate.biz.fang.entity.FangExt;
 import com.lyun.estate.biz.fang.entity.FangInfoOwner;
 import com.lyun.estate.biz.fang.repo.provider.MgtFangSqlProvider;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -49,4 +47,13 @@ public interface MgtFangRepository {
             " FROM t_fang_info_owner fio LEFT JOIN t_department d ON fio.department_id = d.id LEFT JOIN t_employee e ON fio.employee_id = e.id" +
             " WHERE fio.fang_id = #{fangId} AND fio.is_deleted = FALSE ORDER BY fio.id DESC LIMIT 1")
     FangInfoOwnerDTO findLastFangInfoOwner(Long fangId);
+
+    @Select("SELECT * FROM t_fang WHERE id = #{fangId} FOR UPDATE")
+    Fang selectForUpdate(long fangId);
+
+    @Update("UPDATE t_fang SET process = #{process}, update_time = now() where id = #{fangId}")
+    int updateProcess(@Param("fangId") long fangId, @Param("process") HouseProcess process);
+
+    @Update("UPDATE t_fang SET is_deleted = TRUE, update_time = now() where id = #{fangId}")
+    int delete(long fangId);
 }
