@@ -3,6 +3,7 @@ package com.lyun.estate.biz.xiaoqu.repository;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuStationRel;
+import com.lyun.estate.biz.xiaoqu.entity.XiaoQu;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuDetailBean;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSummaryBean;
@@ -10,6 +11,7 @@ import com.lyun.estate.biz.xiaoqu.repository.provider.XiaoQuSqlProvider;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,7 +29,6 @@ public interface XiaoQuRepository {
     XiaoQuDetailBean findDetail(@Param("id") Long id);
 
 
-
     @Select("SELECT xq.id as xiao_qu_id, csr.*, s.name as station_name" +
             "  FROM t_xiao_qu xq" +
             "  LEFT JOIN t_community c ON xq.community_id = c.id" +
@@ -41,4 +42,18 @@ public interface XiaoQuRepository {
             " WHERE xq.id = #{id}")
     XiaoQuSummaryBean findSummary(Long id);
 
+    @Select("SELECT * FROM t_xiao_qu  WHERE id  =#{xiaoQuId} For UPDATE ")
+    XiaoQu selectForUpdate(long xiaoQuId);
+
+    @Update("UPDATE t_xiao_qu SET sell_house_count = sell_house_count +1 WHERE id =#{xiaoQuId}")
+    int increaseSellCount(long xiaoQuId);
+
+    @Update("UPDATE t_xiao_qu SET sell_house_count = sell_house_count -1 WHERE id =#{xiaoQuId}")
+    int decreaseSellCount(long xiaoQuId);
+
+    @Update("UPDATE t_xiao_qu SET rent_house_count = rent_house_count +1 WHERE id =#{xiaoQuId}")
+    int increaseRentCount(long xiaoQuId);
+
+    @Update("UPDATE t_xiao_qu SET rent_house_count = rent_house_count -1 WHERE id =#{xiaoQuId}")
+    int decreaseRentCount(long xiaoQuId);
 }
