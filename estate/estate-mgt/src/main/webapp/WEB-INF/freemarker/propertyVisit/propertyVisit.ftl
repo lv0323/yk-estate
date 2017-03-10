@@ -141,7 +141,7 @@
                                         <th><span>带看客户</span></th>
                                         <th><span>带看房源地址</span></th>
                                         <th><span>带看生成时间</span></th>
-                                        <th><span>带看更新时间</span></th>
+                                        <th><span>带看结束时间</span></th>
                                         <th><span>状态</span></th>
                                         <th><span>操作</span></th>
                                     </tr></thead>

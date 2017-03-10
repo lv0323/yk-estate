@@ -71,7 +71,7 @@ require(['main-app',
                     customerName: item.customerTiny.name,
                     propertyAddress: item.fangTiny.houseLicence.location,
                     visitStartDate: UtilService.timeStamp2Datetime(item.createTime),
-                    visitUpdDate: UtilService.timeStamp2Datetime(item.updateTime),
+                    visitCloseDate: UtilService.timeStamp2Datetime(item.updateTime),
                     status: (item.process.name==="CREATED")?"<label class='badge badge-info'>"+item.process.label+"</label>":(item.process.name==="SUCCESS")?"<label class='badge badge-success'>"+item.process.label+"</label>":"<label class='badge badge-warning'>"+item.process.label+"</label>",
                     operation:(item.process.name==="CREATED")?
                         [{attr: {class: 'btn completeVisitBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#completeVisitDialog'}, text: '完成'},
@@ -96,7 +96,7 @@ require(['main-app',
                         {title: "带看客户", data: 'customerName', defaultContent: ""},
                         {title: "带看房源地址", data: 'propertyAddress', defaultContent: ""},
                         {title: "带看生成时间", data: 'visitStartDate', defaultContent: ""},
-                        {title: "带看更新时间", data: 'visitUpdDate', defaultContent: ""},
+                        {title: "带看结束时间", data: 'visitCloseDate', defaultContent: ""},
                         {title: "状态", data: 'status', defaultContent: ""},
                         {title: "操作", data:'operation', "render": dataTableHelp.operationFormat()}
                     ]
