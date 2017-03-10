@@ -116,7 +116,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/org/department?target=.org"><i class="fa fa-circle"></i>部门列表</a></li>
+                    <li><a href="/mgt/org/department?target=.org"><i class="fa fa-circle"></i>部门管理</a></li>
                     <li><a href="/mgt/org/employee?target=.org"><i class="fa fa-circle"></i>员工管理</a></li>
                     <li><a href="/mgt/org/position?target=.org"><i class="fa fa-circle"></i>岗位管理</a></li>
                 </ul>
@@ -128,7 +128,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/propertyVisit/propertyVisit?target=.prtyVisit"><i class="fa fa-circle"></i>带看列表</a></li>
+                    <li><a href="/mgt/propertyVisit/propertyVisit?target=.prtyVisit"><i class="fa fa-circle"></i>带看管理</a></li>
                 </ul>
             </li>
             <li class="treeview tool">
