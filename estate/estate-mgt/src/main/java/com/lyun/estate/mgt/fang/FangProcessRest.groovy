@@ -1,5 +1,6 @@
 package com.lyun.estate.mgt.fang
 
+import com.lyun.estate.biz.fang.entity.Fang
 import com.lyun.estate.mgt.fang.service.FangProcessMgtService
 import com.lyun.estate.mgt.supports.CommonResp
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,24 +20,22 @@ class FangProcessRest {
     FangProcessMgtService processMgtService;
 
     @PostMapping('publish')
-    def publish(@RequestParam Long fangId) {
+    Fang publish(@RequestParam Long fangId) {
         processMgtService.publish(fangId)
     }
 
     @PostMapping('un-publish')
-    def unPublish(@RequestParam Long fangId) {
+    Fang unPublish(@RequestParam Long fangId) {
         processMgtService.unPublish(fangId)
     }
 
     @PostMapping('deal')
-    def deal(@RequestParam Long fangId) {
+    Fang deal(@RequestParam Long fangId) {
         processMgtService.deal(fangId)
     }
 
     @PostMapping('delete')
-    def delete(@RequestParam Long fangId) {
+    CommonResp delete(@RequestParam Long fangId) {
         processMgtService.delete(fangId) ? CommonResp.succeed() : CommonResp.failed()
     }
-
-
 }
