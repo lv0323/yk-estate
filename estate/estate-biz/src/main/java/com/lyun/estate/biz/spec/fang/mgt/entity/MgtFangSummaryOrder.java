@@ -14,12 +14,12 @@ import static com.lyun.estate.core.repo.SqlSupport.buildOrder;
  * Created by Jeffrey on 2017-01-11.
  */
 public enum MgtFangSummaryOrder {
-    DEFAULT("默认排序", Lists.newArrayList(buildOrder("create_time", DESC))),
-    PUBLISH_PRICE_UP("总价由低到高", Lists.newArrayList(buildOrder("publish_price", Direction.ASC))),
+    DEFAULT("默认排序", Lists.newArrayList(buildOrder("id", DESC))),
+    PUBLISH_PRICE_UP("总价由低到高", Lists.newArrayList(buildOrder("publish_price", ASC))),
     PUBLISH_PRICE_DOWN("总价由高到低", Lists.newArrayList(buildOrder("publish_price", DESC))),
-    UNIT_PRICE_UP("单价价由低到高", Lists.newArrayList(buildOrder("unit_price", Direction.ASC))),
+    UNIT_PRICE_UP("单价价由低到高", Lists.newArrayList(buildOrder("unit_price", ASC))),
     UNIT_PRICE_DOWN("单价由高到低", Lists.newArrayList(buildOrder("unit_price", DESC))),
-    AREA_UP("面积由小到大", Lists.newArrayList(buildOrder("estate_area", Direction.ASC))),
+    AREA_UP("面积由小到大", Lists.newArrayList(buildOrder("estate_area", ASC))),
     AREA_DOWN("面积由大到小", Lists.newArrayList(buildOrder("estate_area", DESC))),
     FLOOR_UP("楼层由低到高", Lists.newArrayList(buildOrder("floor", DESC))),
     FLOOR_DOWN("楼层由高到低", Lists.newArrayList(buildOrder("floor", DESC))),

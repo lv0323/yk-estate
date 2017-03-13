@@ -20,7 +20,7 @@ CREATE TABLE t_contract (
   assignee_id_no     VARCHAR(30)    NOT NULL,
   note               VARCHAR(1000),
   biz_type           VARCHAR(15)    NOT NULL,
-  TYPE               VARCHAR(15)    NOT NULL,
+  type               VARCHAR(15)    NOT NULL,
   process            VARCHAR(15),
   create_time        TIMESTAMP      NOT NULL      DEFAULT CURRENT_TIMESTAMP, --创建时间
   close_time         TIMESTAMP, --关闭时间
