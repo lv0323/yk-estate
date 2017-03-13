@@ -73,6 +73,28 @@ public class HouseLicenceService {
         }
     }
 
+    public HouseLicence active(long id) {
+        HouseLicence houseLicence = repo.findOne(id);
+        if (houseLicence == null) {
+            throw new EstateException(ExCode.NOT_FOUND, id, "房源授权编号");
+        }
+        if (Objects.equals(LicenceStatus.ACTIVE, houseLicence.getStatus())) {
+            return houseLicence;
+        }
+        HouseLicence active = findActive(houseLicence.getCommunityId(),
+                houseLicence.getBizType(),
+                houseLicence.getBuildingId(),
+                houseLicence.getBuildingUnitId(),
+                houseLicence.getHouseNo());
+        if (active != null) {
+            throw new EstateException(ExCode.LICENCE_HOUSE_EXISTED, active.getId());
+        }
+        if (repo.active(id) > 0) {
+            return repo.findOne(id);
+        }
+        throw new EstateException(ExCode.UPDATE_FAIL, "房源授权", "id:" + id);
+    }
+
     public HouseLicence findActive(Long communityId, BizType bizType, Long buildingId, Long buildingUnitId,
                                    String houseNo) {
         houseNo = Optional.ofNullable(houseNo).map(n -> n.replace(" ", "")).orElse(null);

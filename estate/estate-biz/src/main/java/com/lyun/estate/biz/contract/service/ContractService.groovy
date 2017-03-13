@@ -13,6 +13,7 @@ import com.lyun.estate.biz.customer.service.CustomerService
 import com.lyun.estate.biz.department.entity.Department
 import com.lyun.estate.biz.department.service.DepartmentService
 import com.lyun.estate.biz.employee.service.EmployeeService
+import com.lyun.estate.biz.fang.service.FangProcessService
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService
 import com.lyun.estate.core.supports.exceptions.EstateException
 import com.lyun.estate.core.supports.exceptions.ExCode
@@ -44,6 +45,9 @@ class ContractService {
     @Autowired
     MgtFangService mgtFangService
 
+    @Autowired
+    FangProcessService fangProcessService
+
     Contract create(Contract contract) {
         ExceptionUtil.checkIllegal(
                 ValidateUtil.isMobile(contract.getAssignorMobile()), "房东手机", contract.getAssignorMobile())
@@ -56,6 +60,9 @@ class ContractService {
         contract.setProcess(ContractDefine.Process.CREATED)
 
         if (contractRepo.save(contract) > 0) {
+            if (contract.type == ContractDefine.Type.DEAL) {
+                fangProcessService.deal(contract.fangId)
+            }
             return contractRepo.findOne(contract.getId())
         }
         throw new EstateException(ExCode.CREATE_FAIL, "", contract.toString())
