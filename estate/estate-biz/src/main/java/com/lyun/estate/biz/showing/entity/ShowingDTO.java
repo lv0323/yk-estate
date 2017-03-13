@@ -21,6 +21,7 @@ public class ShowingDTO {
     private String employeeName;
     private String avatarURI;
     private Date createTime;
+    private Date closeTime;
     private Date updateTime;
     private ShowingDefine.Process process;
     private Boolean isDeleted;
@@ -162,6 +163,15 @@ public class ShowingDTO {
         return this;
     }
 
+    public Date getCloseTime() {
+        return closeTime;
+    }
+
+    public ShowingDTO setCloseTime(Date closeTime) {
+        this.closeTime = closeTime;
+        return this;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -176,6 +186,7 @@ public class ShowingDTO {
                 .add("employeeName", employeeName)
                 .add("avatarURI", avatarURI)
                 .add("createTime", createTime)
+                .add("closeTime", closeTime)
                 .add("updateTime", updateTime)
                 .add("process", process)
                 .add("isDeleted", isDeleted)

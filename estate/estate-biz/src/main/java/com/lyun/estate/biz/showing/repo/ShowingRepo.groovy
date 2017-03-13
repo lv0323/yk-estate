@@ -23,7 +23,7 @@ interface ShowingRepo {
     @Select('SELECT * FROM t_showing WHERE id = #{id}')
     Showing findOne(Long id)
 
-    @Update("UPDATE t_showing SET process = #{process} , update_time = now() WHERE id = #{id} AND process = 'CREATED' AND is_deleted = FALSE ")
+    @Update("UPDATE t_showing SET process = #{process} ,close_time = now(), update_time = now() WHERE id = #{id} AND process = 'CREATED' AND is_deleted = FALSE ")
     int close(@Param("id") Long id, @Param("process") ShowingDefine.Process process)
 
     @SelectProvider(type = ShowingSqlProvider.class, method = 'list')
