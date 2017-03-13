@@ -16,6 +16,7 @@ public class Showing {
     private Long departmentId;
     private Long employeeId;
     private Date createTime;
+    private Date closeTime;
     private Date updateTime;
     private ShowingDefine.Process process;
     private Boolean isDeleted;
@@ -110,6 +111,15 @@ public class Showing {
         return this;
     }
 
+    public Date getCloseTime() {
+        return closeTime;
+    }
+
+    public Showing setCloseTime(Date closeTime) {
+        this.closeTime = closeTime;
+        return this;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -121,6 +131,7 @@ public class Showing {
                 .add("departmentId", departmentId)
                 .add("employeeId", employeeId)
                 .add("createTime", createTime)
+                .add("closeTime", closeTime)
                 .add("updateTime", updateTime)
                 .add("process", process)
                 .add("isDeleted", isDeleted)

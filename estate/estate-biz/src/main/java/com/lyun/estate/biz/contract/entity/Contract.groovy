@@ -39,6 +39,7 @@ class Contract {
     String assigneeIdNo
     String note
     Date createTime
+    Date closeTime
     Date updateTime
     Boolean isDeleted
 
