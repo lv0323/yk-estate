@@ -7,16 +7,16 @@ define(contextPath+'/js/plugins/SweetAlert/SweetAlertHelp.js',
 
         var SweetAlertHelp = {};
 
-
-        SweetAlertHelp.success = function(res, callback){
+        SweetAlertHelp.sweetAlert = function(option, callback){
             var widthDiffs = window.innerWidth - $("body").eq(0).prop('clientWidth');
-            swal({
-                title: (res && res.title) || "操作成功!",
+            var setting = $.extend({},  {
+                title: "操作成功!",
                 type: "success",
-                text: (res && res["message"]) || '',
-                confirmButtonText: (res && res.confirmButtonText) || "确定",
-                confirmButtonColor: (res && res.confirmButtonColor) ||  "#3c8dbc"
-            },function(){
+                text: '',
+                confirmButtonText: "确定",
+                confirmButtonColor: "#3c8dbc"
+            }, option);
+            swal(setting,function(){
                 $("body").css({"padding-right":''});
                 callback && callback()
             });
@@ -24,23 +24,21 @@ define(contextPath+'/js/plugins/SweetAlert/SweetAlertHelp.js',
             if (scrollBarWidth > 0) {
                 $("body").css({"padding-right":scrollBarWidth+'px'});
             }
-        }
-        SweetAlertHelp.fail = function(res, callback) {
-            var widthDiffs = window.innerWidth - $("body").eq(0).prop('clientWidth');
-            swal({
-                title: (res && res.title)|| "错误!",
-                text: (res && res["message"]) || '',
-                type: "error",
-                confirmButtonText: res.confirmButtonText || "确定",
-                confirmButtonColor: res.confirmButtonColor || "#3c8dbc"
-            },function(){
-                $("body").css({"padding-right":''});
-                callback && callback()
-            });
-            var scrollBarWidth = widthDiffs - (window.innerWidth - $("body").eq(0).prop('clientWidth'));
-            if (scrollBarWidth > 0) {
-                $("body").css({"padding-right":scrollBarWidth+'px'});
-            }
+        };
+
+        SweetAlertHelp.success = function(option, callback){
+            option = option||{};
+            option.text = option.message;
+            option.type = "success";
+            option.title = "操作成功!";
+            SweetAlertHelp.sweetAlert(option, callback);
+        };
+        SweetAlertHelp.fail = function(option, callback) {
+            option = option||{};
+            option.text = option.message;
+            option.type = "error";
+            option.title = "错误!";
+            SweetAlertHelp.sweetAlert(option, callback);
         };
 
         return SweetAlertHelp;
