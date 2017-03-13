@@ -3,6 +3,7 @@ package com.lyun.estate.biz.fang.service
 import com.lyun.estate.biz.fang.def.HouseProcess
 import com.lyun.estate.biz.fang.entity.Fang
 import com.lyun.estate.biz.fang.repo.MgtFangRepository
+import com.lyun.estate.biz.houselicence.service.HouseLicenceService
 import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService
 import com.lyun.estate.biz.support.def.BizType
 import com.lyun.estate.core.supports.exceptions.EstateException
@@ -23,6 +24,9 @@ class FangProcessService {
     @Autowired
     MgtFangRepository mgtFangRepository
 
+    @Autowired
+    HouseLicenceService houseLicenceService
+
 
     @Transactional
     Fang publish(long fangId) {
@@ -32,8 +36,13 @@ class FangProcessService {
         }
         if (fang.getProcess() == HouseProcess.DELEGATE ||
                 fang.getProcess() == HouseProcess.UN_PUBLISH) {
+            //update process
             mgtFangRepository.updateProcess(fangId, HouseProcess.PUBLISH)
+            //update count
             increaseHouseCount(fang.bizType, fang.xiaoQuId)
+            //update licence status
+            houseLicenceService.active(fang.getLicenceId())
+
             return mgtFangRepository.findFang(fangId)
         } else {
             throw new EstateException(ExCode.PROCESS_ILLEGAL, fangId, fang.process, HouseProcess.PUBLISH)
@@ -48,10 +57,14 @@ class FangProcessService {
         }
         if (fang.getProcess() == HouseProcess.DELEGATE ||
                 fang.getProcess() == HouseProcess.PUBLISH) {
+            // update process
             mgtFangRepository.updateProcess(fangId, HouseProcess.UN_PUBLISH)
+            // update count
             if (fang.getProcess() == HouseProcess.PUBLISH) {
                 decreaseHouseCount(fang.bizType, fang.xiaoQuId)
             }
+            // update licence status
+            houseLicenceService.invalid(fang.getLicenceId())
             return mgtFangRepository.findFang(fangId)
         } else {
             throw new EstateException(ExCode.PROCESS_ILLEGAL, fangId, fang.process, HouseProcess.UN_PUBLISH)
@@ -67,10 +80,14 @@ class FangProcessService {
         }
         if (fang.getProcess() == HouseProcess.DELEGATE ||
                 fang.getProcess() == HouseProcess.PUBLISH) {
+            //update process
             mgtFangRepository.updateProcess(fangId, HouseProcess.SUCCESS)
+            //update count
             if (fang.getProcess() == HouseProcess.PUBLISH) {
                 decreaseHouseCount(fang.bizType, fang.xiaoQuId)
             }
+            //update licence status
+            houseLicenceService.invalid(fang.getLicenceId())
             return mgtFangRepository.findFang(fangId)
         } else {
             throw new EstateException(ExCode.PROCESS_ILLEGAL, fangId, fang.process, HouseProcess.SUCCESS)
@@ -84,10 +101,14 @@ class FangProcessService {
         if (fang == null || Objects.equals(fang.getDeleted(), true)) {
             throw new EstateException(ExCode.NOT_FOUND, fangId, "房源")
         }
+        //delete
         mgtFangRepository.delete(fangId)
+        //update count
         if (fang.process == HouseProcess.PUBLISH) {
             decreaseHouseCount(fang.bizType, fang.xiaoQuId)
         }
+        //update licence status
+        houseLicenceService.invalid(fang.getLicenceId())
         return true
     }
 
