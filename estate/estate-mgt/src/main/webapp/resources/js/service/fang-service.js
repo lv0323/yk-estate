@@ -94,5 +94,11 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.contactChange = function (params, header) {
             return RequestService.post('/api/fang/change-contact', params, header);
         };
+        FangService.publish = function (params, header) {
+            return RequestService.post('/api/fang-process/publish', params, header);
+        };
+        FangService.unPublish = function (params, header) {
+            return RequestService.post('/api/fang-process/un-publish', params, header);
+        };
         return FangService;
     });

@@ -249,9 +249,18 @@
                                                     </div>
                                                     <div class="btn-add  pull-left m-l-30">
                                                         <a ng-href="{{'/mgt/fangManage/detail?id='+house.id}}" target="_blank"><i class="fa fa-pencil"></i>查看详情</a>
-                                                        <#--<a ng-href="javascript:void(0)"><i class="fa fa-pencil"></i>新增跟进</a>
-                                                        <a class="m-l-20" ng-href="javascript:void(0)"><i class="fa fa-pencil"></i>新增勘察</a>
-                                                        <a class="m-l-20" ng-href="javascript:void(0)"><i class="fa fa-pencil"></i>删除</a>-->
+                                                        <a class="m-l-20" ng-href="javascript:;" ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.UN_PUBLISH"
+                                                           ng-click="changeStatus(page.status.PUBLISH, house.id)">
+                                                            <i class="fa fa-pencil"></i>上架
+                                                        </a>
+                                                        <a class="m-l-20" ng-href="javascript:;"
+                                                           ng-click="changeStatus(page.status.UN_PUBLISH, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH">
+                                                            <i class="fa fa-pencil"></i>下架
+                                                        </a>
+                                                        <a class="m-l-20" ng-href="javascript:;"
+                                                           ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH">
+                                                            <i class="fa fa-pencil"></i>成交
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -262,13 +271,6 @@
                                             <div class="col-lg-2 col-md-2 col-sm-3 text-right">
                                                 <p><strong class="text-danger f18">{{house.publishPrice}}</strong>{{house.priceUnit.label}}</p>
                                                 <p>{{house.unitPrice}}{{house.priceUnit.label}}/m<sup>2</sup></p>
-                                                <#--<a href="javascript:void(0)" id="favorites" style="color:#777;" onclick="favoritesLookOwner('1639','')" class="text-muted mr10 collection ">
-                                                    <i class="fa fa-star-o" aria-hidden="true"></i>收藏
-                                                </a>-->
-                                                <#--<div class="checkbox checkbox-nice">
-                                                    <input id="house_1639" onclick="setHouseSelected(1639);" type="checkbox">
-                                                    <label for="house_1639" style="padding-right:0px">选择</label>
-                                                </div>-->
                                             </div>
                                         </div>
                                     </div>
