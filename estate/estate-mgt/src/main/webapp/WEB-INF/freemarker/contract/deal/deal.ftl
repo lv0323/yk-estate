@@ -1,44 +1,44 @@
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
 
-<!-- Modal completeVisitDialog -->
-<div class="modal fade" id="completeVisitDialog" tabindex="-1" role="dialog" aria-labelledby="completeVisitLabel">
+<!-- Modal completeDealDialog -->
+<div class="modal fade" id="completeDealDialog" tabindex="-1" role="dialog" aria-labelledby="completeDealLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title" id="completeVisitLabel">完成带看</h4>
+                <h4 class="modal-title" id="completeDealLabel">完成成交</h4>
             </div>
-            <input id="completeVisitId" class="hidden">
+            <input id="completeDealId" class="hidden">
             <div class="modal-body">
-                确定执行完成带看操作吗？
+                确定执行完成成交操作吗？
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="confirmCompleteVisitBtn">确定</button>
+                <button type="button" class="btn btn-primary" id="confirmCompleteDealBtn">确定</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal cancelVisitDialog -->
-<div class="modal fade" id="cancelVisitDialog" tabindex="-1" role="dialog" aria-labelledby="cancelVisitLabel">
+<!-- Modal cancelDealDialog -->
+<div class="modal fade" id="cancelDealDialog" tabindex="-1" role="dialog" aria-labelledby="cancelDealLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title" id="cancelVisitLabel">取消带看</h4>
+                <h4 class="modal-title" id="cancelDealLabel">取消成交</h4>
             </div>
-            <input id="cancelVisitId" class="hidden">
+            <input id="cancelDealId" class="hidden">
             <div class="modal-body">
-                确定执行取消带看操作吗？
+                确定执行取消成交操作吗？
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="confirmCancelVisitBtn">确定</button>
+                <button type="button" class="btn btn-primary" id="confirmCancelDealBtn">确定</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>
         </div>
@@ -52,11 +52,11 @@
             <li>
                 <a href="#">
                     <i class="fa fa-home fa-lg" aria-hidden="true"></i>
-                    房源带看
+                    合同管理
                 </a>
             </li>
             <li class="active">
-                带看列表
+                成交管理
             </li>
         </ol>
     </section>
@@ -68,14 +68,14 @@
                     <section class="connectedSortable">
                         <div class="box box-solid">
                             <div class="box-header">
-                                <h3 class="box-title">带看列表</h3>
+                                <h3 class="box-title">成交列表</h3>
                                 <div class="box-tools">
-                                    <a class="btn" id="addVisitBtn" href="/mgt/propertyVisit/addPropertyVisit?target=.prtyVisit">
+                                    <a class="btn" id="addDealBtn" href="/mgt/contract/addDeal?target=.contract">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
-                                        新增带看
+                                        新增成交
                                     </a>
                                     <span class="opt-gap"></span>
-                                    <a class="btn" id="filterPropertyVisitBtn">
+                                    <a class="btn" id="filterDealBtn">
                                         <i class="fa fa-filter" aria-hidden="true"></i>
                                         筛选
                                     </a>
@@ -83,13 +83,31 @@
                             </div>
                             <div class="box-body">
                                 <form class="form-inline">
-                                    <div id="box-filter"  style="display: none;">
+                                    <div id="box-filter"  style="display: block;">
                                         <div class="form-group sortlist">
                                             <label class="control-label">状态</label>
                                             <div class="tj">
-                                                <a name="visitStatus" class="actived" title="">不限</a>
-                                            <#list showingOperation?if_exists as status>
-                                                <a name="visitStatus" title="${status.name()}">${status.getLabel()}</a>
+                                                <a name="DealStatus" class="actived" title="">不限</a>
+                                            <#list contractOperation?if_exists as status>
+                                                <a name="DealStatus" title="${status.name()}">${status.getLabel()}</a>
+                                            </#list>
+                                            </div>
+                                        </div>
+                                        <div class="form-group sortlist">
+                                            <label class="control-label">房型用途</label>
+                                            <div class="tj">
+                                                <a name="houseType" class="actived" title="">不限</a>
+                                            <#list houseType?if_exists as usage>
+                                                <a name="houseType" title="${usage.name()}">${usage.getLabel()}</a>
+                                            </#list>
+                                            </div>
+                                        </div>
+                                        <div class="form-group sortlist">
+                                            <label class="control-label">合同类型</label>
+                                            <div class="tj">
+                                                <a name="businessType" class="actived" title="">不限</a>
+                                            <#list bizType?if_exists as biz>
+                                                <a name="businessType" title="${biz.name()}">${biz.getLabel()}</a>
                                             </#list>
                                             </div>
                                         </div>
@@ -113,13 +131,13 @@
                                             </div>
                                         </div>
                                         <div class="form-group sortlist form-inline">
-                                            <label class="control-label">带看时间</label>
+                                            <label class="control-label">成交时间</label>
                                             <div class="col-lg-2 col-md-3 col-sm-3">
                                                 <div class="input-group date">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <input type="text" class="form-control pull-right" id="minCreateDate" placeholder="带看起始日期">
+                                                    <input type="text" class="form-control pull-right" id="minCreateDate" placeholder="创建日期">
                                                 </div>
                                             </div>
                                             <div class=" col-lg-2 col-md-3 col-sm-3">
@@ -127,7 +145,7 @@
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
                                                     </div>
-                                                    <input type="text" class="form-control pull-right" id="maxCreateDate" placeholder="带看截止日期">
+                                                    <input type="text" class="form-control pull-right" id="maxCreateDate" placeholder="截止日期">
                                                 </div>
                                             </div>
                                         </div>
@@ -135,19 +153,19 @@
                                 </form>
 
                                 <!-- table -->
-                                <table id="propertyVisitList" class="list table table-bordered table-hover">
+                                <table id="DealList" class="list table table-bordered table-hover">
                                     <thead><tr>
-                                        <th><span>带看员工</span></th>
-                                        <th><span>带看客户</span></th>
-                                        <th><span>带看房源地址</span></th>
-                                        <th><span>带看生成时间</span></th>
-                                        <th><span>带看结束时间</span></th>
+                                        <th><span>成交员工</span></th>
+                                        <th><span>成交客户</span></th>
+                                        <th><span>成交房源地址</span></th>
+                                        <th><span>成交创建时间</span></th>
+                                        <th><span>成交结束时间</span></th>
                                         <th><span>状态</span></th>
                                         <th><span>操作</span></th>
                                     </tr></thead>
                                     <tbody></tbody>
                                 </table>
-                                <ul id="propertyVisitList_paging" class="pagination"></ul>
+                                <ul id="DealList_paging" class="pagination"></ul>
                             </div>
                         </div>
                     </section>
@@ -160,4 +178,4 @@
 <!-- /.content-wrapper -->
 
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/app/propertyVisit/propertyVisit.js"></script>
+<script src="${contextPath!}/js/app/contract/deal/deal.js"></script>

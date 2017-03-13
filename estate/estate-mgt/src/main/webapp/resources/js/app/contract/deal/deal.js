@@ -1,8 +1,8 @@
 /**
- * Created by yanghong on 3/2/17.
+ * Created by yanghong on 3/13/17.
  */
 require(['main-app',
-        contextPath + '/js/service/propertyvisit-service.js',
+        contextPath + '/js/service/contract-service.js',
         contextPath + '/js/service/department-service.js',
         contextPath + '/js/service/employee-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
@@ -10,17 +10,17 @@ require(['main-app',
         contextPath + '/js/utils/dataTableHelp.js',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
         'datetimepicker.zh-cn', 'chosen', 'datatables', 'datatablesBootstrap'],
-    function (mainApp, PropertyVisitService, DepartmentService, EmployeeService, pagingPlugin, UtilService, dataTableHelp, SweetAlertHelp) {
+    function (mainApp, ContractService, DepartmentService, EmployeeService, pagingPlugin, UtilService, dataTableHelp, SweetAlertHelp) {
 
         var pageConfig = {
             limit: 8,
-            currentPage:1,
+            currentPage: 1,
             init: false
         };
 
-        var tableConfig ={
+        var tableConfig = {
             init: false,
-            target:null
+            target: null
         };
 
         var filterConfig = {
@@ -33,63 +33,44 @@ require(['main-app',
         };
 
         var filter = {
-            process:'',
+            process: '',
             departmentId: '',
             children: false,
-            employeeId:'',
-            minCreateDate:'',
-            maxCreateDate:''
+            employeeId: '',
+            minCreateDate: '',
+            maxCreateDate: ''
         };
 
         $.fn.datetimepicker.defaults.language = "zh-CN";
         $('#minCreateDate').datetimepicker({
-            todayHighlight:true,
+            todayHighlight: true,
             format: 'yyyy-mm-dd',
             startView: 2,
             minView: 2,
             autoclose: true
-        }).on("change", function(e) {
+        }).on("change", function (e) {
             filter.minCreateDate = e.target.value;
-            getPropertyVisit(filter, 0, pageConfig.limit);
+            getDeal(filter, 0, pageConfig.limit);
 
         });
         $('#maxCreateDate').datetimepicker({
-            todayHighlight:true,
+            todayHighlight: true,
             format: 'yyyy-mm-dd',
             startView: 2,
             minView: 2,
             autoclose: true
-        }).on("change", function(e) {
+        }).on("change", function (e) {
             filter.maxCreateDate = e.target.value;
-            getPropertyVisit(filter, 0, pageConfig.limit);
+            getDeal(filter, 0, pageConfig.limit);
         });
 
         var displayTable = function (data) {
             var dataSet = data.items.map(function (item, index) {
-                return {
-                    employee: "<img class='img-circle' style='width:42px; height:42px; display: inline-block;' src='" + item.avatarURI + "'/>" + "&nbsp;" + item.departmentName + "-" + item.employeeName,
-                    customerName: item.customerTiny.name,
-                    propertyAddress: item.fangTiny.houseLicence.location,
-                    visitStartDate: UtilService.timeStamp2Datetime(item.createTime),
-                    visitCloseDate: (item.closeTime) ? UtilService.timeStamp2Datetime(item.closeTime) : "",
-                    status: (item.process.name === "CREATED") ? "<label class='badge badge-info'>" + item.process.label + "</label>" : (item.process.name === "SUCCESS") ? "<label class='badge badge-success'>" + item.process.label + "</label>" : "<label class='badge badge-warning'>" + item.process.label + "</label>",
-                    operation: (item.process.name === "CREATED") ?
-                        [{
-                            attr: {class: 'btn completeVisitBtn'},
-                            data: {index: index, id: item.id, toggle: 'modal', target: '#completeVisitDialog'},
-                            text: '完成'
-                        },
-                            {
-                                attr: {class: 'btn cancelVisitBtn'},
-                                data: {index: index, id: item.id, toggle: 'modal', target: '#cancelVisitDialog'},
-                                text: '取消'
-                            }
-                        ] : ""
-                }
+                return {}
             });
 
             if (!tableConfig.target) {
-                tableConfig.target = $('#propertyVisitList').DataTable({
+                tableConfig.target = $('#DealList').DataTable({
                     data: dataSet,
                     paging: false,
                     searching: false,
@@ -100,11 +81,11 @@ require(['main-app',
                         {className: "text-right", "targets": [6]} /*添加class*/
                     ],
                     columns: [
-                        {title: "带看员工", data: 'employee'},
-                        {title: "带看客户", data: 'customerName', defaultContent: ""},
-                        {title: "带看房源地址", data: 'propertyAddress', defaultContent: ""},
-                        {title: "带看生成时间", data: 'visitStartDate', defaultContent: ""},
-                        {title: "带看结束时间", data: 'visitCloseDate', defaultContent: ""},
+                        {title: "成交员工", data: 'employee'},
+                        {title: "成交客户", data: 'customerName', defaultContent: ""},
+                        {title: "成交房源地址", data: 'propertyAddress', defaultContent: ""},
+                        {title: "成交创建时间", data: 'visitStartDate', defaultContent: ""},
+                        {title: "成交结束时间", data: 'visitCloseDate', defaultContent: ""},
                         {title: "状态", data: 'status', defaultContent: ""},
                         {title: "操作", data:'operation', "render": dataTableHelp.operationFormat()}
                     ]
@@ -126,7 +107,7 @@ require(['main-app',
             }
             pageConfig.init = true;
             var config = {
-                pagingId:'#propertyVisitList_paging',
+                pagingId:'#DealList_paging',
                 totalCounts:dataTotal,
                 pageSize: pageConfig.limit,
                 onChange: function (num, type) {
@@ -134,30 +115,30 @@ require(['main-app',
                         return;
                     }
                     pageConfig.currentPage = num;
-                    getPropertyVisit(filter, (num-1)*pageConfig.limit, pageConfig.limit);
+                    getDeal(filter, (num-1)*pageConfig.limit, pageConfig.limit);
                 }
             };
             pagingPlugin.init(config);
         };
 
-        function getPropertyVisit(filter, offset, limit) {
+        function getDeal(filter, offset, limit) {
             var params = {};
             for (var key in filter){
                 if(!!filter[key]){
                     params[key] = filter[key];
                 }
             }
-            PropertyVisitService.getPropertyVisitList(params, {'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
+            ContractService.getDealList(params, {'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
                 .done(function (data) {
                     displayTable(data);
                     pagination(data.total);
                 })
                 .fail(function(){
-                    $('#propertyVisitList>tbody').html('<tr><td colspan="7">无法获取数据</td></tr>');
+                    $('#DealList>tbody').html('<tr><td colspan="7">无法获取数据</td></tr>');
                 });
         }
 
-        getPropertyVisit(null, 0, pageConfig.limit);
+        getDeal(null, 0, pageConfig.limit);
 
 
 
@@ -185,6 +166,7 @@ require(['main-app',
                 $('#employeeList').html(defaultOption);
                 initChosen("#employeeList", 'employeeId');
             }
+
         }
 
         function chosenChange(key, value){
@@ -203,7 +185,7 @@ require(['main-app',
                     if(key === 'departmentId'){
                         filter.employeeId = "";
                     }
-                    getPropertyVisit(filter, 0, pageConfig.limit);
+                    getDeal(filter, 0, pageConfig.limit);
 
                 });
                 return;
@@ -233,7 +215,7 @@ require(['main-app',
         initDepartDropDown();
 
         //toggle filter for Employee display
-        $('#filterPropertyVisitBtn').on('click',function () {
+        $('#filterDealBtn').on('click',function () {
             if($('#box-filter').css('display')=="none"){
                 $('#box-filter').show();
             }else {
@@ -241,33 +223,33 @@ require(['main-app',
             }
         });
 
-        $('a[name="visitStatus"]').on('click', function () {
-            $('a[name="visitStatus"]').removeClass("actived");
+        $('a[name="DealStatus"], a[name="houseType"], a[name="businessType"]').on('click', function () {
+            $(this).siblings().removeClass("actived");
             $(this).addClass("actived");
             filter.process = $(this).attr("title");
-            getPropertyVisit(filter, 0, pageConfig.limit);
+            getDeal(filter, 0, pageConfig.limit);
         });
 
         $('#inferiorIncLabel').on('click', function () {
             filter.children=!($('#inferiorInc').is(':checked'));
-            getPropertyVisit(filter, 0, pageConfig.limit);
+            getDeal(filter, 0, pageConfig.limit);
         });
 
         //initialize complete visit dialog
-        $('.fadeInRight').on('click','.completeVisitBtn',function(e){
-            var visitId = $(e.target).data('id');
-            $('#completeVisitId').val(visitId);
+        $('.fadeInRight').on('click','.completeDealBtn',function(e){
+            var contractId = $(e.target).data('id');
+            $('#completeDealId').val(contractId);
         });
 
         //action for complete visit
-        $('#confirmCompleteVisitBtn').on('click', function(){
-            var visitId = $('#completeVisitId').val();
+        $('#confirmCompleteDealBtn').on('click', function(){
+            var contractId = $('#completeDealId').val();
             var toUpdateData = {
-                showingId: visitId,
+                contractId: contractId,
                 process: 'SUCCESS'
             };
 
-            PropertyVisitService.closePropertyVisit(toUpdateData)
+            ContractService.closeDeal(toUpdateData)
                 .done(function () {
                     SweetAlertHelp.success({}, function () {
                         location.reload(true);
@@ -279,20 +261,20 @@ require(['main-app',
         });
 
         //initialize cancel visit dialog
-        $('.fadeInRight').on('click','.cancelVisitBtn',function(e){
-            var visitId = $(e.target).data('id');
-            $('#cancelVisitId').val(visitId);
+        $('.fadeInRight').on('click','.cancelDealBtn',function(e){
+            var contractId = $(e.target).data('id');
+            $('#cancelDealId').val(contractId);
         });
 
         //action for cancel visit
-        $('#confirmCancelVisitBtn').on('click', function(){
-            var visitId = $('#cancelVisitId').val();
+        $('#confirmCancelDealBtn').on('click', function(){
+            var contractId = $('#cancelDealId').val();
             var toUpdateData = {
-                showingId: visitId,
+                contractId: contractId,
                 process: 'CANCEL'
             };
 
-            PropertyVisitService.closePropertyVisit(toUpdateData)
+            ContractService.closeDeal(toUpdateData)
                 .done(function () {
                     SweetAlertHelp.success({}, function () {
                         location.reload(true);
@@ -303,6 +285,5 @@ require(['main-app',
                     SweetAlertHelp.fail(res);
                 });
         });
-
 
     });

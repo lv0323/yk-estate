@@ -5,7 +5,7 @@ require(['main-app',
         contextPath + '/js/service/audit-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath+'/js/service/util-service.js',
-        'datatables', 'datatablesBootstrap', 'datepicker.zh-cn'],
+        'datatables', 'datatablesBootstrap', 'datetimepicker.zh-cn'],
     function (mainApp, AuditService, pagingPlugin, UtilService ) {
 
         var pageConfig = {
@@ -20,13 +20,19 @@ require(['main-app',
 
         var jqPaginatorInstance = false;
 
-        $.fn.datepicker.defaults.language = "zh-CN";
-        $('#logStartDate').datepicker({
+        $.fn.datetimepicker.defaults.language = "zh-CN";
+        $('#logStartDate').datetimepicker({
             todayHighlight:true,
+            format: 'yyyy-mm-dd',
+            startView: 2,
+            minView: 2,
             autoclose: true
         });
-        $('#logEndDate').datepicker({
+        $('#logEndDate').datetimepicker({
             todayHighlight:true,
+            format: 'yyyy-mm-dd',
+            startView: 2,
+            minView: 2,
             autoclose: true
         });
 
@@ -137,6 +143,7 @@ require(['main-app',
             var endDate = $('#logEndDate').val();
             var subject = $('.nav-pills').find('li.active a').data('name');
             initTabTable({subject:subject, startDate:startDate, endDate: endDate});
+            return false;
         });
 
 

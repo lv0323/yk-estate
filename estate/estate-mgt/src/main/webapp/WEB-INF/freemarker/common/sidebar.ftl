@@ -131,6 +131,16 @@
                     <li><a href="/mgt/propertyVisit/propertyVisit?target=.prtyVisit"><i class="fa fa-circle"></i>带看管理</a></li>
                 </ul>
             </li>
+            <li class="treeview contract">
+                <a href="#"><i class="fa fa-file-text-o" aria-hidden="true"></i> <span>合同管理</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/mgt/contract/deal?target=.contract"><i class="fa fa-circle"></i>成交管理</a></li>
+                </ul>
+            </li>
             <li class="treeview tool">
                 <a href="#"><i class="fa fa-wrench" aria-hidden="true"></i> <span>实用工具</span>
                     <span class="pull-right-container">

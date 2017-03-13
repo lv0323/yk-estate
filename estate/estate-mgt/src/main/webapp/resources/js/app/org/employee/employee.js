@@ -9,7 +9,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         contextPath+'/js/app/org/position/positionCommon.js',
         contextPath+'/js/service/util-service.js',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
-    'datatables', 'zTree','datatablesBootstrap', 'datepicker.zh-cn'],
+    'datatables', 'zTree','datatablesBootstrap', 'datetimepicker.zh-cn'],
     function (mainApp, EmployeeService, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon, PositionCommon, UtilService, SweetAlertHelp) {
         var header = {};
 
@@ -27,13 +27,19 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
 
         var quitPosition = 'false'; //init nonQuit Employee by default
 
-        $.fn.datepicker.defaults.language = "zh-CN";
-        $('#addEmployeeEntryDate').datepicker({
+        $.fn.datetimepicker.defaults.language = "zh-CN";
+        $('#addEmployeeEntryDate').datetimepicker({
             todayHighlight:true,
+            format: 'yyyy-mm-dd',
+            startView: 2,
+            minView: 2,
             autoclose: true
         });
-        $('#editEmployeeEntryDate').datepicker({
+        $('#editEmployeeEntryDate').datetimepicker({
             todayHighlight:true,
+            format: 'yyyy-mm-dd',
+            startView: 2,
+            minView: 2,
             autoclose: true
         });
 
