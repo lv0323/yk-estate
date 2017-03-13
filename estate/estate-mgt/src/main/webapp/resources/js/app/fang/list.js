@@ -41,7 +41,13 @@ require(['main-app',
                 },
                 layoutString:'',
                 collapse:false,
-                now:new Date().getTime()
+                now:new Date().getTime(),
+                status: {
+                    'DELEGATE': 'DELEGATE',
+                    'PUBLISH': 'PUBLISH',
+                    'UN_PUBLISH': 'UN_PUBLISH',
+                    'SUCCESS': 'SUCCESS'
+                }
             };
             $scope.houseList = [];
             $scope.filter ={
@@ -299,6 +305,7 @@ require(['main-app',
             $scope.triggerCollapse = function(){
                 $scope.page.collapse = !$scope.page.collapse;
             };
+            /*房源列表*/
             $scope.list = function(offset, currentpage){
                 var param ={};
                 for (var key in $scope.filter){
@@ -345,6 +352,24 @@ require(['main-app',
                     });
                 });
             };
+            $scope.changeStatus = function(status, id){
+                if(status === $scope.page.status.PUBLISH){
+                    FangService.publish({fangId:id}).then(function(){
+                        SweetAlertHelp.success();
+                        $scope.list((pageConfig.currentPage-1)*pageConfig.limit, pageConfig.currentPage);
+                    }).fail(function(response){
+                        SweetAlertHelp.fail({message:response&&response.message});
+                    });
+                }else if(status === $scope.page.status.UN_PUBLISH){
+                    FangService.unPublish({fangId:id}).then(function(){
+                        SweetAlertHelp.success();
+                        $scope.list((pageConfig.currentPage-1)*pageConfig.limit, pageConfig.currentPage);
+                    }).fail(function(response){
+                        SweetAlertHelp.fail({message:response&&response.message});
+                    });
+
+                }
+            }
         }]);
 
         angular.element(document).ready(function() {
