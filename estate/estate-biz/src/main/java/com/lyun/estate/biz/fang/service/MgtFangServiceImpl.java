@@ -332,12 +332,12 @@ public class MgtFangServiceImpl implements MgtFangService {
         ExceptionUtil.checkNotNull("fang", fang);
         ExceptionUtil.checkNotNull("房源编号", fang.getId());
         ExceptionUtil.checkNotNull("房源子类型", fang.getHouseSubType());
-        Fang needUpdate = fangRepository.findFang(fang.getId());
+        Fang needUpdate = mgtFangRepository.findFang(fang.getId());
         if (needUpdate == null || needUpdate.getDeleted()) {
-            throw new EstateException(ExCode.FANG_MGT_ERROR_EMPLOYEE);
+            throw new EstateException(ExCode.NOT_FOUND, fang.getId(), "房源信息");
         }
-        if (fangRepository.updateFang(fang) > 0) {
-            return fangRepository.findFang(fang.getId());
+        if (mgtFangRepository.updateFang(fang) > 0) {
+            return mgtFangRepository.findFang(fang.getId());
         }
         throw new EstateException(ExCode.UPDATE_FAIL, "房源基本信息", fang.toString());
     }
@@ -347,13 +347,13 @@ public class MgtFangServiceImpl implements MgtFangService {
     public FangExt updateFangExt(FangExt fangExt) {
         ExceptionUtil.checkNotNull("fangExt", fangExt);
         ExceptionUtil.checkNotNull("房源编号", fangExt.getFangId());
-        Fang needUpdate = fangRepository.findFang(fangExt.getFangId());
+        Fang needUpdate = mgtFangRepository.findFang(fangExt.getFangId());
         if (needUpdate == null || needUpdate.getDeleted()) {
-            throw new EstateException(ExCode.FANG_MGT_ERROR_EMPLOYEE);
+            throw new EstateException(ExCode.NOT_FOUND, fangExt.getFangId(), "房源信息");
         }
-        if (fangRepository.updateFangExtByFangId(fangExt) > 0) {
-            fangRepository.updateTime(fangExt.getFangId());
-            return fangRepository.findFangExtByFangId(fangExt.getFangId());
+        if (mgtFangRepository.updateFangExtByFangId(fangExt) > 0) {
+            mgtFangRepository.updateTime(fangExt.getFangId());
+            return mgtFangRepository.findFangExtByFangId(fangExt.getFangId());
         }
         throw new EstateException(ExCode.UPDATE_FAIL, "房源扩展信息", fangExt.toString());
     }
@@ -361,28 +361,32 @@ public class MgtFangServiceImpl implements MgtFangService {
     @Override
     public Fang getFangBase(Long fangId) {
         ExceptionUtil.checkNotNull("房源编号", fangId);
-        return fangRepository.findFang(fangId);
+        return mgtFangRepository.findFang(fangId);
     }
 
     @Override
     public FangExt getFangExt(Long fangId) {
         ExceptionUtil.checkNotNull("房源编号", fangId);
-        return fangRepository.findFangExtByFangId(fangId);
+        return mgtFangRepository.findFangExtByFangId(fangId);
 
     }
 
     @Override
     public MgtFangSummary getFangSummary(Long fangId) {
-        return findSummaryBySelector(new MgtFangSelector().setFangId(fangId), null)
+        MgtFangSummary result = findSummaryBySelector(new MgtFangSelector().setFangId(fangId), null)
                 .stream()
                 .findFirst()
                 .orElse(null);
+        return Optional.ofNullable(result).orElseThrow(() -> new EstateException(ExCode.NOT_FOUND, fangId, "房源信息"));
     }
 
     @Override
     public MgtFangTiny getFangTiny(Long fangId) {
         ExceptionUtil.checkNotNull("房源编号", fangId);
-        Fang fang = fangRepository.findFang(fangId);
+        Fang fang = mgtFangRepository.findFang(fangId);
+        if (fang == null || fang.getDeleted()) {
+            throw new EstateException(ExCode.NOT_FOUND, fangId, "房源信息");
+        }
         MgtFangTiny tiny = new MgtFangTiny();
         BeanUtils.copyProperties(fang, tiny);
         tiny.setHouseLicence(licenceService.findOne(tiny.getLicenceId()));
@@ -392,7 +396,10 @@ public class MgtFangServiceImpl implements MgtFangService {
     @Override
     public MgtFangTiny getFangTinyByLicenceId(Long licenceId) {
         ExceptionUtil.checkNotNull("房源授权编号", licenceId);
-        Fang fang = fangRepository.findFangByLicenceId(licenceId);
+        Fang fang = mgtFangRepository.findFangByLicenceId(licenceId);
+        if (fang == null) {
+            throw new EstateException(ExCode.NOT_FOUND, "房源授权编号:" + licenceId, "房源信息");
+        }
         MgtFangTiny tiny = new MgtFangTiny();
         BeanUtils.copyProperties(fang, tiny);
         tiny.setHouseLicence(licenceService.findOne(licenceId));
