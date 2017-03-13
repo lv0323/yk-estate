@@ -5,6 +5,7 @@ package com.lyun.estate.biz.xiaoqu.entity;
  */
 public class XiaoQuSummaryBean {
     private Long id;
+    private Long cityId;
     private String name;
     private Long districtId;
     private Long subDistrictId;
@@ -72,6 +73,15 @@ public class XiaoQuSummaryBean {
 
     public XiaoQuSummaryBean setStructureType(Integer structureType) {
         this.structureType = structureType;
+        return this;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public XiaoQuSummaryBean setCityId(Long cityId) {
+        this.cityId = cityId;
         return this;
     }
 }
