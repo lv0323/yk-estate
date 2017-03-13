@@ -5,16 +5,17 @@ import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 
+import static com.github.miemiedev.mybatis.paginator.domain.Order.Direction.ASC;
+import static com.lyun.estate.core.repo.SqlSupport.buildOrder;
+
 /**
  * Created by Jeffrey on 2017-01-11.
  */
 public enum XQSummaryOrder {
-    DEFAULT("默认排序", Lists.newArrayList(new Order("ranking", Order.Direction.DESC, null))),
-    PRICE_UP("均价由低到高", Lists.newArrayList(new Order("ap_null", Order.Direction.ASC, null),
-            new Order("avg_price", Order.Direction.ASC, null))),
-    PRICE_DOWN("均价由高到地", Lists.newArrayList(new Order("ap_null", Order.Direction.ASC, null),
-            new Order("avg_price", Order.Direction.DESC, null)
-    )),;
+    DEFAULT("默认排序", Lists.newArrayList(buildOrder("id", ASC))),
+    PRICE_UP("均价由低到高", Lists.newArrayList(buildOrder("ap_null", ASC), buildOrder("avg_price", ASC))),
+    PRICE_DOWN("均价由高到地",
+            Lists.newArrayList(buildOrder("ap_null", ASC), buildOrder("avg_price", Order.Direction.DESC))),;
 
     private final String label;
     private final ArrayList<Order> orders;
