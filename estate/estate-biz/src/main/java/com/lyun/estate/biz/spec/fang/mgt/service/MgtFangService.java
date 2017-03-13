@@ -21,7 +21,6 @@ public interface MgtFangService {
 
     Fang getFangBase(Long fangId);
 
-
     FangExt createFangExt(FangExt fangExt);
 
     FangExt updateFangExt(FangExt fangExt);
@@ -61,7 +60,6 @@ public interface MgtFangService {
     MgtFangSummary getFangSummary(Long fangId);
 
     PageList<MgtFangSummary> listSummary(MgtFangFilter filter, MgtFangSummaryOrder order, PageBounds pageBounds);
-
 
     MgtFangTiny getFangTiny(Long fangId);
 

@@ -144,6 +144,12 @@ public class MgtFangSqlProvider {
         sql.WHERE_IF("f.process =#{process}", nonNull(selector.getProcess()));
         sql.WHERE_IF("f.id =#{fangId}", nonNull(selector.getFangId()));
 
+        if (isNull(selector.getFangId()) && isNull(selector.getProcess())) {
+            //默认情况 delegate 和 publish
+            sql.WHERE("f.process IN ('DELEGATE', 'PUBLISH')");
+        }
+        sql.WHERE("f.is_deleted =false");
+
         return sql.toString();
     }
 }
