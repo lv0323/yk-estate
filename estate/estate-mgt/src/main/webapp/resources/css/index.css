@@ -1814,7 +1814,6 @@ a:focus {
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
   padding: 10px;
-  min-height: 680px;
 }
 .no-header .box-body {
   border-top-right-radius: 3px;
@@ -5311,4 +5310,7 @@ table{
 }
 .badge-sell{
   background-color: #ff6601;
+}
+.default-height{
+  min-height: 680px;
 }
