@@ -33,7 +33,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="box-body clearfix no-padding">
+                        <div class="box-body clearfix no-padding default-height">
                             <form id="formlist" class="form-inline">
                                 <div id="searchList" ng-cloak class="clearfix">
                                     <div class="collapse-box" ng-show="page.collapse">
@@ -260,7 +260,7 @@
                                                            ng-click="changeStatus(page.status.UN_PUBLISH, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH">
                                                             <i class="fa fa-pencil"></i>下架
                                                         </a>
-                                                        <a class="m-l-20" ng-href="javascript:;"
+                                                        <a class="m-l-20" ng-href="{{'/mgt/contract/addDeal?licenceId='+house.licenceId}}"
                                                            ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH">
                                                             <i class="fa fa-pencil"></i>成交
                                                         </a>

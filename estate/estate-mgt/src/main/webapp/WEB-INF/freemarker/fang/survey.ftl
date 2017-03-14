@@ -25,7 +25,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="box-body clearfix no-padding">
+                        <div class="box-body clearfix no-padding default-height">
                             <form id="formlist" class="form-inline">
                                 <div id="searchList" ng-cloak class="clearfix" ng-show="page.collapse">
                                     <div class="collapse-box">
