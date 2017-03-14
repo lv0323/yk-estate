@@ -228,9 +228,12 @@
                                                     <h5 class="media-heading pull-left text-ellipsis" style="width:300px;">
                                                         <a ng-href="{{'/mgt/fangManage/detail?id='+house.id}}" target="_blank" class="text-muted" ng-bind="house.head"></a>
                                                     </h5>
-                                                    <label class="badge badge-success pull-left m-l-20">{{house.process.label}}</label>
-                                                    <i class="fa fa-circle  m-l-20" style="font-size:16px;" ng-class="{true:'text-success', false:'text-danger'}[house.bizType.name == 'RENT']"></i>
-                                                    <span ng-class="{true:'text-success', false:'text-danger'}[house.bizType.name == 'RENT']" ng-show="house.publishTime">[{{(page.now - house.publishTime)/(24*6060*1000)|number:0}}]</span>
+                                                    <label class="badge pull-left m-l-20" ng-class="{'badge-success':house.process.name == 'SUCCESS',
+                                                           'badge-info':house.process.name == 'PUBLISH',
+                                                           'badge-warning':house.process.name == 'UN_PUBLISH',
+                                                           'badge-danger':house.process.name == 'DELEGATE'}">{{house.process.label}}</label>
+                                                    <i class="fa fa-circle  m-l-20" style="font-size:16px;" ng-class="{true:'text-rent', false:'text-sell'}[house.bizType.name == 'RENT']"></i>
+                                                    <span ng-class="{true:'text-rent', false:'text-sell'}[house.bizType.name == 'RENT']" ng-show="house.publishTime">[{{(page.now - house.publishTime)/(24*6060*1000)|number:0}}]</span>
                                                     <span class="text-muted">{{house.publishTime|date:'yyyy-MM-dd'}}<span class="opt-gap"></span>{{house.infoOwner.departmentName}} ~ {{house.infoOwner.employeeName}}</span>
                                                 </div>
                                                 <div class="clearfix m-t-10 text-muted">
