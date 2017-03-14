@@ -5299,3 +5299,16 @@ dl.profile dd{
 table{
   font-size: inherit;
 }
+
+.text-rent{
+  color: #01a34e;
+}
+.text-sell{
+  color: #ff6601;
+}
+.badge-rent{
+  background-color: #01a34e;
+}
+.badge-sell{
+  background-color: #ff6601;
+}
