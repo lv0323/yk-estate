@@ -8,9 +8,9 @@ require(['main-app',
         contextPath + '/js/service/contract-service.js',
         contextPath + '/js/service/propertyvisit-service.js',
         contextPath + '/js/service/fang-service.js',
+        contextPath + '/js/service/util-service.js',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js'],
-    function (mainApp, ContractService, PropertyVisitService, FangService, SweetAlertHelp) {
-        //var houseLicenceID = window.location.href.split('?')[1];
+    function (mainApp, ContractService, PropertyVisitService, FangService, UtilService, SweetAlertHelp) {
         function verifyAddDeal(toSubmitDeal) {
             var flag = true;
             $('.form-group').find('.invalid-input').removeClass('invalid-input');
@@ -48,6 +48,7 @@ require(['main-app',
             }
             return flag;
         }
+        $('#houseLicenceID').val(UtilService.getUrlParam('licenceId'));
         $('#getHouseInfoBtn').on('click',function () {
             $('.form-group').find('.invalid-input').removeClass('invalid-input');
             var houseLicenceID = $('#houseLicenceID').val();
@@ -116,4 +117,6 @@ require(['main-app',
                 SweetAlertHelp.fail({message:"请填写所有必填字段"});
             }
         });
+        /*从url中获取*/
+
     });

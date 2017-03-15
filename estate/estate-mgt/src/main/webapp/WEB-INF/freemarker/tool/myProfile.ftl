@@ -123,7 +123,7 @@
                                                             <td id="username" class="text-left"></td>
                                                             <td class="text-right text-muted">密码</td>
                                                             <td class="text-left">
-                                                                <a id="changePswBtn" class="btn" data-toggle="modal" data-target="#changeMyPasswordDialog">
+                                                                <a id="changePswBtn" href="javascript:;" data-toggle="modal" data-target="#changeMyPasswordDialog">
                                                                     <i class="fa fa-pencil" aria-hidden="true"></i>修改密码
                                                                 </a>
                                                             </td>

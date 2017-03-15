@@ -158,13 +158,13 @@
                                             <div class="form-group clearfix">
                                                 <label class="control-label">面积</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <input type="text" name="estateArea" class="form-control" required placeholder="建筑面积" ng-model="ctrl.data.estateArea" ng-pattern="/^\d{1,5}([.]\d{1,2})*$/" ng-blur="ctrl.estateAreaCheck()"/>
+                                                    <input type="text" name="estateArea" class="form-control" required placeholder="建筑面积" ng-model="ctrl.data.estateArea" ng-pattern="/^\d{1,5}([.]\d{1,2})*$/" ng-blur="ctrl.estateAreaCheck('estateArea')"/>
                                                 </div>
                                                 <div class="pull-left m-t-7 p-l-0">
                                                     ㎡
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <input type="text" name="housePartsqm" class="form-control" placeholder="套内面积" ng-model="ctrl.data.realArea" ng-pattern="/^\d{1,5}([.]\d{1,2})*$/" ng-blur="ctrl.checkArea()"/>
+                                                    <input type="text" name="housePartsqm" class="form-control" placeholder="套内面积" ng-model="ctrl.data.realArea" ng-pattern="/^\d{1,5}([.]\d{1,2})*$/" ng-blur="ctrl.checkArea('realArea')"/>
                                                 </div>
                                                 <div class="pull-left m-t-7 p-l-0">
                                                     ㎡
