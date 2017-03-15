@@ -165,7 +165,9 @@
                                     </tr></thead>
                                     <tbody></tbody>
                                 </table>
-                                <ul id="DealList_paging" class="pagination"></ul>
+                                <div class="pagination-container">
+                                    <ul id="DealList_paging" class="pagination"></ul>
+                                </div>
                             </div>
                         </div>
                     </section>

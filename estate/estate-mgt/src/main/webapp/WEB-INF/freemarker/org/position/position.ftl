@@ -163,7 +163,9 @@
                                     </thead>
                                     <tbody></tbody>
                                 </table>
-                                <ul id="positionList_paging" class="pagination"></ul>
+                                <div class="pagination-container">
+                                    <ul id="positionList_paging" class="pagination"></ul>
+                                </div>
                             </div>
                         </div>
                     </section>

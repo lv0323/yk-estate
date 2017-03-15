@@ -107,7 +107,9 @@
                                     </tr></thead>
                                     <tbody></tbody>
                                 </table>
-                                <ul id="departList_paging" class="pagination"></ul>
+                                <div class="pagination-container">
+                                    <ul id="departList_paging" class="pagination"></ul>
+                                </div>
                             </div>
                         </div>
                     </section>
