@@ -94,16 +94,16 @@
                                             </div>
                                         </div>
                                         <div class="form-group sortlist">
-                                            <label class="control-label">房型用途</label>
+                                            <label class="control-label">房屋用途</label>
                                             <div class="tj">
                                                 <a name="houseType" class="actived" title="">不限</a>
-                                            <#list houseType?if_exists as usage>
-                                                <a name="houseType" title="${usage.name()}">${usage.getLabel()}</a>
+                                            <#list houseType?if_exists as type>
+                                                <a name="houseType" title="${type.name()}">${type.getLabel()}</a>
                                             </#list>
                                             </div>
                                         </div>
                                         <div class="form-group sortlist">
-                                            <label class="control-label">合同类型</label>
+                                            <label class="control-label">成交类型</label>
                                             <div class="tj">
                                                 <a name="businessType" class="actived" title="">不限</a>
                                             <#list bizType?if_exists as biz>
