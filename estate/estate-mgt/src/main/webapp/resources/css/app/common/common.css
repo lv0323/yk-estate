@@ -179,3 +179,88 @@ textarea.noresize{
     transform: rotate(-45deg);
 }
 
+.m-l-5 {
+    margin-left: 5px;
+}
+
+.m-l-10 {
+    margin-left: 10px;
+}
+.m-l-15 {
+    margin-left: 15px;
+}
+.m-l-20 {
+    margin-left: 20px;
+}
+.m-l-30 {
+    margin-left: 30px;
+}
+.m-l-40 {
+    margin-left: 40px;
+}
+.m-t-7 {
+    margin-top: 7px;
+}
+
+.m-t-10 {
+    margin-top: 10px;
+}
+.m-t-12 {
+    margin-top: 12px;
+}
+.m-t-15 {
+    margin-top: 15px;
+}
+
+.m-r-5 {
+    margin-right: 5px;
+}
+.m-r-15 {
+    margin-right: 15px;
+}
+.m-r-20 {
+    margin-right: 20px;
+}
+
+.m-t-0 {
+    margin-top: 0;
+}
+
+.m-t-5 {
+    margin-top: 5px;
+}
+.m-b-15 {
+    margin-bottom: 15px;
+}
+.text-rent{
+    color: #01a34e;
+}
+.text-sell{
+    color: #ff6601;
+}
+.text-rent-bg{
+    color: #fff;
+    background-color: #01a34e;
+}
+.text-sell-bg{
+    color: #fff;
+    background-color: #ff6601;
+}
+.icon-font{
+    border-radius: 6px;
+    font-size: 50px;
+    line-height: 1;
+    font-style: normal;
+    margin-right: 3px;
+}
+.icon-float-left{
+    float: left;
+    padding: 6px 5px;
+}
+.badge-rent{
+    background-color: #2ECC71;
+}
+.badge-sell{
+    background-color: #FF9933;
+}
+
