@@ -356,17 +356,19 @@ require(['main-app',
                 return true;
             };
             //检查面积
-            _this.checkArea = function(){
+            _this.checkArea = function(key){
                 if(!ceilCheck(_this.data.estateArea, _this.data.realArea)){
                     SweetAlertHelp.fail({message:'套内面积不能大于建筑面积'});
+
+                    key && (_this.data[key] = '');
                     return false;
                 }
                 return true;
             };
             /*总价均价变化、总价底价检查*/
-            _this.estateAreaCheck = function(){
+            _this.estateAreaCheck = function(key){
                 _this.unitPriceSet('estateArea');
-                _this.checkArea();
+                _this.checkArea(key);
             };
             _this.publishPriceSet = function(){
                 _this.unitPriceSet('publishPrice');

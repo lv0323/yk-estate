@@ -117,18 +117,18 @@
                                                     <option value="">选择部门</option>
                                                     <option ng-repeat="dep in depList" ng-value="dep.id" repeat-done="initChosen('#douseDepid', 'departmentId')">{{dep.name}}</option>
                                                     </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-2 m-t-7">
+                                                <div class="checkbox checkbox-nice" ng-repeat="depExp in depExpList">
+                                                    <input name="depExp" id="depExp{{depExp.value}}" ng-model="filter[depExp.key]"  ng-click="setDepExp()" type="checkbox" ng-change="includeChildrenCheck()">
+                                                    <label for="depExp{{depExp.value}}">{{depExp.name}}</label>
                                                 </div>
+                                            </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3">
                                                 <select id="employeeId" class="chosen-select-emp">
                                                     <option value="">全部员工</option>
                                                     <option ng-repeat="employee in employeeList" ng-value="employee.id" repeat-done="initChosen('#employeeId', 'employeeId')">{{employee.name}}</option>
                                                 </select>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-3 m-t-7">
-                                                <div class="checkbox checkbox-nice" ng-repeat="depExp in depExpList">
-                                                    <input name="depExp" id="depExp{{depExp.value}}" ng-model="filter[depExp.key]"  ng-click="setDepExp()" type="checkbox" ng-change="includeChildrenCheck()">
-                                                    <label for="depExp{{depExp.value}}">{{depExp.name}}</label>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group sortlist form-inline">

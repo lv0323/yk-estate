@@ -128,8 +128,8 @@ require(['main-app',
                 }
                 EmployeeService.getAllEmployee({departmentId: key}).done(function (response) {
                     $scope.$apply(function(){
-                        if(response && response.items && response.items.length>0){
-                            $scope.employeeList = response.items.map(function(item){
+                        if(response && response.length>0){
+                            $scope.employeeList = response.map(function(item){
                                 return {
                                     name: item.name,
                                     id: item.id
@@ -208,7 +208,7 @@ require(['main-app',
             ];
             $scope.timeCheck = function(e){
                 if(!$scope.filter.timeType){
-                    return;
+
                 }
                 $scope.list();
             };
