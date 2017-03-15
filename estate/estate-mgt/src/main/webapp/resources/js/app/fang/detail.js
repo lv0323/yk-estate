@@ -26,13 +26,13 @@ require(['main-app',
             var fangId = UtilService.getUrlParam('id');
             var _this = this;
             var pageConfig ={
-                fellowPage: {
+                followPage: {
                     limit: 8,
                     offset: 0,
                     dataTotal: 0,
                     currentPage: 1,
                     init: false,
-                    id:'#fellow_paging',
+                    id:'#follow_paging',
                     change:'follow'
                 },
                 surveyPage: {
@@ -307,9 +307,9 @@ require(['main-app',
             };
             /*房源跟进*/
             _this.follow = function(offset){
-                FangService.listFollow({fangId:fangId},{'X-PAGING':'total=true&offset='+(offset||pageConfig.fellowPage.offset)+'&limit='+ pageConfig.fellowPage.limit}).then(function(response){
+                FangService.listFollow({fangId:fangId},{'X-PAGING':'total=true&offset='+(offset||pageConfig.followPage.offset)+'&limit='+ pageConfig.followPage.limit}).then(function(response){
                     $scope.$apply(function(){
-                        pagination(response.total, 'fellowPage');
+                        pagination(response.total, 'followPage');
                         _this.followList= response.items.map(function(item){
                             if(item.fangTiny && item.fangTiny.publishTime){
                                 item.publishedDay = Math.floor((_this.page.now - item.fangTiny.publishTime)/(24 * 3600 * 1000));

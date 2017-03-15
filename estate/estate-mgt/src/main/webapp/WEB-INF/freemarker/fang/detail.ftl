@@ -206,7 +206,7 @@
                                     </table>
                                 </div>
                                 <div class="pagination-container">
-                                    <ul id="fellow_paging" class="pagination"></ul>
+                                    <ul id="follow_paging" class="pagination"></ul>
                                 </div>
                             </div>
                             <div class="tab-pane" id="survey-info">

@@ -88,7 +88,9 @@
                                         </tr></thead>
                                         <tbody></tbody>
                                     </table>
-                                    <ul id="operationLogList_paging" class="pagination"></ul>
+                                    <div class="pagination-container">
+                                        <ul id="operationLogList_paging" class="pagination"></ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
