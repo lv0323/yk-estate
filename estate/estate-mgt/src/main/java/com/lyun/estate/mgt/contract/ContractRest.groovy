@@ -105,4 +105,9 @@ class ContractRest {
 
         return contractMgtService.list(filter, pageBounds)
     }
+
+    @GetMapping("/{id}")
+    ContractDTO findOne(@PathVariable Long id) {
+        return contractMgtService.findOne(id)
+    }
 }

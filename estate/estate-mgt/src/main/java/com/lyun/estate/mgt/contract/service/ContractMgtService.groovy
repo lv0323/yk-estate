@@ -8,6 +8,8 @@ import com.lyun.estate.biz.contract.entity.ContractDTO
 import com.lyun.estate.biz.contract.entity.ContractFilter
 import com.lyun.estate.biz.contract.service.ContractService
 import com.lyun.estate.biz.customer.service.CustomerService
+import com.lyun.estate.core.supports.exceptions.EstateException
+import com.lyun.estate.core.supports.exceptions.ExCode
 import com.lyun.estate.mgt.context.MgtContext
 import com.lyun.estate.mgt.context.Operator
 import org.springframework.beans.factory.annotation.Autowired
@@ -43,5 +45,13 @@ class ContractMgtService {
     PageList<ContractDTO> list(ContractFilter filter, PageBounds pageBounds) {
         filter.setCompanyId(mgtContext.operator.companyId)
         contractService.list(filter, pageBounds)
+    }
+
+    ContractDTO findOne(long id) {
+        ContractFilter filter = new ContractFilter().setId(id)
+        contractService.list(filter, null).
+                stream().
+                findAny().
+                orElseThrow({ new EstateException(ExCode.NOT_FOUND, id, "合同") })
     }
 }

@@ -13,6 +13,7 @@ import groovy.transform.builder.SimpleStrategy
 @Builder(builderStrategy = SimpleStrategy)
 @ToString(includeNames = true, ignoreNulls = true)
 class ContractSelector {
+    Long id
     Long fangId
     Date minCreateTime
     Date maxCreateTime
