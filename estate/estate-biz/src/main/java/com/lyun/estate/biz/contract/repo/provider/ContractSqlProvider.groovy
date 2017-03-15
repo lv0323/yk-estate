@@ -60,6 +60,7 @@ class ContractSqlProvider {
                     join(selector.getDepartmentIds()) + ")")
         }
         sql.WHERE_IF("c.employee_id = #{employeeId}", nonNull(selector.getEmployeeId()))
+        sql.WHERE_IF("c.id = #{id}", nonNull(selector.getId()))
         sql.ORDER_BY("c.id desc")
         sql.toString()
     }

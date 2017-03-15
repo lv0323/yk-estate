@@ -11,6 +11,7 @@ import groovy.transform.builder.SimpleStrategy
  */
 @Builder(builderStrategy = SimpleStrategy)
 class ContractFilter {
+    Long id
     Long fangId
     Date minCreateTime
     Date maxCreateTime
