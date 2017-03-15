@@ -151,20 +151,7 @@
                                         </div>
                                     </div>
                                 </form>
-
-                                <!-- table -->
-                                <table id="DealList" class="list table table-bordered table-hover">
-                                    <thead><tr>
-                                        <th><span>成交员工</span></th>
-                                        <th><span>成交客户</span></th>
-                                        <th><span>成交房源地址</span></th>
-                                        <th><span>成交创建时间</span></th>
-                                        <th><span>成交结束时间</span></th>
-                                        <th><span>状态</span></th>
-                                        <th><span>操作</span></th>
-                                    </tr></thead>
-                                    <tbody></tbody>
-                                </table>
+                                <div id="DealList"></div>
                                 <div class="pagination-container">
                                     <ul id="DealList_paging" class="pagination"></ul>
                                 </div>

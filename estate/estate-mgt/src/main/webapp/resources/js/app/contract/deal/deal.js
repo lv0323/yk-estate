@@ -66,38 +66,58 @@ require(['main-app',
 
         var displayTable = function (data) {
             var dataSet = data.items.map(function (item, index) {
-                return {}
+                return {
+                    contractId: item.id,
+                    bizTypeLabel: (item.bizType.name === "RENT")?('<div class="icon-float-left icon-font text-rent-bg">'+item.bizType.label+'</div>'):('<div class="icon-float-left icon-font text-sell-bg">'+item.bizType.label+'</div>'),
+                    houseLicence: (item.fangTiny.houseLicence)?item.fangTiny.houseLicence.id:"",
+                    location: (item.fangTiny.houseLicence)?item.fangTiny.houseLicence.location:"",
+                    statusLabel: item.process.label,
+                    statusClass: (item.process.name==="CREATED")?'label-info':(item.process.name==="SUCCESS")?'label-success':'label-warning',
+                    statusOperation: (item.process.name==="CREATED")?('<a class="m-l-20 btn completeDealBtn" data-id="'+item.id+'" data-toggle="modal" data-target="#completeDealDialog"><i class="fa fa-check" aria-hidden="true">完成</i></a> <a class="m-l-20 btn cancelDealBtn" data-id="'+item.id+'" data-toggle="modal" data-target="#cancelDealDialog"><i class="fa fa-times" aria-hidden="true">取消</i></a>'):'',
+                    department: item.departmentName,
+                    employee: item.employeeName,
+                    price: item.price,
+                    priceUnit: item.priceUnit.label,
+                    createTime: (item.createTime)?UtilService.timeStamp2Date(item.createTime):"",
+                    closeTime: (item.closeTime)?UtilService.timeStamp2Date(item.closeTime):""
+                }
             });
 
-            if (!tableConfig.target) {
-                tableConfig.target = $('#DealList').DataTable({
-                    data: dataSet,
-                    paging: false,
-                    searching: false,
-                    info: false,
-                    ordering: false,
-                    autoWidth: false,
-                    columnDefs: [
-                        {className: "text-right", "targets": [6]} /*添加class*/
-                    ],
-                    columns: [
-                        {title: "成交员工", data: 'employee'},
-                        {title: "成交客户", data: 'customerName', defaultContent: ""},
-                        {title: "成交房源地址", data: 'propertyAddress', defaultContent: ""},
-                        {title: "成交创建时间", data: 'visitStartDate', defaultContent: ""},
-                        {title: "成交结束时间", data: 'visitCloseDate', defaultContent: ""},
-                        {title: "状态", data: 'status', defaultContent: ""},
-                        {title: "操作", data:'operation', "render": dataTableHelp.operationFormat()}
-                    ]
-                });
-            } else {
-                tableConfig.target.clear();
-                tableConfig.target.rows.add(dataSet).draw();
-            }
+            var dataRow = dataSet.map(function (item, index) {
+               return '<div class="media clearfix">' +
+                            item.bizTypeLabel+
+                            '<div class="media-body clearfix">' +
+                                '<div class="col-sm-6">' +
+                                    '<div class="clearfix">' +
+                                        '<span>'+item.houseLicence+'</span>'+
+                                        '<span class="m-l-20">'+item.location+'</span>'+
+                                        '<h5 class="media-heading inline m-l-20"><span class="m-l-20">'+item.department+'-'+item.employee+'</span></h5>'+
+                                        '<label class="label m-l-20 '+item.statusClass+'">成交'+item.statusLabel+'</label>'+
+                                    '</div>'+
+                                    '<div class="m-t-10">' +
+                                        item.statusOperation+
+                                        '<a class="m-l-20 btn checkContractBtn" title="'+item.contractId+'"><i class="fa fa-eye" aria-hidden="true">查看合同</i></a>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="col-sm-6">' +
+                                    '<div class="col-xs-5">' +
+                                        '<span>成交金额:<strong class="text-danger">￥'+item.price+'&nbsp;'+item.priceUnit+'</strong></span><br><br>'+
+                                        '<span>创建日期:'+item.createTime+'</span>'+
+                                    '</div>'+
+                                    '<div class="col-xs-5">' +
+                                        '<br><br>'+
+                                        '<span>结束日期:'+item.closeTime+'</span>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                       '</div>';
+            });
+
+            $('#DealList').html(dataRow);
         };
 
         var pagination = function(dataTotal) {
-            var id = "#propertyVisitList_paging";
+            var id = "#DealList_paging";
             if(pageConfig.init){
                 pagingPlugin.update(id, {
                     totalCounts:dataTotal,
@@ -226,7 +246,11 @@ require(['main-app',
         $('a[name="DealStatus"], a[name="houseType"], a[name="businessType"]').on('click', function () {
             $(this).siblings().removeClass("actived");
             $(this).addClass("actived");
-            filter.process = $(this).attr("title");
+            switch($(this).attr("name")){
+                case 'DealStatus': filter.process = $(this).attr("title"); break;
+                case 'houseType': filter.houseType = $(this).attr("title"); break;
+                case 'businessType': filter.bizType = $(this).attr("title"); break;
+            }
             getDeal(filter, 0, pageConfig.limit);
         });
 
@@ -235,9 +259,14 @@ require(['main-app',
             getDeal(filter, 0, pageConfig.limit);
         });
 
+        $('.fadeInRight').on('click','.checkHouseBtn',function(e){
+            var contractId = $(this).attr('title');
+            // window.location.href="/mgt/contract/viewDeal?id="+fangId;
+        });
+
         //initialize complete visit dialog
         $('.fadeInRight').on('click','.completeDealBtn',function(e){
-            var contractId = $(e.target).data('id');
+            var contractId = $(this).data('id');
             $('#completeDealId').val(contractId);
         });
 
@@ -262,7 +291,7 @@ require(['main-app',
 
         //initialize cancel visit dialog
         $('.fadeInRight').on('click','.cancelDealBtn',function(e){
-            var contractId = $(e.target).data('id');
+            var contractId = $(this).data('id');
             $('#cancelDealId').val(contractId);
         });
 
