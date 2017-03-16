@@ -76,7 +76,7 @@
 span.opt-gap{
     width: 1px;
     background-color: #d2d9e8;
-    margin: 0 6px;
+    margin: 0 3px;
     display: inline-block;
     height: 16px;
     vertical-align: middle;
@@ -262,5 +262,13 @@ textarea.noresize{
 }
 .badge-sell{
     background-color: #FF9933;
+}
+.img-circle-container-sm{
+    display: inline-block;
+    height:42px;
+    width: 42px;
+    border-radius: 50%;
+    overflow: hidden;
+    vertical-align: middle;
 }
 

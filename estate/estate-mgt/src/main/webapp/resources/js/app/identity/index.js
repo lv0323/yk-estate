@@ -47,7 +47,7 @@ require(['main-app',
                 }
                 IdentityService.loginAction({mobile:$scope.loginData.mobile,password:$scope.loginData.password}, {clientId:clientId, code:$scope.loginData.captcha,id:$scope.captchaId}).done(function(response){
                     var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-                    $window.location=contextPath+'/org/department.ftl';
+                    $window.location=contextPath+'/fangManage/list?target=.fang';
                 }).fail(function(response){
                     SweetAlertHelp.fail({message:response&&response.message});
                 });

@@ -137,11 +137,11 @@
                                 <!-- table -->
                                 <table id="propertyVisitList" class="list table table-bordered table-hover">
                                     <thead><tr>
-                                        <th><span>带看员工</span></th>
-                                        <th><span>带看客户</span></th>
-                                        <th><span>带看房源地址</span></th>
-                                        <th><span>带看生成时间</span></th>
-                                        <th><span>带看结束时间</span></th>
+                                        <th><span>员工</span></th>
+                                        <th><span>客户</span></th>
+                                        <th><span>房源地址</span></th>
+                                        <th><span>生成时间</span></th>
+                                        <th><span>结束时间</span></th>
                                         <th><span>状态</span></th>
                                         <th><span>操作</span></th>
                                     </tr></thead>

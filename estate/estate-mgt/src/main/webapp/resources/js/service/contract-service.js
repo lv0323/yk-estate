@@ -9,6 +9,9 @@ define(contextPath + '/js/service/contract-service.js',
         ContractService.getDealList = function (params, header) {
             return RequestService.get('/api/contract/list', params, header||{});
         };
+        ContractService.getSpecifiedDeal = function (dealId, header) {
+            return RequestService.get('/api/contract/'+dealId, header);
+        };
         ContractService.closeDeal = function (params, header) {
             return RequestService.post('/api/contract/close', params, header||{});
         };

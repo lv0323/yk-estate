@@ -20,6 +20,7 @@ import java.util.HashMap;
 public class ContractPage {
     @Autowired
     private EmployeeMgtService service;
+
     @GetMapping("/deal")
     public ModelAndView deal() {
         HashMap<String, Object> params = new HashMap<>();
@@ -30,6 +31,7 @@ public class ContractPage {
         params.put("bizType",Arrays.asList(BizType.values()));
         return new ModelAndView("/contract/deal/deal", params);
     }
+
     @GetMapping("/addDeal")
     public ModelAndView addDeal() {
         HashMap<String, Object> params = new HashMap<>();
@@ -41,4 +43,13 @@ public class ContractPage {
         params.put("identitySource",Arrays.asList(IdentitySource.values()));
         return new ModelAndView("/contract/deal/addDeal", params);
     }
+
+    @GetMapping("/viewDeal")
+    public ModelAndView viewDeal() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("avatarUrl",service.getAvatar());
+        params.put("username",service.getUsername());
+        return new ModelAndView("/contract/deal/viewDeal", params);
+    }
+
 }

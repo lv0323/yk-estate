@@ -27,6 +27,7 @@ require(['main-app',contextPath + '/js/service/department-service.js',
                 if(item.primary){
                     return {
                         departName: {attr: {class: 'lookDepartBtn btn'}, data: {id: item.id}, text: item.name},
+                        level: item.level,
                         telephone: item.telephone,
                         address: item.address,
                         operation: [
@@ -44,6 +45,7 @@ require(['main-app',contextPath + '/js/service/department-service.js',
                 }else{
                     return {
                         departName: {attr: {class: 'lookDepartBtn btn'}, data: {id: item.id}, text: item.name},
+                        level: item.level,
                         telephone: item.telephone,
                         address: item.address,
                         operation: [
@@ -76,7 +78,7 @@ require(['main-app',contextPath + '/js/service/department-service.js',
                     ordering: false,
                     autoWidth: false,
                     columnDefs: [
-                        {className: "text-right", "targets": [3]} /*添加class*/
+                        {className: "text-right", "targets": [4]} /*添加class*/
                     ],
                     columns: [
                         {
@@ -85,6 +87,7 @@ require(['main-app',contextPath + '/js/service/department-service.js',
                             defaultContent: "",
                             "render": dataTableHelp.operationFormat()
                         },
+                        {title: "部门级别", data: 'level', defaultContent: ""},
                         {title: "部门电话", data: 'telephone', defaultContent: ""},
                         {title: "部门地址", data: 'address', defaultContent: ""},
                         {title: "操作", data: 'operation', "render": dataTableHelp.operationFormat()}
@@ -123,7 +126,7 @@ require(['main-app',contextPath + '/js/service/department-service.js',
                     pagination(data.total);
                 })
                 .fail(function(){
-                    $('#departList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
+                    $('#departList>tbody').append('<tr><td colspan="5">无法获取数据</td></tr>');
                 });
         }
 

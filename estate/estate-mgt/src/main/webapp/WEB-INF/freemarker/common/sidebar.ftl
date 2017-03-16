@@ -4,7 +4,7 @@
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>Y</b>K</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>YK&nbsp;</b>Admin</span>
+        <span class="logo-lg"><b>盈科&nbsp;</b>地产</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -23,7 +23,7 @@
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <#--<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">-->
-                        <span class="hidden-xs username">${username}</span>
+                        <span class="hidden-xs username">${username}<i class="m-l-10 fa fa-gears"></i></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
@@ -62,9 +62,9 @@
                     </ul>
                 </li>
                 <!-- Control Sidebar Toggle Button -->
-                <li>
+                <#--<li>
                     <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                </li>
+                </li>-->
             </ul>
         </div>
     </nav>
@@ -109,18 +109,6 @@
                     <li><a href="/mgt/fangManage/survey?target=.fang"><i class="fa fa-circle"></i>房源勘察</a></li>
                 </ul>
             </li>
-            <li class="treeview org">
-                <a href="#"><i class="fa fa-sitemap" aria-hidden="true"></i> <span>组织机构</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a href="/mgt/org/department?target=.org"><i class="fa fa-circle"></i>部门管理</a></li>
-                    <li><a href="/mgt/org/employee?target=.org"><i class="fa fa-circle"></i>员工管理</a></li>
-                    <li><a href="/mgt/org/position?target=.org"><i class="fa fa-circle"></i>岗位管理</a></li>
-                </ul>
-            </li>
             <li class="treeview prtyVisit">
                 <a href="#"><i class="fa fa-key" aria-hidden="true"></i> <span>房源带看</span>
                     <span class="pull-right-container">
@@ -149,6 +137,18 @@
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="/mgt/tool/myProfile?target=.tool"><i class="fa fa-circle"></i>个人中心</a></li>
+                </ul>
+            </li>
+            <li class="treeview org">
+                <a href="#"><i class="fa fa-sitemap" aria-hidden="true"></i> <span>组织机构</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/mgt/org/department?target=.org"><i class="fa fa-circle"></i>部门管理</a></li>
+                    <li><a href="/mgt/org/employee?target=.org"><i class="fa fa-circle"></i>员工管理</a></li>
+                    <li><a href="/mgt/org/position?target=.org"><i class="fa fa-circle"></i>岗位管理</a></li>
                 </ul>
             </li>
             <li class="treeview sys">
