@@ -2,6 +2,7 @@ package com.lyun.estate.biz.report.engine;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -12,10 +13,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by jesse on 2017/1/25.
  */
-//@Service
+@Service
 public class ReportDataSourceUtils {
     private final Map<String, ReportInfo> dataSourceMap = new ConcurrentHashMap<String, ReportInfo>();
     private final static String CONNECTOR = ":";
@@ -33,17 +34,22 @@ public class ReportDataSourceUtils {
     @Autowired
     private ApplicationContext context;
 
+    @Autowired
+    private Environment env;
+
     @PostConstruct
     public void init() throws IOException, SAXException, ParserConfigurationException {
-        parseDataSourceXml(context.getEnvironment().getRequiredProperty("report.datasource"));
+        try (InputStream inputStream = context.getResource(env.getProperty("report.datasource")).getInputStream()) {
+            parseDataSourceXml(inputStream);
+        }
     }
 
-    private void parseDataSourceXml(String xmlPath) throws ParserConfigurationException, IOException, SAXException {
-        Assert.hasLength(xmlPath, "需指定解析的文件路径");
-        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xmlPath);
+    private void parseDataSourceXml(InputStream inputStream) throws ParserConfigurationException, IOException, SAXException {
+        Assert.notNull(inputStream, "文件无长度");
+        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
         NodeList nodeList = document.getElementsByTagName("ReportInfo");
         ReportInfo reportInfo = null;
-        for (int i =0; i < nodeList.getLength(); i++) {
+        for (int i = 0; i < nodeList.getLength(); i++) {
             reportInfo = new ReportInfo();
             Node node = nodeList.item(i);
             Element element = (Element) node;
@@ -71,7 +77,7 @@ public class ReportDataSourceUtils {
                     } else if ("Header".equalsIgnoreCase(name)) {
                         String r = n.getTextContent();
                         List<String> headerList = new ArrayList<String>();
-                        for (Node s = n.getFirstChild(); s!= null; s = s.getNextSibling()) {
+                        for (Node s = n.getFirstChild(); s != null; s = s.getNextSibling()) {
                             if (n.getNodeType() == Node.ELEMENT_NODE) {
                                 String valueName = s.getNodeName();
                                 if ("Column".equalsIgnoreCase(valueName)) {
@@ -95,7 +101,7 @@ public class ReportDataSourceUtils {
         if (StringUtils.isEmpty(region)) {
             key = DEFAULT_REGION + CONNECTOR + id;
         } else {
-            key =region + CONNECTOR + id;
+            key = region + CONNECTOR + id;
         }
         return dataSourceMap.get(key);
     }
@@ -106,7 +112,7 @@ public class ReportDataSourceUtils {
         if (StringUtils.isEmpty(region)) {
             key = DEFAULT_REGION + CONNECTOR + id;
         } else {
-            key =region + CONNECTOR + id;
+            key = region + CONNECTOR + id;
         }
         dataSourceMap.put(key, reportInfo);
         return true;
