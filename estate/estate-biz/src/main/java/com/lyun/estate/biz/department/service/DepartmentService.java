@@ -170,9 +170,14 @@ public class DepartmentService {
         DepartmentDTO dto = new DepartmentDTO();
         BeanUtils.copyProperties(department, dto);
         dto.setPrimary(Objects.equals(dto.getParentId(), 0L));
-        dto.setHasChild(findChildIds(department.getCompanyId(), department.getId()).size() > 1);
+        dto.setHasChild(hasChild(department.getCompanyId(), department.getId()));
         dto.setLevel(deptLevel.get(department.getId()));
         return dto;
+    }
+
+    private boolean hasChild(Long companyId, Long departmentId) {
+        List<Department> departmentList = repo.listAllByCompanyId(companyId);
+        return departmentList.stream().anyMatch(d -> Objects.equals(d.getParentId(), departmentId));
     }
 
     public Department selectById(Long departmentId) {

@@ -75,7 +75,7 @@ require(['main-app',
                 para: ''
             };
             _this.imageTypeList = [
-                {key: 'virtualMap', para :'SHI_JING', addText: '新增勘察图', defaultMap: '../img/house/kct.jpeg'},
+                {key: 'virtualMap', para :'SHI_JING', addText: '新增实景图', defaultMap: '../img/house/kct.jpeg'},
                 {key: 'layoutMap', para :'HU_XING', addText: '新增户型图', defaultMap: '../img/house/hxt.jpeg'},
                 {key: 'avatarMap', para :'AVATAR', addText: '新增证件照', defaultMap: '../img/house/zjz.jpeg'}];
             _this.virtualMap ={

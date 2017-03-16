@@ -112,6 +112,7 @@ public class MgtFangSqlProvider {
         sql.WHERE_IF("c.sub_district_id = #{subDistrictId}", nonNull(selector.getSubDistrictId()));
         sql.WHERE_IF("f.house_type = #{houseType}", nonNull(selector.getHouseType()));
         sql.WHERE_IF("f.resident = #{resident}", nonNull(selector.getResident()));
+        sql.WHERE_IF("f.decorate = #{decorate}", nonNull(selector.getDecorate()));
         sql.WHERE_IF("f.estate_area >= #{minArea}", nonNull(selector.getMinArea()));
         sql.WHERE_IF("f.estate_area < #{maxArea}", nonNull(selector.getMaxArea()));
         sql.WHERE_IF("f.s_counts = #{sCounts}", nonNull(selector.getsCounts()));

@@ -49,7 +49,6 @@ class ContractService {
     @Autowired
     FangProcessService fangProcessService
 
-    @Transactional
     Contract create(Contract contract) {
         ExceptionUtil.checkIllegal(
                 ValidateUtil.isMobile(contract.getAssignorMobile()), "房东手机", contract.getAssignorMobile())
@@ -60,31 +59,39 @@ class ContractService {
         ExceptionUtil.checkIllegal(
                 ValidateUtil.isIdNo(contract.getAssigneeIdNo()), "客户身份证", contract.getAssigneeIdNo())
         contract.setProcess(ContractDefine.Process.CREATED)
-        
+
         if (contractRepo.save(contract) > 0) {
-            if (contract.type == ContractDefine.Type.DEAL) {
-                fangProcessService.deal(contract.fangId)
-            }
             return contractRepo.findOne(contract.getId())
         }
         throw new EstateException(ExCode.CREATE_FAIL, "", contract.toString())
     }
 
+    @Transactional
     Contract close(long contractId, ContractDefine.Process process) {
         ExceptionUtil.checkIllegal(process != null && process.isEnd(), "状态", process)
 
-        if (contractRepo.close(contractId, process) > 0) {
+        Boolean result
+
+        Contract contract = contractRepo.findOne(contractId)
+        if (Objects.equals(process, contract.getProcess())) {
+            result = true
+        } else {
+            result = contractRepo.close(contractId, process) > 0
+        }
+
+        if (result && process == ContractDefine.Process.SUCCESS
+                && contract.type == ContractDefine.Type.DEAL) {
+            fangProcessService.deal(contract.fangId)
+        }
+
+        if (result) {
             return contractRepo.findOne(contractId)
         } else {
-            Contract contract = contractRepo.findOne(contractId)
-            if (nonNull(contract) && contract.getProcess().isEnd()) {
-                return contract
-            }
+            throw new EstateException(
+                    ExCode.UPDATE_FAIL,
+                    "合同",
+                    new Contract().setId(contractId).setProcess(process).toString())
         }
-        throw new EstateException(
-                ExCode.UPDATE_FAIL,
-                "合同",
-                new Contract().setId(contractId).setProcess(process).toString())
     }
 
     PageList<ContractDTO> list(ContractFilter filter, PageBounds pageBounds) {

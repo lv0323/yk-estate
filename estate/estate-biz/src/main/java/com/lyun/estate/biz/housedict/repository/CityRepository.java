@@ -2,12 +2,16 @@ package com.lyun.estate.biz.housedict.repository;
 
 import com.lyun.estate.biz.housedict.entity.*;
 import com.lyun.estate.biz.housedict.entity.Community;
+import com.lyun.estate.core.config.EstateCacheConfig;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
+@CacheConfig(cacheManager = EstateCacheConfig.MANAGER_360_5K)
 public interface CityRepository {
 
     @Select("select * from t_city")
@@ -17,6 +21,7 @@ public interface CityRepository {
     City findCity(@Param("id") Long id);
 
     @Select("select * from t_district where city_id = #{cityId} order by id")
+    @Cacheable(cacheNames = {"city-repo-ordered-districts"})
     List<District> findOrderedDistricts(Long cityId);
 
     @Select("SELECT sb.* FROM t_district_rel dr LEFT JOIN t_sub_district sb on dr.sub_district_id = sb.id WHERE dr.district_id =#{districtId} ORDER BY sb.id")
