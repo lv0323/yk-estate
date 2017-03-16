@@ -89,11 +89,14 @@ require(['main-app',
                             '<div class="media-body clearfix">' +
                                 '<div class="col-sm-6">' +
                                     '<div class="clearfix">' +
-                                        '<span>'+item.houseLicence+'</span>'+
                                         '<span class="m-l-20">'+item.location+'</span>'+
+
                                         '<h5 class="media-heading inline m-l-20"><span class="m-l-20">'+item.department+'-'+item.employee+'</span></h5>'+
-                                        '<label class="label m-l-20 '+item.statusClass+'">成交'+item.statusLabel+'</label>'+
+                                        '<label class="label m-l-20 '+item.statusClass+'">'+item.statusLabel+'</label>'+
                                     '</div>'+
+                                   '<div class="m-t-10">' +
+                                        '<span class="m-l-20">授权编号:'+item.houseLicence+'</span>'+
+                                   '</div>'+
                                     '<div class="m-t-10">' +
                                         item.statusOperation+
                                         '<a class="m-l-20 btn checkContractBtn" title="'+item.contractId+'"><i class="fa fa-eye" aria-hidden="true">查看合同</i></a>'+
@@ -260,8 +263,8 @@ require(['main-app',
         });
 
         $('.fadeInRight').on('click','.checkContractBtn',function(e){
-            var contractId = $(this).attr('title');
-            // window.location.href="/mgt/contract/viewDeal?id="+contractId;
+            var dealId = $(this).attr('title');
+            window.open("/mgt/contract/viewDeal?dealId="+dealId,'_blank');
         });
 
         //initialize complete visit dialog

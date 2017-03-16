@@ -273,7 +273,7 @@
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3 text-right">
                                                 <p><strong class="text-danger f18">{{house.publishPrice}}</strong>{{house.priceUnit.label}}</p>
-                                                <p>{{house.unitPrice}}{{house.priceUnit.label}}/m<sup>2</sup></p>
+                                                <p>{{house.unitPrice}}<span ng-if="house.priceUnit.name === 'WAN'">元</span><span ng-if="house.priceUnit.name !== 'WAN'">{{house.priceUnit.label}}</span>/m<sup>2</sup></p>
                                             </div>
                                         </div>
                                     </div>
