@@ -7,4 +7,4 @@ CREATE TABLE t_favorite (
   create_time TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP
 
 );
-CREATE INDEX ON t_follow (domain_type, target_id, follower_id);
+CREATE INDEX ON t_favorite (domain_type, target_id, follower_id);

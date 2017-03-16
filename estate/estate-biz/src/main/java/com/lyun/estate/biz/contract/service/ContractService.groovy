@@ -22,6 +22,7 @@ import com.lyun.estate.core.utils.ValidateUtil
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 import static java.util.Objects.nonNull
 
@@ -48,6 +49,7 @@ class ContractService {
     @Autowired
     FangProcessService fangProcessService
 
+    @Transactional
     Contract create(Contract contract) {
         ExceptionUtil.checkIllegal(
                 ValidateUtil.isMobile(contract.getAssignorMobile()), "房东手机", contract.getAssignorMobile())
@@ -58,7 +60,7 @@ class ContractService {
         ExceptionUtil.checkIllegal(
                 ValidateUtil.isIdNo(contract.getAssigneeIdNo()), "客户身份证", contract.getAssigneeIdNo())
         contract.setProcess(ContractDefine.Process.CREATED)
-
+        
         if (contractRepo.save(contract) > 0) {
             if (contract.type == ContractDefine.Type.DEAL) {
                 fangProcessService.deal(contract.fangId)
