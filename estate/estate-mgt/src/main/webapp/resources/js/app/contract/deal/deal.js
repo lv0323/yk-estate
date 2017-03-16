@@ -259,9 +259,9 @@ require(['main-app',
             getDeal(filter, 0, pageConfig.limit);
         });
 
-        $('.fadeInRight').on('click','.checkHouseBtn',function(e){
+        $('.fadeInRight').on('click','.checkContractBtn',function(e){
             var contractId = $(this).attr('title');
-            // window.location.href="/mgt/contract/viewDeal?id="+fangId;
+            // window.location.href="/mgt/contract/viewDeal?id="+contractId;
         });
 
         //initialize complete visit dialog

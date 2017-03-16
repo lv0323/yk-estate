@@ -83,7 +83,7 @@
                             </div>
                             <div class="box-body">
                                 <form class="form-inline">
-                                    <div id="box-filter"  style="display: block;">
+                                    <div id="box-filter"  style="display: none;">
                                         <div class="form-group sortlist">
                                             <label class="control-label">状态</label>
                                             <div class="tj">
