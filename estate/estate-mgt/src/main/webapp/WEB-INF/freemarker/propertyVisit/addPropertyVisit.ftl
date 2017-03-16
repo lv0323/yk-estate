@@ -142,9 +142,9 @@
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
-                                            <label class="pull-left control-label">联系电话</label>
+                                            <label class="pull-left control-label">手机</label>
                                             <div class="col-sm-3">
-                                                <input id="customerContact" type="text" class="form-control" placeholder="联系电话">
+                                                <input id="customerContact" type="text" class="form-control" placeholder="手机">
                                             </div>
                                         </div>
                                         <hr>

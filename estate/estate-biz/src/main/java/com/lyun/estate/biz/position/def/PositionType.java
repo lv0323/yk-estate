@@ -11,7 +11,7 @@ public enum PositionType implements LabelEnum {
     REGION_M("区管"),
     OPERATION("运营"),
     FINANCIAL("财务"),
-    FUNCTIONAL("职能部门"),;
+    FUNCTIONAL("职能"),;
 
     private final String label;
 

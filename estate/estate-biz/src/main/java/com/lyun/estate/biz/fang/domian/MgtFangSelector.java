@@ -25,6 +25,7 @@ public class MgtFangSelector extends TagSelector {
     private DelegateType delegateType;
     private PropertyType propertyType;
     private CertifType certifType;
+    private Decorate decorate;
     private YN resident;
     private HouseProcess process;
     private Integer minPrice;
@@ -270,6 +271,15 @@ public class MgtFangSelector extends TagSelector {
 
     public MgtFangSelector setFangId(Long fangId) {
         this.fangId = fangId;
+        return this;
+    }
+
+    public Decorate getDecorate() {
+        return decorate;
+    }
+
+    public MgtFangSelector setDecorate(Decorate decorate) {
+        this.decorate = decorate;
         return this;
     }
 }

@@ -251,7 +251,7 @@ require(['main-app',
                     };
                     FangService.checkLicence(data).then(function(response){
                         if(response.result != 'SUCCEED'){
-                            SweetAlertHelp.fail({message:'已存在该房间记录'});
+                            SweetAlertHelp.fail({message:'已存在该房源记录'});
                         }
                     });
                 }

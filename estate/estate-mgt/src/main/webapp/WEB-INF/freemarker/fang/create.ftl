@@ -123,7 +123,7 @@
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
                                                     <div class="input-group date form_date" format="yyyy" datetimepicker key="buildYear" change="datePickChange">
-                                                        <input name="buildYear" class="form-control" size="16" placeholder="建造日期" type="text" ng-model="ctrl.data.buildYear" required ng-pattern="/\d{4}$/">
+                                                        <input name="buildYear" class="form-control" size="16" placeholder="建造年代" type="text" ng-model="ctrl.data.buildYear" required ng-pattern="/\d{4}$/">
                                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                     </div>
                                                 </div>
