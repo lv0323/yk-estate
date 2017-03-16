@@ -78,8 +78,8 @@
                                     <table id="operationLogList" class="list table table-bordered table-hover">
                                         <col width="20%" />
                                         <col width="10%" />
-                                        <col width="10%" />
-                                        <col width="60%" />
+                                        <col width="12%" />
+                                        <col width="58%" />
                                         <thead><tr>
                                             <th><span>操作时间</span></th>
                                             <th><span>部门</span></th>

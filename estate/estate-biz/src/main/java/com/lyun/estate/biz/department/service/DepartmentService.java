@@ -100,7 +100,7 @@ public class DepartmentService {
         if (CollectionUtils.isEmpty(departmentList)) {
             return deptLevel;
         }
-        Set<Long> depts = new HashSet<>();
+        Set<Long> lastAddDepts = new HashSet<>();
         int level = 1;
         int lastAdd;
         Optional<Department> first = departmentList.stream()
@@ -109,20 +109,22 @@ public class DepartmentService {
         if (!first.isPresent()) {
             return deptLevel;
         } else {
-            depts.add(first.get().getId());
+            lastAddDepts.add(first.get().getId());
             deptLevel.put(first.get().getId(), level);
             level++;
         }
         do {
             lastAdd = 0;
+            Set<Long> currentAddDepts = new HashSet<>();
             for (Department department : departmentList) {
-                if (depts.contains(department.getParentId()) && !depts.contains(department.getId())) {
-                    depts.add(department.getId());
+                if (lastAddDepts.contains(department.getParentId()) && !lastAddDepts.contains(department.getId())) {
+                    currentAddDepts.add(department.getId());
                     lastAdd += 1;
                     deptLevel.put(department.getId(), level);
                 }
             }
             level++;
+            lastAddDepts = currentAddDepts;
         } while (lastAdd > 0);
 
         return deptLevel;

@@ -1,6 +1,7 @@
 package com.lyun.estate.core.config;
 
-import org.springframework.amqp.core.AmqpAdmin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -30,57 +31,55 @@ public class AmqpConfig implements RabbitListenerConfigurer {
     @Value("${estate.amqp.vhost}")
     private String vhost;
 
+    private Logger logger = LoggerFactory.getLogger(AmqpConfig.class);
+
     @Bean
-    public ConnectionFactory connectionFactory() {
-        return getCachingConnectionFactory();
-    }
-
-    @Bean("syncConnectionFactory")
     public ConnectionFactory syncConnectionFactory() {
-        CachingConnectionFactory connectionFactory = getCachingConnectionFactory();
-        connectionFactory.setPublisherConfirms(true);
-        connectionFactory.setPublisherReturns(true);
-        return connectionFactory;
-    }
-
-
-    private CachingConnectionFactory getCachingConnectionFactory() {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
         connectionFactory.setAddresses(hosts);
         connectionFactory.setUsername(userName);
         connectionFactory.setPassword(password);
         connectionFactory.setVirtualHost(vhost);
+        connectionFactory.setPublisherConfirms(true);
+        connectionFactory.setPublisherReturns(true);
         return connectionFactory;
     }
 
     @Bean
-    public RabbitTemplate messageRabbitTemplate(ConnectionFactory connectionFactory) {
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate();
         rabbitTemplate.setConnectionFactory(connectionFactory);
         rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
         rabbitTemplate.setMandatory(true);
+
+        rabbitTemplate.setConfirmCallback((correlationData, ack, cause) ->
+                logger.info(
+                        "exchange confirm message, correlationData={}, ack={}, cause={}",
+                        correlationData,
+                        ack,
+                        cause));
+
+        rabbitTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> {
+                    logger.error("mq return message, message={}, replyCode={}, replyText={}, exchange={}, routingKey={}",
+                            message,
+                            replyCode,
+                            replyText,
+                            exchange,
+                            routingKey);
+                }
+        );
         return rabbitTemplate;
     }
 
     @Bean
-    public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
+    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
-    }
-
-    @Bean
-    public Jackson2JsonMessageConverter producerJackson2MessageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
-
-    @Bean
-    public MappingJackson2MessageConverter consumerJackson2MessageConverter() {
-        return new MappingJackson2MessageConverter();
     }
 
     @Bean
     public DefaultMessageHandlerMethodFactory messageHandlerMethodFactory() {
         DefaultMessageHandlerMethodFactory factory = new DefaultMessageHandlerMethodFactory();
-        factory.setMessageConverter(consumerJackson2MessageConverter());
+        factory.setMessageConverter(new MappingJackson2MessageConverter());
         return factory;
     }
 

@@ -14,8 +14,6 @@ public enum DomainType {
     EMPLOYEE("员工"),
     DEPARTMENT("部门"),
     POSITION("岗位"),
-    NOTICE("公告"),
-    REPORT("月报"),
     MESSAGE("消息"),
     USER("用户"),;
 
