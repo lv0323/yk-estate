@@ -85,6 +85,7 @@
                                         <div class="form-group sortlist">
                                             <label class="control-label">状态</label>
                                             <div id="houseTradeStatus" class="tj">
+                                                <a ng-href="javascript::" ng-class="{'actived': '' == filter.process}" ng-click="setFilterType('process' ,'')">默认</a>
                                             <#list houseProcess?if_exists as process>
                                                 <a ng-href="javascript::" ng-class="{'actived': '${process.name()}' == filter.process}" ng-click="setFilterType('process' ,'${process.name()}')">
                                                 ${process.getLabel()}</a>
