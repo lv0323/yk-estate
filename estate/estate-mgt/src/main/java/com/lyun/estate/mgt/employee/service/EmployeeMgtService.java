@@ -140,4 +140,8 @@ public class EmployeeMgtService {
     public Employee self() {
         return employeeService.selectById(mgtContext.getOperator().getId());
     }
+
+    public Employee selfEdit(String openContact, String weChat) {
+        return employeeService.updateContact(mgtContext.getOperator().getId(), openContact, weChat);
+    }
 }

@@ -39,7 +39,7 @@ class FangProcessMgtService {
                 .setTargetId(fangId)
                 .setDomainType(DomainType.FANG)
                 .setContent("【" + operator.getDepartmentName() + "--" + operator
-                .getName() + "】上架了编号为【" + fangId + "】的房源")
+                .getName() + "】上架了授权编号为【" + fang.licenceId + "】的房源")
         )
         return fang
     }
@@ -56,7 +56,7 @@ class FangProcessMgtService {
                 .setTargetId(fangId)
                 .setDomainType(DomainType.FANG)
                 .setContent("【" + operator.getDepartmentName() + "--" + operator
-                .getName() + "】下架了编号为【" + fangId + "】的房源")
+                .getName() + "】下架了授权编号为【" + fang.licenceId + "】的房源")
         )
         return fang
     }
@@ -73,14 +73,14 @@ class FangProcessMgtService {
                 .setTargetId(fangId)
                 .setDomainType(DomainType.FANG)
                 .setContent("【" + operator.getDepartmentName() + "--" + operator
-                .getName() + "】成交了编号为【" + fangId + "】的房源")
+                .getName() + "】成交了授权编号为【" + fang.licenceId + "】的房源")
         )
         return fang
     }
 
     @Transactional
     boolean delete(long fangId) {
-        boolean result = processService.delete(fangId)
+        Fang fang = processService.delete(fangId)
         Operator operator = mgtContext.operator
         auditService.save(new Audit()
                 .setCompanyId(operator.getCompanyId())
@@ -90,8 +90,8 @@ class FangProcessMgtService {
                 .setTargetId(fangId)
                 .setDomainType(DomainType.FANG)
                 .setContent("【" + operator.getDepartmentName() + "--" + operator
-                .getName() + "】删除了房源编号为【" + fangId + "】信息")
+                .getName() + "】删除了授权房源编号为【" + fang.licenceId + "】信息")
         )
-        return result
+        return true
     }
 }

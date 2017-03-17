@@ -373,11 +373,9 @@ public class MgtFangServiceImpl implements MgtFangService {
 
     @Override
     public MgtFangSummary getFangSummary(Long fangId) {
-        MgtFangSummary result = findSummaryBySelector(new MgtFangSelector().setFangId(fangId), null)
+        return findSummaryBySelector(new MgtFangSelector().setFangId(fangId), null)
                 .stream()
-                .findFirst()
-                .orElse(null);
-        return Optional.ofNullable(result).orElseThrow(() -> new EstateException(ExCode.NOT_FOUND, fangId, "房源信息"));
+                .findFirst().orElseThrow(() -> new EstateException(ExCode.NOT_FOUND, fangId, "房源信息"));
     }
 
     @Override
@@ -404,6 +402,13 @@ public class MgtFangServiceImpl implements MgtFangService {
         BeanUtils.copyProperties(fang, tiny);
         tiny.setHouseLicence(licenceService.findOne(licenceId));
         return tiny;
+    }
+
+    @Override
+    public MgtFangSummary getFangSummaryByLicenceId(Long licenceId) {
+        return findSummaryBySelector(new MgtFangSelector().setLicenceId(licenceId), null)
+                .stream()
+                .findFirst().orElseThrow(() -> new EstateException(ExCode.NOT_FOUND, licenceId, "房源信息"));
     }
 
     @Override

@@ -2,10 +2,10 @@ package com.lyun.estate.mgt.employee;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.lyun.estate.biz.support.def.Gender;
 import com.lyun.estate.biz.employee.def.WorkingStatus;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.support.def.Gender;
 import com.lyun.estate.mgt.auth.def.SaltSugar;
 import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
 import com.lyun.estate.mgt.supports.RestResponse;
@@ -128,6 +128,12 @@ public class EmployeeRest {
     @GetMapping("self")
     public Employee get() {
         return service.self();
+    }
+
+    @PostMapping("self-edit")
+    public Employee selfEdit(@RequestParam(required = false) String openContact,
+                             @RequestParam(required = false) String weChat) {
+        return service.selfEdit(openContact, weChat);
     }
 
 }

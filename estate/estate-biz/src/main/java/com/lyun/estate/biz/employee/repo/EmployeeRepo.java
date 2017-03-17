@@ -49,4 +49,6 @@ public interface EmployeeRepo {
             " WHERE e.mobile = #{mobile} and e.quit = false")
     Employee selectByMobile(String mobile);
 
+    @Update("update t_employee set open_contact = #{openContact}, wechat = #{wechat}, update_time = now() where id = #{id}")
+    int updateContact(Employee employee);
 }

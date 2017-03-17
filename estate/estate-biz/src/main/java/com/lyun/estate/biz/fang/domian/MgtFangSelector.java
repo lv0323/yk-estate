@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class MgtFangSelector extends TagSelector {
     private Long fangId;
+    private Long licenceId;
     private Long cityId;
     private BizType bizType;
     private Long districtId;
@@ -280,6 +281,15 @@ public class MgtFangSelector extends TagSelector {
 
     public MgtFangSelector setDecorate(Decorate decorate) {
         this.decorate = decorate;
+        return this;
+    }
+
+    public Long getLicenceId() {
+        return licenceId;
+    }
+
+    public MgtFangSelector setLicenceId(Long licenceId) {
+        this.licenceId = licenceId;
         return this;
     }
 }
