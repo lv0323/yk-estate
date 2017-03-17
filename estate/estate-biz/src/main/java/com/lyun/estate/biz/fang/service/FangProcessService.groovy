@@ -45,7 +45,7 @@ class FangProcessService {
         if (fang.getProcess() == HouseProcess.DELEGATE ||
                 fang.getProcess() == HouseProcess.UN_PUBLISH) {
             //update process
-            mgtFangRepository.publish(fangId, HouseProcess.PUBLISH)
+            mgtFangRepository.publish(fangId)
             //update count
             increaseHouseCount(fang.bizType, fang.xiaoQuId)
             //update licence status
@@ -78,7 +78,7 @@ class FangProcessService {
         if (fang.getProcess() == HouseProcess.DELEGATE ||
                 fang.getProcess() == HouseProcess.PUBLISH) {
             // update process
-            mgtFangRepository.updateProcess(fangId, HouseProcess.UN_PUBLISH)
+            mgtFangRepository.unPublish(fangId)
             // update count
             if (fang.getProcess() == HouseProcess.PUBLISH) {
                 decreaseHouseCount(fang.bizType, fang.xiaoQuId)

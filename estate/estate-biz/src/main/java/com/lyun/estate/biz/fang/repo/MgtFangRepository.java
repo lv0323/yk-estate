@@ -75,8 +75,11 @@ public interface MgtFangRepository {
     @Update("UPDATE t_fang SET process = #{process}, update_time = now() where id = #{fangId}")
     int updateProcess(@Param("fangId") long fangId, @Param("process") HouseProcess process);
 
-    @Update("UPDATE t_fang SET process = #{process}, update_time = now(), publish_time = now() where id = #{fangId}")
-    int publish(@Param("fangId") long fangId, @Param("process") HouseProcess process);
+    @Update("UPDATE t_fang SET process = 'PUBLISH', update_time = now(), publish_time = now() where id = #{fangId}")
+    int publish(long fangId);
+
+    @Update("UPDATE t_fang SET process = 'UN_PUBLISH', update_time = now(), publish_time = NULL where id = #{fangId}")
+    int unPublish(long fangId);
 
     @Update("UPDATE t_fang SET is_deleted = TRUE, update_time = now() where id = #{fangId}")
     int delete(long fangId);
