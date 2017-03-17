@@ -41,8 +41,8 @@ public class SmsService {
     @Value("${service.sms.check.code.template.id}")
     Long templateId;
 
-    private boolean isDefaultSend() {
-        return YN.Y == YN.valueOf(environment.getProperty("message.sms.send.enable"));
+    private boolean isRandomSend() {
+        return YN.Y == YN.valueOf(environment.getProperty("message.sms.code.random.enable"));
     }
 
     public SmsResponse sendCheckSms(SmsResource smsResource) {
@@ -53,18 +53,19 @@ public class SmsService {
         if (bindingResult.hasErrors()) {
             throw new ValidateException("warn.sms.send", "短信发送失败", bindingResult.getAllErrors());
         }
+        String smsId = CommonUtil.getUuid();
         String smsCode = "100000";
         String serial = "01";
-        String smsId = CommonUtil.getUuid();
-        if (isDefaultSend()) {
+        if (isRandomSend()) {
             serial = CommonUtil.randomNumberSeq(2);
-            try {
-                if (!smsId.equals(smsClient.sendSms(smsId, smsResource.getMobile(), templateId, smsCode, serial))) {
-                    throw new ValidateException("error.sms.send", "短信发送失败");
-                }
-            } catch (SmsClientException e) {
-                throw new ValidateException(e.getCode(), e.getMessage(), e);
+            smsCode = CommonUtil.randomNumberSeq(6);
+        }
+        try {
+            if (!smsId.equals(smsClient.sendSms(smsId, smsResource.getMobile(), templateId, smsCode, serial))) {
+                throw new ValidateException("error.sms.send", "短信发送失败");
             }
+        } catch (SmsClientException e) {
+            throw new ValidateException(e.getCode(), e.getMessage(), e);
         }
         String smsKv = smsId + ":" + smsResource.getMobile() + ":" + smsCode + ":" + serial + ":" + smsResource.getType() + ":" + restContext
                 .getClientId();
