@@ -65,4 +65,5 @@ public interface MgtFangService {
 
     MgtFangTiny getFangTinyByLicenceId(Long licenceId);
 
+    MgtFangSummary getFangSummaryByLicenceId(Long licenceId);
 }

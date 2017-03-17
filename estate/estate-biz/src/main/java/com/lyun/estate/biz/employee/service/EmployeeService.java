@@ -220,4 +220,13 @@ public class EmployeeService {
         }
         return repo.updatePassword(new Employee().setId(id).setPassword(hmac(employee.getSalt(), newPassword))) > 0;
     }
+
+    public Employee updateContact(Long id, String openContact, String weChat) {
+        Employee employee = new Employee().setId(id).setOpenContact(openContact)
+                .setWechat(weChat);
+        if (repo.updateContact(employee) > 0) {
+            return repo.selectById(id);
+        }
+        throw new EstateException(ExCode.UPDATE_FAIL, employee.toString(), "员工信息");
+    }
 }

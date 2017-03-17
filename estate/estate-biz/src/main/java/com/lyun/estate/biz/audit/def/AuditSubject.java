@@ -7,7 +7,7 @@ import com.lyun.estate.core.supports.labelenum.LabelEnum;
  */
 public enum AuditSubject implements LabelEnum {
     LOGIN_OUT("登录/登出日志"),
-    FANG_P("增／删房源"),
+    FANG_P("增/删房源"),
     FANG_M("修改房源信息"),
     FANG_OWNER("房东信息"),
     ORGANIZATION("组织架构"),

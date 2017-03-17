@@ -206,6 +206,11 @@ public class FangRest {
         return fangMgtService.listSummary(filter, order, pageBounds);
     }
 
+    @GetMapping("summary-by-licence-id")
+    public MgtFangSummary summaryByLicenceId(@RequestParam Long licenceId) {
+        return fangMgtService.summaryByLicenceId(licenceId);
+    }
+
     @GetMapping("sub-types")
     public List<HouseSubType> subTypes(@RequestParam HouseType houseType) {
         return houseType.getSubTypes();

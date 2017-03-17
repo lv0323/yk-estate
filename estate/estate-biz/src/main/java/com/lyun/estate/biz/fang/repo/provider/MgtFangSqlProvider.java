@@ -104,7 +104,7 @@ public class MgtFangSqlProvider {
         }
         sql.LEFT_OUTER_JOIN("( SELECT ff.fang_id,  max(ff.create_time) AS max_follow_time\n" +
                 " FROM t_fang_follow ff WHERE ff.is_deleted = FALSE GROUP BY ff.fang_id ) AS t_ff ON t_ff.fang_id = f.id");
-        if (isNull(selector.getFangId())) {
+        if (isNull(selector.getFangId()) && isNull(selector.getLicenceId())) {
             sql.WHERE("c.city_id = #{cityId}");
         }
         sql.WHERE_IF("f.biz_type = #{bizType}", nonNull(selector.getBizType()));
@@ -144,6 +144,7 @@ public class MgtFangSqlProvider {
         }
         sql.WHERE_IF("f.process =#{process}", nonNull(selector.getProcess()));
         sql.WHERE_IF("f.id =#{fangId}", nonNull(selector.getFangId()));
+        sql.WHERE_IF("f.licence_id =#{licenceId}", nonNull(selector.getLicenceId()));
 
         if (isNull(selector.getFangId()) && isNull(selector.getProcess())) {
             //默认情况 delegate 和 publish

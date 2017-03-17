@@ -143,7 +143,7 @@ public class FangMgtService {
                 .setTargetId(result.getId())
                 .setDomainType(DomainType.FANG)
                 .setContent("【" + operator.getDepartmentName() + "--" + operator
-                        .getName() + "】创建了房源编号为【" + result.getId() + "】的房源")
+                        .getName() + "】创建了授权编号为【" + result.getLicenceId() + "】的房源")
         );
         return result;
     }
@@ -217,6 +217,7 @@ public class FangMgtService {
     @Transactional
     public FangContact getContact(Long fangId) {
 
+        Fang fang = mgtFangService.getFangBase(fangId);
         FangContact result = mgtFangService.getContact(fangId);
 
         Operator operator = mgtContext.getOperator();
@@ -228,7 +229,7 @@ public class FangMgtService {
                 .setTargetId(fangId)
                 .setDomainType(DomainType.FANG)
                 .setContent("【" + operator.getDepartmentName() + "--" + operator
-                        .getName() + "】查看了房源编号为【" + fangId + "】的房东联系方式")
+                        .getName() + "】查看了授权编号为【" + fang.getLicenceId() + "】的房东联系方式")
         );
 
         return result;
@@ -296,6 +297,7 @@ public class FangMgtService {
 
     @Transactional
     public FangDescr updateDesc(FangDescr fangDescr) {
+        Fang fang = mgtFangService.getFangBase(fangDescr.getFangId());
         FangDescr result = mgtFangService.updateDesc(fangDescr);
 
         Operator operator = mgtContext.getOperator();
@@ -307,7 +309,7 @@ public class FangMgtService {
                 .setTargetId(fangDescr.getFangId())
                 .setDomainType(DomainType.FANG)
                 .setContent("【" + operator.getDepartmentName() + "--" + operator
-                        .getName() + "】修改了房源编号为【" + fangDescr.getFangId() + "】的描述为：【" + fangDescr.toString() + "】")
+                        .getName() + "】修改了授权编号为【" + fang.getLicenceId() + "】的描述为：【" + fangDescr.toString() + "】")
         );
         return result;
     }
@@ -334,13 +336,14 @@ public class FangMgtService {
                 .setTargetId(fang.getId())
                 .setDomainType(DomainType.FANG)
                 .setContent("【" + operator.getDepartmentName() + "--" + operator
-                        .getName() + "】修改了房源编号为【" + fang.getId() + "】的基本信息为：【" + fang.toString() + "】")
+                        .getName() + "】修改了授权编号为【" + result.getLicenceId() + "】的基本信息为：【" + fang.toString() + "】")
         );
         return result;
     }
 
     @Transactional
     public FangExt changeFangExt(FangExt fangExt) {
+        Fang fang = mgtFangService.getFangBase(fangExt.getFangId());
         FangExt result = mgtFangService.updateFangExt(fangExt);
 
         Operator operator = mgtContext.getOperator();
@@ -352,7 +355,7 @@ public class FangMgtService {
                 .setTargetId(fangExt.getFangId())
                 .setDomainType(DomainType.FANG)
                 .setContent("【" + operator.getDepartmentName() + "--" + operator
-                        .getName() + "】修改了房源编号为【" + fangExt.getFangId() + "】的扩展信息为：【" + fangExt.toString() + "】")
+                        .getName() + "】修改了授权编号为【" + fang.getLicenceId() + "】的扩展信息为：【" + fangExt.toString() + "】")
         );
         return result;
     }
@@ -452,7 +455,7 @@ public class FangMgtService {
 
     @Transactional
     public FangContact updateContact(FangContact contact) {
-
+        Fang fang = mgtFangService.getFangBase(contact.getFangId());
         FangContact result = mgtFangService.updateContact(contact);
 
         Operator operator = mgtContext.getOperator();
@@ -464,9 +467,13 @@ public class FangMgtService {
                 .setTargetId(contact.getFangId())
                 .setDomainType(DomainType.FANG)
                 .setContent("【" + operator.getDepartmentName() + "--" + operator
-                        .getName() + "】修改了房源编号为【" + contact.getFangId() + "】的房东联系方式为【" + contact.toString() + "】")
+                        .getName() + "】修改了授权编号为【" + fang.getLicenceId() + "】的房东联系方式为【" + contact.toString() + "】")
         );
 
         return result;
+    }
+
+    public MgtFangSummary summaryByLicenceId(Long licenceId) {
+        return mgtFangService.getFangSummaryByLicenceId(licenceId);
     }
 }

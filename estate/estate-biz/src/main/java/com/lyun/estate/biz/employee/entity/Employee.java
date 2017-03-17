@@ -1,7 +1,8 @@
 package com.lyun.estate.biz.employee.entity;
 
-import com.lyun.estate.biz.support.def.Gender;
+import com.google.common.base.MoreObjects;
 import com.lyun.estate.biz.employee.def.WorkingStatus;
+import com.lyun.estate.biz.support.def.Gender;
 
 import java.util.Date;
 
@@ -236,5 +237,35 @@ public class Employee {
     public Employee setOpenContact(String openContact) {
         this.openContact = openContact;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("id", id)
+                .add("companyId", companyId)
+                .add("cityId", cityId)
+                .add("departmentId", departmentId)
+                .add("departmentName", departmentName)
+                .add("positionId", positionId)
+                .add("positionName", positionName)
+                .add("isBoss", isBoss)
+                .add("isAgent", isAgent)
+                .add("avatarId", avatarId)
+                .add("mobile", mobile)
+                .add("openContact", openContact)
+                .add("password", password)
+                .add("salt", salt)
+                .add("name", name)
+                .add("gender", gender)
+                .add("idcardNumber", idcardNumber)
+                .add("wechat", wechat)
+                .add("status", status)
+                .add("quit", quit)
+                .add("entryDate", entryDate)
+                .add("createTime", createTime)
+                .add("updateTime", updateTime)
+                .toString();
     }
 }

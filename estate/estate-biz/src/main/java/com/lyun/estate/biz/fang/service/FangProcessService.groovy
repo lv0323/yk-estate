@@ -1,10 +1,13 @@
 package com.lyun.estate.biz.fang.service
 
+import com.google.common.base.Strings
 import com.lyun.estate.biz.event.def.EventDefine
 import com.lyun.estate.biz.event.entity.Event
 import com.lyun.estate.biz.event.service.EventService
 import com.lyun.estate.biz.fang.def.HouseProcess
 import com.lyun.estate.biz.fang.entity.Fang
+import com.lyun.estate.biz.fang.entity.FangDescr
+import com.lyun.estate.biz.fang.repo.FangDescrRepo
 import com.lyun.estate.biz.fang.repo.MgtFangRepository
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService
 import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService
@@ -30,6 +33,9 @@ class FangProcessService {
     MgtFangRepository mgtFangRepository
 
     @Autowired
+    FangDescrRepo fangDescrRepo
+
+    @Autowired
     HouseLicenceService houseLicenceService
 
     @Autowired
@@ -44,6 +50,12 @@ class FangProcessService {
         }
         if (fang.getProcess() == HouseProcess.DELEGATE ||
                 fang.getProcess() == HouseProcess.UN_PUBLISH) {
+
+            //check desc core
+            FangDescr fangDescr = fangDescrRepo.findByFangId(fangId)
+            if (Strings.isNullOrEmpty(fangDescr.getCore())) {
+                throw new EstateException(ExCode.DESC_CORE_NULL, fangId)
+            }
             //update process
             mgtFangRepository.publish(fangId)
             //update count
@@ -130,7 +142,7 @@ class FangProcessService {
     }
 
     @Transactional
-    boolean delete(long fangId) {
+    Fang delete(long fangId) {
         Fang fang = mgtFangRepository.selectForUpdate(fangId)
         if (fang == null || Objects.equals(fang.getDeleted(), true)) {
             throw new EstateException(ExCode.NOT_FOUND, fangId, "房源")
@@ -143,7 +155,7 @@ class FangProcessService {
         }
         //update licence status
         houseLicenceService.invalid(fang.getLicenceId())
-        return true
+        return mgtFangRepository.findFang(fangId)
     }
 
     def increaseHouseCount(BizType bizType, long xiaoQuId) {
