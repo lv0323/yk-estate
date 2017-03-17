@@ -11,6 +11,7 @@ define(contextPath+'/js/app/org/department/departCommon.js',
         var dropdownData = {};
 
         DepartCommon.initDepartSelector = function (currentDepartPId) {
+            var defer = $.Deferred();
             DepartmentService.getAllDepartment(header).done(function (data) {
                 dropdownData = data.map(function (item, index) {
                     return {level: item.level, name: item.name, id: item.id, parent_id: item.parentId};
@@ -33,7 +34,9 @@ define(contextPath+'/js/app/org/department/departCommon.js',
                     });
                     $('#editDepartDialog .form-group').has('.superiorDepart .dropdown-yk').css('display','none');
                 }
+                defer.resolve(dropdownData);
             });
+            return defer;
         };
 
         var initDistrict = function (city_id) {
