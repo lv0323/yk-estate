@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.message.entity;
 
+import com.google.common.base.MoreObjects;
+import com.lyun.estate.biz.message.def.ContentType;
 import com.lyun.estate.biz.message.def.MessageStatus;
 import com.lyun.estate.biz.support.def.DomainType;
 
@@ -11,7 +13,8 @@ import java.util.Date;
 public class Message {
     private Long id;
     private String title;
-    private String summary;
+    private String content;
+    private ContentType contentType;
     private Long domainId;
     private DomainType domainType;
     private Long senderId;
@@ -24,95 +27,115 @@ public class Message {
         return id;
     }
 
-    public void setId(Long id) {
+    public Message setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public Message setTitle(String title) {
         this.title = title;
+        return this;
     }
 
-    public String getSummary() {
-        return summary;
+    public String getContent() {
+        return content;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public Message setContent(String content) {
+        this.content = content;
+        return this;
     }
 
     public Long getDomainId() {
         return domainId;
     }
 
-    public void setDomainId(Long domainId) {
+    public Message setDomainId(Long domainId) {
         this.domainId = domainId;
+        return this;
     }
 
     public DomainType getDomainType() {
         return domainType;
     }
 
-    public void setDomainType(DomainType domainType) {
+    public Message setDomainType(DomainType domainType) {
         this.domainType = domainType;
+        return this;
     }
 
     public Long getSenderId() {
         return senderId;
     }
 
-    public void setSenderId(Long senderId) {
+    public Message setSenderId(Long senderId) {
         this.senderId = senderId;
+        return this;
     }
 
     public Long getReceiverId() {
         return receiverId;
     }
 
-    public void setReceiverId(Long receiverId) {
+    public Message setReceiverId(Long receiverId) {
         this.receiverId = receiverId;
+        return this;
     }
 
     public MessageStatus getStatus() {
         return status;
     }
 
-    public void setStatus(MessageStatus status) {
+    public Message setStatus(MessageStatus status) {
         this.status = status;
+        return this;
     }
 
     public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public Message setCreateTime(Date createTime) {
         this.createTime = createTime;
+        return this;
     }
 
     public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public Message setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
+    }
+
+    public ContentType getContentType() {
+        return contentType;
+    }
+
+    public Message setContentType(ContentType contentType) {
+        this.contentType = contentType;
+        return this;
     }
 
     @Override
     public String toString() {
-        return "Message{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", summary='" + summary + '\'' +
-                ", domainId=" + domainId +
-                ", domainType=" + domainType +
-                ", senderId=" + senderId +
-                ", receiverId=" + receiverId +
-                ", status=" + status +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("title", title)
+                .add("content", content)
+                .add("contentType", contentType)
+                .add("domainId", domainId)
+                .add("domainType", domainType)
+                .add("senderId", senderId)
+                .add("receiverId", receiverId)
+                .add("status", status)
+                .add("createTime", createTime)
+                .add("updateTime", updateTime)
+                .toString();
     }
 }

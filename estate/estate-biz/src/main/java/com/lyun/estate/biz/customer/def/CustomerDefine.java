@@ -23,21 +23,6 @@ public class CustomerDefine {
         }
     }
 
-    public enum IdentitySource implements LabelEnum {
-        ID_CARD("身份证"),
-        PASSPORT("护照"),;
-        private final String label;
-
-        IdentitySource(String label) {
-            this.label = label;
-        }
-
-        @Override
-        public String getLabel() {
-            return label;
-        }
-    }
-
     public enum Status implements LabelEnum {
         ZI_ZU("自租"),
         HE_ZU("合租"),

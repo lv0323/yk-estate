@@ -1,8 +1,11 @@
 package com.lyun.estate.biz.contract.entity
 
 import com.lyun.estate.biz.contract.def.ContractDefine
-import com.lyun.estate.biz.customer.entity.CustomerTiny
+import com.lyun.estate.biz.fang.def.HouseType
+import com.lyun.estate.biz.fang.def.PriceUnit
 import com.lyun.estate.biz.fang.domian.MgtFangTiny
+import com.lyun.estate.biz.support.def.BizType
+import com.lyun.estate.biz.support.def.IdentitySource
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
@@ -23,10 +26,26 @@ class ContractDTO {
     String avatarURI
     Long employeeId
     ContractDefine.Type type
-    Date createTime
-    Date updateTime
     ContractDefine.Process process
+    HouseType houseType
+    String certifAddress
+    String certifNo
+    BigDecimal estateArea
+    BigDecimal price
+    PriceUnit priceUnit
+    BizType bizType
+    String assignorName
+    String assignorMobile
+    IdentitySource assignorIdSource
+    String assignorIdNo
+    String assigneeName
+    String assigneeMobile
+    IdentitySource assigneeIdSource
+    String assigneeIdNo
+    String note
+    Date createTime
+    Date closeTime
+    Date updateTime
     Boolean isDeleted
     MgtFangTiny fangTiny
-    CustomerTiny customerTiny
 }

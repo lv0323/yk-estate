@@ -17,23 +17,28 @@ public interface MgtFangService {
 
     Fang createFang(Fang fang);
 
+    Fang updateFangBase(Fang fang);
+
+    Fang getFangBase(Long fangId);
+
     FangExt createFangExt(FangExt fangExt);
+
+    FangExt updateFangExt(FangExt fangExt);
+
+    FangExt getFangExt(Long fangId);
+
 
     FangContact createFangContact(FangContact fangContact);
 
-    FangInfoOwner createFangInfoOwner(FangInfoOwner fangInfoOwner);
-
-    PageList<MgtFangSummary> listSummary(MgtFangFilter filter, MgtFangSummaryOrder order, PageBounds pageBounds);
+    FangContact updateContact(FangContact contact);
 
     FangContact getContact(Long fangId);
 
+
+    FangInfoOwner createFangInfoOwner(FangInfoOwner fangInfoOwner);
+
     List<FangInfoOwner> getInfoOwners(Long fangId);
 
-    FangFollow createFollow(FangFollow fangFollow);
-
-    FangCheck createCheck(FangCheck fangCheck);
-
-    PageList<FangCheckDTO> listCheck(FangCheckFilter filter, PageBounds pageBounds);
 
     FangDescr createFangDescr(FangDescr fangDescr);
 
@@ -41,21 +46,23 @@ public interface MgtFangService {
 
     FangDescr findDescr(Long fangId);
 
-    Fang updateFangBase(Fang fang);
 
-    FangExt updateFangExt(FangExt fangExt);
+    FangFollow createFollow(FangFollow fangFollow);
 
-    Fang getFangBase(Long fangId);
+    PageList<FangFollowDTO> listFollow(FangFollowFilter filter, PageBounds pageBounds);
 
-    FangExt getFangExt(Long fangId);
+
+    FangCheck createCheck(FangCheck fangCheck);
+
+    PageList<FangCheckDTO> listCheck(FangCheckFilter filter, PageBounds pageBounds);
+
 
     MgtFangSummary getFangSummary(Long fangId);
+
+    PageList<MgtFangSummary> listSummary(MgtFangFilter filter, MgtFangSummaryOrder order, PageBounds pageBounds);
 
     MgtFangTiny getFangTiny(Long fangId);
 
     MgtFangTiny getFangTinyByLicenceId(Long licenceId);
 
-    PageList<FangFollowDTO> listFollow(FangFollowFilter filter, PageBounds pageBounds);
-
-    FangContact updateContact(FangContact contact);
 }

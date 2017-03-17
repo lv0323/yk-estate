@@ -9,7 +9,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         contextPath+'/js/app/org/position/positionCommon.js',
         contextPath+'/js/service/util-service.js',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
-    'datatables', 'zTree','datatablesBootstrap', 'datepicker.zh-cn'],
+    'datatables', 'zTree','datatablesBootstrap', 'datetimepicker.zh-cn'],
     function (mainApp, EmployeeService, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon, PositionCommon, UtilService, SweetAlertHelp) {
         var header = {};
 
@@ -27,13 +27,19 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
 
         var quitPosition = 'false'; //init nonQuit Employee by default
 
-        $.fn.datepicker.defaults.language = "zh-CN";
-        $('#addEmployeeEntryDate').datepicker({
+        $.fn.datetimepicker.defaults.language = "zh-CN";
+        $('#addEmployeeEntryDate').datetimepicker({
             todayHighlight:true,
+            format: 'yyyy-mm-dd',
+            startView: 2,
+            minView: 2,
             autoclose: true
         });
-        $('#editEmployeeEntryDate').datepicker({
+        $('#editEmployeeEntryDate').datetimepicker({
             todayHighlight:true,
+            format: 'yyyy-mm-dd',
+            startView: 2,
+            minView: 2,
             autoclose: true
         });
 
@@ -70,7 +76,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                     name:item.name,
                     id:item.id,
                     pId:item.parentId};
-            })
+            });
             $.fn.zTree.init($("#departmentTree"), zTreeSetting, departments);
         }
 
@@ -79,35 +85,6 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         var displayFilteredEmployee = function (data) {
             employeeAllDataRaw = data;
             var dataSet = data.map(function (item, index) {
-                /*if(!item.quit){
-                    return {
-                        employeeName: item.name,
-                        departmentName: item.departmentName,
-                        positionName: item.positionName,
-                        mobile: item.mobile,
-                        openContact: item.openContact,
-                        operation: [
-                            {
-                                attr: {class: 'btn editEmployeeBtn'},
-                                data: {index: index, id: item.id, toggle: 'modal', target: '#editEmployeeDialog'},
-                                text: '编辑'
-                            },
-                            {
-                                attr: {class: 'btn quitEmployeeBtn'},
-                                data: {index: index, id: item.id, toggle: 'modal', target: '#quitEmployeeDialog'},
-                                text: '离职'
-                            }]
-                    }
-                }else {
-                    return {
-                        employeeName: item.name,
-                        departmentName: item.departmentName,
-                        positionName: item.positionName,
-                        mobile: item.mobile,
-                        openContact: item.openContact,
-                        operation: '已离职'
-                    }
-                }*/
                 return {
                     employeeName: item.name,
                     departmentName: item.departmentName,
@@ -178,30 +155,13 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         };
 
         function filterEmployee(quitPosition, offset, limit) {
-            /*EmployeeService.quitEmployee = [];
-            EmployeeService.nonQuitEmployee = [];
-            EmployeeService.allEmployee = [];*/
-            //quitPosition = (quitPosition == 'true')?positionStatus["true"]:positionStatus["false"];
-            EmployeeService.getEmployee(null, {'x-paging': 'total=true&offset='+offset+'&limit=' + limit}).done(function (data) {
-               /* $.each(data.items,function (index, employee) {
-                    if(employee["quit"]){
-                        EmployeeService.quitEmployee.push(employee);
-                    }else {
-                        EmployeeService.nonQuitEmployee.push(employee);
-                    }
-                    EmployeeService.allEmployee.push(employee);
+            EmployeeService.getEmployee(null, {'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
+                .done(function (data) {
+                    displayFilteredEmployee(data.items);
+                    pagination(data.total);
+                }).fail(function(){
+                    $('#employeeList>tbody').append('<tr><td colspan="6">无法获取数据</td></tr>');
                 });
-                // employeeAllDataRaw = EmployeeService.nonQuitEmployee;
-                if(quitPosition == 'false'){
-                    displayFilteredEmployee(EmployeeService.nonQuitEmployee);
-                }else if(quitPosition == 'true'){
-                    displayFilteredEmployee(EmployeeService.quitEmployee);
-                }else if(quitPosition == '-1'){
-                    displayFilteredEmployee(EmployeeService.allEmployee);
-                }*/
-                displayFilteredEmployee(data.items);
-                pagination(data.total);
-            });
         }
 
         filterEmployee(quitPosition, 0, pageConfig.limit);

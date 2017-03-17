@@ -26,13 +26,13 @@ require(['main-app',
             var fangId = UtilService.getUrlParam('id');
             var _this = this;
             var pageConfig ={
-                fellowPage: {
+                followPage: {
                     limit: 8,
                     offset: 0,
                     dataTotal: 0,
                     currentPage: 1,
                     init: false,
-                    id:'#fellow_paging',
+                    id:'#follow_paging',
                     change:'follow'
                 },
                 surveyPage: {
@@ -75,7 +75,7 @@ require(['main-app',
                 para: ''
             };
             _this.imageTypeList = [
-                {key: 'virtualMap', para :'SHI_JING', addText: '新增勘察图', defaultMap: '../img/house/kct.jpeg'},
+                {key: 'virtualMap', para :'SHI_JING', addText: '新增实景图', defaultMap: '../img/house/kct.jpeg'},
                 {key: 'layoutMap', para :'HU_XING', addText: '新增户型图', defaultMap: '../img/house/hxt.jpeg'},
                 {key: 'avatarMap', para :'AVATAR', addText: '新增证件照', defaultMap: '../img/house/zjz.jpeg'}];
             _this.virtualMap ={
@@ -307,9 +307,9 @@ require(['main-app',
             };
             /*房源跟进*/
             _this.follow = function(offset){
-                FangService.listFollow({fangId:fangId},{'X-PAGING':'total=true&offset='+(offset||pageConfig.fellowPage.offset)+'&limit='+ pageConfig.fellowPage.limit}).then(function(response){
+                FangService.listFollow({fangId:fangId},{'X-PAGING':'total=true&offset='+(offset||pageConfig.followPage.offset)+'&limit='+ pageConfig.followPage.limit}).then(function(response){
                     $scope.$apply(function(){
-                        pagination(response.total, 'fellowPage');
+                        pagination(response.total, 'followPage');
                         _this.followList= response.items.map(function(item){
                             if(item.fangTiny && item.fangTiny.publishTime){
                                 item.publishedDay = Math.floor((_this.page.now - item.fangTiny.publishTime)/(24 * 3600 * 1000));

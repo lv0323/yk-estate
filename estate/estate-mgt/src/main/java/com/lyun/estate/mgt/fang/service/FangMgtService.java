@@ -139,7 +139,7 @@ public class FangMgtService {
                 .setCompanyId(operator.getCompanyId())
                 .setDepartmentId(operator.getDepartmentId())
                 .setOperatorId(operator.getId())
-                .setSubject(AuditSubject.FANG_A_R)
+                .setSubject(AuditSubject.FANG_P)
                 .setTargetId(result.getId())
                 .setDomainType(DomainType.FANG)
                 .setContent("【" + operator.getDepartmentName() + "--" + operator

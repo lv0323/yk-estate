@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.message.service;
 
-import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.biz.message.def.ContentType;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,15 +9,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminUserUtils {
 
-    public Long getSenderIdByDomainType(DomainType domainType) {
-        switch (domainType) {
-            case FANG:
+    public static Long getSenderIdByContentType(ContentType contentType) {
+        switch (contentType) {
+            case FANG_SUMMARY:
                 return 1L;
-            case XIAO_QU:
+            case FANG_PROCESS:
                 return 2L;
-            case REPORT:
-                return 3L;
             case NOTICE:
+                return 3L;
+            case XIAO_QU_REPORT:
                 return 4L;
             default:
                 return null;

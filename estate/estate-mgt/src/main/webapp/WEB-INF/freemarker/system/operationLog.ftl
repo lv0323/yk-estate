@@ -76,6 +76,10 @@
                                     </form>
 
                                     <table id="operationLogList" class="list table table-bordered table-hover">
+                                        <col width="20%" />
+                                        <col width="10%" />
+                                        <col width="12%" />
+                                        <col width="58%" />
                                         <thead><tr>
                                             <th><span>操作时间</span></th>
                                             <th><span>部门</span></th>
@@ -84,7 +88,9 @@
                                         </tr></thead>
                                         <tbody></tbody>
                                     </table>
-                                    <ul id="operationLogList_paging" class="pagination"></ul>
+                                    <div class="pagination-container">
+                                        <ul id="operationLogList_paging" class="pagination"></ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>

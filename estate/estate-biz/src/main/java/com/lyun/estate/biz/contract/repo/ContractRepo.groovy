@@ -23,7 +23,7 @@ interface ContractRepo {
     @Select("SELECT * FROM t_contract WHERE id =#{id}")
     Contract findOne(long id)
 
-    @Update("UPDATE t_contract SET process = #{process}, update_time = now() WHERE id = #{id} AND process = 'CREATED' AND is_deleted = FALSE ")
+    @Update("UPDATE t_contract SET process = #{process},close_time = now(), update_time = now() WHERE id = #{id} AND process = 'CREATED' AND is_deleted = FALSE ")
     int close(@Param("id") long id, @Param("process") ContractDefine.Process process)
 
     @SelectProvider(type = ContractSqlProvider, method = 'list')

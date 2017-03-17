@@ -21,5 +21,8 @@ public interface FavoriteMapper {
                           @Param("followerId") long followerId);
 
     @Select("select * from t_favorite where domain_type = #{domainType} and target_id=#{targetId}")
-    List<Favorite> getFavorites(@Param("domainType") DomainType domainType, @Param("targetId") Long targetId);
+    List<Favorite> getFavorites(@Param("targetId") Long targetId, @Param("domainType") DomainType domainType);
+
+    @Select("select follower_id from t_favorite where domain_type = #{domainType} and target_id=#{targetId}")
+    List<Long> getFollowerIds(@Param("targetId") Long targetId, @Param("domainType") DomainType domainType);
 }

@@ -13,20 +13,21 @@ require(['main-app',
                 $scope.state={
                     page:'login'
                 };
-                $scope.loginData={};
+                $scope.loginData = {};
                 $scope.activeData={
                     sendSMS :true,
                     smsText:'点击获取'
                 };
             }
+            /*初始状态-现实登录页面*/
+            resetData();
             $scope.loadCaptcha =function() {
                 $scope.captchaId = UtilService.generateSalt(8);
                 localStorage.setItem("captchaId", $scope.captchaId);
                 $scope.captcha = contextPath + '/captcha?clientId='+clientId+'&id='+$scope.captchaId+'&width=120&height=30';
+                $scope.loginData.captcha = '';
             };
             $scope.loadCaptcha();
-            /*初始状态-现实登录页面*/
-            resetData();
             /*页面切换*/
             $scope.changePage= function(page){
                 $scope.state.page = page;
@@ -46,7 +47,7 @@ require(['main-app',
                 }
                 IdentityService.loginAction({mobile:$scope.loginData.mobile,password:$scope.loginData.password}, {clientId:clientId, code:$scope.loginData.captcha,id:$scope.captchaId}).done(function(response){
                     var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-                    $window.location=contextPath+'/org/department.ftl';
+                    $window.location=contextPath+'/fangManage/list?target=.fang';
                 }).fail(function(response){
                     SweetAlertHelp.fail({message:response&&response.message});
                 });
@@ -56,6 +57,7 @@ require(['main-app',
                 $scope.activeCaptchaId = UtilService.generateSalt(8);
                 localStorage.setItem("activeCaptchaId", $scope.activeCaptchaId);
                 $scope.activeCaptcha=contextPath + '/captcha?clientId='+clientId+'&id='+$scope.activeCaptchaId+'&width=120&height=30';
+                $scope.activeData.captcha = '';
             };
             $scope.loadActiveCaptcha();
             /*激活短信验证码*/

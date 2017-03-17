@@ -33,7 +33,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="box-body clearfix no-padding">
+                        <div class="box-body clearfix no-padding default-height">
                             <form id="formlist" class="form-inline">
                                 <div id="searchList" ng-cloak class="clearfix">
                                     <div class="collapse-box" ng-show="page.collapse">
@@ -85,6 +85,7 @@
                                         <div class="form-group sortlist">
                                             <label class="control-label">状态</label>
                                             <div id="houseTradeStatus" class="tj">
+                                                <a ng-href="javascript::" ng-class="{'actived': '' == filter.process}" ng-click="setFilterType('process' ,'')">默认</a>
                                             <#list houseProcess?if_exists as process>
                                                 <a ng-href="javascript::" ng-class="{'actived': '${process.name()}' == filter.process}" ng-click="setFilterType('process' ,'${process.name()}')">
                                                 ${process.getLabel()}</a>
@@ -117,18 +118,18 @@
                                                     <option value="">选择部门</option>
                                                     <option ng-repeat="dep in depList" ng-value="dep.id" repeat-done="initChosen('#douseDepid', 'departmentId')">{{dep.name}}</option>
                                                     </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-2 m-t-7">
+                                                <div class="checkbox checkbox-nice" ng-repeat="depExp in depExpList">
+                                                    <input name="depExp" id="depExp{{depExp.value}}" ng-model="filter[depExp.key]"  ng-click="setDepExp()" type="checkbox" ng-change="includeChildrenCheck()">
+                                                    <label for="depExp{{depExp.value}}">{{depExp.name}}</label>
                                                 </div>
+                                            </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3">
                                                 <select id="employeeId" class="chosen-select-emp">
                                                     <option value="">全部员工</option>
                                                     <option ng-repeat="employee in employeeList" ng-value="employee.id" repeat-done="initChosen('#employeeId', 'employeeId')">{{employee.name}}</option>
                                                 </select>
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-3 m-t-7">
-                                                <div class="checkbox checkbox-nice" ng-repeat="depExp in depExpList">
-                                                    <input name="depExp" id="depExp{{depExp.value}}" ng-model="filter[depExp.key]"  ng-click="setDepExp()" type="checkbox" ng-change="includeChildrenCheck()">
-                                                    <label for="depExp{{depExp.value}}">{{depExp.name}}</label>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group sortlist form-inline">
@@ -228,9 +229,12 @@
                                                     <h5 class="media-heading pull-left text-ellipsis" style="width:300px;">
                                                         <a ng-href="{{'/mgt/fangManage/detail?id='+house.id}}" target="_blank" class="text-muted" ng-bind="house.head"></a>
                                                     </h5>
-                                                    <label class="badge badge-success pull-left m-l-20">{{house.process.label}}</label>
-                                                    <i class="fa fa-circle  m-l-20" style="font-size:16px;" ng-class="{true:'text-success', false:'text-danger'}[house.bizType.name == 'RENT']"></i>
-                                                    <span ng-class="{true:'text-success', false:'text-danger'}[house.bizType.name == 'RENT']" ng-show="house.publishTime">[{{(page.now - house.publishTime)/(24*6060*1000)|number:0}}]</span>
+                                                    <label class="badge pull-left m-l-20" ng-class="{'badge-success':house.process.name == 'SUCCESS',
+                                                           'badge-info':house.process.name == 'PUBLISH',
+                                                           'badge-warning':house.process.name == 'UN_PUBLISH',
+                                                           'badge-danger':house.process.name == 'DELEGATE'}">{{house.process.label}}</label>
+                                                    <i class="fa fa-circle  m-l-20" style="font-size:16px;" ng-class="{true:'text-rent', false:'text-sell'}[house.bizType.name == 'RENT']"></i>
+                                                    <span ng-class="{true:'text-rent', false:'text-sell'}[house.bizType.name == 'RENT']" ng-show="house.publishTime">[{{(page.now - house.publishTime)/(24*6060*1000)|number:0}}]</span>
                                                     <span class="text-muted">{{house.publishTime|date:'yyyy-MM-dd'}}<span class="opt-gap"></span>{{house.infoOwner.departmentName}} ~ {{house.infoOwner.employeeName}}</span>
                                                 </div>
                                                 <div class="clearfix m-t-10 text-muted">
@@ -249,9 +253,18 @@
                                                     </div>
                                                     <div class="btn-add  pull-left m-l-30">
                                                         <a ng-href="{{'/mgt/fangManage/detail?id='+house.id}}" target="_blank"><i class="fa fa-pencil"></i>查看详情</a>
-                                                        <#--<a ng-href="javascript:void(0)"><i class="fa fa-pencil"></i>新增跟进</a>
-                                                        <a class="m-l-20" ng-href="javascript:void(0)"><i class="fa fa-pencil"></i>新增勘察</a>
-                                                        <a class="m-l-20" ng-href="javascript:void(0)"><i class="fa fa-pencil"></i>删除</a>-->
+                                                        <a class="m-l-20" ng-href="javascript:;" ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.UN_PUBLISH"
+                                                           ng-click="changeStatus(page.status.PUBLISH, house.id)">
+                                                            <i class="fa fa-pencil"></i>上架
+                                                        </a>
+                                                        <a class="m-l-20" ng-href="javascript:;"
+                                                           ng-click="changeStatus(page.status.UN_PUBLISH, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH">
+                                                            <i class="fa fa-pencil"></i>下架
+                                                        </a>
+                                                        <a class="m-l-20" ng-href="{{'/mgt/contract/addDeal?licenceId='+house.licenceId}}"
+                                                           ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH">
+                                                            <i class="fa fa-pencil"></i>成交
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -261,14 +274,7 @@
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-3 text-right">
                                                 <p><strong class="text-danger f18">{{house.publishPrice}}</strong>{{house.priceUnit.label}}</p>
-                                                <p>{{house.unitPrice}}{{house.priceUnit.label}}/m<sup>2</sup></p>
-                                                <#--<a href="javascript:void(0)" id="favorites" style="color:#777;" onclick="favoritesLookOwner('1639','')" class="text-muted mr10 collection ">
-                                                    <i class="fa fa-star-o" aria-hidden="true"></i>收藏
-                                                </a>-->
-                                                <#--<div class="checkbox checkbox-nice">
-                                                    <input id="house_1639" onclick="setHouseSelected(1639);" type="checkbox">
-                                                    <label for="house_1639" style="padding-right:0px">选择</label>
-                                                </div>-->
+                                                <p>{{house.unitPrice}}<span ng-if="house.priceUnit.name === 'WAN'">元</span><span ng-if="house.priceUnit.name !== 'WAN'">{{house.priceUnit.label}}</span>/m<sup>2</sup></p>
                                             </div>
                                         </div>
                                     </div>

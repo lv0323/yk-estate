@@ -25,7 +25,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="box-body clearfix no-padding">
+                        <div class="box-body clearfix no-padding default-height">
                             <form id="formlist" class="form-inline">
                                 <div id="searchList" ng-cloak class="clearfix" ng-show="page.collapse">
                                     <div class="collapse-box">
@@ -89,9 +89,13 @@
                                                     </div>
                                                     {{survey.departmentName}}- {{survey.employeeName}}</td>
                                                 <td>{{survey.createTime|date:'yyyy-MM-dd'}}</td>
-                                                <td><label class="badge badge-danger">{{survey.fangTiny.bizType.label}}</label></td>
+                                                <td><label class="badge" ng-class="{'badge-rent':survey.fangTiny.bizType.name =='RENT','badge-sell':survey.fangTiny.bizType.name =='SELL'}">{{survey.fangTiny.bizType.label}}</label></td>
                                                 <td><a ng-href="{{'/mgt/fangManage/detail?id='+survey.fangId}}" target="_blank">{{survey.fangTiny.houseLicence && survey.fangTiny.houseLicence.location}}</a></td>
-                                                <td><label class="badge badge-danger">{{survey.fangTiny.process.label}}</label></td>
+                                                <td><label class="badge"
+                                                           ng-class="{'badge-success':survey.fangTiny.process.name == 'SUCCESS',
+                                                           'badge-info':survey.fangTiny.process.name == 'PUBLISH',
+                                                           'badge-warning':survey.fangTiny.process.name == 'UN_PUBLISH',
+                                                           'badge-danger':survey.fangTiny.process.name == 'DELEGATE'}">{{survey.fangTiny.process.label}}</label></td>
                                                 <td>{{survey.fangTiny && survey.fangTiny.publishTime|date:'yyyy-MM-dd'}}</td>
                                                 <td>{{survey.publishedDay}}</td>
                                             </tr>

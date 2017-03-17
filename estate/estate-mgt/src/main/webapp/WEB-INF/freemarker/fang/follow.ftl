@@ -25,7 +25,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="box-body clearfix no-padding">
+                        <div class="box-body clearfix no-padding default-height">
                             <form id="formlist" class="form-inline">
                                 <div id="searchList" ng-cloak ng-show="page.collapse">
                                     <div class="collapse-box">
@@ -124,16 +124,19 @@
                                                     {{follow.departmentName}}-{{follow.employeeName}}</td>
                                                 <td><label class="badge badge-success">{{follow.followType.label}}</label></td>
                                                 <td>{{follow.createTime|date:'yyyy-MM-dd'}}</td>
-                                                <td><label class="badge badge-danger">{{follow.fangTiny.bizType.label}}</label></td>
+                                                <td><label class="badge" ng-class="{'badge-rent':follow.fangTiny.bizType.name =='RENT','badge-sell':follow.fangTiny.bizType.name =='SELL'}">{{follow.fangTiny.bizType.label}}</label></td>
                                                 <td><a ng-href="{{'/mgt/fangManage/detail?id='+follow.fangId}}" target="_blank">{{follow.fangTiny.houseLicence &&follow.fangTiny.houseLicence.location}}</a></td>
-                                                <td><label class="badge badge-danger">{{follow.fangTiny.process.label}}</label></td>
+                                                <td><label class="badge" ng-class="{'badge-success':follow.fangTiny.process.name == 'SUCCESS',
+                                                           'badge-info':follow.fangTiny.process.name == 'PUBLISH',
+                                                           'badge-warning':follow.fangTiny.process.name == 'UN_PUBLISH',
+                                                           'badge-danger':follow.fangTiny.process.name == 'DELEGATE'}">{{follow.fangTiny.process.label}}</label></td>
                                                 <td>{{follow.fangTiny.publishTime|date:'yyyy-MM-dd'}}</td>
                                                 <td>{{follow.publishedDay}}</td>
                                             <#--<td class="text-right">
                                                 <a href="javascript:void(0);" ng-click="ctrl.deleteFollow(follow.id)">删除</a>
                                             </td>-->
                                             </tr>
-                                            <tr><td colspan="7">跟进内容:{{follow.content}}</td></tr>
+                                            <tr><td colspan="8">跟进内容:{{follow.content}}</td></tr>
                                             </tbody>
                                         </table>
                                     </div>

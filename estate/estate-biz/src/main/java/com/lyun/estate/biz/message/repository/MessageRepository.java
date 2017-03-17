@@ -2,7 +2,6 @@ package com.lyun.estate.biz.message.repository;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.lyun.estate.biz.message.entity.EventMessage;
 import com.lyun.estate.biz.message.entity.Message;
 import com.lyun.estate.biz.message.entity.MessageResource;
 import com.lyun.estate.biz.message.entity.MessageSummaryResource;
@@ -45,10 +44,6 @@ public interface MessageRepository {
     @Options(useGeneratedKeys = true)
     int createMessage(Message message);
 
-    @InsertProvider(type = MessageSqlProvider.class, method = "createEventMessage")
-    @Options(useGeneratedKeys = true)
-    int createEventMessage(EventMessage eventMessage);
-
-    @Select("SELECT * FROM t_event_message WHERE uuid=#{uuid}")
-    Message getEventMessageByUUID(@Param("uuid") String uuid);
+    @Select("SELECT * FROM t_message WHERE id = #{id}")
+    Message findOne(Long id);
 }

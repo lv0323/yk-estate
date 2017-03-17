@@ -6,23 +6,26 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.fang.def.StructureType;
+import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
 import com.lyun.estate.biz.housedict.entity.Line;
 import com.lyun.estate.biz.housedict.entity.SubDistrict;
 import com.lyun.estate.biz.housedict.service.CityService;
-import com.lyun.estate.biz.map.service.MapService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
-import com.lyun.estate.biz.support.def.DomainType;
-import com.lyun.estate.biz.file.service.FileService;
+import com.lyun.estate.biz.map.service.MapService;
 import com.lyun.estate.biz.spec.xiaoqu.rest.def.XQSummaryOrder;
-import com.lyun.estate.biz.spec.xiaoqu.rest.entity.*;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuDetail;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuFilter;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuStationRel;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuSummary;
 import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuDetailBean;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSummaryBean;
@@ -32,6 +35,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -221,7 +225,34 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         } else {
             return new ArrayList<>();
         }
+    }
 
+    @Transactional
+    public boolean increaseSellCount(long xiaoQuId) {
+        xiaoQuRepository.selectForUpdate(xiaoQuId);
+        xiaoQuRepository.increaseSellCount(xiaoQuId);
+        return true;
+    }
+
+    @Transactional
+    public boolean decreaseSellCount(long xiaoQuId) {
+        xiaoQuRepository.selectForUpdate(xiaoQuId);
+        xiaoQuRepository.decreaseSellCount(xiaoQuId);
+        return true;
+    }
+
+    @Transactional
+    public boolean increaseRentCount(long xiaoQuId) {
+        xiaoQuRepository.selectForUpdate(xiaoQuId);
+        xiaoQuRepository.increaseRentCount(xiaoQuId);
+        return true;
+    }
+
+    @Transactional
+    public boolean decreaseRentCount(long xiaoQuId) {
+        xiaoQuRepository.selectForUpdate(xiaoQuId);
+        xiaoQuRepository.decreaseRentCount(xiaoQuId);
+        return true;
     }
 
 }

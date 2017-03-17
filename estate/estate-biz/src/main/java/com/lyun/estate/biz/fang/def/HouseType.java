@@ -36,16 +36,7 @@ public enum HouseType implements LabelEnum {
                     HouseSubType.JKC_CW,
                     HouseSubType.LITI_CW)),
     OTHER("其他",
-            Lists.newArrayList(HouseSubType.DC,
-                    HouseSubType.GC,
-                    HouseSubType.XGC,
-                    HouseSubType.DCFS,
-                    HouseSubType.GCFS,
-                    HouseSubType.DCYS,
-                    HouseSubType.GCYS,
-                    HouseSubType.QL,
-                    HouseSubType.SHY,
-                    HouseSubType.QT)),;
+            Lists.newArrayList(HouseSubType.QT)),;
 
     private final String label;
     private final List<HouseSubType> subTypes;

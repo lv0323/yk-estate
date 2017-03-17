@@ -83,19 +83,33 @@
                             </div>
                             <div class="box-body">
                                 <form class="form-inline">
-                                    <div id="box-filter"  style="display: block;">
+                                    <div id="box-filter"  style="display: none;">
                                         <div class="form-group sortlist">
                                             <label class="control-label">状态</label>
                                             <div class="tj">
+                                                <a name="visitStatus" class="actived" title="">不限</a>
                                             <#list showingOperation?if_exists as status>
-                                                <a name="visitStatus" id="${status.name()}">${status.getLabel()}</a>
+                                                <a name="visitStatus" title="${status.name()}">${status.getLabel()}</a>
                                             </#list>
                                             </div>
                                         </div>
                                         <div class="form-group sortlist">
-                                            <label class="control-label">组织信息</label>
-                                            <div class="tj">
-
+                                            <label class="control-label">部门员工</label>
+                                            <div class="col-lg-2 col-md-2 col-sm-3">
+                                                <select id="departmentList" class="chosen-select-dep">
+                                                    <option value="">选择部门</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-3 m-t-7">
+                                                <div class="checkbox checkbox-nice">
+                                                    <input id="inferiorInc" type="checkbox">
+                                                    <label id="inferiorIncLabel" for="inferiorInc">含下级</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-3">
+                                                <select id="employeeList" class="chosen-select-emp">
+                                                    <option value="">全部员工</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group sortlist form-inline">
@@ -117,28 +131,25 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group sortlist center">
-                                            <div class="col-sm-12">
-                                                <button type="button" class="btn btn-primary" id="confirmFilterPropertyVisitBtn">筛选</button>
-                                            </div>
-                                        </div>
                                     </div>
                                 </form>
 
                                 <!-- table -->
                                 <table id="propertyVisitList" class="list table table-bordered table-hover">
                                     <thead><tr>
-                                        <th><span>带看员工</span></th>
-                                        <th><span>带看客户</span></th>
-                                        <th><span>带看房源地址</span></th>
-                                        <th><span>带看生成时间</span></th>
-                                        <th><span>带看更新时间</span></th>
+                                        <th><span>员工</span></th>
+                                        <th><span>客户</span></th>
+                                        <th><span>房源地址</span></th>
+                                        <th><span>生成时间</span></th>
+                                        <th><span>结束时间</span></th>
                                         <th><span>状态</span></th>
                                         <th><span>操作</span></th>
                                     </tr></thead>
                                     <tbody></tbody>
                                 </table>
-                                <ul id="propertyVisitList_paging" class="pagination"></ul>
+                                <div class="pagination-container">
+                                    <ul id="propertyVisitList_paging" class="pagination"></ul>
+                                </div>
                             </div>
                         </div>
                     </section>

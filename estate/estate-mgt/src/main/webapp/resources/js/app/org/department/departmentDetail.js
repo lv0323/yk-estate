@@ -38,7 +38,10 @@ require(['main-app',
         DepartmentService.getSpecifiedDepartment(departId,header)
             .done(function (depart) {
                 var current_depart_pid = depart["parentId"];
-                DepartCommon.initDepartSelector(current_depart_pid);
+                DepartCommon.initDepartSelector(current_depart_pid).done(function () {
+                    $('.superiorDepart .dropdown-yk').off('click');
+                    $('.duoji-dropdown-input').off('click');
+                });
                 DepartCommon.reloadCity().done(function () {
                     $('#departCid').find('option[id='+depart["cityId"]+']').attr('selected','selected');
                     var city_id = depart["cityId"];

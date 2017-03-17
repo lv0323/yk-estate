@@ -250,7 +250,7 @@
                                 <table id="companyList" class="list table table-bordered table-hover">
                                 </table>
                                 <div class="pagination-container">
-                                <ul id="companyList_paging" class="pagination"></ul>
+                                    <ul id="companyList_paging" class="pagination"></ul>
                                 </div>
                             </div>
                         </div>

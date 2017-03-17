@@ -3,6 +3,7 @@ package com.lyun.estate.biz.customer.entity;
 
 import com.google.common.base.MoreObjects;
 import com.lyun.estate.biz.support.def.Gender;
+import com.lyun.estate.biz.support.def.IdentitySource;
 
 import static com.lyun.estate.biz.customer.def.CustomerDefine.*;
 

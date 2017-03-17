@@ -24,6 +24,7 @@ public class FangSqlProvider {
                 .LEFT_OUTER_JOIN("t_fang_descr fd on f.id = fd.fang_id")
                 .LEFT_OUTER_JOIN("t_fang_ext fe on f.id = fe.fang_id")
                 .WHERE("f.id = #{fangId}")
+                .WHERE("f.is_deleted = false")
                 .toString();
     }
 
@@ -38,6 +39,7 @@ public class FangSqlProvider {
                 .LEFT_OUTER_JOIN("t_district d on dr.district_id = d.id")
                 .LEFT_OUTER_JOIN("t_fang_ext fe ON f.id = fe.fang_id")
                 .WHERE("f.id = #{fangId}")
+                .WHERE("f.is_deleted = false")
                 .toString();
     }
 
@@ -116,6 +118,7 @@ public class FangSqlProvider {
         } else {
             sql.WHERE("f.process <> 'DELEGATE'");
         }
+        sql.WHERE("f.is_deleted = false");
 
         return sql.toString();
     }

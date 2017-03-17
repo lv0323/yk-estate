@@ -59,6 +59,7 @@ public enum ExCode {
 
     //fang process
     NOT_PUBLISH("该房源不可见"),
+    PROCESS_ILLEGAL("房源{}, 状态{}不能变成{}"),
 
     //json
     JSON_ERROR("JSON对象{},转换错误:{}"),;

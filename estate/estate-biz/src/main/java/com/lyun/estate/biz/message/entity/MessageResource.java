@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.message.entity;
 
+import com.google.common.base.MoreObjects;
+import com.lyun.estate.biz.message.def.ContentType;
 import com.lyun.estate.biz.message.def.MessageStatus;
 import com.lyun.estate.biz.support.def.DomainType;
 
@@ -11,7 +13,8 @@ import java.util.Date;
 public class MessageResource {
     private Long id;
     private String title;
-    private String summary;
+    private String content;
+    private ContentType contentType;
     private Long domainId;
     private DomainType domainType;
     private String data;
@@ -34,12 +37,13 @@ public class MessageResource {
         this.title = title;
     }
 
-    public String getSummary() {
-        return summary;
+    public String getContent() {
+        return content;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public MessageResource setContent(String content) {
+        this.content = content;
+        return this;
     }
 
     public Long getDomainId() {
@@ -82,17 +86,27 @@ public class MessageResource {
         this.createTime = createTime;
     }
 
+    public ContentType getContentType() {
+        return contentType;
+    }
+
+    public MessageResource setContentType(ContentType contentType) {
+        this.contentType = contentType;
+        return this;
+    }
+
     @Override
     public String toString() {
-        return "MessageResource{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", summary='" + summary + '\'' +
-                ", domainId=" + domainId +
-                ", domainType=" + domainType +
-                ", data='" + data + '\'' +
-                ", status=" + status +
-                ", createTime=" + createTime +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("title", title)
+                .add("content", content)
+                .add("contentType", contentType)
+                .add("domainId", domainId)
+                .add("domainType", domainType)
+                .add("data", data)
+                .add("status", status)
+                .add("createTime", createTime)
+                .toString();
     }
 }

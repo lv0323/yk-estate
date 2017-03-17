@@ -101,13 +101,16 @@
                                 <table id="departList" class="list table table-bordered table-hover">
                                     <thead><tr>
                                         <th><span>部门名称</span></th>
+                                        <th><span>部门级别</span></th>
                                         <th><span>部门电话</span></th>
                                         <th><span>部门地址</span></th>
                                         <th class="text-right"><span>操作</span></th>
                                     </tr></thead>
                                     <tbody></tbody>
                                 </table>
-                                <ul id="departList_paging" class="pagination"></ul>
+                                <div class="pagination-container">
+                                    <ul id="departList_paging" class="pagination"></ul>
+                                </div>
                             </div>
                         </div>
                     </section>

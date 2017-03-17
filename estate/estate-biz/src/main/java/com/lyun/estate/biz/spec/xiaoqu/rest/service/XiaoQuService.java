@@ -29,4 +29,12 @@ public interface XiaoQuService {
     List<XiaoQuStationRel> findStations(Long xiaoQuId);
 
     List<FileDescription> files(Long xiaoQuId, CustomType customType);
+
+    boolean increaseSellCount(long xiaoQuId);
+
+    boolean decreaseSellCount(long xiaoQuId);
+
+    boolean increaseRentCount(long xiaoQuId);
+
+    boolean decreaseRentCount(long xiaoQuId);
 }

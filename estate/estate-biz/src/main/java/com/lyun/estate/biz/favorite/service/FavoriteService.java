@@ -1,17 +1,18 @@
 package com.lyun.estate.biz.favorite.service;
 
 import com.google.common.collect.Lists;
-import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.favorite.def.FavoriteType;
 import com.lyun.estate.biz.favorite.entity.Favorite;
 import com.lyun.estate.biz.favorite.repository.FavoriteMapper;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.rest.service.FangService;
+import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.EasyCodeException;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
+import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,13 +91,18 @@ public class FavoriteService {
         return null != favoriteMapper.findFavorite(targetId, domainType, restContext.getUserId());
     }
 
-    public List<Favorite> getFavorite(DomainType domainType, Long targetId) {
+    public List<Favorite> getFavorite(Long targetId, DomainType domainType) {
         if (domainType == null) {
             throw new EstateException(PARAM_NULL, "domainType");
         }
         if (targetId == null) {
             throw new EstateException(PARAM_NULL, "targetId");
         }
-        return favoriteMapper.getFavorites(domainType, targetId);
+        return favoriteMapper.getFavorites(targetId, domainType);
+    }
+
+    public List<Long> getFollowerIds(long targetId, DomainType domainType) {
+        ExceptionUtil.checkNotNull("domainType", domainType);
+        return favoriteMapper.getFollowerIds(targetId, domainType);
     }
 }

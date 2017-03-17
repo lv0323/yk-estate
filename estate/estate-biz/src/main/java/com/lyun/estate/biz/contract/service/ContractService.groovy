@@ -13,13 +13,16 @@ import com.lyun.estate.biz.customer.service.CustomerService
 import com.lyun.estate.biz.department.entity.Department
 import com.lyun.estate.biz.department.service.DepartmentService
 import com.lyun.estate.biz.employee.service.EmployeeService
+import com.lyun.estate.biz.fang.service.FangProcessService
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService
 import com.lyun.estate.core.supports.exceptions.EstateException
 import com.lyun.estate.core.supports.exceptions.ExCode
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil
+import com.lyun.estate.core.utils.ValidateUtil
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 import static java.util.Objects.nonNull
 
@@ -43,29 +46,52 @@ class ContractService {
     @Autowired
     MgtFangService mgtFangService
 
+    @Autowired
+    FangProcessService fangProcessService
+
     Contract create(Contract contract) {
+        ExceptionUtil.checkIllegal(
+                ValidateUtil.isMobile(contract.getAssignorMobile()), "房东手机", contract.getAssignorMobile())
+        ExceptionUtil.checkIllegal(
+                ValidateUtil.isIdNo(contract.getAssignorIdNo()), "房东身份证", contract.getAssignorIdNo())
+        ExceptionUtil.checkIllegal(
+                ValidateUtil.isMobile(contract.getAssigneeMobile()), "客户手机", contract.getAssigneeMobile())
+        ExceptionUtil.checkIllegal(
+                ValidateUtil.isIdNo(contract.getAssigneeIdNo()), "客户身份证", contract.getAssigneeIdNo())
         contract.setProcess(ContractDefine.Process.CREATED)
+
         if (contractRepo.save(contract) > 0) {
             return contractRepo.findOne(contract.getId())
         }
         throw new EstateException(ExCode.CREATE_FAIL, "", contract.toString())
     }
 
+    @Transactional
     Contract close(long contractId, ContractDefine.Process process) {
         ExceptionUtil.checkIllegal(process != null && process.isEnd(), "状态", process)
 
-        if (contractRepo.close(contractId, process) > 0) {
+        Boolean result
+
+        Contract contract = contractRepo.findOne(contractId)
+        if (Objects.equals(process, contract.getProcess())) {
+            result = true
+        } else {
+            result = contractRepo.close(contractId, process) > 0
+        }
+
+        if (result && process == ContractDefine.Process.SUCCESS
+                && contract.type == ContractDefine.Type.DEAL) {
+            fangProcessService.deal(contract.fangId)
+        }
+
+        if (result) {
             return contractRepo.findOne(contractId)
         } else {
-            Contract contract = contractRepo.findOne(contractId)
-            if (nonNull(contract) && contract.getProcess().isEnd()) {
-                return contract
-            }
+            throw new EstateException(
+                    ExCode.UPDATE_FAIL,
+                    "合同",
+                    new Contract().setId(contractId).setProcess(process).toString())
         }
-        throw new EstateException(
-                ExCode.UPDATE_FAIL,
-                "合同",
-                new Contract().setId(contractId).setProcess(process).toString())
     }
 
     PageList<ContractDTO> list(ContractFilter filter, PageBounds pageBounds) {
@@ -90,7 +116,6 @@ class ContractService {
         PageList<ContractDTO> result = contractRepo.list(selector, pageBounds)
         result.forEach({
             it.setAvatarURI(employeeService.getAvatarURI(it.getEmployeeId()))
-            it.setCustomerTiny(customerService.getTiny(it.getCustomerId()))
             it.setFangTiny(mgtFangService.getFangTiny(it.getFangId()))
         })
         return result
