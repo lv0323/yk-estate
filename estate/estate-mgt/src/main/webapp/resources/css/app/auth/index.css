@@ -10,6 +10,10 @@ body {
     border-top: 0;
     color: #666;
 }
+#activationBox .form-group{
+    margin-bottom: 10px;
+    border-bottom: 0
+}
 .identity-box{
     margin-bottom: 10px;
 }
@@ -25,6 +29,15 @@ body {
     font-size: 24px;
     color: #fff;
     background: url('../../../img/common/logo.png') left calc(50% - 124px) center no-repeat;
+}
+.activation-logo{
+    text-indent: 40px;
+    font-size: 24px;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 300;
+    background: url('../../../img/common/logo.png') left calc(50% - 154px) center no-repeat;
 }
 .form-control{
     font-size: 18px;
@@ -64,4 +77,14 @@ body {
     right: 10px;
     width: 140px;
     top:8px;
+}
+.activation-box {
+    width: 400px;
+    margin: 7% auto;
+}
+@media (max-width: 768px) {
+    .activation-box {
+        width: 90%;
+        margin-top: 20px;
+    }
 }

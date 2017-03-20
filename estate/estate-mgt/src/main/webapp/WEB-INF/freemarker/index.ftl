@@ -12,7 +12,7 @@
 
     }
 </style>
-<link href="${contextPath}/css/app/identity/index.css?vn=${bts!}" rel="stylesheet">
+<link href="${contextPath}/css/app/auth/index.css?vn=${bts!}" rel="stylesheet">
 <div class="login-box"  id="loginBox" data-angular>
     <div class="login-logo">
         盈家后台管理系统
@@ -87,7 +87,6 @@
 </script>
 <script src="${contextPath}/js/libs/require.min.js?vn=${bts!}"></script>
 <script src="${contextPath!}/js/require-config.js?vn=${bts!}"></script>
-<script src="${contextPath}/js/app/identity/userInfo.js"></script>
-<script src="${contextPath!}/js/app/identity/index.js?vn=${bts!}"></script>
+<script src="${contextPath!}/js/app/auth/login.js?vn=${bts!}"></script>
 </body>
 </html>
