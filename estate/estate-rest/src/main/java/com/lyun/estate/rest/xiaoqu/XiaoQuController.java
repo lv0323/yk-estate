@@ -82,11 +82,6 @@ public class XiaoQuController {
         return xiaoQuService.findNearbyXiaoQu(id);
     }
 
-    @GetMapping("/updateAllKeyword")
-    public boolean updateAllKeyword() {
-        return keywordService.updateAllKeyword();
-    }
-
     @GetMapping("/files")
     public List<FileDescription> file(@RequestParam Long ownerId,
                                       @RequestParam(required = false) CustomType customType) {
