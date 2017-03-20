@@ -47,7 +47,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-4 col-md-4  col-sm-4 text-right">
-                                                    <label class="mt7">编号：自动生成</label>
+                                                    <label class="mt7">授权编号：自动生成</label>
                                                 </div>
                                             </div>
                                             <div class="form-group clearfix">

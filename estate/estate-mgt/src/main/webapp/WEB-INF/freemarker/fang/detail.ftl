@@ -33,7 +33,7 @@
                                                 </h6>
                                                 <label class="badge badge-success m-l-15" ng-bind="ctrl.summary.process.label"></label>
                                                 <span ng-bind="ctrl.summary.publishTime|date:'yyyy-MM-dd'"></span>
-                                                <span class="pull-right" style="min-width:90px">编号:<span ng-bind="ctrl.summary.licenceId"></span></span>
+                                                <span class="pull-right" style="min-width:90px">授权编号:<span ng-bind="ctrl.summary.licenceId"></span></span>
                                             </div>
                                             <div class="clearfix text-muted m-t-10">
                                                 <span><span id="floor" ng-bind="ctrl.summary.floor"> </span>/<span ng-bind="ctrl.summary.floorCounts"></span>F</span>
@@ -44,7 +44,8 @@
                                             <span>
                                                 <strong ng-bind="ctrl.summary.estateArea"></strong>m<sup>2</sup>&nbsp;<strong ng-bind="ctrl.summary.realArea"></strong>m<sup>2</sup>
                                                 (<strong class="text-danger"><span ng-bind="ctrl.summary.publishPrice"></strong><span ng-bind="ctrl.summary.priceUnit.label"></span>&nbsp;
-                                                <strong class="text-warning" ng-bind="ctrl.summary.unitPrice"></strong>元/m<sup>2</sup>)
+                                                <strong class="text-warning" ng-bind="ctrl.summary.unitPrice"></strong><span ng-bind="ctrl.summary.bizType.name==='RENT'?ctrl.summary.priceUnit.label:'元'"></span>/m<sup>2</sup></span>
+                                                )
                                             </span>
                                                 <a class="edit-info pull-right" href="#" ng-click="ctrl.baseInfoInit()"><i class="fa fa-pencil"></i>修改</a>
                                             </div>
@@ -512,7 +513,7 @@
                             </select>
                         </div>
                         <div class="col-lg-4 col-md-4  col-sm-4 text-right">
-                            <label class="mt7">编号：{{ctrl.baseInfo.licenceId}}</label>
+                            <label class="mt7">授权编号：{{ctrl.baseInfo.licenceId}}</label>
                         </div>
                     </div>
                     <div class="form-group clearfix">
@@ -626,13 +627,16 @@
                                 <span ng-show="ctrl.baseInfo.priceUnit === '${unit.name()}'">${unit.getLabel()}</span>
                             </#list>/㎡
                         </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="control-label">底价</label>
                         <div class="col-lg-2 col-md-2 col-sm-2">
                             <input type="text" name="housePriceMin" ng-model="ctrl.baseInfo.bottomPrice" class="form-control" placeholder="底价" strName="底价" ng-blur="ctrl.bottomPriceCheck('publishPrice')" ng-pattern="/^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$/"/>
                         </div>
                         <div class="pull-left m-t-7 p-l-0" id="danwei">
-                            <#list priceUnit ?if_exists as unit>
-                                <span ng-show="ctrl.baseInfo.priceUnit === '${unit.name()}'">${unit.getLabel()}</span>
-                            </#list>
+                        <#list priceUnit ?if_exists as unit>
+                            <span ng-show="ctrl.baseInfo.priceUnit === '${unit.name()}'">${unit.getLabel()}</span>
+                        </#list>
                         </div>
                     </div>
                     <div class="form-group clearfix">
@@ -982,8 +986,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" ng-click="ctrl.surveyCreate()">确定</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
             </div>
         </div>
     </div>

@@ -235,10 +235,12 @@
                                                            'badge-danger':house.process.name == 'DELEGATE'}">{{house.process.label}}</label>
                                                     <i class="fa fa-circle  m-l-20" style="font-size:16px;" ng-class="{true:'text-rent', false:'text-sell'}[house.bizType.name == 'RENT']"></i>
                                                     <span ng-class="{true:'text-rent', false:'text-sell'}[house.bizType.name == 'RENT']" ng-show="house.publishTime">[{{(page.now - house.publishTime)/(24*6060*1000)|number:0}}]</span>
-                                                    <span class="text-muted">{{house.publishTime|date:'yyyy-MM-dd'}}<span class="opt-gap"></span>{{house.infoOwner.departmentName}} ~ {{house.infoOwner.employeeName}}</span>
+                                                    <span class="text-muted">
+                                                        {{house.infoOwner.departmentName}} ~ {{house.infoOwner.employeeName}}
+                                                    </span>
                                                 </div>
                                                 <div class="clearfix m-t-10 text-muted">
-                                                    <span>编号:{{house.licenceId}}</span>
+                                                    <span>授权编号:{{house.licenceId}}</span>
                                                     <span class="m-l-10">
                                                         {{house.layoutFormat}}
                                                     </span>
@@ -261,7 +263,11 @@
                                                            ng-click="changeStatus(page.status.UN_PUBLISH, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH">
                                                             <i class="fa fa-pencil"></i>下架
                                                         </a>
-                                                        <a class="m-l-20" ng-href="{{'/mgt/contract/addDeal?licenceId='+house.licenceId}}"
+                                                        <a class="m-l-20" ng-href="{{'/mgt/propertyVisit/addPropertyVisit?target=.prtyVisit&licenceId='+house.licenceId}}"
+                                                           ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH">
+                                                            <i class="fa fa-pencil"></i>新增带看
+                                                        </a>
+                                                        <a class="m-l-20" ng-href="{{'/mgt/contract/addDeal?target=.contract&licenceId='+house.licenceId}}"
                                                            ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH">
                                                             <i class="fa fa-pencil"></i>成交
                                                         </a>

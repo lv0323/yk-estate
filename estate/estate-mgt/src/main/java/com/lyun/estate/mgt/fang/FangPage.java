@@ -102,7 +102,7 @@ public class FangPage {
         params.put("commissionWilling", Arrays.asList(CommissionWilling.values()));
         params.put("followType", Arrays.asList(FollowType.values()));
         params.put("username", service.getUsername());
-        if(fang.getBizType().name().equals(BizType.RENT)){
+        if(fang.getBizType().equals(BizType.RENT)){
             params.put("priceUnit", PriceUnit.getByBizType(BizType.RENT));
 
         }else{
