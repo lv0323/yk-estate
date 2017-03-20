@@ -108,7 +108,7 @@ public class UserController {
         return userService.refreshToken(refreshToken);
     }
 
-    @PostMapping("userName")
+    @PostMapping("user-name")
     @CheckToken
     public CommonResponse avatar(@RequestParam String userName,
                                  @RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken token) {
