@@ -22,6 +22,7 @@ import com.lyun.estate.biz.spec.fang.rest.entity.FangFilter;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangSummaryOrder;
 import com.lyun.estate.biz.spec.fang.rest.service.FangService;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuSummary;
 import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService;
 import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.support.def.DomainType;
@@ -282,6 +283,22 @@ public class FangServiceImpl implements FangService {
             return fileService.find(ownerId, DomainType.FANG, customType, FileProcess.WATERMARK);
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public PageList<FangSummary> recommendSellFang(Long cityId, PageBounds pageBounds) {
+
+        List<XiaoQuSummary> xiaoQuSummaries = xiaoQuService.sellCountTopXiaoQu(cityId, new PageBounds(1, 5));
+
+        FangSelector fangSelector = new FangSelector().setCityId(cityId)
+                .setBizType(BizType.SELL)
+                .setProcess(HouseProcess.PUBLISH)
+                .setXiaoQuIds(xiaoQuSummaries.stream().map(XiaoQuSummary::getId).collect(Collectors.toList()));
+
+        pageBounds.getOrders().clear();
+        pageBounds.getOrders().addAll(FangSummaryOrder.TIME_DESC.getOrders());
+
+        return findFangSummaryBySelector(fangSelector, pageBounds);
     }
 
 }

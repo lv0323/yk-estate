@@ -135,4 +135,9 @@ public class FangController {
         return fangService.files(ownerId, customType);
     }
 
+    @GetMapping("/recommend")
+    public PageList<FangSummary> recommend(@RequestParam Long cityId,
+                                           @RequestHeader("X-PAGING") PageBounds pageBounds) {
+        return fangService.recommendSellFang(cityId, pageBounds);
+    }
 }

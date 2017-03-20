@@ -2,13 +2,13 @@ package com.lyun.estate.biz.spec.fang.rest.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangDetail;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangFilter;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangSummaryOrder;
+import com.lyun.estate.biz.support.def.BizType;
 
 import java.util.List;
 
@@ -32,4 +32,6 @@ public interface FangService {
     int updateKeyword(Long fangId, String keyword);
 
     List<FileDescription> files(Long ownerId, CustomType customType);
+
+    PageList<FangSummary> recommendSellFang(Long cityId, PageBounds pageBounds);
 }
