@@ -91,7 +91,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                     departmentName: item.departmentName,
                     positionName: item.positionName,
                     mobile: item.mobile,
-                    openContact: item.openContact,
+                    openContact: (item.openContact.split(',')[0]=="")?(""):(item.openContact.split(',')[1]=="")?(item.openContact.split(',')[0]):(item.openContact.split(',')[0]+'转'+item.openContact.split(',')[1]),
                     operation: [
                         {
                             attr: {class: 'btn editEmployeeBtn'},
@@ -178,14 +178,14 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 flag = false;
                 $('#'+actionType+'EmployeeDepart').addClass('invalid-input');
             }
-            if (toSubmitEmployee.mobile==="" || typeof(toSubmitEmployee.mobile)==='undefined') {
+           /* if (toSubmitEmployee.mobile==="" || typeof(toSubmitEmployee.mobile)==='undefined') {
                 flag = false;
                 $('#'+actionType+'EmployeeMobile').addClass('invalid-input');
-            }
-            if (toSubmitEmployee.openContact.split(',')[0]==""|| typeof(toSubmitEmployee.openContact.split(',')[0])==='undefined') {
+            }*/
+            /*if (toSubmitEmployee.openContact.split(',')[0]==""|| typeof(toSubmitEmployee.openContact.split(',')[0])==='undefined') {
                 flag = false;
                 $('#'+actionType+'EmployeeOpenContactHN').addClass('invalid-input');
-            }
+            }*/
             if (toSubmitEmployee.name===""|| typeof(toSubmitEmployee.name)==='undefined') {
                 flag = false;
                 $('#'+actionType+'EmployeeName').addClass('invalid-input');
@@ -240,9 +240,9 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             var toAddData = {
                 'departmentId': $('#addEmployeeDepart').attr('selectedvalue'),
                 'positionId': $('#addEmployeePosition option:selected').attr("id"),
-                'isAgent': $('#addEmployeeIsAgent').is(':checked'),
+                // 'isAgent': $('#addEmployeeIsAgent').is(':checked'),
                 'mobile': $('#addEmployeeMobile').val(),
-                'openContact': openContact.join(','),
+                'openContact': (hostNumber==="")?"":openContact.join(','),
                 'name': $('#addEmployeeName').val(),
                 'gender': $('#addEmployeeGender input:checked').val(),
                 'idcardNumber': $('#addEmployeeID').val(),
@@ -280,7 +280,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             $('#editEmployeeId').val(employee["id"]);
             $('#editEmployeeGender').find('input[value='+employee.gender["name"]+']').prop('checked',true);
             $('#editEmployeeGender').find('input[value!='+employee.gender["name"]+']').prop('checked',false);
-            $('#editEmployeeMobile').val(employee["mobile"]);
+            $('#editEmployeeMobile').text(employee["mobile"]);
             $('#editEmployeeOpenContactHN').val(hostNumber);
             $('#editEmployeeOpenContactEN').val(extensionNumber);
             $('#editEmployeeID').val(employee["idcardNumber"]);
@@ -301,8 +301,8 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 id: $('#editEmployeeId').val(),
                 departmentId: $('#editEmployeeDepart').attr("selectedvalue"),
                 positionId: $('#editEmployeePosition option:selected').attr("id"),
-                mobile: $('#editEmployeeMobile').val(),
-                openContact: openContact.join(','),
+                // mobile: $('#editEmployeeMobile').val(),
+                openContact: (hostNumber==="")?"":openContact.join(','),
                 name: $('#editEmployeeName').val(),
                 gender: $('#editEmployeeGender input:checked').val(),
                 idcardNumber: $('#editEmployeeID').val(),

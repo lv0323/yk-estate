@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">外网电话<span class="required-field">*</span></label>
+                        <label class="control-label">外网电话</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="addEmployeeOpenContactHN" class="form-control" placeholder="外网主机号">
                         </div>
@@ -73,9 +73,9 @@
 
                             </select>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
+                        <#--<div class="col-lg-3 col-md-3 col-sm-3">
                             <input type="checkbox" id="addEmployeeIsAgent">是经纪人
-                        </div>
+                        </div>-->
                     </div>
                     <div class="form-group">
                         <label class="control-label">岗位状态<span class="required-field">*</span></label>
@@ -139,13 +139,13 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">手机号<span class="required-field">*</span></label>
+                        <label class="control-label">手机号</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <input type="text" id="editEmployeeMobile" class="form-control" placeholder="手机号">
+                            <div  id="editEmployeeMobile" class="form-control" style="background-color: #eeeeee;"></div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">外网电话<span class="required-field">*</span></label>
+                        <label class="control-label">外网电话</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="editEmployeeOpenContactHN" class="form-control" placeholder="外网主机号">
                         </div>
@@ -178,9 +178,9 @@
                             <select id="editEmployeePosition" class="employeePosition form-control btn-group dropup">
                             </select>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
+                        <#--<div class="col-lg-3 col-md-3 col-sm-3">
                             <input type="checkbox" id="editEmployeeIsAgent">是经纪人
-                        </div>
+                        </div>-->
                     </div>
                     <div class="form-group">
                         <label class="control-label">岗位状态<span class="required-field">*</span></label>
