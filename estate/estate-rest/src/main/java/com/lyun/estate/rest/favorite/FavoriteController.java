@@ -48,7 +48,7 @@ public class FavoriteController {
     }
 
 
-    @GetMapping("")
+    @GetMapping("fang")
     @CheckToken
     public PageList<FangSummary> fang(FavoriteType type,
                                       @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds,
@@ -58,7 +58,7 @@ public class FavoriteController {
     }
 
 
-    @GetMapping("")
+    @GetMapping("xiao-qu")
     @CheckToken
     public PageList<XiaoQuSummary> xiaoQu(@RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds,
                                           @RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken jwtToken) {
