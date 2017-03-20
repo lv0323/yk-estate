@@ -86,8 +86,9 @@ require(['main-app',
                             $scope.activeData.smsText = '点击获取';
                         }
                     }, 1000, 60);
-                }).fail(function(){
+                }).fail(function(response){
                     $scope.activeData.sendSMS = true;
+                    SweetAlertHelp.fail({message:response && response.message});
                 });
             };
             /*激活*/

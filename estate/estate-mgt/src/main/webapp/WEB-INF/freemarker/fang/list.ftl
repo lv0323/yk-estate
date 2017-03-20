@@ -36,6 +36,15 @@
                         <div class="box-body clearfix no-padding default-height">
                             <form id="formlist" class="form-inline">
                                 <div id="searchList" ng-cloak class="clearfix">
+                                    <div class="col-lg-4 col-md-4 col-sm-4" id="searchById">
+                                        <div class="input-group" style="width:100%;">
+                                            <input placeholder="通过授权编号查询" class="form-control" ng-model="search.id" type="text">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary btn-sm" ng-click="searchById()"><i class="fa fa-search"></i>查询</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
                                     <div class="collapse-box" ng-show="page.collapse">
                                         <div class="form-group sortlist">
                                             <label class="control-label" style="vertical-align:top;padding-top:5px;">区域</label>
