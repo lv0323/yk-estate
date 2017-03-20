@@ -31,7 +31,6 @@ public class EmployeeRest {
     @PostMapping("create")
     public Object create(@RequestParam Long departmentId,
                          @RequestParam Long positionId,
-                         @RequestParam Boolean isAgent,
                          @RequestParam String mobile,
                          @RequestParam(required = false) String openContact,
                          @RequestParam String name,
@@ -42,7 +41,7 @@ public class EmployeeRest {
                          @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date entryDate) {
         Employee employee = new Employee().setDepartmentId(departmentId)
                 .setPositionId(positionId)
-                .setAgent(isAgent)
+                .setAgent(true)
                 .setMobile(mobile)
                 .setOpenContact(openContact)
                 .setName(name)
@@ -70,8 +69,6 @@ public class EmployeeRest {
     public Object edit(@RequestParam Long id,
                        @RequestParam Long departmentId,
                        @RequestParam Long positionId,
-                       @RequestParam Boolean isAgent,
-                       @RequestParam String mobile,
                        @RequestParam String openContact,
                        @RequestParam String name,
                        @RequestParam Gender gender,
@@ -82,8 +79,7 @@ public class EmployeeRest {
         Employee employee = new Employee().setId(id)
                 .setDepartmentId(departmentId)
                 .setPositionId(positionId)
-                .setAgent(isAgent)
-                .setMobile(mobile)
+                .setAgent(true)
                 .setOpenContact(openContact)
                 .setName(name)
                 .setGender(gender)
