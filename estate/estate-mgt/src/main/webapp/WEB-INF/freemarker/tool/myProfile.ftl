@@ -1,6 +1,40 @@
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
 
+<!-- Modal editPersonalInfoDialog -->
+<div class="modal fade" id="editPersonalInfoDialog" tabindex="-1" role="dialog" aria-labelledby="editPersonalInfoLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title" id="editPersonalInfoLabel">修改个人信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label">微信</label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="editWechat" class="form-control pull-right" placeholder="请输入微信ID">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">外网电话</label>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <input type="text" id="editOpenContact" class="form-control pull-right" placeholder="请输入外网电话">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmEditPersonalInfoBtn">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal changeAvatarDialog -->
 <div class="modal fade" id="changeAvatarDialog" tabindex="-1" role="dialog" aria-labelledby="changeAvatarLabel">
     <div class="modal-dialog" role="document">
@@ -48,13 +82,13 @@
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">旧密码</label>
+                        <label class="control-label">旧密码</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="password" id="myOldPassword" class="form-control pull-right" placeholder="请输入旧密码">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-3 col-md-3 col-sm-3 control-label">新密码</label>
+                        <label class="control-label">新密码</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="password" id="myNewPassword" class="form-control pull-right" placeholder="请输入新密码">
                         </div>
@@ -91,13 +125,16 @@
                 <div class="col-lg-12">
                     <section class="connectedSortable">
                         <div class="box box-solid">
-                            <header class="box-header">
+                            <header class="box-header with-border">
                                 <h3 class="box-title pull-left">个人资料</h3>
+                                <div class="box-tools">
+                                    <a id="editPersonalInfoBtn" data-toggle="modal" data-target="#editPersonalInfoDialog" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i>修改个人信息</a>
+                                </div>
                             </header>
                             <div class="box-body no-padding text-center">
                                 <div class="col-md-3 col-sm-3">
                                     <div class="clearfix">
-                                        <a id="changeAvatarBtn" data-toggle="modal" data-target="#changeAvatarDialog" class="btn pull-right">
+                                        <a id="changeAvatarBtn" data-toggle="modal" data-target="#changeAvatarDialog" class="btn center">
                                             <i class="fa fa-pencil" aria-hidden="true"></i>
                                             修改头像
                                         </a>
@@ -114,34 +151,35 @@
                                 <div class="col-sm-offset-1 col-md-8 col-sm-8">
                                     <div class="profile-content">
                                         <div class="clearfix">
-                                            <h5 class="pull-left">关于我</h5>
-                                            <div class="table-responsive">
-                                                <table class="table">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="text-right text-muted">用户名</td>
-                                                            <td id="username" class="text-left"></td>
-                                                            <td class="text-right text-muted">密码</td>
-                                                            <td class="text-left">
-                                                                <a id="changePswBtn" href="javascript:;" data-toggle="modal" data-target="#changeMyPasswordDialog">
-                                                                    <i class="fa fa-pencil" aria-hidden="true"></i>修改密码
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="text-right text-muted">手机号</td>
-                                                            <td id="mobile" class="text-left"></td>
-                                                            <td class="text-right text-muted">入职日期</td>
-                                                            <td id="entryDate" class="text-left"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="text-right text-muted">微信</td>
-                                                            <td id="wechat" class="text-left"></td>
-
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                            <h5 class="m-l-20 pull-left">关于我</h5>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-right text-muted">用户名</td>
+                                                        <td id="username" class="text-left"></td>
+                                                        <td class="text-right text-muted">密码</td>
+                                                        <td class="text-left">
+                                                            <a id="changePswBtn" href="javascript:;" data-toggle="modal" data-target="#changeMyPasswordDialog">
+                                                                <i class="fa fa-pencil" aria-hidden="true"></i>修改密码
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-right text-muted">手机号</td>
+                                                        <td id="mobile" class="text-left"></td>
+                                                        <td class="text-right text-muted">入职日期</td>
+                                                        <td id="entryDate" class="text-left"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-right text-muted">微信</td>
+                                                        <td id="wechat" class="text-left"></td>
+                                                        <td class="text-right text-muted">外网电话</td>
+                                                        <td id="openContact" class="text-left"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

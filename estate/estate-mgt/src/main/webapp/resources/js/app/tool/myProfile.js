@@ -20,6 +20,7 @@ require(['main-app',
             var entryDate = UtilService.timeStamp2Date(data.entryDate);
             $('#entryDate').text(entryDate);
             $('#wechat').text(data.wechat);
+            $('#openContact').text(data.openContact);
         };
         EmployeeService.getSelf(header).done(function (data) {
             loadPage(data, header);
@@ -88,6 +89,20 @@ require(['main-app',
                 .fail(function (res) {
                     SweetAlertHelp.fail(res);
                 });
-        })
+        });
+
+        $('#confirmEditPersonalInfoBtn').on('click', function () {
+            var editWechat = $('#editWechat').val();
+            var editOpenContact = $('#editOpenContact').val();
+
+            EmployeeService.editSelf({openContact: editOpenContact, weChat: editWechat}, header)
+                .done(function () {
+                    SweetAlertHelp.success({title:"个人信息修改成功!"}, function () {
+                        location.reload(true);
+                    });
+                }).fail(function (res) {
+                    SweetAlertHelp.fail(res);
+                });
+        });
 
     });

@@ -3,10 +3,11 @@
  */
 require(['main-app',
         contextPath + '/js/service/propertyvisit-service.js',
+        contextPath + '/js/service/util-service.js',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js'],
-    function (mainApp, PropertyVisitService, SweetAlertHelp) {
+    function (mainApp, PropertyVisitService,UtilService, SweetAlertHelp) {
 
-        // var houseLicenceID = window.location.href.split('?')[1];
+        $('#houseLicenceID').val(UtilService.getUrlParam('licenceId'));
 
         function verifyAddPropertyVisitInput(toSubmitPropertyVisit) {
             var flag = true;
