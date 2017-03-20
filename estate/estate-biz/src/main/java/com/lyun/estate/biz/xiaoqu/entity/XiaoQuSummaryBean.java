@@ -7,6 +7,8 @@ public class XiaoQuSummaryBean {
     private Long id;
     private Long cityId;
     private String name;
+    private Integer sellHouseCount;
+    private Integer rentHouseCount;
     private Long districtId;
     private Long subDistrictId;
     private Integer buildedYear;
@@ -82,6 +84,24 @@ public class XiaoQuSummaryBean {
 
     public XiaoQuSummaryBean setCityId(Long cityId) {
         this.cityId = cityId;
+        return this;
+    }
+
+    public Integer getSellHouseCount() {
+        return sellHouseCount;
+    }
+
+    public XiaoQuSummaryBean setSellHouseCount(Integer sellHouseCount) {
+        this.sellHouseCount = sellHouseCount;
+        return this;
+    }
+
+    public Integer getRentHouseCount() {
+        return rentHouseCount;
+    }
+
+    public XiaoQuSummaryBean setRentHouseCount(Integer rentHouseCount) {
+        this.rentHouseCount = rentHouseCount;
         return this;
     }
 }

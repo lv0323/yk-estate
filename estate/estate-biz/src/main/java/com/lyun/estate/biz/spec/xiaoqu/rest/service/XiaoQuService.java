@@ -37,4 +37,6 @@ public interface XiaoQuService {
     boolean increaseRentCount(long xiaoQuId);
 
     boolean decreaseRentCount(long xiaoQuId);
+
+    PageList<XiaoQuSummary> sellCountTopXiaoQu(Long cityId, PageBounds pageBounds);
 }

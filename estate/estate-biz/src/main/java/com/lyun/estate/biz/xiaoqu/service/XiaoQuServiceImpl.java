@@ -255,4 +255,12 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         return true;
     }
 
+    @Override
+    public PageList<XiaoQuSummary> sellCountTopXiaoQu(Long cityId, PageBounds pageBounds) {
+        XiaoQuSelector selector = new XiaoQuSelector().setCityId(cityId);
+        pageBounds.getOrders().clear();
+        pageBounds.getOrders().addAll(XQSummaryOrder.SELL_COUNT_DOWN.getOrders());
+        return findXiaoQuSummaryBySelector(selector, pageBounds);
+    }
+
 }

@@ -10,7 +10,7 @@ import com.lyun.estate.core.repo.SQL;
 public class XiaoQuSqlProvider {
     public String findSummaryBySelector(XiaoQuSelector selector) {
         SQL sql = new SQL().SELECT(
-                "xq.id, xq.ranking, xq.avg_price, c.city_id, c.name, dr.district_id, c.sub_district_id, c.builded_year, c.structure_type")
+                "xq.id, xq.ranking, xq.avg_price,xq.sell_house_count,xq.rent_house_count, c.city_id, c.name, dr.district_id, c.sub_district_id, c.builded_year, c.structure_type")
                 .SELECT("CASE WHEN xq.avg_price ISNULL THEN 1 ELSE 0 END AS ap_null")
                 .FROM("t_xiao_qu xq ")
                 .LEFT_OUTER_JOIN("t_community c ON xq.community_id = c.id");

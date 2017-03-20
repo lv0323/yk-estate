@@ -3,17 +3,17 @@ package com.lyun.estate.rest.xiaoqu;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.collect.Lists;
+import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.keyword.entity.KeywordResp;
 import com.lyun.estate.biz.keyword.service.KeywordService;
-import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.biz.spec.xiaoqu.rest.def.XQSummaryOrder;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuFilter;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuSummary;
 import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService;
+import com.lyun.estate.biz.support.def.DomainType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,5 +86,11 @@ public class XiaoQuController {
     public List<FileDescription> file(@RequestParam Long ownerId,
                                       @RequestParam(required = false) CustomType customType) {
         return xiaoQuService.files(ownerId, customType);
+    }
+
+    @GetMapping("/recommend")
+    public PageList<XiaoQuSummary> recommend(@RequestParam Long cityId,
+                                             @RequestHeader("X-PAGING") PageBounds pageBounds) {
+        return xiaoQuService.sellCountTopXiaoQu(cityId, pageBounds);
     }
 }
