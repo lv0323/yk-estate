@@ -1,7 +1,6 @@
 package com.lyun.estate.biz.spec.fang.rest.entity;
 
 import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.spec.fang.rest.def.ElevatorFilter;
 import com.lyun.estate.biz.spec.fang.rest.def.HouseTypeFilter;
 import com.lyun.estate.biz.spec.fang.rest.def.IntPair;
@@ -29,6 +28,7 @@ public class FangFilter {
     private List<StructureType> structureTypes;
     private Integer minPrice;
     private Integer maxPrice;
+    private HouseProcess process;
     private String keyword;
     private List<IntPair> areas;
     private List<IntPair> years;
@@ -204,6 +204,15 @@ public class FangFilter {
     public FangFilter setHouseTypeFilters(
             List<HouseTypeFilter> houseTypeFilters) {
         this.houseTypeFilters = houseTypeFilters;
+        return this;
+    }
+
+    public HouseProcess getProcess() {
+        return process;
+    }
+
+    public FangFilter setProcess(HouseProcess process) {
+        this.process = process;
         return this;
     }
 }

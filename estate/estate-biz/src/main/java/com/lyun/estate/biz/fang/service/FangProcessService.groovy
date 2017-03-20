@@ -16,6 +16,8 @@ import com.lyun.estate.biz.support.def.DomainType
 import com.lyun.estate.core.supports.exceptions.EstateException
 import com.lyun.estate.core.supports.exceptions.ExCode
 import com.lyun.estate.core.utils.CommonUtil
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -41,6 +43,8 @@ class FangProcessService {
     @Autowired
     EventService eventService
 
+    Logger logger = LoggerFactory.getLogger(FangProcessService.class)
+
 
     @Transactional
     Fang publish(long fangId) {
@@ -63,16 +67,20 @@ class FangProcessService {
             //update licence status
             houseLicenceService.active(fang.getLicenceId())
 
-            if (fang.getProcess() == HouseProcess.DELEGATE) {
-                eventService.produce(new Event()
-                        .setUuid(CommonUtil.getUuid())
-                        .setDomainId(fangId).setDomainType(DomainType.FANG)
-                        .setType(EventDefine.Type.FANG_PUBLISH))
-            } else if (fang.getProcess() == HouseProcess.UN_PUBLISH) {
-                eventService.produce(new Event()
-                        .setUuid(CommonUtil.getUuid())
-                        .setDomainId(fangId).setDomainType(DomainType.FANG)
-                        .setType(EventDefine.Type.FANG_PROCESS))
+            try {
+                if (fang.getProcess() == HouseProcess.DELEGATE) {
+                    eventService.produce(new Event()
+                            .setUuid(CommonUtil.getUuid())
+                            .setDomainId(fangId).setDomainType(DomainType.FANG)
+                            .setType(EventDefine.Type.FANG_PUBLISH))
+                } else if (fang.getProcess() == HouseProcess.UN_PUBLISH) {
+                    eventService.produce(new Event()
+                            .setUuid(CommonUtil.getUuid())
+                            .setDomainId(fangId).setDomainType(DomainType.FANG)
+                            .setType(EventDefine.Type.FANG_PROCESS))
+                }
+            } catch (EstateException e) {
+                logger.error("publish event error:{}", e)
             }
 
             return mgtFangRepository.findFang(fangId)
@@ -98,12 +106,14 @@ class FangProcessService {
             // update licence status
             houseLicenceService.invalid(fang.getLicenceId())
 
-            eventService.produce(new Event()
-                    .setUuid(CommonUtil.getUuid())
-                    .setDomainId(fangId).setDomainType(DomainType.FANG)
-                    .setType(EventDefine.Type.FANG_PROCESS)
-            )
-
+            try {
+                eventService.produce(new Event()
+                        .setUuid(CommonUtil.getUuid())
+                        .setDomainId(fangId).setDomainType(DomainType.FANG)
+                        .setType(EventDefine.Type.FANG_PROCESS))
+            } catch (EstateException e) {
+                logger.error("unPublish event error:{}", e)
+            }
             return mgtFangRepository.findFang(fangId)
         } else {
             throw new EstateException(ExCode.PROCESS_ILLEGAL, fangId, fang.process, HouseProcess.UN_PUBLISH)
@@ -128,12 +138,14 @@ class FangProcessService {
             //update licence status
             houseLicenceService.invalid(fang.getLicenceId())
 
-            eventService.produce(new Event()
-                    .setUuid(CommonUtil.getUuid())
-                    .setDomainId(fangId).setDomainType(DomainType.FANG)
-                    .setType(EventDefine.Type.FANG_PROCESS)
-            )
-
+            try {
+                eventService.produce(new Event()
+                        .setUuid(CommonUtil.getUuid())
+                        .setDomainId(fangId).setDomainType(DomainType.FANG)
+                        .setType(EventDefine.Type.FANG_PROCESS))
+            } catch (Exception e) {
+                logger.error("deal event error:{}", e)
+            }
             return mgtFangRepository.findFang(fangId)
         } else {
             throw new EstateException(ExCode.PROCESS_ILLEGAL, fangId, fang.process, HouseProcess.SUCCESS)

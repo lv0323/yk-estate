@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.user.repository;
 
+import com.lyun.estate.biz.user.domain.SimpleUser;
 import com.lyun.estate.biz.user.domain.User;
 import com.lyun.estate.biz.user.repository.provider.UserSqlProvider;
 import com.lyun.estate.biz.user.resources.ChangePasswordResource;
@@ -29,5 +30,15 @@ public interface UserMapper {
     int updateUser(User user);
 
     @Select("select * from t_user where id = #{id} and is_deleted='N'")
-    User findUserById(Long aLong);
+    User findUserById(Long id);
+
+    @Select("select * from t_user where id = #{id} and is_deleted='N'")
+    SimpleUser findUserSimpleById(Long id);
+
+    @Update("UPDATE t_user SET user_name = #{userName}, update_time = now() WHERE id = #{userId}")
+    int setUserName(@Param("userId") long userId, @Param("userName") String userName);
+
+
+    @Update("UPDATE t_user SET avatar_id = #{avatarId}, update_time = now() WHERE id = #{userId}")
+    int setAvatarId(@Param("userId") long userId, @Param("avatarId") Long avatarId);
 }
