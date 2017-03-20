@@ -77,7 +77,8 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                     id:item.id,
                     pId:item.parentId};
             });
-            $.fn.zTree.init($("#departmentTree"), zTreeSetting, departments);
+            var zTreeObj = $.fn.zTree.init($("#departmentTree"), zTreeSetting, departments);
+            zTreeObj.expandAll(true);
         }
 
        /* end部门树*/
