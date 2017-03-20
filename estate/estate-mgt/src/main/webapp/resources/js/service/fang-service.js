@@ -100,5 +100,8 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.unPublish = function (params, header) {
             return RequestService.post('/api/fang-process/un-publish', params, header);
         };
+        FangService.summaryByLicenceId = function (params, header) {
+            return RequestService.get('/api/fang/summary-by-licence-id', params, header);
+        };
         return FangService;
     });

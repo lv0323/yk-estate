@@ -1176,3 +1176,6 @@ button.btn-default.invalid-input, input.ng-invalid.ng-dirty{
 .chosen-container-single .chosen-single.invalid-input{
     border: 1px solid #FF0000;
 }
+#searchById{
+    padding-left: 8px;
+}
