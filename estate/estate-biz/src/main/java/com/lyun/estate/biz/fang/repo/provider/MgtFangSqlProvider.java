@@ -146,7 +146,7 @@ public class MgtFangSqlProvider {
         sql.WHERE_IF("f.id =#{fangId}", nonNull(selector.getFangId()));
         sql.WHERE_IF("f.licence_id =#{licenceId}", nonNull(selector.getLicenceId()));
 
-        if (isNull(selector.getFangId()) && isNull(selector.getProcess())) {
+        if (isNull(selector.getProcess()) && isNull(selector.getFangId()) && isNull(selector.getLicenceId())) {
             //默认情况 delegate 和 publish
             sql.WHERE("f.process IN ('DELEGATE', 'PUBLISH')");
         }
