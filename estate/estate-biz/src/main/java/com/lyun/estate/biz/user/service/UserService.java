@@ -5,9 +5,14 @@ import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.token.JWTToken;
 import com.lyun.estate.biz.auth.token.Token;
 import com.lyun.estate.biz.auth.token.TokenProvider;
+import com.lyun.estate.biz.file.def.CustomType;
+import com.lyun.estate.biz.file.def.FileProcess;
+import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.sms.def.SmsType;
+import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.biz.user.domain.SimpleUser;
 import com.lyun.estate.biz.user.domain.User;
 import com.lyun.estate.biz.user.repository.UserMapper;
 import com.lyun.estate.biz.user.resources.*;
@@ -25,6 +30,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -66,7 +72,7 @@ public class UserService {
         }
         if (registerResource.isLogin()) {
             registerResponse
-                    .setToken(getLoginToken(userMapper.findUserByMobile(smsCode.getMobile())).getToken());
+                    .setToken(generateLoginToken(userMapper.findUserByMobile(smsCode.getMobile())).getToken());
         }
         return registerResponse;
     }
@@ -92,7 +98,7 @@ public class UserService {
             }
             User loginUser = userMapper.loginUser(loginResource);
             if (isPasswordRight(loginResource, loginUser)) {
-                return getLoginToken(loginUser);
+                return generateLoginToken(loginUser);
             } else {
                 throw new ValidateException("user.login.error", "用户名或密码错误");
             }
@@ -100,7 +106,7 @@ public class UserService {
             if (smsCode.getType() != SmsType.LOGIN) {
                 throw new ValidateException("sms.type.illegal", "短信验证码类型应为'LOGIN'");
             }
-            return getLoginToken(userMapper.findUserByMobile(smsCode.getMobile()));
+            return generateLoginToken(userMapper.findUserByMobile(smsCode.getMobile()));
         }
     }
 
@@ -121,11 +127,12 @@ public class UserService {
         }
     }
 
-    private TokenResponse getLoginToken(User user) {
+    private TokenResponse generateLoginToken(User user) {
         JWTToken token = tokenProvider.generate(String.valueOf(user.getId()),
                 Integer.valueOf(restContext.getClientId()),
                 new HashMap<String, Object>() {{
                     put("clientId", restContext.getClientId());
+                    put("userName", user.getUserName());
                     put("avatarURI",
                             Optional.ofNullable(user.getAvatarId())
                                     .map(t -> Optional.ofNullable(
@@ -165,7 +172,7 @@ public class UserService {
         }
         tokenProvider.invalidAllUserToken(String.valueOf(loginUser[0].getId()));
         if (changePasswordResource.isLogin()) {
-            return getLoginToken(loginUser[0]);
+            return generateLoginToken(loginUser[0]);
         }
         return new TokenResponse();
     }
@@ -208,4 +215,34 @@ public class UserService {
     public User findUserById(Long userId) {
         return userMapper.findUserById(userId);
     }
+
+    public SimpleUser findSimpleUser() {
+        long userId = restContext.getUserId();
+        SimpleUser simpleUser = userMapper.findUserSimpleById(userId);
+        if (simpleUser.getAvatarId() != null) {
+            simpleUser.setAvatarURI(Optional.ofNullable(fileService.findOne(simpleUser.getAvatarId()))
+                    .map(FileDescription::getFileURI).orElse(null));
+        }
+        return simpleUser;
+    }
+
+    public boolean setUserName(String userName) {
+        return userMapper.setUserName(restContext.getUserId(), userName) > 0;
+    }
+
+    public FileDescription setAvatar(InputStream avatarIS, String suffix) {
+        Long userId = restContext.getUserId();
+
+        FileDescription fileDescription = fileService.save(new FileDescription()
+                        .setOwnerId(userId)
+                        .setOwnerType(DomainType.USER)
+                        .setCustomType(CustomType.AVATAR)
+                        .setFileType(FileType.IMAGE)
+                        .setFileProcess(FileProcess.NONE.getFlag())
+                , avatarIS, suffix);
+
+        userMapper.setAvatarId(userId, fileDescription.getId());
+        return fileService.findOne(fileDescription.getId());
+    }
+
 }

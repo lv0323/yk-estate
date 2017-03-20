@@ -8,15 +8,21 @@ import com.lyun.estate.biz.auth.sms.CheckSmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
 import com.lyun.estate.biz.auth.token.CheckToken;
-import com.lyun.estate.biz.auth.token.JWTTokenArgumentResolver;
 import com.lyun.estate.biz.auth.token.JWTToken;
+import com.lyun.estate.biz.auth.token.JWTTokenArgumentResolver;
+import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.sms.def.SmsType;
+import com.lyun.estate.biz.user.domain.SimpleUser;
 import com.lyun.estate.biz.user.resources.*;
 import com.lyun.estate.biz.user.service.UserService;
 import com.lyun.estate.rest.supports.resources.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 @RestController
 @RequestMapping("/user")
@@ -101,4 +107,28 @@ public class UserController {
     public TokenResponse refreshToken(@RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) String refreshToken) {
         return userService.refreshToken(refreshToken);
     }
+
+    @PostMapping("userName")
+    @CheckToken
+    public CommonResponse avatar(@RequestParam String userName,
+                                 @RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken token) {
+        return new CommonResponse().setSuccess(userService.setUserName(userName));
+    }
+
+    @PostMapping("avatar")
+    @CheckToken
+    public FileDescription avatar(@RequestParam MultipartFile avatar,
+                                  @RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken token) throws IOException {
+        try (InputStream avatarIS = avatar.getInputStream()) {
+            return userService.setAvatar(avatarIS,
+                    avatar.getOriginalFilename().substring(avatar.getOriginalFilename().lastIndexOf('.')));
+        }
+    }
+
+    @GetMapping("simple-user")
+    @CheckToken
+    public SimpleUser getSimpleUser(@RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken token) {
+        return userService.findSimpleUser();
+    }
+
 }

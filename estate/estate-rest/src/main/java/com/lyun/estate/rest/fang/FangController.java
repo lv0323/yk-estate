@@ -6,11 +6,8 @@ import com.google.common.collect.Lists;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.entity.FileDescription;
-import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.keyword.entity.KeywordResp;
 import com.lyun.estate.biz.keyword.service.KeywordService;
-import com.lyun.estate.biz.support.def.BizType;
-import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.biz.spec.fang.rest.def.ElevatorFilter;
 import com.lyun.estate.biz.spec.fang.rest.def.HouseTypeFilter;
 import com.lyun.estate.biz.spec.fang.rest.def.IntPair;
@@ -20,6 +17,8 @@ import com.lyun.estate.biz.spec.fang.rest.entity.FangFilter;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangSummary;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangSummaryOrder;
 import com.lyun.estate.biz.spec.fang.rest.service.FangService;
+import com.lyun.estate.biz.support.def.BizType;
+import com.lyun.estate.biz.support.def.DomainType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,6 +71,7 @@ public class FangController {
                                          @RequestParam(required = false) Integer maxPrice,
                                          @RequestParam(required = false) List<String> yips,
                                          @RequestParam(required = false) List<String> aips,
+                                         @RequestParam(required = false) HouseProcess process,
                                          @RequestParam(required = false) String keyword,
                                          @RequestParam(required = false) List<HouseTypeFilter> htfs,
                                          @RequestParam(required = false) FangSummaryOrder order,
@@ -93,6 +93,7 @@ public class FangController {
                 .setStructureTypes(sts)
                 .setMinPrice(minPrice)
                 .setMaxPrice(maxPrice)
+                .setProcess(process)
                 .setKeyword(keyword)
                 .setHouseTypeFilters(htfs)
                 .setYears(Optional.ofNullable(yips).map(t -> t.stream()

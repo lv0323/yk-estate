@@ -77,7 +77,15 @@ public class FangServiceImpl implements FangService {
         FangSelector selector = new FangSelector();
         BeanUtils.copyProperties(filter, selector);
 
-        selector.setProcess(HouseProcess.PUBLISH);
+        if (filter.getProcess() == null || filter.getProcess() == HouseProcess.PUBLISH) {
+            selector.setProcess(HouseProcess.PUBLISH);
+        } else {
+            if (filter.getProcess() == HouseProcess.SUCCESS) {
+                selector.setProcess(HouseProcess.SUCCESS);
+            }
+            //ignore
+        }
+
 
         //shiCountsFilter
         if (filter.getShiCountsFilters() != null && !filter.getShiCountsFilters().isEmpty()) {
