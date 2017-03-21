@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.fang.entity;
+package com.lyun.estate.biz.agent.entity;
 
 import com.lyun.estate.biz.support.def.Gender;
 
