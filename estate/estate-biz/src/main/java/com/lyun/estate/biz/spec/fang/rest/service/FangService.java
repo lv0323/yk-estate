@@ -26,7 +26,7 @@ public interface FangService {
     /* 根据房屋ID查询房源信息 */
     FangSummary getSummary(Long id);
 
-    PageList<FangSummary> findSummaryByXiaoQuId(Long cityId, Long xiaoQuId, BizType bizType, PageBounds pageBounds);
+    PageList<FangSummary> findSummaryByXiaoQuId(Long xiaoQuId, BizType bizType, PageBounds pageBounds);
 
     PageList<FangSummary> findNearbyByFangId(Long id);
 

@@ -117,11 +117,10 @@ public class FangController {
     }
 
     @GetMapping("/xiaoqu")
-    public PageList<FangSummary> summary(@RequestParam Long cityId,
-                                         @RequestParam Long xiaoQuId,
+    public PageList<FangSummary> summary(@RequestParam Long xiaoQuId,
                                          @RequestParam BizType bizType,
                                          @RequestHeader("X-PAGING") PageBounds pageBounds) {
-        return fangService.findSummaryByXiaoQuId(cityId, xiaoQuId, bizType, pageBounds);
+        return fangService.findSummaryByXiaoQuId(xiaoQuId, bizType, pageBounds);
     }
 
     @GetMapping("/nearby")
@@ -140,10 +139,5 @@ public class FangController {
     public PageList<FangSummary> recommend(@RequestParam Long cityId,
                                            @RequestHeader("X-PAGING") PageBounds pageBounds) {
         return fangService.recommendSellFang(cityId, pageBounds);
-    }
-
-    @GetMapping("/agent")
-    public Agent getFangAgent(Long fangId) {
-        return fangService.getFangAgent(fangId);
     }
 }

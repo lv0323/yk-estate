@@ -232,19 +232,19 @@ public class FangServiceImpl implements FangService {
     }
 
     @Override
-    public PageList<FangSummary> findSummaryByXiaoQuId(Long cityId,
-                                                       Long xiaoQuId,
+    public PageList<FangSummary> findSummaryByXiaoQuId(Long xiaoQuId,
                                                        BizType bizType,
                                                        PageBounds pageBounds) {
-        ExceptionUtil.checkNotNull("城市编号", cityId);
         ExceptionUtil.checkNotNull("小区编号", xiaoQuId);
         ExceptionUtil.checkNotNull("业务", bizType);
+
+        XiaoQuSummary summary = xiaoQuService.getSummary(xiaoQuId);
 
         pageBounds.getOrders().clear();
         pageBounds.getOrders().addAll(FangSummaryOrder.DEFAULT.getOrders());
 
         FangSelector selector = new FangSelector();
-        selector.setCityId(cityId);
+        selector.setCityId(summary.getCityId());
         selector.setXiaoQuIds(Lists.newArrayList(xiaoQuId));
         selector.setBizType(bizType);
         selector.setProcess(HouseProcess.PUBLISH);
@@ -314,9 +314,15 @@ public class FangServiceImpl implements FangService {
             throw new EstateException(ExCode.NOT_PUBLISH, fangId);
         }
         Agent agent = fangRepository.getFangAgent(fangId);
+
+        if (Strings.isNullOrEmpty(agent.getOpenContact())) {
+            agent.setOpenContact(agent.getMobile());
+        }
         agent.setShowingCount(showingService.countSucceedShowing(fangId, agent.getEmployeeId()));
-        agent.setAvatarURI(Optional.ofNullable(fileService.findOne(agent.getAvatarId()))
-                .map(FileDescription::getFileURI).orElse(null));
+        if (agent.getAvatarId() != null) {
+            agent.setAvatarURI(Optional.ofNullable(fileService.findOne(agent.getAvatarId()))
+                    .map(FileDescription::getFileURI).orElse(null));
+        }
         return agent;
     }
 
