@@ -8,7 +8,6 @@ import com.google.common.collect.Lists;
 import com.lyun.estate.biz.fang.def.HouseProcess;
 import com.lyun.estate.biz.fang.def.HouseType;
 import com.lyun.estate.biz.fang.domian.FangSelector;
-import com.lyun.estate.biz.fang.entity.Agent;
 import com.lyun.estate.biz.fang.entity.FangTag;
 import com.lyun.estate.biz.fang.repo.FangRepository;
 import com.lyun.estate.biz.file.def.CustomType;
@@ -17,7 +16,6 @@ import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
-import com.lyun.estate.biz.showing.service.ShowingService;
 import com.lyun.estate.biz.spec.fang.rest.def.ElevatorFilter;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangDetail;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangFilter;
@@ -60,9 +58,6 @@ public class FangServiceImpl implements FangService {
 
     @Autowired
     private XiaoQuService xiaoQuService;
-
-    @Autowired
-    private ShowingService showingService;
 
     @Override
     public PageList<FangSummary> findFangSummaryByKeyword(FangFilter filter, FangSummaryOrder order,
@@ -304,26 +299,6 @@ public class FangServiceImpl implements FangService {
         pageBounds.getOrders().addAll(FangSummaryOrder.TIME_DESC.getOrders());
 
         return findFangSummaryBySelector(fangSelector, pageBounds);
-    }
-
-    @Override
-    public Agent getFangAgent(Long fangId) {
-        ExceptionUtil.checkNotNull("房源编号", fangId);
-        FangSummary fang = fangRepository.findSummary(fangId);
-        if (fang == null || fang.getProcess() == HouseProcess.DELEGATE) {
-            throw new EstateException(ExCode.NOT_PUBLISH, fangId);
-        }
-        Agent agent = fangRepository.getFangAgent(fangId);
-
-        if (Strings.isNullOrEmpty(agent.getOpenContact())) {
-            agent.setOpenContact(agent.getMobile());
-        }
-        agent.setShowingCount(showingService.countSucceedShowing(fangId, agent.getEmployeeId()));
-        if (agent.getAvatarId() != null) {
-            agent.setAvatarURI(Optional.ofNullable(fileService.findOne(agent.getAvatarId()))
-                    .map(FileDescription::getFileURI).orElse(null));
-        }
-        return agent;
     }
 
 }
