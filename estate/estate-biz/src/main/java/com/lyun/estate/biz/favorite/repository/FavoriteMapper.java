@@ -1,5 +1,8 @@
 package com.lyun.estate.biz.favorite.repository;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.favorite.def.FavoriteType;
 import com.lyun.estate.biz.favorite.entity.Favorite;
 import com.lyun.estate.biz.support.def.DomainType;
 import org.apache.ibatis.annotations.*;
@@ -25,4 +28,8 @@ public interface FavoriteMapper {
 
     @Select("select follower_id from t_favorite where domain_type = #{domainType} and target_id=#{targetId}")
     List<Long> getFollowerIds(@Param("targetId") Long targetId, @Param("domainType") DomainType domainType);
+
+    @Select("SELECT * FROM t_favorite where follower_id = #{followerId} and type = #{type}")
+    PageList<Favorite> getFavoritesByFollowerId(@Param("followerId") long followerId, @Param("type") FavoriteType type,
+                                                PageBounds pageBounds);
 }

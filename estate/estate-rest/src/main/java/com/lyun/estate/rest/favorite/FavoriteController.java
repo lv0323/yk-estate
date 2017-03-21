@@ -53,8 +53,7 @@ public class FavoriteController {
     public PageList<FangSummary> fang(FavoriteType type,
                                       @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds,
                                       @RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken jwtToken) {
-
-        return null;
+        return favoriteService.getFavoriteFang(type, pageBounds);
     }
 
 
@@ -63,6 +62,6 @@ public class FavoriteController {
     public PageList<XiaoQuSummary> xiaoQu(@RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds,
                                           @RequestHeader(JWTTokenArgumentResolver.AUTH_HEADER) JWTToken jwtToken) {
 
-        return null;
+        return favoriteService.getFavoriteXiaoQu(pageBounds);
     }
 }
