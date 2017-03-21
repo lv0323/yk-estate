@@ -10,7 +10,7 @@ public enum InfoOwnerReason implements LabelEnum {
     KEY("钥匙"),
     DELEGATE_ONLY("独家"),
     CHECK("勘查"),
-    FOLLOW("维护"),
+    FOLLOW("跟进"),
     OTHER("其他"),;
     private final String label;
 

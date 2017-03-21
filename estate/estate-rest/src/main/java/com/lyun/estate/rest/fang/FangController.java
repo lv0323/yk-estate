@@ -4,6 +4,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.fang.def.*;
+import com.lyun.estate.biz.fang.entity.Agent;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.keyword.entity.KeywordResp;
@@ -139,5 +140,10 @@ public class FangController {
     public PageList<FangSummary> recommend(@RequestParam Long cityId,
                                            @RequestHeader("X-PAGING") PageBounds pageBounds) {
         return fangService.recommendSellFang(cityId, pageBounds);
+    }
+
+    @GetMapping("/agent")
+    public Agent getFangAgent(Long fangId) {
+        return fangService.getFangAgent(fangId);
     }
 }

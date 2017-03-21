@@ -3,9 +3,8 @@ package com.lyun.estate.biz.fang.repo;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.domian.FangSelector;
-import com.lyun.estate.biz.fang.entity.Fang;
+import com.lyun.estate.biz.fang.entity.Agent;
 import com.lyun.estate.biz.fang.entity.FangDescr;
-import com.lyun.estate.biz.fang.entity.FangExt;
 import com.lyun.estate.biz.fang.entity.FangTag;
 import com.lyun.estate.biz.fang.repo.provider.FangSqlProvider;
 import com.lyun.estate.biz.spec.fang.rest.entity.FangDetail;
@@ -42,4 +41,8 @@ public interface FangRepository {
     @Update("UPDATE T_FANG SET NAME_KW=#{keyword} WHERE id=#{fangId}")
     int updateKeyword(@Param("fangId") Long fangId, @Param("keyword") String keyword);
 
+
+    @Select("SELECT e.id as employee_id, e.name, e.gender, e.mobile , e.open_contact, e.avatar_id FROM t_fang_info_owner fio " +
+            "LEFT JOIN t_employee e ON fio.employee_id = e.id WHERE fio.is_deleted = FALSE AND fio.fang_id = #{fangId} LIMIT 1;")
+    Agent getFangAgent(Long fangId);
 }

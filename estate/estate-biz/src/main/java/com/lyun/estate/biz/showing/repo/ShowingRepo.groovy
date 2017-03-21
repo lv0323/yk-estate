@@ -28,4 +28,7 @@ interface ShowingRepo {
 
     @SelectProvider(type = ShowingSqlProvider.class, method = 'list')
     PageList<ShowingDTO> list(ShowingSelector selector, PageBounds pageBounds)
+
+    @Select("SELECT count(1) FROM t_showing WHERE fang_id = #{fangId} AND employee_id = #{employeeId} AND is_deleted =FALSE  AND process = 'SUCCESS'")
+    int countSucceedShowing(@Param("fangId") long fangId, @Param("employeeId") long employeeId)
 }

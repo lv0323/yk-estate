@@ -98,4 +98,11 @@ class ShowingService {
         })
         return result
     }
+
+    int countSucceedShowing(Long fangId, Long employeeId) {
+        ExceptionUtil.checkNotNull("房源编号", fangId)
+        ExceptionUtil.checkNotNull("员工编号", employeeId)
+
+        showingRepo.countSucceedShowing(fangId, employeeId)
+    }
 }
