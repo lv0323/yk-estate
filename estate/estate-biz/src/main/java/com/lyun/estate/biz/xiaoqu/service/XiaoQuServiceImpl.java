@@ -59,9 +59,6 @@ public class XiaoQuServiceImpl implements XiaoQuService {
     private FileService fileService;
 
     @Autowired
-    private MapService mapService;
-
-    @Autowired
     private CityService cityService;
 
 
