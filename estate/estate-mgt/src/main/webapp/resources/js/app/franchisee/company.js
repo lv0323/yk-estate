@@ -53,7 +53,7 @@ require(['main-app',contextPath + '/js/service/company-service.js',
                         {attr: {class: 'renewCompanyBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#renewCompanyDialog'}, text: '续约'},
                         {attr: {class: 'toggleLockCompanyBtn'}, data: {index: index, id: item.id, toggle: 'modal', target:'#toggleLockCompanyDialog'}, text: (item["locked"]?"解冻":"冻结")}]
                     */
-                    operation:['编辑｜续约｜冻结']
+                    operation:['编辑', '续约', (item["locked"]?"解冻":"冻结")]
                 }
             });
 
@@ -69,8 +69,7 @@ require(['main-app',contextPath + '/js/service/company-service.js',
                         { title: "公司授权号" ,data:'secretKey'},
                         { title: "加盟有效起始日期" ,data:'startDate'},
                         { title: "加盟有效截止日期" ,data:'endDate'},
-                        // { title: "操作", data:'operation', "render": dataTableHelp.operationFormat()}
-                        { title: "操作", data:'operation'}
+                        { title: "操作", data:'operation',"render": dataTableHelp.operationFormat()}
                     ]
                 });
             }else{
