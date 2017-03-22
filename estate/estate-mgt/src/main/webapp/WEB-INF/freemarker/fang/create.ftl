@@ -212,7 +212,7 @@
                                                 </#list>/㎡
                                                 </div>
                                             </div>
-                                            <div class="form-group clearfix" id="fyHouseSettle">
+                                            <div class="form-group clearfix" id="fyHouseSettle" ng-show="ctrl.data.bizType === ctrl.bizTypeConfig.sell">
                                                 <label class="control-label">落户</label>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 form-inline m-t-7">
                                                     <div class="radio radio-nice" >

@@ -590,7 +590,12 @@ require(['main-app',
                 if(!flag){
                     return;
                 }
-                _this.data.priceUnit = _this.data.houseType ===_this.bizTypeConfig.rent? _this.data.rentPriceUnit: _this.data.sellPriceUnit;
+                if(_this.data.houseType ===_this.bizTypeConfig.rent){
+                    _this.data.priceUnit = _this.data.rentPriceUnit;
+                    _this.data.resident = '';
+                }else{
+                    _this.data.priceUnit = _this.data.sellPriceUnit;
+                }
                 _this.data.isOnly = _this.data.isOnly ?'Y':'N';
                 _this.data.resident = _this.data.resident ?'Y':'N';
                 FangService.create(_this.data).then(function(){

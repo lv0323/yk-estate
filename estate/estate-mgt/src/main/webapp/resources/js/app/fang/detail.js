@@ -77,7 +77,7 @@ require(['main-app',
             _this.imageTypeList = [
                 {key: 'virtualMap', para :'SHI_JING', addText: '新增实景图', defaultMap: '../img/house/kct.jpeg'},
                 {key: 'layoutMap', para :'HU_XING', addText: '新增户型图', defaultMap: '../img/house/hxt.jpeg'},
-                {key: 'avatarMap', para :'AVATAR', addText: '新增证件照', defaultMap: '../img/house/zjz.jpeg'}];
+                {key: 'certifMap', para :'CERTIF', addText: '新增证件照', defaultMap: '../img/house/zjz.jpeg'}];
             _this.virtualMap ={
                 list:[],
                 count:0,
@@ -86,7 +86,7 @@ require(['main-app',
                 list:[],
                 count:0,
             };
-            _this.avatarMap ={
+            _this.certifMap ={
                 list:[],
                 count:0,
             };
@@ -382,9 +382,9 @@ require(['main-app',
                 _this.layoutMap.list = response;
                 _this.layoutMap.count =response.length;
             });
-            _this.imageGet('AVATAR').then(function(response){
-                _this.avatarMap.list = response;
-                _this.avatarMap.count =response.length;
+            _this.imageGet('CERTIF').then(function(response){
+                _this.certifMap.list = response;
+                _this.certifMap.count =response.length;
             });
             function uploadMap(type){
                 var formData = new FormData();
