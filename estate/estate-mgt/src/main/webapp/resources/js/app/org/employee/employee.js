@@ -91,7 +91,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                     departmentName: item.departmentName,
                     positionName: item.positionName,
                     mobile: item.mobile,
-                    openContact: (item.openContact.split(',')[0]=="")?(""):(item.openContact.split(',')[1]=="")?(item.openContact.split(',')[0]):(item.openContact.split(',')[0]+'转'+item.openContact.split(',')[1]),
+                    openContact: (item.openContact=="")?(""):(typeof(item.openContact.split(',')[1])=='undefined')?(item.openContact):(item.openContact.split(',')[0]+'转'+item.openContact.split(',')[1]),
                     operation: [
                         {
                             attr: {class: 'btn editEmployeeBtn'},
@@ -178,14 +178,6 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 flag = false;
                 $('#'+actionType+'EmployeeDepart').addClass('invalid-input');
             }
-           /* if (toSubmitEmployee.mobile==="" || typeof(toSubmitEmployee.mobile)==='undefined') {
-                flag = false;
-                $('#'+actionType+'EmployeeMobile').addClass('invalid-input');
-            }*/
-            /*if (toSubmitEmployee.openContact.split(',')[0]==""|| typeof(toSubmitEmployee.openContact.split(',')[0])==='undefined') {
-                flag = false;
-                $('#'+actionType+'EmployeeOpenContactHN').addClass('invalid-input');
-            }*/
             if (toSubmitEmployee.name===""|| typeof(toSubmitEmployee.name)==='undefined') {
                 flag = false;
                 $('#'+actionType+'EmployeeName').addClass('invalid-input');
@@ -240,9 +232,8 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             var toAddData = {
                 'departmentId': $('#addEmployeeDepart').attr('selectedvalue'),
                 'positionId': $('#addEmployeePosition option:selected').attr("id"),
-                // 'isAgent': $('#addEmployeeIsAgent').is(':checked'),
                 'mobile': $('#addEmployeeMobile').val(),
-                'openContact': (hostNumber==="")?"":openContact.join(','),
+                'openContact': (hostNumber==="")?"":(extensionNumber==="")?hostNumber:openContact.join(','),
                 'name': $('#addEmployeeName').val(),
                 'gender': $('#addEmployeeGender input:checked').val(),
                 'idcardNumber': $('#addEmployeeID').val(),
@@ -271,8 +262,14 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         $('#employeeList').on('click','.editEmployeeBtn',function(e) {
             var index = $(e.target).data('index');
             var employee = employeeAllDataRaw[index];
-            var hostNumber = employee["openContact"].split(',')[0];
-            var extensionNumber = employee["openContact"].split(',')[1];
+            var hostNumber = "";
+            var extensionNumber = "";
+            if(typeof(employee["openContact"].split(',')[1])=='undefined'){
+                hostNumber = employee["openContact"];
+            }else {
+                hostNumber = employee["openContact"].split(',')[0];
+                extensionNumber = employee["openContact"].split(',')[1];
+            }
             DepartCommon.initDepartSelector(employee["departmentId"]);
             PositionCommon.initPositionSelector(employee["positionId"]);
             var time = UtilService.timeStamp2Date(employee["entryDate"]);
@@ -293,7 +290,6 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
 
         //action for edit Company dialog
         $('#confirmEditEmployeeBtn').on('click', function() {
-            // var entryDate = new Date($('#editEmployeeEntryDate').val());
             var hostNumber = $('#editEmployeeOpenContactHN').val();
             var extensionNumber = $('#editEmployeeOpenContactEN').val();
             var openContact = [hostNumber,extensionNumber];
@@ -301,8 +297,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 id: $('#editEmployeeId').val(),
                 departmentId: $('#editEmployeeDepart').attr("selectedvalue"),
                 positionId: $('#editEmployeePosition option:selected').attr("id"),
-                // mobile: $('#editEmployeeMobile').val(),
-                openContact: (hostNumber==="")?"":openContact.join(','),
+                openContact: (hostNumber==="")?"":(extensionNumber==="")?hostNumber:openContact.join(','),
                 name: $('#editEmployeeName').val(),
                 gender: $('#editEmployeeGender input:checked').val(),
                 idcardNumber: $('#editEmployeeID').val(),
