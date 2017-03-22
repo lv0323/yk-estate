@@ -30,6 +30,7 @@ public class FangSelector extends TagSelector {
     private List<IntPair> areas;
     private List<IntPair> years;
     private List<HouseType> houseTypes;
+    private Long fangId;
 
     public Long getCityId() {
         return cityId;
@@ -199,6 +200,15 @@ public class FangSelector extends TagSelector {
 
     public FangSelector setHouseTypes(List<HouseType> houseTypes) {
         this.houseTypes = houseTypes;
+        return this;
+    }
+
+    public Long getFangId() {
+        return fangId;
+    }
+
+    public FangSelector setFangId(Long fangId) {
+        this.fangId = fangId;
         return this;
     }
 }

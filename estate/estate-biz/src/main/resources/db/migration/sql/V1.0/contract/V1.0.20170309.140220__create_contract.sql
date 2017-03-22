@@ -28,3 +28,4 @@ CREATE TABLE t_contract (
   is_deleted         BOOLEAN        NOT NULL      DEFAULT FALSE
 );
 
+CREATE INDEX ON t_contract (fang_id);

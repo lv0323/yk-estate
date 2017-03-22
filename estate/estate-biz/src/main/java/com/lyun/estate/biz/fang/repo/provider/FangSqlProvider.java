@@ -60,8 +60,12 @@ public class FangSqlProvider {
         if (selector.getLineId() != null) {
             sql.LEFT_OUTER_JOIN("t_line_station_rel lsr ON lsr.station_id = csr.station_id");
         }
-        sql.WHERE("c.city_id = #{cityId}");
-        sql.WHERE("f.biz_type = #{bizType}");
+        if (Objects.isNull(selector.getFangId())) {
+            sql.WHERE("c.city_id = #{cityId}");
+            sql.WHERE("f.biz_type = #{bizType}");
+        } else {
+            sql.WHERE("f.id = #{fangId}");
+        }
         if (hasNotNullElement(selector.getsCounts())) {
             sql.WHERE("f.s_counts IN (" + Joiner.on(",").skipNulls().join(selector.getsCounts()) + ")");
         }
