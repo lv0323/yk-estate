@@ -24,7 +24,7 @@ public enum MgtFangSummaryOrder {
     FLOOR_UP("楼层由低到高", Lists.newArrayList(buildOrder("floor", ASC))),
     FLOOR_DOWN("楼层由高到低", Lists.newArrayList(buildOrder("floor", DESC))),
     FOLLOW_TIME_CLOSER("最近更新时间由远及近",
-            Lists.newArrayList(buildOrder("mftn", ASC),
+            Lists.newArrayList(buildOrder("mftn", DESC),
                     buildOrder("max_follow_time", Direction.ASC))),
     FOLLOW_TIME_FARTHER("最近更新时间由近及远",
             Lists.newArrayList(buildOrder("mftn", ASC),
