@@ -1,6 +1,8 @@
 package com.lyun.estate.biz.user.service;
 
 import com.google.common.base.Strings;
+import com.lyun.estate.biz.auth.captcha.Captcha;
+import com.lyun.estate.biz.auth.captcha.CaptchaAspect;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.token.JWTToken;
 import com.lyun.estate.biz.auth.token.Token;
@@ -19,11 +21,16 @@ import com.lyun.estate.biz.user.resources.*;
 import com.lyun.estate.biz.user.service.validator.ChangePasswordResourceValidator;
 import com.lyun.estate.biz.user.service.validator.LoginResourceValidator;
 import com.lyun.estate.biz.user.service.validator.RegisterResourceValidator;
+import com.lyun.estate.core.config.EstateCacheConfig;
 import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.EasyCodeException;
+import com.lyun.estate.core.supports.exceptions.EstateException;
+import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.utils.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -45,6 +52,13 @@ public class UserService {
     RestContext restContext;
     @Autowired
     FileService fileService;
+
+    @Autowired
+    @Qualifier(EstateCacheConfig.MANAGER_10_5K)
+    CacheManager cacheManager;
+
+    @Autowired
+    CaptchaAspect captchaAspect;
 
 
     @Transactional
@@ -87,28 +101,42 @@ public class UserService {
     }
 
     @Transactional
-    public TokenResponse login(LoginResource loginResource, SmsCode smsCode) {
-        if (loginResource != null && smsCode == null) {
-            DataBinder dataBinder = new DataBinder(loginResource, "userLogin");
-            dataBinder.setValidator(new LoginResourceValidator());
-            dataBinder.validate();
-            BindingResult bindingResult = dataBinder.getBindingResult();
-            if (bindingResult.hasErrors()) {
-                throw new ValidateException("warn.user.login", bindingResult.getAllErrors());
-            }
-            User loginUser = userMapper.loginUser(loginResource);
-            if (isPasswordRight(loginResource, loginUser)) {
-                return generateLoginToken(loginUser);
+    public TokenResponse login(LoginResource loginResource, Captcha captcha) {
+        DataBinder dataBinder = new DataBinder(loginResource, "userLogin");
+        dataBinder.setValidator(new LoginResourceValidator());
+        dataBinder.validate();
+        BindingResult bindingResult = dataBinder.getBindingResult();
+        if (bindingResult.hasErrors()) {
+            throw new ValidateException("warn.user.login", bindingResult.getAllErrors());
+        }
+        User loginUser = userMapper.loginUser(loginResource);
+
+        //一个用户在10分钟内登录超过三次的需要提供图片验证码，如果没有图片验证码则提示需要图片验证码
+        Integer count = cacheManager.getCache(EstateCacheConfig.LOGIN_CACHE).get(loginUser.getId(), Integer.class);
+        if (count != null && count > 3) {
+            if (captcha == null) {
+                throw new EstateException(ExCode.LOGIN_NEED_CAPTCHA);
             } else {
-                throw new ValidateException("user.login.error", "用户名或密码错误");
+                captchaAspect.check(captcha);
             }
+        }
+        cacheManager.getCache(EstateCacheConfig.LOGIN_CACHE)
+                .put(loginUser.getId(), Optional.ofNullable(count).orElse(0) + 1);
+
+        if (isPasswordRight(loginResource, loginUser)) {
+            return generateLoginToken(loginUser);
         } else {
-            if (smsCode.getType() != SmsType.LOGIN) {
-                throw new ValidateException("sms.type.illegal", "短信验证码类型应为'LOGIN'");
-            }
-            return generateLoginToken(userMapper.findUserByMobile(smsCode.getMobile()));
+            throw new ValidateException("user.login.error", "用户名或密码错误");
         }
     }
+
+    public TokenResponse loginBySmsCode(SmsCode smsCode) {
+        if (smsCode.getType() != SmsType.LOGIN) {
+            throw new ValidateException("sms.type.illegal", "短信验证码类型应为'LOGIN'");
+        }
+        return generateLoginToken(userMapper.findUserByMobile(smsCode.getMobile()));
+    }
+
 
     private boolean isPasswordRight(LoginResource loginResource, User user) {
         if (user != null) {

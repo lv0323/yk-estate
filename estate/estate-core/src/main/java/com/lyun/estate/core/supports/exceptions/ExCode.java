@@ -13,6 +13,8 @@ public enum ExCode {
     UPDATE_FAIL("{}更新失败,{}"),
     NOT_FOUND("根据{}未找到{}"),
     EXISTED_ERROR("{}已经存在,{}"),
+    //login
+    LOGIN_NEED_CAPTCHA("登录需要图片验证码"),
     //token
     TOKEN_INVALID("令牌失效"),
     TOKEN_REFRESH_INVALID("无效的刷新令牌"),
