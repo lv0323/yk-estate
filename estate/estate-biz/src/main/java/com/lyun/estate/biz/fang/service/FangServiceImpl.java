@@ -5,6 +5,9 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.lyun.estate.biz.contract.def.ContractDefine;
+import com.lyun.estate.biz.contract.entity.Contract;
+import com.lyun.estate.biz.contract.service.ContractService;
 import com.lyun.estate.biz.fang.def.HouseProcess;
 import com.lyun.estate.biz.fang.def.HouseType;
 import com.lyun.estate.biz.fang.domian.FangSelector;
@@ -58,6 +61,9 @@ public class FangServiceImpl implements FangService {
 
     @Autowired
     private XiaoQuService xiaoQuService;
+
+    @Autowired
+    private ContractService contractService;
 
     @Override
     public PageList<FangSummary> findFangSummaryByKeyword(FangFilter filter, FangSummaryOrder order,
@@ -190,6 +196,15 @@ public class FangServiceImpl implements FangService {
                                     CustomType.SHI_JING,
                                     FileProcess.WATERMARK)).
                             map(FileDescription::getFileURI).orElse(null));
+
+                    if (summary.getProcess() == HouseProcess.SUCCESS) {
+                        Contract contract = contractService.findByFangId(summary.getId());
+                        if (contract != null && contract.getProcess() == ContractDefine.Process.SUCCESS) {
+                            summary.setDealPrice(contract.getPrice());
+                            summary.setDealPriceUnit(contract.getPriceUnit());
+                            summary.setDealTime(contract.getCloseTime());
+                        }
+                    }
                 }
         );
         return summaries;
@@ -214,16 +229,8 @@ public class FangServiceImpl implements FangService {
     @Override
     public FangSummary getSummary(Long id) {
         ExceptionUtil.checkNotNull("房编号", id);
-        FangSummary summary = fangRepository.findSummary(id);
-        List<FangTag> fangTags = fangRepository.findTags(id);
-        summary.setTags(fangTags.stream().map(FangTag::getHouseTag).collect(Collectors.toList()));
-        summary.decorateTags();
-        summary.setImageURI(Optional.ofNullable(fileService.findFirst(id,
-                DomainType.FANG,
-                CustomType.SHI_JING,
-                FileProcess.WATERMARK))
-                .map(FileDescription::getFileURI).orElse(null));
-        return summary;
+        FangSelector selector = new FangSelector().setFangId(id);
+        return findFangSummaryBySelector(selector, null).stream().findAny().orElse(null);
     }
 
     @Override

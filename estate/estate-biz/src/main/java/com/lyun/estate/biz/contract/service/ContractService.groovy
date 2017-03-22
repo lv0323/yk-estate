@@ -113,6 +113,10 @@ class ContractService {
             }
         }
 
+        return listBySelector(selector, pageBounds)
+    }
+
+    private PageList<ContractDTO> listBySelector(ContractSelector selector, PageBounds pageBounds) {
         PageList<ContractDTO> result = contractRepo.list(selector, pageBounds)
         result.forEach({
             it.setAvatarURI(employeeService.getAvatarURI(it.getEmployeeId()))
@@ -120,4 +124,10 @@ class ContractService {
         })
         return result
     }
+
+    Contract findByFangId(long fangId) {
+        contractRepo.findByFangId(fangId)
+    }
+
+
 }

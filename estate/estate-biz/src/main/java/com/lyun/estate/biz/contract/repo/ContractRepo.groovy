@@ -28,4 +28,7 @@ interface ContractRepo {
 
     @SelectProvider(type = ContractSqlProvider, method = 'list')
     PageList<ContractDTO> list(ContractSelector selector, PageBounds pageBounds)
+
+    @Select("SELECT * FROM t_contract WHERE fang_id =#{fangId}")
+    Contract findByFangId(long fangId)
 }
