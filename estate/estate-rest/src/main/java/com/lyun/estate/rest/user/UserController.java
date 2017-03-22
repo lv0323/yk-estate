@@ -3,7 +3,6 @@ package com.lyun.estate.rest.user;
 
 import com.lyun.estate.biz.auth.captcha.Captcha;
 import com.lyun.estate.biz.auth.captcha.CaptchaArgumentResolver;
-import com.lyun.estate.biz.auth.captcha.CheckCaptcha;
 import com.lyun.estate.biz.auth.sms.CheckSmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
@@ -50,22 +49,21 @@ public class UserController {
     }
 
     @PostMapping(value = "/login", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    @CheckCaptcha
     public TokenResponse login(@RequestParam(required = false) String userName,
                                @RequestParam(required = false) String email,
                                @RequestParam(required = false) String mobile,
                                @RequestParam(required = false) String password,
                                @RequestParam(required = false) String signature,
-                               @RequestHeader(CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {
+                               @RequestHeader(value = CaptchaArgumentResolver.CAPTCHA_HEADER, required = false) Captcha captcha) {
         return userService.login(new LoginResource().setUserName(userName).setEmail(email)
-                .setMobile(mobile).setPassword(password).setSignature(signature), null);
+                .setMobile(mobile).setPassword(password).setSignature(signature), captcha);
     }
 
     @PostMapping("/sms-login")
     @CheckSmsCode
     public TokenResponse loginBySmsCode(@RequestHeader(SmsCodeArgumentResolver.SMS_CODE_HEADER) SmsCode smsCode) {
         smsCode.setType(SmsType.LOGIN);
-        return userService.login(null, smsCode);
+        return userService.loginBySmsCode(smsCode);
     }
 
     @PostMapping(value = "change-password", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})

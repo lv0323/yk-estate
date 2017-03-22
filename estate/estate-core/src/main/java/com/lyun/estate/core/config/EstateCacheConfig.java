@@ -23,6 +23,7 @@ public class EstateCacheConfig {
     public static final String CAPTCHA_CACHE = "CAPTCHA_CACHE";
     public static final String SMS_CACHE = "SMS_CACHE";
     public static final String MGT_LOGIN_CACHE = "MGT_LOGIN_CACHE";
+    public static final String LOGIN_CACHE = "LOGIN_CACHE";
 
     @Bean(MANAGER_0_5K)
     @Primary

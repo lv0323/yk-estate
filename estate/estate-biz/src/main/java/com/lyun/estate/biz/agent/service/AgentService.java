@@ -45,8 +45,8 @@ public class AgentService {
             Agent agent = getFangAgent(targetId);
             if (agent != null) {
                 agent.setShowingCount(showingService.countSucceedShowing(targetId, agent.getEmployeeId()));
+                agents.add(agent);
             }
-            agents.add(agent);
         }
         if (domainType == DomainType.XIAO_QU) {
             agents.addAll(agentRepo.getXiaoQuAgents(targetId));
