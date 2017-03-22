@@ -91,7 +91,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                     departmentName: item.departmentName,
                     positionName: item.positionName,
                     mobile: item.mobile,
-                    openContact: (item.openContact.split(',')[0]=="")?(""):(item.openContact.split(',')[1]=="")?(item.openContact.split(',')[0]):(item.openContact.split(',')[0]+'转'+item.openContact.split(',')[1]),
+                    openContact: (item.openContact=="")?(""):(typeof(item.openContact.split(',')[1])=='undefined')?(item.openContact):(item.openContact.split(',')[0]+'转'+item.openContact.split(',')[1]),
                     operation: [
                         {
                             attr: {class: 'btn editEmployeeBtn'},
@@ -242,7 +242,8 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 'positionId': $('#addEmployeePosition option:selected').attr("id"),
                 // 'isAgent': $('#addEmployeeIsAgent').is(':checked'),
                 'mobile': $('#addEmployeeMobile').val(),
-                'openContact': (hostNumber==="")?"":openContact.join(','),
+                // 'openContact': (hostNumber==="")?"":openContact.join(','),
+                'openContact': (hostNumber==="")?"":(extensionNumber==="")?hostNumber:openContact.join(','),
                 'name': $('#addEmployeeName').val(),
                 'gender': $('#addEmployeeGender input:checked').val(),
                 'idcardNumber': $('#addEmployeeID').val(),
@@ -271,8 +272,16 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         $('#employeeList').on('click','.editEmployeeBtn',function(e) {
             var index = $(e.target).data('index');
             var employee = employeeAllDataRaw[index];
-            var hostNumber = employee["openContact"].split(',')[0];
-            var extensionNumber = employee["openContact"].split(',')[1];
+            /*var hostNumber = employee["openContact"].split(',')[0];
+            var extensionNumber = employee["openContact"].split(',')[1];*/
+            var hostNumber = "";
+            var extensionNumber = "";
+            if(typeof(employee["openContact"].split(',')[1])=='undefined'){
+                hostNumber = employee["openContact"];
+            }else {
+                hostNumber = employee["openContact"].split(',')[0];
+                extensionNumber = employee["openContact"].split(',')[1];
+            }
             DepartCommon.initDepartSelector(employee["departmentId"]);
             PositionCommon.initPositionSelector(employee["positionId"]);
             var time = UtilService.timeStamp2Date(employee["entryDate"]);
@@ -302,7 +311,8 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 departmentId: $('#editEmployeeDepart').attr("selectedvalue"),
                 positionId: $('#editEmployeePosition option:selected').attr("id"),
                 // mobile: $('#editEmployeeMobile').val(),
-                openContact: (hostNumber==="")?"":openContact.join(','),
+                // openContact: (hostNumber==="")?"":openContact.join(','),
+                openContact: (hostNumber==="")?"":(extensionNumber==="")?hostNumber:openContact.join(','),
                 name: $('#editEmployeeName').val(),
                 gender: $('#editEmployeeGender input:checked').val(),
                 idcardNumber: $('#editEmployeeID').val(),

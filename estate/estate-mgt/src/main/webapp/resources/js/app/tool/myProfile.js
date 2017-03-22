@@ -11,6 +11,8 @@ require(['main-app',
         var header = {};
         var fileData = new FormData();
         var fileName = "";
+        var openContactHN = "";
+        var openContactEN = "";
 
         /*load page begin*/
         var loadPage = function (data, header) {
@@ -20,7 +22,10 @@ require(['main-app',
             var entryDate = UtilService.timeStamp2Date(data.entryDate);
             $('#entryDate').text(entryDate);
             $('#wechat').text(data.wechat);
-            $('#openContact').text(data.openContact);
+            var contactNo = (data.openContact=="")?(""):(typeof(data.openContact.split(',')[1])=='undefined')?(data.openContact):(data.openContact.split(',')[0]+'转'+data.openContact.split(',')[1])
+            $('#openContact').text(contactNo);
+            openContactHN = data.openContact.split(',')[0];
+            openContactEN = (typeof(data.openContact.split(',')[1])=='undefined')?(""):(data.openContact.split(',')[1]);
         };
         EmployeeService.getSelf(header).done(function (data) {
             loadPage(data, header);
@@ -91,11 +96,22 @@ require(['main-app',
                 });
         });
 
+        $('#editPersonalInfoBtn').on('click', function () {
+
+            $('#editWechat').val($('#wechat').text());
+            $('#editOpenContactHN').val(openContactHN);
+            $('#editOpenContactEN').val(openContactEN);
+
+        });
+
         $('#confirmEditPersonalInfoBtn').on('click', function () {
             var editWechat = $('#editWechat').val();
-            var editOpenContact = $('#editOpenContact').val();
+            var hostNumber = $('#editOpenContactHN').val();
+            var extensionNumber = $('#editOpenContactEN').val();
+            var openContact = [hostNumber,extensionNumber];
+            var contactNo = (hostNumber==="")?"":(extensionNumber==="")?hostNumber:openContact.join(',');
 
-            EmployeeService.editSelf({openContact: editOpenContact, weChat: editWechat}, header)
+            EmployeeService.editSelf({openContact: contactNo, weChat: editWechat}, header)
                 .done(function () {
                     SweetAlertHelp.success({title:"个人信息修改成功!"}, function () {
                         location.reload(true);

@@ -16,13 +16,16 @@
                     <div class="form-group">
                         <label class="control-label">微信</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <input type="text" id="editWechat" class="form-control pull-right" placeholder="请输入微信ID">
+                            <input type="text" id="editWechat" class="form-control pull-right" placeholder="请输入微信">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label">外网电话</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <input type="text" id="editOpenContact" class="form-control pull-right" placeholder="请输入外网电话">
+                            <input type="text" id="editOpenContactHN" class="form-control pull-right" placeholder="请输入外网电话">
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <input type="text" id="editOpenContactEN" class="form-control" placeholder="外网分机号">
                         </div>
                     </div>
                 </form>
