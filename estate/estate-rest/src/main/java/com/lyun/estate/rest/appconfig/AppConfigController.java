@@ -2,6 +2,7 @@ package com.lyun.estate.rest.appconfig;
 
 import com.lyun.estate.biz.appconfig.entity.AndroidVersion;
 import com.lyun.estate.biz.appconfig.entity.RegionConfig;
+import com.lyun.estate.biz.appconfig.entity.ServicePhone;
 import com.lyun.estate.biz.appconfig.service.AppConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,11 @@ public class AppConfigController {
     @GetMapping("android-last-version")
     public AndroidVersion getLastVersion() {
         return appConfigService.getAndroidLastVersion();
+    }
+
+    @GetMapping("service-phone")
+    public ServicePhone getServicePhone() {
+        return appConfigService.getServicePhone();
     }
 
 }

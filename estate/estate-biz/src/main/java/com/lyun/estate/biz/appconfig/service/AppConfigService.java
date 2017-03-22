@@ -3,6 +3,7 @@ package com.lyun.estate.biz.appconfig.service;
 import com.lyun.estate.biz.appconfig.entity.AndroidVersion;
 import com.lyun.estate.biz.appconfig.entity.Region;
 import com.lyun.estate.biz.appconfig.entity.RegionConfig;
+import com.lyun.estate.biz.appconfig.entity.ServicePhone;
 import com.lyun.estate.biz.appconfig.repository.AppConfigRepository;
 import com.lyun.estate.biz.housedict.entity.City;
 import com.lyun.estate.biz.housedict.entity.District;
@@ -10,6 +11,8 @@ import com.lyun.estate.biz.housedict.entity.Line;
 import com.lyun.estate.biz.housedict.service.CityService;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.biz.support.settings.SettingProvider;
+import com.lyun.estate.biz.support.settings.def.NameSpace;
+import com.lyun.estate.biz.support.settings.entity.Setting;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -99,5 +102,11 @@ public class AppConfigService {
         return new AndroidVersion().setVersion(version)
                 .setForceUpdate(forceUpdate)
                 .setUrl(url);
+    }
+
+    public ServicePhone getServicePhone() {
+        Setting phoneNo = settingProvider.find(NameSpace.CONFIG, "phoneNo");
+        return new ServicePhone()
+                .setPhoneNo(phoneNo.getValue());
     }
 }
