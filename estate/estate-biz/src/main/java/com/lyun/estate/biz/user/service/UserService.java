@@ -120,6 +120,11 @@ public class UserService {
                 captchaAspect.check(captcha);
             }
         }
+        //设置clientId
+        if (captcha == null) {
+            restContext.setClientId(String.valueOf(loginResource.getClientId()));
+        }
+
         cacheManager.getCache(EstateCacheConfig.LOGIN_CACHE)
                 .put(loginUser.getId(), Optional.ofNullable(count).orElse(0) + 1);
 

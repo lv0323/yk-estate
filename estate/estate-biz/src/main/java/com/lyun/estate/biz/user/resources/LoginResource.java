@@ -6,6 +6,7 @@ public class LoginResource {
     private String mobile;
     private String password;
     private String signature;
+    private Integer clientId;
 
     public String getUserName() {
         return userName;
@@ -49,6 +50,15 @@ public class LoginResource {
 
     public LoginResource setSignature(String signature) {
         this.signature = signature;
+        return this;
+    }
+
+    public Integer getClientId() {
+        return clientId;
+    }
+
+    public LoginResource setClientId(Integer clientId) {
+        this.clientId = clientId;
         return this;
     }
 }

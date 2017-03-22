@@ -54,9 +54,10 @@ public class UserController {
                                @RequestParam(required = false) String mobile,
                                @RequestParam(required = false) String password,
                                @RequestParam(required = false) String signature,
+                               @RequestParam(required = false) Integer clientId,
                                @RequestHeader(value = CaptchaArgumentResolver.CAPTCHA_HEADER, required = false) Captcha captcha) {
         return userService.login(new LoginResource().setUserName(userName).setEmail(email)
-                .setMobile(mobile).setPassword(password).setSignature(signature), captcha);
+                .setMobile(mobile).setPassword(password).setSignature(signature).setClientId(clientId), captcha);
     }
 
     @PostMapping("/sms-login")
