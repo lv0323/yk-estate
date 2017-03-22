@@ -287,6 +287,10 @@
                                                     <th width="10%" class="text-right"><a ng-href="#" ng-click="ctrl.descrUpdateInit()"><i class="fa fa-pencil" ng-click="ctrl.initUpdateDEscr()"></i>修改</a></th>
                                                 </tr>
                                                 <tr>
+                                                    <td width="10%" class="text-muted text-center">房屋标题</td>
+                                                    <td colspan="9" ng-bind="ctrl.description.title"></td>
+                                                </tr>
+                                                <tr>
                                                     <td width="10%" class="text-muted text-center">核心卖点</td>
                                                     <td colspan="9" ng-bind="ctrl.description.core"></td>
                                                 </tr>
@@ -421,63 +425,69 @@
                 <div class="modal-body">
                     <form class="form-inline layui-layer-wrap">
                         <div class="form-group clearfix">
+                            <label class="control-label col-xs-2">房屋标题</label>
+                            <div class="col-xs-10">
+                                <textarea name="" rows="2" cols="" class="form-control" placeholder="房屋标题" ng-model="ctrl.descrUpdateInfo.title"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
                             <label class="control-label col-xs-2">核心卖点</label>
                             <div class="col-xs-10">
-                                <textarea name="" rows="3" cols="" class="form-control" placeholder="核心卖点" ng-model="ctrl.descrUpdateInfo.core"></textarea>
+                                <textarea name="" rows="2" cols="" class="form-control" placeholder="核心卖点" ng-model="ctrl.descrUpdateInfo.core"></textarea>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-2">户型介绍</label>
                             <div class="col-xs-10">
-                                <textarea name="" rows="3" cols="" class="form-control" placeholder="户型介绍" ng-model="ctrl.descrUpdateInfo.huXing"></textarea>
+                                <textarea name="" rows="2" cols="" class="form-control" placeholder="户型介绍" ng-model="ctrl.descrUpdateInfo.huXing"></textarea>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-2">装修描述</label>
                             <div class="col-xs-10">
-                                <textarea name="" rows="3" cols="" class="form-control" placeholder="装修描述" ng-model="ctrl.descrUpdateInfo.zhuangXiu"></textarea>
+                                <textarea name="" rows="2" cols="" class="form-control" placeholder="装修描述" ng-model="ctrl.descrUpdateInfo.zhuangXiu"></textarea>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-2">权属抵押</label>
                             <div class="col-xs-10">
-                                <textarea name="" rows="3" cols="" class="form-control" placeholder="权属抵押" ng-model="ctrl.descrUpdateInfo.quanShu"></textarea>
+                                <textarea name="" rows="2" cols="" class="form-control" placeholder="权属抵押" ng-model="ctrl.descrUpdateInfo.quanShu"></textarea>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-2">交通出行</label>
                             <div class="col-xs-10">
-                                <textarea name="" rows="3" cols="" class="form-control" placeholder="交通出行" ng-model="ctrl.descrUpdateInfo.jiaoTong"></textarea>
+                                <textarea name="" rows="2" cols="" class="form-control" placeholder="交通出行" ng-model="ctrl.descrUpdateInfo.jiaoTong"></textarea>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-2">小区介绍</label>
                             <div class="col-xs-10">
-                                <textarea name="" rows="3" cols="" class="form-control" placeholder="小区介绍" ng-model="ctrl.descrUpdateInfo.xiaoQu"></textarea>
+                                <textarea name="" rows="2" cols="" class="form-control" placeholder="小区介绍" ng-model="ctrl.descrUpdateInfo.xiaoQu"></textarea>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-2">投资分析</label>
                             <div class="col-xs-10">
-                                <textarea name="" rows="3" cols="" class="form-control" placeholder="投资分析" ng-model="ctrl.descrUpdateInfo.touZi"></textarea>
+                                <textarea name="" rows="2" cols="" class="form-control" placeholder="投资分析" ng-model="ctrl.descrUpdateInfo.touZi"></textarea>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-2">周边配套</label>
                             <div class="col-xs-10">
-                                <textarea name="" rows="3" cols="" class="form-control" placeholder="周边配套" ng-model="ctrl.descrUpdateInfo.peiTao"></textarea>
+                                <textarea name="" rows="2" cols="" class="form-control" placeholder="周边配套" ng-model="ctrl.descrUpdateInfo.peiTao"></textarea>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-2">学区信息</label>
                             <div class="col-xs-10">
-                                <textarea name="" rows="3" cols="" class="form-control" placeholder="学区信息" ng-model="ctrl.descrUpdateInfo.xueQu"></textarea>
+                                <textarea name="" rows="2" cols="" class="form-control" placeholder="学区信息" ng-model="ctrl.descrUpdateInfo.xueQu"></textarea>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-2">税费解析</label>
                             <div class="col-xs-10">
-                                <textarea name="" rows="3" cols="" class="form-control" placeholder="税费解析" ng-model="ctrl.descrUpdateInfo.shuiFei"></textarea>
+                                <textarea name="" rows="2" cols="" class="form-control" placeholder="税费解析" ng-model="ctrl.descrUpdateInfo.shuiFei"></textarea>
                             </div>
                         </div>
                     </form>
@@ -639,7 +649,7 @@
                         </#list>
                         </div>
                     </div>
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix" ng-show="ctrl.summary.bizType.name ==='SELL'">
                         <label class="control-label">落户</label>
                         <div class="col-lg-8 col-md-8 col-sm-8 form-inline m-t-7">
                             <div class="radio radio-nice" >
