@@ -46,7 +46,8 @@ class ContractRest {
                             @RequestParam String assigneeMobile,
                             @RequestParam IdentitySource assigneeIdSource,
                             @RequestParam String assigneeIdNo,
-                            @RequestParam(required = false) String note
+                            @RequestParam(required = false) String note,
+                            @RequestParam Long employeeId
     ) {
         return contractMgtService.create(
                 new Contract()
@@ -68,6 +69,7 @@ class ContractRest {
                         .setAssigneeIdSource(assigneeIdSource)
                         .setAssigneeIdNo(assigneeIdNo)
                         .setNote(note)
+                        .setEmployeeId(employeeId)
         )
     }
 

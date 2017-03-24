@@ -1,9 +1,10 @@
 CREATE TABLE t_contract (
   id                 BIGSERIAL PRIMARY KEY,
   fang_id            BIGINT         NOT NULL,
-  company_id         BIGINT         NOT NULL,
-  department_id      BIGINT         NOT NULL,
-  employee_id        BIGINT         NOT NULL,
+  company_id         BIGINT         NOT NULL, --成交公司
+  department_id      BIGINT         NOT NULL, --成交单位
+  employee_id        BIGINT         NOT NULL, --成交单位
+  operator_id        BIGINT         NOT NULL, --操作人
   house_type         VARCHAR(15)    NOT NULL,
   certif_address     VARCHAR(100),
   certif_no          VARCHAR(50),

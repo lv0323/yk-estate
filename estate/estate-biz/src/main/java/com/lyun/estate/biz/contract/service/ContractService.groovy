@@ -12,6 +12,7 @@ import com.lyun.estate.biz.contract.repo.ContractRepo
 import com.lyun.estate.biz.customer.service.CustomerService
 import com.lyun.estate.biz.department.entity.Department
 import com.lyun.estate.biz.department.service.DepartmentService
+import com.lyun.estate.biz.employee.entity.Employee
 import com.lyun.estate.biz.employee.service.EmployeeService
 import com.lyun.estate.biz.fang.service.FangProcessService
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService
@@ -59,6 +60,11 @@ class ContractService {
         ExceptionUtil.checkIllegal(
                 ValidateUtil.isIdNo(contract.getAssigneeIdNo()), "客户身份证", contract.getAssigneeIdNo())
         contract.setProcess(ContractDefine.Process.CREATED)
+
+        Employee employee = employeeService.selectById(contract.getEmployeeId())
+
+        contract.setCompanyId(employee.companyId)
+        contract.setDepartmentId(employee.departmentId)
 
         if (contractRepo.save(contract) > 0) {
             return contractRepo.findOne(contract.getId())
