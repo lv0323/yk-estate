@@ -84,15 +84,12 @@ public class FangServiceImpl implements FangService {
         FangSelector selector = new FangSelector();
         BeanUtils.copyProperties(filter, selector);
 
-        if (filter.getProcess() == null || filter.getProcess() == HouseProcess.PUBLISH) {
-            selector.setProcess(HouseProcess.PUBLISH);
+        //process
+        if (filter.getProcess() == HouseProcess.SUCCESS) {
+            selector.setProcess(HouseProcess.SUCCESS);
         } else {
-            if (filter.getProcess() == HouseProcess.SUCCESS) {
-                selector.setProcess(HouseProcess.SUCCESS);
-            }
-            //ignore
+            selector.setProcess(HouseProcess.PUBLISH);
         }
-
 
         //shiCountsFilter
         if (filter.getShiCountsFilters() != null && !filter.getShiCountsFilters().isEmpty()) {
@@ -178,10 +175,15 @@ public class FangServiceImpl implements FangService {
             }
         }
 
-        return findFangSummaryBySelector(selector, pageBounds);
+        return findFangSummaryBySelector(selector, pageBounds, selector.getProcess() == HouseProcess.SUCCESS);
     }
 
     private PageList<FangSummary> findFangSummaryBySelector(FangSelector selector, PageBounds pageBounds) {
+        return findFangSummaryBySelector(selector, pageBounds, false);
+    }
+
+    private PageList<FangSummary> findFangSummaryBySelector(FangSelector selector, PageBounds pageBounds,
+                                                            boolean needDealInfo) {
         PageList<FangSummary> summaries = fangRepository.findSummaryBySelector(selector, pageBounds);
 
         summaries.forEach(summary -> {
@@ -197,7 +199,7 @@ public class FangServiceImpl implements FangService {
                                     FileProcess.WATERMARK)).
                             map(FileDescription::getFileURI).orElse(null));
 
-                    if (summary.getProcess() == HouseProcess.SUCCESS) {
+                    if (needDealInfo && summary.getProcess() == HouseProcess.SUCCESS) {
                         Contract contract = contractService.findByFangId(summary.getId());
                         if (contract != null && contract.getProcess() == ContractDefine.Process.SUCCESS) {
                             summary.setDealPrice(contract.getPrice());
