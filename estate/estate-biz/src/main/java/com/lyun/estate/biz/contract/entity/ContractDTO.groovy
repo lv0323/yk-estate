@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.contract.entity
 
 import com.lyun.estate.biz.contract.def.ContractDefine
+import com.lyun.estate.biz.employee.entity.Employee
 import com.lyun.estate.biz.fang.def.HouseType
 import com.lyun.estate.biz.fang.def.PriceUnit
 import com.lyun.estate.biz.fang.domian.MgtFangTiny
@@ -17,7 +18,6 @@ import groovy.transform.builder.SimpleStrategy
 @ToString(includeNames = true, ignoreNulls = true)
 class ContractDTO {
     Long id
-    Long customerId
     Long fangId
     Long companyId
     Long departmentId
@@ -48,4 +48,5 @@ class ContractDTO {
     Date updateTime
     Boolean isDeleted
     MgtFangTiny fangTiny
+    Employee employee
 }

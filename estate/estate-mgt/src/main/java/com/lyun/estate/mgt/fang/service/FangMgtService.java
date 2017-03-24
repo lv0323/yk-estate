@@ -33,6 +33,8 @@ import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.context.Operator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,6 +68,8 @@ public class FangMgtService {
     private EmployeeService employeeService;
 
     private FileService fileService;
+
+    private Logger logger = LoggerFactory.getLogger(FangMgtService.class);
 
     public FangMgtService(HouseLicenceService houseLicenceService,
                           MgtXiaoQuService mgtXiaoQuService, MgtFangService mgtFangService, MgtContext mgtContext,
@@ -428,6 +432,8 @@ public class FangMgtService {
         //部门匹配：departmentId，员工离职
         List<FangInfoOwner> infoOwners = mgtFangService.getInfoOwners(fileDescription.getOwnerId());
         if (infoOwners.stream().anyMatch(t -> Objects.equals(t.getCompanyId(), operator.getCompanyId()))) {
+
+            logger.info("员工{} 删除了图片{}", mgtContext.getOperator().getId(), fileId);
             return fileService.delete(fileId);
         } else {
             throw new EstateException(ExCode.PERMISSION_ERROR);
@@ -447,6 +453,7 @@ public class FangMgtService {
         //todo: permission check
         List<FangInfoOwner> infoOwners = mgtFangService.getInfoOwners(fileDescription.getOwnerId());
         if (infoOwners.stream().anyMatch(t -> Objects.equals(t.getCompanyId(), operator.getCompanyId()))) {
+            logger.info("员工{} 将图片{}置顶", mgtContext.getOperator().getId(), fileId);
             return fileService.setFirst(fileId);
         } else {
             throw new EstateException(ExCode.PERMISSION_ERROR);
