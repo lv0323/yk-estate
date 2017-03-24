@@ -8,6 +8,7 @@ import com.lyun.estate.biz.contract.entity.ContractDTO
 import com.lyun.estate.biz.contract.entity.ContractFilter
 import com.lyun.estate.biz.contract.service.ContractService
 import com.lyun.estate.biz.customer.service.CustomerService
+import com.lyun.estate.biz.employee.service.EmployeeService
 import com.lyun.estate.core.supports.exceptions.EstateException
 import com.lyun.estate.core.supports.exceptions.ExCode
 import com.lyun.estate.mgt.context.MgtContext
@@ -25,6 +26,9 @@ class ContractMgtService {
 
     @Autowired
     CustomerService customerService
+
+    @Autowired
+    EmployeeService employeeService
 
     @Autowired
     MgtContext mgtContext
@@ -47,9 +51,11 @@ class ContractMgtService {
 
     ContractDTO findOne(long id) {
         ContractFilter filter = new ContractFilter().setId(id)
-        contractService.list(filter, null).
+        ContractDTO contract = contractService.list(filter, null).
                 stream().
                 findAny().
                 orElseThrow({ new EstateException(ExCode.NOT_FOUND, id, "合同") })
+        contract.setEmployee(employeeService.selectById(contract.getEmployeeId()))
+        return contract
     }
 }
