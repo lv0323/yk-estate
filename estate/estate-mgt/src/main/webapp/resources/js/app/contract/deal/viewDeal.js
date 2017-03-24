@@ -24,6 +24,11 @@ require(['main-app',
             $('#customerIdSource').html(data.assigneeIdSource.label);
             $('#customerIdNo').val(data.assigneeIdNo);
             $('#customerContact').val(data.assigneeMobile);
+            $('#department').html(data.departmentName);
+            $('#employee').html(data.employeeName);
+            $('#employeePosition').val("");
+            $('#employeeMobile').val("");
+            $('#employeeIdNo').val("");
             $('#note').val(data.note);
             $('input,textarea').prop('disabled',true);
         });

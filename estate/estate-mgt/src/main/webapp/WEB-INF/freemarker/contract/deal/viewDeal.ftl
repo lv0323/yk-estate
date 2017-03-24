@@ -128,6 +128,35 @@
                                             </div>
                                         </div>
                                         <hr>
+                                        <h4 class="text-blue">经纪人信息</h4>
+                                        <div class="form-group clearfix">
+                                            <label class="pull-left control-label">经纪人</label>
+                                            <div class="col-lg-2 col-md-2 col-sm-3">
+                                                <div id="department" class="btn-group dropup form-control" style="background-color: #eeeeee;"></div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-3">
+                                                <div id="employee" class="btn-group dropup form-control" style="background-color: #eeeeee;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label class="pull-left control-label">职位</label>
+                                            <div class="col-sm-3">
+                                                <input id="employeePosition" type="text" class="form-control" placeholder="经纪人职位">
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label class="pull-left control-label">手机</label>
+                                            <div class="col-sm-3">
+                                                <input id="employeeMobile" type="text" class="form-control" placeholder="经纪人手机">
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label class="pull-left control-label">身份证号</label>
+                                            <div class="col-sm-3">
+                                                <input id="employeeIdNo" type="text" class="form-control" placeholder="身份证号">
+                                            </div>
+                                        </div>
+                                        <hr>
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">备注</label>
                                             <div class="col-sm-10">
