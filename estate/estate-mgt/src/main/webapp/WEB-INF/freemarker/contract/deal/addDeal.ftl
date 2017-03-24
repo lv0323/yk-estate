@@ -64,23 +64,10 @@
                                                     <div class="input-group-addon">㎡</div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-md-4 col-sm-4">
-                                                <div class="input-group">
-                                                    <div class="input-group-addon">总价</div>
-                                                    <input id="totalPrice" type="text" name="publishPrice" required class="form-control" placeholder="总价" reg="/^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$/"/>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <select id="priceUnit" class="btn-group dropup form-control">
-                                                <#list priceUnit?if_exists as unit>
-                                                    <option value="${unit.name()}">${unit.getLabel()}</option>
-                                                </#list>
-                                                </select>
-                                            </div>
                                         </div>
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">房屋用途</label>
-                                            <div class="col-sm-3">
+                                            <div class="col-sm-2">
                                                 <select id="houseType" class="btn-group dropup form-control">
                                                 <#list houseType?if_exists as type>
                                                     <option value="${type.name()}">${type.getLabel()}</option>
@@ -89,11 +76,26 @@
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
-                                            <label class="pull-left control-label">成交类型</label>
-                                            <div class="col-sm-3">
+                                            <label class="pull-left control-label">成交价</label>
+                                            <div class="col-sm-2">
                                                 <select id="businessType" class="btn-group dropup form-control">
                                                 <#list bizType?if_exists as biz>
                                                     <option value="${biz.name()}">${biz.getLabel()}</option>
+                                                </#list>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                                <input id="dealPrice" type="text" class="form-control" placeholder="成交价" reg="/^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$/"/>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <select name="priceUnit" id="priceUnitRENT" class="btn-group dropup form-control">
+                                                <#list priceUnitRent?if_exists as unit>
+                                                    <option value="${unit.name()}">${unit.getLabel()}</option>
+                                                </#list>
+                                                </select>
+                                                <select name="priceUnit" id="priceUnitSELL" class="btn-group dropup form-control" style="display: none;">
+                                                <#list priceUnitSell?if_exists as unit>
+                                                    <option value="${unit.name()}">${unit.getLabel()}</option>
                                                 </#list>
                                                 </select>
                                             </div>
@@ -150,6 +152,39 @@
                                             <label class="pull-left control-label">手机</label>
                                             <div class="col-sm-3">
                                                 <input id="customerContact" type="text" class="form-control" placeholder="手机">
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <h4 class="text-blue">经纪人信息</h4>
+                                        <div class="form-group clearfix">
+                                            <label class="pull-left control-label">经纪人</label>
+                                            <div class="col-lg-2 col-md-2 col-sm-3">
+                                                <select id="departmentList" class="chosen-select-dep">
+                                                    <option value="">选择部门</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-3">
+                                                <select id="employeeList" class="chosen-select-emp">
+                                                    <option value="">选择员工</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label class="pull-left control-label">职位</label>
+                                            <div class="col-sm-3">
+                                                <div id="employeePosition" class="form-control"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label class="pull-left control-label">手机</label>
+                                            <div class="col-sm-3">
+                                                <div id="employeeMobile" class="form-control"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label class="pull-left control-label">身份证号</label>
+                                            <div class="col-sm-3">
+                                                <div id="employeeIdNo" class="form-control"></div>
                                             </div>
                                         </div>
                                         <hr>

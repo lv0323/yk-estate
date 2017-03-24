@@ -18,11 +18,6 @@ require(['main-app',
             init: false
         };
 
-        var tableConfig = {
-            init: false,
-            target: null
-        };
-
         var filterConfig = {
             departmentId: {
                 init: false
@@ -87,7 +82,7 @@ require(['main-app',
                return '<div class="media clearfix">' +
                             item.bizTypeLabel+
                             '<div class="media-body clearfix">' +
-                                '<div class="col-sm-6">' +
+                                '<div class="col-sm-7">' +
                                     '<div class="clearfix">' +
                                         '<span class="m-l-20">'+item.location+'</span>'+
 
@@ -102,12 +97,12 @@ require(['main-app',
                                         '<a class="m-l-20 btn checkContractBtn" title="'+item.contractId+'"><i class="fa fa-eye" aria-hidden="true">查看合同</i></a>'+
                                     '</div>'+
                                 '</div>'+
-                                '<div class="col-sm-6">' +
-                                    '<div class="col-xs-5">' +
+                                '<div class="col-sm-5">' +
+                                    '<div class="col-xs-6">' +
                                         '<span>成交金额:<strong class="text-danger">￥'+item.price+'&nbsp;'+item.priceUnit+'</strong></span><br><br>'+
                                         '<span>创建日期:'+item.createTime+'</span>'+
                                     '</div>'+
-                                    '<div class="col-xs-5">' +
+                                    '<div class="col-xs-6">' +
                                         '<br><br>'+
                                         '<span>结束日期:'+item.closeTime+'</span>'+
                                     '</div>'+

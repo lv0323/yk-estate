@@ -59,15 +59,6 @@
                                                     <div class="input-group-addon" style="background-color: #eeeeee;">㎡</div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-md-4 col-sm-4">
-                                                <div class="input-group">
-                                                    <div class="input-group-addon" style="background-color: #eeeeee;">总价</div>
-                                                    <input id="totalPrice" type="text" name="publishPrice" required class="form-control" placeholder="总价" reg="/^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$/"/>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <div id="priceUnit" class="btn-group dropup form-control" style="background-color: #eeeeee;"></div>
-                                            </div>
                                         </div>
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">房屋用途</label>
@@ -76,9 +67,15 @@
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
-                                            <label class="pull-left control-label">成交类型</label>
-                                            <div class="col-sm-3">
+                                            <label class="pull-left control-label">成交价</label>
+                                            <div class="col-sm-2">
                                                 <div id="businessType" class="btn-group dropup form-control" style="background-color: #eeeeee;"></div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                                <input id="dealPrice" type="text" class="form-control" placeholder="成交价" reg="/^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$/"/>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <div id="priceUnit" class="btn-group dropup form-control" style="background-color: #eeeeee;"></div>
                                             </div>
                                         </div>
                                         <hr>
@@ -125,6 +122,35 @@
                                             <label class="pull-left control-label">联系电话</label>
                                             <div class="col-sm-3">
                                                 <input id="customerContact" type="text" class="form-control" placeholder="联系电话">
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <h4 class="text-blue">经纪人信息</h4>
+                                        <div class="form-group clearfix">
+                                            <label class="pull-left control-label">经纪人</label>
+                                            <div class="col-lg-2 col-md-2 col-sm-3">
+                                                <div id="department" class="btn-group dropup form-control" style="background-color: #eeeeee;"></div>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-3">
+                                                <div id="employee" class="btn-group dropup form-control" style="background-color: #eeeeee;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label class="pull-left control-label">职位</label>
+                                            <div class="col-sm-3">
+                                                <input id="employeePosition" type="text" class="form-control" placeholder="经纪人职位">
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label class="pull-left control-label">手机</label>
+                                            <div class="col-sm-3">
+                                                <input id="employeeMobile" type="text" class="form-control" placeholder="经纪人手机">
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label class="pull-left control-label">身份证号</label>
+                                            <div class="col-sm-3">
+                                                <input id="employeeIdNo" type="text" class="form-control" placeholder="身份证号">
                                             </div>
                                         </div>
                                         <hr>

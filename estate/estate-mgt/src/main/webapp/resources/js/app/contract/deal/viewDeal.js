@@ -10,7 +10,7 @@ require(['main-app',
             $('#fangID').val(data.fangId);
             $('#houseLicenceID').val(data.fangTiny.houseLicence.id);
             $('#areaSize').val(data.estateArea);
-            $('#totalPrice').val(data.price);
+            $('#dealPrice').val(data.price);
             $('#priceUnit').html(data.priceUnit.label);
             $('#houseType').html(data.houseType.label);
             $('#businessType').html(data.bizType.label);
@@ -24,6 +24,11 @@ require(['main-app',
             $('#customerIdSource').html(data.assigneeIdSource.label);
             $('#customerIdNo').val(data.assigneeIdNo);
             $('#customerContact').val(data.assigneeMobile);
+            $('#department').html(data.departmentName);
+            $('#employee').html(data.employeeName);
+            $('#employeePosition').val(data.employee.positionName);
+            $('#employeeMobile').val(data.employee.mobile);
+            $('#employeeIdNo').val(data.employee.idcardNumber);
             $('#note').val(data.note);
             $('input,textarea').prop('disabled',true);
         });

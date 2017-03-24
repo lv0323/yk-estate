@@ -35,6 +35,10 @@ define(contextPath + '/js/service/employee-service.js',
             return requestService.post('/api/employee/self-edit', params, header);
         };
 
+        EmployeeService.getSpecifiedEmployee = function (employeeId, header) {
+            return requestService.get('/api/employee/'+employeeId, header);
+        };
+
         EmployeeService.getEmployee = function (params, header) {
             return requestService.get('/api/employee/query', params, header);
         };
