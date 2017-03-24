@@ -39,7 +39,8 @@ public class ContractPage {
         params.put("username",service.getUsername());
         params.put("houseType",Arrays.asList(HouseType.values()));
         params.put("bizType",Arrays.asList(BizType.values()));
-        params.put("priceUnit",Arrays.asList(PriceUnit.values()));
+        params.put("priceUnitRent",PriceUnit.getByBizType(BizType.RENT));
+        params.put("priceUnitSell",PriceUnit.getByBizType(BizType.SELL));
         params.put("identitySource",Arrays.asList(IdentitySource.values()));
         return new ModelAndView("/contract/deal/addDeal", params);
     }

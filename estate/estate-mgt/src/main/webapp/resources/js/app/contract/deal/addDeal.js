@@ -150,6 +150,13 @@ require(['main-app',
         initDepartDropDown();
 
         $('#houseLicenceID').val(UtilService.getUrlParam('licenceId'));
+
+        $('#businessType').on('change', function () {
+            var bizType = $('#businessType option:selected').val();
+            $('#priceUnit'+bizType).show();
+            $('#priceUnit'+bizType).siblings().hide();
+        });
+
         $('#getHouseInfoBtn').on('click',function () {
             $('.form-group').find('.invalid-input').removeClass('invalid-input');
             var houseLicenceID = $('#houseLicenceID').val();
@@ -159,6 +166,8 @@ require(['main-app',
                     $('#areaSize').val(data.estateArea);
                     $('#houseType').val(data.houseType.name);
                     $('#businessType').val(data.bizType.name);
+                    $('#priceUnit'+data.bizType.name).show();
+                    $('#priceUnit'+data.bizType.name).siblings().hide();
                     var fangID = $('#fangID').val();
                     FangService.ext({fangId:fangID})
                         .done(function (data) {
@@ -191,7 +200,7 @@ require(['main-app',
                 certifNo: $('#certifNo').val(),
                 estateArea: $('#areaSize').val(),
                 price: $('#dealPrice').val(),
-                priceUnit: $('#priceUnit option:selected').val(),
+                priceUnit: $('select[name="priceUnit"]:visible').val(),
                 bizType: $('#businessType option:selected').val(),
                 assignorName: $('#OwnerName').val(),
                 assignorMobile: $('#OwnerContact').val(),

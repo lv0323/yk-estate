@@ -26,9 +26,9 @@ require(['main-app',
             $('#customerContact').val(data.assigneeMobile);
             $('#department').html(data.departmentName);
             $('#employee').html(data.employeeName);
-            $('#employeePosition').val("");
-            $('#employeeMobile').val("");
-            $('#employeeIdNo').val("");
+            $('#employeePosition').val(data.employee.positionName);
+            $('#employeeMobile').val(data.employee.mobile);
+            $('#employeeIdNo').val(data.employee.idcardNumber);
             $('#note').val(data.note);
             $('input,textarea').prop('disabled',true);
         });

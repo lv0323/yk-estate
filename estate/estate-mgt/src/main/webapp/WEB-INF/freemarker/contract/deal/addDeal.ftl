@@ -88,8 +88,13 @@
                                                 <input id="dealPrice" type="text" class="form-control" placeholder="成交价" reg="/^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$/"/>
                                             </div>
                                             <div class="col-sm-2">
-                                                <select id="priceUnit" class="btn-group dropup form-control">
-                                                <#list priceUnit?if_exists as unit>
+                                                <select name="priceUnit" id="priceUnitRENT" class="btn-group dropup form-control">
+                                                <#list priceUnitRent?if_exists as unit>
+                                                    <option value="${unit.name()}">${unit.getLabel()}</option>
+                                                </#list>
+                                                </select>
+                                                <select name="priceUnit" id="priceUnitSELL" class="btn-group dropup form-control" style="display: none;">
+                                                <#list priceUnitSell?if_exists as unit>
                                                     <option value="${unit.name()}">${unit.getLabel()}</option>
                                                 </#list>
                                                 </select>

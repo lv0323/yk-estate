@@ -69,21 +69,13 @@
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">成交价</label>
                                             <div class="col-sm-2">
-                                                <select id="businessType" class="btn-group dropup form-control">
-                                                <#list bizType?if_exists as biz>
-                                                    <option value="${biz.name()}">${biz.getLabel()}</option>
-                                                </#list>
-                                                </select>
+                                                <div id="businessType" class="btn-group dropup form-control" style="background-color: #eeeeee;"></div>
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-2">
                                                 <input id="dealPrice" type="text" class="form-control" placeholder="成交价" reg="/^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$/"/>
                                             </div>
                                             <div class="col-sm-2">
-                                                <select id="priceUnit" class="btn-group dropup form-control">
-                                                <#list priceUnit?if_exists as unit>
-                                                    <option value="${unit.name()}">${unit.getLabel()}</option>
-                                                </#list>
-                                                </select>
+                                                <div id="priceUnit" class="btn-group dropup form-control" style="background-color: #eeeeee;"></div>
                                             </div>
                                         </div>
                                         <hr>
