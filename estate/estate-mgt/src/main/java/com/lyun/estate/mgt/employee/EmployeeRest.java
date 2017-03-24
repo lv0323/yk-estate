@@ -122,7 +122,7 @@ public class EmployeeRest {
 
 
     @GetMapping("self")
-    public Employee get() {
+    public Employee self() {
         return service.self();
     }
 
@@ -131,5 +131,11 @@ public class EmployeeRest {
                              @RequestParam(required = false) String weChat) {
         return service.selfEdit(openContact, weChat);
     }
+
+    @GetMapping("/{id}")
+    public Employee getById(@PathVariable Long id) {
+        return service.getById(id);
+    }
+
 
 }

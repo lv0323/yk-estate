@@ -144,4 +144,8 @@ public class EmployeeMgtService {
     public Employee selfEdit(String openContact, String weChat) {
         return employeeService.updateContact(mgtContext.getOperator().getId(), openContact, weChat);
     }
+
+    public Employee getById(Long id) {
+        return employeeService.selectById(id);
+    }
 }

@@ -32,9 +32,7 @@ class ContractMgtService {
     Contract create(Contract contract) {
         Operator operator = mgtContext.getOperator()
         contractService.create(
-                contract.setCompanyId(operator.companyId).
-                        setDepartmentId(operator.departmentId).
-                        setEmployeeId(operator.id)
+                contract.setOperatorId(operator.id)
         )
     }
 

@@ -20,6 +20,7 @@ class Contract {
     Long companyId
     Long departmentId
     Long employeeId
+    Long operatorId
     ContractDefine.Type type
     ContractDefine.Process process
     HouseType houseType
