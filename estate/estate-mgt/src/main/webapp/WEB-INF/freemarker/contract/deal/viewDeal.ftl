@@ -59,15 +59,6 @@
                                                     <div class="input-group-addon" style="background-color: #eeeeee;">㎡</div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3 col-md-4 col-sm-4">
-                                                <div class="input-group">
-                                                    <div class="input-group-addon" style="background-color: #eeeeee;">总价</div>
-                                                    <input id="totalPrice" type="text" name="publishPrice" required class="form-control" placeholder="总价" reg="/^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$/"/>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <div id="priceUnit" class="btn-group dropup form-control" style="background-color: #eeeeee;"></div>
-                                            </div>
                                         </div>
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">房屋用途</label>
@@ -76,9 +67,23 @@
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
-                                            <label class="pull-left control-label">成交类型</label>
-                                            <div class="col-sm-3">
-                                                <div id="businessType" class="btn-group dropup form-control" style="background-color: #eeeeee;"></div>
+                                            <label class="pull-left control-label">成交价</label>
+                                            <div class="col-sm-2">
+                                                <select id="businessType" class="btn-group dropup form-control">
+                                                <#list bizType?if_exists as biz>
+                                                    <option value="${biz.name()}">${biz.getLabel()}</option>
+                                                </#list>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-2">
+                                                <input id="dealPrice" type="text" class="form-control" placeholder="成交价" reg="/^(?!0+(?:\.0+)?$)(?:[1-9]\d{0,8}|0)(?:\.\d{1,2})?$/"/>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <select id="priceUnit" class="btn-group dropup form-control">
+                                                <#list priceUnit?if_exists as unit>
+                                                    <option value="${unit.name()}">${unit.getLabel()}</option>
+                                                </#list>
+                                                </select>
                                             </div>
                                         </div>
                                         <hr>

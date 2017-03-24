@@ -30,7 +30,10 @@ require(['main-app',
                 flag = false;
                 $('#houseLicenceID').addClass('invalid-input');
                 $('#areaSize').addClass('invalid-input');
-                $('#totalPrice').addClass('invalid-input');
+            }
+            if (toSubmitDeal.price === "" || typeof(toSubmitDeal.price) === 'undefined') {
+                flag = false;
+                $('#dealPrice').addClass('invalid-input');
             }
             if (toSubmitDeal.assignorName === "" || typeof(toSubmitDeal.assignorName) === 'undefined') {
                 flag = false;
@@ -55,6 +58,13 @@ require(['main-app',
             if (toSubmitDeal.assigneeMobile === "" || typeof(toSubmitDeal.assigneeMobile) === 'undefined') {
                 flag = false;
                 $('#customerContact').addClass('invalid-input');
+            }
+            if (toSubmitDeal.employeeId === "" || typeof(toSubmitDeal.employeeId) === 'undefined') {
+                flag = false;
+                $('#employeePosition').addClass('invalid-input');
+                $('#employeeMobile').addClass('invalid-input');
+                $('#employeeIdNo').addClass('invalid-input');
+
             }
             return flag;
         }
@@ -147,8 +157,6 @@ require(['main-app',
                 .done(function (data) {
                     $('#fangID').val(data.id);
                     $('#areaSize').val(data.estateArea);
-                    $('#totalPrice').val(data.publishPrice);
-                    $('#priceUnit').val(data.priceUnit.name);
                     $('#houseType').val(data.houseType.name);
                     $('#businessType').val(data.bizType.name);
                     var fangID = $('#fangID').val();
@@ -182,7 +190,7 @@ require(['main-app',
                 certifAddress: $('#certifAddress').val(),
                 certifNo: $('#certifNo').val(),
                 estateArea: $('#areaSize').val(),
-                price: $('#totalPrice').val(),
+                price: $('#dealPrice').val(),
                 priceUnit: $('#priceUnit option:selected').val(),
                 bizType: $('#businessType option:selected').val(),
                 assignorName: $('#OwnerName').val(),

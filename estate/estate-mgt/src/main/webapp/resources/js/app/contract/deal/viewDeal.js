@@ -10,7 +10,7 @@ require(['main-app',
             $('#fangID').val(data.fangId);
             $('#houseLicenceID').val(data.fangTiny.houseLicence.id);
             $('#areaSize').val(data.estateArea);
-            $('#totalPrice').val(data.price);
+            $('#dealPrice').val(data.price);
             $('#priceUnit').html(data.priceUnit.label);
             $('#houseType').html(data.houseType.label);
             $('#businessType').html(data.bizType.label);
