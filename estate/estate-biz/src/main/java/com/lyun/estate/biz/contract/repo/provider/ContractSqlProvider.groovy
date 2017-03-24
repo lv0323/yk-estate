@@ -20,6 +20,7 @@ class ContractSqlProvider {
                 .VALUES('company_id', '#{companyId}')
                 .VALUES('department_id', '#{departmentId}')
                 .VALUES('employee_id', '#{employeeId}')
+                .VALUES('operator_id', '#{operatorId}')
                 .VALUES('house_type', '#{houseType}')
                 .VALUES('certif_address', '#{certifAddress}')
                 .VALUES('certif_no', '#{certifNo}')
