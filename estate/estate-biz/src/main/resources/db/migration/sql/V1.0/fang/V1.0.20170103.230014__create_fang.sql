@@ -53,7 +53,7 @@ CREATE TABLE t_fang_ext (
   taxes_willing      VARCHAR(15), --税费
   commission_willing VARCHAR(15), --佣金
   purchase_price     NUMERIC(28, 5), --购入价格
-  purchaseDate       DATE, --购入时间
+  purchase_date      DATE, --购入时间
   is_only            VARCHAR(1), --唯一住房
   over_years         INTEGER, --满2，满5
   mortgage           VARCHAR(1), --有无贷款抵押

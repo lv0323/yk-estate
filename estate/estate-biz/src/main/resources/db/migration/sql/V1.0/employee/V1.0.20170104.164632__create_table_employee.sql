@@ -55,7 +55,7 @@ CREATE TABLE t_employee
   avatar_id     BIGINT,
   mobile        CHAR(11),
   open_contact  VARCHAR(30),
-  PASSWORD      CHAR(32),
+  password      CHAR(32),
   salt          CHAR(32),
   name          VARCHAR(8),
   gender        CHAR(1),
