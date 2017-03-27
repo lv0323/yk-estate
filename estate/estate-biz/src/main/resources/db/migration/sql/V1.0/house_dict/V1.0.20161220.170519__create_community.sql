@@ -46,8 +46,9 @@ CREATE TABLE t_district_rel (
   id              BIGSERIAL PRIMARY KEY, --id
   district_id     BIGINT NOT NULL, --地区id
   sub_district_id BIGINT NOT NULL, -- 板块id
-  create_time     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_time     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  is_primary      VARCHAR(1) DEFAULT 'N',
+  create_time     TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
+  update_time     TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
   UNIQUE (district_id, sub_district_id)
 );
 

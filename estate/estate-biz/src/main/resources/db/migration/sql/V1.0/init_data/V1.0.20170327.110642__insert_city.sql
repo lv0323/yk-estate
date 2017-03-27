@@ -1,0 +1,1 @@
+INSERT INTO public.t_city (id, abbr, name, longitude, latitude, create_time, update_time, name_kw, view_region) VALUES (1, 'bj', '北京', NULL, NULL, '2017-01-16 17:33:34.360707', '2017-01-16 17:33:34.360707', 'beijing;bj', '116.828751,40.355146;115.946816,39.583664');

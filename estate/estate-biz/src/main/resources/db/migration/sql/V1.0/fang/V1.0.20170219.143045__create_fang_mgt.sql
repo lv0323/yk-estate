@@ -30,8 +30,8 @@ CREATE TABLE t_fang_check (
   company_id    BIGINT  NOT NULL,
   department_id BIGINT  NOT NULL,
   employee_id   BIGINT  NOT NULL,
-  advantage     VARCHAR(500),
-  disadvantage  VARCHAR(500),
+  advantage     VARCHAR(1000),
+  disadvantage  VARCHAR(1000),
   is_deleted    BOOLEAN NOT NULL  DEFAULT FALSE,
   create_time   TIMESTAMP         DEFAULT CURRENT_TIMESTAMP,
   update_time   TIMESTAMP         DEFAULT CURRENT_TIMESTAMP
