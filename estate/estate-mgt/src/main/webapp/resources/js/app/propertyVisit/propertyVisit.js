@@ -134,18 +134,21 @@ require(['main-app',
                         return;
                     }
                     pageConfig.currentPage = num;
-                    getPropertyVisit(filter, (num-1)*pageConfig.limit, pageConfig.limit);
+                    getPropertyVisit(filter, (num-1)*pageConfig.limit, pageConfig.limit, num);
                 }
             };
             pagingPlugin.init(config);
         };
 
-        function getPropertyVisit(filter, offset, limit) {
+        function getPropertyVisit(filter, offset, limit, currentpage) {
             var params = {};
             for (var key in filter){
                 if(!!filter[key]){
                     params[key] = filter[key];
                 }
+            }
+            if(!currentpage){
+                pageConfig.currentPage = 1;
             }
             PropertyVisitService.getPropertyVisitList(params, {'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
                 .done(function (data) {

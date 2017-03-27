@@ -123,6 +123,7 @@ require(['main-app',
                 });
                 return;
             }
+
             pageConfig.init = true;
             var config = {
                 pagingId:'#DealList_paging',
@@ -133,18 +134,21 @@ require(['main-app',
                         return;
                     }
                     pageConfig.currentPage = num;
-                    getDeal(filter, (num-1)*pageConfig.limit, pageConfig.limit);
+                    getDeal(filter, (num-1)*pageConfig.limit, pageConfig.limit, num);
                 }
             };
             pagingPlugin.init(config);
         };
 
-        function getDeal(filter, offset, limit) {
+        function getDeal(filter, offset, limit, currentpage) {
             var params = {};
             for (var key in filter){
                 if(!!filter[key]){
                     params[key] = filter[key];
                 }
+            }
+            if(!currentpage){
+                pageConfig.currentPage = 1;
             }
             ContractService.getDealList(params, {'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
                 .done(function (data) {
