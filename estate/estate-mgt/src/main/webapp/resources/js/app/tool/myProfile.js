@@ -22,10 +22,11 @@ require(['main-app',
             var entryDate = UtilService.timeStamp2Date(data.entryDate);
             $('#entryDate').text(entryDate);
             $('#wechat').text(data.wechat);
-            var contactNo = (data.openContact=="")?(""):(typeof(data.openContact.split(',')[1])=='undefined')?(data.openContact):(data.openContact.split(',')[0]+'转'+data.openContact.split(',')[1])
-            $('#openContact').text(contactNo);
-            openContactHN = data.openContact.split(',')[0];
-            openContactEN = (typeof(data.openContact.split(',')[1])=='undefined')?(""):(data.openContact.split(',')[1]);
+            var contactNoText = (data.openContact=="" || data.openContact==null)?(""):(typeof(data.openContact.split(',')[1])=='undefined')?(data.openContact):(data.openContact.split(',')[0]+'转'+data.openContact.split(',')[1]);
+            $('#openContact').text(contactNoText);
+            var contactNo = (data.openContact=="" || data.openContact==null)?(""):data.openContact;
+            openContactHN = contactNo.split(',')[0];
+            openContactEN = (typeof (contactNo.split(',')[1])=='undefined')?(""):(contactNo.split(',')[1]);
         };
         EmployeeService.getSelf(header).done(function (data) {
             loadPage(data, header);

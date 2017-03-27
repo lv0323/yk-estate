@@ -15,6 +15,8 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
 
         var employeeAllDataRaw = {};
 
+        var jqPaginatorInstance = false;
+
         var pageConfig = {
             limit: 8,
             init: false
@@ -50,6 +52,11 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 EmployeeService.allEmployee = [];
                 $('#quitPosition').find('option[value="-1"]').attr('selected','selected');
                 $('#quitPosition').val("-1");
+                pageConfig.init = false;
+                if(jqPaginatorInstance){
+                    $('#employeeList_paging').jqPaginator('destroy');
+                    jqPaginatorInstance = false;
+                }
                 EmployeeService.getEmployee({departmentId:treeNode.id},{'x-paging':'total=true&offset=0&limit=10'})
                     .done(function (data) {
                         $.each(data.items,function (index, employee) {
@@ -91,7 +98,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                     departmentName: item.departmentName,
                     positionName: item.positionName,
                     mobile: item.mobile,
-                    openContact: (item.openContact=="")?(""):(typeof(item.openContact.split(',')[1])=='undefined')?(item.openContact):(item.openContact.split(',')[0]+'转'+item.openContact.split(',')[1]),
+                    openContact: (item.openContact=="" || item.openContact==null)?(""):(typeof(item.openContact.split(',')[1])=='undefined')?(item.openContact):(item.openContact.split(',')[0]+'转'+item.openContact.split(',')[1]),
                     operation: [
                         {
                             attr: {class: 'btn editEmployeeBtn'},
@@ -139,6 +146,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             if(pageConfig.init){
                 return;
             }
+            jqPaginatorInstance = true;
             pageConfig.init = true;
             var config = {
                 pagingId:'#employeeList_paging',
@@ -264,7 +272,8 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             var employee = employeeAllDataRaw[index];
             var hostNumber = "";
             var extensionNumber = "";
-            if(typeof(employee["openContact"].split(',')[1])=='undefined'){
+            if(employee["openContact"]==null){
+            } else if(typeof(employee["openContact"].split(',')[1])=='undefined'){
                 hostNumber = employee["openContact"];
             }else {
                 hostNumber = employee["openContact"].split(',')[0];
