@@ -15,8 +15,6 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
 
         var employeeAllDataRaw = {};
 
-        var jqPaginatorInstance = false;
-
         var pageConfig = {
             limit: 8,
             init: false
@@ -27,7 +25,10 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             target:null
         };
 
-        var quitPosition = 'false'; //init nonQuit Employee by default
+        var byDepart = {
+            status: false,
+            departmentId: null
+        }; //init filter Employee not according to department
 
         $.fn.datetimepicker.defaults.language = "zh-CN";
         $('#addEmployeeEntryDate').datetimepicker({
@@ -49,22 +50,11 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         function departmentTree(data){
             function beforeClick(treeId, treeNode, clickFlag) {}
             function onClick(event, treeId, treeNode, clickFlag) {
-                EmployeeService.allEmployee = [];
-                $('#quitPosition').find('option[value="-1"]').attr('selected','selected');
-                $('#quitPosition').val("-1");
-                pageConfig.init = false;
-                if(jqPaginatorInstance){
-                    $('#employeeList_paging').jqPaginator('destroy');
-                    jqPaginatorInstance = false;
-                }
-                EmployeeService.getEmployee({departmentId:treeNode.id},{'x-paging':'total=true&offset=0&limit=10'})
-                    .done(function (data) {
-                        $.each(data.items,function (index, employee) {
-                            EmployeeService.allEmployee.push(employee);
-                        });
-                        displayFilteredEmployee(EmployeeService.allEmployee);
-                        pagination(data.total);
-                    });
+                byDepart = {
+                    status:true,
+                    departmentId: treeNode.id
+                };
+                filterEmployee(byDepart, 0, pageConfig.limit);
                 //console.log('点击了:'+ treeNode.id + treeNode.name);
             }
             var zTreeSetting = {
@@ -143,10 +133,15 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         };
 
         var pagination = function(dataTotal) {
+            var id = "#employeeList_paging";
             if(pageConfig.init){
+                pagingPlugin.update(id, {
+                    totalCounts:dataTotal,
+                    currentPage:pageConfig.currentPage
+                });
                 return;
             }
-            jqPaginatorInstance = true;
+
             pageConfig.init = true;
             var config = {
                 pagingId:'#employeeList_paging',
@@ -156,24 +151,45 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                     if(type === 'init'){
                         return;
                     }
-                    filterEmployee(quitPosition, (num-1)*pageConfig.limit, pageConfig.limit);
+                    pageConfig.currentPage = num;
+                    filterEmployee(byDepart, (num-1)*pageConfig.limit, pageConfig.limit, num);
                 }
             };
             pagingPlugin.init(config);
 
         };
 
-        function filterEmployee(quitPosition, offset, limit) {
-            EmployeeService.getEmployee(null, {'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
-                .done(function (data) {
-                    displayFilteredEmployee(data.items);
-                    pagination(data.total);
-                }).fail(function(){
-                    $('#employeeList>tbody').append('<tr><td colspan="6">无法获取数据</td></tr>');
-                });
+        function filterEmployee(byDepart, offset, limit, currentpage) {
+            if(!currentpage){
+                pageConfig.currentPage = 1;
+            }
+            EmployeeService.allEmployee = [];
+            if(byDepart.status){
+                EmployeeService.getEmployee({departmentId:byDepart.departmentId},{'x-paging':'total=true&offset='+offset+'&limit=' + limit})
+                    .done(function (data) {
+                        $.each(data.items,function (index, employee) {
+                            EmployeeService.allEmployee.push(employee);
+                        });
+                        displayFilteredEmployee(EmployeeService.allEmployee);
+                        pagination(data.total);
+                    })
+                    .fail(function () {
+                        $('#employeeList>tbody').html('<tr><td colspan="6">无法获取数据</td></tr>');
+                    });
+            }else {
+                EmployeeService.getEmployee(null, {'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
+                    .done(function (data) {
+                        displayFilteredEmployee(data.items);
+                        pagination(data.total);
+                    })
+                    .fail(function(){
+                        $('#employeeList>tbody').html('<tr><td colspan="6">无法获取数据</td></tr>');
+                    });
+            }
+
         }
 
-        filterEmployee(quitPosition, 0, pageConfig.limit);
+        filterEmployee(byDepart, 0, pageConfig.limit);
 
         DepartmentService.getAllDepartment().done(function(data){
             departmentTree(data);
@@ -212,12 +228,6 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             }else {
                 $('#box-filter').hide();
             }
-        });
-
-        //get quitPosition
-        $('#quitPosition').on('change',function () {
-            var quitPosition = $('#quitPosition option:selected').val();
-            filterEmployee(quitPosition, 0, pageConfig.limit);
         });
 
         //initialize title in add Employee dialog

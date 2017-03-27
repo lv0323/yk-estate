@@ -12,8 +12,6 @@ require(['main-app',
         'datetimepicker.zh-cn', 'chosen', 'datatables', 'datatablesBootstrap'],
     function (mainApp, ContractService, DepartmentService, EmployeeService, pagingPlugin, UtilService, dataTableHelp, SweetAlertHelp) {
 
-        var jqPaginatorInstance = false;
-
         var pageConfig = {
             limit: 8,
             currentPage: 1,
@@ -47,11 +45,6 @@ require(['main-app',
             autoclose: true
         }).on("change", function (e) {
             filter.minCreateDate = e.target.value;
-            pageConfig.init = false;
-            if(jqPaginatorInstance){
-                $('#DealList_paging').jqPaginator('destroy');
-                jqPaginatorInstance = false;
-            }
             getDeal(filter, 0, pageConfig.limit);
 
         });
@@ -63,11 +56,6 @@ require(['main-app',
             autoclose: true
         }).on("change", function (e) {
             filter.maxCreateDate = e.target.value;
-            pageConfig.init = false;
-            if(jqPaginatorInstance){
-                $('#DealList_paging').jqPaginator('destroy');
-                jqPaginatorInstance = false;
-            }
             getDeal(filter, 0, pageConfig.limit);
         });
 
@@ -129,9 +117,13 @@ require(['main-app',
         var pagination = function(dataTotal) {
             var id = "#DealList_paging";
             if(pageConfig.init){
+                pagingPlugin.update(id, {
+                    totalCounts:dataTotal,
+                    currentPage:pageConfig.currentPage
+                });
                 return;
             }
-            jqPaginatorInstance = true;
+
             pageConfig.init = true;
             var config = {
                 pagingId:'#DealList_paging',
@@ -142,18 +134,21 @@ require(['main-app',
                         return;
                     }
                     pageConfig.currentPage = num;
-                    getDeal(filter, (num-1)*pageConfig.limit, pageConfig.limit);
+                    getDeal(filter, (num-1)*pageConfig.limit, pageConfig.limit, num);
                 }
             };
             pagingPlugin.init(config);
         };
 
-        function getDeal(filter, offset, limit) {
+        function getDeal(filter, offset, limit, currentpage) {
             var params = {};
             for (var key in filter){
                 if(!!filter[key]){
                     params[key] = filter[key];
                 }
+            }
+            if(!currentpage){
+                pageConfig.currentPage = 1;
             }
             ContractService.getDealList(params, {'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
                 .done(function (data) {
@@ -212,11 +207,6 @@ require(['main-app',
                     if(key === 'departmentId'){
                         filter.employeeId = "";
                     }
-                    pageConfig.init = false;
-                    if(jqPaginatorInstance){
-                        $('#DealList_paging').jqPaginator('destroy');
-                        jqPaginatorInstance = false;
-                    }
                     getDeal(filter, 0, pageConfig.limit);
 
                 });
@@ -263,21 +253,11 @@ require(['main-app',
                 case 'houseType': filter.houseType = $(this).attr("title"); break;
                 case 'businessType': filter.bizType = $(this).attr("title"); break;
             }
-            pageConfig.init = false;
-            if(jqPaginatorInstance){
-                $('#DealList_paging').jqPaginator('destroy');
-                jqPaginatorInstance = false;
-            }
             getDeal(filter, 0, pageConfig.limit);
         });
 
         $('#inferiorIncLabel').on('click', function () {
             filter.children=!($('#inferiorInc').is(':checked'));
-            pageConfig.init = false;
-            if(jqPaginatorInstance){
-                $('#DealList_paging').jqPaginator('destroy');
-                jqPaginatorInstance = false;
-            }
             getDeal(filter, 0, pageConfig.limit);
         });
 

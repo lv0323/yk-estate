@@ -12,8 +12,6 @@ require(['main-app',
         'datetimepicker.zh-cn', 'chosen', 'datatables', 'datatablesBootstrap'],
     function (mainApp, PropertyVisitService, DepartmentService, EmployeeService, pagingPlugin, UtilService, dataTableHelp, SweetAlertHelp) {
 
-        var jqPaginatorInstance = false;
-
         var pageConfig = {
             limit: 8,
             currentPage:1,
@@ -52,11 +50,6 @@ require(['main-app',
             autoclose: true
         }).on("change", function(e) {
             filter.minCreateDate = e.target.value;
-            pageConfig.init = false;
-            if(jqPaginatorInstance){
-                $('#propertyVisitList_paging').jqPaginator('destroy');
-                jqPaginatorInstance = false;
-            }
             getPropertyVisit(filter, 0, pageConfig.limit);
 
         });
@@ -68,11 +61,6 @@ require(['main-app',
             autoclose: true
         }).on("change", function(e) {
             filter.maxCreateDate = e.target.value;
-            pageConfig.init = false;
-            if(jqPaginatorInstance){
-                $('#propertyVisitList_paging').jqPaginator('destroy');
-                jqPaginatorInstance = false;
-            }
             getPropertyVisit(filter, 0, pageConfig.limit);
         });
 
@@ -130,10 +118,13 @@ require(['main-app',
         var pagination = function(dataTotal) {
             var id = "#propertyVisitList_paging";
             if(pageConfig.init){
+                pagingPlugin.update(id, {
+                    totalCounts:dataTotal,
+                    currentPage:pageConfig.currentPage
+                });
                 return;
             }
             pageConfig.init = true;
-            jqPaginatorInstance = true;
             var config = {
                 pagingId:'#propertyVisitList_paging',
                 totalCounts:dataTotal,
@@ -143,18 +134,21 @@ require(['main-app',
                         return;
                     }
                     pageConfig.currentPage = num;
-                    getPropertyVisit(filter, (num-1)*pageConfig.limit, pageConfig.limit);
+                    getPropertyVisit(filter, (num-1)*pageConfig.limit, pageConfig.limit, num);
                 }
             };
             pagingPlugin.init(config);
         };
 
-        function getPropertyVisit(filter, offset, limit) {
+        function getPropertyVisit(filter, offset, limit, currentpage) {
             var params = {};
             for (var key in filter){
                 if(!!filter[key]){
                     params[key] = filter[key];
                 }
+            }
+            if(!currentpage){
+                pageConfig.currentPage = 1;
             }
             PropertyVisitService.getPropertyVisitList(params, {'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
                 .done(function (data) {
@@ -212,11 +206,6 @@ require(['main-app',
                     if(key === 'departmentId'){
                         filter.employeeId = "";
                     }
-                    pageConfig.init = false;
-                    if(jqPaginatorInstance){
-                        $('#propertyVisitList_paging').jqPaginator('destroy');
-                        jqPaginatorInstance = false;
-                    }
                     getPropertyVisit(filter, 0, pageConfig.limit);
 
                 });
@@ -259,21 +248,11 @@ require(['main-app',
             $('a[name="visitStatus"]').removeClass("actived");
             $(this).addClass("actived");
             filter.process = $(this).attr("title");
-            pageConfig.init = false;
-            if(jqPaginatorInstance){
-                $('#propertyVisitList_paging').jqPaginator('destroy');
-                jqPaginatorInstance = false;
-            }
             getPropertyVisit(filter, 0, pageConfig.limit);
         });
 
         $('#inferiorIncLabel').on('click', function () {
             filter.children=!($('#inferiorInc').is(':checked'));
-            pageConfig.init = false;
-            if(jqPaginatorInstance){
-                $('#propertyVisitList_paging').jqPaginator('destroy');
-                jqPaginatorInstance = false;
-            }
             getPropertyVisit(filter, 0, pageConfig.limit);
         });
 

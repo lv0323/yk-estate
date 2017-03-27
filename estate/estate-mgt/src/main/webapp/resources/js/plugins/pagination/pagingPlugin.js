@@ -18,6 +18,7 @@ define(contextPath+'/js/plugins/pagination/pagingPlugin.js',
 
         };
         pagingPlugin.update = function(id, option){
+            option.totalCounts = option.totalCounts || 1;
             $(id).jqPaginator('option', option);
         };
         return pagingPlugin;
