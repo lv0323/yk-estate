@@ -5,7 +5,8 @@ public enum CustomType {
     HU_XING("户型"),
     CERTIF("证件"),
     AVATAR("头像"),
-    APK("APK"),;
+    APK("APK"),
+    NEWS_IMG("新闻标题"),;
 
     private String label;
 
