@@ -15,7 +15,8 @@ public enum DomainType {
     DEPARTMENT("部门"),
     POSITION("岗位"),
     MESSAGE("消息"),
-    USER("用户"),;
+    USER("用户"),
+    NEWS("新闻"),;
 
     private final String label;
 
