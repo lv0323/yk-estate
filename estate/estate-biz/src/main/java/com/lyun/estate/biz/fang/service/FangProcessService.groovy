@@ -176,6 +176,7 @@ class FangProcessService {
         } else if (bizType == BizType.RENT) {
             xiaoQuService.increaseRentCount(xiaoQuId)
         }
+        produceXiaoQuCountEvent(xiaoQuId)
     }
 
     def decreaseHouseCount(BizType bizType, long xiaoQuId) {
@@ -183,6 +184,18 @@ class FangProcessService {
             xiaoQuService.decreaseSellCount(xiaoQuId)
         } else if (bizType == BizType.RENT) {
             xiaoQuService.decreaseRentCount(xiaoQuId)
+        }
+        produceXiaoQuCountEvent(xiaoQuId)
+    }
+
+    def produceXiaoQuCountEvent(long xiaoQuId) {
+        try {
+            eventService.produce(new Event()
+                    .setUuid(CommonUtil.getUuid())
+                    .setDomainId(xiaoQuId).setDomainType(DomainType.XIAO_QU)
+                    .setType(EventDefine.Type.XIAO_QU_COUNT))
+        } catch (Exception e) {
+            logger.error("xiao qu count event error:{}", e)
         }
     }
 }
