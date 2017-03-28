@@ -37,12 +37,15 @@ class EventService {
     def init() {
         rabbitAdmin.declareExchange(EventDefine.EXCHANGE_FANG_PUBLISH)
         rabbitAdmin.declareExchange(EventDefine.EXCHANGE_FANG_PROCESS)
+        rabbitAdmin.declareExchange(EventDefine.EXCHANGE_XIAO_QU_COUNT)
 
         rabbitAdmin.declareQueue(EventDefine.QUEUE_FANG_PUBLISH_MESSAGE)
         rabbitAdmin.declareQueue(EventDefine.QUEUE_FANG_PROCESS_MESSAGE)
+        rabbitAdmin.declareQueue(EventDefine.QUEUE_XIAO_QU_COUNT_STATISTICS)
 
         rabbitAdmin.declareBinding(EventDefine.BINDING_PUBLISH_MESSAGE)
         rabbitAdmin.declareBinding(EventDefine.BINDING_CHANGE_PRICE_MESSAGE)
+        rabbitAdmin.declareBinding(EventDefine.BINDING_COUNT_STATISTICS)
     }
 
 
@@ -60,6 +63,11 @@ class EventService {
                 rabbitTemplate.convertAndSend(
                         EventDefine.EXCHANGE_FANG_PROCESS.name,
                         EventDefine.KEY_FANG_PROCESS,
+                        event)
+            } else if (event.type == EventDefine.Type.XIAO_QU_COUNT) {
+                rabbitTemplate.convertAndSend(
+                        EventDefine.EXCHANGE_XIAO_QU_COUNT.name,
+                        EventDefine.KEY_XIAO_QU_COUNT,
                         event)
             } else {
                 logger.error("事件类型错误：{}，无法发布", event.type)

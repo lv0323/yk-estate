@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.spec.xiaoqu.rest.entity;
 
+import com.google.common.base.MoreObjects;
+
 /**
  * Created by Jeffrey on 2017-01-09.
  */
@@ -7,6 +9,8 @@ public class XiaoQuSummary {
     private Long id;
     private Long cityId;
     private String name;
+    private Long districtId;
+    private Long subDistrictId;
     private String district;
     private String subDistrict;
     private Integer buildedYear;
@@ -95,15 +99,38 @@ public class XiaoQuSummary {
         return this;
     }
 
+    public Long getDistrictId() {
+        return districtId;
+    }
+
+    public XiaoQuSummary setDistrictId(Long districtId) {
+        this.districtId = districtId;
+        return this;
+    }
+
+    public Long getSubDistrictId() {
+        return subDistrictId;
+    }
+
+    public XiaoQuSummary setSubDistrictId(Long subDistrictId) {
+        this.subDistrictId = subDistrictId;
+        return this;
+    }
+
     @Override
     public String toString() {
-        return "XiaoQuSummary{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", district='" + district + '\'' +
-                ", subDistrict='" + subDistrict + '\'' +
-                ", buildedYear=" + buildedYear +
-                ", imageURI='" + imageURI + '\'' +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("cityId", cityId)
+                .add("name", name)
+                .add("districtId", districtId)
+                .add("subDistrictId", subDistrictId)
+                .add("district", district)
+                .add("subDistrict", subDistrict)
+                .add("buildedYear", buildedYear)
+                .add("structure", structure)
+                .add("avgPrice", avgPrice)
+                .add("imageURI", imageURI)
+                .toString();
     }
 }

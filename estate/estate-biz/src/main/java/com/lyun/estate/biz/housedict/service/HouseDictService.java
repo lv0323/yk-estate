@@ -1,9 +1,11 @@
 package com.lyun.estate.biz.housedict.service;
 
 import com.google.common.collect.Lists;
+import com.lyun.estate.biz.housedict.domain.DomainHouseCount;
 import com.lyun.estate.biz.housedict.domain.XiaoQuOption;
 import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.entity.BuildingUnit;
+import com.lyun.estate.biz.housedict.entity.DistrictRel;
 import com.lyun.estate.biz.housedict.repository.HouseDictRepo;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.service.MgtXiaoQuService;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQu;
@@ -121,5 +123,19 @@ public class HouseDictService {
             }
         }
         return building;
+    }
+
+    public boolean houseCountForSubDistrictAndDistrict(Long subDistrictId) {
+        DomainHouseCount subDistrictHouseCount = houseDictRepo.houseCountForSubDistrict(subDistrictId);
+
+        houseDictRepo.updateSubDistrictHouseCount(subDistrictHouseCount);
+
+        List<DistrictRel> districtRels = houseDictRepo.findDistrictRel(subDistrictId);
+
+        districtRels.forEach(it -> {
+            DomainHouseCount districtHouseCount = houseDictRepo.houseCountForDistricts(it.getDistrictId());
+            houseDictRepo.updateDistrictHouseCount(districtHouseCount);
+        });
+        return true;
     }
 }
