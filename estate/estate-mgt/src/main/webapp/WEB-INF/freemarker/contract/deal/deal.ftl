@@ -132,7 +132,7 @@
                                         </div>
                                         <div class="form-group sortlist form-inline">
                                             <label class="control-label">成交时间</label>
-                                            <div class="col-lg-2 col-md-3 col-sm-3">
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
                                                 <div class="input-group date">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
@@ -140,7 +140,7 @@
                                                     <input type="text" class="form-control pull-right" id="minCreateDate" placeholder="创建日期">
                                                 </div>
                                             </div>
-                                            <div class=" col-lg-2 col-md-3 col-sm-3">
+                                            <div class=" col-lg-3 col-md-3 col-sm-3">
                                                 <div class="input-group date">
                                                     <div class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>

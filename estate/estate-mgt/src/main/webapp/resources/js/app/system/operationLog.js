@@ -13,12 +13,16 @@ require(['main-app',
             init: false
         };
 
+        var logParams = {
+            subject: null,
+            startDate: null,
+            endDate: null
+        };
+
         var tableConfig ={
             init: false,
             target:null
         };
-
-        var jqPaginatorInstance = false;
 
         $.fn.datetimepicker.defaults.language = "zh-CN";
         $('#logStartDate').datetimepicker({
@@ -67,11 +71,15 @@ require(['main-app',
             }
         }
 
-        var pagination = function( params, dataTotal) {
+        var pagination = function( dataTotal) {
+            var id = '#operationLogList_paging';
             if(pageConfig.init){
+                pagingPlugin.update(id, {
+                    totalCounts:dataTotal,
+                    currentPage:pageConfig.currentPage
+                });
                 return;
             }
-            jqPaginatorInstance = true;
             pageConfig.init = true;
             var config = {
                 pagingId:'#operationLogList_paging',
@@ -81,39 +89,37 @@ require(['main-app',
                     if(type === 'init'){
                         return;
                     }
-                    getAndDisplayOperationLog(params, (num-1)*pageConfig.limit, pageConfig.limit);
+                    pageConfig.currentPage = num;
+                    getAndDisplayOperationLog(logParams, (num-1)*pageConfig.limit, pageConfig.limit, num);
                 }
             };
             pagingPlugin.init(config);
 
         };
 
-        var getAndDisplayOperationLog = function (params, offset, limit) {
-            AuditService.getAudit({subject:params.subject, startDate: params.startDate, endDate: params.endDate},{'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
+        var getAndDisplayOperationLog = function (logParams, offset, limit, currentpage) {
+            if(!currentpage){
+                pageConfig.currentPage = 1;
+            }
+            AuditService.getAudit({subject:logParams.subject, startDate: logParams.startDate, endDate: logParams.endDate},{'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
                 .done(function (data) {
                     displayOperationLog(data.items);
-                    if(data.total !== 0){
-                        pagination(params, data.total);
-                    }
+                    pagination(data.total);
                 })
                 .fail(function(){
                 $('#operationLogList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
             });
         };
 
-        function initTabTable(params) {
-            pageConfig.init = false;
-            if(jqPaginatorInstance){
-                $('#operationLogList_paging').jqPaginator('destroy');
-                jqPaginatorInstance = false;
-            }
-            getAndDisplayOperationLog(params, 0, pageConfig.limit);
-        }
-
         function initPage() {
             $('.nav-stacked li:first').addClass('active');
             var subject = $('.nav-pills').find('li.active a').data('name');
-            initTabTable({subject:subject});
+            logParams = {
+                subject:subject,
+                startDate: null,
+                endDate: null
+            };
+            getAndDisplayOperationLog(logParams, 0, pageConfig.limit);
         }
 
         initPage();
@@ -135,14 +141,24 @@ require(['main-app',
             var subject = $(e.target).data('name');
             $('#logStartDate').val("");
             $('#logEndDate').val("");
-            initTabTable({subject:subject});
+            logParams = {
+                subject:subject,
+                startDate: null,
+                endDate: null
+            };
+            getAndDisplayOperationLog(logParams, 0, pageConfig.limit);
         });
 
         $('#confirmFilterOperationLogBtn').on('click',function () {
             var startDate = $('#logStartDate').val();
             var endDate = $('#logEndDate').val();
             var subject = $('.nav-pills').find('li.active a').data('name');
-            initTabTable({subject:subject, startDate:startDate, endDate: endDate});
+            logParams = {
+                subject:subject,
+                startDate: startDate,
+                endDate: endDate
+            };
+            getAndDisplayOperationLog(logParams, 0, pageConfig.limit);
             return false;
         });
 
