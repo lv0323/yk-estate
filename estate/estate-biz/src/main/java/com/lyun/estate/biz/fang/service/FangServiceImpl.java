@@ -200,8 +200,12 @@ public class FangServiceImpl implements FangService {
                             map(FileDescription::getFileURI).orElse(null));
 
                     if (needDealInfo && summary.getProcess() == HouseProcess.SUCCESS) {
-                        Contract contract = contractService.findByFangId(summary.getId());
-                        if (contract != null && contract.getProcess() == ContractDefine.Process.SUCCESS) {
+                        Contract contract = contractService.findByFangId(summary.getId())
+                                .stream()
+                                .filter(t -> t.getProcess() == ContractDefine.Process.SUCCESS)
+                                .findAny()
+                                .orElse(null);
+                        if (contract != null) {
                             summary.setDealPrice(contract.getPrice());
                             summary.setDealPriceUnit(contract.getPriceUnit());
                             summary.setDealTime(contract.getCloseTime());

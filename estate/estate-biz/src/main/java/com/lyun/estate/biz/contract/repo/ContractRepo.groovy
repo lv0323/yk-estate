@@ -30,5 +30,5 @@ interface ContractRepo {
     PageList<ContractDTO> list(ContractSelector selector, PageBounds pageBounds)
 
     @Select("SELECT * FROM t_contract WHERE fang_id =#{fangId}")
-    Contract findByFangId(long fangId)
+    List<Contract> findByFangId(long fangId)
 }

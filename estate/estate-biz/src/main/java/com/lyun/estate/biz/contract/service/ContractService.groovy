@@ -51,6 +51,7 @@ class ContractService {
     FangProcessService fangProcessService
 
     Contract create(Contract contract) {
+        ExceptionUtil.checkNotNull("房源编号", contract.fangId)
         ExceptionUtil.checkIllegal(
                 ValidateUtil.isMobile(contract.getAssignorMobile()), "房东手机", contract.getAssignorMobile())
         ExceptionUtil.checkIllegal(
@@ -59,6 +60,17 @@ class ContractService {
                 ValidateUtil.isMobile(contract.getAssigneeMobile()), "客户手机", contract.getAssigneeMobile())
         ExceptionUtil.checkIllegal(
                 ValidateUtil.isIdNo(contract.getAssigneeIdNo()), "客户身份证", contract.getAssigneeIdNo())
+
+        List<Contract> contractList = contractRepo.findByFangId(contract.fangId)
+
+        if (contractList.stream().anyMatch({ it.getProcess() == ContractDefine.Process.CREATED })) {
+            throw new EstateException(ExCode.CONTRACT_FOR_FANG_EXIST)
+        }
+
+        if (contractList.stream().anyMatch({ it.getProcess() == ContractDefine.Process.SUCCESS })) {
+            throw new EstateException(ExCode.CONTRACT_FOR_FANG_SUCCEED)
+        }
+
         contract.setProcess(ContractDefine.Process.CREATED)
 
         Employee employee = employeeService.selectById(contract.getEmployeeId())
@@ -131,7 +143,7 @@ class ContractService {
         return result
     }
 
-    Contract findByFangId(long fangId) {
+    List<Contract> findByFangId(long fangId) {
         contractRepo.findByFangId(fangId)
     }
 
