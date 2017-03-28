@@ -19,7 +19,7 @@ import org.springframework.messaging.handler.annotation.support.DefaultMessageHa
 
 @Configuration
 @PropertySource("classpath:/estate/core/amqp.properties")
-@PropertySource(value = "file:${LVJINSUO_HOME}/conf/estate/core/amqp.properties", ignoreResourceNotFound = true)
+@PropertySource(value = "file://${LVJINSUO_HOME}/conf/estate/core/amqp.properties", ignoreResourceNotFound = true)
 @EnableRabbit
 public class AmqpConfig implements RabbitListenerConfigurer {
     @Value("${estate.amqp.hosts}")

@@ -21,6 +21,7 @@ import java.util.List;
 @ComponentScan({"com.lyun"})
 @Import({CoreConfig.class, BizConfig.class})
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
+@PropertySource(value = "file://${LVJINSUO_HOME}/conf/estate/application.properties", ignoreResourceNotFound = true)
 @EnableSwagger2
 public class RestConfig extends WebMvcConfigurerAdapter {
 
