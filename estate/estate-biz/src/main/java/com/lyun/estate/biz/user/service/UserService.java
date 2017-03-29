@@ -115,7 +115,7 @@ public class UserService {
 
         //一个用户在10分钟内登录超过三次的需要提供图片验证码，如果没有图片验证码则提示需要图片验证码
         Integer count = cacheManager.getCache(EstateCacheConfig.LOGIN_CACHE).get(loginUser.getId(), Integer.class);
-        if (count != null && count > 3) {
+        if (count != null && count > 2) {
             if (captcha == null) {
                 throw new EstateException(ExCode.LOGIN_NEED_CAPTCHA);
             } else {

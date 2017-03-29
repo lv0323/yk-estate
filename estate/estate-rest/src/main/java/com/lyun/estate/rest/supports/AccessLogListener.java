@@ -31,6 +31,7 @@ public class AccessLogListener implements ApiListener {
     private static final String X_FORWARDED_PORT = "X-Forwarded-Port";
     private static final String REFERER_HEADER = "Referer";
     private static final String USER_AGENT_HEADER = "User-Agent";
+    private static final String CLIENT_ID_HEAD = "X-Client-Id";
     private static Logger logger = LoggerFactory.getLogger(AccessLogListener.class);
 
     @Autowired
@@ -52,6 +53,12 @@ public class AccessLogListener implements ApiListener {
         restContext.setAccessTime(accessTime);
 
         restContext.setCorrelationId(buildCorrelationId(request));
+
+        String clientIdHead = request.getHeader(CLIENT_ID_HEAD);
+        if (!StringUtils.isEmpty(clientIdHead)) {
+            restContext.setClientId(clientIdHead);
+        }
+
 
         String userAddress = StringUtils.isEmpty(request.getHeader(FORWARDED_FOR_HEADER)) ? request.getRemoteHost() : request
                 .getHeader(FORWARDED_FOR_HEADER);
