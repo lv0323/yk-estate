@@ -12,6 +12,13 @@ subprojects {
     repositories {
         flatDir { dirs "$rootDir/libs" }
         mavenLocal()
+        maven {
+            credentials {
+                username "albus"
+                password "YouCantHitMe"
+            }
+            url "http://139.196.34.70:8081/content/groups/public/"
+        }
         maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
         mavenCentral()
         jcenter()
