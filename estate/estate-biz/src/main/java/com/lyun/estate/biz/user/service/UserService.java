@@ -85,8 +85,10 @@ public class UserService {
             throw new EasyCodeException("error.user.register", "用户注册失败");
         }
         if (registerResource.isLogin()) {
+            TokenResponse token = generateLoginToken(userMapper.findUserByMobile(smsCode.getMobile()));
             registerResponse
-                    .setToken(generateLoginToken(userMapper.findUserByMobile(smsCode.getMobile())).getToken());
+                    .setToken(token.getToken())
+                    .setRefreshToken(token.getRefreshToken());
         }
         return registerResponse;
     }
