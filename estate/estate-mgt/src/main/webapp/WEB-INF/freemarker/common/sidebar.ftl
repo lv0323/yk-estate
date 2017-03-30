@@ -151,6 +151,7 @@
                     <li><a href="/mgt/org/position?target=.org"><i class="fa fa-circle"></i>岗位管理</a></li>
                 </ul>
             </li>
+            <!--
             <li class="treeview sys">
                 <a href="#"><i class="fa fa-cog" aria-hidden="true"></i> <span>系统设置</span>
                     <span class="pull-right-container">
@@ -161,6 +162,7 @@
                     <li><a href="/mgt/system/operationLog?target=.sys"><i class="fa fa-circle"></i>操作日志</a></li>
                 </ul>
             </li>
+            -->
         </ul>
         <!-- /.sidebar-menu -->
     </section>
