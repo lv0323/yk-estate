@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.Objects;
 
 @Service
@@ -41,6 +43,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
                 return false;
             }
             mgtContext.setOperator(operator);
+
             // 公司ip地址白名单功能开启
             // 1.如果ip地址符合，则通过
             // 2.设备Id与绑定id一致，也通过
@@ -52,9 +55,15 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
                 if (ipWhiteListService.ipWhiteList(operator.getCompanyId()).contains(mgtContext.getUserAddress())) {
                     return true;
                 }
-                if (mgtContext.getDeviceType() == DeviceType.MOBILE &&
-                        Objects.equals(operator.getDeviceId(), request.getHeader("x-device-id"))) {
-                    return true;
+                if (mgtContext.getDeviceType() == DeviceType.MOBILE) {
+                    Cookie deviceIdCookie = Arrays.stream(request.getCookies())
+                            .filter(t -> Objects.equals(t.getName(), "deviceId"))
+                            .findAny()
+                            .orElse(null);
+                    if (deviceIdCookie != null
+                            && Objects.equals(deviceIdCookie.getValue(), operator.getDeviceId())) {
+                        return true;
+                    }
                 }
                 throw new EstateException(ExCode.IP_AND_DEVICE_ERROR);
             }

@@ -18,6 +18,8 @@ import eu.bitwalker.useragentutils.DeviceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -54,6 +56,7 @@ public class AuthRest {
     @GetMapping("login")
     public Object login(@RequestParam String mobile,
                         @RequestParam String password,
+                        HttpServletResponse response,
                         HttpSession session,
                         @RequestHeader(CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {
         Employee employee = authMgtService.login(mobile, password);
@@ -63,6 +66,10 @@ public class AuthRest {
         if (Strings.isNullOrEmpty(employee.getDeviceId()) && mgtContext.getDeviceType() == DeviceType.MOBILE) {
             deviceId = authMgtService.bindDeviceId(employee.getId());
             employee.setDeviceId(deviceId);
+            Cookie cookie = new Cookie("deviceId", deviceId);
+            cookie.setPath("/");
+            cookie.setMaxAge(3600 * 24 * 999);
+            response.addCookie(cookie);
         }
 
         session.setAttribute(Constant.SESSION_IS_LOGIN, true);

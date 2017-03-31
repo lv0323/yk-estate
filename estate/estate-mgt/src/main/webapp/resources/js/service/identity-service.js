@@ -51,10 +51,6 @@ define(contextPath + '/js/service/identity-service.js',
                             company_id: response.user &&response.user.company_id,
                         };
                         localStorage.setItem("userInfo", JSON.stringify(userInfo));
-
-                        if(response.deviceId !== null){
-                            localStorage.setItem("deviceId",response.deviceId)
-                        }
                          defer.resolve(response);
                     }).fail(function(response){
                          defer.reject(response);
