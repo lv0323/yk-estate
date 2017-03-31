@@ -1,7 +1,6 @@
 package com.lyun.estate.rest.supports;
 
 import com.google.common.base.Strings;
-import com.lyun.estate.biz.support.clock.Clock;
 import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.core.utils.CommonUtil;
@@ -38,18 +37,16 @@ public class AccessLogListener implements ApiListener {
     private RestContext restContext;
 
     @Autowired
-    private Clock clock;
-
-    @Autowired
     private Environment environment;
 
 
     @Override
     public void onRequest(HttpServletRequest request, HttpServletResponse response) {
 
-        response.setHeader("X-TIMESTAMP", String.valueOf((clock.nowInstant().toEpochMilli() / 1000)));
-
         Long accessTime = System.currentTimeMillis();
+
+        response.setHeader("X-TIMESTAMP", String.valueOf(accessTime));
+
         restContext.setAccessTime(accessTime);
 
         restContext.setCorrelationId(buildCorrelationId(request));

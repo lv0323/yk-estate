@@ -5,6 +5,7 @@ define(contextPath + '/js/service/request-service.js', ['main-app'], function (m
     var sendRequest = function (url, method, data, header) {
         header['Cache-Control'] = 'no-cache';
         header['x-auth-token'] = getToken();
+        header['x-device-id'] = localStorage.getItem('deviceId');
         var defer = $.Deferred();
         $.ajax(
             {

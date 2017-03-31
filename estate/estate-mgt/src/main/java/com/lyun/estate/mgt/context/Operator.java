@@ -6,6 +6,9 @@ public class Operator {
 
     private Long id;
     private Long companyId;
+    private Boolean companyIpCheck;
+    private Boolean sysAdmin;
+    private String deviceId;
     private Long cityId;
     private Long departmentId;
     private String departmentName;
@@ -122,6 +125,33 @@ public class Operator {
 
     public Operator setPositionName(String positionName) {
         this.positionName = positionName;
+        return this;
+    }
+
+    public Boolean getCompanyIpCheck() {
+        return companyIpCheck;
+    }
+
+    public Operator setCompanyIpCheck(Boolean companyIpCheck) {
+        this.companyIpCheck = companyIpCheck;
+        return this;
+    }
+
+    public Boolean getSysAdmin() {
+        return sysAdmin;
+    }
+
+    public Operator setSysAdmin(Boolean sysAdmin) {
+        this.sysAdmin = sysAdmin;
+        return this;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public Operator setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
         return this;
     }
 }

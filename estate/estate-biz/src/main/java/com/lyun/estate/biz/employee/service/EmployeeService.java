@@ -229,4 +229,8 @@ public class EmployeeService {
         }
         throw new EstateException(ExCode.UPDATE_FAIL, employee.toString(), "员工信息");
     }
+
+    public Boolean updateDeviceId(Long id, String deviceId) {
+        return repo.updateDeviceId(id, deviceId) > 0;
+    }
 }
