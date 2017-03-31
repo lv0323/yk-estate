@@ -122,7 +122,7 @@ public class AccessLogListener implements ApiListener {
     private String buildRequestLog(HttpServletRequest request) {
         StringBuilder accessLog = new StringBuilder();
         append(accessLog, "[" + restContext.getCorrelationId() + "]");
-        append(accessLog, request.getRemoteHost());
+        append(accessLog, restContext.getUserAddress());
         append(accessLog, request.getHeader(FORWARDED_FOR_HEADER));
         append(accessLog, request.getRemoteUser());
         append(accessLog, request.getMethod());
