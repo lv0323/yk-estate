@@ -24,6 +24,7 @@ public class Company {
     @Future
     private Date endDate;
     private Boolean locked;
+    private Boolean ipCheck;
     @JsonIgnore
     private Date createTime;
     @JsonIgnore
@@ -125,6 +126,15 @@ public class Company {
 
     public Company setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
+    }
+
+    public Boolean getIpCheck() {
+        return ipCheck;
+    }
+
+    public Company setIpCheck(Boolean ipCheck) {
+        this.ipCheck = ipCheck;
         return this;
     }
 }

@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.employee.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 import com.lyun.estate.biz.employee.def.WorkingStatus;
 import com.lyun.estate.biz.support.def.Gender;
@@ -10,6 +11,7 @@ public class Employee {
 
     private Long id;
     private Long companyId;
+    private Boolean companyIpCheck;
     private Long cityId;
     private Long departmentId;
     private String departmentName;
@@ -28,6 +30,8 @@ public class Employee {
     private String wechat;
     private WorkingStatus status;
     private Boolean quit;
+    private String deviceId;
+    private Boolean sysAdmin;
     private Date entryDate;
     private Date createTime;
     private Date updateTime;
@@ -47,6 +51,24 @@ public class Employee {
 
     public Employee setCompanyId(Long companyId) {
         this.companyId = companyId;
+        return this;
+    }
+
+    public Boolean getCompanyIpCheck() {
+        return companyIpCheck;
+    }
+
+    public Employee setCompanyIpCheck(Boolean companyIpCheck) {
+        this.companyIpCheck = companyIpCheck;
+        return this;
+    }
+
+    public Boolean getSysAdmin() {
+        return sysAdmin;
+    }
+
+    public Employee setSysAdmin(Boolean sysAdmin) {
+        this.sysAdmin = sysAdmin;
         return this;
     }
 
@@ -239,6 +261,15 @@ public class Employee {
         return this;
     }
 
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public Employee setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+        return this;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -263,6 +294,7 @@ public class Employee {
                 .add("wechat", wechat)
                 .add("status", status)
                 .add("quit", quit)
+                .add("deviceId", deviceId)
                 .add("entryDate", entryDate)
                 .add("createTime", createTime)
                 .add("updateTime", updateTime)

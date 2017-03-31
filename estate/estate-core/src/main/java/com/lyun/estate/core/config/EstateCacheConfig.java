@@ -27,7 +27,7 @@ public class EstateCacheConfig {
 
     @Bean(MANAGER_0_5K)
     @Primary
-    public CacheManager manager_0_5K() {
+    public CacheManager manager5K() {
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
         caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
                 .maximumSize(5000));
@@ -35,7 +35,7 @@ public class EstateCacheConfig {
     }
 
     @Bean(MANAGER_10_5K)
-    CacheManager manager_10_5K() {
+    CacheManager manager10M5K() {
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
         caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
                 .maximumSize(5000)
@@ -44,7 +44,7 @@ public class EstateCacheConfig {
     }
 
     @Bean(MANAGER_360_5K)
-    CacheManager manager_60_5K() {
+    CacheManager manager360M5K() {
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
         caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
                 .maximumSize(5000)

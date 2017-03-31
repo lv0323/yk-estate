@@ -84,6 +84,8 @@ public class AccessLogListener implements ApiListener {
                         .ofNullable(ua.getOperatingSystem())
                         .map(OperatingSystem::getName)
                         .orElse(null));
+                mgtContext.setDeviceType(ua.getOperatingSystem().getDeviceType());
+
             } catch (Exception e) {
                 ExceptionUtil.catching(e);
             }

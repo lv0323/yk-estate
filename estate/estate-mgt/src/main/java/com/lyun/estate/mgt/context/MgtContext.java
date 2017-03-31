@@ -1,6 +1,7 @@
 package com.lyun.estate.mgt.context;
 
 import com.lyun.estate.core.supports.context.BaseContext;
+import eu.bitwalker.useragentutils.DeviceType;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,7 +23,10 @@ public class MgtContext extends BaseContext {
 
     public static final String OS_NAME = "osName";
 
+    public static final String DEVICE_TYPE = "deviceType";
+
     public static final String ACCESS_TIME = "accessTime";
+
 
     public Long getAccessTime() {
         return (Long) get(ACCESS_TIME);
@@ -97,4 +101,11 @@ public class MgtContext extends BaseContext {
         put(BROWSER_NAME, name);
     }
 
+    public DeviceType getDeviceType() {
+        return (DeviceType) get(DEVICE_TYPE);
+    }
+
+    public void setDeviceType(DeviceType deviceType) {
+        put(DEVICE_TYPE, deviceType);
+    }
 }

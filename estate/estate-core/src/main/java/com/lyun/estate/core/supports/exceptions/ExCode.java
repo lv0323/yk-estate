@@ -69,6 +69,8 @@ public enum ExCode {
 
     //event
     EVENT_PRODUCE_ERROR("事件发布错误"),
+    //ip check
+    IP_AND_DEVICE_ERROR("ip及设备校验错误"),
 
     //json
     JSON_ERROR("JSON对象{},转换错误:{}"),;
