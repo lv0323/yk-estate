@@ -8,6 +8,7 @@ import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.support.def.Gender;
 import com.lyun.estate.mgt.auth.def.SaltSugar;
 import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
+import com.lyun.estate.mgt.supports.CommonResp;
 import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -135,6 +136,11 @@ public class EmployeeRest {
     @GetMapping("/{id}")
     public Employee getById(@PathVariable Long id) {
         return service.getById(id);
+    }
+
+    @PostMapping("unbind")
+    public CommonResp unbindDevice(Long id) {
+        return service.unbindDevice(id) ? CommonResp.succeed() : CommonResp.failed();
     }
 
 

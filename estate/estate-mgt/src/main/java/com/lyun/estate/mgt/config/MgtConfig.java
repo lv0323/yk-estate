@@ -80,9 +80,7 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        if (this.pageBoundsArgumentResolver != null) {
-            argumentResolvers.add(this.pageBoundsArgumentResolver);
-        }
+        argumentResolvers.add(this.pageBoundsArgumentResolver);
     }
 
     @Bean

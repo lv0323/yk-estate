@@ -6,6 +6,8 @@ import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.core.supports.exceptions.EstateException;
+import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.mgt.context.MgtContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +43,9 @@ public class FileRest {
                                 @RequestParam FileType fileType,
                                 @RequestParam FileProcess process,
                                 @RequestParam MultipartFile image) throws IOException {
+        if (!mgtContext.getOperator().getSysAdmin()) {
+            throw new EstateException(ExCode.DEFAULT_EXCEPTION);
+        }
 
         logger.info("{},ownerId:{},ownerType:{},customType:{},fileType:{},process:{}",
                 mgtContext.getOperator().getId(),
