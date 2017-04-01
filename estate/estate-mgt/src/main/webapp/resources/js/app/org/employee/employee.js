@@ -297,6 +297,15 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             $('#editEmployeeGender').find('input[value='+employee.gender["name"]+']').prop('checked',true);
             $('#editEmployeeGender').find('input[value!='+employee.gender["name"]+']').prop('checked',false);
             $('#editEmployeeMobile').text(employee["mobile"]);
+            if(employee["deviceId"]==""|| employee["deviceId"]==null){
+                $('#editEmployeeDeviceId').text("未绑定");
+                $('#editEmployeeUnbindDeviceBtn').prop('disabled',true);
+                $('#editEmployeeDeviceId').css('background-color','#eeeeee');
+            }else {
+                $('#editEmployeeDeviceId').text(employee["deviceId"]);
+                $('#editEmployeeUnbindDeviceBtn').prop('disabled',false);
+                $('#editEmployeeDeviceId').css('background-color','#ffffff');
+            }
             $('#editEmployeeOpenContactHN').val(hostNumber);
             $('#editEmployeeOpenContactEN').val(extensionNumber);
             $('#editEmployeeID').val(employee["idcardNumber"]);
@@ -305,6 +314,19 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             $('#editEmployeeStatus').val(employee.status["name"]);
             $('#editEmployeeEntryDate').val(time);
 
+        });
+
+        $('#editEmployeeUnbindDeviceBtn').on('click', function () {
+            var employeeId = $('#editEmployeeId').val();
+            EmployeeService.unbindDevice({id: employeeId})
+                .done(function () {
+                    SweetAlertHelp.success({}, function () {
+                        location.reload(true);
+                    });
+                })
+                .fail(function (res) {
+                    SweetAlertHelp.fail(res);
+                });
         });
 
         //action for edit Company dialog
