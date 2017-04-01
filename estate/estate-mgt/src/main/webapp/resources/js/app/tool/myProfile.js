@@ -37,8 +37,8 @@ require(['main-app',
 
         var $uploadCrop = $('#previewImg').croppie({
             viewport: {
-                width: 120,
-                height: 160
+                width: 150, //120
+                height: 200 //160
             },
             enableOrientation:true,
             enableExif: true

@@ -40,7 +40,7 @@
 
 <!-- Modal changeAvatarDialog -->
 <div class="modal fade" id="changeAvatarDialog" tabindex="-1" role="dialog" aria-labelledby="changeAvatarLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document" style="width: 500px;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -51,8 +51,9 @@
             <div class="modal-body">
                 <form class="form-horizontal" enctype="multipart/form-data">
                     <div class="form-group previewImg">
-                        <div class="col-lg-9 col-md-9 col-sm-9 pull-right">
-                            <div id="previewImg" style="width: 300px; height: 300px;"></div>
+                        <div class="col-lg-9 col-md-9 col-sm-9 pull-right" style="position: relative;">
+                            <span style="position: absolute; right: 50px; color: #4e4e4e; font-size: 12px;">注意:<br/><br/>支持jpg、png格式;<br/><br/>不超过2M大小;<br/><br/>可拖动、缩放选框</span>
+                            <div id="previewImg" style="width: 150px; height: 200px; border: 1px solid #e2e2e2;"></div>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-3">
                             <a class="btn btn-file btn-primary">
