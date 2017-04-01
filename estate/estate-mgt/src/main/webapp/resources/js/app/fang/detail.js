@@ -400,7 +400,9 @@ require(['main-app',
                             _this.showMap.list = response;
                         });
                     });
-                }).fail(SweetAlertHelp.fail);
+                }).fail(function (response) {
+                    SweetAlertHelp.fail(response.responseJSON)
+                });
             }
             _this.addMap = function(type, title, key){
                 $('#mapModel').modal({'show':true,backdrop:'static'});
