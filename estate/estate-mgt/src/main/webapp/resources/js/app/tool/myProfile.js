@@ -16,17 +16,19 @@ require(['main-app',
 
         /*load page begin*/
         var loadPage = function (data, header) {
-            $('#username').text(data.name);
-            $('#myProfileUsername').text(data.name);
-            $('#mobile').text(data.mobile);
-            var entryDate = UtilService.timeStamp2Date(data.entryDate);
+            var username = (data.name=="" || data.name==null)?("无"):(data.name);
+            $('#username').text(username);
+            $('#myProfileUsername').text(username);
+            $('#mobile').text((data.mobile=="" || data.mobile==null)?("无"):(data.mobile));
+            var entryDate = (data.entryDate=="" || data.entryDate==null)?("无"):(UtilService.timeStamp2Date(data.entryDate));
             $('#entryDate').text(entryDate);
-            $('#wechat').text(data.wechat);
-            var contactNoText = (data.openContact=="" || data.openContact==null)?(""):(typeof(data.openContact.split(',')[1])=='undefined')?(data.openContact):(data.openContact.split(',')[0]+'转'+data.openContact.split(',')[1]);
+            $('#wechat').text((data.wechat=="" || data.wechat==null)?("无"):(data.wechat));
+            var contactNoText = (data.openContact=="" || data.openContact==null)?("无"):(typeof(data.openContact.split(',')[1])=='undefined')?(data.openContact):(data.openContact.split(',')[0]+'转'+data.openContact.split(',')[1]);
             $('#openContact').text(contactNoText);
             var contactNo = (data.openContact=="" || data.openContact==null)?(""):data.openContact;
             openContactHN = contactNo.split(',')[0];
             openContactEN = (typeof (contactNo.split(',')[1])=='undefined')?(""):(contactNo.split(',')[1]);
+            $('#deviceId').text((data.deviceId=="" || data.deviceId==null)?("未绑定"):(data.deviceId));
         };
         EmployeeService.getSelf(header).done(function (data) {
             loadPage(data, header);

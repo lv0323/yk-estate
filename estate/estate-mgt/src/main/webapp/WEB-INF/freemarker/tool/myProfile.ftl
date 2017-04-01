@@ -182,6 +182,10 @@
                                                         <td class="text-right text-muted">外网电话</td>
                                                         <td id="openContact" class="text-left"></td>
                                                     </tr>
+                                                    <tr>
+                                                        <td class="text-right text-muted">绑定设备号</td>
+                                                        <td id="deviceId" class="text-left"></td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>

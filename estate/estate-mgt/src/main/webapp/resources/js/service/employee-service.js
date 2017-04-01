@@ -11,6 +11,10 @@ define(contextPath + '/js/service/employee-service.js',
             allEmployee:[]*/
         };
 
+        EmployeeService.unbindDevice = function (params, header) {
+            return requestService.post('/api/employee/unbind', params, header);
+        };
+
         EmployeeService.getAvatar = function (header) {
             return requestService.get('/api/employee/avatar', null, header);
         };
