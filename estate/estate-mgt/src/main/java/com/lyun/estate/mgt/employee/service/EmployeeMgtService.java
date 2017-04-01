@@ -125,7 +125,7 @@ public class EmployeeMgtService {
                 .setOperatorId(mgtContext.getOperator().getId())
                 .setSubject(AuditSubject.ORGANIZATION)
                 .setTargetId(employee.getId())
-                .setDomainType(DomainType.POSITION)
+                .setDomainType(DomainType.EMPLOYEE)
                 .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
                         .getName() + "】重设了【" + employee.getDepartmentName() + "--" + employee.getName() + "】的登录密码")
         );
@@ -147,5 +147,20 @@ public class EmployeeMgtService {
 
     public Employee getById(Long id) {
         return employeeService.selectById(id);
+    }
+
+    public boolean unbindDevice(Long id) {
+        Employee employee = employeeService.selectById(id);
+
+        auditService.save(new Audit()
+                .setCompanyId(mgtContext.getOperator().getCompanyId())
+                .setDepartmentId(mgtContext.getOperator().getDepartmentId())
+                .setOperatorId(mgtContext.getOperator().getId())
+                .setSubject(AuditSubject.ORGANIZATION)
+                .setTargetId(employee.getId())
+                .setDomainType(DomainType.EMPLOYEE)
+                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
+                        .getName() + "】解绑了【" + employee.getDepartmentName() + "--" + employee.getName() + "】的设备号"));
+        return employeeService.updateDeviceId(id, "");
     }
 }

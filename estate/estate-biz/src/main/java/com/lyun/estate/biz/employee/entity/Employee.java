@@ -18,11 +18,14 @@ public class Employee {
     private Long positionId;
     private String positionName;
     private Boolean isBoss;
+    @JsonIgnore
     private Boolean isAgent;
     private Long avatarId;
     private String mobile;
     private String openContact;
+    @JsonIgnore
     private String password;
+    @JsonIgnore
     private String salt;
     private String name;
     private Gender gender;
@@ -31,6 +34,7 @@ public class Employee {
     private WorkingStatus status;
     private Boolean quit;
     private String deviceId;
+    @JsonIgnore
     private Boolean sysAdmin;
     private Date entryDate;
     private Date createTime;
