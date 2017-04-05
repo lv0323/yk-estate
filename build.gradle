@@ -1,6 +1,29 @@
+def majorVersionNumber = Long.valueOf(majorVersion)
+def minorVersionNumber = Long.valueOf(minorVersion)
+def patchVersionNumber = 0
+
+try {
+    patchVersionNumber = Long.valueOf(patchVersion)
+} catch (ex) {
+    // do nothing
+}
+
 allprojects {
     defaultTasks 'clean', 'build', 'testClasses'
     apply plugin: 'idea'
+
+    if (release == '0') {
+        version = ""
+    } else {
+        version = "$majorVersionNumber.$minorVersionNumber.$patchVersionNumber"
+    }
+
+    idea {
+        module {
+            inheritOutputDirs = false
+            outputDir = file("$buildDir/classes/main/")
+        }
+    }
 }
 
 subprojects {
