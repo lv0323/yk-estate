@@ -320,6 +320,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             var employeeId = $('#editEmployeeId').val();
             EmployeeService.unbindDevice({id: employeeId})
                 .done(function () {
+                    $('#editEmployeeDeviceId').text("");
                     SweetAlertHelp.success({}, function () {
                         location.reload(true);
                     });

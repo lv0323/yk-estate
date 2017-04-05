@@ -145,15 +145,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">绑定设备号<span class="required-field">*</span></label>
-                        <div class="col-lg-8 col-md-8 col-sm-8">
-                            <div id="editEmployeeDeviceId" class="form-control"></div>
-                        </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2">
-                            <button id="editEmployeeUnbindDeviceBtn" type="button" class="btn btn-primary">解绑</button>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="control-label">外网电话</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="editEmployeeOpenContactHN" class="form-control" placeholder="外网主机号">
@@ -210,6 +201,15 @@
                                 </div>
                                 <input type="text" class="form-control pull-right" id="editEmployeeEntryDate" placeholder="请填入职日期">
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">绑定设备号</label>
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                            <div id="editEmployeeDeviceId" class="form-control"></div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <button id="editEmployeeUnbindDeviceBtn" type="button" class="btn btn-primary">解绑</button>
                         </div>
                     </div>
                 </form>
