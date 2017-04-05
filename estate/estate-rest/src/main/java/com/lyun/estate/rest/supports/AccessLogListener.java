@@ -1,7 +1,6 @@
 package com.lyun.estate.rest.supports;
 
 import com.google.common.base.Strings;
-import com.lyun.estate.biz.support.clock.Clock;
 import com.lyun.estate.core.supports.context.RestContext;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.core.utils.CommonUtil;
@@ -38,18 +37,16 @@ public class AccessLogListener implements ApiListener {
     private RestContext restContext;
 
     @Autowired
-    private Clock clock;
-
-    @Autowired
     private Environment environment;
 
 
     @Override
     public void onRequest(HttpServletRequest request, HttpServletResponse response) {
 
-        response.setHeader("X-TIMESTAMP", String.valueOf((clock.nowInstant().toEpochMilli() / 1000)));
-
         Long accessTime = System.currentTimeMillis();
+
+        response.setHeader("X-TIMESTAMP", String.valueOf(accessTime));
+
         restContext.setAccessTime(accessTime);
 
         restContext.setCorrelationId(buildCorrelationId(request));
@@ -59,12 +56,13 @@ public class AccessLogListener implements ApiListener {
             restContext.setClientId(clientIdHead);
         }
 
-
         String userAddress = StringUtils.isEmpty(request.getHeader(FORWARDED_FOR_HEADER)) ? request.getRemoteHost() : request
                 .getHeader(FORWARDED_FOR_HEADER);
-        if (StringUtils.hasText(userAddress) && userAddress.indexOf(',') > 0) {
-            userAddress = userAddress.substring(0, userAddress.indexOf(','));
+
+        if (StringUtils.hasText(userAddress) && userAddress.indexOf(", ") > 0) {
+            userAddress = userAddress.substring(userAddress.lastIndexOf(", ") + 2);
         }
+
         restContext.setUserAddress(userAddress);
 
         restContext.setResourcePath(buildRequestPath(request));
@@ -125,7 +123,7 @@ public class AccessLogListener implements ApiListener {
     private String buildRequestLog(HttpServletRequest request) {
         StringBuilder accessLog = new StringBuilder();
         append(accessLog, "[" + restContext.getCorrelationId() + "]");
-        append(accessLog, request.getRemoteHost());
+        append(accessLog, restContext.getUserAddress());
         append(accessLog, request.getHeader(FORWARDED_FOR_HEADER));
         append(accessLog, request.getRemoteUser());
         append(accessLog, request.getMethod());

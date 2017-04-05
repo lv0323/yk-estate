@@ -56,6 +56,7 @@ public enum ExCode {
     FAVORITE_TYPE_NOT_SUPPORTED("关注实体类型不支持"),
     //file
     FILE_NOT_EXIST("该文件不存在"),
+    FILE_IMG_SIZE_ERROR("图片尺寸不是{}*{}"),
     //permission
     PERMISSION_ERROR("无权进行该操作"),
 
@@ -69,6 +70,8 @@ public enum ExCode {
 
     //event
     EVENT_PRODUCE_ERROR("事件发布错误"),
+    //ip check
+    IP_AND_DEVICE_ERROR("ip及设备校验错误"),
 
     //json
     JSON_ERROR("JSON对象{},转换错误:{}"),;

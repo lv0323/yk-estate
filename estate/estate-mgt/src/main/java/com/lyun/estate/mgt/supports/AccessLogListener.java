@@ -48,8 +48,9 @@ public class AccessLogListener implements ApiListener {
 
         String userAddress = StringUtils.isEmpty(request.getHeader(FORWARDED_FOR_HEADER)) ? request.getRemoteHost() : request
                 .getHeader(FORWARDED_FOR_HEADER);
-        if (StringUtils.hasText(userAddress) && userAddress.indexOf(',') > 0) {
-            userAddress = userAddress.substring(0, userAddress.indexOf(','));
+
+        if (StringUtils.hasText(userAddress) && userAddress.indexOf(", ") > 0) {
+            userAddress = userAddress.substring(userAddress.lastIndexOf(", ") + 2);
         }
         mgtContext.setUserAddress(userAddress);
 
@@ -84,6 +85,8 @@ public class AccessLogListener implements ApiListener {
                         .ofNullable(ua.getOperatingSystem())
                         .map(OperatingSystem::getName)
                         .orElse(null));
+                mgtContext.setDeviceType(ua.getOperatingSystem().getDeviceType());
+
             } catch (Exception e) {
                 ExceptionUtil.catching(e);
             }
@@ -105,7 +108,7 @@ public class AccessLogListener implements ApiListener {
     private String buildRequestLog(HttpServletRequest request) {
         StringBuilder accessLog = new StringBuilder();
         append(accessLog, "[" + mgtContext.getCorrelationId() + "]");
-        append(accessLog, request.getRemoteHost());
+        append(accessLog, mgtContext.getUserAddress());
         append(accessLog, request.getHeader(FORWARDED_FOR_HEADER));
         append(accessLog, request.getRemoteUser());
         append(accessLog, request.getMethod());

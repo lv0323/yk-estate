@@ -1,5 +1,6 @@
 package com.lyun.estate.mgt.auth;
 
+import com.google.common.base.Strings;
 import com.lyun.estate.biz.auth.captcha.Captcha;
 import com.lyun.estate.biz.auth.captcha.CaptchaArgumentResolver;
 import com.lyun.estate.biz.auth.captcha.CheckCaptcha;
@@ -9,11 +10,16 @@ import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.mgt.auth.def.SaltSugar;
 import com.lyun.estate.mgt.auth.service.AuthMgtService;
+import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.context.Operator;
 import com.lyun.estate.mgt.supports.Constant;
 import com.lyun.estate.mgt.supports.RestResponse;
+import eu.bitwalker.useragentutils.DeviceType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -21,6 +27,9 @@ import javax.servlet.http.HttpSession;
 public class AuthRest {
 
     private final AuthMgtService authMgtService;
+
+    @Autowired
+    private MgtContext mgtContext;
 
     public AuthRest(AuthMgtService authMgtService) {
         this.authMgtService = authMgtService;
@@ -47,13 +56,29 @@ public class AuthRest {
     @GetMapping("login")
     public Object login(@RequestParam String mobile,
                         @RequestParam String password,
+                        HttpServletResponse response,
                         HttpSession session,
                         @RequestHeader(CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {
         Employee employee = authMgtService.login(mobile, password);
+        // 自动绑定设备功能
+        // deviceId为空且mgtContext中设备为mobile,则自动绑定
+        String deviceId = null;
+        if (Strings.isNullOrEmpty(employee.getDeviceId()) && mgtContext.getDeviceType() == DeviceType.MOBILE) {
+            deviceId = authMgtService.bindDeviceId(employee.getId());
+            employee.setDeviceId(deviceId);
+            Cookie cookie = new Cookie("deviceId", deviceId);
+            cookie.setPath("/");
+            cookie.setMaxAge(3600 * 24 * 999);
+            response.addCookie(cookie);
+        }
+
         session.setAttribute(Constant.SESSION_IS_LOGIN, true);
         session.setAttribute(Constant.SESSION_OPERATOR, new Operator()
                 .setId(employee.getId())
                 .setCompanyId(employee.getCompanyId())
+                .setCompanyIpCheck(employee.getCompanyIpCheck())
+                .setSysAdmin(employee.getSysAdmin())
+                .setDeviceId(employee.getDeviceId())
                 .setCityId(employee.getCityId())
                 .setDepartmentId(employee.getDepartmentId())
                 .setPositionId(employee.getPositionId())
@@ -65,7 +90,7 @@ public class AuthRest {
                 .setPositionName(employee.getPositionName())
                 .setDepartmentName(employee.getDepartmentName()));
         session.setMaxInactiveInterval(3600 * 4);
-        return new RestResponse().add("ret", true).add("user", employee).get();
+        return new RestResponse().add("ret", true).add("user", employee).add("deviceId", deviceId).get();
     }
 
     @GetMapping("logout")

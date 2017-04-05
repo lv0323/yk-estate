@@ -203,6 +203,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label">绑定设备号</label>
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                            <div id="editEmployeeDeviceId" class="form-control"></div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <button id="editEmployeeUnbindDeviceBtn" type="button" class="btn btn-primary">解绑</button>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">

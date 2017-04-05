@@ -8,6 +8,7 @@ import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
+import com.lyun.estate.core.utils.CommonUtil;
 import com.lyun.estate.mgt.auth.def.SaltSugar;
 import com.lyun.estate.mgt.context.MgtContext;
 import org.springframework.stereotype.Service;
@@ -83,5 +84,11 @@ public class AuthMgtService {
         return new SaltSugar()
                 .setSalt(employee.getSalt())
                 .setSugar(employeeService.sugarById(id));
+    }
+
+    public String bindDeviceId(long employeeId) {
+        String deviceId = CommonUtil.getUuid();
+        employeeService.updateDeviceId(employeeId, deviceId);
+        return deviceId;
     }
 }

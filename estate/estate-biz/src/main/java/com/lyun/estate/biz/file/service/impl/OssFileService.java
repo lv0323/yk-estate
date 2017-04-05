@@ -10,6 +10,7 @@ import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.def.Target;
 import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.biz.support.settings.def.NameSpace;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
@@ -24,6 +25,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,11 +35,17 @@ public class OssFileService extends AbstractFileService {
     private String BUCKET_NAME;
     private String WATERMARK_STYLE;// "image/watermark,image_cGFuZGEuanBn,t_50,g_center";
     private OSSClient client;
+    private Boolean fangForceSize;
+    private Integer fangWidth;
+    private Integer fangHeight;
 
     @PostConstruct
     private void init() {
         BUCKET_NAME = settingProvider.find(NameSpace.FILE, "bucket_name").getValue();
         WATERMARK_STYLE = settingProvider.find(NameSpace.FILE, "watermark_style").getValue();
+        fangForceSize = Boolean.valueOf(settingProvider.find(NameSpace.FILE, "fang_force_size").getValue());
+        fangWidth = Integer.valueOf(settingProvider.find(NameSpace.FILE, "fang_width").getValue());
+        fangHeight = Integer.valueOf(settingProvider.find(NameSpace.FILE, "fang_height").getValue());
         client = new OSSClient(settingProvider.find(NameSpace.FILE, "endpoint").getValue(),
                 environment.getRequiredProperty("oss.access_key_id"),
                 environment.getRequiredProperty("oss.access_key_secret"));
@@ -67,6 +75,12 @@ public class OssFileService extends AbstractFileService {
                 BufferedImage testImage = ImageIO.read(testImageIS);
                 if (testImage == null) {
                     throw new EstateException(ExCode.OSS_FILE_NOT_IMAGE);
+                }
+                if (entity.getOwnerType() == DomainType.FANG) {
+                    if (!Objects.equals(testImage.getWidth(), fangWidth)
+                            || !Objects.equals(testImage.getHeight(), fangHeight)) {
+                        throw new EstateException(ExCode.FILE_IMG_SIZE_ERROR, fangWidth, fangHeight);
+                    }
                 }
             } catch (IOException e) {
                 throw new EstateException(ExCode.OSS_EXCEPTION);

@@ -10,7 +10,6 @@ import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver;
 import com.lyun.estate.core.supports.pagebound.PageListSerializer;
 import com.lyun.estate.core.supports.types.Constant;
 import com.lyun.estate.mgt.advice.AuthInterceptor;
-import com.lyun.estate.mgt.context.MgtContext;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -39,10 +38,10 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
     private Environment env;
 
     @Autowired
-    private MgtContext mgtContext;
+    private PageBoundsArgumentResolver pageBoundsArgumentResolver;
 
     @Autowired
-    private PageBoundsArgumentResolver pageBoundsArgumentResolver;
+    private AuthInterceptor authInterceptor;
 
     @Bean
     public FreeMarkerConfigurer freemarkerConfigurer() {
@@ -81,9 +80,7 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        if (this.pageBoundsArgumentResolver != null) {
-            argumentResolvers.add(this.pageBoundsArgumentResolver);
-        }
+        argumentResolvers.add(this.pageBoundsArgumentResolver);
     }
 
     @Bean
@@ -96,7 +93,7 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor(mgtContext))
+        registry.addInterceptor(authInterceptor)
                 .excludePathPatterns(
                         "/css/**",
                         "/js/**",
