@@ -11,6 +11,7 @@ import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.utils.CommonUtil;
 import com.lyun.estate.mgt.auth.def.SaltSugar;
 import com.lyun.estate.mgt.context.MgtContext;
+import com.lyun.estate.mgt.supports.AuditHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +58,7 @@ public class AuthMgtService {
                         .setSubject(AuditSubject.LOGIN_OUT)
                         .setTargetId(employee.getId())
                         .setDomainType(DomainType.EMPLOYEE)
+                        .setIp(mgtContext.getUserAddress())
                         .setContent("从IP:" + mgtContext.getUserAddress() + "登录成功,浏览器为：" + mgtContext.getBrowserName())
         );
         return employee;
@@ -65,13 +67,11 @@ public class AuthMgtService {
     @Transactional
     public Boolean logout() {
         auditService.save(
-                new Audit().setCompanyId(mgtContext.getOperator().getCompanyId())
-                        .setDepartmentId(mgtContext.getOperator().getDepartmentId())
-                        .setOperatorId(mgtContext.getOperator().getId())
-                        .setSubject(AuditSubject.LOGIN_OUT)
-                        .setTargetId(mgtContext.getOperator().getId())
-                        .setDomainType(DomainType.EMPLOYEE)
-                        .setContent("从IP:" + mgtContext.getUserAddress() + "登出成功")
+                AuditHelper.build(mgtContext,
+                        AuditSubject.LOGIN_OUT,
+                        mgtContext.getOperator().getId(),
+                        DomainType.EMPLOYEE,
+                        "从IP:" + mgtContext.getUserAddress() + "登出成功")
         );
         return true;
     }

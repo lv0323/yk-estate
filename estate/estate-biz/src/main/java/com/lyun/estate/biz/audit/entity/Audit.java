@@ -17,6 +17,7 @@ public class Audit {
     private Long targetId;
     private DomainType domainType;
     private String content;
+    private String ip;
     private Date createTime;
 
     public Long getId() {
@@ -97,6 +98,15 @@ public class Audit {
 
     public Audit setContent(String content) {
         this.content = content;
+        return this;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public Audit setIp(String ip) {
+        this.ip = ip;
         return this;
     }
 }

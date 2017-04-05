@@ -3,12 +3,12 @@ package com.lyun.estate.mgt.position.service;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.audit.def.AuditSubject;
-import com.lyun.estate.biz.audit.entity.Audit;
 import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.biz.position.entity.Position;
 import com.lyun.estate.biz.position.service.PositionService;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.mgt.context.MgtContext;
+import com.lyun.estate.mgt.supports.AuditHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,15 +35,10 @@ public class PositionMgtService {
     public Position create(Position position) {
         Objects.requireNonNull(position).setCompanyId(mgtContext.getOperator().getCompanyId());
         Position result = positionService.create(position);
-        auditService.save(new Audit()
-                .setCompanyId(mgtContext.getOperator().getCompanyId())
-                .setDepartmentId(mgtContext.getOperator().getDepartmentId())
-                .setOperatorId(mgtContext.getOperator().getId())
-                .setSubject(AuditSubject.ORGANIZATION)
-                .setTargetId(result.getId())
-                .setDomainType(DomainType.POSITION)
-                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
-                        .getName() + "】新增了一个名为【" + result.getName() + "】的岗位")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.ORGANIZATION, result.getId(), DomainType.POSITION,
+                        AuditHelper.operatorName(mgtContext) +
+                                "新增了一个名为【" + result.getName() + "】的岗位")
         );
 
         return result;
@@ -56,15 +51,10 @@ public class PositionMgtService {
             return false;
         }
         Boolean result = positionService.deleteById(id);
-        auditService.save(new Audit()
-                .setCompanyId(mgtContext.getOperator().getCompanyId())
-                .setDepartmentId(mgtContext.getOperator().getDepartmentId())
-                .setOperatorId(mgtContext.getOperator().getId())
-                .setSubject(AuditSubject.ORGANIZATION)
-                .setTargetId(needDelete.getId())
-                .setDomainType(DomainType.POSITION)
-                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
-                        .getName() + "】删除了名为【" + needDelete.getName() + "】的岗位")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.ORGANIZATION, needDelete.getId(), DomainType.POSITION,
+                        AuditHelper.operatorName(mgtContext) +
+                                "删除了名为【" + needDelete.getName() + "】的岗位")
         );
         return result;
     }
@@ -72,15 +62,10 @@ public class PositionMgtService {
     @Transactional
     public Object update(Position position) {
         Position result = positionService.update(position);
-        auditService.save(new Audit()
-                .setCompanyId(mgtContext.getOperator().getCompanyId())
-                .setDepartmentId(mgtContext.getOperator().getDepartmentId())
-                .setOperatorId(mgtContext.getOperator().getId())
-                .setSubject(AuditSubject.ORGANIZATION)
-                .setTargetId(result.getId())
-                .setDomainType(DomainType.POSITION)
-                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
-                        .getName() + "】修改了岗位【" + result.getName() + "】的信息")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.ORGANIZATION, result.getId(), DomainType.POSITION,
+                        AuditHelper.operatorName(mgtContext) +
+                                "修改了岗位【" + result.getName() + "】的信息")
         );
         return result;
     }

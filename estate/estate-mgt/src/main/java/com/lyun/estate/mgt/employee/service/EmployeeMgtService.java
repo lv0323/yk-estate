@@ -3,7 +3,6 @@ package com.lyun.estate.mgt.employee.service;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.audit.def.AuditSubject;
-import com.lyun.estate.biz.audit.entity.Audit;
 import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
@@ -11,6 +10,7 @@ import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.mgt.auth.def.SaltSugar;
 import com.lyun.estate.mgt.context.MgtContext;
+import com.lyun.estate.mgt.supports.AuditHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,15 +36,9 @@ public class EmployeeMgtService {
     public Employee create(Employee employee) {
         employee.setCompanyId(mgtContext.getOperator().getCompanyId());
         Employee result = employeeService.create(employee);
-        auditService.save(new Audit()
-                .setCompanyId(mgtContext.getOperator().getCompanyId())
-                .setDepartmentId(mgtContext.getOperator().getDepartmentId())
-                .setOperatorId(mgtContext.getOperator().getId())
-                .setSubject(AuditSubject.ORGANIZATION)
-                .setTargetId(result.getId())
-                .setDomainType(DomainType.EMPLOYEE)
-                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
-                        .getName() + "】新增了一个【" + result.getDepartmentName() + "--" + result.getName() + "】员工")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.ORGANIZATION, result.getId(), DomainType.EMPLOYEE,
+                        AuditHelper.operatorName(mgtContext) + "新增了一个【" + result.getDepartmentName() + "--" + result.getName() + "】员工")
         );
         return result;
     }
@@ -58,15 +52,9 @@ public class EmployeeMgtService {
     @Transactional
     public Employee update(Employee employee) {
         Employee result = employeeService.update(employee);
-        auditService.save(new Audit()
-                .setCompanyId(mgtContext.getOperator().getCompanyId())
-                .setDepartmentId(mgtContext.getOperator().getDepartmentId())
-                .setOperatorId(mgtContext.getOperator().getId())
-                .setSubject(AuditSubject.ORGANIZATION)
-                .setTargetId(result.getId())
-                .setDomainType(DomainType.EMPLOYEE)
-                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
-                        .getName() + "】修改了员工【" + result.getDepartmentName() + "--" + result.getName() + "】的信息")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.ORGANIZATION, result.getId(), DomainType.EMPLOYEE,
+                        AuditHelper.operatorName(mgtContext) + "修改了员工【" + result.getDepartmentName() + "--" + result.getName() + "】的信息")
         );
         return result;
     }
@@ -80,15 +68,9 @@ public class EmployeeMgtService {
         }
         Boolean result = employeeService.quit(id);
 
-        auditService.save(new Audit()
-                .setCompanyId(mgtContext.getOperator().getCompanyId())
-                .setDepartmentId(mgtContext.getOperator().getDepartmentId())
-                .setOperatorId(mgtContext.getOperator().getId())
-                .setSubject(AuditSubject.ORGANIZATION)
-                .setTargetId(needQuit.getId())
-                .setDomainType(DomainType.POSITION)
-                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
-                        .getName() + "】离职了【" + needQuit.getDepartmentName() + "--" + needQuit.getName() + "】员工")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.ORGANIZATION, needQuit.getId(), DomainType.EMPLOYEE,
+                        AuditHelper.operatorName(mgtContext) + "离职了【" + needQuit.getDepartmentName() + "--" + needQuit.getName() + "】员工")
         );
         return result;
     }
@@ -119,15 +101,9 @@ public class EmployeeMgtService {
         }
 
         Boolean result = employeeService.resetPassword(employeeId, newPassword);
-        auditService.save(new Audit()
-                .setCompanyId(mgtContext.getOperator().getCompanyId())
-                .setDepartmentId(mgtContext.getOperator().getDepartmentId())
-                .setOperatorId(mgtContext.getOperator().getId())
-                .setSubject(AuditSubject.ORGANIZATION)
-                .setTargetId(employee.getId())
-                .setDomainType(DomainType.EMPLOYEE)
-                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
-                        .getName() + "】重设了【" + employee.getDepartmentName() + "--" + employee.getName() + "】的登录密码")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.ORGANIZATION, employee.getId(), DomainType.EMPLOYEE,
+                        AuditHelper.operatorName(mgtContext) + "重设了【" + employee.getDepartmentName() + "--" + employee.getName() + "】的登录密码")
         );
         return result;
     }
@@ -149,18 +125,13 @@ public class EmployeeMgtService {
         return employeeService.selectById(id);
     }
 
+    @Transactional
     public boolean unbindDevice(Long id) {
         Employee employee = employeeService.selectById(id);
-
-        auditService.save(new Audit()
-                .setCompanyId(mgtContext.getOperator().getCompanyId())
-                .setDepartmentId(mgtContext.getOperator().getDepartmentId())
-                .setOperatorId(mgtContext.getOperator().getId())
-                .setSubject(AuditSubject.ORGANIZATION)
-                .setTargetId(employee.getId())
-                .setDomainType(DomainType.EMPLOYEE)
-                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
-                        .getName() + "】解绑了【" + employee.getDepartmentName() + "--" + employee.getName() + "】的设备号"));
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.ORGANIZATION, employee.getId(), DomainType.EMPLOYEE,
+                        AuditHelper.operatorName(mgtContext) + "解绑了【" + employee.getDepartmentName() + "--" + employee.getName() + "】的设备号")
+        );
         return employeeService.updateDeviceId(id, "");
     }
 }

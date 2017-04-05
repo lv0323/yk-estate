@@ -3,13 +3,13 @@ package com.lyun.estate.mgt.department.service;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.audit.def.AuditSubject;
-import com.lyun.estate.biz.audit.entity.Audit;
 import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.entity.DepartmentDTO;
 import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.mgt.context.MgtContext;
+import com.lyun.estate.mgt.supports.AuditHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,16 +39,9 @@ public class DepartmentMgtService {
     public Department create(Department department) {
         department.setCompanyId(mgtContext.getOperator().getCompanyId());
         Department result = departmentService.create(department);
-        auditService.save(new Audit()
-                .setCompanyId(mgtContext.getOperator().getCompanyId())
-                .setDepartmentId(mgtContext.getOperator().getDepartmentId())
-                .setOperatorId(mgtContext.getOperator().getId())
-                .setSubject(AuditSubject.ORGANIZATION)
-                .setTargetId(result.getId())
-                .setDomainType(DomainType.DEPARTMENT)
-                .setContent(
-                        "【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
-                                .getName() + "】新增了一个名为【" + result.getName() + "】的部门")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.ORGANIZATION, result.getId(), DomainType.DEPARTMENT,
+                        AuditHelper.operatorName(mgtContext) + "新增了一个名为【" + result.getName() + "】的部门")
         );
         return result;
     }
@@ -56,15 +49,9 @@ public class DepartmentMgtService {
     @Transactional
     public Object updateInfo(Department department) {
         Department result = departmentService.updateInfo(department);
-        auditService.save(new Audit()
-                .setCompanyId(mgtContext.getOperator().getCompanyId())
-                .setDepartmentId(mgtContext.getOperator().getDepartmentId())
-                .setOperatorId(mgtContext.getOperator().getId())
-                .setSubject(AuditSubject.ORGANIZATION)
-                .setTargetId(result.getId())
-                .setDomainType(DomainType.DEPARTMENT)
-                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
-                        .getName() + "】修改了部门【" + result.getName() + "】的信息")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.ORGANIZATION, result.getId(), DomainType.DEPARTMENT,
+                        AuditHelper.operatorName(mgtContext) + "修改了部门【" + result.getName() + "】的信息")
         );
         return result;
     }
@@ -80,15 +67,9 @@ public class DepartmentMgtService {
     @Transactional
     public Department changeParent(Long departmentId, Long parentId) {
         Department result = departmentService.changeParent(departmentId, parentId);
-        auditService.save(new Audit()
-                .setCompanyId(mgtContext.getOperator().getCompanyId())
-                .setDepartmentId(mgtContext.getOperator().getDepartmentId())
-                .setOperatorId(mgtContext.getOperator().getId())
-                .setSubject(AuditSubject.ORGANIZATION)
-                .setTargetId(result.getId())
-                .setDomainType(DomainType.DEPARTMENT)
-                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
-                        .getName() + "】对【" + result.getName() + "】进行了部门调动")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.ORGANIZATION, result.getId(), DomainType.DEPARTMENT,
+                        AuditHelper.operatorName(mgtContext) + "对【" + result.getName() + "】进行了部门调动")
         );
         return result;
     }
@@ -104,15 +85,9 @@ public class DepartmentMgtService {
             return false;
         }
         Boolean result = departmentService.deleteById(id);
-        auditService.save(new Audit()
-                .setCompanyId(mgtContext.getOperator().getCompanyId())
-                .setDepartmentId(mgtContext.getOperator().getDepartmentId())
-                .setOperatorId(mgtContext.getOperator().getId())
-                .setSubject(AuditSubject.ORGANIZATION)
-                .setTargetId(needDelete.getId())
-                .setDomainType(DomainType.DEPARTMENT)
-                .setContent("【" + mgtContext.getOperator().getDepartmentName() + "--" + mgtContext.getOperator()
-                        .getName() + "】删除了名为【" + needDelete.getName() + "】的部门")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.ORGANIZATION, needDelete.getId(), DomainType.DEPARTMENT,
+                        AuditHelper.operatorName(mgtContext) + "删除了名为【" + needDelete.getName() + "】的部门")
         );
         return result;
     }
