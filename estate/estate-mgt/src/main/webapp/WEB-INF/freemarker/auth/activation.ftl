@@ -67,5 +67,6 @@
 <script src="${contextPath}/js/libs/require.min.js?vn=${bts!}"></script>
 <script src="${contextPath!}/js/require-config.js?vn=${bts!}"></script>
 <script src="${contextPath!}/js/app/auth/activation.js?vn=${bts!}"></script>
+<script src="${contextPath!}/js/cnzz/index.js?vn=${bts!}"></script>
 </body>
 </html>
