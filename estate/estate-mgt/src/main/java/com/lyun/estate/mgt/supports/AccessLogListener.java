@@ -49,9 +49,8 @@ public class AccessLogListener implements ApiListener {
         String userAddress = StringUtils.isEmpty(request.getHeader(FORWARDED_FOR_HEADER)) ? request.getRemoteHost() : request
                 .getHeader(FORWARDED_FOR_HEADER);
 
-        logger.info("userAddress:{}", userAddress);
         if (StringUtils.hasText(userAddress) && userAddress.indexOf(", ") > 0) {
-            userAddress = userAddress.substring(userAddress.lastIndexOf(", "));
+            userAddress = userAddress.substring(userAddress.lastIndexOf(", ") + 2);
         }
         mgtContext.setUserAddress(userAddress);
 
