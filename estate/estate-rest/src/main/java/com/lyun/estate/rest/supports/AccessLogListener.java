@@ -56,7 +56,6 @@ public class AccessLogListener implements ApiListener {
             restContext.setClientId(clientIdHead);
         }
 
-
         String userAddress = StringUtils.isEmpty(request.getHeader(FORWARDED_FOR_HEADER)) ? request.getRemoteHost() : request
                 .getHeader(FORWARDED_FOR_HEADER);
 
