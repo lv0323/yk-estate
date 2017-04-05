@@ -1,0 +1,2 @@
+ALTER TABLE t_audit
+  ADD COLUMN ip VARCHAR(30);

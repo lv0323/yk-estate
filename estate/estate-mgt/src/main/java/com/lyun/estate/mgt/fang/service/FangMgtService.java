@@ -4,7 +4,6 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.audit.def.AuditSubject;
-import com.lyun.estate.biz.audit.entity.Audit;
 import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.service.DepartmentService;
@@ -33,6 +32,7 @@ import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.context.Operator;
+import com.lyun.estate.mgt.supports.AuditHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -139,15 +139,9 @@ public class FangMgtService {
                 .setTitle(titleBuilder.toString()));
 
         //audit
-        auditService.save(new Audit()
-                .setCompanyId(operator.getCompanyId())
-                .setDepartmentId(operator.getDepartmentId())
-                .setOperatorId(operator.getId())
-                .setSubject(AuditSubject.FANG_P)
-                .setTargetId(result.getId())
-                .setDomainType(DomainType.FANG)
-                .setContent("【" + operator.getDepartmentName() + "--" + operator
-                        .getName() + "】创建了授权编号为【" + result.getLicenceId() + "】的房源")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.FANG_P, result.getId(), DomainType.FANG,
+                        AuditHelper.operatorName(mgtContext) + "创建了授权编号为【" + result.getLicenceId() + "】的房源")
         );
         return result;
     }
@@ -225,15 +219,9 @@ public class FangMgtService {
         FangContact result = mgtFangService.getContact(fangId);
 
         Operator operator = mgtContext.getOperator();
-        auditService.save(new Audit()
-                .setCompanyId(operator.getCompanyId())
-                .setDepartmentId(operator.getDepartmentId())
-                .setOperatorId(operator.getId())
-                .setSubject(AuditSubject.FANG_OWNER)
-                .setTargetId(fangId)
-                .setDomainType(DomainType.FANG)
-                .setContent("【" + operator.getDepartmentName() + "--" + operator
-                        .getName() + "】查看了授权编号为【" + fang.getLicenceId() + "】的房东联系方式")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.FANG_OWNER, fangId, DomainType.FANG,
+                        AuditHelper.operatorName(mgtContext) + "查看了授权编号为【" + fang.getLicenceId() + "】的房东联系方式")
         );
 
         return result;
@@ -303,17 +291,10 @@ public class FangMgtService {
     public FangDescr updateDesc(FangDescr fangDescr) {
         Fang fang = mgtFangService.getFangBase(fangDescr.getFangId());
         FangDescr result = mgtFangService.updateDesc(fangDescr);
-
-        Operator operator = mgtContext.getOperator();
-        auditService.save(new Audit()
-                .setCompanyId(operator.getCompanyId())
-                .setDepartmentId(operator.getDepartmentId())
-                .setOperatorId(operator.getId())
-                .setSubject(AuditSubject.FANG_M)
-                .setTargetId(fangDescr.getFangId())
-                .setDomainType(DomainType.FANG)
-                .setContent("【" + operator.getDepartmentName() + "--" + operator
-                        .getName() + "】修改了授权编号为【" + fang.getLicenceId() + "】的描述为：【" + fangDescr.toString() + "】")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.FANG_M, fangDescr.getFangId(), DomainType.FANG,
+                        AuditHelper.operatorName(mgtContext) +
+                                "修改了授权编号为【" + fang.getLicenceId() + "】的描述为：【" + fangDescr.toString() + "】")
         );
         return result;
     }
@@ -332,15 +313,10 @@ public class FangMgtService {
         Fang result = mgtFangService.updateFangBase(fang);
 
         Operator operator = mgtContext.getOperator();
-        auditService.save(new Audit()
-                .setCompanyId(operator.getCompanyId())
-                .setDepartmentId(operator.getDepartmentId())
-                .setOperatorId(operator.getId())
-                .setSubject(AuditSubject.FANG_M)
-                .setTargetId(fang.getId())
-                .setDomainType(DomainType.FANG)
-                .setContent("【" + operator.getDepartmentName() + "--" + operator
-                        .getName() + "】修改了授权编号为【" + result.getLicenceId() + "】的基本信息为：【" + fang.toString() + "】")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.FANG_M, fang.getId(), DomainType.FANG,
+                        AuditHelper.operatorName(mgtContext) +
+                                "修改了授权编号为【" + result.getLicenceId() + "】的基本信息为：【" + fang.toString() + "】")
         );
         return result;
     }
@@ -350,16 +326,10 @@ public class FangMgtService {
         Fang fang = mgtFangService.getFangBase(fangExt.getFangId());
         FangExt result = mgtFangService.updateFangExt(fangExt);
 
-        Operator operator = mgtContext.getOperator();
-        auditService.save(new Audit()
-                .setCompanyId(operator.getCompanyId())
-                .setDepartmentId(operator.getDepartmentId())
-                .setOperatorId(operator.getId())
-                .setSubject(AuditSubject.FANG_M)
-                .setTargetId(fangExt.getFangId())
-                .setDomainType(DomainType.FANG)
-                .setContent("【" + operator.getDepartmentName() + "--" + operator
-                        .getName() + "】修改了授权编号为【" + fang.getLicenceId() + "】的扩展信息为：【" + fangExt.toString() + "】")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.FANG_M, fangExt.getFangId(), DomainType.FANG,
+                        AuditHelper.operatorName(mgtContext) +
+                                "修改了授权编号为【" + fang.getLicenceId() + "】的扩展信息为：【" + fangExt.toString() + "】")
         );
         return result;
     }
@@ -465,16 +435,10 @@ public class FangMgtService {
         Fang fang = mgtFangService.getFangBase(contact.getFangId());
         FangContact result = mgtFangService.updateContact(contact);
 
-        Operator operator = mgtContext.getOperator();
-        auditService.save(new Audit()
-                .setCompanyId(operator.getCompanyId())
-                .setDepartmentId(operator.getDepartmentId())
-                .setOperatorId(operator.getId())
-                .setSubject(AuditSubject.FANG_OWNER)
-                .setTargetId(contact.getFangId())
-                .setDomainType(DomainType.FANG)
-                .setContent("【" + operator.getDepartmentName() + "--" + operator
-                        .getName() + "】修改了授权编号为【" + fang.getLicenceId() + "】的房东联系方式为【" + contact.toString() + "】")
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.FANG_OWNER, contact.getFangId(), DomainType.FANG,
+                        AuditHelper.operatorName(mgtContext) +
+                                "修改了授权编号为【" + fang.getLicenceId() + "】的房东联系方式为【" + contact.toString() + "】")
         );
 
         return result;

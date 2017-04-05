@@ -15,8 +15,8 @@ import java.util.Date;
  */
 public interface AuditRepo {
     @Options(useGeneratedKeys = true)
-    @Insert("INSERT INTO t_audit (company_id, department_id, operator_id, subject, target_id, domain_type, content) " +
-            "VALUES (#{companyId}, #{departmentId}, #{operatorId}, #{subject}, #{targetId}, #{domainType}, #{content})")
+    @Insert("INSERT INTO t_audit (company_id, department_id, operator_id, subject, target_id, domain_type, content, ip) " +
+            "VALUES (#{companyId}, #{departmentId}, #{operatorId}, #{subject}, #{targetId}, #{domainType}, #{content}, #{ip})")
     int save(Audit audit);
 
     @Select("SELECT * FROM t_audit WHERE id = #{id}")
