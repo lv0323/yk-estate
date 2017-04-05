@@ -56,7 +56,14 @@ public class AccessLogListener implements ApiListener {
             restContext.setClientId(clientIdHead);
         }
 
-        restContext.setUserAddress(request.getRemoteAddr());
+        String userAddress = StringUtils.isEmpty(request.getHeader(FORWARDED_FOR_HEADER)) ? request.getRemoteHost() : request
+                .getHeader(FORWARDED_FOR_HEADER);
+
+        if (StringUtils.hasText(userAddress) && userAddress.indexOf(", ") > 0) {
+            userAddress = userAddress.substring(userAddress.lastIndexOf(", "));
+        }
+
+        restContext.setUserAddress(userAddress);
 
         restContext.setResourcePath(buildRequestPath(request));
         // parser request base url
