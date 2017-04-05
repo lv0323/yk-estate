@@ -47,7 +47,7 @@ public class RegisterResourceValidator implements Validator {
                 return;
             }
             if (!StringUtils.isEmpty(userMapper.findUserByMobile(smsCode.getMobile()))) {
-                errors.reject("mobile.registered", new String[]{smsCode.getMobile()}, "手机号码{0}已经注册");
+                errors.reject("mobile.registered", new String[]{smsCode.getMobile()}, "该手机号已经注册");
             }
         } else if (!StringUtils.isEmpty(registerResource.getUserName())) {
             if (!ValidateUtil.lengthMax(registerResource.getUserName(), 24)) {
