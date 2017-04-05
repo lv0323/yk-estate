@@ -46,7 +46,14 @@ public class AccessLogListener implements ApiListener {
 
         mgtContext.setCorrelationId(buildCorrelationId(request));
 
-        mgtContext.setUserAddress(request.getRemoteAddr());
+        String userAddress = StringUtils.isEmpty(request.getHeader(FORWARDED_FOR_HEADER)) ? request.getRemoteHost() : request
+                .getHeader(FORWARDED_FOR_HEADER);
+
+        logger.info("userAddress:{}", userAddress);
+        if (StringUtils.hasText(userAddress) && userAddress.indexOf(", ") > 0) {
+            userAddress = userAddress.substring(userAddress.lastIndexOf(", "));
+        }
+        mgtContext.setUserAddress(userAddress);
 
         mgtContext.setResourcePath(buildRequestPath(request));
         // parser request base url
