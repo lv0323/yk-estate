@@ -60,7 +60,7 @@ public class AccessLogListener implements ApiListener {
                 .getHeader(FORWARDED_FOR_HEADER);
 
         if (StringUtils.hasText(userAddress) && userAddress.indexOf(", ") > 0) {
-            userAddress = userAddress.substring(userAddress.lastIndexOf(", "));
+            userAddress = userAddress.substring(userAddress.lastIndexOf(", ") + 2);
         }
 
         restContext.setUserAddress(userAddress);
