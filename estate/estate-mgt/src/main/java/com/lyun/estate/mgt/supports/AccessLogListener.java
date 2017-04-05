@@ -54,11 +54,6 @@ public class AccessLogListener implements ApiListener {
         }
         mgtContext.setUserAddress(userAddress);
 
-        logger.info("xff:[{}],remoteAddress:[{}],remoteHost:[{}]",
-                request.getHeader(FORWARDED_FOR_HEADER),
-                request.getRemoteAddr(),
-                request.getRemoteHost());
-
         mgtContext.setResourcePath(buildRequestPath(request));
         // parser request base url
         String proto = request.getHeader(X_FORWARDED_PROTO);
