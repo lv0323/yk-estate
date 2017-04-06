@@ -1,0 +1,1 @@
+CREATE INDEX ON t_audit (subject);

@@ -7,6 +7,7 @@ import com.lyun.estate.core.supports.labelenum.LabelEnum;
  */
 public enum InfoOwnerReason implements LabelEnum {
     CREATE("录入"),
+    RE_PUBLISH("重新上架"),
     KEY("钥匙"),
     DELEGATE_ONLY("独家"),
     CHECK("勘查"),
