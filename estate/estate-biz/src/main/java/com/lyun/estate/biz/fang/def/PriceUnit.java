@@ -27,7 +27,7 @@ public enum PriceUnit implements LabelEnum {
         if (bizType == BizType.RENT) {
             return Lists.newArrayList(YUAN, YUAN_D, YUAN_M, YUAN_Q, YUAN_Y);
         } else if (bizType == BizType.SELL) {
-            return Lists.newArrayList(YUAN, WAN);
+            return Lists.newArrayList(WAN);
         } else {
             return Lists.newArrayList();
         }
