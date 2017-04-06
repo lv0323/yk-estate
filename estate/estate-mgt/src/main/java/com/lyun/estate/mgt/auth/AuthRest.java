@@ -97,6 +97,7 @@ public class AuthRest {
     public Object logout(HttpSession session) {
         Boolean result = authMgtService.logout();
         session.removeAttribute(Constant.SESSION_IS_LOGIN);
+        session.removeAttribute(Constant.SESSION_OPERATOR);
         session.invalidate();
         return new RestResponse().add("ret", result).get();
     }

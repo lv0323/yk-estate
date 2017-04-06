@@ -1,9 +1,9 @@
 package com.lyun.estate.biz.sms.service.validator;
 
+import com.lyun.estate.biz.sms.def.SmsType;
 import com.lyun.estate.biz.sms.resources.SmsResource;
 import com.lyun.estate.biz.user.repository.UserMapper;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
-import com.lyun.estate.biz.sms.def.SmsType;
 import com.lyun.estate.core.utils.ValidateUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
@@ -28,7 +28,7 @@ public class SmsResourceValidator implements Validator {
             errors.reject("mobile.isNull", "手机号码不能为空");
         }
         if (!ValidateUtil.isMobile(smsResource.getMobile())) {
-            throw new ValidateException("mobile.illegal", "手机号码非法");
+            throw new ValidateException("mobile.illegal", "手机号码不正确");
         }
         if (StringUtils.isEmpty(smsResource.getType())) {
             errors.reject("sms.type.isNull", "短信类型不正确");
@@ -38,11 +38,11 @@ public class SmsResourceValidator implements Validator {
         }
         if (smsResource.getType() == SmsType.LOGIN || smsResource.getType() == SmsType.FORGET_PASSWORD) {
             if (userMapper.findUserByMobile(smsResource.getMobile()) == null) {
-                errors.reject("mobile.not.register", new String[]{smsResource.getMobile()}, "手机号{0}尚未注册");
+                errors.reject("mobile.not.register", new String[]{smsResource.getMobile()}, "该手机号未注册");
             }
         } else if (smsResource.getType() == SmsType.REGISTER) {
             if (userMapper.findUserByMobile(smsResource.getMobile()) != null) {
-                errors.reject("mobile.register", new String[]{smsResource.getMobile()}, "手机号{0}已是注册用户");
+                errors.reject("mobile.register", new String[]{smsResource.getMobile()}, "该手机号已注册");
             }
         }
     }
