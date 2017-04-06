@@ -979,7 +979,7 @@
                 <span class="btn btn-primary fileinput-button">
                     <i class="glyphicon glyphicon-plus"></i>
                     <span>上传图片</span>
-                    <input id="file_upload" type="file" name="files[]" multiple="">
+                    <input id="file_upload" type="file" name="files[]" multiple="" accept="image/jpg, image/jpeg, image/x-png">
                 </span>
                 <div id="uploadedList">
                     <ul class="photoList m-t-10">
@@ -997,6 +997,15 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+            </div>
+            <div class="upload-loading" ng-show="ctrl.page.uploading">
+                <div class="loader-inner pacman">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
             </div>
         </div>
     </div>

@@ -13,6 +13,7 @@ import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.spec.fang.mgt.def.TimeType;
 import com.lyun.estate.biz.spec.fang.mgt.entity.*;
 import com.lyun.estate.biz.support.def.BizType;
+import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver;
 import com.lyun.estate.core.supports.types.YN;
 import com.lyun.estate.mgt.fang.service.FangMgtService;
@@ -359,14 +360,39 @@ public class FangRest {
     }
 
     @PostMapping("image")
-    public FileDescription createImage(@RequestParam Long fangId,
-                                       @RequestParam CustomType customType,
-                                       @RequestParam MultipartFile image) throws IOException {
-        try (InputStream inputStream = image.getInputStream()) {
-            return fangMgtService.createImage(fangId,
-                    customType,
-                    inputStream,
-                    image.getOriginalFilename().substring(image.getOriginalFilename().lastIndexOf(".")));
+    public CommonResp createImage(@RequestParam Long fangId,
+                                  @RequestParam CustomType customType,
+                                  @RequestParam List<MultipartFile> images) {
+        int[] result = new int[]{0, 0};
+        StringBuilder messageBuilder = new StringBuilder();
+
+        for (int i = 0; i < images.size(); i++) {
+            try {
+                MultipartFile image = images.get(i);
+                try (InputStream inputStream = image.getInputStream()) {
+                    fangMgtService.createImage(fangId,
+                            customType,
+                            inputStream,
+                            image.getOriginalFilename().substring(image.getOriginalFilename().lastIndexOf(".")));
+                    result[0] = result[0] + 1;
+                }
+            } catch (Exception e) {
+                ExceptionUtil.catching(e);
+                messageBuilder.append("第").append(i + 1).append("图错误，：").append(e.getLocalizedMessage()).append(",");
+                result[1] = result[1] + 1;
+            }
+        }
+
+        String message = messageBuilder.toString();
+        if (message.length() > 1) {
+            message = message.substring(0, message.length() - 1);
+        }
+
+        if (result[1] > 0) {
+            return CommonResp.failed().addExt("succeed", result[0]).addExt("failed", result[1])
+                    .addExt("message", message);
+        } else {
+            return CommonResp.succeed().addExt("succeed", result[0]);
         }
     }
 
