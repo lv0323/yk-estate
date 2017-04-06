@@ -8,6 +8,7 @@ import com.lyun.estate.core.supports.labelenum.LabelEnum;
 public enum HouseProcess implements LabelEnum {
     DELEGATE("审核中"),
     PUBLISH("上架"),
+    PAUSE("暂缓"),
     UN_PUBLISH("下架"),
     SUCCESS("成交"),;
     private final String label;

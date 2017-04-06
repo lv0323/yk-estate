@@ -157,6 +157,7 @@ public class FangRest {
                                                        @RequestParam(required = false) BizType bizType,
                                                        @RequestParam(required = false) Long districtId,
                                                        @RequestParam(required = false) Long subDistrictId,
+                                                       @RequestParam(required = false) Long xiaoQuId,
                                                        @RequestParam(required = false) HouseType houseType,
                                                        @RequestParam(required = false) HouseProcess process,
                                                        @RequestParam(required = false) Integer minArea,
@@ -178,10 +179,12 @@ public class FangRest {
                                                        @RequestParam(required = false) YN resident,
                                                        @RequestParam MgtFangSummaryOrder order,
                                                        @RequestHeader("X-PAGING") PageBounds pageBounds) {
-        MgtFangFilter filter = new MgtFangFilter().setCityId(cityId)
+        MgtFangFilter filter = new MgtFangFilter()
                 .setBizType(bizType)
+                .setCityId(cityId)
                 .setDistrictId(districtId)
                 .setSubDistrictId(subDistrictId)
+                .setXiaoQuId(xiaoQuId)
                 .setHouseType(houseType)
                 .setProcess(process)
                 .setMinArea(minArea)

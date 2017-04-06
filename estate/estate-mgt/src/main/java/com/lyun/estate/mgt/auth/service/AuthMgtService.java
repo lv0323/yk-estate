@@ -66,14 +66,17 @@ public class AuthMgtService {
 
     @Transactional
     public Boolean logout() {
-        auditService.save(
-                AuditHelper.build(mgtContext,
-                        AuditSubject.LOGIN_OUT,
-                        mgtContext.getOperator().getId(),
-                        DomainType.EMPLOYEE,
-                        "从IP:" + mgtContext.getUserAddress() + "登出成功")
-        );
-        return true;
+        if (mgtContext.getOperator() != null) {
+            auditService.save(
+                    AuditHelper.build(mgtContext,
+                            AuditSubject.LOGIN_OUT,
+                            mgtContext.getOperator().getId(),
+                            DomainType.EMPLOYEE,
+                            "从IP:" + mgtContext.getUserAddress() + "登出成功")
+            );
+            return true;
+        }
+        return false;
     }
 
     public SaltSugar saltSugarById(Long id) {
