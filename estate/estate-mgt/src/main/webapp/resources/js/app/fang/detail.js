@@ -54,7 +54,8 @@ require(['main-app',
                 },
                 layoutString:'',
                 now : new Date().getTime(),
-                uploadTitle:''
+                uploadTitle:'',
+                uploading: false
             };
 
             _this.summary = {};
@@ -388,11 +389,26 @@ require(['main-app',
             });
             function uploadMap(type){
                 var formData = new FormData();
-                formData.append("image", $("#file_upload")[0].files[0]);
+                for(var i =0; i< $("#file_upload")[0].files.length; i++){
+                    formData.append("images", $("#file_upload")[0].files[i]);
+                }
                 formData.append("fangId", fangId);
                 formData.append("customType", type);
-                FangService.imageUpload(formData).then(function(){
-                    SweetAlertHelp.success();
+                $scope.$apply(function(){
+                    _this.page.uploading = true;
+                });
+                FangService.imageUpload(formData).then(function(response){
+                    if(response.result === 'FAILED'){
+                        SweetAlertHelp.fail(response.ext);
+                        return;
+                    }
+                    SweetAlertHelp.success(response.ext);
+                }).fail(function (response) {
+                    SweetAlertHelp.fail(response.responseJSON)
+                }).always(function(){
+                    $scope.$apply(function() {
+                        _this.page.uploading = false;
+                    });
                     _this.imageGet(_this.showMap.para).then(function(response) {
                         $scope.$apply(function () {
                             _this[_this.showMap.key].list = response;
@@ -400,8 +416,6 @@ require(['main-app',
                             _this.showMap.list = response;
                         });
                     });
-                }).fail(function (response) {
-                    SweetAlertHelp.fail(response.responseJSON)
                 });
             }
             _this.addMap = function(type, title, key){
