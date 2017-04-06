@@ -17,6 +17,7 @@ public class MgtFangSelector extends TagSelector {
     private BizType bizType;
     private Long districtId;
     private Long subDistrictId;
+    private Long xiaoQuId;
     private HouseType houseType;
     private Integer minArea;
     private Integer maxArea;
@@ -290,6 +291,15 @@ public class MgtFangSelector extends TagSelector {
 
     public MgtFangSelector setLicenceId(Long licenceId) {
         this.licenceId = licenceId;
+        return this;
+    }
+
+    public Long getXiaoQuId() {
+        return xiaoQuId;
+    }
+
+    public MgtFangSelector setXiaoQuId(Long xiaoQuId) {
+        this.xiaoQuId = xiaoQuId;
         return this;
     }
 }

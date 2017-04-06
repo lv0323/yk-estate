@@ -16,6 +16,7 @@ public class MgtFangFilter {
     private BizType bizType;
     private Long districtId;
     private Long subDistrictId;
+    private Long xiaoQuId;
     private HouseType houseType;
     private Integer minArea;
     private Integer maxArea;
@@ -240,6 +241,15 @@ public class MgtFangFilter {
 
     public MgtFangFilter setProcess(HouseProcess process) {
         this.process = process;
+        return this;
+    }
+
+    public Long getXiaoQuId() {
+        return xiaoQuId;
+    }
+
+    public MgtFangFilter setXiaoQuId(Long xiaoQuId) {
+        this.xiaoQuId = xiaoQuId;
         return this;
     }
 }

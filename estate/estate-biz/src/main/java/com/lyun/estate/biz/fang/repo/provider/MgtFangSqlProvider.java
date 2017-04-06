@@ -108,6 +108,7 @@ public class MgtFangSqlProvider {
             sql.WHERE("c.city_id = #{cityId}");
         }
         sql.WHERE_IF("f.biz_type = #{bizType}", nonNull(selector.getBizType()));
+        sql.WHERE_IF("f.xiao_qu_id = #{xiaoQuId}", nonNull(selector.getXiaoQuId()));
         sql.WHERE_IF("dr.district_id = #{districtId}", nonNull(selector.getDistrictId()));
         sql.WHERE_IF("c.sub_district_id = #{subDistrictId}", nonNull(selector.getSubDistrictId()));
         sql.WHERE_IF("f.house_type = #{houseType}", nonNull(selector.getHouseType()));
