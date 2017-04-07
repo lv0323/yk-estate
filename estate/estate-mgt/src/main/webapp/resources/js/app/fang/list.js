@@ -22,6 +22,7 @@ require(['main-app',
             currentPage:1,
             init: false,
         };
+
         var HouseListModule=angular.module('HouseListModule',['directiveYk']);
         HouseListModule.controller("HouseListCtrl", ['$scope','$timeout', '$interval','$window','$location', function($scope, $timeout, $interval, $window) {
             var config = {
@@ -31,7 +32,12 @@ require(['main-app',
                 employeeId: {
                     init: false
                 },
-                searchById:false
+                searchById:false,
+                xiaoQuId: {
+                    init: false,
+                    value: '',
+                    timer: null
+                }
             };
             /*页面相关内容*/
             $scope.page ={
@@ -80,11 +86,13 @@ require(['main-app',
                 delegateType: '',
                 xuanxiang: '',
                 order:'DEFAULT',
-                orderType:''
+                orderType:'',
+                // xiaoQuId:''
             };
             $scope.districtList =[];
             $scope.subDistrictList =[];
             $scope.employeeList =[{name:'',id:''}];
+            $scope.estateList = [];
             function ceilCheck(ceilValue, value) {
                 if (ceilValue && value && parseFloat(ceilValue) < parseFloat(value)) {
                     return false;
@@ -102,6 +110,54 @@ require(['main-app',
                     }
                 });
             });
+
+            /*获得小区信息*/
+            $scope.estateGet = function(key){
+                if(!key){
+                    key = 'a';
+                }
+                FangService.xiaoquOption({keyword: key}).done(function (response) {
+                    $scope.$apply(function(){
+                        $scope.estateList = response.map(function(item){
+                            return {
+                                name: item.xiaoQuName,
+                                value: item.xiaoQuId
+                            }
+                        });
+                    });
+                }).fail(function () {
+                    $scope.$apply(function() {
+                        $scope.estateList = [{name:'',id:''}];
+                    });
+                });
+            };
+            $scope.estateGet();
+
+            /*小区楼盘*/
+            $scope.stateInputChange = function(e){
+                $timeout.cancel(config.xiaoQuId.timer);
+                config.xiaoQuId.timer = $timeout(function(){
+                    config.xiaoQuId.value = $(e.target).val().trim();
+                    if(config.xiaoQuId.value === ""){
+                        return;
+                    }
+                    $scope.estateGet(config.xiaoQuId.value);
+                },800);
+            };
+
+            $scope.chosenEstate = function(id,key){
+
+                if(!config.xiaoQuId.init){
+                    $scope.initChosen(id, key);
+                }else{
+                    $(id).trigger('chosen:updated');
+                    if( $('#houseEstate_chosen .search-field-input').val().trim() == ''){
+                        $('#houseEstate_chosen .search-field-input').val(config.xiaoQuId.value);
+                    }
+                }
+                $('#estateContainer').off('input','.search-field-input', $scope.stateInputChange).on('input','.search-field-input', $scope.stateInputChange);
+            };
+
             $scope.getSubDistrict= function(id) {
                 if (id == "") {
                     $scope.filter.subDistrictId = '';
@@ -374,28 +430,36 @@ require(['main-app',
                 });
             };
             $scope.changeStatus = function(status, id){
+                var option = {};
                 if(status === $scope.page.status.PUBLISH){
-                    FangService.publish({fangId:id}).then(function(){
-                        SweetAlertHelp.success();
-                        if(config.searchById){
-                            $scope.searchById();
-                        }else{
-                            $scope.list((pageConfig.currentPage-1)*pageConfig.limit, pageConfig.currentPage);
-                        }
-                    }).fail(function(response){
-                        SweetAlertHelp.fail({message:response&&response.message});
+                    option.title = "确认上架？";
+                    SweetAlertHelp.confirm(option, function () {
+                        FangService.publish({fangId:id}).then(function(){
+                            SweetAlertHelp.success();
+                            if(config.searchById){
+                                $scope.searchById();
+                            }else{
+                                $scope.list((pageConfig.currentPage-1)*pageConfig.limit, pageConfig.currentPage);
+                            }
+                        }).fail(function(response){
+                            SweetAlertHelp.fail({message:response&&response.message});
+                        });
                     });
                 }else if(status === $scope.page.status.UN_PUBLISH){
-                    FangService.unPublish({fangId:id}).then(function(){
-                        SweetAlertHelp.success();
-                        if(config.searchById){
-                            $scope.searchById();
-                        }else{
-                            $scope.list((pageConfig.currentPage - 1) * pageConfig.limit, pageConfig.currentPage);
-                        }
-                    }).fail(function(response){
-                        SweetAlertHelp.fail({message:response&&response.message});
+                    option.title = "确认下架？";
+                    SweetAlertHelp.confirm(option, function () {
+                        FangService.unPublish({fangId:id}).then(function(){
+                            SweetAlertHelp.success();
+                            if(config.searchById){
+                                $scope.searchById();
+                            }else{
+                                $scope.list((pageConfig.currentPage - 1) * pageConfig.limit, pageConfig.currentPage);
+                            }
+                        }).fail(function(response){
+                            SweetAlertHelp.fail({message:response&&response.message});
+                        });
                     });
+
 
                 }
             }
