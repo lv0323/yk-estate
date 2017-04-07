@@ -65,6 +65,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
                         return true;
                     }
                 }
+                request.getSession().invalidate();
                 throw new EstateException(ExCode.IP_AND_DEVICE_ERROR);
             }
         }
