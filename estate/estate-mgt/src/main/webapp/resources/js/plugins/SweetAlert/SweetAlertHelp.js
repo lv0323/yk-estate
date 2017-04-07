@@ -41,5 +41,18 @@ define(contextPath+'/js/plugins/SweetAlert/SweetAlertHelp.js',
             SweetAlertHelp.sweetAlert(option, callback);
         };
 
+        SweetAlertHelp.confirm = function (option, callback) {
+            option = option||{};
+            option.title = option.title || "确认该操作？";
+            option.text = "";
+            option.type = "warning";
+            option.showCancelButton = true;
+            option.cancelButtonText = "取消";
+            option.confirmButtonColor = "#DD6B55";
+            option.confirmButtonText = "确认";
+            option.closeOnConfirm =  false;
+            SweetAlertHelp.sweetAlert(option, callback);
+        };
+
         return SweetAlertHelp;
     });
