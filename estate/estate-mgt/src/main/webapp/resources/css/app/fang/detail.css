@@ -99,3 +99,6 @@
     display: inline-block;
     margin-left: -15%;
 }
+#contactModel .form-group{
+    margin-bottom: 15px;
+}

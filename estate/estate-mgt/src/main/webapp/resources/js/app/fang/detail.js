@@ -55,9 +55,10 @@ require(['main-app',
                 layoutString:'',
                 now : new Date().getTime(),
                 uploadTitle:'',
-                uploading: false
+                uploading: false,
+                userInfo : JSON.parse(localStorage.getItem('userInfo')),
+                licenseId:''
             };
-
             _this.summary = {};
             _this.baseInfo = {};
             _this.ext = {};
@@ -286,13 +287,16 @@ require(['main-app',
             /*业主信息*/
             _this.contactInfoInit = function(){
                 _this.updateContact = {};
+                _this.newFollow = {};
                 $('#contactModel').modal({'show':true,backdrop:'static'});
                 FangService.contact({fangId:fangId}).then(function(response){
                     $scope.$apply(function(){
                         _this.updateContact =  response;
                     });
-
                 });
+                setTimeout(function(){
+                    $('#houseNewFollow2').selectpicker('refresh');
+                },200)
             }
             _this.ownerInfoUpdate = function(){
                 //$('#ownerModel').modal('hide');
@@ -301,7 +305,6 @@ require(['main-app',
                 }
                 FangService.contactChange(_this.updateContact).then(function(){
                     SweetAlertHelp.success();
-                    $('#contactModel').modal('hide');
                 }).fail(function(response){
                     SweetAlertHelp.fail({message:response&&response.message});
                 });
@@ -324,6 +327,9 @@ require(['main-app',
             _this.newFollowInit = function(){
                 _this.newFollow = {};
                 $('#followModel').modal({'show':true,backdrop:'static'});
+                setTimeout(function(){
+                    $('#houseNewFollow').selectpicker('refresh');
+                },200)
             };
             _this.followCreate = function(){
                 var info ={};
@@ -331,6 +337,7 @@ require(['main-app',
                 info.fangId = fangId;
                 FangService.createFollow(info).then(function(response){
                     $('#followModel').modal('hide');
+                    $('#contactModel').modal('hide');
                     _this.follow();
                     SweetAlertHelp.success();
                 }).fail(SweetAlertHelp.fail);

@@ -858,42 +858,84 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">业主信息</h4>
+                    <h4 class="modal-title">查看业主</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" name="contactDialogForm">
-                        <div class="form-group clearfix">
-                            <label class="control-label">业主</label>
-                            <div class="col-lg-3 col-md-3 col-sm-3">
-                                <input type="text" name="houseOwname" reg="^\S+$" class="form-control"
-                                       placeholder="业主姓名" required ng-model="ctrl.updateContact.name"/>
-                            </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <form class="form-inline" name="contactDialogForm">
+                                <div class="panel">
+                                    <div class="panel-heading">
+                                        业主信息
+                                    </div>
+                                    <div class="panel-body" style="padding: 15px 0 0">
+                                        <div class="form-group clearfix">
+                                            <label class="control-label col-xs-3">业主</label>
+                                            <div class="col-lg-9 col-md-9 col-sm-9">
+                                                <input type="text" name="houseOwname" reg="^\S+$" class="form-control"
+                                                       placeholder="业主姓名" required ng-model="ctrl.updateContact.name"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label class="control-label col-xs-3">手机1</label>
+                                            <div class="col-lg-9 col-md-9 col-sm-9">
+                                                <input type="text" name="houseOwphone1" required st-mobile-phone class="form-control"
+                                                       placeholder="业主手机1" ng-model="ctrl.updateContact.mobile"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label class="control-label col-xs-3">手机2</label>
+                                            <div class="col-lg-9 col-md-9 col-sm-9">
+                                                <input type="text" name="houseOwphone2" st-mobile-phone class="form-control"
+                                                       placeholder="业主手机2" ng-model="ctrl.updateContact.aMobile"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label class="control-label col-xs-3">手机3</label>
+                                            <div class="col-lg-9 col-md-9 col-sm-9">
+                                                <input type="text" name="houseOwphone3" st-mobile-phone class="form-control"
+                                                       placeholder="业主手机3" ng-model="ctrl.updateContact.bMobile"/>
+                                        </div>
+                                            </div>
+                                        <div class="clearfix">
+                                            <a class="btn btn-white" style="display:block;" href="javascript:;" ng-click="ctrl.ownerInfoUpdate()">保存</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group clearfix">
-                            <label class="control-label">手机1</label>
-                            <div class="col-lg-5 col-md-5 col-sm-5">
-                                <input type="text" name="houseOwphone1" required st-mobile-phone class="form-control"
-                                       placeholder="业主手机1" ng-model="ctrl.updateContact.mobile"/>
-                            </div>
+                        <div class="col-xs-6">
+                            <form class="form-inline" name="ownerDialogForm">
+                                <div class="form-group clearfix">
+                                    <label class="control-label text-right" style="float:left; width: 48px;">姓名</label>
+                                    <div class="col-lg-9 col-md-9 col-sm-9">
+                                        <input type="text" name="houseOwphone2"  class="form-control" ng-model="ctrl.page.userInfo.name" readonly="readonly"/>
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <label class="control-label text-right" style="float:left;">跟进方式</label>
+                                    <div class="col-lg-9 col-md-9 col-sm-9">
+                                        <select select-picker class="selectpicker show-menu-arrow form-control " name="houseNewFollow2" id="houseNewFollow2"
+                                                ng-model="ctrl.newFollow.followType" ng-change="ctrl.selectPickerChange('#houseNewFollow2', 'followType', 'newFollow')">
+                                            <option value="">--请选择--</option>
+                                        <#list followType ?if_exists as type>
+                                            <option value="${type.name()}">${type.getLabel()}</option>
+                                        </#list>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <label class="control-label text-right"  style="float:left;">跟进内容</label>
+                                    <div class="col-lg-9 col-md-9 col-sm-9">
+                                        <textarea name="note" cols="30" rows="8" class="form-control" ng-model="ctrl.newFollow.content"></textarea>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group clearfix">
-                            <label class="control-label">手机2</label>
-                            <div class="col-lg-5 col-md-5 col-sm-5">
-                                <input type="text" name="houseOwphone2" st-mobile-phone class="form-control"
-                                       placeholder="业主手机2" ng-model="ctrl.updateContact.aMobile"/>
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <label class="control-label">手机3</label>
-                            <div class="col-lg-5 col-md-5 col-sm-5">
-                                <input type="text" name="houseOwphone3" st-mobile-phone class="form-control"
-                                       placeholder="业主手机3" ng-model="ctrl.updateContact.bMobile"/>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" ng-click="ctrl.ownerInfoUpdate()">确定</button>
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.followCreate()">确定</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 </div>
             </div>
@@ -909,6 +951,12 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" name="ownerDialogForm">
+                    <div class="form-group clearfix">
+                        <label class="control-label">姓名</label>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <input type="text" name="houseOwphone2"  class="form-control" ng-model="ctrl.page.userInfo.name" readonly="readonly"/>
+                        </div>
+                    </div>
                     <div class="form-group clearfix">
                         <label class="control-label">跟进方式</label>
                         <div class="col-lg-3 col-md-3 col-sm-3">
