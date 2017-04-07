@@ -274,7 +274,10 @@
                                                         <span class="tip tip-success tag" ng-repeat="tag in house.tags" ng-bind="tag.label"></span>
                                                     </div>
                                                     <div class="btn-add  pull-left m-l-30">
-                                                        <a ng-href="{{'/mgt/fangManage/detail?id='+house.id}}" target="_blank"><i class="fa fa-pencil"></i>查看详情</a>
+                                                        <a ng-href="javascript:;" ng-click="newFollowInit(house.id, house.licenceId)">
+                                                            <i class="fa fa-pencil"></i>新增跟进
+                                                        </a>
+                                                        <a class="m-l-20" ng-href="{{'/mgt/fangManage/detail?id='+house.id}}" target="_blank"><i class="fa fa-pencil"></i>查看详情</a>
                                                         <a class="m-l-20" ng-href="javascript:;" ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE"
                                                            ng-click="changeStatus(page.status.PUBLISH, house.id)">
                                                             <i class="fa fa-pencil"></i>上架
@@ -314,6 +317,49 @@
                                 </div>
                             </form>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="followModel" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">新增跟进</h4>
+
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" name="ownerDialogForm">
+                            <div class="form-group clearfix">
+                                <label class="control-label">姓名</label>
+                                <div class="col-lg-3 col-md-3 col-sm-3">
+                                    <input type="text" name="houseOwphone2"  class="form-control" ng-model="page.userInfo.name" readonly="readonly"/>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label class="control-label">跟进方式</label>
+                                <div class="col-lg-3 col-md-3 col-sm-3">
+                                    <select select-picker class="selectpicker show-menu-arrow form-control " name="houseNewFollow" id="houseNewFollow"
+                                            ng-model="newFollow.followType" ng-change="selectPickerChange('#houseNewFollow', 'followType', 'newFollow')">
+                                        <option value="">--请选择--</option>
+                                    <#list followType ?if_exists as type>
+                                        <option value="${type.name()}">${type.getLabel()}</option>
+                                    </#list>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label class="control-label">跟进内容</label>
+                                <div class="col-lg-9 col-md-9 col-sm-9">
+                                    <textarea name="note" cols="30" rows="3" class="form-control" ng-model="newFollow.content"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" ng-click="followCreate()">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     </div>
                 </div>
             </div>

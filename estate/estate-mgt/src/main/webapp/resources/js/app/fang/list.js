@@ -55,7 +55,8 @@ require(['main-app',
                     'UN_PUBLISH': 'UN_PUBLISH',
                     'PAUSE': 'PAUSE',
                     'SUCCESS': 'SUCCESS'
-                }
+                },
+                userInfo : JSON.parse(localStorage.getItem('userInfo')),
             };
             $scope.houseList = [];
             $scope.search ={
@@ -100,6 +101,26 @@ require(['main-app',
                 }
                 return true;
             }
+            $scope.selectPickerChange = function(id, key, info) {
+                if(info){
+                    if(!$scope[info][key]){
+                        $(id).siblings('.btn-default').addClass('invalid-input');
+                        return false;
+                    }else{
+                        $(id).siblings('.btn-default').removeClass('invalid-input');
+                        return true;
+                    }
+                }else{
+                    if(!$scope.baseInfo[key]){
+                        $(id).siblings('.btn-default').addClass('invalid-input');
+                        return false;
+                    }else{
+                        $(id).siblings('.btn-default').removeClass('invalid-input');
+                        return true;
+                    }
+                }
+
+            };
             /*区域*/
             CityService.getDistrict().then(function(response){
                 $scope.filter.cityId = response[0].cityId;
@@ -111,7 +132,23 @@ require(['main-app',
                     }
                 });
             });
-
+            /*房源跟进*/
+            $scope.newFollowInit = function(fangId){
+                $scope.newFollow = {fangId:fangId};
+                $('#followModel').modal({'show':true,backdrop:'static'});
+                setTimeout(function(){
+                    $('#houseNewFollow').selectpicker('refresh');
+                },200)
+            };
+            $scope.followCreate = function(){
+                var info ={};
+                angular.copy($scope.newFollow, info);
+                FangService.createFollow(info).then(function(response){
+                    $('#followModel').modal('hide');
+                    SweetAlertHelp.success();
+                }).fail(SweetAlertHelp.fail);
+            };
+            /*end 房源跟进*/
             /*获得小区信息*/
             $scope.estateGet = function(key){
                 if(!key){

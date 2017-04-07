@@ -46,6 +46,7 @@ public class FangPage {
         params.put("houseTag", Arrays.asList(HouseTag.values()));
         params.put("propertyType", Arrays.asList(PropertyType.values()));
         params.put("certifType", Arrays.asList(CertifType.values()));
+        params.put("followType", Arrays.asList(FollowType.values()));
         params.put("timeType", Arrays.asList(TimeType.values()));
         params.put("delegateType", Arrays.asList(DelegateType.values()));
         params.put("mgtFangSummaryOrder", Arrays.asList(MgtFangSummaryOrder.values()));
