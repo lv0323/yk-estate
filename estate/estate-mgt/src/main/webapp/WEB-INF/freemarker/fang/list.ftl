@@ -199,14 +199,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group sortlist">
-                                        <#--小区查询-->
-                                        <#--<div class="col-lg-2 col-md-2 col-sm-3">
-                                            <select name="houseTratype" id="fouseTratype" select-picker class="selectpicker show-menu-arrow form-control" ng-model="filter.bizType" ng-change="list()">
-                                                <option value="">--请选择--</option>
-                                                <option value="RENT">出租</option>
-                                                <option value="SELL">出售</option>
-                                            </select>
-                                        </div>-->
                                         <label class="control-label">小区楼盘</label>
                                         <div class="col-lg-2 col-md-2 col-sm-2" id="estateContainer">
                                             <select id="houseEstate" data-placeholder="楼盘字典" class="chosen-select" name="houseEstate">
@@ -283,20 +275,24 @@
                                                     </div>
                                                     <div class="btn-add  pull-left m-l-30">
                                                         <a ng-href="{{'/mgt/fangManage/detail?id='+house.id}}" target="_blank"><i class="fa fa-pencil"></i>查看详情</a>
-                                                        <a class="m-l-20" ng-href="javascript:;" ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.UN_PUBLISH"
+                                                        <a class="m-l-20" ng-href="javascript:;" ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE"
                                                            ng-click="changeStatus(page.status.PUBLISH, house.id)">
                                                             <i class="fa fa-pencil"></i>上架
                                                         </a>
                                                         <a class="m-l-20" ng-href="javascript:;"
-                                                           ng-click="changeStatus(page.status.UN_PUBLISH, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH">
+                                                           ng-click="changeStatus(page.status.UN_PUBLISH, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH || house.process.name == page.status.PAUSE">
                                                             <i class="fa fa-pencil"></i>下架
                                                         </a>
+                                                        <a class="m-l-20" ng-href="javascript:;"
+                                                           ng-click="changeStatus(page.status.PAUSE, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH">
+                                                            <i class="fa fa-pencil"></i>暂缓
+                                                        </a>
                                                         <a class="m-l-20" ng-href="{{'/mgt/propertyVisit/addPropertyVisit?target=.prtyVisit&licenceId='+house.licenceId}}"
-                                                           ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH">
+                                                           ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE">
                                                             <i class="fa fa-pencil"></i>新增带看
                                                         </a>
                                                         <a class="m-l-20" ng-href="{{'/mgt/contract/addDeal?target=.contract&licenceId='+house.licenceId}}"
-                                                           ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH">
+                                                           ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE">
                                                             <i class="fa fa-pencil"></i>成交
                                                         </a>
                                                     </div>

@@ -53,6 +53,7 @@ require(['main-app',
                     'DELEGATE': 'DELEGATE',
                     'PUBLISH': 'PUBLISH',
                     'UN_PUBLISH': 'UN_PUBLISH',
+                    'PAUSE': 'PAUSE',
                     'SUCCESS': 'SUCCESS'
                 }
             };
@@ -87,7 +88,7 @@ require(['main-app',
                 xuanxiang: '',
                 order:'DEFAULT',
                 orderType:'',
-                // xiaoQuId:''
+                xiaoQuId:''
             };
             $scope.districtList =[];
             $scope.subDistrictList =[];
@@ -459,7 +460,7 @@ require(['main-app',
                             SweetAlertHelp.fail({message:response&&response.message});
                         });
                     });
-
+                }else if(status === $scope.page.status.PAUSE){
 
                 }
             }
