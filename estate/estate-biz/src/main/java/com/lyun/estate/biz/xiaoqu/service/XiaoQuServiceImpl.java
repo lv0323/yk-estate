@@ -207,7 +207,7 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         XiaoQuDetailBean xiaoQuDetailBean = xiaoQuRepository.findDetail(id);
         if (xiaoQuDetailBean != null) {
             pageBounds.getOrders().clear();
-            pageBounds.getOrders().addAll(XQSummaryOrder.DEFAULT.getOrders());
+            pageBounds.getOrders().addAll(XQSummaryOrder.SELL_COUNT_DOWN.getOrders());
             XiaoQuSelector selector = new XiaoQuSelector();
             selector.setSubDistrictId(xiaoQuDetailBean.getSubDistrictId());
             selector.setCityId(xiaoQuDetailBean.getCityId());
