@@ -18,7 +18,6 @@ import com.lyun.estate.biz.housedict.entity.SubDistrict;
 import com.lyun.estate.biz.housedict.service.CityService;
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
 import com.lyun.estate.biz.keyword.service.KeywordService;
-import com.lyun.estate.biz.map.service.MapService;
 import com.lyun.estate.biz.spec.xiaoqu.rest.def.XQSummaryOrder;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuFilter;
@@ -26,6 +25,9 @@ import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuStationRel;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuSummary;
 import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService;
 import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.biz.support.settings.SettingProvider;
+import com.lyun.estate.biz.support.settings.def.NameSpace;
+import com.lyun.estate.biz.support.settings.entity.Setting;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuDetailBean;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSelector;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuSummaryBean;
@@ -37,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -60,6 +63,17 @@ public class XiaoQuServiceImpl implements XiaoQuService {
 
     @Autowired
     private CityService cityService;
+
+    @Autowired
+    private SettingProvider settingProvider;
+
+    private FileDescription xiaoQuDefaultImg;
+
+    @PostConstruct
+    private void init() {
+        Setting defaultImg = settingProvider.find(NameSpace.XIAO_QU, "default_img");
+        xiaoQuDefaultImg = fileService.findOne(Long.valueOf(defaultImg.getValue()));
+    }
 
 
     /**
@@ -147,7 +161,9 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         summary.setStructure(StructureType.getTypeStr(summaryBean.getStructureType()));
         FileDescription firstImg = fileService.findFirst(summaryBean.getId(), DomainType.XIAO_QU, CustomType.SHI_JING,
                 FileProcess.WATERMARK);
-        summary.setImageURI(Optional.ofNullable(firstImg).map(FileDescription::getFileURI).orElse(null));
+        summary.setImageURI(Optional.ofNullable(firstImg)
+                .map(FileDescription::getFileURI)
+                .orElse(xiaoQuDefaultImg.getFileURI()));
         return summary;
     }
 
@@ -174,7 +190,9 @@ public class XiaoQuServiceImpl implements XiaoQuService {
         detail.setStructure(StructureType.getTypeStr(bean.getStructureType()));
         FileDescription firstImg = fileService.findFirst(bean.getId(), DomainType.XIAO_QU, CustomType.SHI_JING,
                 FileProcess.WATERMARK);
-        detail.setImageURI(Optional.ofNullable(firstImg).map(FileDescription::getFileURI).orElse(null));
+        detail.setImageURI(Optional.ofNullable(firstImg)
+                .map(FileDescription::getFileURI)
+                .orElse(xiaoQuDefaultImg.getFileURI()));
         //todo: fix this
         detail.setFollows(RandomUtils.nextInt(9999));
 

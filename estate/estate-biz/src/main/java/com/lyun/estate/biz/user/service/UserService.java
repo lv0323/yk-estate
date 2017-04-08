@@ -133,7 +133,7 @@ public class UserService {
         if (isPasswordRight(loginResource, loginUser)) {
             return generateLoginToken(loginUser);
         } else {
-            throw new ValidateException("user.login.error", "用户名或密码错误");
+            throw new ValidateException("user.login.error", "密码错误");
         }
     }
 
