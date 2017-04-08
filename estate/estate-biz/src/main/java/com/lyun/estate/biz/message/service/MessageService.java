@@ -60,9 +60,15 @@ public class MessageService {
         if (receiverId == null) {
             throw new EstateException(PARAM_NULL, "receiverId");
         }
-        List<MessageSummaryResource> summaryResourceList = messageRepository.getMessageSummaryResource(receiverId);
+        List<MessageSummaryResource> summaryResourceList = messageRepository.getDistinctSender(receiverId);
+
         summaryResourceList.forEach(
                 t -> {
+                    Message lastMessage = messageRepository.getLastMessage(receiverId, t.getSenderId());
+                    t.setLastMessageId(lastMessage.getId());
+                    t.setLastMessageTitle(lastMessage.getTitle());
+                    int unreadCount = messageRepository.getUnReadCount(receiverId, t.getSenderId());
+                    t.setUnreadCount(unreadCount);
                     User sender = userService.findUserById(t.getSenderId());
                     if (Objects.nonNull(sender.getAvatarId())) {
                         FileDescription file = fileService.findOne(sender.getAvatarId());

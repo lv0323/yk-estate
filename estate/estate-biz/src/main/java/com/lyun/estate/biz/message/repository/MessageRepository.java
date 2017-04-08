@@ -17,21 +17,6 @@ import java.util.List;
 @Repository
 public interface MessageRepository {
 
-    @Select("select message.receiver_id,message.sender_id,message.sender_name,message.unread_count,message.max_id as last_message_id,lastMessage.title as last_message_title\n" +
-            "from (\n" +
-            "       select ms.receiver_id,ms.sender_id,sender.real_name as sender_name,sum(case when message.status='UNREAD' then 1 else 0 end) as unread_count,max(message.id) as max_id\n" +
-            "       from (\n" +
-            "              SELECT DISTINCT sender_id, message.receiver_id\n" +
-            "              FROM t_message message\n" +
-            "              WHERE message.receiver_id=#{receiverId}\n" +
-            "            ) ms\n" +
-            "         left join t_user sender on sender.id = ms.sender_id\n" +
-            "         left join t_message message on message.sender_id = ms.sender_id\n" +
-            "       group by ms.receiver_id,ms.sender_id,sender.real_name\n" +
-            ") message\n" +
-            "left join t_message lastMessage on lastMessage.id = message.max_id")
-    List<MessageSummaryResource> getMessageSummaryResource(@Param("receiverId") Long receiverId);
-
     @SelectProvider(type = MessageSqlProvider.class, method = "getMessage")
     PageList<MessageResource> getMessage(@Param("receiverId") Long receiverId, @Param("senderId") Long senderId,
                                          @Param("lastMessageId") Long lastMessageId, PageBounds pageBounds);
@@ -46,4 +31,15 @@ public interface MessageRepository {
 
     @Select("SELECT * FROM t_message WHERE id = #{id}")
     Message findOne(Long id);
+
+    @Select("SELECT  ms.receiver_id,  ms.sender_id,  sender.real_name AS sender_name\n" +
+            "FROM ( SELECT DISTINCT sender_id, message.receiver_id FROM t_message message WHERE message.receiver_id = #{receiverId}) ms\n" +
+            "LEFT JOIN t_user sender ON sender.id = ms.sender_id")
+    List<MessageSummaryResource> getDistinctSender(Long receiverId);
+
+    @Select("SELECT * FROM t_message WHERE receiver_id = #{receiverId} AND sender_id = #{senderId} ORDER BY id DESC LIMIT 1")
+    Message getLastMessage(@Param("receiverId") Long receiverId, @Param("senderId") Long senderId);
+
+    @Select("SELECT count(1) FROM t_message WHERE receiver_id =#{receiverId} AND sender_id = #{senderId} AND status = 'UNREAD';")
+    int getUnReadCount(@Param("receiverId") Long receiverId, @Param("senderId") Long senderId);
 }
