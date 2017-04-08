@@ -6,5 +6,6 @@ package com.lyun.estate.biz.support.settings.def;
 public enum NameSpace {
     FILE,
     ANDROID_VERSION,
-    CONFIG
+    CONFIG,
+    XIAO_QU
 }
