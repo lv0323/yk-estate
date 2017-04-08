@@ -5,8 +5,6 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.lyun.estate.biz.contract.def.ContractDefine;
-import com.lyun.estate.biz.contract.entity.Contract;
 import com.lyun.estate.biz.contract.service.ContractService;
 import com.lyun.estate.biz.fang.def.HouseProcess;
 import com.lyun.estate.biz.fang.def.HouseType;
@@ -175,15 +173,10 @@ public class FangServiceImpl implements FangService {
             }
         }
 
-        return findFangSummaryBySelector(selector, pageBounds, selector.getProcess() == HouseProcess.SUCCESS);
+        return findFangSummaryBySelector(selector, pageBounds);
     }
 
     private PageList<FangSummary> findFangSummaryBySelector(FangSelector selector, PageBounds pageBounds) {
-        return findFangSummaryBySelector(selector, pageBounds, false);
-    }
-
-    private PageList<FangSummary> findFangSummaryBySelector(FangSelector selector, PageBounds pageBounds,
-                                                            boolean needDealInfo) {
         PageList<FangSummary> summaries = fangRepository.findSummaryBySelector(selector, pageBounds);
 
         summaries.forEach(summary -> {
@@ -198,19 +191,6 @@ public class FangServiceImpl implements FangService {
                                     CustomType.SHI_JING,
                                     FileProcess.WATERMARK)).
                             map(FileDescription::getFileURI).orElse(null));
-
-                    if (needDealInfo && summary.getProcess() == HouseProcess.SUCCESS) {
-                        Contract contract = contractService.findByFangId(summary.getId())
-                                .stream()
-                                .filter(t -> t.getProcess() == ContractDefine.Process.SUCCESS)
-                                .findAny()
-                                .orElse(null);
-                        if (contract != null) {
-                            summary.setDealPrice(contract.getPrice());
-                            summary.setDealPriceUnit(contract.getPriceUnit());
-                            summary.setDealTime(contract.getCloseTime());
-                        }
-                    }
                 }
         );
         return summaries;

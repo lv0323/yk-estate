@@ -7,7 +7,6 @@ import com.lyun.estate.biz.spec.fang.domain.FangForTag;
 import com.lyun.estate.biz.support.def.BizType;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * Created by Jeffrey on 2017-01-20.
@@ -28,9 +27,6 @@ public class FangSummary extends FangForTag {
     private String xiaoQuName;
     private HouseProcess process;
     private String imageURI;
-    private BigDecimal dealPrice;
-    private PriceUnit dealPriceUnit;
-    private Date dealTime;
 
     public Long getId() {
         return id;
@@ -164,33 +160,6 @@ public class FangSummary extends FangForTag {
 
     public FangSummary setProcess(HouseProcess process) {
         this.process = process;
-        return this;
-    }
-
-    public BigDecimal getDealPrice() {
-        return dealPrice;
-    }
-
-    public FangSummary setDealPrice(BigDecimal dealPrice) {
-        this.dealPrice = dealPrice;
-        return this;
-    }
-
-    public Date getDealTime() {
-        return dealTime;
-    }
-
-    public FangSummary setDealTime(Date dealTime) {
-        this.dealTime = dealTime;
-        return this;
-    }
-
-    public PriceUnit getDealPriceUnit() {
-        return dealPriceUnit;
-    }
-
-    public FangSummary setDealPriceUnit(PriceUnit dealPriceUnit) {
-        this.dealPriceUnit = dealPriceUnit;
         return this;
     }
 }

@@ -117,7 +117,7 @@ public class FangSqlProvider {
         sql.WHERE_IF("csr.station_id = #{stationId}", selector.getStationId() != null);
         sql.WHERE_IF("lsr.line_id = #{lineId}", selector.getLineId() != null);
 
-        if (selector.getProcess() != null) {
+        if (Objects.isNull(selector.getFangId()) && selector.getProcess() != null) {
             sql.WHERE("f.process =#{process}");
         } else {
             sql.WHERE("f.process <> 'DELEGATE'");
