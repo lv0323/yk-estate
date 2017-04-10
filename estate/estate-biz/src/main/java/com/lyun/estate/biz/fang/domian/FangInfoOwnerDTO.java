@@ -11,7 +11,9 @@ public class FangInfoOwnerDTO {
     private Long companyId;
     private Long departmentId;
     private Long employeeId;
+    private Long mobile;
     private InfoOwnerReason reason;
+    private String companyName;
     private String departmentName;
     private String employeeName;
 
@@ -84,6 +86,24 @@ public class FangInfoOwnerDTO {
 
     public FangInfoOwnerDTO setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
+        return this;
+    }
+
+    public Long getMobile() {
+        return mobile;
+    }
+
+    public FangInfoOwnerDTO setMobile(Long mobile) {
+        this.mobile = mobile;
+        return this;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public FangInfoOwnerDTO setCompanyName(String companyName) {
+        this.companyName = companyName;
         return this;
     }
 }
