@@ -13,6 +13,7 @@ public class FangInfoOwnerDTO {
     private Long employeeId;
     private Long mobile;
     private InfoOwnerReason reason;
+    private Boolean isDeleted;
     private String companyName;
     private String departmentName;
     private String employeeName;
@@ -104,6 +105,15 @@ public class FangInfoOwnerDTO {
 
     public FangInfoOwnerDTO setCompanyName(String companyName) {
         this.companyName = companyName;
+        return this;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public FangInfoOwnerDTO setDeleted(Boolean deleted) {
+        isDeleted = deleted;
         return this;
     }
 }

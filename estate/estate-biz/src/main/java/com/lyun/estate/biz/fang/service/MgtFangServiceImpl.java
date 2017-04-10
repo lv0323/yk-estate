@@ -217,7 +217,13 @@ public class MgtFangServiceImpl implements MgtFangService {
     }
 
     @Override
-    public List<FangInfoOwnerDTO> getInfoOwners(Long fangId) {
+    public List<FangInfoOwnerDTO> getSuccessiveInfoOwners(Long fangId) {
+        ExceptionUtil.checkNotNull("房源编号", fangId);
+        return fangInfoOwnerRepo.getSuccessiveInfoOwners(fangId);
+    }
+
+    @Override
+    public List<FangInfoOwnerDTO> getInfoOwners(long fangId) {
         ExceptionUtil.checkNotNull("房源编号", fangId);
         return fangInfoOwnerRepo.findByFangId(fangId);
     }

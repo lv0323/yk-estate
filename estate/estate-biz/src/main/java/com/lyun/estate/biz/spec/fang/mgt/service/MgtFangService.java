@@ -38,7 +38,9 @@ public interface MgtFangService {
 
     FangInfoOwner createFangInfoOwner(FangInfoOwner fangInfoOwner);
 
-    List<FangInfoOwnerDTO> getInfoOwners(Long fangId);
+    List<FangInfoOwnerDTO> getSuccessiveInfoOwners(Long fangId);
+
+    List<FangInfoOwnerDTO> getInfoOwners(long fangId);
 
     FangDescr createFangDescr(FangDescr fangDescr);
 

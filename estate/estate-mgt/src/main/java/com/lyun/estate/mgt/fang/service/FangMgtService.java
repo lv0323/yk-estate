@@ -22,6 +22,7 @@ import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
+import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.spec.fang.mgt.entity.*;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.service.MgtXiaoQuService;
@@ -33,9 +34,11 @@ import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.context.Operator;
+import com.lyun.estate.mgt.permission.service.PermissionCheckService;
 import com.lyun.estate.mgt.supports.AuditHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,37 +57,28 @@ import static java.util.Objects.nonNull;
 @Service
 public class FangMgtService {
 
+    @Autowired
     private HouseLicenceService houseLicenceService;
-
+    @Autowired
     private MgtXiaoQuService mgtXiaoQuService;
-
+    @Autowired
     private MgtFangService mgtFangService;
-
+    @Autowired
     private MgtContext mgtContext;
-
+    @Autowired
     private AuditService auditService;
-
+    @Autowired
     private DepartmentService departmentService;
-
+    @Autowired
     private EmployeeService employeeService;
-
+    @Autowired
     private FileService fileService;
+
+    @Autowired
+    private PermissionCheckService permissionCheckService;
 
     private Logger logger = LoggerFactory.getLogger(FangMgtService.class);
 
-    public FangMgtService(HouseLicenceService houseLicenceService,
-                          MgtXiaoQuService mgtXiaoQuService, MgtFangService mgtFangService, MgtContext mgtContext,
-                          AuditService auditService, DepartmentService departmentService,
-                          EmployeeService employeeService, FileService fileService) {
-        this.houseLicenceService = houseLicenceService;
-        this.mgtXiaoQuService = mgtXiaoQuService;
-        this.mgtFangService = mgtFangService;
-        this.mgtContext = mgtContext;
-        this.auditService = auditService;
-        this.departmentService = departmentService;
-        this.employeeService = employeeService;
-        this.fileService = fileService;
-    }
 
     @Transactional
     public Fang createFang(HouseLicence houseLicence, Fang fang, FangExt fangExt, FangContact contact) {
@@ -216,6 +210,8 @@ public class FangMgtService {
     @Transactional
     public FangContact getContact(Long fangId) {
 
+        permissionCheckService.check(fangId, Permission.VIEW_CONTACT);
+
         Fang fang = mgtFangService.getFangBase(fangId);
         FangContact result = mgtFangService.getContact(fangId);
 
@@ -230,8 +226,8 @@ public class FangMgtService {
     }
 
     @Transactional
-    public List<FangInfoOwnerDTO> getInfoOwners(Long fangId) {
-        return mgtFangService.getInfoOwners(fangId);
+    public List<FangInfoOwnerDTO> getSuccessiveInfoOwners(Long fangId) {
+        return mgtFangService.getSuccessiveInfoOwners(fangId);
     }
 
     @Transactional
@@ -406,7 +402,7 @@ public class FangMgtService {
         //员工匹配：employeeId
         //公司匹配：companyId，员工调动
         //部门匹配：departmentId，员工离职
-        List<FangInfoOwnerDTO> infoOwners = mgtFangService.getInfoOwners(fileDescription.getOwnerId());
+        List<FangInfoOwnerDTO> infoOwners = mgtFangService.getSuccessiveInfoOwners(fileDescription.getOwnerId());
         if (infoOwners.stream().anyMatch(t -> Objects.equals(t.getCompanyId(), operator.getCompanyId()))) {
 
             logger.info("员工{} 删除了图片{}", mgtContext.getOperator().getId(), fileId);
@@ -427,7 +423,7 @@ public class FangMgtService {
         Operator operator = mgtContext.getOperator();
 
         //todo: permission check
-        List<FangInfoOwnerDTO> infoOwners = mgtFangService.getInfoOwners(fileDescription.getOwnerId());
+        List<FangInfoOwnerDTO> infoOwners = mgtFangService.getSuccessiveInfoOwners(fileDescription.getOwnerId());
         if (infoOwners.stream().anyMatch(t -> Objects.equals(t.getCompanyId(), operator.getCompanyId()))) {
             logger.info("员工{} 将图片{}置顶", mgtContext.getOperator().getId(), fileId);
             return fileService.setFirst(fileId);
@@ -438,6 +434,8 @@ public class FangMgtService {
 
     @Transactional
     public FangContact updateContact(FangContact contact) {
+        permissionCheckService.check(contact.getFangId(), Permission.MODIFY_CONTACT);
+
         Fang fang = mgtFangService.getFangBase(contact.getFangId());
         FangContact result = mgtFangService.updateContact(contact);
 
