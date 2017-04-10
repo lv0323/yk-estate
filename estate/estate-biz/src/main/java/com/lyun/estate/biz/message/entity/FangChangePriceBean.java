@@ -1,9 +1,9 @@
 package com.lyun.estate.biz.message.entity;
 
-import com.google.common.base.MoreObjects;
 import com.lyun.estate.biz.fang.def.HouseProcess;
 import com.lyun.estate.biz.fang.def.Orientation;
 import com.lyun.estate.biz.fang.def.PriceUnit;
+import com.lyun.estate.biz.spec.fang.domain.FangForTag;
 import com.lyun.estate.biz.support.def.BizType;
 
 import java.math.BigDecimal;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 /**
  * Created by Jeffrey on 2017-03-16.
  */
-public class FangChangePriceBean {
+public class FangChangePriceBean extends FangForTag {
     private Long id;
     private Long cityId;
     private Long subDistrictId;
@@ -171,27 +171,5 @@ public class FangChangePriceBean {
     public FangChangePriceBean setMessageContent(String messageContent) {
         this.messageContent = messageContent;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("cityId", cityId)
-                .add("subDistrictId", subDistrictId)
-                .add("title", title)
-                .add("bizType", bizType)
-                .add("publishPrice", publishPrice)
-                .add("priceUnit", priceUnit)
-                .add("unitPrice", unitPrice)
-                .add("sCounts", sCounts)
-                .add("tCounts", tCounts)
-                .add("estateArea", estateArea)
-                .add("orientation", orientation)
-                .add("xiaoQuName", xiaoQuName)
-                .add("process", process)
-                .add("imageURI", imageURI)
-                .add("messageContent", messageContent)
-                .toString();
     }
 }
