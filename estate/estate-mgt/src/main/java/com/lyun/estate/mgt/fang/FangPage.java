@@ -1,9 +1,12 @@
 package com.lyun.estate.mgt.fang;
 
+import com.lyun.estate.biz.employee.entity.Employee;
+import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
 import com.lyun.estate.biz.support.def.BizType;
+import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
 import com.lyun.estate.mgt.housedict.service.HouseDictMgtService;
 import com.lyun.estate.biz.spec.fang.mgt.def.TimeType;
@@ -29,6 +32,10 @@ public class FangPage {
     private EmployeeMgtService service;
     @Autowired
     private MgtFangService mgtFangService;
+    @Autowired
+    private EmployeeService employeeService;
+    @Autowired
+    private MgtContext mgtContext;
 
 
     @GetMapping("/list")
@@ -79,9 +86,16 @@ public class FangPage {
 
     @GetMapping("/detail")
     public ModelAndView detail(@RequestParam Long id) {
-        Fang fang = mgtFangService.getFangBase(id);
-        System.out.print(fang.getHouseType().getSubTypes());
+        Employee employee = employeeService.findById(mgtContext.getOperator().getId());
+        Long followFangId = employee.getFollowFangId();
         HashMap<String, Object> params = new HashMap<>();
+        if(followFangId != null){
+            params.put("followFangId", followFangId);
+            if(!followFangId.equals(id)){
+                return new ModelAndView("redirect:/fangManage/detail?id=" + String.valueOf(followFangId) , params);
+            }
+        }
+        Fang fang = mgtFangService.getFangBase(id);
         params.put("avatarUrl", service.getAvatar());
         params.put("houseTypes", Arrays.asList(HouseType.values()));
         params.put("houseSubType", fang.getHouseSubType().name());
@@ -103,9 +117,9 @@ public class FangPage {
         params.put("commissionWilling", Arrays.asList(CommissionWilling.values()));
         params.put("followType", Arrays.asList(FollowType.values()));
         params.put("username", service.getUsername());
+        params.put("licenceId", fang.getLicenceId().toString());
         if(fang.getBizType().equals(BizType.RENT)){
             params.put("priceUnit", PriceUnit.getByBizType(BizType.RENT));
-
         }else{
             params.put("priceUnit", PriceUnit.getByBizType(BizType.SELL));
         }

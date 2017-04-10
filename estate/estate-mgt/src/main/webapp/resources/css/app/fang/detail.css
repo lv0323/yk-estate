@@ -102,3 +102,6 @@
 #contactModel .form-group{
     margin-bottom: 15px;
 }
+.tag-warning{
+    color: #d9534f;
+}

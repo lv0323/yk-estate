@@ -858,7 +858,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">查看业主</h4>
+                    <h4 class="modal-title">
+                        查看业主与新增跟进
+                        <#if followFangId??>
+                            <span class="tag-warning" ng-init="followFangTag=true" ng-show="followFangTag">(未填跟进)</span>
+                        </#if>
+                    </h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
