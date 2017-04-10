@@ -13,7 +13,7 @@ import java.util.List;
 public interface FangInfoOwnerRepo {
 
     @Select("SELECT fio.*, d.name as department_name, e.name as employee_name, e.mobile, c.name as company_name FROM t_fang_info_owner fio LEFT JOIN t_department d ON fio.department_id = d.id LEFT JOIN t_employee e ON fio.employee_id = e.id " +
-            "LEFT JOIN t_company c ON fio.company_id = c.id where fio.fang_id = #{fangId}")
+            "LEFT JOIN t_company c ON fio.company_id = c.id where fio.fang_id = #{fangId} AND fio.is_deleted = false")
     List<FangInfoOwnerDTO> findByFangId(Long fangId);
 
 
@@ -21,4 +21,8 @@ public interface FangInfoOwnerRepo {
             " FROM t_fang_info_owner fio LEFT JOIN t_department d ON fio.department_id = d.id LEFT JOIN t_employee e ON fio.employee_id = e.id LEFT JOIN t_company c ON fio.company_id = c.id " +
             " WHERE fio.fang_id = #{fangId} AND fio.is_deleted = FALSE ORDER BY fio.id DESC LIMIT 1")
     FangInfoOwnerDTO findLastFangInfoOwner(Long fangId);
+
+    @Select("SELECT fio.*, d.name as department_name, e.name as employee_name, e.mobile, c.name as company_name FROM t_fang_info_owner fio LEFT JOIN t_department d ON fio.department_id = d.id LEFT JOIN t_employee e ON fio.employee_id = e.id " +
+            "LEFT JOIN t_company c ON fio.company_id = c.id where fio.fang_id = #{fangId}")
+    List<FangInfoOwnerDTO> getSuccessiveInfoOwners(Long fangId);
 }

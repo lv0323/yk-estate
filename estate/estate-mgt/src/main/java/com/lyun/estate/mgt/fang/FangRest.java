@@ -19,6 +19,7 @@ import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver;
 import com.lyun.estate.core.supports.types.YN;
 import com.lyun.estate.mgt.fang.service.FangMgtService;
 import com.lyun.estate.mgt.supports.CommonResp;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,11 +39,8 @@ import java.util.Optional;
 @RequestMapping("api/fang")
 public class FangRest {
 
+    @Autowired
     private FangMgtService fangMgtService;
-
-    public FangRest(FangMgtService fangMgtService) {
-        this.fangMgtService = fangMgtService;
-    }
 
     @PostMapping("create")
     public Fang createFang(@RequestParam BizType bizType,
@@ -241,9 +239,9 @@ public class FangRest {
         return fangMgtService.getContact(fangId);
     }
 
-    @GetMapping("info-owner")
+    @GetMapping("successive-info-owner")
     public List<FangInfoOwnerDTO> getInfoOwners(@RequestParam Long fangId) {
-        return fangMgtService.getInfoOwners(fangId);
+        return fangMgtService.getSuccessiveInfoOwners(fangId);
     }
 
     @PostMapping("change-base")
