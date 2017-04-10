@@ -286,10 +286,10 @@
                                                            ng-click="changeStatus(page.status.UN_PUBLISH, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH || house.process.name == page.status.PAUSE">
                                                             <i class="fa fa-pencil"></i>下架
                                                         </a>
-                                                        <a class="m-l-20" ng-href="javascript:;"
+                                                        <#--<a class="m-l-20" ng-href="javascript:;"
                                                            ng-click="changeStatus(page.status.PAUSE, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH">
                                                             <i class="fa fa-pencil"></i>暂缓
-                                                        </a>
+                                                        </a>-->
                                                         <a class="m-l-20" ng-href="{{'/mgt/propertyVisit/addPropertyVisit?target=.prtyVisit&licenceId='+house.licenceId}}"
                                                            ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE">
                                                             <i class="fa fa-pencil"></i>新增带看
