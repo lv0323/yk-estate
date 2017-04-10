@@ -105,6 +105,7 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
                         "/**/api-docs",
                         "/captcha",
                         "/sms",
+                        "/error",
                         "/api/auth/active",
                         "/api/auth/salt",
                         "/api/auth/login",

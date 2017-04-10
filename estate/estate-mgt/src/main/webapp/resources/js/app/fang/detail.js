@@ -45,6 +45,11 @@ require(['main-app',
                     change:'survey'
                 }
             };
+            $scope.$watch("followFangTag", function(){
+                if($scope.followFangTag){
+                    _this.contactInfoInit();
+                }
+            });
             /*页面相关内容*/
             _this.page ={
                 name: "房源详情",
@@ -338,6 +343,7 @@ require(['main-app',
                 FangService.createFollow(info).then(function(response){
                     $('#followModel').modal('hide');
                     $('#contactModel').modal('hide');
+                    $scope.followFangTag = false;
                     _this.follow();
                     SweetAlertHelp.success();
                 }).fail(SweetAlertHelp.fail);
