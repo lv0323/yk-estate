@@ -54,4 +54,10 @@ public interface EmployeeRepo {
 
     @Update("update t_employee set device_id = #{deviceId},  update_time = now() where id = #{id}")
     int updateDeviceId(@Param("id") Long id, @Param("deviceId") String deviceId);
+
+    @Update("UPDATE t_employee SET follow_fang_id = #{fangId} WHERE id = #{id};")
+    int updateFollowFangId(@Param("id") long id, @Param("fangId") long fangId);
+
+    @Update("UPDATE t_employee SET follow_fang_id = NULL WHERE id = #{id} AND follow_fang_id = #{fangId};")
+    int clearFollowFangId(@Param("id") long id, @Param("fangId") long fangId);
 }

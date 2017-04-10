@@ -204,7 +204,7 @@ public class MgtFangServiceImpl implements MgtFangService {
                                     CustomType.SHI_JING,
                                     FileProcess.WATERMARK)).
                             map(FileDescription::getFileURI).orElse(null));
-                    summary.setInfoOwner(mgtFangRepository.findLastFangInfoOwner(summary.getId()));
+                    summary.setInfoOwner(fangInfoOwnerRepo.findLastFangInfoOwner(summary.getId()));
                 }
         );
         return summaries;
@@ -217,7 +217,7 @@ public class MgtFangServiceImpl implements MgtFangService {
     }
 
     @Override
-    public List<FangInfoOwner> getInfoOwners(Long fangId) {
+    public List<FangInfoOwnerDTO> getInfoOwners(Long fangId) {
         ExceptionUtil.checkNotNull("房源编号", fangId);
         return fangInfoOwnerRepo.findByFangId(fangId);
     }

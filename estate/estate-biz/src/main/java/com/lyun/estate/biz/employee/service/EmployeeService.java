@@ -233,4 +233,16 @@ public class EmployeeService {
     public Boolean updateDeviceId(Long id, String deviceId) {
         return repo.updateDeviceId(id, deviceId) > 0;
     }
+
+    public Employee findById(long id) {
+        return repo.selectById(id);
+    }
+
+    public boolean updateFollowFangId(long id, long fangId) {
+        return repo.updateFollowFangId(id, fangId) > 0;
+    }
+
+    public boolean clearFollowFangId(Long id, Long fangId) {
+        return repo.clearFollowFangId(id, fangId) > 0;
+    }
 }

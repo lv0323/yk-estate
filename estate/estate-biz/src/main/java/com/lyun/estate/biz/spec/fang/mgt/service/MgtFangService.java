@@ -4,6 +4,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.domian.FangCheckDTO;
 import com.lyun.estate.biz.fang.domian.FangFollowDTO;
+import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
 import com.lyun.estate.biz.fang.domian.MgtFangTiny;
 import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.spec.fang.mgt.entity.*;
@@ -37,8 +38,7 @@ public interface MgtFangService {
 
     FangInfoOwner createFangInfoOwner(FangInfoOwner fangInfoOwner);
 
-    List<FangInfoOwner> getInfoOwners(Long fangId);
-
+    List<FangInfoOwnerDTO> getInfoOwners(Long fangId);
 
     FangDescr createFangDescr(FangDescr fangDescr);
 

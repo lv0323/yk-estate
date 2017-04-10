@@ -5,6 +5,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.domian.FangCheckDTO;
 import com.lyun.estate.biz.fang.domian.FangFollowDTO;
+import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
 import com.lyun.estate.biz.fang.domian.MgtFangTiny;
 import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.file.def.CustomType;
@@ -22,7 +23,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalTime;
@@ -242,7 +242,7 @@ public class FangRest {
     }
 
     @GetMapping("info-owner")
-    public List<FangInfoOwner> getInfoOwners(@RequestParam Long fangId) {
+    public List<FangInfoOwnerDTO> getInfoOwners(@RequestParam Long fangId) {
         return fangMgtService.getInfoOwners(fangId);
     }
 

@@ -36,6 +36,7 @@ public class Employee {
     private String deviceId;
     @JsonIgnore
     private Boolean sysAdmin;
+    private Long followFangId;
     private Date entryDate;
     private Date createTime;
     private Date updateTime;
@@ -274,6 +275,15 @@ public class Employee {
         return this;
     }
 
+    public Long getFollowFangId() {
+        return followFangId;
+    }
+
+    public Employee setFollowFangId(Long followFangId) {
+        this.followFangId = followFangId;
+        return this;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -302,6 +312,7 @@ public class Employee {
                 .add("entryDate", entryDate)
                 .add("createTime", createTime)
                 .add("updateTime", updateTime)
+                .add("followFangId", followFangId)
                 .toString();
     }
 }

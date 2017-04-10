@@ -12,6 +12,7 @@ import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.domian.FangCheckDTO;
 import com.lyun.estate.biz.fang.domian.FangFollowDTO;
+import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
 import com.lyun.estate.biz.fang.domian.MgtFangTiny;
 import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.file.def.CustomType;
@@ -218,7 +219,8 @@ public class FangMgtService {
         Fang fang = mgtFangService.getFangBase(fangId);
         FangContact result = mgtFangService.getContact(fangId);
 
-        Operator operator = mgtContext.getOperator();
+        employeeService.updateFollowFangId(mgtContext.getOperator().getId(), fangId);
+
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_OWNER, fangId, DomainType.FANG,
                         AuditHelper.operatorName(mgtContext) + "查看了授权编号为【" + fang.getLicenceId() + "】的房东联系方式")
@@ -227,12 +229,16 @@ public class FangMgtService {
         return result;
     }
 
-    public List<FangInfoOwner> getInfoOwners(Long fangId) {
+    @Transactional
+    public List<FangInfoOwnerDTO> getInfoOwners(Long fangId) {
         return mgtFangService.getInfoOwners(fangId);
     }
 
+    @Transactional
     public FangFollow createFollow(Long fangId, FollowType followType, String content) {
         Operator operator = mgtContext.getOperator();
+
+        employeeService.clearFollowFangId(operator.getId(), fangId);
 
         return mgtFangService.createFollow(
                 new FangFollow().setFangId(fangId)
@@ -400,7 +406,7 @@ public class FangMgtService {
         //员工匹配：employeeId
         //公司匹配：companyId，员工调动
         //部门匹配：departmentId，员工离职
-        List<FangInfoOwner> infoOwners = mgtFangService.getInfoOwners(fileDescription.getOwnerId());
+        List<FangInfoOwnerDTO> infoOwners = mgtFangService.getInfoOwners(fileDescription.getOwnerId());
         if (infoOwners.stream().anyMatch(t -> Objects.equals(t.getCompanyId(), operator.getCompanyId()))) {
 
             logger.info("员工{} 删除了图片{}", mgtContext.getOperator().getId(), fileId);
@@ -421,7 +427,7 @@ public class FangMgtService {
         Operator operator = mgtContext.getOperator();
 
         //todo: permission check
-        List<FangInfoOwner> infoOwners = mgtFangService.getInfoOwners(fileDescription.getOwnerId());
+        List<FangInfoOwnerDTO> infoOwners = mgtFangService.getInfoOwners(fileDescription.getOwnerId());
         if (infoOwners.stream().anyMatch(t -> Objects.equals(t.getCompanyId(), operator.getCompanyId()))) {
             logger.info("员工{} 将图片{}置顶", mgtContext.getOperator().getId(), fileId);
             return fileService.setFirst(fileId);
