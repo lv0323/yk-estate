@@ -105,3 +105,7 @@
 .tag-warning{
     color: #d9534f;
 }
+.deleted-owner{
+    color:#d9534f;
+    font-size: 16px;
+}

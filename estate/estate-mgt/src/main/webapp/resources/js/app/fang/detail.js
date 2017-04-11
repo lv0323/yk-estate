@@ -109,7 +109,7 @@ require(['main-app',
                 _this.currentLayout[type] = value;
             };
             _this.setInfoOwner = function(response){
-
+                _this.infoOwnerList = response
             };
             _this.selectPickerChange = function(id, key, info) {
                 if(info){
@@ -157,7 +157,7 @@ require(['main-app',
             _this.getSummary();
             /*归属*/
             _this.getInfoOwner = function(){
-                FangService.infoOwner({fangId:fangId}).then(function(response){
+                FangService.successiveInfoOwner({fangId:fangId}).then(function(response){
                     _this.setInfoOwner(response);
                 });
             };
@@ -293,15 +293,17 @@ require(['main-app',
             _this.contactInfoInit = function(){
                 _this.updateContact = {};
                 _this.newFollow = {};
-                $('#contactModel').modal({'show':true,backdrop:'static'});
                 FangService.contact({fangId:fangId}).then(function(response){
+                    $('#contactModel').modal({'show':true,backdrop:'static'});
                     $scope.$apply(function(){
                         _this.updateContact =  response;
                     });
+                    setTimeout(function(){
+                        $('#houseNewFollow2').selectpicker('refresh');
+                    },200)
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
                 });
-                setTimeout(function(){
-                    $('#houseNewFollow2').selectpicker('refresh');
-                },200)
             }
             _this.ownerInfoUpdate = function(){
                 //$('#ownerModel').modal('hide');

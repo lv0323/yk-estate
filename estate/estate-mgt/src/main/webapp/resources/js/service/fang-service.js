@@ -61,8 +61,8 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.updateDescr = function (params, header) {
             return RequestService.post('/api/fang/descr', params, header);
         };
-        FangService.infoOwner = function (params, header) {
-            return RequestService.get('/api/fang/info-owner', params, header);
+        FangService.successiveInfoOwner = function (params, header) {
+            return RequestService.get('/api/fang/successive-info-owner', params, header);
         };
         FangService.listFollow = function (params, header) {
             return RequestService.get('/api/fang/list-follow', params, header);
