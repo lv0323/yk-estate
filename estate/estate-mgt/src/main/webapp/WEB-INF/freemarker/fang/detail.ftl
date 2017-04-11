@@ -61,6 +61,7 @@
                         <!-- Tabs within a box -->
                         <ul class="nav nav-tabs" id="yeqian">
                             <li class="active"><a href="#basic-info" data-toggle="tab">基本信息</a></li>
+                            <li><a href="#contact-info" data-toggle="tab">归属信息</a></li>
                             <li><a href="#follow-info" data-toggle="tab">跟进记录</a></li>
                             <li><a href="#survey-info" data-toggle="tab">勘察记录</a></li>
                             <li><a href="#image-info" data-toggle="tab">房源图片</a></li>
@@ -208,6 +209,33 @@
                                 </div>
                                 <div class="pagination-container">
                                     <ul id="follow_paging" class="pagination"></ul>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="contact-info">
+                                <div class="box-header" style="padding-left: 0">
+                                    <h3 class="box-title pull-left">归属人</h3>
+                                </div>q
+                                <div class="row">
+                                    <div class="col-lg-2 col-md-3 col-sm-4" style="padding: 0" ng-repeat="infoOwner in ctrl.infoOwnerList">
+                                        <div class="panel">
+                                            <div class="panel-body">
+                                                <div class="media media-hover no-border no-padding">
+                                                    <div class="media-body">
+                                                        <h4 class="media-heading pull-left">{{infoOwner.employeeName}}</h4>
+                                                        <span class="pull-right deleted-owner" ng-if="infoOwner.deleted">已失效</span>
+                                                        <div class="clearfix"></div>
+                                                        <p class="text-muted" style="margin-bottom:5px;">
+                                                            <span ng-bind="infoOwner.companyName"></span>-<span ng-bind="infoOwner.departmentName"></span>
+                                                        </p>
+                                                        <p class="text-muted" ng-bind="infoOwner.mobile"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-footer text-center">
+                                                <b ng-bind="infoOwner.reason.label"></b>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane" id="survey-info">
