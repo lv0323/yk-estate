@@ -63,6 +63,7 @@ public enum ExCode {
     //fang process
     NOT_PUBLISH("该房源不可见"),
     PROCESS_ILLEGAL("房源{}, 状态{}不能变成{}"),
+    SUB_PROCESS_ILLEGAL("房源{}, 状态{}-{}不合法"),
     DESC_CORE_NULL("房源{}, 外网描述中核心卖点为空，不能发布"),
     //contract
     CONTRACT_FOR_FANG_EXIST("该房源的合同已存在"),
