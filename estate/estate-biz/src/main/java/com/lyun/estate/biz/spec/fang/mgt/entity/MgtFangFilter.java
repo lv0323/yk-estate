@@ -36,6 +36,7 @@ public class MgtFangFilter {
     private Integer minPrice;
     private Integer maxPrice;
     private HouseProcess process;
+    private HouseSubProcess subProcess;
 
     public Long getCityId() {
         return cityId;
@@ -250,6 +251,15 @@ public class MgtFangFilter {
 
     public MgtFangFilter setXiaoQuId(Long xiaoQuId) {
         this.xiaoQuId = xiaoQuId;
+        return this;
+    }
+
+    public HouseSubProcess getSubProcess() {
+        return subProcess;
+    }
+
+    public MgtFangFilter setSubProcess(HouseSubProcess subProcess) {
+        this.subProcess = subProcess;
         return this;
     }
 }

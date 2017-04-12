@@ -30,6 +30,7 @@ public class MgtFangSelector extends TagSelector {
     private Decorate decorate;
     private YN resident;
     private HouseProcess process;
+    private HouseSubProcess subProcess;
     private Integer minPrice;
     private Integer maxPrice;
     private Date minCreateTime;
@@ -300,6 +301,15 @@ public class MgtFangSelector extends TagSelector {
 
     public MgtFangSelector setXiaoQuId(Long xiaoQuId) {
         this.xiaoQuId = xiaoQuId;
+        return this;
+    }
+
+    public HouseSubProcess getSubProcess() {
+        return subProcess;
+    }
+
+    public MgtFangSelector setSubProcess(HouseSubProcess subProcess) {
+        this.subProcess = subProcess;
         return this;
     }
 }

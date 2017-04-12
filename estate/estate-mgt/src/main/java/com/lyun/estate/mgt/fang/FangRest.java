@@ -159,6 +159,7 @@ public class FangRest {
                                                        @RequestParam(required = false) Long xiaoQuId,
                                                        @RequestParam(required = false) HouseType houseType,
                                                        @RequestParam(required = false) HouseProcess process,
+                                                       @RequestParam(required = false) HouseSubProcess subProcess,
                                                        @RequestParam(required = false) Integer minArea,
                                                        @RequestParam(required = false) Integer maxArea,
                                                        @RequestParam(required = false) Integer minPrice,
@@ -186,6 +187,7 @@ public class FangRest {
                 .setXiaoQuId(xiaoQuId)
                 .setHouseType(houseType)
                 .setProcess(process)
+                .setSubProcess(subProcess)
                 .setMinArea(minArea)
                 .setMaxArea(maxArea)
                 .setMinPrice(minPrice)
