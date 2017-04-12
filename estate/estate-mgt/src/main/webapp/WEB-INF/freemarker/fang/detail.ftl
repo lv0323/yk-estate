@@ -214,9 +214,9 @@
                             <div class="tab-pane" id="contact-info">
                                 <div class="box-header" style="padding-left: 0">
                                     <h3 class="box-title pull-left">归属人</h3>
-                                </div>q
+                                </div>
                                 <div class="row">
-                                    <div class="col-lg-2 col-md-3 col-sm-4" style="padding: 0" ng-repeat="infoOwner in ctrl.infoOwnerList">
+                                    <div class="col-lg-2 col-md-3 col-sm-4" style="padding-left: 0" ng-repeat="infoOwner in ctrl.infoOwnerList">
                                         <div class="panel">
                                             <div class="panel-body">
                                                 <div class="media media-hover no-border no-padding">
