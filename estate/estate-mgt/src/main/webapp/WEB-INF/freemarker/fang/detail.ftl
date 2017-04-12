@@ -216,7 +216,7 @@
                                     <h3 class="box-title pull-left">归属人</h3>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-2 col-md-3 col-sm-4" style="padding-left: 0" ng-repeat="infoOwner in ctrl.infoOwnerList">
+                                    <div class="col-lg-3 col-md-3 col-sm-4" style="padding-left: 0" ng-repeat="infoOwner in ctrl.infoOwnerList">
                                         <div class="panel">
                                             <div class="panel-body">
                                                 <div class="media media-hover no-border no-padding">
@@ -232,7 +232,7 @@
                                                 </div>
                                             </div>
                                             <div class="panel-footer text-center">
-                                                <b ng-bind="infoOwner.reason.label"></b>
+                                                <b ng-bind="infoOwner.reason.label"></b><span class="owner-info-create-time">({{infoOwner.createTime|date:'yyyy-MM-dd'}})</span>
                                             </div>
                                         </div>
                                     </div>
@@ -290,6 +290,18 @@
                                         <div class="box-body surveyImg">
                                             <div class="row">
                                                 <div class="col-lg-3 col-md-3 col-sm-6" ng-repeat="type in ctrl.imageTypeList">
+                                                    <div class="thumbnail">
+                                                       <img ng-src="{{ctrl[type.key].count > 0? ctrl[type.key].list[0].fileURI : type.defaultMap}}"/>
+                                                        <div class="caption clearfix">
+                                                            <a class="btn btn-warning btn-xs pull-left" ng-click="ctrl.addMap(type.para, type.addText, type.key);">{{type.addText}}</a>
+                                                            <a class="btn btn-success btn-xs pull-left m-l-30" ng-click="ctrl.showAllMap(type.para, type.addText, type.key);">查看全部</a>
+                                                            <span class="pull-right">{{ctrl[type.key].count}}张</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-3 col-sm-6" ng-repeat="type in ctrl.imageTypeList2">
                                                     <div class="thumbnail">
                                                        <img ng-src="{{ctrl[type.key].count > 0? ctrl[type.key].list[0].fileURI : type.defaultMap}}"/>
                                                         <div class="caption clearfix">
@@ -895,7 +907,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-xs-5">
                             <form class="form-inline" name="contactDialogForm">
                                 <div class="panel">
                                     <div class="panel-heading">
@@ -937,30 +949,41 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="col-xs-6">
+                        <div class="col-xs-7">
                             <form class="form-inline" name="ownerDialogForm">
-                                <div class="form-group clearfix">
-                                    <label class="control-label text-right" style="float:left; width: 48px;">姓名</label>
-                                    <div class="col-lg-9 col-md-9 col-sm-9">
-                                        <input type="text" name="houseOwphone2"  class="form-control" ng-model="ctrl.page.userInfo.name" readonly="readonly"/>
+                                <div class="panel">
+                                    <div class="panel-heading">
+                                        跟进记录
                                     </div>
-                                </div>
-                                <div class="form-group clearfix">
-                                    <label class="control-label text-right" style="float:left;">跟进方式</label>
-                                    <div class="col-lg-9 col-md-9 col-sm-9">
-                                        <select select-picker class="selectpicker show-menu-arrow form-control " name="houseNewFollow2" id="houseNewFollow2"
-                                                ng-model="ctrl.newFollow.followType" ng-change="ctrl.selectPickerChange('#houseNewFollow2', 'followType', 'newFollow')">
-                                            <option value="">--请选择--</option>
-                                        <#list followType ?if_exists as type>
-                                            <option value="${type.name()}">${type.getLabel()}</option>
-                                        </#list>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group clearfix">
-                                    <label class="control-label text-right"  style="float:left;">跟进内容</label>
-                                    <div class="col-lg-9 col-md-9 col-sm-9">
-                                        <textarea name="note" cols="30" rows="8" class="form-control" ng-model="ctrl.newFollow.content"></textarea>
+                                    <div class="panel-body" style="padding: 15px 0 0">
+                                        <div class="form-group clearfix">
+                                            <label class="control-label col-xs-2">姓名</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                <input type="text" name="houseOwphone2" class="form-control"
+                                                       ng-model="ctrl.page.userInfo.name" readonly="readonly"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label class="control-label col-xs-2" style="float:left;">方式</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                <select select-picker class="selectpicker show-menu-arrow form-control "
+                                                        name="houseNewFollow2" id="houseNewFollow2"
+                                                        ng-model="ctrl.newFollow.followType"
+                                                        ng-change="ctrl.selectPickerChange('#houseNewFollow2', 'followType', 'newFollow')">
+                                                    <option value="">--请选择--</option>
+                                                <#list followType ?if_exists as type>
+                                                    <option value="${type.name()}">${type.getLabel()}</option>
+                                                </#list>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label class="control-label col-xs-2" style="float:left;">内容</label>
+                                            <div class="col-lg-10 col-md-10 col-sm-10">
+                                                <textarea name="note" cols="30" rows="5" class="form-control"
+                                                          ng-model="ctrl.newFollow.content"></textarea>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </form>

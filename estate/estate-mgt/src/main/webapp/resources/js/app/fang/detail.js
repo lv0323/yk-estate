@@ -83,8 +83,11 @@ require(['main-app',
             };
             _this.imageTypeList = [
                 {key: 'virtualMap', para :'SHI_JING', addText: '新增实景图', defaultMap: '../img/house/kct.jpeg'},
-                {key: 'layoutMap', para :'HU_XING', addText: '新增户型图', defaultMap: '../img/house/hxt.jpeg'},
-                {key: 'certifMap', para :'CERTIF', addText: '新增证件照', defaultMap: '../img/house/zjz.jpeg'}];
+                {key: 'layoutMap', para :'HU_XING', addText: '新增户型图', defaultMap: '../img/house/hxt.jpeg'}];
+            _this.imageTypeList2 = [
+                {key: 'certifMap', para :'CERTIF', addText: '新增房产证', defaultMap: '../img/house/fcz.png'},
+                {key: 'attorneyMap', para :'ATTORNEY', addText: '新增委托书', defaultMap: '../img/house/wts.png'},
+                {key: 'idCardMap', para :'OWNER_ID_CARD', addText: '新增身份证', defaultMap: '../img/house/sfz.png'}];
             _this.virtualMap ={
                 list:[],
                 count:0,
@@ -94,6 +97,14 @@ require(['main-app',
                 count:0,
             };
             _this.certifMap ={
+                list:[],
+                count:0,
+            };
+            _this.attorneyMap ={
+                list:[],
+                count:0,
+            };
+            _this.idCardMap ={
                 list:[],
                 count:0,
             };
@@ -401,6 +412,14 @@ require(['main-app',
             _this.imageGet('CERTIF').then(function(response){
                 _this.certifMap.list = response;
                 _this.certifMap.count =response.length;
+            });
+            _this.imageGet('ATTORNEY').then(function(response){
+                _this.attorneyMap.list = response;
+                _this.attorneyMap.count =response.length;
+            });
+            _this.imageGet('OWNER_ID_CARD').then(function(response){
+                _this.idCardMap.list = response;
+                _this.idCardMap.count =response.length;
             });
             function uploadMap(type){
                 var formData = new FormData();

@@ -277,7 +277,10 @@
                                                         <a ng-href="javascript:;" ng-click="newFollowInit(house.id, house.licenceId)">
                                                             <i class="fa fa-pencil"></i>新增跟进
                                                         </a>
-                                                        <a class="m-l-20" ng-href="{{'/mgt/fangManage/detail?id='+house.id}}" target="_blank"><i class="fa fa-pencil"></i>查看详情</a>
+                                                        <a class="m-l-20" ng-href="{{'/mgt/propertyVisit/addPropertyVisit?target=.prtyVisit&licenceId='+house.licenceId}}"
+                                                           ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE">
+                                                            <i class="fa fa-pencil"></i>新增带看
+                                                        </a>
                                                         <a class="m-l-20" ng-href="javascript:;" ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE"
                                                            ng-click="changeStatus(page.status.PUBLISH, house.id)">
                                                             <i class="fa fa-pencil"></i>上架
@@ -290,10 +293,6 @@
                                                            ng-click="changeStatus(page.status.PAUSE, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH">
                                                             <i class="fa fa-pencil"></i>暂缓
                                                         </a>-->
-                                                        <a class="m-l-20" ng-href="{{'/mgt/propertyVisit/addPropertyVisit?target=.prtyVisit&licenceId='+house.licenceId}}"
-                                                           ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE">
-                                                            <i class="fa fa-pencil"></i>新增带看
-                                                        </a>
                                                         <a class="m-l-20" ng-href="{{'/mgt/contract/addDeal?target=.contract&licenceId='+house.licenceId}}"
                                                            ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE">
                                                             <i class="fa fa-pencil"></i>成交
