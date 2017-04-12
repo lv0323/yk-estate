@@ -240,7 +240,7 @@ public class FangRest {
     }
 
     @GetMapping("successive-info-owner")
-    public List<FangInfoOwnerDTO> getInfoOwners(@RequestParam Long fangId) {
+    public List<FangInfoOwnerDTO> getSuccessiveInfoOwners(@RequestParam Long fangId) {
         return fangMgtService.getSuccessiveInfoOwners(fangId);
     }
 

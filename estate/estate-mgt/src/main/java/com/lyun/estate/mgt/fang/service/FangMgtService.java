@@ -270,7 +270,7 @@ public class FangMgtService {
         ExceptionUtil.checkNotNull("文件输入流", inputStream);
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(suffix), "文件后缀名", suffix);
         if (customType == CustomType.SHI_JING || customType == CustomType.HU_XING || customType == CustomType.CERTIF
-                || customType == CustomType.ID_CARD || customType == CustomType.ATTORNEY) {
+                || customType == CustomType.OWNER_ID_CARD || customType == CustomType.ATTORNEY) {
             FileDescription fileDescription = new FileDescription()
                     .setOwnerId(fangId)
                     .setOwnerType(DomainType.FANG)

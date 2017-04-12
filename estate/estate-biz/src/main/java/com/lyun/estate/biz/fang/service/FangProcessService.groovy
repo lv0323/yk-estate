@@ -12,11 +12,16 @@ import com.lyun.estate.biz.fang.entity.FangDescr
 import com.lyun.estate.biz.fang.entity.FangInfoOwner
 import com.lyun.estate.biz.fang.repo.FangDescrRepo
 import com.lyun.estate.biz.fang.repo.MgtFangRepository
+import com.lyun.estate.biz.file.def.CustomType
+import com.lyun.estate.biz.file.def.FileProcess
+import com.lyun.estate.biz.file.service.FileService
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService
 import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService
 import com.lyun.estate.biz.support.def.BizType
 import com.lyun.estate.biz.support.def.DomainType
+import com.lyun.estate.biz.support.settings.SettingProvider
+import com.lyun.estate.biz.support.settings.def.NameSpace
 import com.lyun.estate.core.supports.exceptions.EstateException
 import com.lyun.estate.core.supports.exceptions.ExCode
 import com.lyun.estate.core.utils.CommonUtil
@@ -25,6 +30,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.util.CollectionUtils
 
 /**
  * Created by Jeffrey on 2017-03-10.
@@ -48,6 +54,12 @@ class FangProcessService {
     MgtFangService mgtFangService
 
     @Autowired
+    FileService fileService
+
+    @Autowired
+    SettingProvider settingProvider
+
+    @Autowired
     EventService eventService
 
     Logger logger = LoggerFactory.getLogger(FangProcessService.class)
@@ -63,11 +75,6 @@ class FangProcessService {
                 || fang.getProcess() == HouseProcess.UN_PUBLISH
                 || fang.getProcess() == HouseProcess.PAUSE) {
 
-            //check desc core
-            FangDescr fangDescr = fangDescrRepo.findByFangId(fangId)
-            if (Strings.isNullOrEmpty(fangDescr.getCore())) {
-                throw new EstateException(ExCode.DESC_CORE_NULL, fangId)
-            }
             //update process
             mgtFangRepository.publish(fangId)
 
@@ -188,13 +195,18 @@ class FangProcessService {
         if (fang == null || Objects.equals(fang.getDeleted(), true)) {
             throw new EstateException(ExCode.NOT_FOUND, fangId, "房源")
         }
+
         if (fang.getProcess() == HouseProcess.PUBLISH && fang.getSubProcess() == null) {
+
+            publicPreCheck(fangId)
+
             mgtFangRepository.applyPublic(fangId)
             return mgtFangRepository.findFang(fangId)
         } else {
             throw new EstateException(ExCode.SUB_PROCESS_ILLEGAL, fangId, fang.process, fang.subProcess)
         }
     }
+
 
     @Transactional
     Fang rejectPublic(long fangId) {
@@ -257,6 +269,29 @@ class FangProcessService {
         }
     }
 
+    def publicPreCheck(long fangId) {
+        //check desc core
+        FangDescr fangDescr = fangDescrRepo.findByFangId(fangId)
+        if (Strings.isNullOrEmpty(fangDescr.getCore())) {
+            throw new EstateException(ExCode.DESC_CORE_NULL, fangId)
+        }
+        //查三证
+        def setting = settingProvider.find(NameSpace.CONFIG, "CHECK_DOCS")
+        if (Boolean.valueOf(setting.getValue())) {
+
+            checkFangDoc(fangId, CustomType.CERTIF)
+            checkFangDoc(fangId, CustomType.ATTORNEY)
+            checkFangDoc(fangId, CustomType.OWNER_ID_CARD)
+
+        }
+    }
+
+    def checkFangDoc(long fangId, CustomType customType) {
+        if (CollectionUtils.isEmpty(
+                fileService.find(fangId, DomainType.FANG, customType, FileProcess.WATERMARK))) {
+            throw new EstateException(ExCode.REQUIRE_DOCS_NULL, customType.label)
+        }
+    }
 
     def increaseHouseCount(BizType bizType, long xiaoQuId) {
         if (bizType == BizType.SELL) {
