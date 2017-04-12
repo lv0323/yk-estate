@@ -3,9 +3,11 @@ package com.lyun.estate.mgt.fang.service
 import com.lyun.estate.biz.audit.def.AuditSubject
 import com.lyun.estate.biz.audit.service.AuditService
 import com.lyun.estate.biz.fang.entity.Fang
+import com.lyun.estate.biz.fang.entity.FangInfoOwner
 import com.lyun.estate.biz.fang.service.FangProcessService
 import com.lyun.estate.biz.support.def.DomainType
 import com.lyun.estate.mgt.context.MgtContext
+import com.lyun.estate.mgt.context.Operator
 import com.lyun.estate.mgt.supports.AuditHelper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -28,7 +30,13 @@ class FangProcessMgtService {
 
     @Transactional
     Fang publish(long fangId) {
-        Fang fang = processService.publish(fangId)
+        Operator operator = mgtContext.getOperator()
+        FangInfoOwner infoOwner = new FangInfoOwner()
+                .setCompanyId(operator.getCompanyId())
+                .setDepartmentId(operator.getDepartmentId())
+                .setEmployeeId(operator.getId())
+
+        Fang fang = processService.publish(fangId, infoOwner)
 
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,

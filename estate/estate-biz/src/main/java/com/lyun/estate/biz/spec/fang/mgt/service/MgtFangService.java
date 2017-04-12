@@ -38,6 +38,8 @@ public interface MgtFangService {
 
     FangInfoOwner createFangInfoOwner(FangInfoOwner fangInfoOwner);
 
+    FangInfoOwner changeFangInfoOwner(FangInfoOwner fangInfoOwner);
+
     List<FangInfoOwnerDTO> getSuccessiveInfoOwners(Long fangId);
 
     List<FangInfoOwnerDTO> getInfoOwners(long fangId);
@@ -68,4 +70,5 @@ public interface MgtFangService {
     MgtFangTiny getFangTinyByLicenceId(Long licenceId);
 
     MgtFangSummary getFangSummaryByLicenceId(Long licenceId);
+
 }

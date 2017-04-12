@@ -2,12 +2,9 @@ package com.lyun.estate.biz.fang.repo;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.lyun.estate.biz.fang.def.HouseProcess;
-import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
 import com.lyun.estate.biz.fang.domian.MgtFangSelector;
 import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.entity.FangExt;
-import com.lyun.estate.biz.fang.entity.FangInfoOwner;
 import com.lyun.estate.biz.fang.repo.provider.MgtFangSqlProvider;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import org.apache.ibatis.annotations.*;
@@ -54,26 +51,19 @@ public interface MgtFangRepository {
     @Select("select * from t_fang_ext where fang_id = #{fangId}")
     FangExt findFangExtByFangId(Long fangId);
 
-    @InsertProvider(type = MgtFangSqlProvider.class, method = "saveFangInfoOwner")
-    @Options(useGeneratedKeys = true)
-    int saveFangInfoOwner(FangInfoOwner fangInfoOwner);
-
-    @Select("select * from t_fang_info_owner where id = #{id}")
-    FangInfoOwner findFangInfoOwner(Long id);
-
     @SelectProvider(type = MgtFangSqlProvider.class, method = "listSummary")
     PageList<MgtFangSummary> listSummary(MgtFangSelector selector, PageBounds pageBounds);
 
     @Select("SELECT * FROM t_fang WHERE id = #{fangId} FOR UPDATE")
     Fang selectForUpdate(long fangId);
 
-    @Update("UPDATE t_fang SET process = #{process}, update_time = now() where id = #{fangId}")
-    int updateProcess(@Param("fangId") long fangId, @Param("process") HouseProcess process);
+    @Update("UPDATE t_fang SET process = 'SUCCESS', sub_process = NULL, update_time = now() where id = #{fangId}")
+    int deal(long fangId);
 
     @Update("UPDATE t_fang SET process = 'PUBLISH', update_time = now(), publish_time = now() where id = #{fangId}")
     int publish(long fangId);
 
-    @Update("UPDATE t_fang SET process = 'UN_PUBLISH', update_time = now(), publish_time = NULL where id = #{fangId}")
+    @Update("UPDATE t_fang SET process = 'UN_PUBLISH', sub_process = NULL, update_time = now(), publish_time = NULL where id = #{fangId}")
     int unPublish(long fangId);
 
     @Update("UPDATE t_fang SET is_deleted = TRUE, update_time = now() where id = #{fangId}")
@@ -82,4 +72,18 @@ public interface MgtFangRepository {
     @Update("UPDATE t_fang set update_time = CURRENT_TIMESTAMP where id = #{id} and is_deleted = false")
     int updateTime(Long id);
 
+    @Update("UPDATE t_fang SET process = 'PAUSE', sub_process = NULL, update_time = now(), publish_time = NULL where id = #{fangId}")
+    int pause(long fangId);
+
+    @Update("UPDATE t_fang SET sub_process = 'PRE_PUBLIC', update_time = now() where id = #{fangId}")
+    int applyPublic(long fangId);
+
+    @Update("UPDATE t_fang SET sub_process = NULL, update_time = now() where id = #{fangId}")
+    int rejectPublic(long fangId);
+
+    @Update("UPDATE t_fang SET sub_process = 'PUBLIC', update_time = now() where id = #{fangId}")
+    int confirmPublic(long fangId);
+
+    @Update("UPDATE t_fang SET sub_process = NULL, update_time = now() where id = #{fangId}")
+    int undoPublic(long fangId);
 }
