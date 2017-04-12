@@ -17,7 +17,7 @@ public class IndexPage {
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
         if (Objects.nonNull(request.getSession().getAttribute(Constant.SESSION_IS_LOGIN))
                 && (Boolean) request.getSession().getAttribute(Constant.SESSION_IS_LOGIN)) {
-            return new ModelAndView("fangManage/list?target=.fang");
+            return new ModelAndView("redirect:/fangManage/list?target=.fang");
         } else {
             response.setHeader("X-PAGE-FLAG", "/index");
             HashMap<String, String> params = new HashMap<>();
