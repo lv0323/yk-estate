@@ -67,6 +67,10 @@
     min-width: 860px;
     max-width: 1080px;
 }
+#contactModel .modal-dialog{
+    width: auto;
+    width: 760px;
+}
 #layoutModel{
     z-index: 10001;
 }
@@ -108,4 +112,9 @@
 .deleted-owner{
     color:#d9534f;
     font-size: 16px;
+}
+.owner-info-create-time{
+    font-size: 12px;
+    margin-left: 5px;
+    color: #777;
 }
