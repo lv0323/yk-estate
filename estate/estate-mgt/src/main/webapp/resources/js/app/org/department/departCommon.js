@@ -2,13 +2,45 @@
  * Created by yanghong on 2/16/17.
  */
 define(contextPath+'/js/app/org/department/departCommon.js',
-    ['main-app', contextPath + '/js/service/department-service.js', 'locationUtil', 'dropdown'],
+    ['main-app', contextPath + '/js/service/department-service.js', 'locationUtil', 'dropdown','chosen'],
     function (mainApp,DepartmentService) {
 
         var DepartCommon = {};
 
         var header = {};
         var dropdownData = {};
+
+        var chosenConfig = {
+            departCid: {
+                init: false
+            }
+        };
+
+        function chosenChange(key, value){
+            if(key === 'departmentId'){
+                iniEmployeeDropDown(value);
+            }
+        }
+
+        function initChosen(id, key){
+            $(id).chosen("destroy");
+            if(!chosenConfig[key].init){
+                chosenConfig[key].init = !chosenConfig[key].init;
+                $(id).chosen({disable_search_threshold: 10}).change(function(e, result){
+                    chosenChange(key, result.selected);
+                    if(key === 'employeeId'){
+                        getAgentInfo(result.selected);
+                    }
+                    if(key === 'departmentId'){
+                        $('#employeePosition').text("");
+                        $('#employeeMobile').text("");
+                        $('#employeeIdNo').text("");
+                    }
+                });
+            }
+            $(id).chosen({disable_search_threshold: 10});
+            $(id).trigger('chosen:updated');
+        }
 
         DepartCommon.initDepartSelector = function (currentDepartPId) {
             var defer = $.Deferred();
