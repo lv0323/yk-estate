@@ -5,15 +5,12 @@ import com.lyun.estate.core.supports.labelenum.LabelEnum;
 /**
  * Created by Jeffrey on 2017-01-22.
  */
-public enum HouseProcess implements LabelEnum {
-    DELEGATE("待审核"),
-    PUBLISH("上架"),
-    PAUSE("暂缓"),
-    UN_PUBLISH("下架"),
-    SUCCESS("成交"),;
+public enum HouseSubProcess implements LabelEnum {
+    PRE_PUBLIC("待发布外网"),
+    PUBLIC("已发布外网");
     private final String label;
 
-    HouseProcess(String label) {
+    HouseSubProcess(String label) {
         this.label = label;
     }
 

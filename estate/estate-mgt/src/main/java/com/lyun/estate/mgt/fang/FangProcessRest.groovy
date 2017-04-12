@@ -17,16 +17,42 @@ import org.springframework.web.bind.annotation.RestController
 class FangProcessRest {
 
     @Autowired
-    FangProcessMgtService processMgtService;
+    FangProcessMgtService processMgtService
 
     @PostMapping('publish')
     Fang publish(@RequestParam Long fangId) {
         processMgtService.publish(fangId)
     }
 
+    @PostMapping('pause')
+    Fang pause(@RequestParam Long fangId) {
+        processMgtService.pause(fangId)
+    }
+
     @PostMapping('un-publish')
     Fang unPublish(@RequestParam Long fangId) {
         processMgtService.unPublish(fangId)
+    }
+
+
+    @PostMapping('apply-public')
+    Fang applyPublic(@RequestParam Long fangId) {
+        processMgtService.applyPublic(fangId)
+    }
+
+    @PostMapping('confirm-public')
+    Fang confirmPublic(@RequestParam Long fangId) {
+        processMgtService.confirmPublic(fangId)
+    }
+
+    @PostMapping('reject-public')
+    Fang rejectPublic(@RequestParam Long fangId) {
+        processMgtService.rejectPublic(fangId)
+    }
+
+    @PostMapping('undo-public')
+    Fang undoPublic(@RequestParam Long fangId) {
+        processMgtService.undoPublic(fangId)
     }
 
     @PostMapping('deal')

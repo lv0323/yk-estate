@@ -33,6 +33,7 @@ public class Fang {
     private BigDecimal unitPrice; //单价
     private BigDecimal bottomPrice;
     private HouseProcess process;
+    private HouseSubProcess subProcess;
     private YN resident;
     private Integer floor;//层高
     private Integer floorCounts;//总层高
@@ -353,6 +354,15 @@ public class Fang {
         return this;
     }
 
+    public HouseSubProcess getSubProcess() {
+        return subProcess;
+    }
+
+    public Fang setSubProcess(HouseSubProcess subProcess) {
+        this.subProcess = subProcess;
+        return this;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -378,6 +388,7 @@ public class Fang {
                 .add("unitPrice", unitPrice)
                 .add("bottomPrice", bottomPrice)
                 .add("process", process)
+                .add("subProcess", subProcess)
                 .add("resident", resident)
                 .add("floor", floor)
                 .add("floorCounts", floorCounts)

@@ -127,11 +127,22 @@ public class MgtFangServiceImpl implements MgtFangService {
 
     @Override
     public FangInfoOwner createFangInfoOwner(FangInfoOwner fangInfoOwner) {
-        if (mgtFangRepository.saveFangInfoOwner(fangInfoOwner) > 0) {
-            return mgtFangRepository.findFangInfoOwner(fangInfoOwner.getId());
+        if (fangInfoOwnerRepo.saveFangInfoOwner(fangInfoOwner) > 0) {
+            return fangInfoOwnerRepo.findFangInfoOwner(fangInfoOwner.getId());
         }
-        throw new EstateException(ExCode.CREATE_FAIL, "联系方式", fangInfoOwner.toString());
+        throw new EstateException(ExCode.CREATE_FAIL, "归属入", fangInfoOwner.toString());
+    }
 
+    @Override
+    @Transactional
+    public FangInfoOwner changeFangInfoOwner(FangInfoOwner fangInfoOwner) {
+        ExceptionUtil.checkNotNull("归属信息", fangInfoOwner);
+        ExceptionUtil.checkNotNull("房源编号", fangInfoOwner.getFangId());
+        ExceptionUtil.checkNotNull("员工信息", fangInfoOwner.getEmployeeId());
+        ExceptionUtil.checkNotNull("归属原因", fangInfoOwner.getReason());
+
+        fangInfoOwnerRepo.deleteFangInfoOwner(fangInfoOwner.getFangId());
+        return createFangInfoOwner(fangInfoOwner);
     }
 
     @Override
