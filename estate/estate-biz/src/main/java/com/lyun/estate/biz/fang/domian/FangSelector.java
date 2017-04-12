@@ -25,6 +25,7 @@ public class FangSelector extends TagSelector {
     private List<Long> xiaoQuIds;
     private List<Long> excludeIds;
     private HouseProcess process;
+    private HouseSubProcess subProcess;
     private Integer minPrice;
     private Integer maxPrice;
     private List<IntPair> areas;
@@ -209,6 +210,15 @@ public class FangSelector extends TagSelector {
 
     public FangSelector setFangId(Long fangId) {
         this.fangId = fangId;
+        return this;
+    }
+
+    public HouseSubProcess getSubProcess() {
+        return subProcess;
+    }
+
+    public FangSelector setSubProcess(HouseSubProcess subProcess) {
+        this.subProcess = subProcess;
         return this;
     }
 }

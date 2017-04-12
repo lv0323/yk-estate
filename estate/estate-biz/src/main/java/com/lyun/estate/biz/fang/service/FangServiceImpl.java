@@ -7,6 +7,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.contract.service.ContractService;
 import com.lyun.estate.biz.fang.def.HouseProcess;
+import com.lyun.estate.biz.fang.def.HouseSubProcess;
 import com.lyun.estate.biz.fang.def.HouseType;
 import com.lyun.estate.biz.fang.domian.FangSelector;
 import com.lyun.estate.biz.fang.entity.FangTag;
@@ -87,6 +88,7 @@ public class FangServiceImpl implements FangService {
             selector.setProcess(HouseProcess.SUCCESS);
         } else {
             selector.setProcess(HouseProcess.PUBLISH);
+            selector.setSubProcess(HouseSubProcess.PUBLIC);
         }
 
         //shiCountsFilter

@@ -117,10 +117,13 @@ public class FangSqlProvider {
         sql.WHERE_IF("csr.station_id = #{stationId}", selector.getStationId() != null);
         sql.WHERE_IF("lsr.line_id = #{lineId}", selector.getLineId() != null);
 
-        if (Objects.isNull(selector.getFangId()) && selector.getProcess() != null) {
-            sql.WHERE("f.process =#{process}");
-        } else {
-            sql.WHERE("f.process <> 'DELEGATE'");
+        if (Objects.isNull(selector.getFangId())) {
+            if (selector.getProcess() != null) {
+                sql.WHERE("f.process = #{process}");
+            } else {
+                sql.WHERE("f.process <> 'DELEGATE'");
+            }
+            sql.WHERE_IF("f.sub_process = #{subProcess}", selector.getSubProcess() != null);
         }
         sql.WHERE("f.is_deleted = false");
 
