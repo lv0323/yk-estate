@@ -144,6 +144,7 @@ public class MgtFangSqlProvider {
             sql.WHERE("fe.showing IN (" + buildQMEnumsStr(selector.getShowings()) + ")");
         }
         sql.WHERE_IF("f.process =#{process}", nonNull(selector.getProcess()));
+        sql.WHERE_IF("f.sub_process =#{subProcess}", nonNull(selector.getSubProcess()));
         sql.WHERE_IF("f.id =#{fangId}", nonNull(selector.getFangId()));
         sql.WHERE_IF("f.licence_id =#{licenceId}", nonNull(selector.getLicenceId()));
 
