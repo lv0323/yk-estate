@@ -116,10 +116,6 @@ public class FangInfoOwnerDTO {
         return isDeleted;
     }
 
-    public Boolean getDeleted() {
-        return isDeleted;
-    }
-
     public FangInfoOwnerDTO setDeleted(Boolean deleted) {
         isDeleted = deleted;
         return this;
