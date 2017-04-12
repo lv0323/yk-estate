@@ -2,6 +2,8 @@ package com.lyun.estate.biz.fang.domian;
 
 import com.lyun.estate.biz.fang.def.InfoOwnerReason;
 
+import java.util.Date;
+
 /**
  * Created by Jeffrey on 2017-02-21.
  */
@@ -17,6 +19,8 @@ public class FangInfoOwnerDTO {
     private String companyName;
     private String departmentName;
     private String employeeName;
+    private Date createTime;
+
 
     public Long getId() {
         return id;
@@ -112,8 +116,21 @@ public class FangInfoOwnerDTO {
         return isDeleted;
     }
 
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
     public FangInfoOwnerDTO setDeleted(Boolean deleted) {
         isDeleted = deleted;
+        return this;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public FangInfoOwnerDTO setCreateTime(Date createTime) {
+        this.createTime = createTime;
         return this;
     }
 }
