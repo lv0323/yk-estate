@@ -5,27 +5,25 @@ require(['main-app',
         contextPath + '/js/app/org/department/departCommon.js',
         contextPath + '/js/service/department-service.js',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
-        'select'],
+        'select', 'chosen'],
     function (mainApp, DepartCommon, DepartmentService, SweetAlertHelp) {
 
         var header = {};
         var departId = window.location.href.split('?')[1];
 
-        DepartCommon.registerOnChangeForLocationSelector();
+        //DepartCommon.registerOnChangeForLocationSelector();
 
-        function loadDepart(depart, city_id, district_id) {
-            DepartCommon.reloadDistrict(city_id).done(function () {
-                $('#departDid').find('option[id='+depart["districtId"]+']').attr('selected','selected');
-                DepartCommon.reloadSubDistrict(district_id).done(function () {
-                    $('#departSDid').find('option[id='+depart["subDistrictId"]+']').attr('selected','selected');
-                    $('.selectpicker').selectpicker({
-                        style: 'btn-default',
-                        dropupAuto:false,
-                        size: 8
-                    });
+        function loadDepart(depart) {
+            $('#departCid option[value="'+depart["cityId"]+'"]').prop('selected', true).attr('selected','selected');
+            $("#departCid").trigger("chosen:updated");
+            DepartCommon.chosenChange('departCid', depart["cityId"]).done(function () {
+                $('#departDid option[value="'+depart["districtId"]+'"]').prop('selected', true).attr('selected','selected');
+                $("#departDid").trigger("chosen:updated");
+                DepartCommon.chosenChange('departDid', depart["districtId"]).done(function () {
+                    $('#departSDid option[value="'+depart["subDistrictId"]+'"]').prop('selected', true).attr('selected','selected');
+                    $("#departSDid").trigger("chosen:updated");
                 });
             });
-
 
             $('#departId').val(depart["id"]);
             $('#departName').val(depart["name"]);
@@ -42,11 +40,9 @@ require(['main-app',
                     $('.superiorDepart .dropdown-yk').off('click');
                     $('.duoji-dropdown-input').off('click');
                 });
-                DepartCommon.reloadCity().done(function () {
-                    $('#departCid').find('option[id='+depart["cityId"]+']').attr('selected','selected');
-                    var city_id = depart["cityId"];
-                    var district_id = depart["districtId"];
-                    loadDepart(depart, city_id, district_id);
+
+                DepartCommon.initAndRegisterChangeEvent().done(function () {
+                    loadDepart(depart);
                 });
 
             });
@@ -66,9 +62,9 @@ require(['main-app',
                     parentId: parseInt(parent_id,10),
                     //shortName: $('#editDepartDialog #departSpell').val(),
                     telephone: $('#editDepartDialog #departTel').val(),
-                    cityId:$('#editDepartDialog #departCid option:selected').attr("id"),
-                    districtId:$('#editDepartDialog #departDid option:selected').attr("id"),
-                    subDistrictId:$('#editDepartDialog #departSDid option:selected').attr("id")
+                    cityId:$('#editDepartDialog #departCid option:selected').val(),
+                    districtId:$('#editDepartDialog #departDid option:selected').val(),
+                    subDistrictId:$('#editDepartDialog #departSDid option:selected').val()
                 };
             }else{
                 toEditDepart = {
@@ -78,9 +74,9 @@ require(['main-app',
                     parentId: 0,
                     //shortName: $('#editDepartDialog #departSpell').val(),
                     telephone: $('#editDepartDialog #departTel').val(),
-                    cityId:$('#editDepartDialog #departCid option:selected').attr("id"),
-                    districtId:$('#editDepartDialog #departDid option:selected').attr("id"),
-                    subDistrictId:$('#editDepartDialog #departSDid option:selected').attr("id")
+                    cityId:$('#editDepartDialog #departCid option:selected').val(),
+                    districtId:$('#editDepartDialog #departDid option:selected').val(),
+                    subDistrictId:$('#editDepartDialog #departSDid option:selected').val()
                 };
             }
 

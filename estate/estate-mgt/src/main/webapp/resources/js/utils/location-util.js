@@ -13,7 +13,7 @@
                 var appendOption = '';
                 
                 $.each(data,function (index, city) {
-                    appendOption += '<option id="'+city.id+'">'+city.name+'</option>';
+                    appendOption += '<option value="'+city.id+'">'+city.name+'</option>';
                 });
 
                 $(_this).html(appendOption);

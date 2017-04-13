@@ -2,7 +2,7 @@
  * Created by yanghong on 2/17/17.
  */
 define(contextPath+'/js/app/org/position/positionCommon.js',
-    ['main-app', contextPath + '/js/service/position-service.js', 'locationUtil', 'dropdown'],
+    ['main-app', contextPath + '/js/service/position-service.js', 'dropdown'],
     function (mainApp, PositionService) {
 
         var header = {};
