@@ -11,8 +11,6 @@ require(['main-app',
         var header = {};
         var departId = window.location.href.split('?')[1];
 
-        //DepartCommon.registerOnChangeForLocationSelector();
-
         function loadDepart(depart) {
             $('#departCid option[value="'+depart["cityId"]+'"]').prop('selected', true).attr('selected','selected');
             $("#departCid").trigger("chosen:updated");

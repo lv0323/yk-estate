@@ -39,7 +39,7 @@
                                     <div class="form-group parent-department-form-group">
                                         <label id="superiorDepartLabel" class="control-label">上级部门</label>
                                         <div class="superiorDepart col-lg-3 col-md-4 col-sm-4">
-                                            <div class="dropdown-yk" style="background-color: #eeeeee;">
+                                            <div class="dropdown-yk" style="background-color: #eeeeee; opacity: 0.5;">
                                                 <div class="parent">请选择</div>
                                                 <ul class="listUl">
                                                 </ul>

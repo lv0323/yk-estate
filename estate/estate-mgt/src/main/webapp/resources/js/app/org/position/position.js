@@ -6,7 +6,7 @@ require(['main-app',
         contextPath + '/js/app/org/position/positionCommon.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath + '/js/utils/dataTableHelp.js',
-        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js'],
+        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js', 'chosen'],
     function (mainApp,PositionService,PositionCommon, pagingPlugin, dataTableHelp, SweetAlertHelp) {
 
         var header = {};
@@ -20,6 +20,15 @@ require(['main-app',
         var tableConfig ={
             init: false,
             target:null
+        };
+
+        var chosenConfig = {
+            addPositionType: {
+                init: false
+            },
+            editPositionType: {
+                init: false
+            }
         };
 
         var displayTable = function (data) {
@@ -105,6 +114,19 @@ require(['main-app',
 
         getPosition(0, pageConfig.limit);
 
+        function initChosen(id, key){
+            $(id).chosen("destroy");
+            if(!chosenConfig[key].init){
+                chosenConfig[key].init = !chosenConfig[key].init;
+            }
+            $(id).chosen({disable_search_threshold: 10});
+            $(id).trigger('chosen:updated');
+        }
+
+        $('#addPositionBtn').on('click', function(){
+            initChosen('#addPositionType','addPositionType');
+        });
+
         //action for added Position
         $('#confirmAddPositionBtn').on('click', function(){
             var toAddPosition = {
@@ -153,6 +175,7 @@ require(['main-app',
 
         //initialize title and default value in edit Position dialog
         $('#positionList').on('click','.editPositionBtn',function(e){
+            initChosen('#editPositionType','editPositionType');
             var index = $(e.target).data('index');
             var position = positionAllDataRaw[index];
             $('#editPositionId').val(position["id"]);

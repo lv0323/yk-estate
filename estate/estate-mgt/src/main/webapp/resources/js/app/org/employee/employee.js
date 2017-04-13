@@ -9,7 +9,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         contextPath+'/js/app/org/position/positionCommon.js',
         contextPath+'/js/service/util-service.js',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
-    'datatables', 'zTree','datatablesBootstrap', 'datetimepicker.zh-cn'],
+    'datatables', 'zTree','datatablesBootstrap', 'datetimepicker.zh-cn', 'chosen'],
     function (mainApp, EmployeeService, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon, PositionCommon, UtilService, SweetAlertHelp) {
         var header = {};
 
@@ -29,6 +29,21 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             status: false,
             departmentId: null
         }; //init filter Employee not according to department
+
+        var chosenConfig = {
+            addEmployeePosition: {
+                init: false
+            },
+            addEmployeeStatus: {
+                init: false
+            },
+            editEmployeePosition: {
+                init: false
+            },
+            editEmployeeStatus: {
+                init: false
+            }
+        };
 
         $.fn.datetimepicker.defaults.language = "zh-CN";
         $('#addEmployeeEntryDate').datetimepicker({
@@ -195,6 +210,15 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             departmentTree(data);
         });
 
+        function initChosen(id, key){
+            $(id).chosen("destroy");
+            if(!chosenConfig[key].init){
+                chosenConfig[key].init = !chosenConfig[key].init;
+            }
+            $(id).chosen({disable_search_threshold: 10});
+            $(id).trigger('chosen:updated');
+        }
+
         function verifyEmployeeInput(actionType, toSubmitEmployee) {
             var flag = true;
             $('.form-group').find('.invalid-input').removeClass('invalid-input');
@@ -209,6 +233,12 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             if (toSubmitEmployee.gender===""|| typeof(toSubmitEmployee.gender)==='undefined') {
                 flag = false;
                 $('#'+actionType+'EmployeeGender').addClass('invalid-input');
+            }
+            if (toSubmitEmployee.mobile===""|| typeof(toSubmitEmployee.mobile)==='undefined') {
+                if(actionType == 'add'){
+                    flag = false;
+                    $('#'+actionType+'EmployeeMobile').addClass('invalid-input');
+                }
             }
             if (toSubmitEmployee.idcardNumber===""|| typeof(toSubmitEmployee.idcardNumber)==='undefined') {
                 flag = false;
@@ -233,7 +263,10 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         //initialize title in add Employee dialog
         $('#addEmployeeBtn').on('click', function(){
             DepartCommon.initDepartSelector();
-            PositionCommon.initPositionSelector();
+            PositionCommon.initPositionSelector().done(function () {
+                initChosen('#addEmployeePosition', 'addEmployeePosition');
+            });
+            initChosen('#addEmployeeStatus', 'addEmployeeStatus');
         });
 
         //get checked gender
@@ -249,7 +282,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             var openContact = [hostNumber,extensionNumber];
             var toAddData = {
                 'departmentId': $('#addEmployeeDepart').attr('selectedvalue'),
-                'positionId': $('#addEmployeePosition option:selected').attr("id"),
+                'positionId': $('#addEmployeePosition option:selected').val(),
                 'mobile': $('#addEmployeeMobile').val(),
                 'openContact': (hostNumber==="")?"":(extensionNumber==="")?hostNumber:openContact.join(','),
                 'name': $('#addEmployeeName').val(),
@@ -290,7 +323,10 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 extensionNumber = employee["openContact"].split(',')[1];
             }
             DepartCommon.initDepartSelector(employee["departmentId"]);
-            PositionCommon.initPositionSelector(employee["positionId"]);
+            PositionCommon.initPositionSelector(employee["positionId"]).done(function () {
+                initChosen('#editEmployeePosition', 'editEmployeePosition');
+            });
+            initChosen('#editEmployeeStatus', 'editEmployeeStatus');
             var time = UtilService.timeStamp2Date(employee["entryDate"]);
             $('#editEmployeeName').val(employee["name"]);
             $('#editEmployeeId').val(employee["id"]);
@@ -300,7 +336,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             if(employee["deviceId"]==""|| employee["deviceId"]==null){
                 $('#editEmployeeDeviceId').text("未绑定");
                 $('#editEmployeeUnbindDeviceBtn').prop('disabled',true);
-                $('#editEmployeeDeviceId').css('background-color','#eeeeee');
+                $('#editEmployeeDeviceId').css({'background-color':'#eeeeee', 'opacity': '0.5'});
             }else {
                 $('#editEmployeeDeviceId').text(employee["deviceId"]);
                 $('#editEmployeeUnbindDeviceBtn').prop('disabled',false);
@@ -312,6 +348,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             $('#editEmployeeWechat').val(employee["wechat"]);
             $('#editEmployeeIsAgent').prop('checked',employee["agent"]);
             $('#editEmployeeStatus').val(employee.status["name"]);
+            $("#editEmployeeStatus").trigger("chosen:updated");
             $('#editEmployeeEntryDate').val(time);
 
         });
@@ -338,7 +375,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             var toEditData = {
                 id: $('#editEmployeeId').val(),
                 departmentId: $('#editEmployeeDepart').attr("selectedvalue"),
-                positionId: $('#editEmployeePosition option:selected').attr("id"),
+                positionId: $('#editEmployeePosition option:selected').val(),
                 openContact: (hostNumber==="")?"":(extensionNumber==="")?hostNumber:openContact.join(','),
                 name: $('#editEmployeeName').val(),
                 gender: $('#editEmployeeGender input:checked').val(),

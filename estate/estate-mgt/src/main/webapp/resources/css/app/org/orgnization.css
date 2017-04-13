@@ -5,3 +5,12 @@
     color: #5b6885;
     font-size: 0.93em;
 }
+.chosen-container-single.chosen-disabled .chosen-single{
+    background: #eeeeee;
+}
+.chosen-container{
+    font-size: 14px !important;
+}
+.chosen-disabled{
+    opacity: 1 !important;
+}

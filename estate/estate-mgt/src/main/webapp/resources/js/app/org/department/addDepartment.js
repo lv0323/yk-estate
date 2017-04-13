@@ -11,8 +11,6 @@ require(['main-app',
         var header = {};
 
         DepartCommon.initDepartSelector();
-        /*DepartCommon.initLocationSelector();
-        DepartCommon.registerOnChangeForLocationSelector();*/
         DepartCommon.initAndRegisterChangeEvent();
 
         //action for added department

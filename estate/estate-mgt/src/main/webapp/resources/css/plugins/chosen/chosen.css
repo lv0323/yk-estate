@@ -343,7 +343,7 @@
 /* @end */
 /* @group Disabled Support */
 .chosen-disabled {
-  opacity: 0.5 !important;
+  opacity: 0.5;
   cursor: default;
 }
 .chosen-disabled .chosen-single {
