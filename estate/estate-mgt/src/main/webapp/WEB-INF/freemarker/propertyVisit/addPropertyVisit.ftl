@@ -50,24 +50,6 @@
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
-                                            <label class="pull-left control-label">物业地址</label>
-                                            <div class="col-lg-3 col-md-3 col-sm-3">
-                                                <input id="houseDict" type="text" class="form-control" placeholder="楼盘字典">
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                                <input id="building" type="text" class="form-control" placeholder="栋座">
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                                <input id="unit" type="text" class="form-control" placeholder="单元">
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-2">
-                                                <div class="input-group">
-                                                    <input id="roomNo" type="text" class="form-control" placeholder="房号">
-                                                    <div class="input-group-addon">号房</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group clearfix">
                                             <label class="pull-left control-label">物业信息</label>
                                             <div class="col-sm-2">
                                                 <div class="input-group">

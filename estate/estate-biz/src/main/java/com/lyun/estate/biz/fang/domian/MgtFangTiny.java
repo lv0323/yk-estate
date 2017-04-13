@@ -5,7 +5,6 @@ import com.lyun.estate.biz.fang.def.HouseProcess;
 import com.lyun.estate.biz.fang.def.HouseSubType;
 import com.lyun.estate.biz.fang.def.HouseType;
 import com.lyun.estate.biz.fang.def.PriceUnit;
-import com.lyun.estate.biz.houselicence.entity.HouseLicenceDTO;
 import com.lyun.estate.biz.support.def.BizType;
 
 import java.math.BigDecimal;
@@ -20,7 +19,6 @@ public class MgtFangTiny {
     private HouseType houseType;
     private HouseSubType houseSubType;
     private Long licenceId;
-    private HouseLicenceDTO houseLicence;
     private Long xiaoQuId;
     private Integer sCounts;//室
     private Integer tCounts;//厅
@@ -81,15 +79,6 @@ public class MgtFangTiny {
 
     public MgtFangTiny setLicenceId(Long licenceId) {
         this.licenceId = licenceId;
-        return this;
-    }
-
-    public HouseLicenceDTO getHouseLicence() {
-        return houseLicence;
-    }
-
-    public MgtFangTiny setHouseLicence(HouseLicenceDTO houseLicence) {
-        this.houseLicence = houseLicence;
         return this;
     }
 
@@ -254,7 +243,6 @@ public class MgtFangTiny {
                 .add("houseType", houseType)
                 .add("houseSubType", houseSubType)
                 .add("licenceId", licenceId)
-                .add("houseLicence", houseLicence)
                 .add("xiaoQuId", xiaoQuId)
                 .add("sCounts", sCounts)
                 .add("tCounts", tCounts)
