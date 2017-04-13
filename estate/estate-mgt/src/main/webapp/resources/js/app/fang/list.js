@@ -24,7 +24,7 @@ require(['main-app',
         };
 
         var HouseListModule=angular.module('HouseListModule',['directiveYk']);
-        HouseListModule.controller("HouseListCtrl", ['$scope','$timeout', '$interval','$window','$location', function($scope, $timeout, $interval, $window) {
+        HouseListModule.controller("HouseListCtrl", ['$scope','$timeout', '$q', '$interval', '$window', '$location', function($scope, $timeout, $q, $interval, $window) {
             var config = {
                 departmentId: {
                     init: false
@@ -37,6 +37,15 @@ require(['main-app',
                     init: false,
                     value: '',
                     timer: null
+                },
+                confirmText: {
+                    'PUBLISH': '确认上架?',
+                    'UN_PUBLISH': '确认下架?',
+                    'PAUSE': '确认暂缓?',
+                    'APPLY_PUBLISH': '申请发布?',
+                    'REJECT_PUBLISH': '拒绝发布?',
+                    'CONFIRM_PUBLISH': '确认发布?',
+                    'UNDO_PUBLISH': '撤销发布?'
                 }
             };
             /*页面相关内容*/
@@ -54,6 +63,10 @@ require(['main-app',
                     'PUBLISH': 'PUBLISH',
                     'UN_PUBLISH': 'UN_PUBLISH',
                     'PAUSE': 'PAUSE',
+                    'APPLY_PUBLISH': 'APPLY_PUBLISH',
+                    'REJECT_PUBLISH': 'REJECT_PUBLISH',
+                    'CONFIRM_PUBLISH': 'CONFIRM_PUBLISH',
+                    'UNDO_PUBLISH': 'UNDO_PUBLISH',
                     'SUCCESS': 'SUCCESS'
                 },
                 userInfo : JSON.parse(localStorage.getItem('userInfo')),
@@ -80,6 +93,7 @@ require(['main-app',
                 includeChildren: false,
                 timeType: '',
                 startDate: '',
+                subProcess: '',
                 endDate: '',
                 resident: '',
                 decorate: '',
@@ -271,8 +285,15 @@ require(['main-app',
                 $scope.filter.distractId = value;
             };
             $scope.setFilterType = function(key,value){
+                if(key === 'process' && value ==='PUBLISH'){
+                    $scope.filter['subProcess'] = '';
+                }
                 $scope.filter[key]=value;
                 $scope.list();
+            };
+            $scope.setSubProcess = function(value){
+                $scope.filter['process'] ='PUBLISH';
+                $scope.setFilterType('subProcess' ,value);
             };
             /*户型*/
             $scope.sCountsList =[
@@ -467,39 +488,59 @@ require(['main-app',
                     });
                 });
             };
+            $scope.confirmChangeStatus = function(status, id){
+                var deferred = $q.defer();
+                var operation = null;
+                switch(status) {
+                    case $scope.page.status.PUBLISH:
+                        operation = FangService.publish;
+                        break;
+                    case $scope.page.status.UN_PUBLISH:
+                        operation = FangService.unPublish;
+                        break;
+                    case $scope.page.status.PAUSE:
+                        operation =  FangService.pause;
+                        break;
+                    case $scope.page.status.APPLY_PUBLISH:
+                        operation =  FangService.applyPublic;
+                        break;
+                    case $scope.page.status.REJECT_PUBLISH:
+                        operation =  FangService.rejectPublic;
+                        break;
+                    case $scope.page.status.CONFIRM_PUBLISH:
+                        operation =  FangService.confirmPublic;
+                        break;
+                    case $scope.page.status.UNDO_PUBLISH:
+                        operation =  FangService.undoPublic;
+                        break;
+                }
+                if(operation){
+                    operation({fangId:id}).then(function(response){
+                        deferred.resolve(response);
+                    }).fail(function(response){
+                        deferred.reject(response);
+                    });
+                }else{
+                    deferred.reject({message:'未知操作'});
+                }
+
+                return deferred.promise;
+            };
             $scope.changeStatus = function(status, id){
                 var option = {};
-                if(status === $scope.page.status.PUBLISH){
-                    option.title = "确认上架？";
-                    SweetAlertHelp.confirm(option, function () {
-                        FangService.publish({fangId:id}).then(function(){
-                            SweetAlertHelp.success();
-                            if(config.searchById){
-                                $scope.searchById();
-                            }else{
-                                $scope.list((pageConfig.currentPage-1)*pageConfig.limit, pageConfig.currentPage);
-                            }
-                        }).fail(function(response){
-                            SweetAlertHelp.fail({message:response&&response.message});
-                        });
-                    });
-                }else if(status === $scope.page.status.UN_PUBLISH){
-                    option.title = "确认下架？";
-                    SweetAlertHelp.confirm(option, function () {
-                        FangService.unPublish({fangId:id}).then(function(){
-                            SweetAlertHelp.success();
-                            if(config.searchById){
-                                $scope.searchById();
-                            }else{
-                                $scope.list((pageConfig.currentPage - 1) * pageConfig.limit, pageConfig.currentPage);
-                            }
-                        }).fail(function(response){
-                            SweetAlertHelp.fail({message:response&&response.message});
-                        });
-                    });
-                }else if(status === $scope.page.status.PAUSE){
-
-                }
+                option.title = config.confirmText[status];
+                SweetAlertHelp.confirm(option, function () {
+                    $scope.confirmChangeStatus(status, id).then(function(){
+                        SweetAlertHelp.success();
+                        if(config.searchById){
+                            $scope.searchById();
+                        }else{
+                            $scope.list((pageConfig.currentPage - 1) * pageConfig.limit, pageConfig.currentPage);
+                        }
+                    }).catch(function(response){
+                        SweetAlertHelp.fail({message:response&&response.message});
+                    })
+                });
             }
         }]);
 

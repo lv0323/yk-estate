@@ -100,6 +100,21 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.unPublish = function (params, header) {
             return RequestService.post('/api/fang-process/un-publish', params, header);
         };
+        FangService.rejectPublic = function (params, header) {
+            return RequestService.post('/api/fang-process/reject-public', params, header);
+        };
+        FangService.applyPublic = function (params, header) {
+            return RequestService.post('/api/fang-process/apply-public', params, header);
+        };
+        FangService.confirmPublic = function (params, header) {
+            return RequestService.post('/api/fang-process/confirm-public', params, header);
+        };
+        FangService.undoPublic = function (params, header) {
+            return RequestService.post('/api/fang-process/undo-public', params, header);
+        };
+        FangService.pause = function (params, header) {
+            return RequestService.post('/api/fang-process/pause', params, header);
+        };
         FangService.summaryByLicenceId = function (params, header) {
             return RequestService.get('/api/fang/summary-by-licence-id', params, header);
         };
