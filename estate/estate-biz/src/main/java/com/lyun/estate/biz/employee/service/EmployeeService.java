@@ -245,4 +245,8 @@ public class EmployeeService {
     public boolean clearFollowFangId(Long id, Long fangId) {
         return repo.clearFollowFangId(id, fangId) > 0;
     }
+
+    public int clearAllFollowFangId(Long fangId) {
+        return repo.clearAllFollowFangId(fangId);
+    }
 }

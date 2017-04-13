@@ -126,6 +126,8 @@ public class MgtFangServiceImpl implements MgtFangService {
         ExceptionUtil.checkNotNull("归属原因", fangInfoOwner.getReason());
 
         fangInfoOwnerRepo.deleteFangInfoOwner(fangInfoOwner.getFangId());
+        employeeService.clearAllFollowFangId(fangInfoOwner.getFangId());
+
         return createFangInfoOwner(fangInfoOwner);
     }
 
