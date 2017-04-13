@@ -48,12 +48,7 @@ require(['main-app',
             var houseLicenceID = $('#houseLicenceID').val();
             PropertyVisitService.getPropertyInfo({licenceId:houseLicenceID})
                 .done(function (data) {
-                    var house = data.houseLicence;
                     $('#fangID').val(data.id);
-                    $('#houseDict').val(house.xiaoQuName);
-                    $('#building').val(house.buildingName);
-                    $('#unit').val(house.buildingUnitName);
-                    $('#roomNo').val(house.houseNo);
                     $('#areaSize').val(data.estateArea);
                     $('#totalPrice').val(data.publishPrice);
                     $('#totalPriceUnit').html(data.priceUnit.label);
