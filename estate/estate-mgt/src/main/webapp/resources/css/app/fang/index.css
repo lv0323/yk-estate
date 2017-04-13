@@ -1119,8 +1119,10 @@ a.btn-collapse:hover{
 
 .media.house-item:hover .btn-add{
     display: block;
-    height: 20px;
-
+    overflow:visible;
+    min-height: 20px;
+    height: auto;
+    line-height: 20px;
 }
 .tip.tag{
     margin-right: 5px;
@@ -1178,4 +1180,33 @@ button.btn-default.invalid-input, input.ng-invalid.ng-dirty{
 }
 #searchById{
     padding-left: 8px;
+}
+.sub-process-container{
+    margin: 0 25px 0 -20px;
+}
+.sub-process-tag{
+    margin-right: 10px !important;
+}
+.sub-process-tag:last-child{
+    margin-right: 0 !important;
+}
+.add-info-operation a{
+    color: #5bc0de;
+}
+.add-info-operation a:hover,
+.add-info-operation a:active,
+.add-info-operation a:focus {
+    color: #7bebf0;
+}
+.sub-process-opration a{
+    color: #d9534f;
+}
+.sub-process-opration a:hover,
+.sub-process-opration a:active,
+.sub-process-opration a:focus {
+    color: #f79c9c;
+}
+#fouseTratype{
+    padding-top: 4px;
+    margin-right: 40px;
 }

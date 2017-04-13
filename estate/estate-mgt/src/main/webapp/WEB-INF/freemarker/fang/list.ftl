@@ -199,22 +199,20 @@
                                         </div>
                                     </div>
                                     <div class="form-group sortlist">
-                                        <label class="control-label">小区楼盘</label>
-                                        <div class="col-lg-2 col-md-2 col-sm-2" id="estateContainer">
-                                            <select id="houseEstate" data-placeholder="楼盘字典" class="chosen-select" name="houseEstate">
-                                                <option value="">楼盘字典</option>
-                                                <option ng-repeat="estate in estateList" repeat-done="chosenEstate('#houseEstate', 'xiaoQuId')" ng-value="estate.value">{{estate.name}}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group sortlist">
                                         <label class="control-label">成交类型</label>
-                                        <div id="fouseTratype" class="tj">
+                                        <div id="fouseTratype" class="pull-left tj">
                                             <a ng-href="javascript::" ng-class="{'actived': '' == filter.bizType}" ng-click="setFilterType('bizType' ,'')">不限</a>
                                         <#list bizType?if_exists as biz>
                                             <a ng-href="javascript::" ng-class="{'actived': '${biz.name()}' == filter.bizType}" ng-click="setFilterType('bizType' ,'${biz.name()}')">
                                             ${biz.getLabel()}</a>
                                         </#list>
+                                        </div>
+                                        <label class="control-label pull-left">小区楼盘</label>
+                                        <div id="estateContainer" class="col-lg-2 col-md-2 col-sm-4">
+                                            <select id="houseEstate" data-placeholder="楼盘字典" class="chosen-select" name="houseEstate">
+                                                <option value="">楼盘字典</option>
+                                                <option ng-repeat="estate in estateList" repeat-done="chosenEstate('#houseEstate', 'xiaoQuId')" ng-value="estate.value">{{estate.name}}</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="form-group sortlist">
@@ -223,7 +221,16 @@
                                             <a ng-href="javascript::" ng-class="{'actived': '' == filter.process}" ng-click="setFilterType('process' ,'')">默认</a>
                                         <#list houseProcess?if_exists as process>
                                             <a ng-href="javascript::" ng-class="{'actived': '${process.name()}' == filter.process}" ng-click="setFilterType('process' ,'${process.name()}')">
-                                            ${process.getLabel()}</a>
+                                                ${process.getLabel()}
+                                            </a>
+                                            <#if process.name() =='PUBLISH'>
+                                                <span class="sub-process-container">
+                                                    (<#list houseSubProcess ? if_exists as subProcess>
+                                                    <a ng-href="javascript::" class="sub-process-tag" ng-class="{'actived': '${subProcess.name()}' == filter.subProcess}" ng-click="setSubProcess('${subProcess.name()}')">
+                                                    ${subProcess.getLabel()}</a>
+                                            </#list>)
+                                            </span>
+                                            </#if>
                                         </#list>
                                         </div>
                                     </div>
@@ -244,7 +251,7 @@
                                             <img class="media-object" ng-src="{{house.imageURI}}" height="75px" width="100px">
                                         </a>
                                         <div class="media-body">
-                                            <div class="col-lg-8 col-md-8 col-sm-9">
+                                            <div class="col-lg-8 col-md-8 col-sm-9" style="padding-right: 0">
                                                 <div class="clearfix">
                                                     <h5 class="media-heading pull-left text-ellipsis" style="width:300px;">
                                                         <a ng-href="{{'/mgt/fangManage/detail?id='+house.id}}" target="_blank" class="text-muted" ng-bind="house.head"></a>
@@ -253,6 +260,7 @@
                                                            'badge-info':house.process.name == 'PUBLISH',
                                                            'badge-warning':house.process.name == 'UN_PUBLISH',
                                                            'badge-danger':house.process.name == 'DELEGATE'}">{{house.process.label}}</label>
+                                                    <label ng-if="house.subProcess" class="badge pull-left m-l-20 badge-primary" style="margin-left: 8px">{{house.subProcess.label}}</label>
                                                     <i class="fa fa-circle  m-l-20" style="font-size:16px;" ng-class="{true:'text-rent', false:'text-sell'}[house.bizType.name == 'RENT']"></i>
                                                     <span ng-class="{true:'text-rent', false:'text-sell'}[house.bizType.name == 'RENT']" ng-show="house.publishTime">[{{(page.now - house.publishTime)/(24*6060*1000)|number:0}}]</span>
                                                     <span class="text-muted">
@@ -269,36 +277,6 @@
                                                     <span class="m-l-10">{{house.decorate.label}}</span>
                                                     <span class="m-l-10">{{house.createTime|date:'yyyy-MM-dd'}}</span>
                                                 </div>
-                                                <div class="clearfix m-t-10">
-                                                    <div class="pull-left">
-                                                        <span class="tip tip-success tag" ng-repeat="tag in house.tags" ng-bind="tag.label"></span>
-                                                    </div>
-                                                    <div class="btn-add  pull-left m-l-30">
-                                                        <a ng-href="javascript:;" ng-click="newFollowInit(house.id, house.licenceId)">
-                                                            <i class="fa fa-pencil"></i>新增跟进
-                                                        </a>
-                                                        <a class="m-l-20" ng-href="{{'/mgt/propertyVisit/addPropertyVisit?target=.prtyVisit&licenceId='+house.licenceId}}"
-                                                           ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE">
-                                                            <i class="fa fa-pencil"></i>新增带看
-                                                        </a>
-                                                        <a class="m-l-20" ng-href="javascript:;" ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE"
-                                                           ng-click="changeStatus(page.status.PUBLISH, house.id)">
-                                                            <i class="fa fa-pencil"></i>上架
-                                                        </a>
-                                                        <a class="m-l-20" ng-href="javascript:;"
-                                                           ng-click="changeStatus(page.status.UN_PUBLISH, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH || house.process.name == page.status.PAUSE">
-                                                            <i class="fa fa-pencil"></i>下架
-                                                        </a>
-                                                        <#--<a class="m-l-20" ng-href="javascript:;"
-                                                           ng-click="changeStatus(page.status.PAUSE, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH">
-                                                            <i class="fa fa-pencil"></i>暂缓
-                                                        </a>-->
-                                                        <a class="m-l-20" ng-href="{{'/mgt/contract/addDeal?target=.contract&licenceId='+house.licenceId}}"
-                                                           ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE">
-                                                            <i class="fa fa-pencil"></i>成交
-                                                        </a>
-                                                    </div>
-                                                </div>
                                             </div>
                                             <div class="col-lg-2 col-md-2 hidden-sm">
                                                 <p><strong class="f18">{{house.estateArea}}</strong>m<sup>2</sup></p>
@@ -307,6 +285,54 @@
                                             <div class="col-lg-2 col-md-2 col-sm-3 text-right">
                                                 <p><strong class="text-danger f18">{{house.publishPrice}}</strong>{{house.priceUnit.label}}</p>
                                                 <p>{{house.unitPrice}}<span ng-if="house.priceUnit.name === 'WAN'">元</span><span ng-if="house.priceUnit.name !== 'WAN'">{{house.priceUnit.label}}</span>/m<sup>2</sup></p>
+                                            </div>
+                                            <div class="clearfix col-lg-12 col-md-12 col-sm-12">
+                                                <div class="pull-left">
+                                                    <span class="tip tip-success tag" ng-repeat="tag in house.tags" ng-bind="tag.label"></span>
+                                                </div>
+                                                <div class="pull-left btn-add m-l-20">
+                                                    <span class="add-info-operation m-r-20">
+                                                        <a ng-href="javascript:;" ng-click="newFollowInit(house.id, house.licenceId)">
+                                                            <i class="fa fa-pencil"></i>新增跟进
+                                                        </a>
+                                                        <a class="m-l-10" ng-href="{{'/mgt/propertyVisit/addPropertyVisit?target=.prtyVisit&licenceId='+house.licenceId}}"
+                                                           ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE">
+                                                            <i class="fa fa-pencil"></i>新增带看
+                                                        </a>
+                                                    </span>
+                                                    <span class="m-r-20">
+                                                        <a class="m-l-10" ng-href="javascript:;" ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE"
+                                                           ng-click="changeStatus(page.status.PUBLISH, house.id)">
+                                                            <i class="fa fa-pencil"></i>上架
+                                                        </a>
+                                                        <a class="m-l-10" ng-href="javascript:;"
+                                                           ng-click="changeStatus(page.status.UN_PUBLISH, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH || house.process.name == page.status.PAUSE">
+                                                            <i class="fa fa-pencil"></i>下架
+                                                        </a>
+                                                        <a class="m-l-10" ng-href="javascript:;"
+                                                           ng-click="changeStatus(page.status.PAUSE, house.id)"  ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH">
+                                                            <i class="fa fa-pencil"></i>暂缓
+                                                        </a>
+                                                        <a class="m-l-10" ng-href="{{'/mgt/contract/addDeal?target=.contract&licenceId='+house.licenceId}}"
+                                                           ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE">
+                                                            <i class="fa fa-pencil"></i>成交
+                                                        </a>
+                                                    </span>
+                                                    <span ng-show="house.process.name == page.status.PUBLISH" class="sub-process-opration">
+                                                        <a class="m-l-10" ng-href="javascript:;" ng-show="house.subProcess == null" ng-click="changeStatus(page.status.APPLY_PUBLISH, house.id)">
+                                                            <i class="fa fa-pencil"></i>申请发布
+                                                        </a>
+                                                        <a class="m-l-10" ng-href="javascript:;" ng-show="house.subProcess && house.subProcess.name == 'PRE_PUBLIC' " ng-click="changeStatus(page.status.REJECT_PUBLISH, house.id)">
+                                                            <i class="fa fa-pencil"></i>拒绝发布
+                                                        </a>
+                                                        <a class="m-l-10" ng-href="javascript:;" ng-show="house.subProcess && house.subProcess.name == 'PRE_PUBLIC' " ng-click="changeStatus(page.status.CONFIRM_PUBLISH, house.id)">
+                                                            <i class="fa fa-pencil"></i>确认发布
+                                                        </a>
+                                                        <a class="m-l-10" ng-href="javascript:;" ng-show="house.subProcess && house.subProcess.name == 'PUBLIC' " ng-click="changeStatus(page.status.UNDO_PUBLISH, house.id)">
+                                                            <i class="fa fa-pencil"></i>撤销发布
+                                                        </a>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
