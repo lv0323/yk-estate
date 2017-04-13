@@ -1,11 +1,12 @@
 package com.lyun.estate.biz.spec.fang.mgt.entity;
 
-import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.fang.def.HouseProcess;
+import com.lyun.estate.biz.fang.def.HouseSubProcess;
 import com.lyun.estate.biz.fang.def.Orientation;
 import com.lyun.estate.biz.fang.def.PriceUnit;
 import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
 import com.lyun.estate.biz.spec.fang.domain.FangForTag;
+import com.lyun.estate.biz.support.def.BizType;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -27,6 +28,7 @@ public class MgtFangSummary extends FangForTag {
     private BigDecimal estateArea;
     private BigDecimal realArea;
     private HouseProcess process;
+    private HouseSubProcess subProcess;
     private Integer sCounts;//室
     private Integer tCounts;//厅
     private Integer wCounts;//卫
@@ -272,6 +274,15 @@ public class MgtFangSummary extends FangForTag {
 
     public MgtFangSummary setRealArea(BigDecimal realArea) {
         this.realArea = realArea;
+        return this;
+    }
+
+    public HouseSubProcess getSubProcess() {
+        return subProcess;
+    }
+
+    public MgtFangSummary setSubProcess(HouseSubProcess subProcess) {
+        this.subProcess = subProcess;
         return this;
     }
 }
