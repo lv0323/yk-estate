@@ -60,4 +60,7 @@ public interface EmployeeRepo {
 
     @Update("UPDATE t_employee SET follow_fang_id = NULL WHERE id = #{id} AND follow_fang_id = #{fangId};")
     int clearFollowFangId(@Param("id") long id, @Param("fangId") long fangId);
+
+    @Update("UPDATE t_employee SET follow_fang_id = NULL WHERE follow_fang_id = #{fangId};")
+    int clearAllFollowFangId(Long fangId);
 }
