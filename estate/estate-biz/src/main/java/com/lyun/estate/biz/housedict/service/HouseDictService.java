@@ -33,12 +33,13 @@ public class HouseDictService {
 
 
     public Building createBuilding(Long xiaoQuId, String name, Integer floors, Integer stairs, Integer houses,
-                                   String description, Long operatorId) {
+                                   String description, Long companyId, Long operatorId) {
         ExceptionUtil.checkNotNull("小区编号", xiaoQuId);
         ExceptionUtil.checkIllegal(!StringUtils.isEmpty(name), "楼栋名", name);
         ExceptionUtil.checkIllegal(floors != null && floors > 0, "总楼层", floors);
         ExceptionUtil.checkIllegal(stairs != null && stairs > 0, "梯数", stairs);
         ExceptionUtil.checkIllegal(houses != null && houses > 0, "户数", houses);
+        ExceptionUtil.checkNotNull("公司编号", companyId);
         ExceptionUtil.checkNotNull("操作者编号", operatorId);
         XiaoQu xiaoQu = mgtXiaoQuService.findOne(xiaoQuId);
         if (xiaoQu == null) {
@@ -52,6 +53,7 @@ public class HouseDictService {
                 .setStairs(stairs)
                 .setHouses(houses)
                 .setDescription(description)
+                .setCompanyId(companyId)
                 .setCreateById(operatorId);
         if (houseDictRepo.saveBuilding(building) > 0) {
             return findBuildingAndUnits(building.getId());
@@ -78,13 +80,14 @@ public class HouseDictService {
         }
     }
 
-    public List<Building> findBuildingsByXiaoQuId(Long xiaoQuId) {
+    public List<Building> findBuildingsByXiaoQuId(Long xiaoQuId, long companyId) {
         ExceptionUtil.checkNotNull("小区编号", xiaoQuId);
         XiaoQu xiaoQu = mgtXiaoQuService.findOne(xiaoQuId);
         if (xiaoQu == null) {
             return new ArrayList<>();
         }
-        List<Building> buildings = houseDictRepo.findBuildingByCommunityId(xiaoQu.getCommunityId());
+        List<Building> buildings = houseDictRepo.findBuildingByCommunityIdAndCompanyId(xiaoQu.getCommunityId(),
+                companyId);
         if (buildings != null) {
             buildings.forEach(b -> b.setUnits(houseDictRepo.findBuildingUnitByBuildingId(b.getId())));
         }
