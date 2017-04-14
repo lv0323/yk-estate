@@ -180,7 +180,9 @@ require(['main-app',
             var position = positionAllDataRaw[index];
             $('#editPositionId').val(position["id"]);
             $('#editPositionName').val(position["name"]);
-            $('#editPositionType').val(position.type["name"]);
+            $('#editPositionType option[value="'+position.type["name"]+'"]').prop('selected', true).attr('selected','selected');
+            $('#editPositionType option[value!="'+position.type["name"]+'"]').prop('selected', false).removeAttr("selected");
+            $("#editPositionType").trigger("chosen:updated");
             $('#editPositionNote').val(position["note"]);
         });
 

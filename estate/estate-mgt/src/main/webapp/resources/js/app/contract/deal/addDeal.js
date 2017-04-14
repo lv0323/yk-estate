@@ -194,8 +194,10 @@ require(['main-app',
                     $('#fangID').val(data.id);
                     $('#areaSize').val(data.estateArea);
                     $('#houseType option[value="'+data.houseType.name+'"]').prop('selected', true).attr('selected','selected');
+                    $('#houseType option[value!="'+data.houseType.name+'"]').prop('selected', false).removeAttr("selected");
                     $("#houseType").trigger("chosen:updated");
                     $('#businessType option[value="'+data.bizType.name+'"]').prop('selected', true).attr('selected','selected');
+                    $('#businessType option[value!="'+data.bizType.name+'"]').prop('selected', false).removeAttr("selected");
                     $("#businessType").trigger("chosen:updated");
                     switchPriceUnitChosen(data.bizType.name);
                     var fangID = $('#fangID').val();
