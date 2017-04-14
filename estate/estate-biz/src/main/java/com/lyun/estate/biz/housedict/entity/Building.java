@@ -9,6 +9,7 @@ import java.util.List;
 public class Building {
     private Long id;
     private Long communityId;
+    private Long companyId;
     private String name;
     private Integer floors;
     private Integer stairs;
@@ -145,6 +146,15 @@ public class Building {
 
     public Building setUnits(List<BuildingUnit> units) {
         this.units = units;
+        return this;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public Building setCompanyId(Long companyId) {
+        this.companyId = companyId;
         return this;
     }
 }

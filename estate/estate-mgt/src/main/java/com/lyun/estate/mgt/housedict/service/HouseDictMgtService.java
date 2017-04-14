@@ -44,6 +44,7 @@ public class HouseDictMgtService {
                 stairs,
                 houses,
                 description,
+                mgtContext.getOperator().getCompanyId(),
                 mgtContext.getOperator().getId());
     }
 
@@ -64,7 +65,8 @@ public class HouseDictMgtService {
     }
 
     public List<Building> findBuildingsByXiaoQuId(Long communityId) {
-        return houseDictService.findBuildingsByXiaoQuId(communityId);
+
+        return houseDictService.findBuildingsByXiaoQuId(communityId, mgtContext.getOperator().getCompanyId());
     }
 
 

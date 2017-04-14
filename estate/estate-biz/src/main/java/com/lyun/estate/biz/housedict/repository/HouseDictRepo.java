@@ -5,10 +5,7 @@ import com.lyun.estate.biz.housedict.domain.XiaoQuOption;
 import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.entity.BuildingUnit;
 import com.lyun.estate.biz.housedict.entity.DistrictRel;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,8 +17,8 @@ import java.util.List;
 public interface HouseDictRepo {
 
     @Options(useGeneratedKeys = true)
-    @Insert("INSERT INTO t_building (community_id, name, floors, stairs, houses, description, create_by_id, version)" +
-            " VALUES (#{communityId}, #{name}, #{floors}, #{stairs}, #{houses}, #{description}, #{createById}, 1)")
+    @Insert("INSERT INTO t_building (community_id, company_id, name, floors, stairs, houses, description, create_by_id, version)" +
+            " VALUES (#{communityId}, #{companyId}, #{name}, #{floors}, #{stairs}, #{houses}, #{description}, #{createById}, 1)")
     int saveBuilding(Building building);
 
     @Options(useGeneratedKeys = true)
@@ -38,8 +35,9 @@ public interface HouseDictRepo {
     @Select("SELECT * FROM t_building_unit where building_id =#{buildingId} AND is_deleted = false")
     List<BuildingUnit> findBuildingUnitByBuildingId(Long buildingId);
 
-    @Select("SELECT * FROM t_building where community_id =#{communityId} AND is_deleted = false")
-    List<Building> findBuildingByCommunityId(Long communityId);
+    @Select("SELECT * FROM t_building where community_id =#{communityId} AND company_id =#{companyId} AND is_deleted = false")
+    List<Building> findBuildingByCommunityIdAndCompanyId(@Param("communityId") Long communityId,
+                                                         @Param("companyId") Long companyId);
 
     @Select("SELECT xq.id as xiao_qu_id, c.name as xiao_qu_name FROM t_xiao_qu xq LEFT JOIN t_community c on xq.community_id =c.id\n" +
             "WHERE c.city_id = #{cityId} order by id asc limit 20")
