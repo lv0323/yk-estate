@@ -141,7 +141,7 @@
                     <div class="form-group">
                         <label class="control-label">手机号</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            <div  id="editEmployeeMobile" class="form-control" style="background-color: #eeeeee; opacity: 0.5;"></div>
+                            <div  id="editEmployeeMobile" class="form-control" style="background-color: #eeeeee;"></div>
                         </div>
                     </div>
                     <div class="form-group">

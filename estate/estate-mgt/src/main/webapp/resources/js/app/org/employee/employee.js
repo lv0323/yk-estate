@@ -336,7 +336,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             if(employee["deviceId"]==""|| employee["deviceId"]==null){
                 $('#editEmployeeDeviceId').text("未绑定");
                 $('#editEmployeeUnbindDeviceBtn').prop('disabled',true);
-                $('#editEmployeeDeviceId').css({'background-color':'#eeeeee', 'opacity': '0.5'});
+                $('#editEmployeeDeviceId').css({'background-color':'#eeeeee', 'opacity': '1'});
             }else {
                 $('#editEmployeeDeviceId').text(employee["deviceId"]);
                 $('#editEmployeeUnbindDeviceBtn').prop('disabled',false);

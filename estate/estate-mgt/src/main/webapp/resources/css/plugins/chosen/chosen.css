@@ -343,7 +343,7 @@
 /* @end */
 /* @group Disabled Support */
 .chosen-disabled {
-  opacity: 0.5;
+  opacity: 0.5 !important;
   cursor: default;
 }
 .chosen-disabled .chosen-single {
@@ -454,4 +454,14 @@
 }
 .chosen-select{
   width:calc(100% - 16px);
+}
+/* unify chosen-disable style for mgt project  */
+.chosen-container-single.chosen-disabled .chosen-single{
+  background: #eeeeee;
+}
+.chosen-container{
+  font-size: 14px !important;
+}
+.chosen-disabled{
+  opacity: 1 !important;
 }
