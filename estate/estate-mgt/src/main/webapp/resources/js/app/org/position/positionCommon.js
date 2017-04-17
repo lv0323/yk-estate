@@ -2,22 +2,26 @@
  * Created by yanghong on 2/17/17.
  */
 define(contextPath+'/js/app/org/position/positionCommon.js',
-    ['main-app', contextPath + '/js/service/position-service.js', 'locationUtil', 'dropdown'],
+    ['main-app', contextPath + '/js/service/position-service.js', 'dropdown', 'chosen'],
     function (mainApp, PositionService) {
 
         var header = {};
         var PositionCommon = {};
 
         PositionCommon.initPositionSelector = function (currentPositionId) {
+            var defer  = $.Deferred();
             PositionService.getAllPosition(header).done(function (data) {
                 $('.employeePosition').html(data.map(function (item, index) {
-                    return '<option id='+item.id+'>'+item.name+'</option>';
+                    return '<option value='+item.id+'>'+item.name+'</option>';
                 }));
+                defer.resolve(data);
 
                 if(typeof(currentPositionId) != 'undefined'){
-                    $('.employeePosition').find('option[id='+currentPositionId+']').attr('selected','selected');
+                    $('.employeePosition option[value="'+currentPositionId+'"]').prop('selected', true).attr('selected','selected');
+                    $(".employeePosition").trigger("chosen:updated");
                 }
             });
+            return defer;
         };
 
         PositionCommon.verifyPositionInput = function (actionType, toSubmitPosition) {

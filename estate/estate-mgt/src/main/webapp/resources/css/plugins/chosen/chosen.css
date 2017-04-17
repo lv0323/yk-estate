@@ -455,3 +455,13 @@
 .chosen-select{
   width:calc(100% - 16px);
 }
+/* unify chosen-disable style for mgt project  */
+.chosen-container-single.chosen-disabled .chosen-single{
+  background: #eeeeee;
+}
+.chosen-container{
+  font-size: 14px !important;
+}
+.chosen-disabled{
+  opacity: 1 !important;
+}

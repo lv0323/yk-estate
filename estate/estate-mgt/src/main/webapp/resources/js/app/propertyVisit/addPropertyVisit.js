@@ -4,10 +4,26 @@
 require(['main-app',
         contextPath + '/js/service/propertyvisit-service.js',
         contextPath + '/js/service/util-service.js',
-        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js'],
+        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js', 'chosen'],
     function (mainApp, PropertyVisitService,UtilService, SweetAlertHelp) {
 
+        var chosenConfig = {
+            customerSource: {
+                init: false
+            }
+        };
+
         $('#houseLicenceID').val(UtilService.getUrlParam('licenceId'));
+
+        function initChosen(id, key){
+            $(id).chosen("destroy");
+            if(!chosenConfig[key].init){
+                chosenConfig[key].init = !chosenConfig[key].init;
+            }
+            $(id).chosen({disable_search_threshold: 10});
+            $(id).trigger('chosen:updated');
+        }
+        initChosen('#customerSource', 'customerSource');
 
         function verifyAddPropertyVisitInput(toSubmitPropertyVisit) {
             var flag = true;

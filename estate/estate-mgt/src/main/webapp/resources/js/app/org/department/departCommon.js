@@ -2,13 +2,73 @@
  * Created by yanghong on 2/16/17.
  */
 define(contextPath+'/js/app/org/department/departCommon.js',
-    ['main-app', contextPath + '/js/service/department-service.js', 'locationUtil', 'dropdown'],
+    ['main-app', contextPath + '/js/service/department-service.js', 'locationUtil', 'dropdown','chosen'],
     function (mainApp,DepartmentService) {
 
         var DepartCommon = {};
 
         var header = {};
         var dropdownData = {};
+
+        var chosenConfig = {
+            departCid: {
+                init: false
+            },
+            departDid: {
+                init: false
+            },
+            departSDid: {
+                init: false
+            }
+        };
+
+        DepartCommon.chosenChange = function(key, value){
+            var defer = $.Deferred();
+            if(key === 'departCid'){
+                DepartCommon.reloadDistrict(value).done(function () {
+                    initChosen('#departDid', 'departDid');
+                    defer.resolve(value);
+                });
+            }
+            if(key === 'departDid'){
+                DepartCommon.reloadSubDistrict(value).done(function () {
+                    initChosen('#departSDid', 'departSDid');
+                    defer.resolve(value);
+                })
+            }
+            return defer;
+        };
+
+        function initChosen(id, key){
+            $(id).chosen("destroy");
+            if(!chosenConfig[key].init){
+                chosenConfig[key].init = !chosenConfig[key].init;
+                $(id).chosen({disable_search_threshold: 10}).change(function(e, result){
+                    DepartCommon.chosenChange(key, result.selected);
+                });
+            }
+            $(id).chosen({disable_search_threshold: 10});
+            $(id).trigger('chosen:updated');
+        }
+
+        DepartCommon.initAndRegisterChangeEvent = function () {
+            var defer = $.Deferred();
+            DepartCommon.reloadCity().done(function () {
+                initChosen('#departCid', 'departCid');
+
+                var city_id = $('#departCid option:selected').val();
+                DepartCommon.reloadDistrict(city_id).done(function () {
+                    initChosen('#departDid', 'departDid');
+
+                    var district_id = $('#departDid option:selected').val();
+                    DepartCommon.reloadSubDistrict(district_id).done(function () {
+                        initChosen('#departSDid', 'departSDid');
+                        defer.resolve(district_id);
+                    });
+                });
+            });
+            return defer;
+        };
 
         DepartCommon.initDepartSelector = function (currentDepartPId) {
             var defer = $.Deferred();
@@ -39,21 +99,6 @@ define(contextPath+'/js/app/org/department/departCommon.js',
             return defer;
         };
 
-        var initDistrict = function (city_id) {
-            //then fill district selector
-            DepartmentService.getDistrict({data:{id:city_id}},header)
-                .done(function (data) {
-                    $('#departDid').LocationDropdown(data);
-                    var district_id = $('#departDid option:selected').attr("id");
-
-                    //then fill subDistrict selector
-                    DepartmentService.getSubDistrict({data:{id:district_id}},header)
-                        .done(function (data) {
-                            $('#departSDid').LocationDropdown(data);
-                        })
-                });
-        };
-
         DepartCommon.reloadCity = function () {
             var defer =$.Deferred();
             DepartmentService.getCity(header)
@@ -82,34 +127,6 @@ define(contextPath+'/js/app/org/department/departCommon.js',
                     defer.resolve(data);
                 });
             return defer.promise();
-        };
-
-        //fill city/district/subDistrict selector
-        DepartCommon.initLocationSelector = function () {
-            DepartmentService.getCity(header).done(function (data) {
-                $('#departCid').LocationDropdown(data);
-                var city_id = $('#departCid option:selected').attr("id");
-                initDistrict(city_id);
-            });
-        };
-
-        //register onChangeEvents for location selector
-        DepartCommon.registerOnChangeForLocationSelector = function () {
-            //register onChange event for city selector
-            $('#departCid').on('change', function() {
-                var city_id = $('#departCid option:selected').attr("id");
-                initDistrict(city_id);
-            });
-
-            //register onChange event for depart selector
-            $('#departDid').on('change', function(){
-                var district_id = $('#departDid option:selected').attr("id");
-                //then fill subDistrict selector
-                DepartmentService.getSubDistrict({data:{id:district_id}},header)
-                    .done(function (data) {
-                        $('#departSDid').LocationDropdown(data);
-                    });
-            });
         };
 
         DepartCommon.verifyDepartmentInput = function (toSubmitDepart) {

@@ -11,8 +11,7 @@ require(['main-app',
         var header = {};
 
         DepartCommon.initDepartSelector();
-        DepartCommon.initLocationSelector();
-        DepartCommon.registerOnChangeForLocationSelector();
+        DepartCommon.initAndRegisterChangeEvent();
 
         //action for added department
         $('#confirmAddDepartBtn').on('click', function(){
@@ -22,9 +21,9 @@ require(['main-app',
                 parentId: $('.dropdown-yk').attr('selectedValue'),
                 // shortName: $('#addDepartDialog #departSpell').val(),
                 telephone: $('#departTel').val(),
-                cityId:$('#departCid option:selected').attr("id"),
-                districtId:$('#departDid option:selected').attr("id"),
-                subDistrictId:$('#departSDid option:selected').attr("id")
+                cityId:$('#departCid option:selected').val(),
+                districtId:$('#departDid option:selected').val(),
+                subDistrictId:$('#departSDid option:selected').val()
             };
 
             if(DepartCommon.verifyDepartmentInput(toAddDepart)){

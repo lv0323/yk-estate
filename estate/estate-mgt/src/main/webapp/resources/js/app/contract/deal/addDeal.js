@@ -20,6 +20,24 @@ require(['main-app',
             },
             employeeId: {
                 init: false
+            },
+            customerIdSource:{
+                init: false
+            },
+            OwnerIdSource:{
+                init: false
+            },
+            houseType:{
+                init: false
+            },
+            businessType:{
+                init: false
+            },
+            priceUnitRENT:{
+                init: false
+            },
+            priceUnitSELL:{
+                init: false
             }
         };
 
@@ -29,7 +47,6 @@ require(['main-app',
             if (toSubmitDeal.fangId === "" || typeof(toSubmitDeal.fangId) === 'undefined') {
                 flag = false;
                 $('#houseLicenceID').addClass('invalid-input');
-                $('#areaSize').addClass('invalid-input');
             }
             if (toSubmitDeal.price === "" || typeof(toSubmitDeal.price) === 'undefined') {
                 flag = false;
@@ -113,7 +130,7 @@ require(['main-app',
             $(id).chosen("destroy");
             if(!chosenConfig[key].init){
                 chosenConfig[key].init = !chosenConfig[key].init;
-                $(id).chosen().change(function(e, result){
+                $(id).chosen({disable_search_threshold: 10}).change(function(e, result){
                     chosenChange(key, result.selected);
                     if(key === 'employeeId'){
                         getAgentInfo(result.selected);
@@ -125,7 +142,7 @@ require(['main-app',
                     }
                 });
             }
-            $(id).chosen();
+            $(id).chosen({disable_search_threshold: 10});
             $(id).trigger('chosen:updated');
         }
 
@@ -146,6 +163,19 @@ require(['main-app',
             });
         }
 
+        function switchPriceUnitChosen(bizType) {
+            var bizType_opsite = (bizType == 'RENT')? 'SELL':'RENT';
+            $('#priceUnit'+bizType_opsite).chosen("destroy");
+            $('#priceUnit'+bizType_opsite).hide();
+            $('#priceUnit'+bizType).show();
+            initChosen('#priceUnit'+bizType, 'priceUnit'+bizType);
+        }
+
+        initChosen("#houseType", 'houseType');
+        initChosen("#businessType", 'businessType');
+        initChosen("#priceUnitRENT", 'priceUnitRENT');
+        initChosen("#OwnerIdSource", 'OwnerIdSource');
+        initChosen("#customerIdSource", 'customerIdSource');
         initChosen("#employeeList", 'employeeId');
         initDepartDropDown();
 
@@ -153,8 +183,7 @@ require(['main-app',
 
         $('#businessType').on('change', function () {
             var bizType = $('#businessType option:selected').val();
-            $('#priceUnit'+bizType).show();
-            $('#priceUnit'+bizType).siblings().hide();
+            switchPriceUnitChosen(bizType);
         });
 
         $('#getHouseInfoBtn').on('click',function () {
@@ -164,10 +193,13 @@ require(['main-app',
                 .done(function (data) {
                     $('#fangID').val(data.id);
                     $('#areaSize').val(data.estateArea);
-                    $('#houseType').val(data.houseType.name);
-                    $('#businessType').val(data.bizType.name);
-                    $('#priceUnit'+data.bizType.name).show();
-                    $('#priceUnit'+data.bizType.name).siblings().hide();
+                    $('#houseType option[value="'+data.houseType.name+'"]').prop('selected', true).attr('selected','selected');
+                    $('#houseType option[value!="'+data.houseType.name+'"]').prop('selected', false).removeAttr("selected");
+                    $("#houseType").trigger("chosen:updated");
+                    $('#businessType option[value="'+data.bizType.name+'"]').prop('selected', true).attr('selected','selected');
+                    $('#businessType option[value!="'+data.bizType.name+'"]').prop('selected', false).removeAttr("selected");
+                    $("#businessType").trigger("chosen:updated");
+                    switchPriceUnitChosen(data.bizType.name);
                     var fangID = $('#fangID').val();
                     FangService.ext({fangId:fangID})
                         .done(function (data) {
@@ -192,6 +224,7 @@ require(['main-app',
                 });
         });
         $('#confirmAddDealBtn').on('click',function () {
+            var bizType = $('#businessType option:selected').val();
             var toAddDeal = {
                 fangId: $('#fangID').val(),
                 contractType: 'DEAL',
@@ -200,7 +233,7 @@ require(['main-app',
                 certifNo: $('#certifNo').val(),
                 estateArea: $('#areaSize').val(),
                 price: $('#dealPrice').val(),
-                priceUnit: $('select[name="priceUnit"]:visible').val(),
+                priceUnit: $('#priceUnit'+bizType).val(),
                 bizType: $('#businessType option:selected').val(),
                 assignorName: $('#OwnerName').val(),
                 assignorMobile: $('#OwnerContact').val(),
