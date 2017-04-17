@@ -49,6 +49,7 @@ public class FileExt {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("createById", createById)
+                .add("deleteById", deleteById)
                 .toString();
     }
 
