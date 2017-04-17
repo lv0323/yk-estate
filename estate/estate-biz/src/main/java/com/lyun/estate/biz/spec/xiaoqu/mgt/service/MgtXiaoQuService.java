@@ -2,6 +2,7 @@ package com.lyun.estate.biz.spec.xiaoqu.mgt.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.spec.xiaoqu.mgt.entity.MgtXiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.entity.MgtXiaoQuFilter;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.entity.MgtXiaoQuSummary;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQu;
@@ -14,4 +15,6 @@ public interface MgtXiaoQuService {
     XiaoQu findOne(Long id);
 
     PageList<MgtXiaoQuSummary> list(MgtXiaoQuFilter filter, PageBounds pageBounds);
+
+    MgtXiaoQuDetail detail(Long id);
 }

@@ -2,6 +2,7 @@ package com.lyun.estate.biz.xiaoqu.repository;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.spec.xiaoqu.mgt.entity.MgtXiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.entity.MgtXiaoQuFilter;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.entity.MgtXiaoQuSummary;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQu;
@@ -20,4 +21,8 @@ public interface MgtXiaoQuRepository {
 
     @SelectProvider(type = MgtXiaoQuSqlProvider.class, method = "list")
     PageList<MgtXiaoQuSummary> list(MgtXiaoQuFilter filter, PageBounds pageBounds);
+
+
+    @SelectProvider(type = MgtXiaoQuSqlProvider.class, method = "detail")
+    MgtXiaoQuDetail detail(Long xiaoQuId);
 }
