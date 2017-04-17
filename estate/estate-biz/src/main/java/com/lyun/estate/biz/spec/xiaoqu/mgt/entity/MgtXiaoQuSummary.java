@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.spec.xiaoqu.mgt.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects;
 
 /**
@@ -14,6 +15,7 @@ public class MgtXiaoQuSummary {
     private String district;
     private String subDistrict;
     private Integer buildedYear;
+    @JsonIgnore
     private Integer structureType;
     private String structureStr;
     private String address;

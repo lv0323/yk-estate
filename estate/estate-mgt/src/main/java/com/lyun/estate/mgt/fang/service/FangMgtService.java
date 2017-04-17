@@ -19,6 +19,7 @@ import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.file.entity.FileExt;
 import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
@@ -266,7 +267,7 @@ public class FangMgtService {
 
     public FileDescription createImage(Long fangId, CustomType customType, InputStream inputStream, String suffix) {
         ExceptionUtil.checkNotNull("房源编号", fangId);
-        ExceptionUtil.checkNotNull("文件业务类型", fangId);
+        ExceptionUtil.checkNotNull("文件业务类型", customType);
         ExceptionUtil.checkNotNull("文件输入流", inputStream);
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(suffix), "文件后缀名", suffix);
         if (customType == CustomType.SHI_JING || customType == CustomType.HU_XING || customType == CustomType.CERTIF
@@ -277,7 +278,7 @@ public class FangMgtService {
                     .setFileType(FileType.IMAGE)
                     .setFileProcess(FileProcess.WATERMARK.getFlag())
                     .setCustomType(customType)
-                    .setExt("operator=" + mgtContext.getOperator().getId());
+                    .setExt(new FileExt().setCreateById(mgtContext.getOperator().getId()).toJsonString());
             return fileService.save(fileDescription, inputStream, suffix);
         }
         throw new EstateException(ExCode.CUSTOM_TYPE_NOT_SUPPORTED, customType);
@@ -285,7 +286,7 @@ public class FangMgtService {
 
     public List<FileDescription> getImages(Long fangId, CustomType customType) {
         ExceptionUtil.checkNotNull("房源编号", fangId);
-        ExceptionUtil.checkNotNull("房源编号", customType);
+        ExceptionUtil.checkNotNull("文件业务类型", customType);
 
         return fileService.find(fangId, DomainType.FANG, customType, FileProcess.WATERMARK);
     }

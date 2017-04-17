@@ -7,6 +7,7 @@ import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.FileService;
+import com.lyun.estate.biz.spec.xiaoqu.mgt.entity.MgtXiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.entity.MgtXiaoQuFilter;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.entity.MgtXiaoQuSummary;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.service.MgtXiaoQuService;
@@ -69,6 +70,22 @@ public class MgtXiaoQuServiceImpl implements MgtXiaoQuService {
                     .orElse(xiaoQuDefaultImg.getFileURI()));
 
         });
+        return result;
+    }
+
+    @Override
+    public MgtXiaoQuDetail detail(Long xiaoQuId) {
+        MgtXiaoQuDetail result = mgtXiaoQuRepository.detail(xiaoQuId);
+        if (result != null) {
+            result.setStructureStr(StructureType.getTypeStr(result.getStructureType()));
+            FileDescription firstImg = fileService.findFirst(result.getId(),
+                    DomainType.XIAO_QU,
+                    CustomType.SHI_JING,
+                    FileProcess.WATERMARK);
+            result.setImageURI(Optional.ofNullable(firstImg)
+                    .map(FileDescription::getFileURI)
+                    .orElse(xiaoQuDefaultImg.getFileURI()));
+        }
         return result;
     }
 }
