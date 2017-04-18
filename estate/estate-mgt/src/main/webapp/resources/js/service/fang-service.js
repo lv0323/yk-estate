@@ -19,6 +19,9 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.buildingPost = function (params, header) {
             return RequestService.post('/api/house-dict/building', params, header);
         };
+        FangService.buildingUpdate = function (params, header) {
+            return RequestService.post('/api/house-dict/building/update', params, header);
+        };
         FangService.buildingUnit = function (params, header) {
             return RequestService.get('/api/house-dict/building-unit', params, header);
         };

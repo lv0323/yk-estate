@@ -2,8 +2,8 @@
 <#--<link rel="stylesheet" href="${contextPath}/js/plugins/datatables/dataTables.bootstrap.css">-->
 <link href="${contextPath}/css/app/org/orgnization.css" rel="stylesheet">
 <#include "/common/header.ftl" />
+<link rel="stylesheet" href="${contextPath}/css/plugins/zTree/iconSkin.css">
 <#include "/common/sidebar.ftl" />
-
 <!-- Modal addEmployeeDialog -->
 <div class="modal fade" id="addEmployeeDialog" tabindex="-1" role="dialog" aria-labelledby="addEmployeeLabel">
     <div class="modal-dialog" role="document">
