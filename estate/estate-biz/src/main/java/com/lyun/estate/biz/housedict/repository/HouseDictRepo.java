@@ -60,4 +60,23 @@ public interface HouseDictRepo {
 
     @Update("UPDATE t_district SET sell_house_count = #{sellHouseCount},rent_house_count = #{rentHouseCount} WHERE id = #{domainId}")
     int updateDistrictHouseCount(DomainHouseCount districtHouseCount);
+
+    @Update("UPDATE t_building SET name = #{name}, floors = #{floors}, stairs = #{stairs}, houses = #{houses}, description = #{description}, " +
+            "update_by_id = #{operatorId} ,update_time = now() WHERE id = #{buildingId}")
+    int updateBuildingInfo(@Param("buildingId") Long buildingId,
+                           @Param("name") String name,
+                           @Param("floors") Integer floors,
+                           @Param("stairs") Integer stairs,
+                           @Param("houses") Integer houses,
+                           @Param("description") String description,
+                           @Param("operatorId") Long operatorId);
+
+
+    @Update("UPDATE t_building_unit SET is_deleted = TRUE , update_by_id = #{operatorId}, update_time = now() WHERE building_id = #{buildingId}")
+    int deleteOldBuildingUnit(@Param("buildingId") Long buildingId,
+                              @Param("operatorId") Long operatorId);
+
+    @Update("UPDATE t_building SET is_deleted = TRUE , update_by_id = #{operatorId}, update_time = now() WHERE id = #{buildingId}")
+    int deleteBuilding(@Param("buildingId") Long buildingId,
+                       @Param("operatorId") Long operatorId);
 }

@@ -13,7 +13,8 @@ public enum AuditSubject implements LabelEnum {
     ORGANIZATION("组织架构"),
     PRIVILEGE("权限设置"),
     XIAO_QU_P("增/删小区"),
-    XIAO_QU_M("修改小区信息"),;
+    XIAO_QU_M("修改小区信息"),
+    BUILDING("楼座信息"),;
 
     private final String label;
 

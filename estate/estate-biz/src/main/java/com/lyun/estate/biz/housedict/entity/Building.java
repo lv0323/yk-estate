@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.housedict.entity;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.Date;
 import java.util.List;
 
@@ -156,5 +158,19 @@ public class Building {
     public Building setCompanyId(Long companyId) {
         this.companyId = companyId;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("id", id)
+                .add("name", name)
+                .add("floors", floors)
+                .add("stairs", stairs)
+                .add("houses", houses)
+                .add("description", description)
+                .add("units", units)
+                .toString();
     }
 }
