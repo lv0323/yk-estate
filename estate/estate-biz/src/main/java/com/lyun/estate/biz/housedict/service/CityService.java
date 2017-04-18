@@ -1,12 +1,14 @@
 package com.lyun.estate.biz.housedict.service;
 
+import com.lyun.estate.biz.housedict.domain.DistrictWithSubs;
 import com.lyun.estate.biz.housedict.entity.*;
 import com.lyun.estate.biz.housedict.repository.CityRepository;
-import com.lyun.estate.biz.housedict.entity.Community;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -88,5 +90,19 @@ public class CityService {
 
     public List<Community> findAllCommunity() {
         return cityRepository.findAllCommunity();
+    }
+
+    public List<DistrictWithSubs> findOrderedDistrictWithSubs(Long cityId) {
+        List<DistrictWithSubs> result = new ArrayList<>();
+        List<District> districts = cityRepository.findOrderedDistricts(cityId);
+
+        districts.forEach(t -> {
+            DistrictWithSubs entity = new DistrictWithSubs();
+            BeanUtils.copyProperties(t, entity);
+            entity.setSubs(cityRepository.findOrderedSubDistricts(t.getId()));
+            result.add(entity);
+        });
+
+        return result;
     }
 }
