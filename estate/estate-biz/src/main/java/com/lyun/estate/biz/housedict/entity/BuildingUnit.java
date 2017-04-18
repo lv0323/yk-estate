@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.housedict.entity;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.Date;
 
 /**
@@ -85,5 +87,15 @@ public class BuildingUnit {
     public BuildingUnit setDeleted(Boolean deleted) {
         isDeleted = deleted;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("id", id)
+                .add("buildingId", buildingId)
+                .add("unitName", unitName)
+                .toString();
     }
 }

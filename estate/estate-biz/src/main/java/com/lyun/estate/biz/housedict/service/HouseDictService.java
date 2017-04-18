@@ -14,6 +14,8 @@ import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -32,8 +34,9 @@ public class HouseDictService {
     private MgtXiaoQuService mgtXiaoQuService;
 
 
+    @Transactional
     public Building createBuilding(Long xiaoQuId, String name, Integer floors, Integer stairs, Integer houses,
-                                   String description, Long companyId, Long operatorId) {
+                                   String description, List<String> unitNames, Long companyId, Long operatorId) {
         ExceptionUtil.checkNotNull("小区编号", xiaoQuId);
         ExceptionUtil.checkIllegal(!StringUtils.isEmpty(name), "楼栋名", name);
         ExceptionUtil.checkIllegal(floors != null && floors > 0, "总楼层", floors);
@@ -56,6 +59,9 @@ public class HouseDictService {
                 .setCompanyId(companyId)
                 .setCreateById(operatorId);
         if (houseDictRepo.saveBuilding(building) > 0) {
+            if (!CollectionUtils.isEmpty(unitNames)) {
+                unitNames.forEach(t -> createBuildingUnit(building.getId(), t, operatorId));
+            }
             return findBuildingAndUnits(building.getId());
         } else {
             throw new EstateException(ExCode.CREATE_FAIL, "楼栋", "小区编号:" + xiaoQuId);
@@ -140,5 +146,26 @@ public class HouseDictService {
             houseDictRepo.updateDistrictHouseCount(districtHouseCount);
         });
         return true;
+    }
+
+    @Transactional
+    public Building updateBuilding(Long buildingId, String name, Integer floors, Integer stairs, Integer houses,
+                                   String description, List<String> unitNames, Long companyId, Long operatorId) {
+
+        //update building info
+        houseDictRepo.updateBuildingInfo(buildingId, name, floors, stairs, houses, description, operatorId);
+
+        //delete old building unit
+        houseDictRepo.deleteOldBuildingUnit(buildingId, operatorId);
+
+        //create new building unit
+        if (!CollectionUtils.isEmpty(unitNames)) {
+            unitNames.forEach(t -> createBuildingUnit(buildingId, t, operatorId));
+        }
+        return findBuildingAndUnits(buildingId);
+    }
+
+    public boolean deleteBuilding(Long buildingId, Long operatorId) {
+        return houseDictRepo.deleteBuilding(buildingId, operatorId) > 0;
     }
 }

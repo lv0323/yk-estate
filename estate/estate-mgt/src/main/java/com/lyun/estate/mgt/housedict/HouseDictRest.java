@@ -4,6 +4,7 @@ import com.lyun.estate.biz.housedict.domain.XiaoQuOption;
 import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.entity.BuildingUnit;
 import com.lyun.estate.mgt.housedict.service.HouseDictMgtService;
+import com.lyun.estate.mgt.supports.CommonResp;
 import com.lyun.estate.mgt.supports.RestResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,13 +29,36 @@ public class HouseDictRest {
                                    @RequestParam Integer floors,
                                    @RequestParam Integer stairs,
                                    @RequestParam Integer houses,
-                                   @RequestParam(required = false) String description) {
+                                   @RequestParam(required = false) String description,
+                                   @RequestParam(required = false) List<String> unitNames) {
         return houseDictMgtService.createBuilding(xiaoQuId,
                 name,
                 floors,
                 stairs,
                 houses,
-                description);
+                description, unitNames);
+    }
+
+    @PostMapping("building/update")
+    public Building updateBuilding(@RequestParam Long buildingId,
+                                   @RequestParam String name,
+                                   @RequestParam Integer floors,
+                                   @RequestParam Integer stairs,
+                                   @RequestParam Integer houses,
+                                   @RequestParam String description,
+                                   @RequestParam List<String> unitNames) {
+        return houseDictMgtService.updateBuilding(buildingId,
+                name,
+                floors,
+                stairs,
+                houses,
+                description, unitNames);
+    }
+
+
+    @PostMapping("building/delete")
+    public CommonResp deleteBuilding(@RequestParam Long buildingId) {
+        return houseDictMgtService.deleteBuilding(buildingId) ? CommonResp.succeed() : CommonResp.failed();
     }
 
     @PostMapping("building-unit")
