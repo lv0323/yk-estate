@@ -3,6 +3,7 @@ package com.lyun.estate.biz.housedict.service;
 import com.lyun.estate.biz.housedict.domain.DistrictWithSubs;
 import com.lyun.estate.biz.housedict.entity.*;
 import com.lyun.estate.biz.housedict.repository.CityRepository;
+import com.lyun.estate.biz.support.def.DomainType;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -99,6 +100,7 @@ public class CityService {
         districts.forEach(t -> {
             DistrictWithSubs entity = new DistrictWithSubs();
             BeanUtils.copyProperties(t, entity);
+            entity.setDomainType(DomainType.DISTRICT);
             entity.setSubs(cityRepository.findOrderedSubDistricts(t.getId()));
             result.add(entity);
         });

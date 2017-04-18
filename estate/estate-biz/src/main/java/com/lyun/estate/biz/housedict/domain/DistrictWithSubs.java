@@ -2,6 +2,7 @@ package com.lyun.estate.biz.housedict.domain;
 
 
 import com.lyun.estate.biz.housedict.entity.SubDistrict;
+import com.lyun.estate.biz.support.def.DomainType;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class DistrictWithSubs {
 
     private Long id;
     private Long cityId;
+    private DomainType domainType;
     private String abbr;
     private String name;
     private List<SimpleSubDistrict> subs;
@@ -51,6 +53,15 @@ public class DistrictWithSubs {
         return this;
     }
 
+    public DomainType getDomainType() {
+        return domainType;
+    }
+
+    public DistrictWithSubs setDomainType(DomainType domainType) {
+        this.domainType = domainType;
+        return this;
+    }
+
     public List<SimpleSubDistrict> getSubs() {
         return subs;
     }
@@ -59,6 +70,7 @@ public class DistrictWithSubs {
         this.subs = subs.stream().map(t -> {
             SimpleSubDistrict entity = new SimpleSubDistrict();
             BeanUtils.copyProperties(t, entity);
+            entity.setDomainType(DomainType.SUB_DISTRICT);
             return entity;
         }).collect(Collectors.toList());
         return this;
@@ -68,6 +80,7 @@ public class DistrictWithSubs {
         private Long id;
         private String abbr;
         private String name;
+        private DomainType domainType;
 
         public Long getId() {
             return id;
@@ -93,6 +106,15 @@ public class DistrictWithSubs {
 
         public SimpleSubDistrict setName(String name) {
             this.name = name;
+            return this;
+        }
+
+        public DomainType getDomainType() {
+            return domainType;
+        }
+
+        public SimpleSubDistrict setDomainType(DomainType domainType) {
+            this.domainType = domainType;
             return this;
         }
     }
