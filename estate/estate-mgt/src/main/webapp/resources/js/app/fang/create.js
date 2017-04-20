@@ -83,6 +83,8 @@ require(['main-app',
                 stairs:'',
                 houses:'',
                 description:'',
+                firstUnit: '',
+                unitList: [],
                 xiaoqu: {
                     id: '',
                     name: '',
@@ -288,6 +290,14 @@ require(['main-app',
                     _this.page.warn.closeF= param.closeF;
                 },30)
             };
+            /* 添加单元*/
+            _this.unitAdd = function(){
+                _this.data.newBuilding.unitList.unshift('');
+            };
+            /*删除单元*/
+            _this.unitRemove = function(item, index){
+                _this.data.newBuilding.unitList.splice(index, 1);
+            };
             _this.addBuildInit = function(){
                 XiaoquService.getXiaoquInfo({id: _this.data.xiaoQuId}).then(function(response){
                     if(!response){
@@ -318,9 +328,16 @@ require(['main-app',
                     if (!_this.newBuilding.houses) {
                         _this.commonInputWarn('buildingHouses','newBuildForm');
                     }
+                    if (!_this.newBuilding.firstUnit) {
+                        _this.commonInputWarn('firstUnit','newBuildForm');
+                    }
+                    if (!_this.newBuilding.description) {
+                        _this.commonInputWarn('buildingDescription','newBuildForm');
+                    }
                     return;
                 }
                 FangService.buildingPost(_this.newBuilding).then(function(){
+                    SweetAlertHelp.success();
                     $('#addBuildModel').modal('hide');
                     _this.buildingsGet(_this.newBuilding.xiaoQuId);
                 });

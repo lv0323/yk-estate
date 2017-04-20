@@ -28,7 +28,9 @@ requirejs.config({
         'adminLTE': 'app/AdminLTE/index',
         'adminLTEdemo': 'app/AdminLTE/demo',
         'Croppie': 'plugins/croppie/croppie.min',
-        'sweetalert':'plugins/SweetAlert/sweetalert.min'
+        'sweetalert':'plugins/SweetAlert/sweetalert.min',
+        'jssorSlider':'plugins/slider/jssor.slider-23.1.1.mini',
+        'pagescroller':'plugins/pagescroller/pagescroller.min'
     },
     shim: {
         'bootstrap': ['jquery'],
@@ -85,6 +87,14 @@ requirejs.config({
         'sweetalert':{
             deps: ['jquery'],
             exports: 'sweetalert'
+        },
+        'jssorSlider':{
+            deps: ['jquery'],
+            exports: 'jssorSlider'
+        },
+        'pagescroller':{
+            deps: ['jquery'],
+            exports: 'pagescroller'
         }
     },
     waitSeconds: 0,

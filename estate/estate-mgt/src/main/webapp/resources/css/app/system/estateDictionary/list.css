@@ -1,0 +1,18 @@
+#dictionaryTree{
+    min-height: 700px;
+    padding-left: 10px;
+}
+#searchResult{
+    min-height: 700px;
+}
+#searchList .form-group{
+    width: 100%;
+}
+#houseDictionary .xiaoqu-img-container{
+    width: 120px;
+    height: 90px;
+    overflow: hidden;
+}
+#houseDictionary .xiaoqu-img{
+    width: 160px;
+}

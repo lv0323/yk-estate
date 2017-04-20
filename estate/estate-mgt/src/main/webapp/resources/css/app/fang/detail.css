@@ -89,20 +89,7 @@
 #follow-info table, #survey-info table{
     font-size: 12px;
 }
-.upload-loading{
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    padding-top: 200px;
-    background: rgba(0, 0, 0, .6);
-    text-align: center;
-}
-.loader-inner{
-    display: inline-block;
-    margin-left: -15%;
-}
+
 #contactModel .form-group{
     margin-bottom: 15px;
 }

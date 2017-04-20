@@ -16,6 +16,9 @@ define(contextPath+'/js/service/city-service.js',
         CityService.getSubDistrict = function (params, header) {
             return RequestService.get('/api/cities/sub-districts', params, header);
         };
+        CityService.districtsWithSubs = function (params, header) {
+            return RequestService.get('/api/cities/districts-with-subs', params, header);
+        };
         
         return CityService;
     });

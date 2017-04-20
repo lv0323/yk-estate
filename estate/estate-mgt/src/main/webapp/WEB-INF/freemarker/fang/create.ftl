@@ -542,7 +542,32 @@
                                 <input id="glBuildingFloorall" name="buildingFloors" required reg="^\S+$" class="form-control" placeholder="总层" type="text" ng-model="ctrl.newBuilding.floors">
                             </div>
                         </div>
-
+                        <div class="form-group clearfix">
+                            <label class="control-label">单元名称</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5 clearfix">
+                                <div class="clearfix">
+                                    <div class="col-lg-10 col-md-10 col-sm-10" style="padding:0">
+                                        <input type="text" name="firstUnit" reg="^\S+$" class="form-control"
+                                               required ng-model="ctrl.data.modifyBuilding.firstUnit"/>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 clearfix m-t-7">
+                                        <a href="#">
+                                            <i class="fa fa-plus-circle" aria-hidden="true" ng-click="ctrl.unitAdd()"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div ng-repeat="unit in ctrl.data.modifyBuilding.unitList track by $index" ng-class="{'m-t-7':true }" class="clearfix">
+                                    <div class="col-lg-10 col-md-10 col-sm-10" style="padding:0">
+                                        <input type="text" reg="^\S+$" class="form-control" ng-model="ctrl.data.modifyBuilding.unitList[$index]"/>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 m-t-7">
+                                        <a href="#">
+                                            <i class="fa fa-minus-circle" aria-hidden="true" ng-click="ctrl.unitRemove(item, $index)"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group clearfix">
                             <label class="control-label">梯/户数</label>
                             <div class="col-xs-3">

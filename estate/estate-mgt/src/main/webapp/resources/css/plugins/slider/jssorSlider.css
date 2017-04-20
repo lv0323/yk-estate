@@ -1,0 +1,149 @@
+.jssora02l, .jssora02r {
+    display: block;
+    position: absolute;
+    /* size of arrow element */
+    width: 55px;
+    height: 55px;
+    cursor: pointer;
+    background: url('../../../img/slider/arrow.png') no-repeat;
+    overflow: hidden;
+}
+
+.jssora02l {
+    background-position: -3px -33px;
+    top: 0px;
+    left: 8px;
+    width: 55px;
+    height: 55px;
+}
+
+.jssora02r {
+    background-position: -63px -33px;
+    top: 0px;
+    right: 8px;
+    width: 55px;
+    height: 55px;
+}
+
+.jssora02l:hover {
+    background-position: -123px -33px;
+}
+
+.jssora02r:hover {
+    background-position: -183px -33px;
+}
+
+.jssora02l.jssora02ldn {
+    background-position: -3px -33px;
+}
+
+.jssora02r.jssora02rdn {
+    background-position: -63px -33px;
+}
+
+.jssora02l.jssora02lds {
+    background-position: -3px -33px;
+    opacity: .3;
+    pointer-events: none;
+}
+
+.jssora02r.jssora02rds {
+    background-position: -63px -33px;
+    opacity: .3;
+    pointer-events: none;
+}
+
+/* jssor slider thumbnail navigator skin 03 css *//*.thumbnavigator .p            (normal).thumbnavigator .p:hover      (normal mouseover).thumbnavigator .pav          (active).thumbnavigator .pdn          (mousedown)*/
+.thumbnavigator{
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 60px;
+}
+.thumbnavigator .p {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 62px;
+    height: 32px;
+}
+
+.thumbnavigator .t {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.thumbnavigator .w, .thumbnavigator .pav:hover .w {
+    position: absolute;
+    width: 60px;
+    height: 30px;
+    border: white 1px dashed;
+    box-sizing: content-box;
+}
+
+.thumbnavigator .pdn .w, .thumbnavigator .pav .w {
+    border-style: solid;
+}
+
+.thumbnavigator .c {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 62px;
+    height: 32px;
+    background-color: #000;
+    filter: alpha(opacity=45);
+    opacity: .45;
+    transition: opacity .6s;
+    -moz-transition: opacity .6s;
+    -webkit-transition: opacity .6s;
+    -o-transition: opacity .6s;
+}
+
+.thumbnavigator .p:hover .c, .thumbnavigator .pav .c {
+    filter: alpha(opacity=0);
+    opacity: 0;
+}
+
+.thumbnavigator .p:hover .c {
+    transition: none;
+    -moz-transition: none;
+    -webkit-transition: none;
+    -o-transition: none;
+}
+.thumbnavigator-content{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    filter: alpha(opacity=30.0);
+    opacity: 0.3;
+}
+* html .thumbnavigator .w {
+    width /**/: 62px;
+    height /**/: 32px;
+}
+.jssorSlideWrapper{
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 320px;
+    overflow: hidden;
+    visibility: hidden;
+}
+.jssorSlideContainer{
+    cursor:default;
+    position:relative;
+    top:0px;
+    left:0px;
+    height:100%;
+    overflow:hidden;
+    width: 100%;
+}
