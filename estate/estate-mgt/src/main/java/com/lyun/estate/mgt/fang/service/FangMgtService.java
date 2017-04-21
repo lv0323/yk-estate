@@ -211,7 +211,7 @@ public class FangMgtService {
     @Transactional
     public FangContact getContact(Long fangId) {
 
-        permissionCheckService.check(fangId, Permission.VIEW_CONTACT);
+        permissionCheckService.check(fangId, Permission.VIEW_FANG_CONTACT);
 
         Fang fang = mgtFangService.getFangBase(fangId);
         FangContact result = mgtFangService.getContact(fangId);
@@ -436,7 +436,7 @@ public class FangMgtService {
 
     @Transactional
     public FangContact updateContact(FangContact contact) {
-        permissionCheckService.check(contact.getFangId(), Permission.MODIFY_CONTACT);
+        permissionCheckService.check(contact.getFangId(), Permission.MODIFY_FANG_CONTACT);
 
         Fang fang = mgtFangService.getFangBase(contact.getFangId());
         FangContact result = mgtFangService.updateContact(contact);

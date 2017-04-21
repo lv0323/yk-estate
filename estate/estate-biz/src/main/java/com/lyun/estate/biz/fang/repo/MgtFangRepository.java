@@ -3,6 +3,7 @@ package com.lyun.estate.biz.fang.repo;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.domian.MgtFangSelector;
+import com.lyun.estate.biz.fang.domian.MgtFangTiny;
 import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.entity.FangExt;
 import com.lyun.estate.biz.fang.repo.provider.MgtFangSqlProvider;
@@ -86,4 +87,12 @@ public interface MgtFangRepository {
 
     @Update("UPDATE t_fang SET sub_process = NULL, update_time = now() where id = #{fangId}")
     int undoPublic(long fangId);
+
+    @Select("SELECT f.*, c.name as xiao_qu_name FROM t_fang f LEFT JOIN t_xiao_qu xq on f.xiao_qu_id = xq.id LEFT JOIN t_community c on xq.community_id = c.id\n" +
+            "WHERE f.id = #{fangId}")
+    MgtFangTiny getMgtFangTiny(long fangId);
+
+    @Select("SELECT f.*, c.name as xiao_qu_name FROM t_fang f LEFT JOIN t_xiao_qu xq on f.xiao_qu_id = xq.id LEFT JOIN t_community c on xq.community_id = c.id\n" +
+            "WHERE f.licence_id = #{licenceId}")
+    MgtFangTiny getMgtFangTinyByLicenceId(long licenceId);
 }

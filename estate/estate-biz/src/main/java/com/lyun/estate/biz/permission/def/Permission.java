@@ -6,24 +6,50 @@ import com.lyun.estate.core.supports.labelenum.LabelEnum;
  * Created by Jeffrey on 2017-04-06.
  */
 public enum Permission implements LabelEnum {
-    VIEW_CONTACT("查看房东信息", PermissionTarget.FANG),
-    MODIFY_CONTACT("修改房东信息", PermissionTarget.FANG),
-    PUBLISH("上架房源", PermissionTarget.FANG),
-    PAUSE("暂缓房源", PermissionTarget.FANG),
-    UN_PUBLISH("下架房源", PermissionTarget.FANG),
-    RE_PUBLISH("上架已下架的房源", PermissionTarget.FANG),
-    APPLY_PUBLIC("申请发布外网", PermissionTarget.FANG),
-    CONFIRM_PUBLIC("确认发布外网", PermissionTarget.FANG),
-    REJECT_PUBLIC("拒绝发布外网", PermissionTarget.FANG),
-    UNDO_PUBLIC("撤销发布外网", PermissionTarget.FANG),
-    UNBIND_DEVICE("解绑设备", PermissionTarget.COMPANY),;
+    CREATE_FANG("新增房源", PermissionDefine.Target.FANG, PermissionDefine.Operation.CREATE),
+    LIST_FANG_SELL("出售", PermissionDefine.Target.FANG, PermissionDefine.Operation.QUERY),
+    LIST_FANG_RENT("出租", PermissionDefine.Target.FANG, PermissionDefine.Operation.QUERY),
+    VIEW_FANG_CONTACT("查看业主信息", PermissionDefine.Target.FANG, PermissionDefine.Operation.QUERY),
+    VIEW_SELL_CONTACT_LIMIT("出售房源每天看业主次数", PermissionDefine.Target.FANG, PermissionDefine.Operation.QUERY),
+    VIEW_RENT_CONTACT_LIMIT("出租房源每天看业主次数", PermissionDefine.Target.FANG, PermissionDefine.Operation.QUERY),
+    NOT_FOLLOW_SELL("出售看业主不必写跟进", PermissionDefine.Target.FANG, PermissionDefine.Operation.QUERY),
+    NOT_FOLLOW_RENT("出租看业主不必写跟进", PermissionDefine.Target.FANG, PermissionDefine.Operation.QUERY),
+    DEL_FANG_IMG_SHI_JING("删除实景图", PermissionDefine.Target.FANG, PermissionDefine.Operation.DELETE),
+    DEL_FANG_IMG_HU_XING("删除户型图", PermissionDefine.Target.FANG, PermissionDefine.Operation.DELETE),
+    DEL_FANG_IMG_CERTIF("删除房产证", PermissionDefine.Target.FANG, PermissionDefine.Operation.DELETE),
+    DEL_FANG_IMG_ATTORNEY("删除委托书", PermissionDefine.Target.FANG, PermissionDefine.Operation.DELETE),
+    DEL_FANG_IMG_ID_CARD("删除业主身份证", PermissionDefine.Target.FANG, PermissionDefine.Operation.DELETE),
+    DEL_FANG_CONTACT("修改业主信息", PermissionDefine.Target.FANG, PermissionDefine.Operation.DELETE),
+    FANG_PUBLISH("上架房源", PermissionDefine.Target.FANG, PermissionDefine.Operation.UPDATE),
+    FANG_PAUSE("暂缓房源", PermissionDefine.Target.FANG, PermissionDefine.Operation.UPDATE),
+    FANG_UN_PUBLISH("下架房源", PermissionDefine.Target.FANG, PermissionDefine.Operation.UPDATE),
+    FANG_RE_PUBLISH("上架已下架的房源", PermissionDefine.Target.FANG, PermissionDefine.Operation.UPDATE),
+    FANG_APPLY_PUBLIC("申请发布外网", PermissionDefine.Target.FANG, PermissionDefine.Operation.UPDATE),
+    FANG_CONFIRM_PUBLIC("确认发布外网", PermissionDefine.Target.FANG, PermissionDefine.Operation.UPDATE),
+    FANG_REJECT_PUBLIC("拒绝发布外网", PermissionDefine.Target.FANG, PermissionDefine.Operation.UPDATE),
+    FANG_UNDO_PUBLIC("撤销发布外网", PermissionDefine.Target.FANG, PermissionDefine.Operation.UPDATE),
+    UPDATE_FANG_BASE("修改基本信息", PermissionDefine.Target.FANG, PermissionDefine.Operation.UPDATE),
+    UPDATE_FANG_EXT("修改配套信息", PermissionDefine.Target.FANG, PermissionDefine.Operation.UPDATE),
+    MODIFY_FANG_CONTACT("修改业主信息", PermissionDefine.Target.FANG, PermissionDefine.Operation.UPDATE),
+
+    CREATE_XIAO_QU("创建小区", PermissionDefine.Target.XIAO_QU, PermissionDefine.Operation.CREATE),
+    MODIFY_XIAO_QU("修改小区信息", PermissionDefine.Target.XIAO_QU, PermissionDefine.Operation.UPDATE),
+    DEL_XIAO_QU("删除小区", PermissionDefine.Target.XIAO_QU, PermissionDefine.Operation.DELETE),
+    CREATE_BUILDING("创建栋座", PermissionDefine.Target.XIAO_QU, PermissionDefine.Operation.CREATE),
+    MODIFY_BUILDING("修改栋座信息", PermissionDefine.Target.XIAO_QU, PermissionDefine.Operation.UPDATE),
+    DEL_BUILDING("删除栋座", PermissionDefine.Target.XIAO_QU, PermissionDefine.Operation.DELETE),
+
+    UNBIND_DEVICE("解绑设备", PermissionDefine.Target.ORGANIZATION, PermissionDefine.Operation.DELETE),;
+
 
     private final String label;
-    private final PermissionTarget target;
+    private final PermissionDefine.Target target;
+    private final PermissionDefine.Operation operation;
 
-    Permission(String label, PermissionTarget target) {
+    Permission(String label, PermissionDefine.Target target, PermissionDefine.Operation operation) {
         this.label = label;
         this.target = target;
+        this.operation = operation;
     }
 
     @Override
@@ -31,8 +57,11 @@ public enum Permission implements LabelEnum {
         return label;
     }
 
-    public PermissionTarget getTarget() {
+    public PermissionDefine.Target getTarget() {
         return target;
     }
 
+    public PermissionDefine.Operation getOperation() {
+        return operation;
+    }
 }
