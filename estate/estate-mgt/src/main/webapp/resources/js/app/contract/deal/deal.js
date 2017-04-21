@@ -64,7 +64,7 @@ require(['main-app',
                 return {
                     contractId: item.id,
                     bizTypeLabel: (item.bizType.name === "RENT")?('<div class="icon-float-left icon-font text-rent-bg">'+item.bizType.label+'</div>'):('<div class="icon-float-left icon-font text-sell-bg">'+item.bizType.label+'</div>'),
-                    houseLicence: (item.fangTiny.houseLicence)?item.fangTiny.houseLicence.id:"",
+                    houseLicence: (item.fangTiny.licenceId)?item.fangTiny.licenceId:"",
                     location: (item.fangTiny.houseLicence)?item.fangTiny.houseLicence.location:"",
                     statusLabel: item.process.label,
                     statusClass: (item.process.name==="CREATED")?'label-info':(item.process.name==="SUCCESS")?'label-success':'label-warning',
@@ -84,14 +84,10 @@ require(['main-app',
                             '<div class="media-body clearfix">' +
                                 '<div class="col-sm-7">' +
                                     '<div class="clearfix">' +
-                                        '<span class="m-l-20">'+item.location+'</span>'+
-
+                                        '<span class="m-l-20">授权编号:'+item.houseLicence+'</span>'+
                                         '<h5 class="media-heading inline m-l-20"><span class="m-l-20">'+item.department+'-'+item.employee+'</span></h5>'+
                                         '<label class="label m-l-20 '+item.statusClass+'">'+item.statusLabel+'</label>'+
                                     '</div>'+
-                                   '<div class="m-t-10">' +
-                                        '<span class="m-l-20">授权编号:'+item.houseLicence+'</span>'+
-                                   '</div>'+
                                     '<div class="m-t-10">' +
                                         item.statusOperation+
                                         '<a class="m-l-20 btn checkContractBtn" title="'+item.contractId+'"><i class="fa fa-eye" aria-hidden="true">查看合同</i></a>'+
