@@ -64,8 +64,8 @@ require(['main-app',
                 return {
                     contractId: item.id,
                     bizTypeLabel: (item.bizType.name === "RENT")?('<div class="icon-float-left icon-font text-rent-bg">'+item.bizType.label+'</div>'):('<div class="icon-float-left icon-font text-sell-bg">'+item.bizType.label+'</div>'),
-                    houseLicence: (item.fangTiny.licenceId)?item.fangTiny.licenceId:"",
-                    location: (item.fangTiny.houseLicence)?item.fangTiny.houseLicence.location:"",
+                    houseLicence: item.fangTiny.licenceId || "",
+                    location: item.fangTiny.fangHead || "",
                     statusLabel: item.process.label,
                     statusClass: (item.process.name==="CREATED")?'label-info':(item.process.name==="SUCCESS")?'label-success':'label-warning',
                     statusOperation: (item.process.name==="CREATED")?('<a class="m-l-20 btn completeDealBtn" data-id="'+item.id+'" data-toggle="modal" data-target="#completeDealDialog"><i class="fa fa-check" aria-hidden="true">完成</i></a> <a class="m-l-20 btn cancelDealBtn" data-id="'+item.id+'" data-toggle="modal" data-target="#cancelDealDialog"><i class="fa fa-times" aria-hidden="true">取消</i></a>'):'',
@@ -84,10 +84,13 @@ require(['main-app',
                             '<div class="media-body clearfix">' +
                                 '<div class="col-sm-7">' +
                                     '<div class="clearfix">' +
-                                        '<span class="m-l-20">授权编号:'+item.houseLicence+'</span>'+
+                                        '<span class="m-l-20">'+item.location+'</span>'+
                                         '<h5 class="media-heading inline m-l-20"><span class="m-l-20">'+item.department+'-'+item.employee+'</span></h5>'+
                                         '<label class="label m-l-20 '+item.statusClass+'">'+item.statusLabel+'</label>'+
                                     '</div>'+
+                                   '<div class="m-t-10">' +
+                                        '<span class="m-l-20">授权编号:'+item.houseLicence+'</span>'+
+                                   '</div>'+
                                     '<div class="m-t-10">' +
                                         item.statusOperation+
                                         '<a class="m-l-20 btn checkContractBtn" title="'+item.contractId+'"><i class="fa fa-eye" aria-hidden="true">查看合同</i></a>'+
