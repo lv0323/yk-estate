@@ -8,7 +8,7 @@ require(['main-app',
         var dealId = UtilService.getUrlParam('dealId');
         ContractService.getSpecifiedDeal(dealId).done(function (data) {
             $('#fangID').val(data.fangId);
-            $('#houseLicenceID').val(data.fangTiny.houseLicence.id);
+            $('#houseLicenceID').val(data.fangTiny.licenceId);
             $('#areaSize').val(data.estateArea);
             $('#dealPrice').val(data.price);
             $('#priceUnit').html(data.priceUnit.label);

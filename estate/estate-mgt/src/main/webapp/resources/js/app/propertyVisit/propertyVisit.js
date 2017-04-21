@@ -69,7 +69,6 @@ require(['main-app',
                 return {
                     employee: "<div class='img-circle-container-sm'><img style='width:42px; display: inline-block;' src='" + item.avatarURI + "'/></div>" + "&nbsp;" + item.departmentName + "-" + item.employeeName,
                     customerName: item.customerTiny.name,
-                    propertyAddress: "<span>"+item.fangTiny.houseLicence.location+"</span><br><span>授权编号:"+item.fangTiny.houseLicence.id+"</span>",
                     visitStartDate: UtilService.timeStamp2DatetimeMin(item.createTime),
                     visitCloseDate: (item.closeTime) ? UtilService.timeStamp2DatetimeMin(item.closeTime) : "",
                     status: (item.process.name === "CREATED") ? "<label class='badge badge-info'>" + item.process.label + "</label>" : (item.process.name === "SUCCESS") ? "<label class='badge badge-success'>" + item.process.label + "</label>" : "<label class='badge badge-warning'>" + item.process.label + "</label>",
@@ -97,12 +96,12 @@ require(['main-app',
                     ordering: false,
                     autoWidth: false,
                     columnDefs: [
-                        {className: "text-right", "targets": [6]} /*添加class*/
+                        {className: "text-right", "targets": [5]} /*添加class*/
                     ],
                     columns: [
                         {title: "员工", data: 'employee'},
                         {title: "客户", data: 'customerName', defaultContent: ""},
-                        {title: "房源地址", data: 'propertyAddress', defaultContent: ""},
+                        // {title: "房源地址", data: 'propertyAddress', defaultContent: ""},
                         {title: "生成时间", data: 'visitStartDate', defaultContent: ""},
                         {title: "结束时间", data: 'visitCloseDate', defaultContent: ""},
                         {title: "状态", data: 'status', defaultContent: ""},
