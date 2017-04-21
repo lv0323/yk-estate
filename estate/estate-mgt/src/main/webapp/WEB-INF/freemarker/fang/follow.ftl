@@ -112,7 +112,6 @@
                                                 <th>房源状态</th>
                                                 <th>发布日期</th>
                                                 <th>发布天数</th>
-                                            <#--<th class="text-right">操作</th>-->
                                             </tr>
                                             </thead>
                                             <tbody ng-repeat="follow in followList">
