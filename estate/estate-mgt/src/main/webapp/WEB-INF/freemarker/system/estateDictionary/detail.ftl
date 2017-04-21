@@ -143,6 +143,37 @@
                             </div>
                         </div>
                     </div>
+                    <div class="section section_5" style="position: relative; margin: 0px;">
+                        <div class="box box-solid">
+                            <div class="box-header" style="border-bottom: 1px solid #ddd;">
+                                <h3 class="box-title">周边配套</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="mapps">
+                                    <a class="btn btn-white btn-sm" ng-class="{'btn-primary' :ctrl.mapConfig.mapSearchStr === '公交车'}" ng-click="ctrl.searchMap('公交车')"><i class="fa fa-bus"></i>公交</a>
+                                    <a class="btn btn-white btn-sm" ng-class="{'btn-primary' :ctrl.mapConfig.mapSearchStr === '地铁站'}" ng-click="ctrl.searchMap('地铁站')"><i class="fa fa-subway"></i>地铁</a>
+                                    <a class="btn btn-white btn-sm" ng-class="{'btn-primary' :ctrl.mapConfig.mapSearchStr === '学校'}" ng-click="ctrl.searchMap('学校')"><i class="fa fa-graduation-cap"></i>教育</a>
+                                    <a class="btn btn-white btn-sm" ng-class="{'btn-primary' :ctrl.mapConfig.mapSearchStr === '医院'}" ng-click="ctrl.searchMap('医院')"><i class="fa fa-heartbeat"></i>医院</a>
+                                    <a class="btn btn-white btn-sm" ng-class="{'btn-primary' :ctrl.mapConfig.mapSearchStr === '银行'}" ng-click="ctrl.searchMap('银行')"><i class="fa fa-bank"></i>银行</a>
+                                    <a class="btn btn-white btn-sm" ng-class="{'btn-primary' :ctrl.mapConfig.mapSearchStr === '商城'}" ng-click="ctrl.searchMap('商城')"><i class="fa fa-shopping-cart"></i>购物</a>
+                                    <a class="btn btn-white btn-sm" ng-class="{'btn-primary' :ctrl.mapConfig.mapSearchStr === '美食'}" ng-click="ctrl.searchMap('美食')"><i class="fa fa-coffee"></i>餐饮</a>
+                                </div>
+                                <div class="m-t-15">
+                                    <div class="col-lg-3 col-sm-12" id="salesstaffMapPage">
+                                        <div style="overflow-x: hidden; overflow-y: auto; height: 688px;">
+                                            <div class="adr_info clearfix">
+                                                <div id="r-result" class="pull-left" style="width:100%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="l-map" class="col-lg-9 col-sm-12"  baidu-map="${mapKey!}" map-ready="ctrl.mapReady(map)" style="height: 688px">
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="section section_7" style="position: relative; margin: 0px;">
                         <div class="box box-solid">
                             <div class="box-header" style="border-bottom: 1px solid #ddd;">
@@ -375,6 +406,21 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function initialize() {
+//        var mp = new BMap.Map('map');
+//        mp.centerAndZoom(new BMap.Point(121.491, 31.233), 11);
+    }
+
+    function loadScript() {
+        var script = document.createElement("script");
+        script.src = "http://api.map.baidu.com/api?v=2.0&ak=sFojtWWX6RcdymdNVMVae8WnAo1WPPlB&callback=initialize";//此为v2.0版本的引用方式
+        // http://api.map.baidu.com/api?v=1.4&ak=您的密钥&callback=initialize"; //此为v1.4版本及以前版本的引用方式
+        document.body.appendChild(script);
+    }
+
+    //window.onload = loadScript;
+</script>
 <#include "/common/footer.ftl" />
 <script src="${contextPath!}/js/app/system/estateDictionary/detail.js"></script>
 

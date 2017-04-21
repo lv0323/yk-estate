@@ -1,6 +1,8 @@
 package com.lyun.estate.mgt.system;
 
 import com.lyun.estate.biz.fang.def.HouseType;
+import com.lyun.estate.biz.support.settings.SettingProvider;
+import com.lyun.estate.biz.support.settings.def.NameSpace;
 import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,9 @@ import java.util.HashMap;
 public class systemPage {
     @Autowired
     private EmployeeMgtService service;
+
+    @Autowired
+    private SettingProvider settingProvider;
 
     @GetMapping("/operationLog")
     public ModelAndView operationLog() {
@@ -41,6 +46,7 @@ public class systemPage {
         params.put("houseTypes", Arrays.asList(HouseType.values()));
         params.put("avatarUrl",service.getAvatar());
         params.put("username",service.getUsername());
+        params.put("mapKey",settingProvider.find(NameSpace.CONFIG, "BAI_DU_MAP_KEY").getValue());
         return new ModelAndView("/system/estateDictionary/detail", params);
     }
 }
