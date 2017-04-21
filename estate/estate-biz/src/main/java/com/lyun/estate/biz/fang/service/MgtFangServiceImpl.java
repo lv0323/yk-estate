@@ -368,24 +368,22 @@ public class MgtFangServiceImpl implements MgtFangService {
     @Override
     public MgtFangTiny getFangTiny(Long fangId) {
         ExceptionUtil.checkNotNull("房源编号", fangId);
-        Fang fang = mgtFangRepository.findFang(fangId);
-        if (fang == null || fang.getDeleted()) {
-            throw new EstateException(ExCode.NOT_FOUND, fangId, "房源信息");
-        }
-        MgtFangTiny tiny = new MgtFangTiny();
-        BeanUtils.copyProperties(fang, tiny);
+        MgtFangTiny tiny = mgtFangRepository.getMgtFangTiny(fangId);
+        tiny.setFangHead(tiny.getXiaoQuName() + " " +
+                tiny.getsCounts() + "室" + tiny.gettCounts() + "厅" + " "
+                + tiny.getPublishPrice().setScale(2, BigDecimal.ROUND_HALF_UP) + tiny.getPriceUnit()
+                .getLabel());
         return tiny;
     }
 
     @Override
     public MgtFangTiny getFangTinyByLicenceId(Long licenceId) {
         ExceptionUtil.checkNotNull("房源授权编号", licenceId);
-        Fang fang = mgtFangRepository.findFangByLicenceId(licenceId);
-        if (fang == null) {
-            throw new EstateException(ExCode.NOT_FOUND, "房源授权编号:" + licenceId, "房源信息");
-        }
-        MgtFangTiny tiny = new MgtFangTiny();
-        BeanUtils.copyProperties(fang, tiny);
+        MgtFangTiny tiny = mgtFangRepository.getMgtFangTinyByLicenceId(licenceId);
+        tiny.setFangHead(tiny.getXiaoQuName() + " " +
+                tiny.getsCounts() + "室" + tiny.gettCounts() + "厅" + " "
+                + tiny.getPublishPrice().setScale(2, BigDecimal.ROUND_HALF_UP) + tiny.getPriceUnit()
+                .getLabel());
         return tiny;
     }
 

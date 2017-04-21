@@ -18,8 +18,10 @@ public class MgtFangTiny {
     private BizType bizType;
     private HouseType houseType;
     private HouseSubType houseSubType;
+    private String fangHead;
     private Long licenceId;
     private Long xiaoQuId;
+    private String xiaoQuName;
     private Integer sCounts;//室
     private Integer tCounts;//厅
     private Integer wCounts;//卫
@@ -88,6 +90,16 @@ public class MgtFangTiny {
 
     public MgtFangTiny setXiaoQuId(Long xiaoQuId) {
         this.xiaoQuId = xiaoQuId;
+        return this;
+    }
+
+
+    public String getXiaoQuName() {
+        return xiaoQuName;
+    }
+
+    public MgtFangTiny setXiaoQuName(String xiaoQuName) {
+        this.xiaoQuName = xiaoQuName;
         return this;
     }
 
@@ -232,6 +244,15 @@ public class MgtFangTiny {
 
     public MgtFangTiny setPublishTime(Date publishTime) {
         this.publishTime = publishTime;
+        return this;
+    }
+
+    public String getFangHead() {
+        return fangHead;
+    }
+
+    public MgtFangTiny setFangHead(String fangHead) {
+        this.fangHead = fangHead;
         return this;
     }
 

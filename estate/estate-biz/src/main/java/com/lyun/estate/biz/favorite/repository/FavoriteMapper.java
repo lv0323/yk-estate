@@ -13,6 +13,7 @@ import java.util.List;
 public interface FavoriteMapper {
 
     @Insert("insert into t_favorite (target_id,domain_type, type, follower_id,create_time) values(#{targetId},#{domainType}, #{type}, #{followerId},current_timestamp)")
+    @Options(useGeneratedKeys = true)
     int createFavorite(Favorite favorite);
 
     @Delete("delete from t_favorite where target_id=#{targetId} and domain_type = #{domainType} and follower_id=#{followerId}")

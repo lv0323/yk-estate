@@ -3,6 +3,7 @@ package com.lyun.estate.biz.permission.entity;
 import com.google.common.base.MoreObjects;
 import com.lyun.estate.biz.permission.def.GrantScope;
 import com.lyun.estate.biz.permission.def.Permission;
+import com.lyun.estate.biz.support.def.DomainType;
 
 import java.util.Date;
 
@@ -11,12 +12,15 @@ import java.util.Date;
  */
 public class Grant {
     private Long id;
-    private Long employeeId;
+    private Long targetId;
+    private DomainType targetType;
     private Permission permission;
-    private GrantScope grantScope;
+    private Integer limits;
+    private GrantScope scope;
     private Long grantById;
     private Date createTime;
     private Date updateTime;
+    private Long updateById;
     private boolean isDeleted;
 
     public Long getId() {
@@ -28,12 +32,21 @@ public class Grant {
         return this;
     }
 
-    public Long getEmployeeId() {
-        return employeeId;
+    public Long getTargetId() {
+        return targetId;
     }
 
-    public Grant setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
+    public Grant setTargetId(Long targetId) {
+        this.targetId = targetId;
+        return this;
+    }
+
+    public DomainType getTargetType() {
+        return targetType;
+    }
+
+    public Grant setTargetType(DomainType targetType) {
+        this.targetType = targetType;
         return this;
     }
 
@@ -46,12 +59,12 @@ public class Grant {
         return this;
     }
 
-    public GrantScope getGrantScope() {
-        return grantScope;
+    public GrantScope getScope() {
+        return scope;
     }
 
-    public Grant setGrantScope(GrantScope grantScope) {
-        this.grantScope = grantScope;
+    public Grant setScope(GrantScope scope) {
+        this.scope = scope;
         return this;
     }
 
@@ -91,16 +104,34 @@ public class Grant {
         return this;
     }
 
+    public Integer getLimits() {
+        return limits;
+    }
+
+    public Grant setLimits(Integer limits) {
+        this.limits = limits;
+        return this;
+    }
+
+    public Long getUpdateById() {
+        return updateById;
+    }
+
+    public Grant setUpdateById(Long updateById) {
+        this.updateById = updateById;
+        return this;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
+                .omitNullValues()
                 .add("id", id)
-                .add("employeeId", employeeId)
+                .add("targetId", targetId)
+                .add("targetType", targetType)
                 .add("permission", permission)
-                .add("grantScope", grantScope)
-                .add("grantById", grantById)
-                .add("createTime", createTime)
-                .add("updateTime", updateTime)
+                .add("limits", limits)
+                .add("scope", scope)
                 .add("isDeleted", isDeleted)
                 .toString();
     }

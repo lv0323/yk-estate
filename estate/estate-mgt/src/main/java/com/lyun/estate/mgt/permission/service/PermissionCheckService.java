@@ -3,7 +3,7 @@ package com.lyun.estate.mgt.permission.service;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
 import com.lyun.estate.biz.permission.def.Permission;
-import com.lyun.estate.biz.permission.def.PermissionTarget;
+import com.lyun.estate.biz.permission.def.PermissionDefine;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
 import com.lyun.estate.biz.support.settings.SettingProvider;
 import com.lyun.estate.biz.support.settings.def.NameSpace;
@@ -39,14 +39,14 @@ public class PermissionCheckService {
     private List<Long> bizAdminIdList = new ArrayList<>();
 
     private List<Permission> selfOperateAllowed = Lists.newArrayList(
-            Permission.VIEW_CONTACT,
-            Permission.MODIFY_CONTACT,
-            Permission.PUBLISH,
-            Permission.PAUSE,
-            Permission.UN_PUBLISH,
-            Permission.RE_PUBLISH,
-            Permission.APPLY_PUBLIC,
-            Permission.UNDO_PUBLIC);
+            Permission.VIEW_FANG_CONTACT,
+            Permission.MODIFY_FANG_CONTACT,
+            Permission.FANG_PUBLISH,
+            Permission.FANG_PAUSE,
+            Permission.FANG_UN_PUBLISH,
+            Permission.FANG_RE_PUBLISH,
+            Permission.FANG_APPLY_PUBLIC,
+            Permission.FANG_UNDO_PUBLIC);
 
     private Logger logger = LoggerFactory.getLogger(PermissionCheckService.class);
 
@@ -58,7 +58,7 @@ public class PermissionCheckService {
 
     public void check(long targetId, Permission permission) {
         Operator operator = mgtContext.getOperator();
-        if (permission.getTarget() == PermissionTarget.FANG) {
+        if (permission.getTarget() == PermissionDefine.Target.FANG) {
             //管理员都全部允许
             if (bizAdminIdList.contains(operator.getId())) {
                 return;
