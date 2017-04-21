@@ -108,7 +108,7 @@
                                                 <th>跟进方式</th>
                                                 <th>跟进日期</th>
                                                 <th>交易类型</th>
-                                                <th>物业地址</th>
+                                                <th>房源信息</th>
                                                 <th>房源状态</th>
                                                 <th>发布日期</th>
                                                 <th>发布天数</th>
@@ -125,16 +125,13 @@
                                                 <td><label class="badge badge-success">{{follow.followType.label}}</label></td>
                                                 <td>{{follow.createTime|date:'yyyy-MM-dd'}}</td>
                                                 <td><label class="badge" ng-class="{'badge-rent':follow.fangTiny.bizType.name =='RENT','badge-sell':follow.fangTiny.bizType.name =='SELL'}">{{follow.fangTiny.bizType.label}}</label></td>
-                                                <td><a ng-href="{{'/mgt/fangManage/detail?id='+follow.fangId}}" target="_blank">{{follow.fangTiny.houseLicence &&follow.fangTiny.houseLicence.location}}</a></td>
+                                                <td><a ng-href="{{'/mgt/fangManage/detail?id='+follow.fangId}}" target="_blank">{{follow.fangTiny.fangHead}}</a></td>
                                                 <td><label class="badge" ng-class="{'badge-success':follow.fangTiny.process.name == 'SUCCESS',
                                                            'badge-info':follow.fangTiny.process.name == 'PUBLISH',
                                                            'badge-warning':follow.fangTiny.process.name == 'UN_PUBLISH',
                                                            'badge-danger':follow.fangTiny.process.name == 'DELEGATE'}">{{follow.fangTiny.process.label}}</label></td>
                                                 <td>{{follow.fangTiny.publishTime|date:'yyyy-MM-dd'}}</td>
                                                 <td>{{follow.publishedDay}}</td>
-                                            <#--<td class="text-right">
-                                                <a href="javascript:void(0);" ng-click="ctrl.deleteFollow(follow.id)">删除</a>
-                                            </td>-->
                                             </tr>
                                             <tr><td colspan="8">跟进内容:{{follow.content}}</td></tr>
                                             </tbody>
