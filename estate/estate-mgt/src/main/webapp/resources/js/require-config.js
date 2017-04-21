@@ -30,6 +30,7 @@ requirejs.config({
         'Croppie': 'plugins/croppie/croppie.min',
         'sweetalert':'plugins/SweetAlert/sweetalert.min',
         'jssorSlider':'plugins/slider/jssor.slider-23.1.1.mini',
+        'angularMap':'plugins/baiduMap/angular-baidu-map.min',
         'pagescroller':'plugins/pagescroller/pagescroller.min'
     },
     shim: {
@@ -91,6 +92,10 @@ requirejs.config({
         'jssorSlider':{
             deps: ['jquery'],
             exports: 'jssorSlider'
+        },
+        'angularMap':{
+            deps:[],
+            exports :'angularMap'
         },
         'pagescroller':{
             deps: ['jquery'],

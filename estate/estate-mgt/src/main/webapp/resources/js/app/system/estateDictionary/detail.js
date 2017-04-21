@@ -9,7 +9,7 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
         contextPath+'/js/service/util-service.js',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
         contextPath + '/js/directive/index.js',
-    'datatables', 'select', 'zTree','datatablesBootstrap', 'fancyboxThumbs','datetimepicker.zh-cn', 'chosen', 'pagescroller', 'jssorSlider'],
+    'datatables', 'select', 'zTree','datatablesBootstrap', 'fancyboxThumbs','datetimepicker.zh-cn', 'chosen', 'pagescroller', 'jssorSlider', 'angularMap'],
     function (mainApp, FangService, XiaoquService, CityService, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon, PositionCommon, UtilService, SweetAlertHelp) {
         var pageConfig = {
             limit: 8,
@@ -20,7 +20,7 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
         };
         var xiaoquId = UtilService.getUrlParam('id');
         /*小区列表*/
-        var module = angular.module('DictDetailModule', ['directiveYk']);
+        var module = angular.module('DictDetailModule', ['directiveYk', 'angular-baidu-map']);
         function DetailCtrl($scope, $timeout){
             var _this = this;
             _this.data ={
@@ -37,11 +37,13 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 list:[],
                 count:0,
             };
-            _this.page = {
-
-            };
-            _this.showMap = {
-
+            _this.page = {};
+            _this.showMap = {};
+            _this.baiduMap = {};
+            _this.mapConfig = {
+                baiduMap : null,
+                mapPoint : null,
+                mapSearchStr: ''
             };
             _this.commonInputWarn = function(name, formName){
                 $scope[formName||'buildingForm'][name].$setDirty();
@@ -149,7 +151,7 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 });
             };
             /*获取详细信息*/
-            (function(){
+            (function getDetail(){
                 XiaoquService.getXiaoquDetail({id :xiaoquId}).then(function(response){
                     $scope.$apply(function(){
                         _this.data.detail = response;
@@ -161,6 +163,13 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                             _this.data.config.showImage = true;
                         });
                     });
+                    /*如果地图指令先执行*/
+                    if(_this.mapConfig.baiduMap){
+                        _this.mapConfig.mapPoint = new BMap.Point(_this.data.detail.longitude, _this.data.detail.latitude);
+                        _this.mapConfig.baiduMap.centerAndZoom(_this.mapConfig.mapPoint, 15);
+                        var marker = new BMap.Marker(_this.mapConfig.mapPoint);
+                        _this.mapConfig.baiduMap.addOverlay(marker);
+                    }
                 });
             })();
 
@@ -172,6 +181,36 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 });
             };
             _this.getBuildings();
+            /*百度地图*/
+            _this.mapReady = function(map){
+                _this.mapConfig.baiduMap = map;
+                _this.mapConfig.baiduMap.enableScrollWheelZoom();
+                _this.mapConfig.baiduMap.addControl(new BMap.NavigationControl());
+                _this.mapConfig.baiduMap.addControl(new BMap.ScaleControl());
+                _this.mapConfig.baiduMap.addControl(new BMap.OverviewMapControl());
+                _this.mapConfig.baiduMap.addControl(new BMap.MapTypeControl());
+                if(_this.data.detail && _this.data.detail.latitude){
+                     _this.mapConfig.mapPoint = new BMap.Point(_this.data.detail.longitude, _this.data.detail.latitude);
+                    _this.mapConfig.baiduMap.centerAndZoom(_this.mapConfig.mapPoint, 15);
+                    var marker = new BMap.Marker(_this.mapConfig.mapPoint);
+                    _this.mapConfig.baiduMap.addOverlay(marker);
+
+                }
+            };
+            _this.searchMap =function(str){
+                if(_this.mapConfig.mapSearchStr === str){
+                    return;
+                }
+                _this.mapConfig.mapSearchStr = str;
+                var local = new BMap.LocalSearch(_this.mapConfig.baiduMap, {
+                    renderOptions: {map: _this.mapConfig.baiduMap, panel: "r-result"}
+                });
+                _this.mapConfig.baiduMap.clearOverlays();
+                var circle = new BMap.Circle( _this.mapConfig.mapPoint, 1000, {fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
+                _this.mapConfig.baiduMap.addOverlay(circle);
+                local.searchNearby(str,  _this.mapConfig.mapPoint, 1000);
+            };
+            /*end 百度地图*/
             /*查看栋座信息*/
             _this.buildingItem = function(item){
                 _this.data.showBuilding = item;
@@ -276,22 +315,7 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 }
             };
             /*end编辑栋座信息*/
-
-            // var jssor_1_options = {
-            //     $AutoPlay: 1,
-            //     $ArrowNavigatorOptions: {
-            //         $Class: $JssorArrowNavigator$
-            //     },
-            //     $ThumbnailNavigatorOptions: {
-            //         $Class: $JssorThumbnailNavigator$,
-            //         $Cols: 9,
-            //         $SpacingX: 3,
-            //         $SpacingY: 3,
-            //         $Align: 260
-            //     }
-            // };
-            // var jssor_1_slider = new $JssorSlider$("xiaoquSlider", jssor_1_options);
-        }
+        };
         DetailCtrl.$inject =['$scope', '$timeout'];
         module.controller("DetailCtrl", DetailCtrl);
         var navLabel = new Array('基本信息', '栋座字典', "周边配套", '开发商/物业');

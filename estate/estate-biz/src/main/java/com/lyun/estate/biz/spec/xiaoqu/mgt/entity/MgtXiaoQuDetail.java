@@ -31,6 +31,8 @@ public class MgtXiaoQuDetail {
     private String containerRate;
     private String greenRate;
     private String imageURI;
+    private String longitude;
+    private String latitude;
 
     public Long getId() {
         return id;
@@ -257,6 +259,22 @@ public class MgtXiaoQuDetail {
         return this;
     }
 
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -285,6 +303,8 @@ public class MgtXiaoQuDetail {
                 .add("containerRate", containerRate)
                 .add("greenRate", greenRate)
                 .add("imageURI", imageURI)
+                .add("longitude", longitude)
+                .add("latitude", latitude)
                 .toString();
     }
 }
