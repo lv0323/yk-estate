@@ -6,10 +6,10 @@ import com.lyun.estate.core.supports.labelenum.LabelEnum;
  * Created by Jeffrey on 2017-04-06.
  */
 public enum Permission implements LabelEnum {
+    //fang
     CREATE_FANG("新增房源", PermissionDefine.Category.FANG, PermissionDefine.Operation.CREATE),
     LIST_FANG_SELL("出售", PermissionDefine.Category.FANG, PermissionDefine.Operation.QUERY),
     LIST_FANG_RENT("出租", PermissionDefine.Category.FANG, PermissionDefine.Operation.QUERY),
-    VIEW_FANG_CONTACT("查看业主信息", PermissionDefine.Category.FANG, PermissionDefine.Operation.QUERY),
     VIEW_SELL_CONTACT_LIMIT("出售房源每天看业主次数", PermissionDefine.Category.FANG, PermissionDefine.Operation.QUERY),
     VIEW_RENT_CONTACT_LIMIT("出租房源每天看业主次数", PermissionDefine.Category.FANG, PermissionDefine.Operation.QUERY),
     NOT_FOLLOW_SELL("出售看业主不必写跟进", PermissionDefine.Category.FANG, PermissionDefine.Operation.QUERY),
@@ -30,8 +30,10 @@ public enum Permission implements LabelEnum {
     FANG_UNDO_PUBLIC("撤销发布外网", PermissionDefine.Category.FANG, PermissionDefine.Operation.UPDATE),
     UPDATE_FANG_BASE("修改基本信息", PermissionDefine.Category.FANG, PermissionDefine.Operation.UPDATE),
     UPDATE_FANG_EXT("修改配套信息", PermissionDefine.Category.FANG, PermissionDefine.Operation.UPDATE),
+    VIEW_FANG_CONTACT("查看业主信息", PermissionDefine.Category.FANG, PermissionDefine.Operation.QUERY),
     MODIFY_FANG_CONTACT("修改业主信息", PermissionDefine.Category.FANG, PermissionDefine.Operation.UPDATE),
 
+    //xiaoqu
     CREATE_XIAO_QU("创建小区", PermissionDefine.Category.XIAO_QU, PermissionDefine.Operation.CREATE),
     MODIFY_XIAO_QU("修改小区信息", PermissionDefine.Category.XIAO_QU, PermissionDefine.Operation.UPDATE),
     DEL_XIAO_QU("删除小区", PermissionDefine.Category.XIAO_QU, PermissionDefine.Operation.DELETE),
@@ -39,16 +41,22 @@ public enum Permission implements LabelEnum {
     MODIFY_BUILDING("修改栋座信息", PermissionDefine.Category.XIAO_QU, PermissionDefine.Operation.UPDATE),
     DEL_BUILDING("删除栋座", PermissionDefine.Category.XIAO_QU, PermissionDefine.Operation.DELETE),
 
-    UNBIND_DEVICE("解绑设备", PermissionDefine.Category.ORGANIZATION, PermissionDefine.Operation.DELETE),;
+    //组织架构
+    ORG_MANAGEMENT("组织架构管理", PermissionDefine.Category.ORGANIZATION, PermissionDefine.Operation.MANAGE),
+    UNBIND_DEVICE("解绑设备", PermissionDefine.Category.ORGANIZATION, PermissionDefine.Operation.DELETE),
+
+    //公司
+    PERMISSION_MANAGEMENT("权限设置", PermissionDefine.Category.COMPANY, PermissionDefine.Operation.MANAGE),
+    VIEW_AUDIT_LOG("查看业务日志", PermissionDefine.Category.COMPANY, PermissionDefine.Operation.QUERY),;
 
 
     private final String label;
-    private final PermissionDefine.Category Category;
+    private final PermissionDefine.Category category;
     private final PermissionDefine.Operation operation;
 
-    Permission(String label, PermissionDefine.Category Category, PermissionDefine.Operation operation) {
+    Permission(String label, PermissionDefine.Category category, PermissionDefine.Operation operation) {
         this.label = label;
-        this.Category = Category;
+        this.category = category;
         this.operation = operation;
     }
 
@@ -58,7 +66,7 @@ public enum Permission implements LabelEnum {
     }
 
     public PermissionDefine.Category getCategory() {
-        return Category;
+        return category;
     }
 
     public PermissionDefine.Operation getOperation() {

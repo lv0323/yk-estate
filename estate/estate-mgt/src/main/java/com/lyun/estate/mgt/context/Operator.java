@@ -15,7 +15,6 @@ public class Operator {
     private Long positionId;
     private String positionName;
     private Boolean isBoss;
-    private Boolean isAgent;
     private String mobile;
     private String name;
     private Gender gender;
@@ -71,15 +70,6 @@ public class Operator {
 
     public Operator setBoss(Boolean boss) {
         isBoss = boss;
-        return this;
-    }
-
-    public Boolean getAgent() {
-        return isAgent;
-    }
-
-    public Operator setAgent(Boolean agent) {
-        isAgent = agent;
         return this;
     }
 

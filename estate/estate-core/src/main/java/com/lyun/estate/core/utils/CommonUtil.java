@@ -4,6 +4,7 @@ import org.springframework.util.StringUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Random;
 import java.util.UUID;
@@ -19,7 +20,8 @@ public class CommonUtil {
         try {
             String ret = null;
             if (null != decryptStr && !"".equals(decryptStr.trim())) {
-                ret = Base64.getUrlEncoder().encodeToString(MessageDigest.getInstance("SHA-256").digest(decryptStr.getBytes()));
+                ret = Base64.getUrlEncoder()
+                        .encodeToString(MessageDigest.getInstance("SHA-256").digest(decryptStr.getBytes()));
             }
             return ret.replaceAll("=", "");
         } catch (NoSuchAlgorithmException e) {
@@ -36,6 +38,10 @@ public class CommonUtil {
 
     public static String getUuid() {
         return UUID.randomUUID().toString();
+    }
+
+    public static ZoneId defaultZone() {
+        return ZoneId.of("Asia/Shanghai");
     }
 
 }

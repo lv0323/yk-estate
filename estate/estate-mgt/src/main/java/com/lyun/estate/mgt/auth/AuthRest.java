@@ -83,7 +83,6 @@ public class AuthRest {
                 .setDepartmentId(employee.getDepartmentId())
                 .setPositionId(employee.getPositionId())
                 .setBoss(employee.getBoss())
-                .setAgent(employee.getAgent())
                 .setGender(employee.getGender())
                 .setName(employee.getName())
                 .setMobile(employee.getMobile())

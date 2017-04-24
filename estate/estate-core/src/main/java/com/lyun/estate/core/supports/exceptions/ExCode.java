@@ -60,6 +60,9 @@ public enum ExCode {
     //permission
     PERMISSION_ERROR("无权限进行该操作"),
     PERMISSION_CATEGORY_ERROR("权限类别错误"),
+    PERMISSION_NULL("没有权限:{}"),
+    PERMISSION_OUT_LIMIT("{},超过限制"),
+
 
     //fang process
     NOT_PUBLISH("该房源不可见"),
