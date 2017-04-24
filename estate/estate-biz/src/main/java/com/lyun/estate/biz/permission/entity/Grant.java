@@ -3,6 +3,7 @@ package com.lyun.estate.biz.permission.entity;
 import com.google.common.base.MoreObjects;
 import com.lyun.estate.biz.permission.def.GrantScope;
 import com.lyun.estate.biz.permission.def.Permission;
+import com.lyun.estate.biz.permission.def.PermissionDefine;
 import com.lyun.estate.biz.support.def.DomainType;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ public class Grant {
     private Long targetId;
     private DomainType targetType;
     private Permission permission;
+    private PermissionDefine.Category category;
     private Integer limits;
     private GrantScope scope;
     private Long grantById;
@@ -56,6 +58,15 @@ public class Grant {
 
     public Grant setPermission(Permission permission) {
         this.permission = permission;
+        return this;
+    }
+
+    public PermissionDefine.Category getCategory() {
+        return category;
+    }
+
+    public Grant setCategory(PermissionDefine.Category category) {
+        this.category = category;
         return this;
     }
 
@@ -130,6 +141,7 @@ public class Grant {
                 .add("targetId", targetId)
                 .add("targetType", targetType)
                 .add("permission", permission)
+                .add("category", category)
                 .add("limits", limits)
                 .add("scope", scope)
                 .add("isDeleted", isDeleted)
