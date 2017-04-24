@@ -43,7 +43,7 @@ class FangProcessMgtService {
         if (fangBase.getProcess() == HouseProcess.UN_PUBLISH) {
 //            permissionCheckService.check(fangId, Permission.RE_PUBLISH)
         } else {
-            permissionCheckService.check(fangId, Permission.PUBLISH)
+            permissionCheckService.check(fangId, Permission.FANG_PUBLISH)
         }
 
         Operator operator = mgtContext.getOperator()
@@ -64,7 +64,7 @@ class FangProcessMgtService {
 
     @Transactional
     Fang unPublish(long fangId) {
-        permissionCheckService.check(fangId, Permission.UN_PUBLISH)
+        permissionCheckService.check(fangId, Permission.FANG_UN_PUBLISH)
 
         Fang fang = processService.unPublish(fangId)
 
@@ -78,7 +78,7 @@ class FangProcessMgtService {
 
     @Transactional
     Fang pause(long fangId) {
-        permissionCheckService.check(fangId, Permission.PAUSE)
+        permissionCheckService.check(fangId, Permission.FANG_PAUSE)
 
         Fang fang = processService.pause(fangId)
 
@@ -114,7 +114,7 @@ class FangProcessMgtService {
 
     @Transactional
     Fang applyPublic(long fangId) {
-        permissionCheckService.check(fangId, Permission.APPLY_PUBLIC)
+        permissionCheckService.check(fangId, Permission.FANG_APPLY_PUBLIC)
 
         Fang fang = processService.applyPublic(fangId)
 
@@ -128,7 +128,7 @@ class FangProcessMgtService {
 
     @Transactional
     Fang confirmPublic(long fangId) {
-        permissionCheckService.check(fangId, Permission.CONFIRM_PUBLIC)
+        permissionCheckService.check(fangId, Permission.FANG_CONFIRM_PUBLIC)
 
         Fang fang = processService.confirmPublic(fangId)
 
@@ -142,7 +142,7 @@ class FangProcessMgtService {
 
     @Transactional
     Fang rejectPublic(long fangId) {
-        permissionCheckService.check(fangId, Permission.REJECT_PUBLIC)
+        permissionCheckService.check(fangId, Permission.FANG_REJECT_PUBLIC)
 
         Fang fang = processService.rejectPublic(fangId)
 
@@ -156,7 +156,7 @@ class FangProcessMgtService {
 
     @Transactional
     Fang undoPublic(long fangId) {
-        permissionCheckService.check(fangId, Permission.UNDO_PUBLIC)
+        permissionCheckService.check(fangId, Permission.FANG_UNDO_PUBLIC)
 
         Fang fang = processService.undoPublic(fangId)
 
