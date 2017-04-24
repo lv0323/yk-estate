@@ -28,6 +28,9 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.buildingUnitPost = function (params, header) {
             return RequestService.post('/api/house-dict/building-unit', params, header);
         };
+        FangService.buildingDelete = function (params, header) {
+            return RequestService.post('/api/house-dict/building/delete', params, header);
+        };
         FangService.subType = function (params, header) {
             return RequestService.get('/api/fang/sub-types', params, header);
         };

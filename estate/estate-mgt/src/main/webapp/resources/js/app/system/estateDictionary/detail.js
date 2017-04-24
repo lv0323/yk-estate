@@ -315,6 +315,24 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 }
             };
             /*end编辑栋座信息*/
+
+            /*删除栋座*/
+            _this.buildingDelete = function(){
+                if(!_this.data.modifyBuilding.id){
+                    return;
+                }
+                SweetAlertHelp.confirm({title:'确认删除栋座?'},function(){
+                    $('#buildingModify').modal('hide');
+                    FangService.buildingDelete({buildingId:_this.data.modifyBuilding.id}).then(function(response) {
+                        SweetAlertHelp.success();
+                        _this.getBuildings();
+                    }).fail(function(response){
+                        SweetAlertHelp.fail({message:response&&response.message})
+                    });
+                });
+
+            };
+            /*end删除栋座*/
         };
         DetailCtrl.$inject =['$scope', '$timeout'];
         module.controller("DetailCtrl", DetailCtrl);
