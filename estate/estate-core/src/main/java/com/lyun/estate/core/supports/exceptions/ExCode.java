@@ -59,6 +59,7 @@ public enum ExCode {
     FILE_IMG_SIZE_ERROR("图片尺寸不是{}*{}"),
     //permission
     PERMISSION_ERROR("无权限进行该操作"),
+    PERMISSION_CATEGORY_ERROR("权限类别错误"),
 
     //fang process
     NOT_PUBLISH("该房源不可见"),
