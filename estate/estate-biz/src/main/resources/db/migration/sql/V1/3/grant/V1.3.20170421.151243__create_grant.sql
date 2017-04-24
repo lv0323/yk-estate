@@ -3,6 +3,7 @@ CREATE TABLE t_grant (
   target_id    BIGINT      NOT NULL,
   target_type  VARCHAR(15) NOT NULL,
   permission   VARCHAR(40) NOT NULL,
+  category     VARCHAR(30) NOT NULL,
   scope        VARCHAR(15),
   limits       INT,
   grant_by_id  BIGINT,

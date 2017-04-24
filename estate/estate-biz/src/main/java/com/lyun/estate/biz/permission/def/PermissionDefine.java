@@ -7,7 +7,7 @@ import com.lyun.estate.core.supports.labelenum.LabelEnum;
  */
 public class PermissionDefine {
 
-    public enum Target implements LabelEnum {
+    public enum Category implements LabelEnum {
         FANG("房源"),
         CUSTOMER("客源"),
         XIAO_QU("小区"),
@@ -16,7 +16,7 @@ public class PermissionDefine {
 
         private final String label;
 
-        Target(String label) {
+        Category(String label) {
             this.label = label;
         }
 
