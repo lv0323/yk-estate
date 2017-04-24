@@ -24,6 +24,8 @@ import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
 import com.lyun.estate.biz.permission.def.Permission;
+import com.lyun.estate.biz.permission.entity.Grant;
+import com.lyun.estate.biz.permission.service.GrantService;
 import com.lyun.estate.biz.spec.fang.mgt.entity.*;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.service.MgtXiaoQuService;
@@ -47,6 +49,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.util.Objects.isNull;
@@ -74,9 +77,10 @@ public class FangMgtService {
     private EmployeeService employeeService;
     @Autowired
     private FileService fileService;
-
     @Autowired
     private PermissionCheckService permissionCheckService;
+    @Autowired
+    private GrantService grantService;
 
     private Logger logger = LoggerFactory.getLogger(FangMgtService.class);
 
@@ -88,6 +92,8 @@ public class FangMgtService {
         ExceptionUtil.checkNotNull("基本信息", fang);
         ExceptionUtil.checkNotNull("扩展信息", fangExt);
         ExceptionUtil.checkNotNull("联系方式", fangExt);
+
+        permissionCheckService.checkExist(Permission.CREATE_FANG);
 
         fillFang(fang);
 
@@ -191,6 +197,29 @@ public class FangMgtService {
                                                 PageBounds pageBounds) {
         Operator operator = mgtContext.getOperator();
 
+        //permission check && biz type set
+        if (!operator.getSysAdmin()) {
+            Map<Permission, Grant> employeeGrantsMap = grantService.getEmployeeGrantsMap(operator.getId());
+            boolean canListSell = employeeGrantsMap.get(Permission.LIST_FANG_SELL) != null;
+            boolean canListRent = employeeGrantsMap.get(Permission.LIST_FANG_RENT) != null;
+            if (filter.getBizType() == BizType.SELL && !canListSell) {
+                throw new EstateException(ExCode.PERMISSION_ERROR);
+            } else if (filter.getBizType() == BizType.RENT && !canListRent) {
+                throw new EstateException(ExCode.PERMISSION_ERROR);
+            } else if (filter.getBizType() == null) {
+                if (!canListSell && !canListRent) {
+                    throw new EstateException(ExCode.PERMISSION_ERROR);
+                }
+                if (canListSell && canListRent) {
+                    //do nothing
+                } else if (canListSell) {
+                    filter.setBizType(BizType.SELL);
+                } else {
+                    filter.setBizType(BizType.RENT);
+                }
+            }
+        }
+
         if (nonNull(filter.getDepartmentId())) {
             Department department = departmentService.selectById(filter.getDepartmentId());
             if (isNull(department) ||
@@ -211,9 +240,16 @@ public class FangMgtService {
     @Transactional
     public FangContact getContact(Long fangId) {
 
-        permissionCheckService.check(fangId, Permission.VIEW_FANG_CONTACT);
+        permissionCheckService.check(fangId, DomainType.FANG, Permission.VIEW_FANG_CONTACT);
 
         Fang fang = mgtFangService.getFangBase(fangId);
+
+        if (fang.getBizType() == BizType.SELL) {
+            permissionCheckService.checkLimit(Permission.VIEW_SELL_CONTACT_LIMIT);
+        } else {
+            permissionCheckService.checkLimit(Permission.VIEW_RENT_CONTACT_LIMIT);
+        }
+
         FangContact result = mgtFangService.getContact(fangId);
 
         employeeService.updateFollowFangId(mgtContext.getOperator().getId(), fangId);
@@ -436,7 +472,7 @@ public class FangMgtService {
 
     @Transactional
     public FangContact updateContact(FangContact contact) {
-        permissionCheckService.check(contact.getFangId(), Permission.MODIFY_FANG_CONTACT);
+        permissionCheckService.check(contact.getFangId(), DomainType.FANG, Permission.MODIFY_FANG_CONTACT);
 
         Fang fang = mgtFangService.getFangBase(contact.getFangId());
         FangContact result = mgtFangService.updateContact(contact);

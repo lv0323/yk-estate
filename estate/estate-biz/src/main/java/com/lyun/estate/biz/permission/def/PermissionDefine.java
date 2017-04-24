@@ -12,7 +12,8 @@ public class PermissionDefine {
         CUSTOMER("客源"),
         XIAO_QU("小区"),
         ORGANIZATION("组织架构"),
-        COMPANY("公司"),;
+        COMPANY("公司"),
+        ;
 
         private final String label;
 
@@ -30,7 +31,8 @@ public class PermissionDefine {
         CREATE("新增"),
         UPDATE("更新"),
         QUERY("查询"),
-        DELETE("删除"),;
+        DELETE("删除"),
+        MANAGE("管理"),;
 
         private final String label;
 

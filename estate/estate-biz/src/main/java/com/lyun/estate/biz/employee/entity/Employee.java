@@ -36,10 +36,21 @@ public class Employee {
     private String deviceId;
     @JsonIgnore
     private Boolean sysAdmin;
-    private Long followFangId;
     private Date entryDate;
     private Date createTime;
     private Date updateTime;
+    @JsonIgnore
+    private Long followFangId;
+    @JsonIgnore
+    private Long followRentId;
+    @JsonIgnore
+    private Integer sellContactCount;
+    @JsonIgnore
+    private Date lastSellCountTime;
+    @JsonIgnore
+    private Integer rentContactCount;
+    @JsonIgnore
+    private Date lastRentCountTime;
 
     public Long getId() {
         return id;
@@ -284,12 +295,58 @@ public class Employee {
         return this;
     }
 
+    public Long getFollowRentId() {
+        return followRentId;
+    }
+
+    public Employee setFollowRentId(Long followRentId) {
+        this.followRentId = followRentId;
+        return this;
+    }
+
+    public Integer getSellContactCount() {
+        return sellContactCount;
+    }
+
+    public Employee setSellContactCount(Integer sellContactCount) {
+        this.sellContactCount = sellContactCount;
+        return this;
+    }
+
+    public Date getLastSellCountTime() {
+        return lastSellCountTime;
+    }
+
+    public Employee setLastSellCountTime(Date lastSellCountTime) {
+        this.lastSellCountTime = lastSellCountTime;
+        return this;
+    }
+
+    public Integer getRentContactCount() {
+        return rentContactCount;
+    }
+
+    public Employee setRentContactCount(Integer rentContactCount) {
+        this.rentContactCount = rentContactCount;
+        return this;
+    }
+
+    public Date getLastRentCountTime() {
+        return lastRentCountTime;
+    }
+
+    public Employee setLastRentCountTime(Date lastRentCountTime) {
+        this.lastRentCountTime = lastRentCountTime;
+        return this;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
                 .add("id", id)
                 .add("companyId", companyId)
+                .add("companyIpCheck", companyIpCheck)
                 .add("cityId", cityId)
                 .add("departmentId", departmentId)
                 .add("departmentName", departmentName)
@@ -309,10 +366,16 @@ public class Employee {
                 .add("status", status)
                 .add("quit", quit)
                 .add("deviceId", deviceId)
+                .add("sysAdmin", sysAdmin)
                 .add("entryDate", entryDate)
                 .add("createTime", createTime)
                 .add("updateTime", updateTime)
                 .add("followFangId", followFangId)
+                .add("followRentId", followRentId)
+                .add("sellContactCount", sellContactCount)
+                .add("lastSellCountTime", lastSellCountTime)
+                .add("rentContactCount", rentContactCount)
+                .add("lastRentCountTime", lastRentCountTime)
                 .toString();
     }
 }
