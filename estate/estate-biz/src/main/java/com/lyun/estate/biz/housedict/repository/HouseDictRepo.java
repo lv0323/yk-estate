@@ -35,7 +35,7 @@ public interface HouseDictRepo {
     @Select("SELECT * FROM t_building_unit where building_id =#{buildingId} AND is_deleted = false")
     List<BuildingUnit> findBuildingUnitByBuildingId(Long buildingId);
 
-    @Select("SELECT * FROM t_building where community_id =#{communityId} AND company_id =#{companyId} AND is_deleted = false")
+    @Select("SELECT * FROM t_building where community_id =#{communityId} AND company_id =#{companyId} AND is_deleted = false ORDER BY id")
     List<Building> findBuildingByCommunityIdAndCompanyId(@Param("communityId") Long communityId,
                                                          @Param("companyId") Long companyId);
 
