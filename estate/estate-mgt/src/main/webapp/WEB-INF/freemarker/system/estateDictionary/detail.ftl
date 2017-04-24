@@ -5,7 +5,7 @@
     <section class="content-header">
         <ol class="breadcrumb">
             <li>
-                <a href="#">
+                <a ng-href="${contextPath}/system/estateDictionary?target=.sys">
                     <i class="fa fa-home fa-lg" aria-hidden="true"></i>
                     楼盘字典
                 </a>
@@ -111,7 +111,7 @@
                             <div class="box-header" style="border-bottom: 1px solid #ddd;">
                                 <h3 class="box-title pull-left">栋座字典</h3>
                                 <div class="box-tools">
-                                    <a href="javascript:void(0);" class="pull-right btn btn-white" ng-click="ctrl.buildingModify()"><i class="fa fa-plus"></i>增加栋座</a>
+                                    <a href="javascript:void(0);" class="pull-right btn btn-white" ng-click="ctrl.buildingModify()"><i class="fa fa-plus"></i>新增栋座</a>
                                 </div>
                             </div>
                             <div class="box-body">
@@ -356,6 +356,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" ng-show="ctrl.data.modifyBuilding.id" ng-click="ctrl.buildingDelete()" style="margin-right: 30px">删除</button>
                     <button type="button" class="btn btn-primary" ng-click="ctrl.buildingUpdate()">确定</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 </div>
