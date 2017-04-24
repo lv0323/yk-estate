@@ -58,7 +58,7 @@ public class PermissionCheckService {
 
     public void check(long targetId, Permission permission) {
         Operator operator = mgtContext.getOperator();
-        if (permission.getTarget() == PermissionDefine.Target.FANG) {
+        if (permission.getCategory() == PermissionDefine.Category.FANG) {
             //管理员都全部允许
             if (bizAdminIdList.contains(operator.getId())) {
                 return;
