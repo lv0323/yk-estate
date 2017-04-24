@@ -6,6 +6,7 @@ import com.lyun.estate.core.supports.labelenum.LabelEnum;
  * Created by Jeffrey on 2017-04-06.
  */
 public enum GrantScope implements LabelEnum {
+    NONE("无"),
     SELF("本人"),
     DEPT("本部门"),
     COMPANY("本公司"),;
