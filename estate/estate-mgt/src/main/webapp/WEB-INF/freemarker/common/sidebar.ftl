@@ -161,6 +161,7 @@
                 <ul class="treeview-menu">
                     <!--<li><a href="/mgt/system/operationLog?target=.sys"><i class="fa fa-circle"></i>操作日志</a></li> -->
                     <li><a href="/mgt/system/estateDictionary?target=.sys"><i class="fa fa-circle"></i>楼盘字典</a></li>
+                    <li><a href="/mgt/system/authorityConfig?target=.sys"><i class="fa fa-circle"></i>权限管理</a></li>
                 </ul>
             </li>
 

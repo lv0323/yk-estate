@@ -49,4 +49,13 @@ public class systemPage {
         params.put("mapKey",settingProvider.find(NameSpace.CONFIG, "BAI_DU_MAP_KEY").getValue());
         return new ModelAndView("/system/estateDictionary/detail", params);
     }
+
+    @GetMapping("/authorityConfig")
+    public ModelAndView authorityConfig() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("houseTypes", Arrays.asList(HouseType.values()));
+        params.put("avatarUrl",service.getAvatar());
+        params.put("username",service.getUsername());
+        return new ModelAndView("/system/authorityConfig/index", params);
+    }
 }
