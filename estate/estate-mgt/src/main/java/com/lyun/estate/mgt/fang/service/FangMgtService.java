@@ -24,7 +24,6 @@ import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
 import com.lyun.estate.biz.permission.def.Permission;
-import com.lyun.estate.biz.permission.entity.Grant;
 import com.lyun.estate.biz.permission.service.GrantService;
 import com.lyun.estate.biz.spec.fang.mgt.entity.*;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
@@ -49,7 +48,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static java.util.Objects.isNull;
@@ -198,27 +196,27 @@ public class FangMgtService {
         Operator operator = mgtContext.getOperator();
 
         //permission check && biz type set
-        if (!operator.getSysAdmin()) {
-            Map<Permission, Grant> employeeGrantsMap = grantService.getEmployeeGrantsMap(operator.getId());
-            boolean canListSell = employeeGrantsMap.get(Permission.LIST_FANG_SELL) != null;
-            boolean canListRent = employeeGrantsMap.get(Permission.LIST_FANG_RENT) != null;
-            if (filter.getBizType() == BizType.SELL && !canListSell) {
-                throw new EstateException(ExCode.PERMISSION_ERROR);
-            } else if (filter.getBizType() == BizType.RENT && !canListRent) {
-                throw new EstateException(ExCode.PERMISSION_ERROR);
-            } else if (filter.getBizType() == null) {
-                if (!canListSell && !canListRent) {
-                    throw new EstateException(ExCode.PERMISSION_ERROR);
-                }
-                if (canListSell && canListRent) {
-                    //do nothing
-                } else if (canListSell) {
-                    filter.setBizType(BizType.SELL);
-                } else {
-                    filter.setBizType(BizType.RENT);
-                }
-            }
-        }
+//        if (!operator.getSysAdmin()) {
+//            Map<Permission, Grant> employeeGrantsMap = grantService.getEmployeeGrantsMap(operator.getId());
+//            boolean canListSell = employeeGrantsMap.get(Permission.LIST_FANG_SELL) != null;
+//            boolean canListRent = employeeGrantsMap.get(Permission.LIST_FANG_RENT) != null;
+//            if (filter.getBizType() == BizType.SELL && !canListSell) {
+//                throw new EstateException(ExCode.PERMISSION_ERROR);
+//            } else if (filter.getBizType() == BizType.RENT && !canListRent) {
+//                throw new EstateException(ExCode.PERMISSION_ERROR);
+//            } else if (filter.getBizType() == null) {
+//                if (!canListSell && !canListRent) {
+//                    throw new EstateException(ExCode.PERMISSION_ERROR);
+//                }
+//                if (canListSell && canListRent) {
+//                    //do nothing
+//                } else if (canListSell) {
+//                    filter.setBizType(BizType.SELL);
+//                } else {
+//                    filter.setBizType(BizType.RENT);
+//                }
+//            }
+//        }
 
         if (nonNull(filter.getDepartmentId())) {
             Department department = departmentService.selectById(filter.getDepartmentId());

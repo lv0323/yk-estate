@@ -65,6 +65,11 @@ public class GrantRest {
                 positionId) ? CommonResp.succeed() : CommonResp.failed();
     }
 
+    @PostMapping("/regrant-by-position")
+    CommonResp regrantByPosition(@RequestParam Long positionId) {
+        return grantMgtService.regrantByPosition(positionId) ? CommonResp.succeed() : CommonResp.failed();
+    }
+
 
     private Grant convertToGrant(String t) {
         String[] split = t.split("\\.", 2);

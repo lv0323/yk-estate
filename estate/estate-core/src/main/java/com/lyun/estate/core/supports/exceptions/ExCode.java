@@ -59,9 +59,11 @@ public enum ExCode {
     FILE_IMG_SIZE_ERROR("图片尺寸不是{}*{}"),
     //permission
     PERMISSION_ERROR("无权限进行该操作"),
-    PERMISSION_CATEGORY_ERROR("权限类别错误"),
+    PERMISSION_OWNERSHIP_ERROR("没有操作对象的权限:{}.{}"),
     PERMISSION_NULL("没有权限:{}"),
     PERMISSION_OUT_LIMIT("{},超过限制"),
+    PERMISSION_CATEGORY_ERROR("权限类别错误"),
+    PERMISSION_CATEGORY_NOT_SUPPORT("不支持设置权限类别:{}"),
 
 
     //fang process
