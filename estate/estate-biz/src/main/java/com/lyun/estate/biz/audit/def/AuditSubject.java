@@ -11,7 +11,7 @@ public enum AuditSubject implements LabelEnum {
     FANG_M("修改房源信息"),
     FANG_OWNER("房东信息"),
     ORGANIZATION("组织架构"),
-    PRIVILEGE("权限设置"),
+    PERMISSION("权限设置"),
     XIAO_QU_P("增/删小区"),
     XIAO_QU_M("修改小区信息"),
     BUILDING("楼座信息"),;

@@ -25,6 +25,9 @@ public interface GrantRepo {
     @Select("SELECT * FROM t_grant WHERE target_id = #{targetId} AND target_type = #{targetType} AND is_deleted = FALSE;")
     List<Grant> findGrants(@Param("targetId") long targetId, @Param("targetType") DomainType targetType);
 
+    @Select("SELECT * FROM t_grant WHERE target_id = #{positionId} AND target_type = 'POSITION' AND category <> 'PAGE' AND is_deleted = FALSE;")
+    List<Grant> findPositionNotPageGrants(@Param("positionId") long positionId);
+
     @Update("UPDATE t_grant SET is_deleted = TRUE, update_time =now(), update_by_id =#{operatorId} WHERE target_id =#{targetId} AND  target_type = #{targetType};")
     int delAll(@Param("targetId") long targetId, @Param("targetType") DomainType targetType,
                @Param("operatorId") long operatorId);

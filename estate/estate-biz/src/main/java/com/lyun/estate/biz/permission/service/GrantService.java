@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.permission.service;
 
+import com.lyun.estate.biz.employee.entity.Employee;
+import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.permission.def.PermissionDefine;
 import com.lyun.estate.biz.permission.entity.Grant;
@@ -28,6 +30,9 @@ public class GrantService {
     @Autowired
     private GrantRepo grantRepo;
 
+    @Autowired
+    private EmployeeService employeeService;
+
     private Logger logger = LoggerFactory.getLogger(GrantService.class);
 
     public List<Grant> getGrantsByCategory(long targetId, DomainType targetType, PermissionDefine.Category category) {
@@ -46,7 +51,7 @@ public class GrantService {
     @Transactional
     public boolean regrantEmployeeByPosition(long employeeId, long positionId, long operatorId) {
         grantRepo.delAll(employeeId, DomainType.EMPLOYEE, operatorId);
-        List<Grant> grants = grantRepo.findGrants(positionId, DomainType.POSITION);
+        List<Grant> grants = grantRepo.findPositionNotPageGrants(positionId);
         if (!CollectionUtils.isEmpty(grants)) {
             grants.forEach(
                     g -> {
@@ -75,6 +80,10 @@ public class GrantService {
                 t -> t.getPermission() == null || t.getTargetId() == null || t.getTargetType() == null
         ), "授权信息", grants);
 
+        if (targetType == DomainType.EMPLOYEE && category == PermissionDefine.Category.PAGE) {
+            throw new EstateException(ExCode.PERMISSION_CATEGORY_NOT_SUPPORT, category.getLabel());
+        }
+
         grantRepo.delAllOfCategory(targetId, targetType, category, operatorId);
 
         if (!CollectionUtils.isEmpty(grants)) {
@@ -96,6 +105,33 @@ public class GrantService {
                     }
             );
         }
+        return true;
+    }
+
+    @Transactional
+    public boolean regrantByPosition(Long companyId, Long positionId, Long operatorId) {
+        List<Employee> employees = employeeService.listByCompanyIdAndPositionId(companyId, positionId);
+        List<Grant> grants = grantRepo.findPositionNotPageGrants(positionId);
+
+        employees.forEach(
+                t -> {
+                    grantRepo.delAll(t.getId(), DomainType.EMPLOYEE, operatorId);
+                    if (!CollectionUtils.isEmpty(grants)) {
+                        grants.forEach(
+                                g -> {
+                                    Grant newGrant = new Grant();
+                                    newGrant.setTargetId(t.getId())
+                                            .setTargetType(DomainType.EMPLOYEE)
+                                            .setPermission(g.getPermission())
+                                            .setCategory(g.getPermission().getCategory())
+                                            .setScope(g.getScope())
+                                            .setLimits(g.getLimits())
+                                            .setGrantById(operatorId);
+                                    grantRepo.save(newGrant);
+                                }
+                        );
+                    }
+                });
         return true;
     }
 }

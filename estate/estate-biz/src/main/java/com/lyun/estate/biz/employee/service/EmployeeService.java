@@ -29,6 +29,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -248,5 +249,9 @@ public class EmployeeService {
 
     public int clearAllFollowFangId(Long fangId) {
         return repo.clearAllFollowFangId(fangId);
+    }
+
+    public List<Employee> listByCompanyIdAndPositionId(long companyId, long positionId) {
+        return repo.listByCompanyIdAndPositionId(companyId, positionId);
     }
 }

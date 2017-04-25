@@ -7,6 +7,7 @@ import com.lyun.estate.biz.employee.repo.provider.EmployeeProvider;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface EmployeeRepo {
 
@@ -63,4 +64,8 @@ public interface EmployeeRepo {
 
     @Update("UPDATE t_employee SET follow_fang_id = NULL WHERE follow_fang_id = #{fangId};")
     int clearAllFollowFangId(Long fangId);
+
+    @SelectProvider(type = EmployeeProvider.class, method = "selectByCompanyIdAndPositionId")
+    List<Employee> listByCompanyIdAndPositionId(@Param("companyId") long companyId,
+                                                @Param("positionId") long positionId);
 }
