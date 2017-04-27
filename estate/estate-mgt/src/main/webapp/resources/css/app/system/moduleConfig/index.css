@@ -1,0 +1,21 @@
+.zTreeDemoBackground{
+    min-height: 600px;
+
+}
+.ztree li span.button.ico_docu.employee_ico {
+    background-position: -65px -17px;
+}
+.ztree li span.button.ico_docu.position_ico {
+    margin-right: 2px;
+    background-position: -80px -17px;
+    vertical-align: middle;
+    *vertical-align: middle;
+}
+
+.galcolumn {
+    width: 49.4318%;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    float: left;
+    box-sizing: border-box;
+}

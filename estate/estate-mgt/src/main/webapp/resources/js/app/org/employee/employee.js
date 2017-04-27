@@ -3,6 +3,7 @@
  */
 require(['main-app',contextPath + '/js/service/employee-service.js',
         contextPath + '/js/service/department-service.js',
+        contextPath + '/js/service/authority-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath+'/js/utils/dataTableHelp.js',
         contextPath+'/js/app/org/department/departCommon.js',
@@ -10,7 +11,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         contextPath+'/js/service/util-service.js',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
     'datatables', 'zTree','datatablesBootstrap', 'datetimepicker.zh-cn', 'chosen'],
-    function (mainApp, EmployeeService, DepartmentService, pagingPlugin, dataTableHelp, DepartCommon, PositionCommon, UtilService, SweetAlertHelp) {
+    function (mainApp, EmployeeService, DepartmentService, AuthorityService, pagingPlugin, dataTableHelp, DepartCommon, PositionCommon, UtilService, SweetAlertHelp) {
         var header = {};
 
         var employeeAllDataRaw = {};
@@ -24,7 +25,9 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             init: false,
             target:null
         };
-
+        var positionConfig = {
+            positionId:null
+        };
         var byDepart = {
             status: false,
             departmentId: null
@@ -44,7 +47,6 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 init: false
             }
         };
-
         $.fn.datetimepicker.defaults.language = "zh-CN";
         $('#addEmployeeEntryDate').datetimepicker({
             todayHighlight:true,
@@ -250,7 +252,15 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             }
             return flag;
         }
-
+        function reGrantEmployeeByPosition (employeeId, positionId) {
+            AuthorityService.reGrantEmployeeByPosition({employeeId:employeeId, positionId:positionId}).then(function(){
+                SweetAlertHelp.success({},function(){
+                    location.reload(true);
+                });
+            }).fail(function(response){
+                SweetAlertHelp.fail({message: response && response.message});
+            });
+        }
         //toggle filter for Employee display
         $('.fadeInRight').on('click','#filterEmployeeBtn',function(){
             if($('#box-filter').css('display')=="none"){
@@ -263,6 +273,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
         //initialize title in add Employee dialog
         $('#addEmployeeBtn').on('click', function(){
             DepartCommon.initDepartSelector();
+            positionConfig.positionId = null;
             PositionCommon.initPositionSelector().done(function () {
                 initChosen('#addEmployeePosition', 'addEmployeePosition');
             });
@@ -295,10 +306,22 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
 
             if(verifyEmployeeInput('add',toAddData)){
                 EmployeeService.addEmployee({data:toAddData},header)
-                    .done(function(){
-                        SweetAlertHelp.success({}, function () {
-                            location.reload(true);
-                        });
+                    .done(function(data){
+                        if(positionConfig.positionId != toAddData.positionId){
+                            SweetAlertHelp.success({
+                                message: "是否将员工权限更改为新岗位的权限?",
+                                showCancelButton: true,
+                                cancelButtonText: "取消",
+                                confirmButtonColor: "#5cb85c",
+                                confirmButtonText: "更新",
+                            }, function () {
+                                reGrantEmployeeByPosition(data.id, data.positionId);
+                            });
+                        }else{
+                            SweetAlertHelp.success({}, function () {
+                                location.reload(true);
+                            });
+                        }
                     })
                     .fail(function (res) {
                         SweetAlertHelp.fail(res);
@@ -323,6 +346,7 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                 extensionNumber = employee["openContact"].split(',')[1];
             }
             DepartCommon.initDepartSelector(employee["departmentId"]);
+            positionConfig.positionId = employee["positionId"];
             PositionCommon.initPositionSelector(employee["positionId"]).done(function () {
                 initChosen('#editEmployeePosition', 'editEmployeePosition');
             });
@@ -352,7 +376,9 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             $('#editEmployeeEntryDate').val(time);
 
         });
-
+        $('body').on('click', '.sweet-alert .cancel', function () {
+            location.reload(true);
+        });
         $('#editEmployeeUnbindDeviceBtn').on('click', function () {
             var employeeId = $('#editEmployeeId').val();
             EmployeeService.unbindDevice({id: employeeId})
@@ -389,9 +415,21 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             if(verifyEmployeeInput('edit',toEditData)){
                 EmployeeService.editEmployee({data:toEditData},header)
                     .done(function(){
-                        SweetAlertHelp.success({}, function () {
-                            location.reload(true);
-                        });
+                        if(positionConfig.positionId != toEditData.positionId){
+                            SweetAlertHelp.success({
+                                message: "是否将员工权限更改为新岗位的权限?",
+                                showCancelButton: true,
+                                cancelButtonText: "取消",
+                                confirmButtonColor: "#5cb85c",
+                                confirmButtonText: "更新",
+                            }, function () {
+                                reGrantEmployeeByPosition(toEditData.id, toEditData.positionId);
+                            });
+                        }else{
+                            SweetAlertHelp.success({}, function () {
+                                location.reload(true);
+                            });
+                        }
                     })
                     .fail(function (res) {
                         SweetAlertHelp.fail(res);
