@@ -1,6 +1,7 @@
 package com.lyun.estate.mgt.system;
 
 import com.lyun.estate.biz.fang.def.HouseType;
+import com.lyun.estate.biz.permission.def.GrantScope;
 import com.lyun.estate.biz.support.settings.SettingProvider;
 import com.lyun.estate.biz.support.settings.def.NameSpace;
 import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
@@ -54,6 +55,7 @@ public class systemPage {
     public ModelAndView authorityConfig() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("houseTypes", Arrays.asList(HouseType.values()));
+        params.put("authorityScope", Arrays.asList(GrantScope.values()));
         params.put("avatarUrl",service.getAvatar());
         params.put("username",service.getUsername());
         return new ModelAndView("/system/authorityConfig/index", params);
