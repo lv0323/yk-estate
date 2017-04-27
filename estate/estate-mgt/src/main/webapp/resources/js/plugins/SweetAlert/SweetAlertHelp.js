@@ -53,6 +53,8 @@ define(contextPath+'/js/plugins/SweetAlert/SweetAlertHelp.js',
             option.closeOnConfirm =  false;
             SweetAlertHelp.sweetAlert(option, callback);
         };
-
+        SweetAlertHelp.close = function(){
+            swal.close();
+        };
         return SweetAlertHelp;
     });

@@ -87,20 +87,7 @@ require(['main-app', contextPath + '/js/service/department-service.js',
             angular.copy(initData.xiaoqu, _this.authorityXiaoqu);
             angular.copy(initData.organization, _this.authorityOrganization);
             angular.copy(initData.company, _this.authorityCompany);
-            _this.list = function(offset, currentPage) {
-                var params = _this.filterData;
-                params.cityId = _this.config.cityList[_this.config.currentCity].id;
-                if(!currentPage){
-                    pageConfig.currentPage = 1;
-                }
-                XiaoquService.list(params,{'X-PAGING':'total=true&offset='+(offset||pageConfig.offset)+'&limit='+ pageConfig.limit}).then(function(response){
-                    _this.xiaoquList =[];
-                    $scope.$apply(function(){
-                        pagination(response.total);
-                        _this.xiaoquList = response.items;
-                    });
-                });
-            };
+
             /* 部门员工树*/
             DepartmentService.getAllDepartment().done(function(data){
                 var departmentData = data.map(function(item){
@@ -350,13 +337,29 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                     }
                 });
                 AuthorityService.reGrant(params).then(function(){
-                    SweetAlertHelp.success();
                     if(_this.authorityConfig.targetType === 'POSITION'){
+                        SweetAlertHelp.success({
+                            message:"是否将权限更新至该岗位所有员工?",
+                            showCancelButton :true,
+                            cancelButtonText : "取消",
+                            confirmButtonColor : "#5cb85c",
+                            confirmButtonText : "更新",
+                        },function(){
+                            _this.reGrantByPosition();
+                        });
                         _this.getPositionAllAuthority(_this.baseData.currentPosition);
                     }else{
+                        SweetAlertHelp.success();
                         _this.getAllAuthority();
                     }
 
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message: response && response.message});
+                });
+            }
+            _this.reGrantByPosition = function(){
+                AuthorityService.reGrantByPosition({positionId:_this.authorityConfig.targetId}).then(function(){
+                    SweetAlertHelp.success();
                 }).fail(function(response){
                     SweetAlertHelp.fail({message: response && response.message});
                 });

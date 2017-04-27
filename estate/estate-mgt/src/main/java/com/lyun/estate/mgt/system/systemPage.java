@@ -60,4 +60,13 @@ public class systemPage {
         params.put("username",service.getUsername());
         return new ModelAndView("/system/authorityConfig/index", params);
     }
+
+    @GetMapping("/moduleConfig")
+    public ModelAndView moduleConfig() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("houseTypes", Arrays.asList(HouseType.values()));
+        params.put("avatarUrl",service.getAvatar());
+        params.put("username",service.getUsername());
+        return new ModelAndView("/system/moduleConfig/index", params);
+    }
 }
