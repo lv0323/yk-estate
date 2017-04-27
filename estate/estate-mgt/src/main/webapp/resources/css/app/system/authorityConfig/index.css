@@ -1,0 +1,80 @@
+.zTreeDemoBackground{
+    min-height: 600px;
+
+}
+.ztree li span.button.ico_docu.employee_ico {
+    background-position: -65px -17px;
+}
+.ztree li span.button.ico_docu.position_ico {
+    margin-right: 2px;
+    background-position: -80px -17px;
+    vertical-align: middle;
+    *vertical-align: middle;
+}
+
+/* 选项页签  */
+.gridbox .item{
+    margin-bottom:10px;
+}
+.gridalicious {
+    position: relative;
+}
+.gridalicious .item {
+    border-radius: 3px;
+    background-clip: padding-box;
+    box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
+    border:1px solid #ddd;
+    overflow:visible;
+    background: #fff;
+}
+.gridalicious .item a {
+    text-decoration: none;
+}
+.gridalicious .item a:hover {
+    text-decoration: underline;
+}
+.gridalicious .item img {
+    width: 100%;
+}
+.gridalicious .item .text {
+    display: block;
+}
+.gridalicious .item .time, .gridalicious .tweet .user {
+    font-style: italic;
+    color: #666666;
+}
+.gridalicious .tweet-wrapper {
+    padding: 10px;
+    line-height: 16px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+.gridalicious .tweet-wrapper h4{ margin:0; padding-bottom:10px; border-bottom:1px solid #ddd;}
+.gridalicious .tweet-wrapper .form-inline{ padding:8px 0; border-bottom:1px dotted #ddd;}
+.gridalicious .tweet-wrapper .form-inline:last-child{border:none;}
+
+/* 选项页签 end */
+
+.ml80{
+    margin-left: 80px;
+}
+.m-t-sm{
+    margin-top: 10px;
+}
+.authority-content{
+    min-height: 400px;
+}
+
+#xiaoqu .form-horizontal .control-label {
+    width: 90px;
+}
+#modify-authority .control-label {
+    width: 90px;
+    height: 32px;
+}
+.ml90{
+    margin-left: 90px;
+}
+.position-list-nav{
+    cursor: pointer;
+}
