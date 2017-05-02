@@ -22,6 +22,13 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                 targetType: 'POSITION',
                 category:'PAGE'
             };
+            var pickConfig ={
+                "P_FANG": ['P_FANG_LIST', 'P_FANG_NEW', 'P_FANG_FOLLOW', 'P_FANG_CHECK'],
+                "P_SHOWING": ['P_SHOWING_LIST'],
+                "P_CONTRACT": ['P_CONTRACT_LIST'],
+                "P_ORG": ['P_ORG_DEPT', 'P_ORG_POSITION', 'P_ORG_EMPLOYEE'],
+                "P_CONFIG": ['P_CONFIG_AUDIT', 'P_CONFIG_HOUSE_DICT', 'P_CONFIG_PAGE', 'P_CONFIG_PERMISSION']
+            };
             var initData ={
                 P_FANG: false,
                 P_FANG_LIST: false,
@@ -67,6 +74,26 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                 }).fail(function(response){
                     SweetAlertHelp.fail({message: response && response.message});
                 });
+            };
+            _this.allPickChange = function(param){
+                var value = false;
+                if(_this.moduleAuthority[param]){
+                    value = true;
+                }
+                angular.forEach(pickConfig[param], function(item){
+                    _this.moduleAuthority[item] = value;
+                })
+            };
+            _this.dataChange = function(param, value){
+                if(value){
+                    _this.moduleAuthority[param] = true;
+                    return;
+                }
+                if(pickConfig[param].every(function(item){
+                        return _this.moduleAuthority[item] === value
+                })){
+                    _this.moduleAuthority[param] = value;
+                }
             };
             _this.updateConfig = function(){
                 if(!_this.moduleConfig.targetId){
