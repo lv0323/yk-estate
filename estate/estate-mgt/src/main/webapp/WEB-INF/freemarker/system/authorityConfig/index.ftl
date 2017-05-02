@@ -184,31 +184,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <#--<div class="form-inline ">-->
-                                                    <#--<label class="pull-left control-label">删除图片：</label>-->
-                                                    <#--<div class="ml90">-->
-                                                        <#--<div class="checkbox checkbox-nice">-->
-                                                            <#--<input value="1" checked="" type="checkbox">-->
-                                                            <#--<label for="100410">实景图</label>-->
-                                                        <#--</div>-->
-                                                        <#--<div class="checkbox checkbox-nice">-->
-                                                            <#--<input value="1" checked="" type="checkbox">-->
-                                                            <#--<label for="100409">户型图</label>-->
-                                                        <#--</div>-->
-                                                        <#--<div class="checkbox checkbox-nice">-->
-                                                            <#--<input value="1" checked="" type="checkbox">-->
-                                                            <#--<label for="100411">房产证</label>-->
-                                                        <#--</div>-->
-                                                        <#--<div class="checkbox checkbox-nice">-->
-                                                            <#--<input value="1" checked="" type="checkbox">-->
-                                                            <#--<label for="100411">委托书</label>-->
-                                                        <#--</div>-->
-                                                        <#--<div class="checkbox checkbox-nice">-->
-                                                            <#--<input value="1" checked="" type="checkbox">-->
-                                                            <#--<label for="100411">业主身份证</label>-->
-                                                        <#--</div>-->
-                                                    <#--</div>-->
-                                                <#--</div>-->
                                             </div>
                                         </div>
                                     </div>
@@ -216,43 +191,6 @@
                                         <div class="item" id="modify-authority">
                                             <div class="tweet-wrapper clearfix">
                                                 <h4>修改权限</h4>
-                                                <#--<div class="form-inline">
-                                                    <label class="pull-left control-label">状态：</label>
-                                                    <div class="ml90">
-                                                        <div class="checkbox checkbox-nice">
-                                                            <input id="100213" value="1" checked="" type="checkbox">
-                                                            <label for="100213">上架房源</label>
-                                                        </div>
-                                                        <div class="checkbox checkbox-nice">
-                                                            <input id="100214" value="1" checked="" type="checkbox">
-                                                            <label for="100214">暂缓房源</label>
-                                                        </div>
-                                                        <div class="checkbox checkbox-nice">
-                                                            <input id="100215"  value="1" checked="" type="checkbox">
-                                                            <label for="100215">下架房源</label>
-                                                        </div>
-                                                        <div class="checkbox checkbox-nice">
-                                                            <input id="100216"  value="1" checked="" type="checkbox">
-                                                            <label for="100216">上架已下架的房源</label>
-                                                        </div>
-                                                        <div class="checkbox checkbox-nice">
-                                                            <input id="100217"  value="1" checked="" type="checkbox">
-                                                            <label for="100217">申请发布外网</label>
-                                                        </div>
-                                                        <div class="checkbox checkbox-nice">
-                                                            <input id="100218"  value="1" checked="" type="checkbox">
-                                                            <label for="100218">确认发布外网</label>
-                                                        </div>
-                                                        <div class="checkbox checkbox-nice">
-                                                            <input id="100219"  value="1" checked="" type="checkbox">
-                                                            <label for="100219">拒绝发布外网</label>
-                                                        </div>
-                                                        <div class="checkbox checkbox-nice">
-                                                            <input id="100220"  value="1" checked="" type="checkbox">
-                                                            <label for="100220">撤销发布外网</label>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
                                                 <div class="form-inline">
                                                     <div class="clearfix">
                                                         <label class="pull-left control-label">上架房源：</label>
@@ -406,28 +344,15 @@
                                             <div class="tweet-wrapper clearfix">
                                                 <h4>新增权限</h4>
                                                 <div class="form-inline">
-                                                    <div class="clearfix">
-                                                        <label class="pull-left control-label">新增小区：</label>
-                                                        <div class="col-sm-4">
-                                                            <select select-picker class="selectpicker show-menu-arrow form-control" name="houseCertifType" id="houseCertifType"
-                                                                    ng-model="ctrl.authorityXiaoqu.CREATE_XIAO_QU">
-                                                            <#list authorityScope ?if_exists as type>
-                                                                <option value="${type.name()}">${type.getLabel()}</option>
-                                                            </#list>
-                                                            </select>
+                                                    <label class="pull-left control-label">新增：</label>
+                                                    <div class="ml90">
+                                                        <div class="checkbox checkbox-nice">
+                                                            <input id="200101" ng-model="ctrl.authorityXiaoqu.CREATE_XIAO_QU" type="checkbox">
+                                                            <label for="200101">小区</label>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-inline">
-                                                    <div class="clearfix">
-                                                        <label class="pull-left control-label">新增栋座/单元：</label>
-                                                        <div class="col-sm-4">
-                                                            <select select-picker class="selectpicker show-menu-arrow form-control" name="houseCertifType" id="houseCertifType"
-                                                                    ng-model="ctrl.authorityXiaoqu.CREATE_BUILDING">
-                                                            <#list authorityScope ?if_exists as type>
-                                                                <option value="${type.name()}">${type.getLabel()}</option>
-                                                            </#list>
-                                                            </select>
+                                                        <div class="checkbox checkbox-nice">
+                                                            <input id="200102" ng-model="ctrl.authorityXiaoqu.CREATE_BUILDING" type="checkbox">
+                                                            <label for="200102">栋座/单元</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -437,28 +362,15 @@
                                             <div class="tweet-wrapper clearfix">
                                                 <h4>删除权限</h4>
                                                 <div class="form-inline">
-                                                    <div class="clearfix">
-                                                        <label class="pull-left control-label">删除小区：</label>
-                                                        <div class="col-sm-4">
-                                                            <select select-picker class="selectpicker show-menu-arrow form-control" name="houseCertifType" id="houseCertifType"
-                                                                    ng-model="ctrl.authorityXiaoqu.DEL_XIAO_QU">
-                                                            <#list authorityScope ?if_exists as type>
-                                                                <option value="${type.name()}">${type.getLabel()}</option>
-                                                            </#list>
-                                                            </select>
+                                                    <label class="pull-left control-label">删除：</label>
+                                                    <div class="ml90">
+                                                        <div class="checkbox checkbox-nice">
+                                                            <input id="200201" ng-model="ctrl.authorityXiaoqu.DEL_XIAO_QU" type="checkbox">
+                                                            <label for="200201">小区</label>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-inline">
-                                                    <div class="clearfix">
-                                                        <label class="pull-left control-label">删除栋座/单元：</label>
-                                                        <div class="col-sm-4">
-                                                            <select select-picker class="selectpicker show-menu-arrow form-control" name="houseCertifType" id="houseCertifType"
-                                                                    ng-model="ctrl.authorityXiaoqu.DEL_BUILDING">
-                                                            <#list authorityScope ?if_exists as type>
-                                                                <option value="${type.name()}">${type.getLabel()}</option>
-                                                            </#list>
-                                                            </select>
+                                                        <div class="checkbox checkbox-nice">
+                                                            <input id="200202" ng-model="ctrl.authorityXiaoqu.DEL_BUILDING" type="checkbox">
+                                                            <label for="200202">栋座/单元</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -470,35 +382,22 @@
                                             <div class="tweet-wrapper clearfix">
                                                 <h4>修改权限</h4>
                                                 <div class="form-inline">
-                                                    <div class="clearfix">
-                                                        <label class="pull-left control-label">修改小区：</label>
-                                                        <div class="col-sm-4">
-                                                            <select select-picker class="selectpicker show-menu-arrow form-control" name="houseCertifType" id="houseCertifType"
-                                                                    ng-model="ctrl.authorityXiaoqu.MODIFY_XIAO_QU">
-                                                            <#list authorityScope ?if_exists as type>
-                                                                <option value="${type.name()}">${type.getLabel()}</option>
-                                                            </#list>
-                                                            </select>
+                                                    <label class="pull-left control-label">修改：</label>
+                                                    <div class="ml90">
+                                                        <div class="checkbox checkbox-nice">
+                                                            <input id="200301" ng-model="ctrl.authorityXiaoqu.MODIFY_XIAO_QU" type="checkbox">
+                                                            <label for="200301">小区</label>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-inline">
-                                                    <div class="clearfix">
-                                                        <label class="pull-left control-label">修改栋座/单元：</label>
-                                                        <div class="col-sm-4">
-                                                            <select select-picker class="selectpicker show-menu-arrow form-control" name="houseCertifType" id="houseCertifType"
-                                                                    ng-model="ctrl.authorityXiaoqu.MODIFY_BUILDING">
-                                                            <#list authorityScope ?if_exists as type>
-                                                                <option value="${type.name()}">${type.getLabel()}</option>
-                                                            </#list>
-                                                            </select>
+                                                        <div class="checkbox checkbox-nice">
+                                                            <input id="200302" ng-model="ctrl.authorityXiaoqu.MODIFY_BUILDING" type="checkbox">
+                                                            <label for="200302">栋座/单元</label>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    </div>
                             </div>
                             <div class="clearfix text-center">
                                 <button type="button" class="btn btn-primary" ng-click="ctrl.updateAuthority('XIAO_QU')"><i class="fa fa-save"></i> 保存</button>
@@ -514,28 +413,20 @@
                                             <div class="tweet-wrapper clearfix">
                                                 <h4>管理</h4>
                                                 <div class="form-inline">
-                                                    <div class="clearfix">
-                                                        <label class="pull-left control-label">组织架构管理</label>
-                                                        <div class="col-sm-4">
-                                                            <select select-picker class="selectpicker show-menu-arrow form-control"
-                                                                    ng-model="ctrl.authorityOrganization.ORG_MANAGEMENT">
-                                                            <#list authorityScope ?if_exists as type>
-                                                                <option value="${type.name()}">${type.getLabel()}</option>
-                                                            </#list>
-                                                            </select>
+                                                    <label class="pull-left control-label">组织：</label>
+                                                    <div class="ml90">
+                                                        <div class="checkbox checkbox-nice">
+                                                            <input id="300101" ng-model="ctrl.authorityOrganization.ORG_MANAGEMENT" type="checkbox">
+                                                            <label for="300101">组织架构管理</label>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-inline">
-                                                    <div class="clearfix">
-                                                        <label class="pull-left control-label">解绑设备</label>
-                                                        <div class="col-sm-4">
-                                                            <select select-picker class="selectpicker show-menu-arrow form-control"
-                                                                    ng-model="ctrl.authorityOrganization.UNBIND_DEVICE">
-                                                            <#list authorityScope ?if_exists as type>
-                                                                <option value="${type.name()}">${type.getLabel()}</option>
-                                                            </#list>
-                                                            </select>
+                                                    <label class="pull-left control-label">设备：</label>
+                                                    <div class="ml90">
+                                                        <div class="checkbox checkbox-nice">
+                                                            <input id="300102" ng-model="ctrl.authorityOrganization.UNBIND_DEVICE" type="checkbox">
+                                                            <label for="300102">解绑设备</label>
                                                         </div>
                                                     </div>
                                                 </div>
