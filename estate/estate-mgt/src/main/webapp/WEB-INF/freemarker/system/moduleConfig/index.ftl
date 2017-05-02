@@ -49,7 +49,7 @@
                                 <div class="box box-solid backf5 " style="margin-bottom:0">
                                     <header class="box-header with-border">
                                         <div class="checkbox checkbox-nice">
-                                            <input id="P_FANG" ng-model="ctrl.moduleAuthority.P_FANG" type="checkbox">
+                                            <input id="P_FANG" ng-model="ctrl.moduleAuthority.P_FANG" type="checkbox" ng-change="ctrl.allPickChange('P_FANG')">
                                             <label for="P_FANG"><h3 class="box-title">房源管理</h3></label>
                                         </label>
                                         </div>
@@ -58,25 +58,25 @@
                                         <div class="form-group form-inline">
                                             <div class="col-xs-6">
                                                 <div class="checkbox checkbox-nice">
-                                                    <input ng-model="ctrl.moduleAuthority.P_FANG_LIST" id="P_FANG_LIST" type="checkbox">
+                                                    <input ng-model="ctrl.moduleAuthority.P_FANG_LIST" id="P_FANG_LIST" type="checkbox" ng-change="ctrl.dataChange('P_FANG', ctrl.moduleAuthority.P_FANG_LIST)">
                                                     <label for="P_FANG_LIST">房源列表</label>
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
                                                 <div class="checkbox checkbox-nice">
-                                                    <input ng-model="ctrl.moduleAuthority.P_FANG_NEW" id="P_FANG_NEW" type="checkbox">
+                                                    <input ng-model="ctrl.moduleAuthority.P_FANG_NEW" id="P_FANG_NEW" type="checkbox" ng-change="ctrl.dataChange('P_FANG', ctrl.moduleAuthority.P_FANG_NEW)">
                                                     <label for="P_FANG_NEW">新增房源</label>
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
                                                 <div class="checkbox checkbox-nice">
-                                                    <input ng-model="ctrl.moduleAuthority.P_FANG_FOLLOW" id="P_FANG_FOLLOW" type="checkbox">
+                                                    <input ng-model="ctrl.moduleAuthority.P_FANG_FOLLOW" id="P_FANG_FOLLOW" type="checkbox" ng-change="ctrl.dataChange('P_FANG', ctrl.moduleAuthority.P_FANG_FOLLOW)">
                                                     <label for="P_FANG_FOLLOW">房源跟进</label>
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
                                                 <div class="checkbox checkbox-nice">
-                                                    <input ng-model="ctrl.moduleAuthority.P_FANG_CHECK" id="P_FANG_CHECK" type="checkbox">
+                                                    <input ng-model="ctrl.moduleAuthority.P_FANG_CHECK" id="P_FANG_CHECK" type="checkbox" ng-change="ctrl.dataChange('P_FANG', ctrl.moduleAuthority.P_FANG_CHECK)">
                                                     <label for="P_FANG_CHECK">房源勘查</label>
                                                 </div>
                                             </div>
@@ -88,7 +88,7 @@
                                 <div class="box box-solid backf5 " style="margin-bottom:0">
                                     <header class="box-header with-border">
                                         <div class="checkbox checkbox-nice">
-                                            <input id="P_SHOWING" ng-model="ctrl.moduleAuthority.P_SHOWING" type="checkbox">
+                                            <input id="P_SHOWING" ng-model="ctrl.moduleAuthority.P_SHOWING" type="checkbox" ng-change="ctrl.allPickChange('P_SHOWING')">
                                             <label for="P_SHOWING"><h3 class="box-title">带看管理</h3></label>
                                         </div>
                                     </header>
@@ -96,7 +96,7 @@
                                         <div class="form-group form-inline">
                                             <div class="col-xs-6">
                                                 <div class="checkbox checkbox-nice">
-                                                    <input id="P_SHOWING_LIST" ng-model="ctrl.moduleAuthority.P_SHOWING_LIST" type="checkbox">
+                                                    <input id="P_SHOWING_LIST" ng-model="ctrl.moduleAuthority.P_SHOWING_LIST" type="checkbox" ng-change="ctrl.dataChange('P_SHOWING_LIST', ctrl.moduleAuthority.P_SHOWING_LIST)">
                                                     <label for="P_SHOWING_LIST">房源带看</label>
                                                 </div>
                                             </div>
@@ -108,7 +108,7 @@
                                 <div class="box box-solid backf5 " style="margin-bottom:0">
                                     <header class="box-header with-border">
                                         <div class="checkbox checkbox-nice">
-                                            <input id="P_CONTRACT" ng-model="ctrl.moduleAuthority.P_CONTRACT" type="checkbox">
+                                            <input id="P_CONTRACT" ng-model="ctrl.moduleAuthority.P_CONTRACT" type="checkbox" ng-change="ctrl.allPickChange('P_CONTRACT')">
                                             <label for="P_CONTRACT"><h3 class="box-title">合同管理</h3></label>
                                         </div>
                                     </header>
@@ -116,7 +116,7 @@
                                         <div class="form-group form-inline">
                                             <div class="col-xs-6">
                                                 <div class="checkbox checkbox-nice">
-                                                    <input id="P_CONTRACT_LIST" ng-model="ctrl.moduleAuthority.P_CONTRACT_LIST" type="checkbox">
+                                                    <input id="P_CONTRACT_LIST" ng-model="ctrl.moduleAuthority.P_CONTRACT_LIST" type="checkbox" ng-change="ctrl.dataChange('P_CONTRACT', ctrl.moduleAuthority.P_CONTRACT_LIST)">
                                                     <label for="P_CONTRACT_LIST">成交管理</label>
                                                 </div>
                                             </div>
@@ -130,7 +130,7 @@
                                 <div class="box box-solid backf5 " style="margin-bottom:0">
                                     <header class="box-header with-border">
                                         <div class="checkbox checkbox-nice">
-                                            <input id="P_ORG" ng-model="ctrl.moduleAuthority.P_ORG" type="checkbox">
+                                            <input id="P_ORG" ng-model="ctrl.moduleAuthority.P_ORG" type="checkbox" ng-change="ctrl.allPickChange('P_ORG')">
                                             <label for="P_ORG"><h3 class="box-title">组织架构</h3></label>
                                         </div>
                                     </header>
@@ -138,19 +138,19 @@
                                         <div class="form-group form-inline">
                                             <div class="col-xs-6">
                                                 <div class="checkbox checkbox-nice">
-                                                    <input id="P_ORG_DEPT" ng-model="ctrl.moduleAuthority.P_ORG_DEPT" type="checkbox">
+                                                    <input id="P_ORG_DEPT" ng-model="ctrl.moduleAuthority.P_ORG_DEPT" type="checkbox" ng-change="ctrl.dataChange('P_ORG', ctrl.moduleAuthority.P_ORG_DEPT)">
                                                     <label for="P_ORG_DEPT">部门管理</label>
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
                                                 <div class="checkbox checkbox-nice">
-                                                    <input id="P_ORG_POSITION" ng-model="ctrl.moduleAuthority.P_ORG_POSITION" type="checkbox">
+                                                    <input id="P_ORG_POSITION" ng-model="ctrl.moduleAuthority.P_ORG_POSITION" type="checkbox" ng-change="ctrl.dataChange('P_ORG', ctrl.moduleAuthority.P_ORG_POSITION)">
                                                     <label for="P_ORG_POSITION">岗位管理</label>
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
                                                 <div class="checkbox checkbox-nice">
-                                                    <input id="P_ORG_EMPLOYEE" ng-model="ctrl.moduleAuthority.P_ORG_EMPLOYEE" type="checkbox">
+                                                    <input id="P_ORG_EMPLOYEE" ng-model="ctrl.moduleAuthority.P_ORG_EMPLOYEE" type="checkbox" ng-change="ctrl.dataChange('P_ORG', ctrl.moduleAuthority.P_ORG_EMPLOYEE)">
                                                     <label for="P_ORG_EMPLOYEE">员工管理</label>
                                                 </div>
                                             </div>
@@ -162,7 +162,7 @@
                                 <div class="box box-solid backf5 " style="margin-bottom:0">
                                     <header class="box-header with-border">
                                         <div class="checkbox checkbox-nice">
-                                            <input id="P_CONFIG" ng-model="ctrl.moduleAuthority.P_CONFIG" type="checkbox">
+                                            <input id="P_CONFIG" ng-model="ctrl.moduleAuthority.P_CONFIG" type="checkbox" ng-change="ctrl.allPickChange('P_CONFIG')">
                                             <label for="P_CONFIG"><h3 class="box-title">系统设置</h3></label>
                                         </div>
                                     </header>
@@ -170,25 +170,25 @@
                                         <div class="form-group form-inline">
                                             <div class="col-xs-6">
                                                 <div class="checkbox checkbox-nice">
-                                                    <input id="P_CONFIG_AUDIT" ng-model="ctrl.moduleAuthority.P_CONFIG_AUDIT" type="checkbox">
+                                                    <input id="P_CONFIG_AUDIT" ng-model="ctrl.moduleAuthority.P_CONFIG_AUDIT" type="checkbox" ng-change="ctrl.dataChange('P_CONFIG', ctrl.moduleAuthority.P_CONFIG_AUDIT)">
                                                     <label for="P_CONFIG_AUDIT">操作日志</label>
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
                                                 <div class="checkbox checkbox-nice">
-                                                    <input id="P_CONFIG_HOUSE_DICT" ng-model="ctrl.moduleAuthority.P_CONFIG_HOUSE_DICT" type="checkbox">
+                                                    <input id="P_CONFIG_HOUSE_DICT" ng-model="ctrl.moduleAuthority.P_CONFIG_HOUSE_DICT" type="checkbox" ng-change="ctrl.dataChange('P_CONFIG', ctrl.moduleAuthority.P_CONFIG_HOUSE_DICT)">
                                                     <label for="P_CONFIG_HOUSE_DICT">楼盘字典</label>
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
                                                 <div class="checkbox checkbox-nice">
-                                                    <input id="P_CONFIG_PAGE" ng-model="ctrl.moduleAuthority.P_CONFIG_PAGE" type="checkbox">
+                                                    <input id="P_CONFIG_PAGE" ng-model="ctrl.moduleAuthority.P_CONFIG_PAGE" type="checkbox" ng-change="ctrl.dataChange('P_CONFIG', ctrl.moduleAuthority.P_CONFIG_PAGE)">
                                                     <label for="P_CONFIG_PAGE">岗位模块</label>
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
                                                 <div class="checkbox checkbox-nice">
-                                                    <input id="P_CONFIG_PERMISSION" ng-model="ctrl.moduleAuthority.P_CONFIG_PERMISSION" type="checkbox">
+                                                    <input id="P_CONFIG_PERMISSION" ng-model="ctrl.moduleAuthority.P_CONFIG_PERMISSION" type="checkbox" ng-change="ctrl.dataChange('P_CONFIG', ctrl.moduleAuthority.P_CONFIG_PERMISSION)">
                                                     <label for="P_CONFIG_PERMISSION">权限设置</label>
                                                 </div>
                                             </div>
