@@ -295,7 +295,7 @@
                                                         <label class="pull-left control-label">修改业主信息：</label>
                                                         <div class="col-sm-4">
                                                             <select select-picker class="selectpicker show-menu-arrow form-control"
-                                                                    ng-model="ctrl.authorityFang.UPDATE_FANG_BASE">
+                                                                    ng-model="ctrl.authorityFang.MODIFY_FANG_CONTACT">
                                                             <#list authorityScope ?if_exists as type>
                                                                 <option value="${type.name()}">${type.getLabel()}</option>
                                                             </#list>
@@ -306,7 +306,7 @@
                                                         <label class="pull-left control-label">修改基本信息：</label>
                                                         <div class="col-sm-4">
                                                             <select select-picker class="selectpicker show-menu-arrow form-control"
-                                                                    ng-model="ctrl.authorityFang.UPDATE_FANG_EXT">
+                                                                    ng-model="ctrl.authorityFang.UPDATE_FANG_BASE">
                                                             <#list authorityScope ?if_exists as type>
                                                                 <option value="${type.name()}">${type.getLabel()}</option>
                                                             </#list>
@@ -317,7 +317,7 @@
                                                         <label class="pull-left control-label">修改配套信息：</label>
                                                         <div class="col-sm-4">
                                                             <select select-picker class="selectpicker show-menu-arrow form-control"
-                                                                    ng-model="ctrl.authorityFang.MODIFY_FANG_CONTACT">
+                                                                    ng-model="ctrl.authorityFang.UPDATE_FANG_EXT">
                                                             <#list authorityScope ?if_exists as type>
                                                                 <option value="${type.name()}">${type.getLabel()}</option>
                                                             </#list>
