@@ -96,7 +96,7 @@
                                         <div class="form-group form-inline">
                                             <div class="col-xs-6">
                                                 <div class="checkbox checkbox-nice">
-                                                    <input id="P_SHOWING_LIST" ng-model="ctrl.moduleAuthority.P_SHOWING_LIST" type="checkbox" ng-change="ctrl.dataChange('P_SHOWING_LIST', ctrl.moduleAuthority.P_SHOWING_LIST)">
+                                                    <input id="P_SHOWING_LIST" ng-model="ctrl.moduleAuthority.P_SHOWING_LIST" type="checkbox" ng-change="ctrl.dataChange('P_SHOWING', ctrl.moduleAuthority.P_SHOWING_LIST)">
                                                     <label for="P_SHOWING_LIST">房源带看</label>
                                                 </div>
                                             </div>
