@@ -25,6 +25,9 @@ public class EstateCacheConfig {
     public static final String MGT_LOGIN_CACHE = "MGT_LOGIN_CACHE";
     public static final String LOGIN_CACHE = "LOGIN_CACHE";
 
+    public static final String POSITION_PAGES = "POSITION_PAGES";
+    public static final String EMPLOYEE_ACTIONS = "EMPLOYEE_ACTIONS";
+
     @Bean(MANAGER_0_5K)
     @Primary
     public CacheManager manager5K() {

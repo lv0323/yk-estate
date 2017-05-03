@@ -9,8 +9,10 @@ import com.lyun.estate.biz.housedict.entity.Building;
 import com.lyun.estate.biz.housedict.entity.BuildingUnit;
 import com.lyun.estate.biz.housedict.service.HouseDictService;
 import com.lyun.estate.biz.keyword.service.KeywordService;
+import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.mgt.context.MgtContext;
+import com.lyun.estate.mgt.permission.service.PermissionCheckService;
 import com.lyun.estate.mgt.supports.AuditHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,10 +39,15 @@ public class HouseDictMgtService {
     @Autowired
     private AuditService auditService;
 
+    @Autowired
+    private PermissionCheckService permissionCheckService;
+
 
     @Transactional
     public Building createBuilding(Long xiaoQuId, String name, Integer floors, Integer stairs, Integer houses,
                                    String description, List<String> unitNames) {
+        permissionCheckService.checkExist(Permission.CREATE_BUILDING);
+
         Building building = houseDictService.createBuilding(xiaoQuId,
                 name,
                 floors,
@@ -61,6 +68,9 @@ public class HouseDictMgtService {
 
     @Transactional
     public Integer createBuildingUnit(Long buildingId, List<String> unitNames) {
+
+        permissionCheckService.checkExist(Permission.CREATE_BUILDING);
+
         final Integer[] count = {0};
         if (unitNames != null) {
             unitNames.stream().filter(t -> !Strings.isNullOrEmpty(t)).forEach(unitName -> {
@@ -110,6 +120,9 @@ public class HouseDictMgtService {
     @Transactional
     public Building updateBuilding(Long buildingId, String name, Integer floors, Integer stairs, Integer houses,
                                    String description, List<String> unitNames) {
+
+        permissionCheckService.checkExist(Permission.MODIFY_BUILDING);
+
         Building building = houseDictService.updateBuilding(buildingId,
                 name,
                 floors,
@@ -119,6 +132,9 @@ public class HouseDictMgtService {
                 unitNames,
                 mgtContext.getOperator().getCompanyId(),
                 mgtContext.getOperator().getId());
+
+        permissionCheckService.checkCompany(building.getCompanyId());
+
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.BUILDING, building.getId(), DomainType.BUILDING,
                         AuditHelper.operatorName(mgtContext) + "修改了栋座信息【" + building + "】")
@@ -128,6 +144,12 @@ public class HouseDictMgtService {
 
     @Transactional
     public boolean deleteBuilding(Long buildingId) {
+        permissionCheckService.checkExist(Permission.DEL_BUILDING);
+
+        Building buildingAndUnits = houseDictService.findBuildingAndUnits(buildingId);
+
+        permissionCheckService.checkCompany(buildingAndUnits.getCompanyId());
+
         boolean result = houseDictService.deleteBuilding(buildingId, mgtContext.getOperator().getId());
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.BUILDING, buildingId, DomainType.BUILDING,

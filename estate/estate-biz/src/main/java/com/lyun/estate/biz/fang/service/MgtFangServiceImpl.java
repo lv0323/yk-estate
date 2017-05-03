@@ -225,9 +225,9 @@ public class MgtFangServiceImpl implements MgtFangService {
     }
 
     @Override
-    public List<FangInfoOwnerDTO> getInfoOwners(long fangId) {
+    public FangInfoOwnerDTO findLastFangInfoOwner(long fangId) {
         ExceptionUtil.checkNotNull("房源编号", fangId);
-        return fangInfoOwnerRepo.findByFangId(fangId);
+        return fangInfoOwnerRepo.findLastFangInfoOwner(fangId);
     }
 
     @Override

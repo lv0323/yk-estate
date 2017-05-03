@@ -42,7 +42,7 @@ public interface MgtFangService {
 
     List<FangInfoOwnerDTO> getSuccessiveInfoOwners(Long fangId);
 
-    List<FangInfoOwnerDTO> getInfoOwners(long fangId);
+    FangInfoOwnerDTO findLastFangInfoOwner(long fangId);
 
     FangDescr createFangDescr(FangDescr fangDescr);
 

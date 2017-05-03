@@ -65,6 +65,7 @@ public enum ExCode {
     PERMISSION_CATEGORY_ERROR("权限类别错误"),
     PERMISSION_CATEGORY_NOT_SUPPORT("不支持设置权限类别:{}"),
     PERMISSION_EMPTY("没有需要校验的权限"),
+    PERMISSION_COMPANY_ERROR("操作对象超出公司范围"),
 
 
     //fang process
