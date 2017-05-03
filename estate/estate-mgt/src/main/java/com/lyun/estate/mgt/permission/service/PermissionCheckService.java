@@ -5,6 +5,7 @@ import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
 import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.permission.def.PermissionDefine;
+import com.lyun.estate.biz.permission.entity.Grant;
 import com.lyun.estate.biz.permission.service.GrantService;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
 import com.lyun.estate.biz.support.def.DomainType;
@@ -86,26 +87,26 @@ public class PermissionCheckService {
         }
     }
 
-    public void checkExist(Permission permission) {
+    public boolean checkExist(Permission permission) {
 //        Operator operator = mgtContext.getOperator();
 //        if (operator.getSysAdmin()) {
 //            return;
 //        }
 //        Grant grant = grantService.getEmployeeGrantsMap(operator.getId()).get(permission);
 //        if (grant == null) {
-//            throw new EstateException(ExCode.PERMISSION_NULL, permission.getLabel());
+//            throw new EstateException(ExCode.PERMISSION_NOT_FOUND, permission.getLabel());
 //        }
-        return;
+        return true;
     }
 
-    public void checkLimit(Permission permission) {
+    public boolean checkLimit(Permission permission) {
 //        Operator operator = mgtContext.getOperator();
 //        if (operator.getSysAdmin()) {
 //            return;
 //        }
 //        Grant grant = grantService.getEmployeeGrantsMap(operator.getId()).get(permission);
 //        if (grant == null) {
-//            throw new EstateException(ExCode.PERMISSION_NULL, permission.getLabel());
+//            throw new EstateException(ExCode.PERMISSION_NOT_FOUND, permission.getLabel());
 //        }
 //
 //        Employee employee = employeeService.findById(operator.getId());
@@ -123,6 +124,23 @@ public class PermissionCheckService {
 //                throw new EstateException(ExCode.PERMISSION_OUT_LIMIT, permission.getLabel());
 //            }
 //        }
-        return;
+        return true;
+    }
+
+    public boolean checkPage(Permission permission) {
+        Operator operator = mgtContext.getOperator();
+        if (operator.getSysAdmin()) {
+            return true;
+        }
+        if ((permission == Permission.P_CONFIG
+                || permission == Permission.P_CONFIG_PAGE
+                || permission == Permission.P_CONFIG_PERMISSION)
+                && operator.getBoss()) {
+            return true;
+        }
+
+        List<Grant> grants = grantService.getGrantsByCategory(operator.getPositionId(),
+                DomainType.POSITION, PermissionDefine.Category.PAGE);
+        return grants != null && grants.stream().anyMatch(t -> t.getPermission() == permission);
     }
 }
