@@ -28,8 +28,8 @@ public enum Permission implements LabelEnum {
     FANG_CONFIRM_PUBLIC("确认发布外网", PermissionDefine.Category.FANG),
     FANG_REJECT_PUBLIC("拒绝发布外网", PermissionDefine.Category.FANG),
     FANG_UNDO_PUBLIC("撤销发布外网", PermissionDefine.Category.FANG),
-    UPDATE_FANG_BASE("修改基本信息", PermissionDefine.Category.FANG),
-    UPDATE_FANG_EXT("修改配套信息", PermissionDefine.Category.FANG),
+    UPDATE_FANG_BASE("修改房源基本信息", PermissionDefine.Category.FANG),
+    UPDATE_FANG_EXT("修改房源配套信息", PermissionDefine.Category.FANG),
     VIEW_FANG_CONTACT("查看业主信息", PermissionDefine.Category.FANG),
     MODIFY_FANG_CONTACT("修改业主信息", PermissionDefine.Category.FANG),
 

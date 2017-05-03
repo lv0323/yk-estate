@@ -7,10 +7,13 @@ import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.file.entity.FileDescription;
+import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.mgt.auth.def.SaltSugar;
 import com.lyun.estate.mgt.context.MgtContext;
+import com.lyun.estate.mgt.permission.service.PermissionCheckService;
 import com.lyun.estate.mgt.supports.AuditHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,19 +24,20 @@ import java.io.InputStream;
  */
 @Service
 public class EmployeeMgtService {
-    private final EmployeeService employeeService;
-    private final AuditService auditService;
-    private final MgtContext mgtContext;
+    @Autowired
+    private EmployeeService employeeService;
+    @Autowired
+    private AuditService auditService;
+    @Autowired
+    private MgtContext mgtContext;
+    @Autowired
+    private PermissionCheckService permissionCheckService;
 
-    public EmployeeMgtService(EmployeeService employeeService, AuditService auditService,
-                              MgtContext mgtContext) {
-        this.employeeService = employeeService;
-        this.auditService = auditService;
-        this.mgtContext = mgtContext;
-    }
 
     @Transactional
     public Employee create(Employee employee) {
+        permissionCheckService.checkExist(Permission.ORG_MANAGEMENT);
+
         employee.setCompanyId(mgtContext.getOperator().getCompanyId());
         Employee result = employeeService.create(employee);
         auditService.save(
@@ -51,7 +55,9 @@ public class EmployeeMgtService {
 
     @Transactional
     public Employee update(Employee employee) {
+        permissionCheckService.checkExist(Permission.ORG_MANAGEMENT);
         Employee result = employeeService.update(employee);
+        permissionCheckService.checkCompany(result.getCompanyId());
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.ORGANIZATION, result.getId(), DomainType.EMPLOYEE,
                         AuditHelper.operatorName(mgtContext) + "修改了员工【" + result.getDepartmentName() + "--" + result.getName() + "】的信息")
@@ -62,10 +68,12 @@ public class EmployeeMgtService {
 
     @Transactional
     public Boolean quit(Long id) {
+        permissionCheckService.checkExist(Permission.ORG_MANAGEMENT);
         Employee needQuit = employeeService.selectById(id);
         if (needQuit == null) {
             return null;
         }
+        permissionCheckService.checkCompany(needQuit.getCompanyId());
         Boolean result = employeeService.quit(id);
 
         auditService.save(
@@ -94,11 +102,13 @@ public class EmployeeMgtService {
     @Transactional
     @Deprecated
     public Boolean resetPassword(Long employeeId, String newPassword) {
-        //todo::权限校验
+
+        permissionCheckService.checkExist(Permission.ORG_MANAGEMENT);
         Employee employee = employeeService.selectById(employeeId);
         if (employee == null) {
             return false;
         }
+        permissionCheckService.checkCompany(employee.getCompanyId());
 
         Boolean result = employeeService.resetPassword(employeeId, newPassword);
         auditService.save(
@@ -127,7 +137,12 @@ public class EmployeeMgtService {
 
     @Transactional
     public boolean unbindDevice(Long id) {
+        permissionCheckService.checkExist(Permission.UNBIND_DEVICE);
+
         Employee employee = employeeService.selectById(id);
+
+        permissionCheckService.checkCompany(employee.getCompanyId());
+
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.ORGANIZATION, employee.getId(), DomainType.EMPLOYEE,
                         AuditHelper.operatorName(mgtContext) + "解绑了【" + employee.getDepartmentName() + "--" + employee.getName() + "】的设备号")

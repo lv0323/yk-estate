@@ -54,9 +54,9 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
         HashMap<String, Object> params = new HashMap<>();
         params.put("contextPath", Strings.nullToEmpty(env.getProperty("mgt.context.path")));
         params.put("checkPermission", checkPermissionDirectiveModel());
-        configurer.setFreemarkerVariables(params);
         params.put("bts", System.currentTimeMillis() / 1000L);
         params.put("clientId", String.valueOf(Constant.CLIENT_ID.MGT));
+        configurer.setFreemarkerVariables(params);
         return configurer;
     }
 

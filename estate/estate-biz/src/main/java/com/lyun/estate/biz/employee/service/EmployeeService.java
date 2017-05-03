@@ -11,6 +11,7 @@ import com.lyun.estate.biz.file.def.FileProcess;
 import com.lyun.estate.biz.file.def.FileType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.service.FileService;
+import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.core.config.EstateCacheConfig;
 import com.lyun.estate.core.supports.exceptions.EstateException;
@@ -239,7 +240,7 @@ public class EmployeeService {
         return repo.selectById(id);
     }
 
-    public boolean updateFollowFangId(long id, long fangId) {
+    public boolean updateFollowFangId(long id, long fangId, BizType bizType) {
         return repo.updateFollowFangId(id, fangId) > 0;
     }
 

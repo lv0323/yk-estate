@@ -24,6 +24,7 @@ import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
 import com.lyun.estate.biz.permission.def.Permission;
+import com.lyun.estate.biz.permission.entity.Grant;
 import com.lyun.estate.biz.permission.service.GrantService;
 import com.lyun.estate.biz.spec.fang.mgt.entity.*;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
@@ -48,6 +49,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.util.Objects.isNull;
@@ -196,27 +198,27 @@ public class FangMgtService {
         Operator operator = mgtContext.getOperator();
 
         //permission check && biz type set
-//        if (!operator.getSysAdmin()) {
-//            Map<Permission, Grant> employeeGrantsMap = grantService.getEmployeeGrantsMap(operator.getId());
-//            boolean canListSell = employeeGrantsMap.get(Permission.LIST_FANG_SELL) != null;
-//            boolean canListRent = employeeGrantsMap.get(Permission.LIST_FANG_RENT) != null;
-//            if (filter.getBizType() == BizType.SELL && !canListSell) {
-//                throw new EstateException(ExCode.PERMISSION_ERROR);
-//            } else if (filter.getBizType() == BizType.RENT && !canListRent) {
-//                throw new EstateException(ExCode.PERMISSION_ERROR);
-//            } else if (filter.getBizType() == null) {
-//                if (!canListSell && !canListRent) {
-//                    throw new EstateException(ExCode.PERMISSION_ERROR);
-//                }
-//                if (canListSell && canListRent) {
-//                    //do nothing
-//                } else if (canListSell) {
-//                    filter.setBizType(BizType.SELL);
-//                } else {
-//                    filter.setBizType(BizType.RENT);
-//                }
-//            }
-//        }
+        if (!operator.getSysAdmin()) {
+            Map<Permission, Grant> employeeGrantsMap = grantService.getEmployeeGrantsMap(operator.getId());
+            boolean canListSell = employeeGrantsMap.get(Permission.LIST_FANG_SELL) != null;
+            boolean canListRent = employeeGrantsMap.get(Permission.LIST_FANG_RENT) != null;
+            if (filter.getBizType() == BizType.SELL && !canListSell) {
+                throw new EstateException(ExCode.PERMISSION_ERROR);
+            } else if (filter.getBizType() == BizType.RENT && !canListRent) {
+                throw new EstateException(ExCode.PERMISSION_ERROR);
+            } else if (filter.getBizType() == null) {
+                if (!canListSell && !canListRent) {
+                    throw new EstateException(ExCode.PERMISSION_ERROR);
+                }
+                if (canListSell && canListRent) {
+                    //do nothing
+                } else if (canListSell) {
+                    filter.setBizType(BizType.SELL);
+                } else {
+                    filter.setBizType(BizType.RENT);
+                }
+            }
+        }
 
         if (nonNull(filter.getDepartmentId())) {
             Department department = departmentService.selectById(filter.getDepartmentId());
@@ -238,7 +240,7 @@ public class FangMgtService {
     @Transactional
     public FangContact getContact(Long fangId) {
 
-        permissionCheckService.check(fangId, DomainType.FANG, Permission.VIEW_FANG_CONTACT);
+        permissionCheckService.checkScope(fangId, Permission.VIEW_FANG_CONTACT);
 
         Fang fang = mgtFangService.getFangBase(fangId);
 
@@ -250,7 +252,7 @@ public class FangMgtService {
 
         FangContact result = mgtFangService.getContact(fangId);
 
-        employeeService.updateFollowFangId(mgtContext.getOperator().getId(), fangId);
+        employeeService.updateFollowFangId(mgtContext.getOperator().getId(), fangId, fang.getBizType());
 
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_OWNER, fangId, DomainType.FANG,
@@ -343,6 +345,8 @@ public class FangMgtService {
 
     @Transactional
     public Fang changeFangBase(Fang fang) {
+        permissionCheckService.checkScope(fang.getId(), Permission.UPDATE_FANG_BASE);
+
         Fang needUpdate = mgtFangService.getFangBase(fang.getId());
 
         fang.setBizType(needUpdate.getBizType());
@@ -361,6 +365,8 @@ public class FangMgtService {
 
     @Transactional
     public FangExt changeFangExt(FangExt fangExt) {
+        permissionCheckService.checkScope(fangExt.getFangId(), Permission.UPDATE_FANG_EXT);
+
         Fang fang = mgtFangService.getFangBase(fangExt.getFangId());
         FangExt result = mgtFangService.updateFangExt(fangExt);
 
@@ -432,20 +438,29 @@ public class FangMgtService {
         if (fileDescription.getOwnerType() != DomainType.FANG) {
             throw new EstateException("文件归属类型不正确");
         }
-        Operator operator = mgtContext.getOperator();
 
-        //todo: permission check
-        //员工匹配：employeeId
-        //公司匹配：companyId，员工调动
-        //部门匹配：departmentId，员工离职
-        List<FangInfoOwnerDTO> infoOwners = mgtFangService.getSuccessiveInfoOwners(fileDescription.getOwnerId());
-        if (infoOwners.stream().anyMatch(t -> Objects.equals(t.getCompanyId(), operator.getCompanyId()))) {
+        permissionCheckService.checkScope(fileDescription.getOwnerId(),
+                map2Permission(fileDescription.getCustomType()));
 
-            logger.info("员工{} 删除了图片{}", mgtContext.getOperator().getId(), fileId);
-            return fileService.delete(fileId);
-        } else {
-            throw new EstateException(ExCode.PERMISSION_ERROR);
+        logger.info("员工{} 删除了图片{}", mgtContext.getOperator().getId(), fileId);
+        return fileService.delete(fileId);
+
+    }
+
+    private Permission map2Permission(CustomType customType) {
+        switch (customType) {
+            case SHI_JING:
+                return Permission.DEL_FANG_IMG_SHI_JING;
+            case HU_XING:
+                return Permission.DEL_FANG_IMG_HU_XING;
+            case CERTIF:
+                return Permission.DEL_FANG_IMG_CERTIF;
+            case ATTORNEY:
+                return Permission.DEL_FANG_IMG_ATTORNEY;
+            case OWNER_ID_CARD:
+                return Permission.DEL_FANG_IMG_ID_CARD;
         }
+        return null;
     }
 
     public Boolean setFirstImage(Long fileId) {
@@ -456,21 +471,14 @@ public class FangMgtService {
         if (fileDescription.getOwnerType() != DomainType.FANG) {
             throw new EstateException("文件归属类型不正确");
         }
-        Operator operator = mgtContext.getOperator();
 
-        //todo: permission check
-        List<FangInfoOwnerDTO> infoOwners = mgtFangService.getSuccessiveInfoOwners(fileDescription.getOwnerId());
-        if (infoOwners.stream().anyMatch(t -> Objects.equals(t.getCompanyId(), operator.getCompanyId()))) {
-            logger.info("员工{} 将图片{}置顶", mgtContext.getOperator().getId(), fileId);
-            return fileService.setFirst(fileId);
-        } else {
-            throw new EstateException(ExCode.PERMISSION_ERROR);
-        }
+        logger.info("员工{} 将图片{}置顶", mgtContext.getOperator().getId(), fileId);
+        return fileService.setFirst(fileId);
     }
 
     @Transactional
     public FangContact updateContact(FangContact contact) {
-        permissionCheckService.check(contact.getFangId(), DomainType.FANG, Permission.MODIFY_FANG_CONTACT);
+        permissionCheckService.checkScope(contact.getFangId(), Permission.MODIFY_FANG_CONTACT);
 
         Fang fang = mgtFangService.getFangBase(contact.getFangId());
         FangContact result = mgtFangService.updateContact(contact);
