@@ -10,6 +10,7 @@ import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver;
 import com.lyun.estate.core.supports.pagebound.PageListSerializer;
 import com.lyun.estate.core.supports.types.Constant;
 import com.lyun.estate.mgt.advice.AuthInterceptor;
+import com.lyun.estate.mgt.supports.CheckPermissionDirective;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -52,10 +53,17 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
         // ADD YOUR PARAMS BELOW FOR PARAM USING IN FREEMARKER
         HashMap<String, Object> params = new HashMap<>();
         params.put("contextPath", Strings.nullToEmpty(env.getProperty("mgt.context.path")));
+        params.put("checkPermission", checkPermissionDirectiveModel());
         configurer.setFreemarkerVariables(params);
         params.put("bts", System.currentTimeMillis() / 1000L);
         params.put("clientId", String.valueOf(Constant.CLIENT_ID.MGT));
         return configurer;
+    }
+
+
+    @Bean
+    public CheckPermissionDirective checkPermissionDirectiveModel() {
+        return new CheckPermissionDirective();
     }
 
     @Bean

@@ -60,10 +60,11 @@ public enum ExCode {
     //permission
     PERMISSION_ERROR("无权限进行该操作"),
     PERMISSION_OWNERSHIP_ERROR("没有操作对象的权限:{}.{}"),
-    PERMISSION_NULL("没有权限:{}"),
+    PERMISSION_NOT_FOUND("没有权限:{}"),
     PERMISSION_OUT_LIMIT("{},超过限制"),
     PERMISSION_CATEGORY_ERROR("权限类别错误"),
     PERMISSION_CATEGORY_NOT_SUPPORT("不支持设置权限类别:{}"),
+    PERMISSION_EMPTY("没有需要校验的权限"),
 
 
     //fang process

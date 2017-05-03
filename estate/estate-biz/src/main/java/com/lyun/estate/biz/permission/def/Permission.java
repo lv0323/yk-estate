@@ -46,7 +46,7 @@ public enum Permission implements LabelEnum {
     UNBIND_DEVICE("解绑设备", PermissionDefine.Category.ORGANIZATION),
 
     //公司
-    PERMISSION_MANAGEMENT("模块与权限设置", PermissionDefine.Category.COMPANY),
+    PERMISSION_MANAGEMENT("权限管理与模块设置", PermissionDefine.Category.COMPANY),
     VIEW_AUDIT_LOG("查看业务日志", PermissionDefine.Category.COMPANY),
 
     //页面模块
