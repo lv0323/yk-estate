@@ -271,7 +271,9 @@ public class FangMgtService {
     public FangFollow createFollow(Long fangId, FollowType followType, String content) {
         Operator operator = mgtContext.getOperator();
 
-        employeeService.clearFollowFangId(operator.getId(), fangId);
+        Fang fangBase = mgtFangService.getFangBase(fangId);
+
+        employeeService.clearFollowFangId(operator.getId(), fangId, fangBase.getBizType());
 
         return mgtFangService.createFollow(
                 new FangFollow().setFangId(fangId)

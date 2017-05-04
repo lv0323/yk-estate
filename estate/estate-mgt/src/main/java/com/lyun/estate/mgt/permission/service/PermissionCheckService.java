@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -102,15 +101,13 @@ public class PermissionCheckService {
 
         if (permission == Permission.VIEW_SELL_CONTACT_LIMIT) {
             if (employee.getLastSellCountTime() != null
-                    && employee.getLastSellCountTime().toInstant()
-                    .isAfter(LocalDate.now().atStartOfDay().atZone(CommonUtil.defaultZone()).toInstant())
+                    && employee.getLastSellCountTime().toInstant().isAfter(CommonUtil.startOfToday())
                     && (Optional.ofNullable(employee.getSellContactCount()).orElse(0) >= grant.getLimits())) {
                 throw new EstateException(ExCode.PERMISSION_OUT_LIMIT, permission.getLabel());
             }
         } else if (permission == Permission.VIEW_RENT_CONTACT_LIMIT) {
             if (employee.getLastRentCountTime() != null
-                    && employee.getLastRentCountTime().toInstant()
-                    .isAfter(LocalDate.now().atStartOfDay().atZone(CommonUtil.defaultZone()).toInstant())
+                    && employee.getLastRentCountTime().toInstant().isAfter(CommonUtil.startOfToday())
                     && (Optional.ofNullable(employee.getRentContactCount()).orElse(0) >= grant.getLimits())) {
                 throw new EstateException(ExCode.PERMISSION_OUT_LIMIT, permission.getLabel());
             }
