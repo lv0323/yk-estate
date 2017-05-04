@@ -117,6 +117,8 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                         pagination(response.total);
                         _this.xiaoquList = response.items;
                     });
+                }).fail(function(res){
+                    SweetAlertHelp.fail({message: res && res.message});
                 });
             };
             /* 树*/

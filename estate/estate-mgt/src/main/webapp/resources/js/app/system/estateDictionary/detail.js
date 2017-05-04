@@ -126,6 +126,8 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                             _this[_this.showMap.key].count = response.length;
                             _this.showMap.list = response;
                         });
+                    }).fail(function(res){
+                        SweetAlertHelp.fail({message: res && res.message});
                     });
                 });
             };
