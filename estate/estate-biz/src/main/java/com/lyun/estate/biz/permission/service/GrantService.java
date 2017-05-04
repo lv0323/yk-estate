@@ -39,7 +39,7 @@ public class GrantService {
     private EmployeeService employeeService;
 
     @Autowired
-    @Qualifier(EstateCacheConfig.MANAGER_360_5K)
+    @Qualifier(EstateCacheConfig.MANAGER_10_5K)
     private CacheManager cacheManager;
 
     private Cache positionPages;
