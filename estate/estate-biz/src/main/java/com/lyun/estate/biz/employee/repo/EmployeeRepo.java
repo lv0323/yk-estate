@@ -56,16 +56,25 @@ public interface EmployeeRepo {
     @Update("update t_employee set device_id = #{deviceId},  update_time = now() where id = #{id}")
     int updateDeviceId(@Param("id") Long id, @Param("deviceId") String deviceId);
 
-    @Update("UPDATE t_employee SET follow_fang_id = #{fangId} WHERE id = #{id};")
-    int updateFollowFangId(@Param("id") long id, @Param("fangId") long fangId);
-
     @Update("UPDATE t_employee SET follow_fang_id = NULL WHERE id = #{id} AND follow_fang_id = #{fangId};")
-    int clearFollowFangId(@Param("id") long id, @Param("fangId") long fangId);
+    int clearFollowSell(@Param("id") long id, @Param("fangId") long fangId);
+
+    @Update("UPDATE t_employee SET follow_rent_id = NULL WHERE id = #{id} AND follow_rent_id = #{fangId};")
+    int clearFollowRent(@Param("id") long id, @Param("fangId") long fangId);
 
     @Update("UPDATE t_employee SET follow_fang_id = NULL WHERE follow_fang_id = #{fangId};")
-    int clearAllFollowFangId(Long fangId);
+    int clearAllFollowSell(Long fangId);
+
+    @Update("UPDATE t_employee SET follow_rent_id = NULL WHERE follow_rent_id = #{fangId};")
+    int clearAllFollowRent(Long fangId);
 
     @SelectProvider(type = EmployeeProvider.class, method = "selectByCompanyIdAndPositionId")
     List<Employee> listByCompanyIdAndPositionId(@Param("companyId") long companyId,
                                                 @Param("positionId") long positionId);
+
+    @Update("UPDATE t_employee SET follow_fang_id = #{fangId}, sell_contact_count = #{contactCount}, last_sell_count_time = now() WHERE id = #{id}")
+    int updateFollowSell(@Param("id") long id, @Param("fangId") long fangId, @Param("contactCount") int contactCount);
+
+    @Update("UPDATE t_employee SET follow_rent_id = #{fangId}, rent_contact_count = #{contactCount}, last_rent_count_time = now() WHERE id = #{id}")
+    int updateFollowRent(@Param("id") long id, @Param("fangId") long fangId, @Param("contactCount") int contactCount);
 }

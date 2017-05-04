@@ -4,6 +4,8 @@ import org.springframework.util.StringUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Random;
@@ -42,6 +44,10 @@ public class CommonUtil {
 
     public static ZoneId defaultZone() {
         return ZoneId.of("Asia/Shanghai");
+    }
+
+    public static Instant startOfToday() {
+        return LocalDate.now().atStartOfDay().atZone(CommonUtil.defaultZone()).toInstant();
     }
 
 }

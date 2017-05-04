@@ -17,12 +17,14 @@ import com.lyun.estate.core.config.EstateCacheConfig;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
+import com.lyun.estate.core.utils.CommonUtil;
 import com.lyun.estate.core.utils.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.crypto.Mac;
@@ -240,16 +242,44 @@ public class EmployeeService {
         return repo.selectById(id);
     }
 
+    @Transactional
     public boolean updateFollowFangId(long id, long fangId, BizType bizType) {
-        return repo.updateFollowFangId(id, fangId) > 0;
+        ExceptionUtil.checkNotNull("业务类别", bizType);
+        Employee employee = repo.selectById(id);
+        int contactCount = 1;
+        if (bizType == BizType.SELL && !Objects.equals(fangId, employee.getFollowFangId())) {
+            if (employee.getLastSellCountTime() != null
+                    && employee.getLastSellCountTime().toInstant()
+                    .isAfter(CommonUtil.startOfToday())) {
+                contactCount = employee.getSellContactCount() + 1;
+            }
+            return repo.updateFollowSell(id, fangId, contactCount) > 0;
+        } else if (bizType == BizType.RENT && !Objects.equals(fangId, employee.getFollowRentId())) {
+            if (employee.getLastRentCountTime() != null
+                    && employee.getLastRentCountTime().toInstant().isAfter(CommonUtil.startOfToday())) {
+                contactCount = employee.getRentContactCount() + 1;
+            }
+            return repo.updateFollowRent(id, fangId, contactCount) > 0;
+        }
+        return false;
     }
 
-    public boolean clearFollowFangId(Long id, Long fangId) {
-        return repo.clearFollowFangId(id, fangId) > 0;
+    public boolean clearFollowFangId(Long id, Long fangId, BizType bizType) {
+        ExceptionUtil.checkNotNull("业务类别", bizType);
+        if (bizType == BizType.SELL) {
+            return repo.clearFollowSell(id, fangId) > 0;
+        } else {
+            return repo.clearFollowRent(id, fangId) > 0;
+        }
     }
 
-    public int clearAllFollowFangId(Long fangId) {
-        return repo.clearAllFollowFangId(fangId);
+    public int clearAllFollowFangId(Long fangId, BizType bizType) {
+        ExceptionUtil.checkNotNull("业务类别", bizType);
+        if (bizType == BizType.SELL) {
+            return repo.clearAllFollowSell(fangId);
+        } else {
+            return repo.clearAllFollowRent(fangId);
+        }
     }
 
     public List<Employee> listByCompanyIdAndPositionId(long companyId, long positionId) {

@@ -4,19 +4,21 @@ import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.entity.Fang;
+import com.lyun.estate.biz.permission.def.Permission;
+import com.lyun.estate.biz.permission.service.GrantService;
+import com.lyun.estate.biz.spec.fang.mgt.def.TimeType;
+import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
 import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
-import com.lyun.estate.mgt.housedict.service.HouseDictMgtService;
-import com.lyun.estate.biz.spec.fang.mgt.def.TimeType;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -27,7 +29,7 @@ import java.util.HashMap;
 @RequestMapping("/fangManage")
 public class FangPage {
     @Autowired
-    private HouseDictMgtService houseDictMgtService;
+    private GrantService grantService;
     @Autowired
     private EmployeeMgtService service;
     @Autowired
@@ -87,15 +89,27 @@ public class FangPage {
 
     @GetMapping("/detail")
     public ModelAndView detail(@RequestParam Long id) {
-        Employee employee = employeeService.findById(mgtContext.getOperator().getId());
-        Long followFangId = employee.getFollowFangId();
         HashMap<String, Object> params = new HashMap<>();
-        if(followFangId != null){
+
+        Employee employee = employeeService.findById(mgtContext.getOperator().getId());
+        if (employee.getFollowFangId() != null &&
+                grantService.getEmployeeGrantsMap(mgtContext.getOperator().getId())
+                        .get(Permission.NOT_FOLLOW_SELL) == null) {
+            Long followFangId = employee.getFollowFangId();
             params.put("followFangId", followFangId);
-            if(!followFangId.equals(id)){
-                return new ModelAndView("redirect:/fangManage/detail?id=" + String.valueOf(followFangId) , params);
+            if (!followFangId.equals(id)) {
+                return new ModelAndView("redirect:/fangManage/detail?id=" + String.valueOf(followFangId), params);
+            }
+        } else if (employee.getFollowRentId() != null &&
+                grantService.getEmployeeGrantsMap(mgtContext.getOperator().getId())
+                        .get(Permission.NOT_FOLLOW_RENT) == null) {
+            Long followFangId = employee.getFollowRentId();
+            params.put("followFangId", followFangId);
+            if (!followFangId.equals(id)) {
+                return new ModelAndView("redirect:/fangManage/detail?id=" + String.valueOf(followFangId), params);
             }
         }
+
         Fang fang = mgtFangService.getFangBase(id);
         params.put("avatarUrl", service.getAvatar());
         params.put("houseTypes", Arrays.asList(HouseType.values()));
@@ -119,9 +133,9 @@ public class FangPage {
         params.put("followType", Arrays.asList(FollowType.values()));
         params.put("username", service.getUsername());
         params.put("licenceId", fang.getLicenceId().toString());
-        if(fang.getBizType().equals(BizType.RENT)){
+        if (fang.getBizType().equals(BizType.RENT)) {
             params.put("priceUnit", PriceUnit.getByBizType(BizType.RENT));
-        }else{
+        } else {
             params.put("priceUnit", PriceUnit.getByBizType(BizType.SELL));
         }
         return new ModelAndView("/fang/detail", params);
