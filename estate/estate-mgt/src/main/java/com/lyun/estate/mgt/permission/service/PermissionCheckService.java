@@ -79,7 +79,9 @@ public class PermissionCheckService {
             return true;
         }
         Grant grant = grantService.getEmployeeGrantsMap(operator.getId()).get(permission);
-        if (grant == null) {
+        if (grant == null
+                //历史原因，fix
+                || grant.getScope() == GrantScope.NONE) {
             throw new EstateException(ExCode.PERMISSION_NOT_FOUND, permission.getLabel());
         }
         return true;
