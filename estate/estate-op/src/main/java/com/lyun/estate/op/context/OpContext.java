@@ -1,20 +1,12 @@
-package com.lyun.estate.core.supports.context;
+package com.lyun.estate.op.context;
 
+import com.lyun.estate.core.supports.context.BaseContext;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JobContext extends BaseContext {
-    private final static String JOB_NAME = "jobName";
+public class OpContext extends BaseContext {
 
     private static final String CORRELATION_ID = "correlationId";
-
-    public String getJobName() {
-        return (String) get(JOB_NAME);
-    }
-
-    public void setJobName(String jobName) {
-        put(JOB_NAME, jobName);
-    }
 
     public String getCorrelationId() {
         return (String) get(CORRELATION_ID);
