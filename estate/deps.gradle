@@ -26,5 +26,11 @@ project(':estate-rest') {
     }
 }
 
+project(':estate-op') {
+    dependencies {
+        compile project(':estate-core')
+    }
+}
+
 project(':estate-core') {
 }
