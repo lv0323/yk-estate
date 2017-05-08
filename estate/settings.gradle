@@ -3,5 +3,6 @@ include 'estate-core'
 include 'estate-job'
 include 'estate-mgt'
 include 'estate-rest'
+include 'estate-op'
 
 rootProject.name = 'estate'

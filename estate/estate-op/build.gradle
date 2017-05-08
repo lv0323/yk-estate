@@ -1,0 +1,40 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath lib.spring_boot_gradle_plugin
+        classpath lib.dependency_management_plugin
+    }
+}
+
+apply plugin: 'war'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+bootRun() {
+    jvmArgs = ["-Dlogback.level=INFO"]
+}
+
+configurations {
+    providedCompile
+}
+
+dependencies {
+    compile(lib.spring_boot_starter_web)
+    providedCompile lib.servlet_api
+    compile libGroup.swagger
+    compile lib.user_agent_utils
+}
+
+tasks.withType(AbstractCompile) {
+    options.encoding = "UTF-8"
+}
+
+
+sourceSets.main.java.srcDirs = []
+sourceSets.main.groovy.srcDirs = ['src/main/java']
