@@ -1,7 +1,7 @@
 package com.lyun.estate.job;
 
 import com.lyun.estate.job.config.JobConfig;
-import com.lyun.estate.core.supports.context.JobContext;
+import com.lyun.estate.job.context.JobContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

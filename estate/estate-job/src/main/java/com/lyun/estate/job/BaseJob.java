@@ -2,7 +2,7 @@ package com.lyun.estate.job;
 
 
 import com.lyun.estate.core.utils.CommonUtil;
-import com.lyun.estate.core.supports.context.JobContext;
+import com.lyun.estate.job.context.JobContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
