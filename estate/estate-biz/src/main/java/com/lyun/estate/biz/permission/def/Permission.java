@@ -67,7 +67,12 @@ public enum Permission implements LabelEnum {
     P_CONFIG_AUDIT("操作日志", PermissionDefine.Category.PAGE),
     P_CONFIG_HOUSE_DICT("楼盘字典", PermissionDefine.Category.PAGE),
     P_CONFIG_PAGE("岗位模块", PermissionDefine.Category.PAGE),
-    P_CONFIG_PERMISSION("权限设置", PermissionDefine.Category.PAGE),;
+    P_CONFIG_PERMISSION("权限设置", PermissionDefine.Category.PAGE),
+
+    CT_YK("盈科", PermissionDefine.Category.COMPANY_TYPE),
+    CT_CHANNEL("渠道", PermissionDefine.Category.COMPANY_TYPE),
+    CT_SS("单店", PermissionDefine.Category.COMPANY_TYPE),
+    CT_RA("区域加盟", PermissionDefine.Category.COMPANY_TYPE),;
 
 
     private final String label;

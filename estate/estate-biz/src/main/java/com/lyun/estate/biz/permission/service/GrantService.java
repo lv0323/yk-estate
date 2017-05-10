@@ -120,7 +120,9 @@ public class GrantService {
                 t -> t.getPermission() == null || t.getTargetId() == null || t.getTargetType() == null
         ), "授权信息", grants);
 
-        if (targetType == DomainType.EMPLOYEE && category == PermissionDefine.Category.PAGE) {
+        //check category
+        if (category == PermissionDefine.Category.COMPANY_TYPE
+                || (category == PermissionDefine.Category.PAGE && targetType == DomainType.EMPLOYEE)) {
             throw new EstateException(ExCode.PERMISSION_CATEGORY_NOT_SUPPORT, category.getLabel());
         }
 
