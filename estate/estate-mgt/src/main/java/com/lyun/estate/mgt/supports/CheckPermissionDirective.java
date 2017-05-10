@@ -31,7 +31,7 @@ public class CheckPermissionDirective implements TemplateDirectiveModel {
 
         Set<String> names = StringUtils.commaDelimitedListToSet(valueScalar.getAsString());
 
-        boolean flag = names.stream().allMatch(t ->
+        boolean flag = names.stream().anyMatch(t ->
                 permissionCheckerService.checkPage(Permission.valueOf(t))
         );
 
