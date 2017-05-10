@@ -242,6 +242,8 @@ require(['main-app',
                   $('#priceUnit').selectpicker('refresh');
                   $('#houseHasElevator').selectpicker('refresh');
                   $('#houseHeatingType').selectpicker('refresh');
+              }).fail(function(res){
+                  SweetAlertHelp.fail({message: res && res.message});
               });
             };
             _this.subTypeRefresh = function(id){
@@ -258,6 +260,8 @@ require(['main-app',
                 FangService.baseChange(info).then(function(response){
                     $('#baseModel').modal('hide');
                     SweetAlertHelp.success();
+                }).fail(function(res){
+                    SweetAlertHelp.fail({message: res && res.message});
                 });
             };
             _this.extInfoInit = function(){
@@ -297,6 +301,8 @@ require(['main-app',
                         $('#extModel').modal('hide');
                         _this.getExt();
                         SweetAlertHelp.success();
+                    }).fail(function(response){
+                        SweetAlertHelp.fail({message:response&&response.message});
                     });
                 };
             };
@@ -492,6 +498,8 @@ require(['main-app',
                             _this.showMap.list = response;
                         });
                     });
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
                 });
             };
             _this.setFirstImage = function(fileId){
@@ -505,6 +513,8 @@ require(['main-app',
                         });
 
                     });
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
                 });
             };
             /*end 图片*/

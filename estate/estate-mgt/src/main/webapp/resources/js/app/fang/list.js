@@ -285,7 +285,7 @@ require(['main-app',
                 $scope.filter.distractId = value;
             };
             $scope.setFilterType = function(key,value){
-                if(key === 'process' && value ==='PUBLISH'){
+                if(key === 'process'){
                     $scope.filter['subProcess'] = '';
                 }
                 $scope.filter[key]=value;
@@ -486,6 +486,8 @@ require(['main-app',
                         });
 
                     });
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
                 });
             };
             $scope.confirmChangeStatus = function(status, id){

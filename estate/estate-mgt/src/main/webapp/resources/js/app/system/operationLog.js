@@ -5,8 +5,9 @@ require(['main-app',
         contextPath + '/js/service/audit-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath+'/js/service/util-service.js',
+        contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
         'datatables', 'datatablesBootstrap', 'datetimepicker.zh-cn'],
-    function (mainApp, AuditService, pagingPlugin, UtilService ) {
+    function (mainApp, AuditService, pagingPlugin, UtilService, SweetAlertHelp ) {
 
         var pageConfig = {
             limit: 10,
@@ -106,8 +107,9 @@ require(['main-app',
                     displayOperationLog(data.items);
                     pagination(data.total);
                 })
-                .fail(function(){
-                $('#operationLogList>tbody').append('<tr><td colspan="4">无法获取数据</td></tr>');
+                .fail(function(res){
+                $('#operationLogList>tbody').html('<tr><td colspan="4">无法获取数据</td></tr>');
+                SweetAlertHelp.fail(res);
             });
         };
 

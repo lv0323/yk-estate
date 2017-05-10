@@ -196,7 +196,7 @@
                                                         <label class="pull-left control-label">上架房源：</label>
                                                         <div class="col-sm-4">
                                                             <select select-picker class="selectpicker show-menu-arrow form-control"
-                                                                    ng-model="ctrl.authorityFang.FANG_UN_PUBLISH">
+                                                                    ng-model="ctrl.authorityFang.FANG_PUBLISH">
                                                             <#list authorityScope ?if_exists as type>
                                                                 <option value="${type.name()}">${type.getLabel()}</option>
                                                             </#list>

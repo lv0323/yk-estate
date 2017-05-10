@@ -617,6 +617,8 @@ require(['main-app',
                 _this.data.resident = _this.data.resident ?'Y':'N';
                 FangService.create(_this.data).then(function(){
                     SweetAlertHelp.success({message:'新增房源完成'},_this.goList);
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
                 });
 
             };
