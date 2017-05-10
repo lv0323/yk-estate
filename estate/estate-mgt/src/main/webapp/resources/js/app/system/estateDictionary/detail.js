@@ -281,9 +281,6 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                     if (!_this.data.modifyBuilding.firstUnit) {
                         _this.commonInputWarn('firstUnit','buildingForm');
                     }
-                    if (!_this.data.modifyBuilding.description) {
-                        _this.commonInputWarn('buildingDescription','buildingForm');
-                    }
                     return;
                 }
                 _this.data.modifyBuilding.unitNames = [];
