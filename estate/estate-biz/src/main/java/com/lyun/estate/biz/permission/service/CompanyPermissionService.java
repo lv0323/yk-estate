@@ -1,28 +1,27 @@
 package com.lyun.estate.biz.permission.service;
 
-import com.google.common.collect.Lists;
 import com.lyun.estate.biz.company.def.CompanyDefine;
 import com.lyun.estate.biz.permission.def.Permission;
-
-import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by Jeffrey on 2017-05-10.
  */
+@Service
 public class CompanyPermissionService {
 
-    List<Permission> getByCompayType(CompanyDefine.Type type) {
+    public Permission getByType(CompanyDefine.Type type) {
         switch (type) {
             case YK:
-                return Lists.newArrayList(Permission.CT_YK);
+                return Permission.CT_YK;
             case CHANNEL:
-                return Lists.newArrayList(Permission.CT_CHANNEL);
+                return Permission.CT_CHANNEL;
             case SINGLE_STORE:
-                return Lists.newArrayList(Permission.CT_SS);
+                return Permission.CT_SS;
             case REGIONAL_AGENT:
-                return Lists.newArrayList(Permission.CT_RA);
+                return Permission.CT_RA;
             default:
-                return Lists.newArrayList();
+                return null;
         }
     }
 }
