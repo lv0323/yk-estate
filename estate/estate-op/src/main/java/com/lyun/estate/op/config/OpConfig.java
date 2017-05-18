@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.lyun.estate.core.config.CoreConfig;
 import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver;
 import com.lyun.estate.core.supports.pagebound.PageListSerializer;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.http.converter.FormHttpMessageConverter;
@@ -17,7 +18,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.List;
 
 @Configuration
-@ComponentScan({"com.lyun"})
+@ComponentScan({"com.lyun.estate.op"})
+@MapperScan(basePackages = {"com.lyun.estate.op.**.repository", "com.lyun.estate.op.**.repo"})
 @Import({CoreConfig.class})
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
 @EnableSwagger2
