@@ -68,6 +68,7 @@ public class HouseDictMgtService {
 
     @Transactional
     public Integer createBuildingUnit(Long buildingId, List<String> unitNames) {
+        //todo: check company
 
         permissionCheckService.checkExist(Permission.CREATE_BUILDING);
 
@@ -90,16 +91,17 @@ public class HouseDictMgtService {
     }
 
     public List<Building> findBuildingsByXiaoQuId(Long communityId) {
-
         return houseDictService.findBuildingsByXiaoQuId(communityId, mgtContext.getOperator().getCompanyId());
     }
 
 
     public Building findBuilding(Long buildingId) {
+        //todo: check company
         return houseDictService.findBuildingAndUnits(buildingId);
     }
 
     public List<BuildingUnit> findBuildingUnitsByBuildingId(Long buildingId) {
+        //todo: check company
         return houseDictService.findBuildingUnitsByBuildingId(buildingId);
     }
 
@@ -121,6 +123,7 @@ public class HouseDictMgtService {
     public Building updateBuilding(Long buildingId, String name, Integer floors, Integer stairs, Integer houses,
                                    String description, List<String> unitNames) {
 
+        //todo: check company
         permissionCheckService.checkExist(Permission.MODIFY_BUILDING);
 
         Building building = houseDictService.updateBuilding(buildingId,
@@ -144,6 +147,7 @@ public class HouseDictMgtService {
 
     @Transactional
     public boolean deleteBuilding(Long buildingId) {
+        //todo: check company
         permissionCheckService.checkExist(Permission.DEL_BUILDING);
 
         Building buildingAndUnits = houseDictService.findBuildingAndUnits(buildingId);

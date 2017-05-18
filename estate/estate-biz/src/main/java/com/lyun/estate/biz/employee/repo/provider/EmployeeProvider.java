@@ -21,6 +21,8 @@ public class EmployeeProvider {
                 .VALUES("idcard_number", "#{idcardNumber}")
                 .VALUES("wechat", "#{wechat}")
                 .VALUES("status", "#{status}")
+                .VALUES_IF("salt", "#{salt}", employee.getSalt() != null)
+                .VALUES_IF("password", "#{password}", employee.getPassword() != null)
                 .VALUES_IF("open_contact", "#{openContact}", employee.getOpenContact() != null)
                 .VALUES_IF("is_boss", "#{isBoss}", employee.getBoss() != null)
                 .VALUES_IF("is_agent", "#{isAgent}", employee.getAgent() != null).toString();
