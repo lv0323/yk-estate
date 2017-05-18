@@ -1,53 +1,61 @@
 package com.lyun.estate.mgt.company;
 
-import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.lyun.estate.biz.company.entity.Company;
-import com.lyun.estate.biz.company.entity.CreateCompanyEntity;
-import com.lyun.estate.biz.company.service.CompanyService;
-import com.lyun.estate.mgt.supports.RestResponse;
-import org.springframework.web.bind.annotation.*;
+import com.lyun.estate.biz.company.def.CompanyDefine;
+import com.lyun.estate.biz.company.domain.Company;
+import com.lyun.estate.biz.company.entity.CreateCompanyInfo;
+import com.lyun.estate.mgt.company.service.CompanyMgtService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Date;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @RestController
 @RequestMapping("api/company")
 public class CompanyRest {
 
-    private final CompanyService service;
+    @Autowired
+    private CompanyMgtService companyMgtService;
 
-    public CompanyRest(CompanyService service) {
-        this.service = service;
-    }
+    @PostMapping(value = "create")
+    public Company create(@RequestParam Long cityId,
+                          @RequestParam Long parentId,
+                          @RequestParam Long partAId,
+                          @RequestParam CompanyDefine.Type type,
+                          @RequestParam String name,
+                          @RequestParam String abbr,
+                          @RequestParam String address,
+                          @RequestParam(required = false) String introduction,
+                          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+                          @RequestParam Integer years,
+                          @RequestParam Integer storeCount,
+                          @RequestParam BigDecimal price,
+                          @RequestParam String bossName,
+                          @RequestParam String mobile) {
 
-    @PostMapping("create")
-    public Object create(CreateCompanyEntity entity) {
-        return service.createCompany(entity);
-    }
+        CreateCompanyInfo info = new CreateCompanyInfo()
+                .setCityId(cityId)
+                .setParentId(parentId)
+                .setPartAId(partAId)
+                .setType(type)
+                .setName(name)
+                .setAbbr(abbr)
+                .setAddress(address)
+                .setIntroduction(introduction)
+                .setStartDate(startDate)
+                .setEndDate(endDate)
+                .setYears(years)
+                .setStoreCount(storeCount)
+                .setPrice(price)
+                .setBossName(bossName)
+                .setMobile(mobile);
 
-    @GetMapping("lock")
-    public Object lock(@RequestParam Long id, @RequestParam Boolean locked) {
-        return new RestResponse().add("ret", service.lock(id, locked)).get();
-    }
-
-    @GetMapping("renew")
-    public Object renew(@RequestParam Long id, @RequestParam Date endDate) {
-        return new RestResponse().add("ret", service.renew(id, endDate)).get();
-    }
-
-    @PostMapping("edit")
-    public Object edit(Company company) {
-        return service.update(company);
-    }
-
-    @GetMapping("query")
-    public PageList<Company> queryAll(@RequestHeader("X-PAGING") PageBounds pageBounds) {
-        return service.find(pageBounds);
-    }
-
-    @GetMapping("/{companyId}")
-    public Company findOne(@PathVariable Long companyId) {
-        return service.findOne(companyId);
+        return companyMgtService.createCompany(info);
     }
 
 }

@@ -1,7 +1,13 @@
 package com.lyun.estate.core.utils;
 
+import com.lyun.estate.core.supports.exceptions.EstateException;
+import com.lyun.estate.core.supports.exceptions.ExCode;
 import org.springframework.util.StringUtils;
 
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
@@ -48,6 +54,17 @@ public class CommonUtil {
 
     public static Instant startOfToday() {
         return LocalDate.now().atStartOfDay().atZone(CommonUtil.defaultZone()).toInstant();
+    }
+
+    public static String hmac(String salt, String password) {
+        try {
+            SecretKey secretKey = new SecretKeySpec(salt.getBytes(), "HmacMD5");
+            Mac mac = Mac.getInstance("HmacMD5");
+            mac.init(secretKey);
+            return new BigInteger(1, mac.doFinal(password.getBytes())).toString(16);
+        } catch (Exception e) {
+            throw new EstateException(ExCode.DEFAULT_EXCEPTION);
+        }
     }
 
 }

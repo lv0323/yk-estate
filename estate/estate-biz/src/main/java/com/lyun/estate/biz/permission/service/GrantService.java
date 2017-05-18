@@ -117,8 +117,7 @@ public class GrantService {
         ExceptionUtil.checkIllegal(targetType == DomainType.EMPLOYEE || targetType == DomainType.POSITION,
                 "主体类型", targetType);
         ExceptionUtil.checkIllegal(CollectionUtils.isEmpty(grants) || grants.stream().noneMatch(
-                t -> t.getPermission() == null || t.getTargetId() == null || t.getTargetType() == null
-        ), "授权信息", grants);
+                t -> t.getPermission() == null), "授权信息", grants);
 
         //check category
         if (category == PermissionDefine.Category.COMPANY_TYPE

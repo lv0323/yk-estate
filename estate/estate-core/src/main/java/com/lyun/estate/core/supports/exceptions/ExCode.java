@@ -33,6 +33,8 @@ public enum ExCode {
     //company
     COMPANY_LOCKED("公司被冻结"),
     COMPANY_EXPIRED("公司授权已到截止日期"),
+    COMPANY_ABBR_OVER_COUNT("公司简称不可用"),
+    COMPANY_CREATE_PARENT_ERROR("您所在公司无法创建该类型加盟商"),
     //position
     POSITION_HAS_EMPLOYEE("该岗位下有员工，不能删除"),
     //department

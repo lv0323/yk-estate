@@ -44,9 +44,6 @@ public class GrantRest {
                     t -> {
                         Grant grant = convertToGrant(t);
                         if (grant != null) {
-                            grant.setCategory(category);
-                            grant.setTargetId(targetId);
-                            grant.setTargetType(targetType);
                             grantList.add(grant);
                         }
                     }

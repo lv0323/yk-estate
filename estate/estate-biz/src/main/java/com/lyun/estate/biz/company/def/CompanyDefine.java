@@ -44,4 +44,20 @@ public class CompanyDefine {
         }
     }
 
+    public enum Status implements LabelEnum {
+        ACTIVE("有效"),
+        OVERDUE("过期"),;
+
+        private final String label;
+
+        Status(String label) {
+            this.label = label;
+        }
+
+        @Override
+        public String getLabel() {
+            return label;
+        }
+    }
+
 }
