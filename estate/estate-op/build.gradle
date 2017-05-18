@@ -29,6 +29,8 @@ dependencies {
     providedCompile lib.servlet_api
     compile libGroup.swagger
     compile lib.user_agent_utils
+    compile 'com.auth0:java-jwt:3.2.0'
+    compile 'com.google.code.gson:gson:2.8.0'
 }
 
 tasks.withType(AbstractCompile) {

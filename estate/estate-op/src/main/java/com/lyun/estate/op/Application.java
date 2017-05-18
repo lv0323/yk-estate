@@ -12,7 +12,7 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(OpConfig.class);
-        app.setBannerMode(Banner.Mode.OFF);
+        app.setBannerMode(Banner.Mode.CONSOLE);
         app.run(args);
     }
 
