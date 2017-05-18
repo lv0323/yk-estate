@@ -117,4 +117,5 @@ public class CompanySigning {
         this.updateTime = updateTime;
         return this;
     }
+
 }
