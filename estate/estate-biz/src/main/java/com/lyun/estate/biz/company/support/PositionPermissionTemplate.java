@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.company.support;
 
 import com.google.common.collect.Lists;
+import com.lyun.estate.biz.company.def.CompanyDefine;
 import com.lyun.estate.biz.permission.def.GrantScope;
 import com.lyun.estate.biz.permission.def.PermissionDefine;
 import com.lyun.estate.biz.permission.entity.Grant;
@@ -17,7 +18,8 @@ import static com.lyun.estate.biz.permission.def.Permission.*;
  */
 public class PositionPermissionTemplate {
 
-    public static Map<PermissionDefine.Category, List<Grant>> defaultPermissions(PositionType positionType) {
+    public static Map<PermissionDefine.Category, List<Grant>> defaultPermissions(CompanyDefine.Type companyType,
+                                                                                 PositionType positionType) {
         Map<PermissionDefine.Category, List<Grant>> categoryGrantsMap = new HashMap<>();
         switch (positionType) {
             case REGION_M:
@@ -63,6 +65,7 @@ public class PositionPermissionTemplate {
                         new Grant().setPermission(VIEW_FANG_CONTACT).setScope(GrantScope.COMPANY),
                         new Grant().setPermission(MODIFY_FANG_CONTACT).setScope(GrantScope.COMPANY)
                 ));
+
                 categoryGrantsMap.put(PermissionDefine.Category.XIAO_QU, Lists.newArrayList(
                         new Grant().setPermission(CREATE_BUILDING),
                         new Grant().setPermission(MODIFY_BUILDING),

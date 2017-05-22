@@ -7,6 +7,8 @@ import com.lyun.estate.biz.auth.captcha.CheckCaptcha;
 import com.lyun.estate.biz.auth.sms.CheckSmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
+import com.lyun.estate.biz.company.domain.Company;
+import com.lyun.estate.biz.company.service.CompanyService;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.mgt.auth.def.SaltSugar;
 import com.lyun.estate.mgt.auth.service.AuthMgtService;
@@ -26,14 +28,15 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("api/auth")
 public class AuthRest {
 
-    private final AuthMgtService authMgtService;
+    @Autowired
+    private AuthMgtService authMgtService;
 
     @Autowired
     private MgtContext mgtContext;
 
-    public AuthRest(AuthMgtService authMgtService) {
-        this.authMgtService = authMgtService;
-    }
+    @Autowired
+    private CompanyService companyService;
+
 
     @PostMapping("active")
     @CheckSmsCode
@@ -71,12 +74,14 @@ public class AuthRest {
             cookie.setMaxAge(3600 * 24 * 999);
             response.addCookie(cookie);
         }
+        Company company = companyService.findOne(employee.getCompanyId());
 
         session.setAttribute(Constant.SESSION_IS_LOGIN, true);
         session.setAttribute(Constant.SESSION_OPERATOR, new Operator()
                 .setId(employee.getId())
                 .setCompanyId(employee.getCompanyId())
-                .setCompanyIpCheck(employee.getCompanyIpCheck())
+                .setCompanyType(company.getType())
+                .setCompanyIpCheck(company.isIpCheck())
                 .setSysAdmin(employee.getSysAdmin())
                 .setDeviceId(employee.getDeviceId())
                 .setCityId(employee.getCityId())

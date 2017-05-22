@@ -1,7 +1,5 @@
 package com.lyun.estate.biz.company.service;
 
-import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.stuxuhai.jpinyin.PinyinException;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.google.common.base.Strings;
@@ -52,6 +50,14 @@ public class CompanyService {
 
     @Transactional
     public Company createCompany(CreateCompanyInfo createCompanyInfo, Long operatorId) {
+        ExceptionUtil.checkNotNull("加盟信息", createCompanyInfo);
+        ExceptionUtil.checkNotNull("城市信息", createCompanyInfo.getCityId());
+        ExceptionUtil.checkNotNull("加盟公司", createCompanyInfo.getParentId());
+        ExceptionUtil.checkNotNull("加盟负责人", createCompanyInfo.getPartAId());
+        ExceptionUtil.checkNotNull("公司名", createCompanyInfo.getName());
+        ExceptionUtil.checkNotNull("公司简称", createCompanyInfo.getAbbr());
+        ExceptionUtil.checkNotNull("公司负责人", createCompanyInfo.getBossName());
+        ExceptionUtil.checkNotNull("公司负责人手机", createCompanyInfo.getMobile());
 
         checkCompanyParent(createCompanyInfo.getParentId(), createCompanyInfo.getType());
 
@@ -71,11 +77,11 @@ public class CompanyService {
         );
 
         //3. create position
-        Position manager = createPosition(company.getId(), PositionType.REGION_M, operatorId);
+        Position manager = createPosition(company.getId(), company.getType(), PositionType.REGION_M, operatorId);
 
-        createPosition(company.getId(), PositionType.DEPT_M, operatorId);
+        createPosition(company.getId(), company.getType(), PositionType.DEPT_M, operatorId);
 
-        createPosition(company.getId(), PositionType.BUSINESS, operatorId);
+        createPosition(company.getId(), company.getType(), PositionType.BUSINESS, operatorId);
 
         //4. create employee
         String salt = CommonUtil.getUuid().replace("-", "");
@@ -111,7 +117,8 @@ public class CompanyService {
         }
     }
 
-    private Position createPosition(Long companyId, PositionType positionType, Long operatorId) {
+    private Position createPosition(Long companyId, CompanyDefine.Type companyType,
+                                    PositionType positionType, Long operatorId) {
         Position position = positionService.create(new Position()
                 .setCompanyId(companyId)
                 .setName(positionType.getLabel())
@@ -120,7 +127,7 @@ public class CompanyService {
 
         //grant position permission
         Map<PermissionDefine.Category, List<Grant>> categoryGrantsMap = PositionPermissionTemplate.defaultPermissions(
-                positionType);
+                companyType, positionType);
         for (PermissionDefine.Category category : categoryGrantsMap.keySet()) {
             grantService.regrant(position.getId(),
                     DomainType.POSITION,
@@ -154,7 +161,8 @@ public class CompanyService {
         return repository.findOne(id);
     }
 
-    public PageList<Company> find(PageBounds pageBounds) {
-        return repository.select(pageBounds);
+    public List<Company> findYkRaCompany() {
+        return repository.findYkRaCompany();
     }
+
 }
