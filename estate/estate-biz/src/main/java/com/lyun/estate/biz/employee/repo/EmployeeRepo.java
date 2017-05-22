@@ -45,9 +45,9 @@ public interface EmployeeRepo {
             "(select company_id from t_employee where mobile = #{0} and quit = false)) = #{3}")
     int active(String mobile, String password, String salt, String secretKey);
 
-    @Select("SELECT e.*, c.ip_check as company_ip_check, p.name as position_name, d.city_id, d.name as department_name\n" +
+    @Select("SELECT e.*, p.name as position_name, d.city_id, d.name as department_name\n" +
             "FROM t_employee e LEFT JOIN t_position p on e.position_id = p.id LEFT JOIN t_department d on e.department_id = d.id\n" +
-            "LEFT JOIN t_company c on e.company_id = c.id WHERE e.mobile = #{mobile} and e.quit = false")
+            " WHERE e.mobile = #{mobile} and e.quit = false")
     Employee selectByMobile(String mobile);
 
     @Update("update t_employee set open_contact = #{openContact}, wechat = #{wechat}, update_time = now() where id = #{id}")

@@ -1,10 +1,10 @@
 package com.lyun.estate.biz.company.repo;
 
-import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.company.domain.Company;
 import com.lyun.estate.biz.company.repo.provider.CompanyProvider;
 import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 public interface CompanyRepository {
 
@@ -21,5 +21,6 @@ public interface CompanyRepository {
     @Update("UPDATE t_company SET boss_id = #{bossId} WHERE id = #{id}")
     int updateBossId(@Param("id") Long id, @Param("bossId") Long bossId);
 
-    PageList<Company> select(PageBounds pageBounds);
+    @Select("SELECT * FROM t_company WHERE type IN ('YK', 'REGIONAL_AGENT')  AND status = 'ACTIVE'")
+    List<Company> findYkRaCompany();
 }

@@ -1,5 +1,6 @@
 package com.lyun.estate.mgt.permission.service;
 
+import com.lyun.estate.biz.company.def.CompanyDefine;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
@@ -157,7 +158,14 @@ public class PermissionCheckService {
     }
 
     public boolean checkCompany(long companyId) {
+        //1. operator in company
         if (Objects.equals(companyId, mgtContext.getOperator().getCompanyId())) {
+            return true;
+        }
+        //2. operator in parent company
+
+        //3. operator in yk company
+        if (mgtContext.getOperator().getCompanyType() == CompanyDefine.Type.YK) {
             return true;
         }
         throw new EstateException(ExCode.PERMISSION_COMPANY_ERROR);

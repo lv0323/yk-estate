@@ -24,7 +24,7 @@ public class CityRest {
         this.mgtContext = mgtContext;
     }
 
-    @GetMapping
+    @GetMapping("cities")
     public Object cites() {
         return service.findCities();
     }
