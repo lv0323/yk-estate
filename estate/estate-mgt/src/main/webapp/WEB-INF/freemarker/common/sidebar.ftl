@@ -97,6 +97,18 @@
             <li class="header">主导航</li>
             <!-- Optionally, you can add icons to the links -->
             <li><a href="/mgt/franchisee/company"><i class="fa fa-users" aria-hidden="true"></i> <span>加盟商管理</span></a>
+            <li class="treeview franchisee">
+                <a href="#"><i class="fa fa-users" aria-hidden="true"></i> <span>加盟商管理</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/mgt/franchisee/channelPartner?target=.franchisee"><i class="fa fa-circle"></i>渠道商管理</a></li>
+                    <li><a href="/mgt/franchisee/storePartner?target=.franchisee"><i class="fa fa-circle"></i>单店加盟管理</a></li>
+                    <li><a href="/mgt/franchisee/regionAgent?target=.franchisee"><i class="fa fa-circle"></i>区域代理管理</a></li>
+                </ul>
+            </li>
             </li>
         <@checkPermission value='P_FANG'>
             <li class="treeview fang">
