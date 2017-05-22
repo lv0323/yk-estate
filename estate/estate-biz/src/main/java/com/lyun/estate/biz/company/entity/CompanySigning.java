@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.company.domain;
+package com.lyun.estate.biz.company.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;

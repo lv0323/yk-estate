@@ -1,8 +1,8 @@
 package com.lyun.estate.mgt.company;
 
 import com.lyun.estate.biz.company.def.CompanyDefine;
-import com.lyun.estate.biz.company.domain.Company;
-import com.lyun.estate.biz.company.entity.CreateCompanyInfo;
+import com.lyun.estate.biz.company.entity.Company;
+import com.lyun.estate.biz.company.domain.CreateCompanyInfo;
 import com.lyun.estate.biz.department.entity.DepartmentDTO;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.mgt.company.service.CompanyMgtService;

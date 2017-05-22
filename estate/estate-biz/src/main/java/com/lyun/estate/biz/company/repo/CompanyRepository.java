@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.company.repo;
 
-import com.lyun.estate.biz.company.domain.Company;
+import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.repo.provider.CompanyProvider;
 import org.apache.ibatis.annotations.*;
 

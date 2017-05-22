@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.company.repo;
 
-import com.lyun.estate.biz.company.domain.CompanySigning;
+import com.lyun.estate.biz.company.entity.CompanySigning;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;

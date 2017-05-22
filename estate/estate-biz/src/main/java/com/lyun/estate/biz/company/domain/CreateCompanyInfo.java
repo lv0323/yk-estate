@@ -1,8 +1,8 @@
-package com.lyun.estate.biz.company.entity;
+package com.lyun.estate.biz.company.domain;
 
 import com.lyun.estate.biz.company.def.CompanyDefine;
-import com.lyun.estate.biz.company.domain.Company;
-import com.lyun.estate.biz.company.domain.CompanySigning;
+import com.lyun.estate.biz.company.entity.Company;
+import com.lyun.estate.biz.company.entity.CompanySigning;
 import com.lyun.estate.biz.employee.def.WorkingStatus;
 import com.lyun.estate.biz.employee.entity.Employee;
 
