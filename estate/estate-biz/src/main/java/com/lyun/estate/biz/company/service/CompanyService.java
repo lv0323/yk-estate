@@ -4,8 +4,8 @@ import com.github.stuxuhai.jpinyin.PinyinException;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.company.def.CompanyDefine;
-import com.lyun.estate.biz.company.domain.Company;
-import com.lyun.estate.biz.company.entity.CreateCompanyInfo;
+import com.lyun.estate.biz.company.entity.Company;
+import com.lyun.estate.biz.company.domain.CreateCompanyInfo;
 import com.lyun.estate.biz.company.repo.CompanyRepository;
 import com.lyun.estate.biz.company.support.PositionPermissionTemplate;
 import com.lyun.estate.biz.department.entity.Department;
@@ -23,6 +23,7 @@ import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.core.utils.CommonUtil;
+import com.lyun.estate.core.utils.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +58,9 @@ public class CompanyService {
         ExceptionUtil.checkNotNull("公司名", createCompanyInfo.getName());
         ExceptionUtil.checkNotNull("公司简称", createCompanyInfo.getAbbr());
         ExceptionUtil.checkNotNull("公司负责人", createCompanyInfo.getBossName());
-        ExceptionUtil.checkNotNull("公司负责人手机", createCompanyInfo.getMobile());
+        ExceptionUtil.checkIllegal(ValidateUtil.isMobile(createCompanyInfo.getMobile()),
+                "公司负责人手机",
+                createCompanyInfo.getMobile());
 
         checkCompanyParent(createCompanyInfo.getParentId(), createCompanyInfo.getType());
 

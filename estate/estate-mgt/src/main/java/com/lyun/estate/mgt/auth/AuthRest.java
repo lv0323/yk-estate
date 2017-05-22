@@ -7,7 +7,7 @@ import com.lyun.estate.biz.auth.captcha.CheckCaptcha;
 import com.lyun.estate.biz.auth.sms.CheckSmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCode;
 import com.lyun.estate.biz.auth.sms.SmsCodeArgumentResolver;
-import com.lyun.estate.biz.company.domain.Company;
+import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.service.CompanyService;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.mgt.auth.def.SaltSugar;

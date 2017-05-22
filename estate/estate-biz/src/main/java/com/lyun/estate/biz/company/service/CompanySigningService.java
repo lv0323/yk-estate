@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.company.service;
 
-import com.lyun.estate.biz.company.domain.CompanySigning;
+import com.lyun.estate.biz.company.entity.CompanySigning;
 import com.lyun.estate.biz.company.repo.CompanySigningRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
