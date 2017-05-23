@@ -1,10 +1,14 @@
 package com.lyun.estate.mgt.company;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.company.def.CompanyDefine;
-import com.lyun.estate.biz.company.entity.Company;
+import com.lyun.estate.biz.company.domain.CompanyDTO;
 import com.lyun.estate.biz.company.domain.CreateCompanyInfo;
+import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.department.entity.DepartmentDTO;
 import com.lyun.estate.biz.employee.entity.Employee;
+import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver;
 import com.lyun.estate.mgt.company.service.CompanyMgtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -71,6 +75,14 @@ public class CompanyRest {
     @GetMapping("partAIds")
     List<Employee> findPartAIds(@RequestParam Long companyId, Long departmentId) {
         return companyMgtService.findPartAIds(companyId, departmentId);
+    }
+
+    @GetMapping("list")
+    PageList<CompanyDTO> list(@RequestParam(required = false) Long cityId,
+                              @RequestParam(required = false) Long parentId,
+                              @RequestParam(required = false) CompanyDefine.Type companyType,
+                              @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
+        return companyMgtService.list(cityId, parentId, companyType, pageBounds);
     }
 
 }

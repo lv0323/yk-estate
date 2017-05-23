@@ -1,5 +1,9 @@
 package com.lyun.estate.biz.company.repo;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.company.def.CompanyDefine;
+import com.lyun.estate.biz.company.domain.CompanyDTO;
 import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.repo.provider.CompanyProvider;
 import org.apache.ibatis.annotations.*;
@@ -21,6 +25,16 @@ public interface CompanyRepository {
     @Update("UPDATE t_company SET boss_id = #{bossId} WHERE id = #{id}")
     int updateBossId(@Param("id") Long id, @Param("bossId") Long bossId);
 
-    @Select("SELECT * FROM t_company WHERE type IN ('YK', 'REGIONAL_AGENT')  AND status = 'ACTIVE'")
+    @Select("SELECT * FROM t_company WHERE type IN ('YK', 'REGIONAL_AGENT')  AND status = 'ACTIVE'  AND is_deleted =FALSE ")
     List<Company> findYkRaCompany();
+
+    @SelectProvider(type = CompanyProvider.class, method = "list")
+    PageList<CompanyDTO> list(@Param("cityId") Long cityId,
+                              @Param("parentId") Long parentId,
+                              @Param("companyType") CompanyDefine.Type companyType,
+                              PageBounds pageBounds);
+
+    @Select("select count(1) from t_company where parent_id = #{parentId} and type =#{companyType} and is_deleted = false")
+    Integer countForParent(@Param("parentId") Long parentId,
+                           @Param("companyType") CompanyDefine.Type companyType);
 }

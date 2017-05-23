@@ -77,4 +77,7 @@ public interface EmployeeRepo {
 
     @Update("UPDATE t_employee SET follow_rent_id = #{fangId}, rent_contact_count = #{contactCount}, last_rent_count_time = now() WHERE id = #{id}")
     int updateFollowRent(@Param("id") long id, @Param("fangId") long fangId, @Param("contactCount") int contactCount);
+
+    @Select("select count(1) from t_employee where company_id =#{companyId} AND quit = FALSE")
+    Integer countForCompany(Long companyId);
 }
