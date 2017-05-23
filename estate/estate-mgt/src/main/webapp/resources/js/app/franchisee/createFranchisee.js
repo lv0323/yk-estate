@@ -3,10 +3,11 @@
  */
 require(['main-app',
         contextPath + '/js/service/createFranchisee-service.js',
+        contextPath+'/js/service/city-service.js',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
         contextPath + '/js/directive/index.js',
         'select', 'chosen', 'datetimepicker.zh-cn'],
-    function (mainApp, CreateService, SweetAlertHelp) {
+    function (mainApp, CreateService, CityService, SweetAlertHelp) {
 
         var CreateFranchiseeModule=angular.module('CreateFranchiseeModule',['directiveYk']);
         CreateFranchiseeModule.controller("CreateFranchiseeCtrl", ['$scope','$timeout', '$q', '$interval', '$window', '$location', function ($scope, $timeout, $q, $interval, $window) {
@@ -15,24 +16,105 @@ require(['main-app',
                 cityId: {
                     init: false
                 },
-                companyId: {
+                parentId: {
                     init: false
                 },
                 signatureDepId: {
                     init: false
                 },
-                signatureRepId: {
+                partAId: {
                     init: false
                 }
             };
 
-            $scope.cityList = [{id: 1, name: '北京'}];
-            $scope.companyList = [{id: 1, name: '北京代理'}];
-            $scope.signatureDepList = [{id:1, name: '盈科总部'}];
-            $scope.signatureRepList = [{id:1, name: '李欣儿'}];
+            $scope.cityList = [{name:'',id:''}];
+            $scope.companyList = [{name:'',id:''}];
+            $scope.signatureDepList = [{name:'',id:''}];
+            $scope.signatureRepList = [{name:'',id:''}];
 
-            $scope.contractStartDate = '';
-            $scope.contractEndDate = '';
+            $scope.create = {
+                cityId: '',
+                parentId: '',
+                signatureDepId: '',
+                partAId: '',
+                type: 'CHANNEL',
+                name: '',
+                abbr: '',
+                address: '',
+                introduction:'',
+                startDate: '',
+                endDate: '',
+                years:'',
+                storeCount: '',
+                price :''
+            };
+
+
+            /*区域城市列表初始化*/
+            CityService.getCity().then(function(response){
+                $scope.cityList = response.map(function(item){
+                    return {
+                        name: item.name,
+                        id: item.id
+                    }
+                });
+            });
+
+            /*签约父公司列表初始化*/
+            CreateService.getParentCompany().then(function (response) {
+                $scope.companyList = response.map(function (item) {
+                   return {
+                       name: item.abbr || item.name,
+                       id: item.id
+                   }
+                });
+            });
+
+            $scope.loadParentCompanyDep = function (companyId) {
+                if(companyId === ''){
+                    return;
+                }
+                CreateService.getParentCompanyDep({companyId: companyId}).then(function (response) {
+                    $scope.$apply(function(){
+                        $scope.signatureDepList = response.map(function (item) {
+                            return {
+                                name: item.name,
+                                id: item.id
+                            }
+                        });
+                    });
+                });
+
+            };
+
+            $scope.loadParentCompanyDepEmp = function (companyId, depId) {
+                if(companyId === ''){
+                    return;
+                }
+                CreateService.getParentCompanyDepEmp({companyId: companyId, departmentId: depId}).then(function (response) {
+                    $scope.$apply(function(){
+                        $scope.signatureRepList = response.map(function (item) {
+                            return {
+                                name: item.name,
+                                id: item.id
+                            }
+                        });
+                    });
+                });
+            };
+
+
+            $scope.chosenChange = function(id, key, value){
+                if(key === 'parentId'){
+                    $scope.loadParentCompanyDep(value);
+                    $scope.loadParentCompanyDepEmp(value);
+                    $scope.create.signatureDepId = '';
+                    $scope.create.partAId = '';
+                }
+                if(key === 'signatureDepId'){
+                    $scope.loadParentCompanyDepEmp($scope.create.parentId, $scope.create.signatureDepId);
+                }
+            };
 
             /*下拉框*/
             $scope.initChosen = function(id, key){
@@ -41,8 +123,8 @@ require(['main-app',
                     config[key].init = !config[key].init;
                     $(id).chosen().change(function(e, result){
                         $scope.$apply(function(){
-                            $scope.filter[key] = result.selected;
-                            $scope.list();
+                            $scope.create[key] = result.selected;
+                            $scope.chosenChange(id, key, result.selected);
                         });
                     });
                     return;
@@ -50,6 +132,84 @@ require(['main-app',
                 $(id).chosen();
                 $(id).trigger('chosen:updated');
             };
+
+            $scope.setDate = function(key, value){
+                $scope.create[key] = value;
+            };
+
+            $scope.confirmAddDealBtn = function () {
+                // console.log($scope.create)
+                var flag = true;
+                $('.form-group').find('.invalid-input').removeClass('invalid-input');
+                if (!$scope.create.cityId) {
+                    $('#cityListDrop').addClass('invalid-input');
+                    flag = false;
+                }
+                if (!$scope.create.parentId) {
+                    $('#companyListDrop').addClass('invalid-input');
+                    flag = false;
+                }
+                if (!$scope.create.partAId) {
+                    $('#signatureRepListDrop').addClass('invalid-input');
+                    flag = false;
+                }
+                if (!$scope.create.type) {
+                    $('#franchiseeType').addClass('invalid-input');
+                    flag = false;
+                }
+                if (!$scope.create.name) {
+                    $('#franchiseeName').addClass('invalid-input');
+                    flag = false;
+                }
+                if (!$scope.create.abbr) {
+                    $('#franchiseeAbbr').addClass('invalid-input');
+                    flag = false;
+                }
+                if (!$scope.create.address) {
+                    $('#franchiseeAddr').addClass('invalid-input');
+                    flag = false;
+                }
+                if (!$scope.create.startDate) {
+                    $('#contractSDate').addClass('invalid-input');
+                    flag = false;
+                }
+                if (!$scope.create.endDate) {
+                    $('#contractEDate').addClass('invalid-input');
+                    flag = false;
+                }
+                if (!$scope.create.years) {
+                    $('#contractYears').addClass('invalid-input');
+                    flag = false;
+                }
+                if (!$scope.create.storeCount) {
+                    $('#franchiseeStores').addClass('invalid-input');
+                    flag = false;
+                }
+                if (!$scope.create.price) {
+                    $('#franchiseeFee').addClass('invalid-input');
+                    flag = false;
+                }
+                if (!$scope.create.bossName) {
+                    $('#franchiseeBoss').addClass('invalid-input');
+                    flag = false;
+                }
+                if (!$scope.create.mobile) {
+                    $('#franchiseeBossMobile').addClass('invalid-input');
+                    flag = false;
+                }
+                if(flag){
+                    CreateService.createCompany($scope.create)
+                        .done(function () {
+                            SweetAlertHelp.success({}, function () {
+                                window.history.back();
+                            });
+                        }).fail(function (res) {
+                            SweetAlertHelp.fail(res);
+                        });
+                }else {
+                    SweetAlertHelp.fail({message:"请填写所有必填字段"});
+                }
+            }
 
         }]);
 

@@ -7,7 +7,7 @@ define(contextPath+'/js/service/city-service.js',
 
         var CityService = {};
         CityService.getCity = function (param, header) {
-            return RequestService.get('/api/cities/', param, header);
+            return RequestService.get('/api/cities/cities', param, header);
         };
         CityService.getDistrict = function (params, header) {
             return RequestService.get('/api/cities/districts', params, header);

@@ -20,7 +20,7 @@ define(contextPath + '/js/service/department-service.js',
         };
 
         DepartmentService.getCity = function (header) {
-            return RequestService.get('/api/cities/', null, header);
+            return RequestService.get('/api/cities/cities', null, header);
         };
 
         DepartmentService.getDistrict = function (params, header) {

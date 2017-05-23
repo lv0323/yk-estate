@@ -3,11 +3,12 @@
  */
 require(['main-app',
         contextPath + '/js/service/channelPartner-service.js',
+        contextPath+'/js/service/city-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
         contextPath + '/js/directive/index.js',
         'chosen'],
-    function (mainApp, ChannelService, pagingPlugin, SweetAlertHelp) {
+    function (mainApp, ChannelService, CityService, pagingPlugin, SweetAlertHelp) {
 
         var pageConfig = {
             limit: 8,
@@ -38,7 +39,7 @@ require(['main-app',
                 collapse:true
             };
 
-            $scope.cityList = [{id: 1, name: '北京'}];
+            $scope.cityList = [{name:'',id:''}];
             $scope.signatureRepList = [{id:1, name: '盈科总部'}];
             $scope.channelPartnerList = [
                 {id: 0, name:'北京盈科渠道商', totalStores: 134, totalAgent: 546, cityName: '北京', representative: '李欣儿', representativeMobile:'18688889999', signatureRep:'范哲思', signatureRepCompany:'盈科地产', signatureRepMobile:'13566667777', signatureLowerYear: '2014-5-8', signatureUpperYear: '2018-7-9'},
@@ -49,6 +50,16 @@ require(['main-app',
             $scope.triggerCollapse = function () {
                 $scope.page.collapse = !$scope.page.collapse;
             };
+
+            /*筛选栏城市列表初始化*/
+            CityService.getCity().then(function(response){
+                $scope.cityList = response.map(function(item){
+                    return {
+                        name: item.name,
+                        id: item.id
+                    }
+                });
+            });
 
             /*下拉框*/
             $scope.initChosen = function(id, key){
