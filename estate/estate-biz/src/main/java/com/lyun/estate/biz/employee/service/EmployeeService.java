@@ -271,4 +271,8 @@ public class EmployeeService {
     public List<Employee> listByCompanyIdAndPositionId(long companyId, long positionId) {
         return repo.listByCompanyIdAndPositionId(companyId, positionId);
     }
+
+    public Integer countForCompany(Long companyId) {
+        return repo.countForCompany(companyId);
+    }
 }

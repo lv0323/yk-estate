@@ -1,11 +1,14 @@
 package com.lyun.estate.biz.company.service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.stuxuhai.jpinyin.PinyinException;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.company.def.CompanyDefine;
-import com.lyun.estate.biz.company.entity.Company;
+import com.lyun.estate.biz.company.domain.CompanyDTO;
 import com.lyun.estate.biz.company.domain.CreateCompanyInfo;
+import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.repo.CompanyRepository;
 import com.lyun.estate.biz.company.support.PositionPermissionTemplate;
 import com.lyun.estate.biz.department.entity.Department;
@@ -166,6 +169,22 @@ public class CompanyService {
 
     public List<Company> findYkRaCompany() {
         return repository.findYkRaCompany();
+    }
+
+    public PageList<CompanyDTO> list(Long cityId, Long parentId, CompanyDefine.Type companyType,
+                                     PageBounds pageBounds) {
+        ExceptionUtil.checkNotNull("分页信息", pageBounds);
+        PageList<CompanyDTO> list = repository.list(cityId, parentId, companyType, pageBounds);
+        list.forEach(c -> {
+            c.setBoss(employeeService.findById(c.getBossId()));
+            c.setDeptsCount(departmentService.countForCompany(c.getId()));
+            c.setEmployeeCount(employeeService.countForCompany(c.getId()));
+            if (c.getType() == CompanyDefine.Type.REGIONAL_AGENT) {
+                c.setChannelCount(repository.countForParent(c.getId(), CompanyDefine.Type.CHANNEL));
+                c.setSigleStoreCount(repository.countForParent(c.getId(), CompanyDefine.Type.SINGLE_STORE));
+            }
+        });
+        return list;
     }
 
 }

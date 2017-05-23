@@ -1,12 +1,14 @@
 package com.lyun.estate.mgt.company.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.audit.def.AuditSubject;
 import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.biz.company.def.CompanyDefine;
-import com.lyun.estate.biz.company.entity.Company;
+import com.lyun.estate.biz.company.domain.CompanyDTO;
 import com.lyun.estate.biz.company.domain.CreateCompanyInfo;
+import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.service.CompanyService;
 import com.lyun.estate.biz.department.entity.DepartmentDTO;
 import com.lyun.estate.biz.department.service.DepartmentService;
@@ -50,7 +52,6 @@ public class CompanyMgtService {
     public Company createCompany(CreateCompanyInfo info) {
 
         permissionCheckService.checkExist(Permission.CREATE_FRANCHISEE);
-        permissionCheckService.checkCompany(info.getParentId());
 
         Company company = companyService.createCompany(info, mgtContext.getOperator().getId());
 
@@ -88,5 +89,20 @@ public class CompanyMgtService {
         permissionCheckService.checkCompany(companyId);
 
         return employeeService.listByCompanyIdDepartmentId(companyId, departmentId, new PageBounds(1, 100));
+    }
+
+    public PageList<CompanyDTO> list(Long cityId, Long parentId, CompanyDefine.Type companyType,
+                                     PageBounds pageBounds) {
+        permissionCheckService.checkExist(Permission.LIST_FRANCHISEE);
+
+        if (parentId == null) {
+            if (mgtContext.getOperator().getCompanyType() != CompanyDefine.Type.YK) {
+                parentId = mgtContext.getOperator().getCompanyId();
+            }
+        } else {
+            permissionCheckService.checkCompany(parentId);
+        }
+
+        return companyService.list(cityId, parentId, companyType, pageBounds);
     }
 }

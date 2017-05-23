@@ -49,7 +49,9 @@ public enum Permission implements LabelEnum {
     PERMISSION_MANAGEMENT("权限管理与模块设置", PermissionDefine.Category.COMPANY),
     VIEW_AUDIT_LOG("查看业务日志", PermissionDefine.Category.COMPANY),
 
-    CREATE_FRANCHISEE("新增加盟商", PermissionDefine.Category.FRANCHISEE),
+    CREATE_FRANCHISEE("新增加盟信息", PermissionDefine.Category.FRANCHISEE),
+    LIST_FRANCHISEE("查看加盟信息", PermissionDefine.Category.FRANCHISEE),
+    MODIFY_FRANCHISEE("修改加盟信息", PermissionDefine.Category.FRANCHISEE),
 
     //页面模块
     P_FANG("房源管理", PermissionDefine.Category.PAGE),
