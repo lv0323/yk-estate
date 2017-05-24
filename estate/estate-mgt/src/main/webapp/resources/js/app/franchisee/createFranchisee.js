@@ -2,12 +2,12 @@
  * Created by yanghong on 5/22/17.
  */
 require(['main-app',
-        contextPath + '/js/service/createFranchisee-service.js',
+        contextPath + '/js/service/franchisee-service.js',
         contextPath+'/js/service/city-service.js',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
         contextPath + '/js/directive/index.js',
         'select', 'chosen', 'datetimepicker.zh-cn'],
-    function (mainApp, CreateService, CityService, SweetAlertHelp) {
+    function (mainApp, FranchiseeService, CityService, SweetAlertHelp) {
 
         var CreateFranchiseeModule=angular.module('CreateFranchiseeModule',['directiveYk']);
         CreateFranchiseeModule.controller("CreateFranchiseeCtrl", ['$scope','$timeout', '$q', '$interval', '$window', '$location', function ($scope, $timeout, $q, $interval, $window) {
@@ -37,7 +37,7 @@ require(['main-app',
                 parentId: '',
                 signatureDepId: '',
                 partAId: '',
-                type: 'CHANNEL',
+                type: '',
                 name: '',
                 abbr: '',
                 address: '',
@@ -49,6 +49,18 @@ require(['main-app',
                 price :''
             };
 
+            /*根据url设置type选项默认值*/
+            var url = window.location.href.split('?')[0];
+            var checkPage = function(url) {
+                var regs = [new RegExp('ChannelPartner$'), new RegExp('StorePartner$'), new RegExp('RegionAgent$')];
+                var contains = ['CHANNEL', 'SINGLE_STORE', 'REGIONAL_AGENT'];
+                for(var i = 0; i < regs.length; i++){
+                    if(regs[i].test(url)){
+                        this.create.type =  contains[i];
+                    }
+                }
+            };
+            checkPage.call($scope, url);
 
             /*区域城市列表初始化*/
             CityService.getCity().then(function(response){
@@ -61,7 +73,7 @@ require(['main-app',
             });
 
             /*签约父公司列表初始化*/
-            CreateService.getParentCompany().then(function (response) {
+            FranchiseeService.getParentCompany().then(function (response) {
                 $scope.companyList = response.map(function (item) {
                    return {
                        name: item.abbr || item.name,
@@ -74,7 +86,7 @@ require(['main-app',
                 if(companyId === ''){
                     return;
                 }
-                CreateService.getParentCompanyDep({companyId: companyId}).then(function (response) {
+                FranchiseeService.getParentCompanyDep({companyId: companyId}).then(function (response) {
                     $scope.$apply(function(){
                         $scope.signatureDepList = response.map(function (item) {
                             return {
@@ -91,7 +103,7 @@ require(['main-app',
                 if(companyId === ''){
                     return;
                 }
-                CreateService.getParentCompanyDepEmp({companyId: companyId, departmentId: depId}).then(function (response) {
+                FranchiseeService.getParentCompanyDepEmp({companyId: companyId, departmentId: depId}).then(function (response) {
                     $scope.$apply(function(){
                         $scope.signatureRepList = response.map(function (item) {
                             return {
@@ -198,7 +210,7 @@ require(['main-app',
                     flag = false;
                 }
                 if(flag){
-                    CreateService.createCompany($scope.create)
+                    FranchiseeService.createCompany($scope.create)
                         .done(function () {
                             SweetAlertHelp.success({}, function () {
                                 window.history.back();

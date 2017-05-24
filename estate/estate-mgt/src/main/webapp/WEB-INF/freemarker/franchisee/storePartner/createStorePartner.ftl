@@ -38,7 +38,7 @@
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">区域</label>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
-                                                <select id="cityListDrop" class="chosen-select-dep">
+                                                <select id="cityListDrop" ng-model="create.cityId" class="chosen-select-dep">
                                                     <option value="">选择城市</option>
                                                     <option ng-repeat="city in cityList" ng-value="city.id" repeat-done="initChosen('#cityListDrop', 'cityId')">{{city.name}}</option>
                                                 </select>
@@ -46,6 +46,12 @@
                                         </div>
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">签约信息</label>
+                                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                                <select id="companyListDrop">
+                                                    <option value="">所属公司</option>
+                                                    <option ng-repeat="company in companyList" ng-value="company.id" repeat-done="initChosen('#companyListDrop', 'parentId')">{{company.name}}</option>
+                                                </select>
+                                            </div>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
                                                 <select id="signatureDepListDrop">
                                                     <option value="">上级部门</option>
@@ -55,22 +61,20 @@
                                             <div class="col-lg-3 col-md-3 col-sm-3">
                                                 <select id="signatureRepListDrop">
                                                     <option value="">部门员工</option>
-                                                    <option ng-repeat="signatureRep in signatureRepList" ng-value="signatureRep.id" repeat-done="initChosen('#signatureRepListDrop', 'signatureRepId')">{{signatureRep.name}}</option>
+                                                    <option ng-repeat="signatureRep in signatureRepList" ng-value="signatureRep.id" repeat-done="initChosen('#signatureRepListDrop', 'partAId')">{{signatureRep.name}}</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">加盟类型</label>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
-                                                <select id="franchiseeType" class="selected_1 show-menu-arrow form-control" select-picker>
+                                                <select id="franchiseeType" ng-model="create.type" class="selected_1 show-menu-arrow form-control" select-picker>
                                                     <option value="">选择加盟类型</option>
                                                 <#list franchiseeType?if_exists as type>
                                                     <#if type == 'YK'>
                                                         <option value="${type.name()}" style="display: none;">${type.getLabel()}</option>
-                                                    <#elseif type == 'SINGLE_STORE'>
-                                                        <option ng-value="${type.name()}" selected="true">${type.getLabel()}</option>
                                                     <#else>
-                                                        <option ng-value="${type.name()}" >${type.getLabel()}</option>
+                                                        <option value="${type.name()}" >${type.getLabel()}</option>
                                                     </#if>
                                                 </#list>
                                                 </select>
@@ -79,22 +83,22 @@
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">加盟商信息</label>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
-                                                <input id="franchiseeName" type="text" class="form-control" placeholder="加盟商名称">
+                                                <input id="franchiseeName" ng-model="create.name" type="text" class="form-control" placeholder="加盟商名称">
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-2">
-                                                <input id="franchiseeAbbr" type="text" class="form-control" placeholder="缩写" />
+                                                <input id="franchiseeAbbr" ng-model="create.abbr" type="text" class="form-control" placeholder="简称" />
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">加盟商地址</label>
                                             <div class="col-sm-7">
-                                                <input id="franchiseeAddress" type="text" class="form-control" placeholder="加盟商地址" />
+                                                <input id="franchiseeAddr" ng-model="create.address" type="text" class="form-control" placeholder="加盟商地址" />
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">简介</label>
                                             <div class="col-sm-7">
-                                                <textarea id="note" class="form-control noresize" placeholder="填写介绍" cols="20" rows="4"></textarea>
+                                                <textarea ng-model="create.introduction" class="form-control noresize" placeholder="填写介绍" cols="20" rows="4"></textarea>
                                             </div>
                                         </div>
                                         <hr>
@@ -102,34 +106,37 @@
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">签约有效期</label>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
-                                                <div class="input-group date form_date" datetimepicker>
-                                                    <input class="form-control" size="16" placeholder="开始日期" type="text" ng-model="contractStartDate">
+                                                <div class="input-group date form_date" datetimepicker key="startDate" change="setDate">
+                                                    <input id="contractSDate" class="form-control" size="16" placeholder="开始日期" type="text" ng-model="create.startDate">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
-                                                <div class="input-group date form_date" datetimepicker>
-                                                    <input class="form-control" size="16" placeholder="结束日期" type="text" ng-model="contractEndDate">
+                                                <div class="input-group date form_date" datetimepicker key="endDate" change="setDate">
+                                                    <input id="contractEDate" class="form-control" size="16" placeholder="结束日期" type="text" ng-model="create.endDate">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2 col-md-2 col-sm-2">
                                                 <div class="input-group">
-                                                    <input id="contractDuration" type="text" class="form-control" placeholder="年限">
-                                                    <label class="input-group-addon" for="contractDuration">年</label>
+                                                    <input id="contractYears" type="text" class="form-control" placeholder="年限" ng-model="create.years">
+                                                    <label class="input-group-addon">年</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">门店总数</label>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
-                                                <input id="storeCount" type="text" class="form-control" placeholder="门店总数">
+                                                <input id="franchiseeStores" type="text" class="form-control" placeholder="门店总数" ng-model="create.storeCount">
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">加盟费</label>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
-                                                <input id="signPrice" type="text" class="form-control" placeholder="加盟费">
+                                                <div class="input-group">
+                                                    <input id="franchiseeFee" type="text" class="form-control" placeholder="加盟费" ng-model="create.price" >
+                                                    <label class="input-group-addon">元</label>
+                                                </div>
                                             </div>
                                         </div>
                                         <hr>
@@ -137,13 +144,13 @@
                                         <div class="form-group clearfix">
                                             <label class="pull-left control-label">负责人姓名</label>
                                             <div class="col-sm-3">
-                                                <input id="bossName" type="text" class="form-control" placeholder="负责人姓名">
+                                                <input id="franchiseeBoss" type="text" class="form-control" placeholder="负责人姓名" ng-model="create.bossName">
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
-                                            <label class="pull-left control-label">手机</label>
+                                            <label class="pull-left control-label">负责人手机</label>
                                             <div class="col-sm-3">
-                                                <input id="customerContact" type="text" class="form-control" placeholder="手机">
+                                                <input id="franchiseeBossMobile" type="text" class="form-control" placeholder="负责人手机" ng-model="create.mobile">
                                             </div>
                                         </div>
                                         <hr>
@@ -151,7 +158,7 @@
 
                                         <div class="form-group center">
                                             <div class="col-sm-12">
-                                                <button type="button" class="btn btn-primary" id="confirmAddDealBtn">保存</button>
+                                                <button type="button" class="btn btn-primary" ng-click="confirmAddDealBtn()">保存</button>
                                             </div>
                                         </div>
                                     </form>

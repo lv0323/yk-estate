@@ -7,29 +7,8 @@ define(contextPath+'/js/service/company-service.js',
 
         var CompanyService = {};
 
-        CompanyService.getCompany = function (header) {
-
-            return RequestService.get('/api/company/query', null, header);
-        };
-
-        CompanyService.getSpecifiedCompany = function (companyId,header) {
-            return RequestService.get('/api/company/'+companyId, header);
-        };
-
-        CompanyService.addCompany = function (params,header) {
-            return RequestService.post('/api/company/create',params.data,header);
-        };
-
-        CompanyService.editCompany = function (params,header) {
-            return RequestService.post('/api/company/edit',params.data,header);
-        };
-
-        CompanyService.toggleLockCompany = function (params,header) {
-            return RequestService.get('/api/company/lock',params.data,header);
-        };
-
-        CompanyService.renewCompany = function (params,header) {
-            return RequestService.get('/api/company/renew',params.data,header);
+        CompanyService.listCompany = function (params,header) {
+            return RequestService.get('/api/company/list',params,header);
         };
 
         return CompanyService;

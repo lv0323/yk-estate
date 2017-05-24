@@ -6,11 +6,14 @@
  */
 require(['main-app',
         contextPath + '/js/service/storePartner-service.js',
+        contextPath+'/js/service/franchisee-service.js',
+        contextPath + '/js/service/util-service.js',
+        contextPath+'/js/service/city-service.js',
         contextPath + '/js/plugins/pagination/pagingPlugin.js',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
         contextPath + '/js/directive/index.js',
         'chosen'],
-    function (mainApp, StoreService, pagingPlugin, SweetAlertHelp) {
+    function (mainApp, StoreService, FranchiseeService, UtilService, CityService, pagingPlugin, SweetAlertHelp) {
 
         var pageConfig = {
             limit: 8,
@@ -27,31 +30,82 @@ require(['main-app',
                 cityId: {
                     init: false
                 },
-                signatureRepId: {
+                parentId: {
                     init: false
                 }
             };
 
             $scope.filter ={
                 cityId:'',
-                signatureRepId:''
+                companyType: 'SINGLE_STORE',
+                parentId: ''
             };
 
             $scope.page = {
                 collapse:true
             };
 
-            $scope.cityList = [{id: 1, name: '北京'}];
-            $scope.signatureRepList = [{id:1, name: '盈科总部'}];
+            $scope.cityList = [{name:'',id:''}];
+            $scope.superiorDepList = [{name:'',id:''}];
+
             $scope.storePartnerList = [
-                {id: 0, name:'北京盈科渠道商', totalStores: 134, totalAgent: 546, cityName: '北京', representative: '李欣儿', representativeMobile:'18688889999', signatureRep:'范哲思', signatureRepCompany:'盈科地产', signatureRepMobile:'13566667777', signatureLowerYear: '2014-5-8', signatureUpperYear: '2018-7-9'},
-                {id: 1, name:'天津盈科渠道商', totalStores: 104, totalAgent: 753, cityName: '天津', representative: '王欣儿', representativeMobile:'18677779999', signatureRep:'肖哲思', signatureRepCompany:'肖式地产', signatureRepMobile:'13577778888', signatureLowerYear: '2014-5-8', signatureUpperYear: '2018-7-9'}
+                {id: '', name:'', deptsCount: '', employeeCount: '', cityName: '', boss: {name: '', mobile:''}, partA: {name: '', companyAbbr: '', mobile: ''}, startDate: '', endDate: ''}
             ];
 
             /*筛选栏隐藏／显示*/
             $scope.triggerCollapse = function () {
                 $scope.page.collapse = !$scope.page.collapse;
             };
+
+            /*筛选栏城市列表初始化*/
+            CityService.getCity().then(function(response){
+                $scope.cityList = response.map(function(item){
+                    return {
+                        name: item.name,
+                        id: item.id
+                    }
+                });
+            });
+
+            /*筛选栏上级部门列表初始化*/
+            var iniSuperiorDepList = function () {
+                var superiorDepList_YK = [];
+                var superiorDepList_RA = [];
+                FranchiseeService.listCompany({companyType: 'YK'}, {'X-PAGING':'total=true'}).then(function (res) {
+                    superiorDepList_YK = res.items.map(function (item) {
+                        return {
+                            id: item.id,
+                            name: item.boss.companyAbbr
+                        }
+                    });
+                    FranchiseeService.listCompany({companyType: 'REGIONAL_AGENT'}, {'X-PAGING':'total=true'}).then(function (res) {
+                        superiorDepList_RA = res.items.map(function (item) {
+                            return {
+                                id: item.id,
+                                name: item.boss.companyAbbr
+                            }
+                        });
+
+                        $scope.$apply(function() {
+                            $scope.superiorDepList = superiorDepList_YK.concat(superiorDepList_RA);
+                        });
+
+                    });
+                });
+            };
+            iniSuperiorDepList();
+
+            /*筛选栏上级部门列表初始化*/
+            FranchiseeService.listCompany({companyType: 'REGIONAL_AGENT'}, {'X-PAGING':'total=true'}).then(function (res) {
+                $scope.$apply(function() {
+                    $scope.superiorDepList = res.items.map(function (item) {
+                        return {
+                            id: item.id,
+                            name: item.name
+                        }
+                    });
+                });
+            });
 
             /*下拉框*/
             $scope.initChosen = function(id, key){
@@ -98,9 +152,31 @@ require(['main-app',
 
             };
 
-            $scope.list = function () {
-                pagination(1)
-            }
+            $scope.list = function (offset, currentPage) {
+                if(!currentPage){
+                    pageConfig.currentPage = 1;
+                }
+
+                FranchiseeService.listCompany($scope.filter, {'X-PAGING':'total=true&offset='+(offset||pageConfig.offset)+'&limit='+ pageConfig.limit}).then(function (res) {
+                    $scope.$apply(function() {
+                        $scope.storePartnerList = res.items.map(function (item) {
+                            return {
+                                id: item.id,
+                                name: item.name,
+                                deptsCount: item.deptsCount,
+                                employeeCount: item.employeeCount,
+                                cityName: item.cityName,
+                                boss: {name: item.boss.name, mobile: item.boss.mobile},
+                                partA: {name: item.partA.name, companyAbbr: item.partA.companyAbbr, mobile: item.partA.mobile},
+                                startDate: UtilService.timeStamp2Date(item.startDate),
+                                endDate: UtilService.timeStamp2Date(item.endDate)
+                            }
+                        });
+                        pagination(res.total);
+                    });
+                });
+                // pagination(1)
+            };
 
             $scope.list()
 

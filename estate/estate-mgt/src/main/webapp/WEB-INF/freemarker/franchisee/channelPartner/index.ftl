@@ -46,53 +46,53 @@
                                             <div class="form-group sortlist">
                                                 <label class="control-label">筛选</label>
                                                 <div class="col-lg-2 col-md-2 col-sm-3">
-                                                    <select id="cityListDrop" class="chosen-select-dep">
+                                                    <select id="cityListDrop">
                                                         <option value="">选择城市</option>
                                                         <option ng-repeat="city in cityList" ng-value="city.id" repeat-done="initChosen('#cityListDrop', 'cityId')">{{city.name}}</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-3">
-                                                    <select id="signatureRepListDrop" class="chosen-select-dep">
-                                                        <option value="">选择签约人</option>
-                                                        <option ng-repeat="signatureRep in signatureRepList" ng-value="signatureRep.id" repeat-done="initChosen('#signatureRepListDrop', 'signatureRepId')">{{signatureRep.name}}</option>
+                                                    <select id="superiorDepListDrop">
+                                                        <option value="">选择上级部门</option>
+                                                        <option ng-repeat="superiorDep in superiorDepList" ng-value="superiorDep.id" repeat-done="initChosen('#superiorDepListDrop', 'parentId')">{{superiorDep.name}}</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div id="PartnerList" class="table-responsive clearfix" ng-cloak>
-                                        <div class="media clearfix" ng-repeat="channelPartner in channelPartnerList">
+                                        <div class="media clearfix" ng-repeat="partner in channelPartnerList">
                                             <div class="media-body">
                                                 <div class="col-lg-8 col-md-8 col-sm-8" style="padding-right: 0">
                                                     <div class="clearfix">
                                                         <h5 class="clearfix media-heading pull-left" >
-                                                            <a ng-href="{{'/mgt/franchisee/channelPartner/detailChannelPartner?id='+channelPartner.id}}" target="_blank" class="f18" ng-bind="channelPartner.name"></a>
+                                                            <a ng-href="{{'/mgt/franchisee/channelPartner/detailChannelPartner?id='+partner.id}}" target="_blank" class="f18" ng-bind="partner.name"></a>
                                                         </h5>
 
                                                     </div>
                                                     <div class="clearfix m-t-10 text-muted">
                                                         <span class="tip tip-success">签约</span>
-                                                        <span class="m-l-5 text-muted"> {{channelPartner.signatureRep}}-{{channelPartner.signatureRepCompany}}-{{channelPartner.signatureRepMobile}}</span>
-                                                        <span class="m-l-10 text-muted">{{channelPartner.signatureLowerYear}}~{{channelPartner.signatureUpperYear}}</span>
+                                                        <span class="m-l-5 text-muted"> {{partner.partA.name}}-{{partner.partA.companyAbbr}}-{{partner.partA.mobile}}</span>
+                                                        <span class="m-l-10 text-muted">{{partner.startDate}}~{{partner.endDate}}</span>
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-4 col-md-4 col-sm-4 text-left">
-                                                    <p><strong class="text-muted">{{channelPartner.cityName}}</strong></p>
-                                                    <p><span class="tip tip-danger">负责人</span><span class="m-l-5 text-muted">{{channelPartner.representative}}-{{channelPartner.representativeMobile}}</span></p>
+                                                    <p><strong class="text-muted">{{partner.cityName}}</strong></p>
+                                                    <p><span class="tip tip-danger">负责人</span><span class="m-l-5 text-muted">{{partner.boss.name}}-{{partner.boss.mobile}}</span></p>
                                                 </div>
 
                                                 <div class="clearfix col-lg-12 col-md-12 col-sm-12">
                                                     <div class="pull-left btn-add">
-                                                        <span class="badge badge-info m-r-5">店 </span><span class="text-muted m-r-20">{{channelPartner.totalStores}}</span>
-                                                        <span class="badge badge-warning m-r-5">员工</span><span class="text-muted m-r-20"> {{channelPartner.totalAgent}}</span>
+                                                        <span class="badge badge-info m-r-5">店 </span><span class="text-muted m-r-20">{{partner.deptsCount}}</span>
+                                                        <span class="badge badge-warning m-r-5">员工</span><span class="text-muted m-r-20"> {{partner.employeeCount}}</span>
                                                         <span class="m-r-20">
-                                                            <a class="m-l-10" ng-href="javascript:;" ng-click="editPartner(channelPartner.id)">
+                                                            <a class="m-l-10" ng-href="javascript:;" ng-click="editPartner(partner.id)">
                                                                 <i class="fa fa-pencil"></i>编辑
                                                             </a>
                                                         </span>
                                                         <span class="m-r-20">
-                                                            <a class="m-l-10" ng-href="javascript:;" ng-click="delPartner(channelPartner.id)">
+                                                            <a class="m-l-10" ng-href="javascript:;" ng-click="delPartner(partner.id)">
                                                                 <i class="fa fa-pencil"></i>删除
                                                             </a>
                                                         </span>

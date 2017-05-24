@@ -1,8 +1,10 @@
+<link href="${contextPath}/css/app/fang/index.css" rel="stylesheet">
+
 <#include "/common/header.ftl" />
 <#include "/common/sidebar.ftl" />
 
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+<div class="content-wrapper" id="regionAgentListWrapper" ng-controller="RegionAgentListCtrl">
     <section class="content-header">
         <ol class="breadcrumb">
             <li>
@@ -31,31 +33,38 @@
                                         新增区域代理
                                     </a>
                                     <span class="opt-gap"></span>
-                                    <a class="btn" id="filterPartnerBtn">
-                                        <i class="fa fa-filter" aria-hidden="true"></i>
-                                        筛选
+                                    <a class="btn-collapse icon-down btn" ng-click="triggerCollapse()">
+                                        <strong><i class="fa" ng-class="{true:'fa-chevron-up',false:'fa-chevron-down'}[page.collapse]" aria-hidden="true"></i>筛选</strong>
                                     </a>
                                 </div>
                             </div>
 
                             <div class="box-body">
                                 <form class="form-inline">
-                                    <div id="box-filter"  style="display: block;">
-                                        <div class="form-group sortlist">
-                                            <label class="control-label">城市</label>
-                                            <div class="tj">
-                                                <a name="city" class="actived" title="">不限</a>
-
+                                    <div id="searchList" ng-cloak class="clearfix" ng-show="page.collapse">
+                                        <div class="collapse-box">
+                                            <div class="form-group sortlist">
+                                                <label class="control-label">筛选</label>
+                                                <div class="col-lg-2 col-md-2 col-sm-3">
+                                                    <select id="cityListDrop" class="chosen-select-dep">
+                                                        <option value="">选择城市</option>
+                                                        <option ng-repeat="city in cityList" ng-value="city.id" repeat-done="initChosen('#cityListDrop', 'cityId')">{{city.name}}</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div id="PartnerList" class="table-responsive clearfix" ng-cloak>
+                                        <div class="media clearfix" ng-repeat="partner in regionAgentList">
+                                            <div class="media-body">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pagination-container">
+                                        <ul id="PartnerList_paging" class="pagination"></ul>
+                                    </div>
                                 </form>
-
-                                <div id="PartnerList"></div>
-                                <div class="pagination-container">
-                                    <ul id="PartnerList_paging" class="pagination"></ul>
-                                </div>
-
                             </div>
                         </div>
                     </section>
