@@ -65,8 +65,13 @@ public class DepartmentMgtService {
         return departmentService.selectByCompanyId(mgtContext.getOperator().getCompanyId(), pageBounds);
     }
 
-    public List<DepartmentDTO> listSorted() {
-        return departmentService.listSortedByCompanyId(mgtContext.getOperator().getCompanyId());
+    public List<DepartmentDTO> listSortedByCompanyId(Long companyId) {
+        if (companyId == null) {
+            companyId = mgtContext.getOperator().getCompanyId();
+        } else {
+            permissionCheckService.checkCompany(companyId);
+        }
+        return departmentService.listSortedByCompanyId(companyId);
     }
 
     @Transactional

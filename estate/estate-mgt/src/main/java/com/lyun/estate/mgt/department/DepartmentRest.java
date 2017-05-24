@@ -43,8 +43,8 @@ public class DepartmentRest {
     }
 
     @GetMapping("query-all")
-    public List<DepartmentDTO> query() {
-        return service.listSorted();
+    public List<DepartmentDTO> queryAll(@RequestParam(required = false) Long compnayId) {
+        return service.listSortedByCompanyId(compnayId);
     }
 
     @GetMapping("changeParent")

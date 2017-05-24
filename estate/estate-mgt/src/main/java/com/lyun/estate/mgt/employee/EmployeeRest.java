@@ -57,13 +57,14 @@ public class EmployeeRest {
     @GetMapping("query")
     public PageList<Employee> query(@RequestParam(required = false) Long departmentId,
                                     @RequestHeader("X-PAGING") PageBounds pageBounds) {
-        return service.listByCompanyIdDepartmentId(departmentId,
+        return service.listByCompanyIdDepartmentId(null, departmentId,
                 pageBounds);
     }
 
     @GetMapping("query-all")
-    public List<Employee> queryAll(@RequestParam(required = false) Long departmentId) {
-        return service.listByCompanyIdDepartmentId(departmentId, null);
+    public List<Employee> queryAll(@RequestParam(required = false) Long companyId,
+                                   @RequestParam(required = false) Long departmentId) {
+        return service.listByCompanyIdDepartmentId(companyId, departmentId, null);
     }
 
     @PostMapping("edit")
