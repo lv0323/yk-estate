@@ -47,10 +47,14 @@ public class EmployeeMgtService {
         return result;
     }
 
-    public PageList<Employee> listByCompanyIdDepartmentId(Long departmentId, PageBounds pageBounds) {
-        return employeeService.listByCompanyIdDepartmentId(mgtContext.getOperator().getCompanyId(),
-                departmentId,
-                pageBounds);
+    public PageList<Employee> listByCompanyIdDepartmentId(Long companyId, Long departmentId, PageBounds pageBounds) {
+        if (companyId == null) {
+            companyId = mgtContext.getOperator().getCompanyId();
+        } else {
+            permissionCheckService.checkCompany(companyId);
+        }
+
+        return employeeService.listByCompanyIdDepartmentId(companyId, departmentId, pageBounds);
     }
 
     @Transactional
