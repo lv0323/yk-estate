@@ -4,6 +4,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.audit.def.AuditSubject;
 import com.lyun.estate.biz.audit.service.AuditService;
+import com.lyun.estate.biz.employee.domain.EmployeeDTO;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.file.entity.FileDescription;
@@ -47,7 +48,7 @@ public class EmployeeMgtService {
         return result;
     }
 
-    public PageList<Employee> listByCompanyIdDepartmentId(Long companyId, Long departmentId, PageBounds pageBounds) {
+    public PageList<EmployeeDTO> listByCompanyIdDepartmentId(Long companyId, Long departmentId, PageBounds pageBounds) {
         if (companyId == null) {
             companyId = mgtContext.getOperator().getCompanyId();
         } else {

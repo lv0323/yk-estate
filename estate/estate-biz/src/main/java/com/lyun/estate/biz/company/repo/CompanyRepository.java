@@ -37,4 +37,8 @@ public interface CompanyRepository {
     @Select("select count(1) from t_company where parent_id = #{parentId} and type =#{companyType} and is_deleted = false")
     Integer countForParent(@Param("parentId") Long parentId,
                            @Param("companyType") CompanyDefine.Type companyType);
+
+    @Update("UPDATE t_company SET name = #{name}, abbr = #{abbr}, address = #{address}, introduction = #{introduction}, " +
+            "start_date =#{startDate}, end_date = #{endDate} WHERE id = #{id}")
+    int updateInfo(Company company);
 }

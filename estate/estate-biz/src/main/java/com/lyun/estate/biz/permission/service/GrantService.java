@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.permission.service;
 
-import com.lyun.estate.biz.employee.entity.Employee;
+import com.lyun.estate.biz.employee.domain.EmployeeDTO;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.permission.def.PermissionDefine;
@@ -158,7 +158,7 @@ public class GrantService {
 
     @Transactional
     public boolean regrantByPosition(Long companyId, Long positionId, Long operatorId) {
-        List<Employee> employees = employeeService.listByCompanyIdAndPositionId(companyId, positionId);
+        List<EmployeeDTO> employees = employeeService.listByCompanyIdAndPositionId(companyId, positionId);
         List<Grant> grants = grantRepo.findPositionNotPageGrants(positionId);
 
         employees.forEach(

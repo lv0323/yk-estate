@@ -3,6 +3,7 @@ package com.lyun.estate.mgt.employee;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.employee.def.WorkingStatus;
+import com.lyun.estate.biz.employee.domain.EmployeeDTO;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.support.def.Gender;
@@ -55,14 +56,14 @@ public class EmployeeRest {
     }
 
     @GetMapping("query")
-    public PageList<Employee> query(@RequestParam(required = false) Long companyId,
-                                    @RequestParam(required = false) Long departmentId,
-                                    @RequestHeader("X-PAGING") PageBounds pageBounds) {
+    public PageList<EmployeeDTO> query(@RequestParam(required = false) Long companyId,
+                                       @RequestParam(required = false) Long departmentId,
+                                       @RequestHeader("X-PAGING") PageBounds pageBounds) {
         return service.listByCompanyIdDepartmentId(companyId, departmentId, pageBounds);
     }
 
     @GetMapping("query-all")
-    public List<Employee> queryAll(
+    public List<EmployeeDTO> queryAll(
             @RequestParam(required = false) Long departmentId) {
         return service.listByCompanyIdDepartmentId(null, departmentId, null);
     }

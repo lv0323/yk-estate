@@ -4,6 +4,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.department.service.DepartmentService;
+import com.lyun.estate.biz.employee.domain.EmployeeDTO;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.repo.EmployeeRepo;
 import com.lyun.estate.biz.file.def.CustomType;
@@ -61,13 +62,18 @@ public class EmployeeService {
         ExceptionUtil.checkNotNull("状态", employee.getStatus());
         ExceptionUtil.checkIllegal(ValidateUtil.isMobile(employee.getMobile()), "用户手机", employee.getMobile());
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(employee.getName()), "用户名", employee.getName());
+        Employee byMobile = repo.selectByMobile(employee.getMobile());
+        if (byMobile != null) {
+            throw new EstateException(ExCode.EMPLOYEE_MOBILE_EXIST);
+        }
+
         repo.insert(employee);
         return repo.selectById(employee.getId());
     }
 
-    public PageList<Employee> listByCompanyIdDepartmentId(Long companyId,
-                                                          Long departmentId,
-                                                          PageBounds pageBounds) {
+    public PageList<EmployeeDTO> listByCompanyIdDepartmentId(Long companyId,
+                                                             Long departmentId,
+                                                             PageBounds pageBounds) {
         ExceptionUtil.checkNotNull("公司编号", companyId);
         Set<Long> childs = null;
         if (departmentId != null) {
@@ -268,11 +274,19 @@ public class EmployeeService {
         }
     }
 
-    public List<Employee> listByCompanyIdAndPositionId(long companyId, long positionId) {
+    public List<EmployeeDTO> listByCompanyIdAndPositionId(long companyId, long positionId) {
         return repo.listByCompanyIdAndPositionId(companyId, positionId);
     }
 
     public Integer countForCompany(Long companyId) {
         return repo.countForCompany(companyId);
+    }
+
+    public EmployeeDTO selectDTOById(Long id) {
+        return repo.selectDTOById(id);
+    }
+
+    public boolean setIsBoss(Long employeeId, boolean isBoss) {
+        return repo.setIsBoss(employeeId, isBoss) > 0;
     }
 }

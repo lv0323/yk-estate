@@ -1,7 +1,7 @@
 package com.lyun.estate.biz.company.domain;
 
 import com.lyun.estate.biz.company.def.CompanyDefine;
-import com.lyun.estate.biz.employee.entity.Employee;
+import com.lyun.estate.biz.employee.domain.EmployeeDTO;
 
 import java.util.Date;
 
@@ -20,7 +20,8 @@ public class CompanyDTO {
     private Date startDate;
     private Date endDate;
 
-    private Employee boss;
+    private EmployeeDTO boss;
+    private EmployeeDTO partA;
 
     private Integer deptsCount;
     private Integer employeeCount;
@@ -135,11 +136,11 @@ public class CompanyDTO {
         return this;
     }
 
-    public Employee getBoss() {
+    public EmployeeDTO getBoss() {
         return boss;
     }
 
-    public CompanyDTO setBoss(Employee boss) {
+    public CompanyDTO setBoss(EmployeeDTO boss) {
         this.boss = boss;
         return this;
     }
@@ -177,6 +178,15 @@ public class CompanyDTO {
 
     public CompanyDTO setSigleStoreCount(Integer sigleStoreCount) {
         this.sigleStoreCount = sigleStoreCount;
+        return this;
+    }
+
+    public EmployeeDTO getPartA() {
+        return partA;
+    }
+
+    public CompanyDTO setPartA(EmployeeDTO partA) {
+        this.partA = partA;
         return this;
     }
 }
