@@ -23,10 +23,10 @@ public class CompanyDTO {
     private EmployeeDTO boss;
     private EmployeeDTO partA;
 
-    private Integer deptsCount;
+    private Integer deptCount;
     private Integer employeeCount;
     private Integer ChannelCount;
-    private Integer sigleStoreCount;
+    private Integer singleStoreCount;
 
     public Long getId() {
         return id;
@@ -145,12 +145,12 @@ public class CompanyDTO {
         return this;
     }
 
-    public Integer getDeptsCount() {
-        return deptsCount;
+    public Integer getDeptCount() {
+        return deptCount;
     }
 
-    public CompanyDTO setDeptsCount(Integer deptsCount) {
-        this.deptsCount = deptsCount;
+    public CompanyDTO setDeptCount(Integer deptCount) {
+        this.deptCount = deptCount;
         return this;
     }
 
@@ -172,12 +172,12 @@ public class CompanyDTO {
         return this;
     }
 
-    public Integer getSigleStoreCount() {
-        return sigleStoreCount;
+    public Integer getSingleStoreCount() {
+        return singleStoreCount;
     }
 
-    public CompanyDTO setSigleStoreCount(Integer sigleStoreCount) {
-        this.sigleStoreCount = sigleStoreCount;
+    public CompanyDTO setSingleStoreCount(Integer singleStoreCount) {
+        this.singleStoreCount = singleStoreCount;
         return this;
     }
 
