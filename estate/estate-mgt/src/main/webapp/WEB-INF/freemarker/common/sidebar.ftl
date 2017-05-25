@@ -98,7 +98,7 @@
             <!-- Optionally, you can add icons to the links -->
             <li><a href="/mgt/franchisee/company"><i class="fa fa-users" aria-hidden="true"></i> <span>加盟商管理</span></a>
             <li class="treeview franchisee">
-                <a href="#"><i class="fa fa-users" aria-hidden="true"></i> <span>加盟商管理</span>
+                <a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i> <span>加盟商管理</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>

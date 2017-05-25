@@ -120,7 +120,7 @@ require(['main-app',contextPath + '/js/service/department-service.js',
         };
 
         function getDepartment(offset, limit) {
-            DepartmentService.getDepartment({'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
+            DepartmentService.getDepartment(null, {'x-paging': 'total=true&offset='+offset+'&limit=' + limit})
                 .done(function(data){
                     displayTable(data);
                     pagination(data.total);

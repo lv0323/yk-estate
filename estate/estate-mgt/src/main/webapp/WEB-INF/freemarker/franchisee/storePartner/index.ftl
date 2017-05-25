@@ -66,7 +66,7 @@
                                                 <div class="col-lg-8 col-md-8 col-sm-8" style="padding-right: 0">
                                                     <div class="clearfix">
                                                         <h5 class="clearfix media-heading pull-left" >
-                                                            <a ng-href="{{'/mgt/franchisee/storePartner/detailStorePartner?id='+partner.id}}" target="_blank" class="f18" ng-bind="partner.name"></a>
+                                                            <a ng-href="{{'/mgt/franchisee/storePartner/detailStorePartner?partnerId='+partner.id}}" target="_blank" class="f18" ng-bind="partner.name"></a>
                                                         </h5>
 
                                                     </div>
@@ -84,7 +84,7 @@
 
                                                 <div class="clearfix col-lg-12 col-md-12 col-sm-12">
                                                     <div class="pull-left btn-add">
-                                                        <span class="badge badge-info m-r-5">店 </span><span class="text-muted m-r-20">{{partner.singleStoreCount}}</span>
+                                                        <span class="badge badge-info m-r-5">店</span><span class="text-muted m-r-20">{{partner.deptCount}}</span>
                                                         <span class="badge badge-warning m-r-5">员工</span><span class="text-muted m-r-20"> {{partner.employeeCount}}</span>
                                                         <span class="m-r-20">
                                                             <a class="m-l-10" ng-href="javascript:;" ng-click="delPartner(partner.id)">

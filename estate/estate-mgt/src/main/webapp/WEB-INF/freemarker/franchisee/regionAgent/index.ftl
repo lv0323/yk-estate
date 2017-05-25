@@ -58,6 +58,36 @@
                                     <div id="PartnerList" class="table-responsive clearfix" ng-cloak>
                                         <div class="media clearfix" ng-repeat="partner in regionAgentList">
                                             <div class="media-body">
+                                                <div class="col-lg-8 col-md-8 col-sm-8" style="padding-right: 0">
+                                                    <div class="clearfix">
+                                                        <h5 class="clearfix media-heading pull-left" >
+                                                            <a ng-href="{{'/mgt/franchisee/regionAgent/detailRegionAgent?partnerId='+partner.id}}" target="_blank" class="f18" ng-bind="partner.name"></a>
+                                                        </h5>
+
+                                                    </div>
+                                                    <div class="clearfix m-t-10 text-muted">
+                                                        <span class="tip tip-success">签约</span>
+                                                        <span class="m-l-5 text-muted"> {{partner.partA.name}}-{{partner.partA.companyAbbr}}-{{partner.partA.mobile}}</span>
+                                                        <span class="m-l-10 text-muted">{{partner.startDate}}~{{partner.endDate}}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-4 col-sm-4 text-left">
+                                                    <p><strong class="text-muted">{{partner.cityName}}</strong></p>
+                                                    <p><span class="tip tip-danger">负责人</span><span class="m-l-5 text-muted">{{partner.boss.name}}-{{partner.boss.mobile}}</span></p>
+                                                </div>
+
+                                                <div class="clearfix col-lg-12 col-md-12 col-sm-12">
+                                                    <div class="pull-left btn-add">
+                                                        <span class="badge badge-info m-r-5">单店</span><span class="text-muted m-r-20">{{partner.singleStoreCount}}</span>
+                                                        <span class="badge badge-warning m-r-5">渠道</span><span class="text-muted m-r-20"> {{partner.channelCount}}</span>
+                                                        <span class="m-r-20">
+                                                            <a class="m-l-10" ng-href="javascript:;" ng-click="delPartner(partner.id)">
+                                                                <i class="fa fa-pencil"></i>删除
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

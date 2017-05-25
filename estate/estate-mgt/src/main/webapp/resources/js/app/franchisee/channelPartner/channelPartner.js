@@ -130,8 +130,8 @@ require(['main-app',
                             return {
                                 id: item.id,
                                 name: item.name,
-                                singleStoreCount: item.singleStoreCount || '未知',
-                                employeeCount: item.employeeCount || '未知',
+                                deptCount: (item.deptCount == null)?'未知':item.deptCount,
+                                employeeCount: (item.employeeCount == null)?'未知':item.employeeCount,
                                 cityName: item.cityName,
                                 boss: {name: item.boss.name, mobile: item.boss.mobile},
                                 partA: {name: item.partA && item.partA.name, companyAbbr: item.partA && item.partA.companyAbbr, mobile: item.partA && item.partA.mobile},
@@ -145,7 +145,7 @@ require(['main-app',
                 // pagination(1)
             };
 
-            $scope.list()
+            $scope.list();
 
         }]);
 

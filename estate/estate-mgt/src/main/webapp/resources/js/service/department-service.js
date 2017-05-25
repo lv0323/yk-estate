@@ -11,8 +11,8 @@ define(contextPath + '/js/service/department-service.js',
             return RequestService.get('/api/department/'+departId, header);
         };
 
-        DepartmentService.getDepartment = function (header) {
-            return RequestService.get('/api/department/query', null, header);
+        DepartmentService.getDepartment = function (params, header) {
+            return RequestService.get('/api/department/query', params, header);
         };
 
         DepartmentService.getAllDepartment = function (header) {
