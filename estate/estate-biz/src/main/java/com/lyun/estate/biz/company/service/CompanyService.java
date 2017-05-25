@@ -1,11 +1,15 @@
 package com.lyun.estate.biz.company.service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.stuxuhai.jpinyin.PinyinException;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.company.def.CompanyDefine;
-import com.lyun.estate.biz.company.entity.Company;
+import com.lyun.estate.biz.company.domain.CompanyDTO;
+import com.lyun.estate.biz.company.domain.CompanySigningDTO;
 import com.lyun.estate.biz.company.domain.CreateCompanyInfo;
+import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.repo.CompanyRepository;
 import com.lyun.estate.biz.company.support.PositionPermissionTemplate;
 import com.lyun.estate.biz.department.entity.Department;
@@ -30,6 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class CompanyService {
@@ -55,9 +61,12 @@ public class CompanyService {
         ExceptionUtil.checkNotNull("城市信息", createCompanyInfo.getCityId());
         ExceptionUtil.checkNotNull("加盟公司", createCompanyInfo.getParentId());
         ExceptionUtil.checkNotNull("加盟负责人", createCompanyInfo.getPartAId());
-        ExceptionUtil.checkNotNull("公司名", createCompanyInfo.getName());
-        ExceptionUtil.checkNotNull("公司简称", createCompanyInfo.getAbbr());
-        ExceptionUtil.checkNotNull("公司负责人", createCompanyInfo.getBossName());
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(createCompanyInfo.getName()),
+                "公司名", createCompanyInfo.getName());
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(createCompanyInfo.getAbbr()),
+                "公司简称", createCompanyInfo.getAbbr());
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(createCompanyInfo.getBossName()),
+                "公司负责人", createCompanyInfo.getBossName());
         ExceptionUtil.checkIllegal(ValidateUtil.isMobile(createCompanyInfo.getMobile()),
                 "公司负责人手机",
                 createCompanyInfo.getMobile());
@@ -168,4 +177,48 @@ public class CompanyService {
         return repository.findYkRaCompany();
     }
 
+    public PageList<CompanyDTO> list(Long cityId, Long parentId, CompanyDefine.Type companyType,
+                                     PageBounds pageBounds) {
+        ExceptionUtil.checkNotNull("分页信息", pageBounds);
+        PageList<CompanyDTO> list = repository.list(cityId, parentId, companyType, pageBounds);
+        list.forEach(c -> {
+            c.setPartA(Optional.ofNullable(companySigningService.getLastSigning(c.getId()))
+                    .map(CompanySigningDTO::getPartA)
+                    .orElse(null));
+            c.setBoss(employeeService.selectDTOById(c.getBossId()));
+            c.setDeptCount(departmentService.countForCompany(c.getId()));
+            c.setEmployeeCount(employeeService.countForCompany(c.getId()));
+            if (c.getType() == CompanyDefine.Type.REGIONAL_AGENT) {
+                c.setChannelCount(repository.countForParent(c.getId(), CompanyDefine.Type.CHANNEL));
+                c.setSingleStoreCount(repository.countForParent(c.getId(), CompanyDefine.Type.SINGLE_STORE));
+            }
+        });
+        return list;
+    }
+
+    @Transactional
+    public Company updateInfo(Company company) {
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(company.getName()),
+                "公司名", company.getName());
+        ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(company.getAbbr()),
+                "公司简称", company.getAbbr());
+        ExceptionUtil.checkNotNull("负责人编号", company.getBossId());
+        repository.updateInfo(company);
+        return repository.findOne(company.getId());
+    }
+
+    @Transactional
+    public Company updateBoss(long companyId, long bossId) {
+        Company oldCompany = repository.findOne(companyId);
+        if (!Objects.equals(oldCompany.getBossId(), bossId)) {
+            Employee newBoss = employeeService.findById(bossId);
+            if (!Objects.equals(newBoss.getCompanyId(), companyId)) {
+                throw new EstateException(ExCode.COMPANY_BOSS_NOT_IN);
+            }
+            employeeService.setIsBoss(oldCompany.getBossId(), false);
+            employeeService.setIsBoss(bossId, true);
+            repository.updateBossId(companyId, bossId);
+        }
+        return repository.findOne(companyId);
+    }
 }

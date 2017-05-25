@@ -1,16 +1,20 @@
 package com.lyun.estate.mgt.company.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.audit.def.AuditSubject;
 import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.biz.company.def.CompanyDefine;
-import com.lyun.estate.biz.company.entity.Company;
+import com.lyun.estate.biz.company.domain.CompanyDTO;
+import com.lyun.estate.biz.company.domain.CompanySigningDTO;
 import com.lyun.estate.biz.company.domain.CreateCompanyInfo;
+import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.service.CompanyService;
+import com.lyun.estate.biz.company.service.CompanySigningService;
 import com.lyun.estate.biz.department.entity.DepartmentDTO;
 import com.lyun.estate.biz.department.service.DepartmentService;
-import com.lyun.estate.biz.employee.entity.Employee;
+import com.lyun.estate.biz.employee.domain.EmployeeDTO;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.support.def.DomainType;
@@ -32,6 +36,9 @@ public class CompanyMgtService {
     private CompanyService companyService;
 
     @Autowired
+    private CompanySigningService companySigningService;
+
+    @Autowired
     private DepartmentService departmentService;
 
     @Autowired
@@ -50,7 +57,6 @@ public class CompanyMgtService {
     public Company createCompany(CreateCompanyInfo info) {
 
         permissionCheckService.checkExist(Permission.CREATE_FRANCHISEE);
-        permissionCheckService.checkCompany(info.getParentId());
 
         Company company = companyService.createCompany(info, mgtContext.getOperator().getId());
 
@@ -83,10 +89,62 @@ public class CompanyMgtService {
         return departmentService.listSortedByCompanyId(companyId);
     }
 
-    public List<Employee> findPartAIds(Long companyId, Long departmentId) {
+    public List<EmployeeDTO> findPartAIds(Long companyId, Long departmentId) {
         permissionCheckService.checkExist(Permission.CREATE_FRANCHISEE);
         permissionCheckService.checkCompany(companyId);
 
         return employeeService.listByCompanyIdDepartmentId(companyId, departmentId, new PageBounds(1, 100));
+    }
+
+    public PageList<CompanyDTO> list(Long cityId, Long parentId, CompanyDefine.Type companyType,
+                                     PageBounds pageBounds) {
+        permissionCheckService.checkExist(Permission.LIST_FRANCHISEE);
+
+        if (parentId == null) {
+            if (mgtContext.getOperator().getCompanyType() != CompanyDefine.Type.YK) {
+                parentId = mgtContext.getOperator().getCompanyId();
+            }
+        } else {
+            permissionCheckService.checkCompany(parentId);
+        }
+
+        return companyService.list(cityId, parentId, companyType, pageBounds);
+    }
+
+    public PageList<CompanySigningDTO> lisSigningByCompanyId(Long companyId, PageBounds pageBounds) {
+        if (companyId == null) {
+            companyId = mgtContext.getOperator().getCompanyId();
+        } else {
+            permissionCheckService.checkCompany(companyId);
+        }
+        return companySigningService.listByCompanyId(companyId, pageBounds);
+    }
+
+    @Transactional
+    public Company updateInfo(Company company) {
+        permissionCheckService.checkExist(Permission.MODIFY_FRANCHISEE);
+        permissionCheckService.checkCompany(company.getId());
+
+        auditService.save(
+                AuditHelper.build(
+                        mgtContext, AuditSubject.FRANCHISEE, company.getId(), DomainType.FRANCHISEE,
+                        AuditHelper.operatorName(mgtContext) + "修改了加盟商信息" + company.toString()
+                )
+        );
+        return companyService.updateInfo(company);
+    }
+
+    @Transactional
+    public Company updateBoss(Long companyId, Long bossId) {
+        permissionCheckService.checkExist(Permission.MODIFY_FRANCHISEE);
+        permissionCheckService.checkCompany(companyId);
+        auditService.save(
+                AuditHelper.build(
+                        mgtContext, AuditSubject.FRANCHISEE, companyId, DomainType.FRANCHISEE,
+                        AuditHelper.operatorName(mgtContext) + "修改了加盟商负责人为：" + bossId
+                )
+        );
+
+        return companyService.updateBoss(companyId, bossId);
     }
 }

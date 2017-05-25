@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.company.entity;
 
+import com.google.common.base.MoreObjects;
 import com.lyun.estate.biz.company.def.CompanyDefine;
 
 import java.util.Date;
@@ -175,5 +176,26 @@ public class Company {
     public Company setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("id", id)
+                .add("cityId", cityId)
+                .add("parentId", parentId)
+                .add("type", type)
+                .add("status", status)
+                .add("name", name)
+                .add("abbr", abbr)
+                .add("address", address)
+                .add("introduction", introduction)
+                .add("secretKey", secretKey)
+                .add("bossId", bossId)
+                .add("startDate", startDate)
+                .add("endDate", endDate)
+                .add("ipCheck", ipCheck)
+                .toString();
     }
 }

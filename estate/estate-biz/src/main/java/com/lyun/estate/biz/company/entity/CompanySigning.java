@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.company.entity;
 
+import com.google.common.base.MoreObjects;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -118,4 +120,18 @@ public class CompanySigning {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("id", id)
+                .add("companyId", companyId)
+                .add("partAId", partAId)
+                .add("years", years)
+                .add("storeCount", storeCount)
+                .add("startDate", startDate)
+                .add("endDate", endDate)
+                .add("price", price)
+                .toString();
+    }
 }

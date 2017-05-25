@@ -204,4 +204,8 @@ public class DepartmentService {
         repo.updateParent(id, parentId);
         return repo.selectById(id);
     }
+
+    public Integer countForCompany(Long companyId) {
+        return repo.countForCompany(companyId);
+    }
 }

@@ -31,8 +31,9 @@ public class EmployeeProvider {
     public String selectByCompanyIdAndDeptIds(Map<String, Object> params) {
         Collection<Long> deptIds = (Collection<Long>) params.get("deptIds");
         SQL sql = new SQL()
-                .SELECT("e.*, p.name as position_name, d.name as department_name")
+                .SELECT("e.*, c.abbr as company_abbr, p.name as position_name, d.name as department_name")
                 .FROM("t_employee e")
+                .LEFT_OUTER_JOIN("t_company c on e.company_id = c.id")
                 .LEFT_OUTER_JOIN("t_position p on e.position_id = p.id")
                 .LEFT_OUTER_JOIN("t_department d on e.department_id = d.id");
         if (SqlSupport.hasNotNullElement(deptIds)) {
@@ -46,8 +47,9 @@ public class EmployeeProvider {
 
     public String selectByCompanyIdAndPositionId(Map<String, Object> params) {
         SQL sql = new SQL()
-                .SELECT("e.*, p.name as position_name, d.name as department_name")
+                .SELECT("e.*,c.abbr as company_abbr, p.name as position_name, d.name as department_name")
                 .FROM("t_employee e")
+                .LEFT_OUTER_JOIN("t_company c on e.company_id = c.id")
                 .LEFT_OUTER_JOIN("t_position p on e.position_id = p.id")
                 .LEFT_OUTER_JOIN("t_department d on e.department_id = d.id");
         sql.WHERE("e.position_id = #{positionId}");

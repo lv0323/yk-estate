@@ -1,10 +1,15 @@
 package com.lyun.estate.mgt.company;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.company.def.CompanyDefine;
-import com.lyun.estate.biz.company.entity.Company;
+import com.lyun.estate.biz.company.domain.CompanyDTO;
+import com.lyun.estate.biz.company.domain.CompanySigningDTO;
 import com.lyun.estate.biz.company.domain.CreateCompanyInfo;
+import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.department.entity.DepartmentDTO;
-import com.lyun.estate.biz.employee.entity.Employee;
+import com.lyun.estate.biz.employee.domain.EmployeeDTO;
+import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver;
 import com.lyun.estate.mgt.company.service.CompanyMgtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -69,8 +74,46 @@ public class CompanyRest {
     }
 
     @GetMapping("partAIds")
-    List<Employee> findPartAIds(@RequestParam Long companyId, Long departmentId) {
+    List<EmployeeDTO> findPartAIds(@RequestParam Long companyId, Long departmentId) {
         return companyMgtService.findPartAIds(companyId, departmentId);
+    }
+
+    @GetMapping("list")
+    PageList<CompanyDTO> list(@RequestParam(required = false) Long cityId,
+                              @RequestParam(required = false) Long parentId,
+                              @RequestParam(required = false) CompanyDefine.Type companyType,
+                              @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
+        return companyMgtService.list(cityId, parentId, companyType, pageBounds);
+    }
+
+    @GetMapping("list-signing")
+    PageList<CompanySigningDTO> listSigning(@RequestParam(required = false) Long companyId,
+                                            @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
+        return companyMgtService.lisSigningByCompanyId(companyId, pageBounds);
+    }
+
+    @PostMapping("update-info")
+    Company updateInfo(@RequestParam Long companyId,
+                       @RequestParam String name,
+                       @RequestParam String abbr,
+                       @RequestParam String address,
+                       @RequestParam(required = false) String introduction,
+                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
+        Company company = new Company().setId(companyId)
+                .setName(name)
+                .setAbbr(abbr)
+                .setAddress(address)
+                .setIntroduction(introduction)
+                .setStartDate(startDate)
+                .setEndDate(endDate);
+        return companyMgtService.updateInfo(company);
+    }
+
+    @PostMapping("update-boss")
+    Company updateBoss(@RequestParam Long companyId,
+                       @RequestParam Long bossId) {
+        return companyMgtService.updateBoss(companyId, bossId);
     }
 
 }

@@ -38,4 +38,7 @@ public interface DepartmentRepo {
 
     @Select("select * from t_department where company_id=#{companyId} and is_deleted = false")
     List<Department> listAllByCompanyId(Long companyId);
+
+    @Select("select count(1) from t_department where company_id = #{companyId} and is_deleted = false")
+    Integer countForCompany(Long companyId);
 }
