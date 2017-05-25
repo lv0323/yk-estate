@@ -186,11 +186,11 @@ public class CompanyService {
                     .map(CompanySigningDTO::getPartA)
                     .orElse(null));
             c.setBoss(employeeService.selectDTOById(c.getBossId()));
-            c.setDeptsCount(departmentService.countForCompany(c.getId()));
+            c.setDeptCount(departmentService.countForCompany(c.getId()));
             c.setEmployeeCount(employeeService.countForCompany(c.getId()));
             if (c.getType() == CompanyDefine.Type.REGIONAL_AGENT) {
                 c.setChannelCount(repository.countForParent(c.getId(), CompanyDefine.Type.CHANNEL));
-                c.setSigleStoreCount(repository.countForParent(c.getId(), CompanyDefine.Type.SINGLE_STORE));
+                c.setSingleStoreCount(repository.countForParent(c.getId(), CompanyDefine.Type.SINGLE_STORE));
             }
         });
         return list;
