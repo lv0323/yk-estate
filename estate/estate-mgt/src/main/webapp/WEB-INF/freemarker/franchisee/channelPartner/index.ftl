@@ -53,7 +53,7 @@
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-3">
                                                     <select id="superiorDepListDrop">
-                                                        <option value="">选择上级部门</option>
+                                                        <option value="">签约公司</option>
                                                         <option ng-repeat="superiorDep in superiorDepList" ng-value="superiorDep.id" repeat-done="initChosen('#superiorDepListDrop', 'parentId')">{{superiorDep.name}}</option>
                                                     </select>
                                                 </div>
@@ -84,13 +84,8 @@
 
                                                 <div class="clearfix col-lg-12 col-md-12 col-sm-12">
                                                     <div class="pull-left btn-add">
-                                                        <span class="badge badge-info m-r-5">店 </span><span class="text-muted m-r-20">{{partner.deptsCount}}</span>
+                                                        <span class="badge badge-info m-r-5">店 </span><span class="text-muted m-r-20">{{partner.singleStoreCount}}</span>
                                                         <span class="badge badge-warning m-r-5">员工</span><span class="text-muted m-r-20"> {{partner.employeeCount}}</span>
-                                                        <span class="m-r-20">
-                                                            <a class="m-l-10" ng-href="javascript:;" ng-click="editPartner(partner.id)">
-                                                                <i class="fa fa-pencil"></i>编辑
-                                                            </a>
-                                                        </span>
                                                         <span class="m-r-20">
                                                             <a class="m-l-10" ng-href="javascript:;" ng-click="delPartner(partner.id)">
                                                                 <i class="fa fa-pencil"></i>删除

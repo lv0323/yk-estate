@@ -48,13 +48,13 @@
                                             <label class="pull-left control-label">签约信息</label>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
                                                 <select id="companyListDrop">
-                                                    <option value="">所属公司</option>
+                                                    <option value="">签约公司</option>
                                                     <option ng-repeat="company in companyList" ng-value="company.id" repeat-done="initChosen('#companyListDrop', 'parentId')">{{company.name}}</option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-3 col-md-3 col-sm-3">
                                                 <select id="signatureDepListDrop">
-                                                    <option value="">上级部门</option>
+                                                    <option value="">公司部门</option>
                                                     <option ng-repeat="signatureDep in signatureDepList" ng-value="signatureDep.id" repeat-done="initChosen('#signatureDepListDrop', 'signatureDepId')">{{signatureDep.name}}</option>
                                                 </select>
                                             </div>

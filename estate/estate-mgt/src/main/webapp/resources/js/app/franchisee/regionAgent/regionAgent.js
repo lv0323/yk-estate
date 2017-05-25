@@ -116,11 +116,11 @@ require(['main-app',
                             return {
                                 id: item.id,
                                 name: item.name,
-                                deptsCount: item.deptsCount,
-                                employeeCount: item.employeeCount,
+                                singleStoreCount: item.singleStoreCount || '未知',
+                                employeeCount: item.employeeCount || '未知',
                                 cityName: item.cityName,
                                 boss: {name: item.boss.name, mobile: item.boss.mobile},
-                                partA: {name: item.partA.name, companyAbbr: item.partA.companyAbbr, mobile: item.partA.mobile},
+                                partA: {name: item.partA && item.partA.name, companyAbbr: item.partA && item.partA.companyAbbr, mobile: item.partA && item.partA.mobile},
                                 startDate: UtilService.timeStamp2Date(item.startDate),
                                 endDate: UtilService.timeStamp2Date(item.endDate)
                             }
