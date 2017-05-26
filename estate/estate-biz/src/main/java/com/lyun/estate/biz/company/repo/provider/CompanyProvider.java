@@ -37,6 +37,7 @@ public class CompanyProvider {
                 .WHERE_IF("c.type = #{companyType}", Objects.nonNull(params.get("companyType")))
                 .WHERE("c.status = 'ACTIVE'")
                 .WHERE("c.is_deleted =FALSE ")
+                .ORDER_BY("c.id")
                 .toString();
     }
 }

@@ -72,6 +72,10 @@ public enum Permission implements LabelEnum {
     P_CONFIG_HOUSE_DICT("楼盘字典", PermissionDefine.Category.PAGE),
     P_CONFIG_PAGE("岗位模块", PermissionDefine.Category.PAGE),
     P_CONFIG_PERMISSION("权限设置", PermissionDefine.Category.PAGE),
+    P_FRANCHISEE("加盟事业管理", PermissionDefine.Category.PAGE),
+    P_FRANCHISEE_C("渠道加盟", PermissionDefine.Category.PAGE),
+    P_FRANCHISEE_SS("单店加盟", PermissionDefine.Category.PAGE),
+    P_FRANCHISEE_RA("区域代理加盟", PermissionDefine.Category.PAGE),
 
     //公司性质
     CT_YK("盈科", PermissionDefine.Category.COMPANY_TYPE),

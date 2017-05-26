@@ -10,6 +10,7 @@ import com.lyun.estate.biz.company.domain.CompanyDTO;
 import com.lyun.estate.biz.company.domain.CompanySigningDTO;
 import com.lyun.estate.biz.company.domain.CreateCompanyInfo;
 import com.lyun.estate.biz.company.entity.Company;
+import com.lyun.estate.biz.company.entity.CompanySigning;
 import com.lyun.estate.biz.company.service.CompanyService;
 import com.lyun.estate.biz.company.service.CompanySigningService;
 import com.lyun.estate.biz.department.entity.DepartmentDTO;
@@ -146,5 +147,50 @@ public class CompanyMgtService {
         );
 
         return companyService.updateBoss(companyId, bossId);
+    }
+
+    @Transactional
+    public CompanySigning renewSigning(CompanySigning signing) {
+        permissionCheckService.checkExist(Permission.MODIFY_FRANCHISEE);
+        permissionCheckService.checkCompany(signing.getCompanyId());
+        auditService.save(
+                AuditHelper.build(
+                        mgtContext, AuditSubject.FRANCHISEE, signing.getCompanyId(), DomainType.FRANCHISEE,
+                        AuditHelper.operatorName(mgtContext) + "与进行了续签：" + signing.toString()
+                )
+        );
+        return companyService.renewSigning(signing);
+    }
+
+    @Transactional
+    public CompanySigning updateSigningInfo(CompanySigning signing) {
+        permissionCheckService.checkExist(Permission.MODIFY_FRANCHISEE);
+        CompanySigning oldSigning = companySigningService.findOne(signing.getId());
+        permissionCheckService.checkCompany(oldSigning.getCompanyId());
+
+        auditService.save(
+                AuditHelper.build(
+                        mgtContext, AuditSubject.FRANCHISEE, oldSigning.getCompanyId(), DomainType.FRANCHISEE,
+                        AuditHelper.operatorName(mgtContext) + "修改了签约信息：" + signing.toString()
+                )
+        );
+
+        return companySigningService.updateSigningInfo(signing);
+    }
+
+    @Transactional
+    public Boolean deleteSigning(Long signingId) {
+        permissionCheckService.checkExist(Permission.MODIFY_FRANCHISEE);
+        CompanySigning signing = companySigningService.findOne(signingId);
+        permissionCheckService.checkCompany(signing.getCompanyId());
+
+        auditService.save(
+                AuditHelper.build(
+                        mgtContext, AuditSubject.FRANCHISEE, signing.getCompanyId(), DomainType.FRANCHISEE,
+                        AuditHelper.operatorName(mgtContext) + "删除了签约信息：" + signingId
+                )
+        );
+
+        return companySigningService.deleteSigning(signingId);
     }
 }

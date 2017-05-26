@@ -44,4 +44,17 @@ public class CompanySigningService {
         }
         return result;
     }
+
+    public CompanySigning updateSigningInfo(CompanySigning signing) {
+        companySigningRepo.updateSigningInfo(signing);
+        return companySigningRepo.findOne(signing.getId());
+    }
+
+    public CompanySigning findOne(Long signingId) {
+        return companySigningRepo.findOne(signingId);
+    }
+
+    public boolean deleteSigning(Long signingId) {
+        return companySigningRepo.delete(signingId) > 0;
+    }
 }
