@@ -5395,3 +5395,7 @@ button.btn-default.invalid-input, input.ng-invalid.ng-dirty, textarea.ng-invalid
   display: inline-block;
   margin-left: -15%;
 }
+.page{
+  padding: 10px;
+  box-sizing: border-box;
+}
