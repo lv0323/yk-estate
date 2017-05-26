@@ -8,6 +8,7 @@ import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.repo.provider.CompanyProvider;
 import org.apache.ibatis.annotations.*;
 
+import java.util.Date;
 import java.util.List;
 
 public interface CompanyRepository {
@@ -41,4 +42,8 @@ public interface CompanyRepository {
     @Update("UPDATE t_company SET name = #{name}, abbr = #{abbr}, address = #{address}, introduction = #{introduction}, " +
             "start_date =#{startDate}, end_date = #{endDate} WHERE id = #{id}")
     int updateInfo(Company company);
+
+    @Update("UPDATE t_company SET start_date = #{startDate} ,end_date =#{endDate} WHERE id =#{companyId}")
+    int updateSigningDate(@Param("companyId") Long companyId, @Param("startDate") Date startDate,
+                          @Param("endDate") Date endDate);
 }

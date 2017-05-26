@@ -10,6 +10,7 @@ import com.lyun.estate.biz.company.domain.CompanyDTO;
 import com.lyun.estate.biz.company.domain.CompanySigningDTO;
 import com.lyun.estate.biz.company.domain.CreateCompanyInfo;
 import com.lyun.estate.biz.company.entity.Company;
+import com.lyun.estate.biz.company.entity.CompanySigning;
 import com.lyun.estate.biz.company.repo.CompanyRepository;
 import com.lyun.estate.biz.company.support.PositionPermissionTemplate;
 import com.lyun.estate.biz.department.entity.Department;
@@ -32,10 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CompanyService {
@@ -220,5 +218,17 @@ public class CompanyService {
             repository.updateBossId(companyId, bossId);
         }
         return repository.findOne(companyId);
+    }
+
+    @Transactional
+    public CompanySigning renewSigning(CompanySigning signing) {
+        CompanySigning result = companySigningService.create(signing);
+        Company company = repository.findOne(signing.getCompanyId());
+        Date startDate = company.getStartDate().after(signing.getStartDate()) ?
+                company.getStartDate() : signing.getStartDate();
+        Date endDate = company.getEndDate().before(signing.getEndDate()) ?
+                signing.getEndDate() : company.getStartDate();
+        repository.updateSigningDate(signing.getCompanyId(), startDate, endDate);
+        return result;
     }
 }

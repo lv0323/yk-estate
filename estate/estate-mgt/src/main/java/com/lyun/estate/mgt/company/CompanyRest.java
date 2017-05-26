@@ -7,10 +7,12 @@ import com.lyun.estate.biz.company.domain.CompanyDTO;
 import com.lyun.estate.biz.company.domain.CompanySigningDTO;
 import com.lyun.estate.biz.company.domain.CreateCompanyInfo;
 import com.lyun.estate.biz.company.entity.Company;
+import com.lyun.estate.biz.company.entity.CompanySigning;
 import com.lyun.estate.biz.department.entity.DepartmentDTO;
 import com.lyun.estate.biz.employee.domain.EmployeeDTO;
 import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver;
 import com.lyun.estate.mgt.company.service.CompanyMgtService;
+import com.lyun.estate.mgt.supports.CommonResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -114,6 +116,47 @@ public class CompanyRest {
     Company updateBoss(@RequestParam Long companyId,
                        @RequestParam Long bossId) {
         return companyMgtService.updateBoss(companyId, bossId);
+    }
+
+    @PostMapping("renew-signing")
+    CompanySigning createSigning(@RequestParam Long companyId,
+                                 @RequestParam Long partAId,
+                                 @RequestParam Integer years,
+                                 @RequestParam Integer storeCount,
+                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+                                 @RequestParam BigDecimal price) {
+        CompanySigning signing = new CompanySigning()
+                .setCompanyId(companyId)
+                .setPartAId(partAId)
+                .setYears(years)
+                .setStartDate(startDate)
+                .setEndDate(endDate)
+                .setStoreCount(storeCount)
+                .setPrice(price);
+        return companyMgtService.renewSigning(signing);
+    }
+
+    @PostMapping("update-signing")
+    CompanySigning updateSigning(@RequestParam Long signingId,
+                                 @RequestParam Integer years,
+                                 @RequestParam Integer storeCount,
+                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+                                 @RequestParam BigDecimal price) {
+        CompanySigning signing = new CompanySigning()
+                .setId(signingId)
+                .setYears(years)
+                .setStoreCount(storeCount)
+                .setStartDate(startDate)
+                .setEndDate(endDate)
+                .setPrice(price);
+        return companyMgtService.updateSigningInfo(signing);
+    }
+
+    @PostMapping("delete-signing")
+    CommonResp deleteSigning(@RequestParam Long signingId) {
+        return companyMgtService.deleteSigning(signingId) ? CommonResp.succeed() : CommonResp.failed();
     }
 
 }
