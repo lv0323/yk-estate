@@ -2,6 +2,9 @@ package com.lyun.estate.biz.fang.def;
 
 import com.lyun.estate.core.supports.labelenum.LabelEnum;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * Created by Jeffrey on 2017-01-18.
  */
@@ -24,5 +27,9 @@ public enum Orientation implements LabelEnum {
 
     public String getLabel() {
         return label;
+    }
+
+    public static Orientation parse(String label) {
+        return Arrays.stream(Orientation.values()).filter(t -> Objects.equals(t.getLabel(), label)).findFirst().orElse(null);
     }
 }

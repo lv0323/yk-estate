@@ -154,7 +154,7 @@ public class FangMgtService {
             fang.setRealArea(fang.getEstateArea());
         }
 
-        fang.setFloorType(calculateFloorType(fang.getFloor(), fang.getFloorCounts()));
+        fang.setFloorType(mgtFangService.calculateFloorType(fang.getFloor(), fang.getFloorCounts()));
 
         BigDecimal publishPrice = fang.getPublishPrice();
         if (fang.getBizType() == BizType.SELL && fang.getPriceUnit() == PriceUnit.WAN) {
@@ -164,22 +164,6 @@ public class FangMgtService {
         fang.setUnitPrice(publishPrice.divide(fang.getEstateArea(), 2, RoundingMode.HALF_UP));
 
         return fang;
-    }
-
-    private FloorType calculateFloorType(int floor, int floorCounts) {
-        if (floor <= 0 || floorCounts <= 0 || floor > floorCounts) {
-            return null;
-        }
-        Integer low = floorCounts / 3;
-        Integer high = floorCounts * 2 / 3;
-
-        if (floor <= low) {
-            return FloorType.LOW;
-        } else if (floor > high) {
-            return FloorType.HIGH;
-        } else {
-            return FloorType.MIDDLE;
-        }
     }
 
     public Boolean preCheckLicence(Long xiaoquId, BizType bizType, Long buildingId, Long buildingUnitId,

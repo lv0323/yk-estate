@@ -2,6 +2,7 @@ package com.lyun.estate.biz.spec.fang.mgt.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.fang.def.FloorType;
 import com.lyun.estate.biz.fang.domian.FangCheckDTO;
 import com.lyun.estate.biz.fang.domian.FangFollowDTO;
 import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
@@ -71,4 +72,5 @@ public interface MgtFangService {
 
     MgtFangSummary getFangSummaryByLicenceId(Long licenceId);
 
+    FloorType calculateFloorType(int floor, int floorCounts);
 }
