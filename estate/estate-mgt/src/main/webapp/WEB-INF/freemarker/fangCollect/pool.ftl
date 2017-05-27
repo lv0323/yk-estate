@@ -104,7 +104,7 @@
                                 <div id="getHouseCharPage" class="table-responsive clearfix" ng-cloak>
                                     <div class="media clearfix house-item" ng-repeat="house in houseList">
                                         <div class="media-body">
-                                            <div class="col-lg-6 col-md-6 col-sm-6" style="padding-right: 0">
+                                            <div class="col-lg-7 col-md-7 col-sm-7" style="padding-right: 0">
                                                 <div class="clearfix">
                                                     <h5 class="media-heading pull-left text-ellipsis">
                                                         <a ng-href="{{'/mgt/fangCollection/detail?id='+house.id}}" target="_blank" class="text-muted" ng-bind="house.header"></a>
@@ -115,10 +115,10 @@
                                                 </div>
                                                 <div class="clearfix m-t-7 text-muted">
                                                     <span>{{house.layoutFormat}}</span>
-                                                    <span class="m-l-10">{{house.floor}}/{{house.floorCounts}}F</span>
+                                                    <span class="m-l-10" ng-show="house.floor||house.floorCounts">{{house.floor}}/{{house.floorCounts}}F</span>
                                                     <span class="m-l-10">{{house.orientation.label}}</span>
                                                     <span class="m-l-10">{{house.decorate}}</span>
-                                                    <span class="m-l-10">{{house.updateTime|date:'yyyy-MM-dd'}}</span>
+                                                    <span class="m-l-20 text-danger">{{house.createTime|date:'yyyy-MM-dd hh:mm:ss'}}</span>
                                                    <#-- <span class="m-l-10">{{house.address}}</span>-->
                                                 </div>
                                             </div>
@@ -129,7 +129,7 @@
 
                                                 </p>
                                             </div>
-                                            <div class="col-lg-3 col-md-3 col-sm-3 text-right">
+                                            <div class="col-lg-2 col-md-2 col-sm-2 text-right">
                                                 <p><strong class="text-danger f18" ng-if="house.contactName">{{house.contactName}}</strong>{{house.contactName?'':'姓名:'}}</p>
                                                 <p class="m-t-7">{{house.contactMobile}}</p>
                                             </div>
