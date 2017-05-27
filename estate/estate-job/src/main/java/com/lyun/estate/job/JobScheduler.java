@@ -35,6 +35,6 @@ public class JobScheduler implements SchedulingConfigurer {
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
         taskRegistrar.setScheduler(taskExecutor());
-        taskRegistrar.addCronTask(fy01MappingJob, "0 0 1 ? * L");
+        taskRegistrar.addCronTask(fy01MappingJob, "0 0 1 ? * SUN");
     }
 }

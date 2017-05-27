@@ -29,21 +29,17 @@
                                                 </h6>
                                                 <label class="badge m-l-10" ng-class="{'badge-info':ctrl.summary.bizType.name == 'SELL','badge-warning':ctrl.summary.bizType.name == 'RENT'}" ng-bind="ctrl.summary.bizType.label"></label>
                                                 <a ng-href="{{ctrl.summary.url}}" target="_blank" class="badge badge-success m-l-15" ng-bind="ctrl.summary.fangOrigin.label"></a>
-                                                <span class="pull-right" style="min-width:90px">房源编号:<span ng-bind="ctrl.summary.id"></span></span>
                                             </div>
                                             <div class="clearfix text-muted m-t-10">
-                                                <span ng-show="ctrl.summary.floorCounts"><span id="floor" ng-bind="ctrl.summary.floor||'未知'"> </span>/<span ng-bind="ctrl.summary.floorCounts"></span>F</span>
-                                                <span class="m-l-10" ng-bind="ctrl.summary.orientation.label"></span>
-                                                <span class="m-l-10" ng-bind="ctrl.summary.layoutString"></span>
+                                                <span ng-show="ctrl.summary.floorCounts" class="m-r-15"><span id="floor" ng-bind="ctrl.summary.floor||'未知'"> </span>/<span ng-bind="ctrl.summary.floorCounts"></span>F</span>
+                                                <span ng-show="ctrl.summary.orientation" class="m-r-15" ng-bind="ctrl.summary.orientation.label"></span>
+                                                <span ng-show="ctrl.summary.layoutString"  ng-bind="ctrl.summary.layoutString"></span>
                                             </div>
                                             <div class="clearfix m-t-10 text-muted">
-                                            <span>
-                                                <strong ng-bind="ctrl.summary.estateArea"></strong>m<sup>2</sup>&nbsp;<span ng-show="ctrl.summary.realArea"><strong ng-bind="ctrl.summary.realArea"></strong>m<sup>2</sup></span>
-                                                (<strong class="text-danger"><span ng-bind="ctrl.summary.publishPrice"></strong><span ng-bind="ctrl.summary.priceUnit.label"></span>&nbsp;
-                                                <strong class="text-warning" ng-bind="ctrl.summary.unitPrice"></strong><span ng-bind="ctrl.summary.bizType.name==='RENT'?ctrl.summary.priceUnit.label:'元'"></span>/m<sup>2</sup></span>
-                                                )
+                                                <span class="m-r-20"><strong ng-bind="ctrl.summary.estateArea"></strong>m<sup>2</sup>&nbsp;<span ng-show="ctrl.summary.realArea"><strong ng-bind="ctrl.summary.realArea"></strong>m<sup>2</sup></span></span>
+                                                <span class="m-r-20"><strong class="text-danger"><span ng-bind="ctrl.summary.publishPrice"></strong><span ng-bind="ctrl.summary.priceUnit.label"></span>&nbsp;(<strong class="text-warning" ng-bind="ctrl.summary.unitPrice"></strong><span ng-bind="ctrl.summary.bizType.name==='RENT'?ctrl.summary.priceUnit.label:'元'"></span>/m<sup>2</sup>)</span>
+                                                <span class="text-danger" ng-bind="ctrl.summary.createTime|date:'yyyy-MM-dd hh:mm:ss'"></span>
                                             </span>
-                                                <a class="edit-info pull-right" href="#" ng-click="ctrl.baseInfoInit()"><i class="fa fa-pencil"></i>修改</a>
                                             </div>
                                         </div>
                                     </div>
@@ -63,7 +59,6 @@
                                                 <tbody>
                                                 <tr>
                                                     <th colspan="9">基本信息</th>
-                                                    <th width="10%" class="text-right"><a ng-href="#" ng-click="ctrl.descrUpdateInit()"><i class="fa fa-pencil" ng-click="ctrl.initUpdateDEscr()"></i>修改</a></th>
                                                 </tr>
                                                 <tr>
                                                     <td width="10%" class="text-muted text-center">房屋地址</td>
@@ -122,7 +117,7 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        录入时间：<span ng-bind="ctrl.summary.createTime|date:'yyyy-MM-dd hh:mm:ss'"></span>
+                        录入时间：<span ng-bind="ctrl.summary.updateTime|date:'yyyy-MM-dd hh:mm:ss'"></span>
                     </div>
                 </div>
             </section>

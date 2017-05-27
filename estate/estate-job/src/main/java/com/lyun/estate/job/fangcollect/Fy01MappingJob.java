@@ -16,9 +16,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by robin on 17/5/5.
@@ -84,7 +82,9 @@ public class Fy01MappingJob extends BaseJob {
         fangPool.setContactMobile(fy01Fang.getContactMobile());
         fangPool.setDescription(fy01Fang.getDescription());
         if(fy01Fang.getImagePath() !=null && !fy01Fang.getImagePath().equals("")){
-            JSONArray jsArr = JSONArray.fromObject(fy01Fang.getImagePath().split(","));
+            String[] imgArr = fy01Fang.getImagePath().split(",");
+            List<String> imgList = new ArrayList<String>(Arrays.asList(imgArr));
+            JSONArray jsArr = JSONArray.fromObject(imgList);
             fangPool.setImagePath(jsArr.toString());
         }
         fangPool.setUpdateTime(fy01Fang.getUpdataTime());
