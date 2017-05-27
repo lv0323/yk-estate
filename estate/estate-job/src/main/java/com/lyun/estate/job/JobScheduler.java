@@ -2,6 +2,7 @@ package com.lyun.estate.job;
 
 import com.lyun.estate.job.config.JobConfig;
 import com.lyun.estate.job.context.JobContext;
+import com.lyun.estate.job.fangcollect.Fy01MappingJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,9 @@ public class JobScheduler implements SchedulingConfigurer {
     @Autowired
     JobContext jobContext;
 
+    @Autowired
+    private Fy01MappingJob fy01MappingJob;
+
     @Bean(destroyMethod = "shutdown")
     public Executor taskExecutor() {
         return Executors.newScheduledThreadPool(100);
@@ -31,5 +35,6 @@ public class JobScheduler implements SchedulingConfigurer {
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
         taskRegistrar.setScheduler(taskExecutor());
+        taskRegistrar.addCronTask(fy01MappingJob, "0 0 1 ? * L");
     }
 }

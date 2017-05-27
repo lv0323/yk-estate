@@ -3,7 +3,9 @@ package com.lyun.estate.biz.fang.def;
 import com.google.common.collect.Lists;
 import com.lyun.estate.core.supports.labelenum.LabelEnum;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Jeffrey on 2017-01-18.
@@ -52,5 +54,9 @@ public enum HouseType implements LabelEnum {
 
     public List<HouseSubType> getSubTypes() {
         return subTypes;
+    }
+
+    public static HouseType parse(String label) {
+        return Arrays.stream(HouseType.values()).filter(t -> Objects.equals(t.getLabel(), label)).findFirst().orElse(null);
     }
 }

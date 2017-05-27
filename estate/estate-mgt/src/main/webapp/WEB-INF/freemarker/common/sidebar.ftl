@@ -110,6 +110,16 @@
                 </ul>
             </li>
             </li>
+            <li class="treeview fangCollection">
+                <a href="#"><i class="fa fa-pie-chart" aria-hidden="true"></i> <span>房源采集</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/mgt/fangCollection/pool?target=.fangCollection"><i class="fa fa-table"></i>房源池</a></li>
+                </ul>
+            </li>
         <@checkPermission value='P_FANG'>
             <li class="treeview fang">
                 <a href="#"><i class="fa fa-home" aria-hidden="true"></i> <span>房源管理</span>

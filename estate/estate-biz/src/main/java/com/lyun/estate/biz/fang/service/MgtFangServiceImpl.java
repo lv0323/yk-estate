@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.biz.employee.service.EmployeeService;
+import com.lyun.estate.biz.fang.def.FloorType;
 import com.lyun.estate.biz.fang.domian.*;
 import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.fang.repo.*;
@@ -395,6 +396,22 @@ public class MgtFangServiceImpl implements MgtFangService {
         return findSummaryBySelector(new MgtFangSelector().setLicenceId(licenceId), null)
                 .stream()
                 .findFirst().orElseThrow(() -> new EstateException(ExCode.NOT_FOUND, licenceId, "房源信息"));
+    }
+
+    @Override
+    public FloorType calculateFloorType(int floor, int floorCounts) {
+        if (floor <= 0 || floorCounts <= 0 || floor > floorCounts) {
+            return null;
+        }
+        Integer low = floorCounts / 3;
+        Integer high = floorCounts * 2 / 3;
+        if (floor <= low) {
+            return FloorType.LOW;
+        } else if (floor > high) {
+            return FloorType.HIGH;
+        } else {
+            return FloorType.MIDDLE;
+        }
     }
 
     @Override
