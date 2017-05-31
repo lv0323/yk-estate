@@ -193,4 +193,10 @@ public class CompanyMgtService {
 
         return companySigningService.deleteSigning(signingId);
     }
+
+    public CompanyDTO findDTO(Long id) {
+        permissionCheckService.checkExist(Permission.LIST_FRANCHISEE);
+        permissionCheckService.checkCompany(id);
+        return companyService.findDTO(id);
+    }
 }
