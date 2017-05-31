@@ -41,7 +41,7 @@ public class FangCollectPage {
         params.put("timeType", Arrays.asList(TimeType.values()));
         params.put("delegateType", Arrays.asList(DelegateType.values()));
         params.put("mgtFangSummaryOrder", Arrays.asList(MgtFangSummaryOrder.values()));
-        return new ModelAndView("/fangcollect/pool", params);
+        return new ModelAndView("/fangCollect/pool", params);
     }
 
     @GetMapping("/detail")
@@ -49,7 +49,7 @@ public class FangCollectPage {
         HashMap<String, Object> params = new HashMap<>();
         params.put("avatarUrl", service.getAvatar());
         params.put("username", service.getUsername());
-        return new ModelAndView("/fangcollect/detail", params);
+        return new ModelAndView("/fangCollect/detail", params);
     }
 
     @GetMapping("/blacklist")
@@ -57,6 +57,6 @@ public class FangCollectPage {
         HashMap<String, Object> params = new HashMap<>();
         params.put("avatarUrl", service.getAvatar());
         params.put("username", service.getUsername());
-        return new ModelAndView("/fangcollect/blacklist", params);
+        return new ModelAndView("/fangCollect/blacklist", params);
     }
 }
