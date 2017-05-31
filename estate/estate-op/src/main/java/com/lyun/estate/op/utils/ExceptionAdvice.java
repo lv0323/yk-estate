@@ -24,6 +24,8 @@ public class ExceptionAdvice {
 
     @ExceptionHandler
     public void processRuntimeException(Throwable t, HttpServletResponse response) {
+
+        System.out.println("#####"+t.getMessage());
         if(t instanceof NoDataFoundException){
 
             try {
@@ -34,6 +36,9 @@ public class ExceptionAdvice {
 
         } else if(t instanceof BizIllegalArgumentException || t instanceof BizRuntimeException){
 
+            ActionResultBean bean = new ActionResultBean().setSuccess(false).setReason(t.getMessage());
+            writeResponse(response, bean);
+        }else{
             ActionResultBean bean = new ActionResultBean().setSuccess(false).setReason(t.getMessage());
             writeResponse(response, bean);
         }

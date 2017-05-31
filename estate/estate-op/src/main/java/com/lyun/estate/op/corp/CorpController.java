@@ -57,7 +57,7 @@ public class CorpController {
 
         long userId = CorpUtil.getUserId(token);
 
-        return corpService.getMyJudgement(userId, corpId);
+        return corpService.getMyJudgement(corpId, userId);
     }
 
     @PostMapping(value = "/{corpId}/judge_good", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})

@@ -1,76 +1,48 @@
 package com.lyun.estate.op.utils;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.lyun.estate.op.corp.entity.BizIllegalArgumentException;
 import com.lyun.estate.op.corp.entity.BizRuntimeException;
 import com.lyun.estate.op.corp.entity.TagCount;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
-//
-//import com.lyun.estate.op.corp.entity.Comment;
-//import com.lyun.estate.op.corp.entity.RawComment;
-//import javafx.util.Pair;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
 public class CorpUtil {
 
     private static String secret = "dianpingSecret123456";
 
     public static String getToken(long userId){
-
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            String token = JWT.create()
-                    .withClaim("userId", userId)
-                    .withClaim("sign_time", System.currentTimeMillis())
-                    .withIssuer("op_dianping")
-                    .sign(algorithm);
-
-            return token;
-
-        } catch (UnsupportedEncodingException exception){
-            //UTF-8 encoding not supported
-        } catch (JWTCreationException exception){
-            //Invalid Signing configuration / Couldn't convert Claims.
-        }
-
-        throw new BizRuntimeException("generate token failuer");
+        String compactJws = Jwts.builder()
+                .setSubject("corp_dianping")
+                .claim("user_id", ""+userId)
+                .claim("start_time", ""+System.currentTimeMillis())
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+        return compactJws;
     }
 
 
     public static Long getUserId(String token){
 
         try {
-            Algorithm algorithm = Algorithm.HMAC256("secret");
-            JWTVerifier verifier = JWT.require(algorithm)
-                    .withIssuer("auth0")
-                    .build(); //Reusable verifier instance
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(token)
+                    .getBody();
+            Object object = claims.get("user_id");
 
-            verifier.verify(token);
+            System.out.println(object.toString());
 
-            DecodedJWT jwt = JWT.decode(token);
+            Long ret = Long.parseLong(object.toString());
+            return ret;
 
-            Claim claim = jwt.getClaim("userId");
-
-            return claim.asLong();
-
-        } catch (UnsupportedEncodingException exception){
-            //UTF-8 encoding not supported
-        } catch (JWTVerificationException exception){
-            //Invalid signature/claims
+        } catch (SignatureException e) {
+            e.printStackTrace();
         }
 
         throw new BizIllegalArgumentException("invalid token");

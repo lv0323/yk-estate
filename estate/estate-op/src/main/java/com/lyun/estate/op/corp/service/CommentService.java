@@ -35,12 +35,21 @@ public class CommentService {
         if(commentRepo.liked(commentId, userId) <= 0){
             commentRepo.like(commentId, userId);
             commentRepo.increaseLike(commentId, userId);
+            return;
         }
+        throw new IllegalArgumentException("comment_like (comment, userId)=("+commentId + ", "+userId +") liked");
     }
 
     public void cancelLike(long commentId, long userId){
         commentRepo.cancelLike(commentId, userId);
         commentRepo.descreaseLike(commentId, userId);
+    }
+
+    public boolean liked(long commentId, long userId){
+        if(commentRepo.liked(commentId, userId) <= 0){
+            return false;
+        }
+        return true;
     }
 
 }

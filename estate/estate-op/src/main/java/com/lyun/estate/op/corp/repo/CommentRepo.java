@@ -56,13 +56,13 @@ public interface CommentRepo {
     @Insert("insert into t_op_dianping_comment_like_map values(#{commentId}, #{userId})")
     int like(@Param("commentId") long commentId, @Param("userId") long userId);
 
-    @Delete("delete from t_op_dianping_comment_like_map where comment_id=#{commentId} and user_id=#{user_id}")
+    @Delete("delete from t_op_dianping_comment_like_map where comment_id=#{commentId} and user_id=#{userId}")
     int cancelLike(@Param("commentId") long commentId, @Param("userId") long userId);
 
-    @Update("update t_op_dianping_comment set positive_count = positive_count + 1 where comment_id=#{commentId} and user_id=#{user_id}")
+    @Update("update t_op_dianping_comment set positive_count = positive_count + 1 where id=#{commentId} and user_id=#{userId}")
     int increaseLike(@Param("commentId") long commentId, @Param("userId") long userId);
 
-    @Update("update t_op_dianping_comment set positive_count = positive_count + 1 where comment_id=#{commentId} and user_id=#{user_id}")
+    @Update("update t_op_dianping_comment set positive_count = positive_count - 1 where id=#{commentId} and user_id=#{userId}")
     int descreaseLike(@Param("commentId") long commentId, @Param("userId") long userId);
 
 }

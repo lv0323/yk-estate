@@ -29,7 +29,8 @@ dependencies {
     providedCompile lib.servlet_api
     compile libGroup.swagger
     compile lib.user_agent_utils
-    compile 'com.auth0:java-jwt:3.2.0'
+    compile 'io.jsonwebtoken:jjwt:0.7.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.2'
     compile 'com.google.code.gson:gson:2.8.0'
 }
 
