@@ -269,18 +269,18 @@ require(['main-app',
                 $timeout(function(){
                     var info ={};
                     angular.copy(_this.ext, info);
-                    info.level = _this.ext.level.name;
-                    info.certifType = _this.ext.certifType.name;
-                    info.commissionWilling = _this.ext.commissionWilling.name;
-                    info.delegateType = _this.ext.delegateType.name;
-                    info.propertyType = _this.ext.propertyType.name;
-                    info.showing = _this.ext.showing.name;
-                    info.source = _this.ext.source.name;
-                    info.status = _this.ext.status.name;
+                    info.level = _this.ext.level && _this.ext.level.name;
+                    info.certifType = _this.ext.certifType && _this.ext.certifType.name;
+                    info.commissionWilling = _this.ext.commissionWilling && _this.ext.commissionWilling.name;
+                    info.delegateType = _this.ext.delegateType && _this.ext.delegateType.name;
+                    info.propertyType = _this.ext.propertyType && _this.ext.propertyType.name;
+                    info.showing = _this.ext.showing && _this.ext.showing.name;
+                    info.source = _this.ext.source && _this.ext.source.name;
+                    info.status = _this.ext.status && _this.ext.status.name;
                     info.address = _this.ext.certifAddress;
                     info.delegateStart = UtilService.timeStamp2Date(_this.ext.delegateStart);
                     info.delegateEnd = UtilService.timeStamp2Date(_this.ext.delegateEnd);
-                    info.taxesWilling = _this.ext.taxesWilling.name;
+                    info.taxesWilling = _this.ext.taxesWilling && _this.ext.taxesWilling.name;
                     info.isOnly = _this.ext.isOnly === 'Y';
                     $scope.$apply(function(){
                         _this.updateExt = info;
