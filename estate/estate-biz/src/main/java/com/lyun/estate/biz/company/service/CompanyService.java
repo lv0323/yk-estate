@@ -201,7 +201,6 @@ public class CompanyService {
                 "公司名", company.getName());
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(company.getAbbr()),
                 "公司简称", company.getAbbr());
-        ExceptionUtil.checkNotNull("负责人编号", company.getBossId());
         repository.updateInfo(company);
         return repository.findOne(company.getId());
     }
