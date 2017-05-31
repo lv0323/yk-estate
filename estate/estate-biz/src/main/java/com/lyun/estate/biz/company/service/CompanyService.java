@@ -29,6 +29,7 @@ import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.core.utils.CommonUtil;
 import com.lyun.estate.core.utils.ValidateUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -230,5 +231,25 @@ public class CompanyService {
                 signing.getEndDate() : company.getStartDate();
         repository.updateSigningDate(signing.getCompanyId(), startDate, endDate);
         return result;
+    }
+
+    public CompanyDTO findDTO(Long id) {
+        Company company = repository.findOne(id);
+        if (company == null) {
+            return null;
+        }
+        CompanyDTO dto = new CompanyDTO();
+        BeanUtils.copyProperties(company, dto);
+        dto.setPartA(Optional.ofNullable(companySigningService.getLastSigning(dto.getId()))
+                .map(CompanySigningDTO::getPartA)
+                .orElse(null));
+        dto.setBoss(employeeService.selectDTOById(dto.getBossId()));
+        dto.setDeptCount(departmentService.countForCompany(dto.getId()));
+        dto.setEmployeeCount(employeeService.countForCompany(dto.getId()));
+        if (dto.getType() == CompanyDefine.Type.REGIONAL_AGENT) {
+            dto.setChannelCount(repository.countForParent(dto.getId(), CompanyDefine.Type.CHANNEL));
+            dto.setSingleStoreCount(repository.countForParent(dto.getId(), CompanyDefine.Type.SINGLE_STORE));
+        }
+        return dto;
     }
 }

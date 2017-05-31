@@ -88,6 +88,11 @@ public class CompanyRest {
         return companyMgtService.list(cityId, parentId, companyType, pageBounds);
     }
 
+    @GetMapping("/{id}")
+    CompanyDTO findDTO(@PathVariable Long id) {
+        return companyMgtService.findDTO(id);
+    }
+
     @GetMapping("list-signing")
     PageList<CompanySigningDTO> listSigning(@RequestParam(required = false) Long companyId,
                                             @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
@@ -158,5 +163,6 @@ public class CompanyRest {
     CommonResp deleteSigning(@RequestParam Long signingId) {
         return companyMgtService.deleteSigning(signingId) ? CommonResp.succeed() : CommonResp.failed();
     }
+
 
 }
