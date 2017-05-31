@@ -1,7 +1,9 @@
 package com.lyun.estate.op.corp;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.lyun.estate.op.corp.entity.ActionResultBean;
 import com.lyun.estate.op.corp.entity.BooleanResponse;
+import com.lyun.estate.op.corp.entity.Comment;
 import com.lyun.estate.op.corp.entity.JudgeStatus;
 import com.lyun.estate.op.corp.service.CommentService;
 import com.lyun.estate.op.utils.CorpUtil;
@@ -61,6 +63,12 @@ public class CommentController {
         BooleanResponse response = new BooleanResponse();
         response.setLiked(commentService.liked(commentId, userId));
         return response;
+    }
+    @GetMapping(value = "/my")
+    public List<Comment> my(@RequestHeader String token, @RequestHeader("X-PAGING")PageBounds pageBounds) {
+
+        long userId = CorpUtil.getUserId(token);
+        return commentService.myComments(userId, pageBounds);
     }
 
 }

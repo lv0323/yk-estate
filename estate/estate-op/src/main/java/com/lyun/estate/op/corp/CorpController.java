@@ -1,6 +1,6 @@
 package com.lyun.estate.op.corp;
 
-import com.lyun.estate.op.corp.entity.BizIllegalArgumentException;
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.lyun.estate.op.corp.entity.*;
 import com.lyun.estate.op.corp.service.CorpService;
 import com.lyun.estate.op.utils.CorpUtil;
@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by localuser on 2017/5/15.
@@ -46,18 +45,21 @@ public class CorpController {
     }
 
     @GetMapping(value = "/{corpId}/comments")
-    public List<Comment> getComments(@PathVariable long corpId) {
+    public List<Comment> getCorpComments(@PathVariable long corpId, @RequestHeader("X-PAGING")PageBounds pageBounds) {
 
-        return corpService.getComments(corpId);
+        return corpService.getCorpComments(corpId, pageBounds);
 
     }
 
     @GetMapping(value = "/{corpId}/judgement_my")
-    public JudgeStatus getJudgementStatus(@RequestHeader String token, @PathVariable long corpId) {
+    public JudgeStateResponse getJudgementStatus(@RequestHeader String token, @PathVariable long corpId) {
 
         long userId = CorpUtil.getUserId(token);
 
-        return corpService.getMyJudgement(corpId, userId);
+        JudgeStateResponse response = new JudgeStateResponse();
+        response.setStatus(corpService.getMyJudgement(corpId, userId).toString());
+
+        return response;
     }
 
     @PostMapping(value = "/{corpId}/judge_good", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})

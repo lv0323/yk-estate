@@ -32,14 +32,26 @@ public interface CommentRepo {
 //            "\n" +
 //            "WHERE c.corp_id = #{id}\n" +
 //            "ORDER BY c.create_time desc;")
-//    List<RawComment> getComments(long id);
+//    List<RawComment> getCorpComments(long id);
 
     @Select("SELECT c.id, c.content, c.positive_count as positiveCount, c.create_time as createTime, c.tags,\n" +
             "    u.id as userId, u.nicky, u.avatar\n" +
             "from t_op_dianping_comment as c RIGHT JOIN t_op_dianping_user as u\n" +
             "    on c.user_id = u.id\n" +
-            "WHERE c.corp_id = #{id};")
-    List<RawComment> getComments(long id);
+            "WHERE c.corp_id = #{id}\n" +
+            "ORDER BY c.create_time desc " +
+            "offset #{offset} limit #{limit}" +
+            ";")
+    List<RawComment> getCorpComments(@Param("id")long id, @Param("offset") long offset, @Param("limit") long limit);
+
+    @Select("SELECT ct.id, ct.content, ct.positive_count as positiveCount, ct.create_time as createTime, ct.tags,\n" +
+            "    corp.id as corpId, corp.name as corpName\n " +
+            "from t_op_dianping_comment as ct RIGHT JOIN t_op_dianping_corp as corp\n " +
+            "on ct.corp_id = corp.id\n " +
+            "WHERE ct.user_id = #{userId} " +
+            "ORDER BY ct.create_time desc " +
+            "offset #{offset} limit #{limit};")
+    List<RawComment> myComments(@Param("userId")long userId, @Param("offset")long offset, @Param("limit")long limit);
 
 
     @Insert("INSERT into t_op_dianping_comment(user_id, corp_id, shopfront, content, tags) " +

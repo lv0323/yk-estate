@@ -18,6 +18,26 @@ public class Comment {
 
     private List<String> tags;
 
+    private long corpId;
+
+    public long getCorpId() {
+        return corpId;
+    }
+
+    public void setCorpId(long corpId) {
+        this.corpId = corpId;
+    }
+
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
+    }
+
+    private String corpName;
+
     public Comment(RawComment raw){
         this.id = raw.getId();
         this.content = raw.getContent();
@@ -26,6 +46,8 @@ public class Comment {
         this.userId = raw.getUserId();
         this.nicky = raw.getNicky();
         this.avatar = raw.getAvatar();
+        this.corpId = raw.getCorpId();
+        this.corpName = raw.getCorpName();
     }
 
     private Comment(){

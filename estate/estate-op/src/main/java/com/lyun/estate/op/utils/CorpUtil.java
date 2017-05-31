@@ -1,7 +1,6 @@
 package com.lyun.estate.op.utils;
 
 import com.lyun.estate.op.corp.entity.BizIllegalArgumentException;
-import com.lyun.estate.op.corp.entity.BizRuntimeException;
 import com.lyun.estate.op.corp.entity.TagCount;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

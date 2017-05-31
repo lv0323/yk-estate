@@ -1,5 +1,6 @@
 package com.lyun.estate.op.corp.service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.google.common.base.Strings;
 import com.lyun.estate.op.corp.entity.*;
 import com.lyun.estate.op.corp.repo.CommentRepo;
@@ -51,12 +52,15 @@ public class CorpService {
         return detail;
     }
 
-    public List<Comment> getComments(long id){
-        List<RawComment> raws = commentRepo.getComments(id);
+    public List<Comment> getCorpComments(long id, PageBounds pageBounds){
+        List<RawComment> raws = commentRepo.getCorpComments(id, pageBounds.getOffset(), pageBounds.getLimit());
 
         List<Comment> comments = new ArrayList<>();
 
         for (RawComment tmp : raws){
+
+            tmp.setCorpId(id);
+
             Comment comment = new Comment(tmp);
 
             String[] tags = tmp.getTags().split("_");
@@ -107,7 +111,7 @@ public class CorpService {
         if(status == JudgeStatus.NOT_YET){
 
             corpRepo.createJudgement(corpId, userId, JudgeStatus.BAD_SELECTED.name());
-            corpRepo.increasePositiveCount(corpId);
+            corpRepo.increaseNegativeCount(corpId);
 
         }else if(status == JudgeStatus.BAD_SELECTED){
             //do nothing
