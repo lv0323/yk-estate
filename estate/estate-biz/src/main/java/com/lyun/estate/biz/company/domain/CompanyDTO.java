@@ -15,6 +15,8 @@ public class CompanyDTO {
     private CompanyDefine.Status status;
     private String name;
     private String abbr;
+    private String address;
+    private String introduction;
     private String secretKey;
     private Long bossId;
     private Date startDate;
@@ -187,6 +189,24 @@ public class CompanyDTO {
 
     public CompanyDTO setPartA(EmployeeDTO partA) {
         this.partA = partA;
+        return this;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public CompanyDTO setAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public CompanyDTO setIntroduction(String introduction) {
+        this.introduction = introduction;
         return this;
     }
 }
