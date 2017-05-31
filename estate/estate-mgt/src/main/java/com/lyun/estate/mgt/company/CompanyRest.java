@@ -104,7 +104,7 @@ public class CompanyRest {
                        @RequestParam String name,
                        @RequestParam String abbr,
                        @RequestParam String address,
-                       @RequestParam(required = false) String introduction,
+                       @RequestParam String introduction,
                        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
                        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate) {
         Company company = new Company().setId(companyId)
