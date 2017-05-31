@@ -14,7 +14,11 @@
         var reg = /^(13|15|17|18|14)\d{9}(~)?$/;
         return (reg.test(value));
     }
-    var module = angular.module('directiveYk',[]);
+    var module = angular.module('directiveYk',[]).config([
+        '$compileProvider', function( $compileProvider ) {
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file|javascript):/);
+
+        }]);
 
     module.directive('datetimepicker', function () {
         return {
