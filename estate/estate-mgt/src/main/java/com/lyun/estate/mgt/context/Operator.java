@@ -1,11 +1,13 @@
 package com.lyun.estate.mgt.context;
 
+import com.lyun.estate.biz.company.def.CompanyDefine;
 import com.lyun.estate.biz.support.def.Gender;
 
 public class Operator {
 
     private Long id;
     private Long companyId;
+    private CompanyDefine.Type companyType;
     private Boolean companyIpCheck;
     private Boolean sysAdmin;
     private String deviceId;
@@ -142,6 +144,15 @@ public class Operator {
 
     public Operator setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+        return this;
+    }
+
+    public CompanyDefine.Type getCompanyType() {
+        return companyType;
+    }
+
+    public Operator setCompanyType(CompanyDefine.Type companyType) {
+        this.companyType = companyType;
         return this;
     }
 }

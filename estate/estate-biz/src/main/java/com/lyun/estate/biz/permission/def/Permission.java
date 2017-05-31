@@ -49,6 +49,10 @@ public enum Permission implements LabelEnum {
     PERMISSION_MANAGEMENT("权限管理与模块设置", PermissionDefine.Category.COMPANY),
     VIEW_AUDIT_LOG("查看业务日志", PermissionDefine.Category.COMPANY),
 
+    CREATE_FRANCHISEE("新增加盟信息", PermissionDefine.Category.FRANCHISEE),
+    LIST_FRANCHISEE("查看加盟信息", PermissionDefine.Category.FRANCHISEE),
+    MODIFY_FRANCHISEE("修改加盟信息", PermissionDefine.Category.FRANCHISEE),
+
     //页面模块
     P_FANG("房源管理", PermissionDefine.Category.PAGE),
     P_FANG_LIST("房源列表", PermissionDefine.Category.PAGE),
@@ -67,7 +71,17 @@ public enum Permission implements LabelEnum {
     P_CONFIG_AUDIT("操作日志", PermissionDefine.Category.PAGE),
     P_CONFIG_HOUSE_DICT("楼盘字典", PermissionDefine.Category.PAGE),
     P_CONFIG_PAGE("岗位模块", PermissionDefine.Category.PAGE),
-    P_CONFIG_PERMISSION("权限设置", PermissionDefine.Category.PAGE),;
+    P_CONFIG_PERMISSION("权限设置", PermissionDefine.Category.PAGE),
+    P_FRANCHISEE("加盟事业管理", PermissionDefine.Category.PAGE),
+    P_FRANCHISEE_C("渠道加盟", PermissionDefine.Category.PAGE),
+    P_FRANCHISEE_SS("单店加盟", PermissionDefine.Category.PAGE),
+    P_FRANCHISEE_RA("区域代理加盟", PermissionDefine.Category.PAGE),
+
+    //公司性质
+    CT_YK("盈科", PermissionDefine.Category.COMPANY_TYPE),
+    CT_CHANNEL("渠道", PermissionDefine.Category.COMPANY_TYPE),
+    CT_SS("单店", PermissionDefine.Category.COMPANY_TYPE),
+    CT_RA("区域加盟", PermissionDefine.Category.COMPANY_TYPE),;
 
 
     private final String label;

@@ -61,8 +61,13 @@ public class DepartmentMgtService {
         return result;
     }
 
-    public PageList<DepartmentDTO> listByPageBounds(PageBounds pageBounds) {
-        return departmentService.selectByCompanyId(mgtContext.getOperator().getCompanyId(), pageBounds);
+    public PageList<DepartmentDTO> listByCompanyIdPageBounds(Long companyId, PageBounds pageBounds) {
+        if (companyId == null) {
+            companyId = mgtContext.getOperator().getCompanyId();
+        } else {
+            permissionCheckService.checkCompany(companyId);
+        }
+        return departmentService.selectByCompanyId(companyId, pageBounds);
     }
 
     public List<DepartmentDTO> listSorted() {

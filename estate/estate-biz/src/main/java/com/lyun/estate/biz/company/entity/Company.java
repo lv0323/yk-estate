@@ -1,33 +1,28 @@
 package com.lyun.estate.biz.company.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.validator.constraints.NotEmpty;
+import com.google.common.base.MoreObjects;
+import com.lyun.estate.biz.company.def.CompanyDefine;
 
-import javax.validation.constraints.Future;
-import javax.validation.constraints.Null;
-import java.sql.Date;
+import java.util.Date;
+
 
 public class Company {
-
     private Long id;
-    @NotEmpty
+    private Long cityId;
+    private Long parentId;
+    private CompanyDefine.Type type;
+    private CompanyDefine.Status status;
     private String name;
-    @NotEmpty
-    private String license;
-    @NotEmpty
+    private String abbr;
     private String address;
     private String introduction;
-    @Null
     private String secretKey;
-    @Future
+    private Long bossId;
     private Date startDate;
-    @Future
     private Date endDate;
-    private Boolean locked;
-    private Boolean ipCheck;
-    @JsonIgnore
+    private boolean ipCheck;
+    private boolean isDeleted;
     private Date createTime;
-    @JsonIgnore
     private Date updateTime;
 
     public Long getId() {
@@ -36,6 +31,42 @@ public class Company {
 
     public Company setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public Company setCityId(Long cityId) {
+        this.cityId = cityId;
+        return this;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public Company setParentId(Long parentId) {
+        this.parentId = parentId;
+        return this;
+    }
+
+    public CompanyDefine.Type getType() {
+        return type;
+    }
+
+    public Company setType(CompanyDefine.Type type) {
+        this.type = type;
+        return this;
+    }
+
+    public CompanyDefine.Status getStatus() {
+        return status;
+    }
+
+    public Company setStatus(CompanyDefine.Status status) {
+        this.status = status;
         return this;
     }
 
@@ -48,12 +79,12 @@ public class Company {
         return this;
     }
 
-    public String getLicense() {
-        return license;
+    public String getAbbr() {
+        return abbr;
     }
 
-    public Company setLicense(String license) {
-        this.license = license;
+    public Company setAbbr(String abbr) {
+        this.abbr = abbr;
         return this;
     }
 
@@ -84,6 +115,15 @@ public class Company {
         return this;
     }
 
+    public Long getBossId() {
+        return bossId;
+    }
+
+    public Company setBossId(Long bossId) {
+        this.bossId = bossId;
+        return this;
+    }
+
     public Date getStartDate() {
         return startDate;
     }
@@ -102,12 +142,21 @@ public class Company {
         return this;
     }
 
-    public Boolean getLocked() {
-        return locked;
+    public boolean isIpCheck() {
+        return ipCheck;
     }
 
-    public Company setLocked(Boolean locked) {
-        this.locked = locked;
+    public Company setIpCheck(boolean ipCheck) {
+        this.ipCheck = ipCheck;
+        return this;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public Company setDeleted(boolean deleted) {
+        isDeleted = deleted;
         return this;
     }
 
@@ -129,12 +178,24 @@ public class Company {
         return this;
     }
 
-    public Boolean getIpCheck() {
-        return ipCheck;
-    }
-
-    public Company setIpCheck(Boolean ipCheck) {
-        this.ipCheck = ipCheck;
-        return this;
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("id", id)
+                .add("cityId", cityId)
+                .add("parentId", parentId)
+                .add("type", type)
+                .add("status", status)
+                .add("name", name)
+                .add("abbr", abbr)
+                .add("address", address)
+                .add("introduction", introduction)
+                .add("secretKey", secretKey)
+                .add("bossId", bossId)
+                .add("startDate", startDate)
+                .add("endDate", endDate)
+                .add("ipCheck", ipCheck)
+                .toString();
     }
 }

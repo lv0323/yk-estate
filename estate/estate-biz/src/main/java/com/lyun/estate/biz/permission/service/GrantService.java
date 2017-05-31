@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.permission.service;
 
-import com.lyun.estate.biz.employee.entity.Employee;
+import com.lyun.estate.biz.employee.domain.EmployeeDTO;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.permission.def.PermissionDefine;
@@ -117,10 +117,11 @@ public class GrantService {
         ExceptionUtil.checkIllegal(targetType == DomainType.EMPLOYEE || targetType == DomainType.POSITION,
                 "主体类型", targetType);
         ExceptionUtil.checkIllegal(CollectionUtils.isEmpty(grants) || grants.stream().noneMatch(
-                t -> t.getPermission() == null || t.getTargetId() == null || t.getTargetType() == null
-        ), "授权信息", grants);
+                t -> t.getPermission() == null), "授权信息", grants);
 
-        if (targetType == DomainType.EMPLOYEE && category == PermissionDefine.Category.PAGE) {
+        //check category
+        if (category == PermissionDefine.Category.COMPANY_TYPE
+                || (category == PermissionDefine.Category.PAGE && targetType == DomainType.EMPLOYEE)) {
             throw new EstateException(ExCode.PERMISSION_CATEGORY_NOT_SUPPORT, category.getLabel());
         }
 
@@ -157,7 +158,7 @@ public class GrantService {
 
     @Transactional
     public boolean regrantByPosition(Long companyId, Long positionId, Long operatorId) {
-        List<Employee> employees = employeeService.listByCompanyIdAndPositionId(companyId, positionId);
+        List<EmployeeDTO> employees = employeeService.listByCompanyIdAndPositionId(companyId, positionId);
         List<Grant> grants = grantRepo.findPositionNotPageGrants(positionId);
 
         employees.forEach(

@@ -350,7 +350,7 @@
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">描述说明:</label>
                             <div class="col-lg-9 col-md-9 col-sm-9">
-                                <textarea name="buildingDescription" cols="30" rows="3" name="buildingDescription" class="form-control" ng-model="ctrl.data.modifyBuilding.description" required></textarea>
+                                <textarea name="buildingDescription" cols="30" rows="3" name="buildingDescription" class="form-control" ng-model="ctrl.data.modifyBuilding.description"></textarea>
                             </div>
                         </div>
                     </form>

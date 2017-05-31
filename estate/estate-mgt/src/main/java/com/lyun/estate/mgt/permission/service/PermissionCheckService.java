@@ -1,5 +1,6 @@
 package com.lyun.estate.mgt.permission.service;
 
+import com.lyun.estate.biz.company.def.CompanyDefine;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
@@ -7,6 +8,7 @@ import com.lyun.estate.biz.permission.def.GrantScope;
 import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.permission.def.PermissionDefine;
 import com.lyun.estate.biz.permission.entity.Grant;
+import com.lyun.estate.biz.permission.service.CompanyPermissionService;
 import com.lyun.estate.biz.permission.service.GrantService;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
 import com.lyun.estate.biz.support.def.DomainType;
@@ -40,6 +42,9 @@ public class PermissionCheckService {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private CompanyPermissionService companyPermissionService;
 
     private Logger logger = LoggerFactory.getLogger(PermissionCheckService.class);
 
@@ -77,6 +82,12 @@ public class PermissionCheckService {
         if (operator.getSysAdmin()) {
             return true;
         }
+        if ((permission == Permission.PERMISSION_MANAGEMENT
+                || permission == Permission.VIEW_AUDIT_LOG)
+                && operator.getBoss()) {
+            return true;
+        }
+
         Grant grant = grantService.getEmployeeGrantsMap(operator.getId()).get(permission);
         if (grant == null
                 //历史原因，fix
@@ -85,6 +96,7 @@ public class PermissionCheckService {
         }
         return true;
     }
+
 
     public boolean checkLimit(Permission permission) {
         Operator operator = mgtContext.getOperator();
@@ -115,7 +127,7 @@ public class PermissionCheckService {
         return true;
     }
 
-    public boolean checkPage(Permission permission) {
+    public boolean verifyPage(Permission permission) {
         Operator operator = mgtContext.getOperator();
         if (operator.getSysAdmin()) {
             return true;
@@ -132,8 +144,28 @@ public class PermissionCheckService {
         return grants != null && grants.stream().anyMatch(t -> t.getPermission() == permission);
     }
 
+
+    public boolean verifyCompanyType(Permission permission) {
+        Operator operator = mgtContext.getOperator();
+        if (operator.getSysAdmin()) {
+            return true;
+        }
+        if (permission.getCategory() == PermissionDefine.Category.COMPANY_TYPE) {
+            return Objects.equals(permission, companyPermissionService.getByType(operator.getCompanyType()));
+        } else {
+            return false;
+        }
+    }
+
     public boolean checkCompany(long companyId) {
+        //1. operator in company
         if (Objects.equals(companyId, mgtContext.getOperator().getCompanyId())) {
+            return true;
+        }
+        //2. operator in parent company
+
+        //3. operator in yk company
+        if (mgtContext.getOperator().getCompanyType() == CompanyDefine.Type.YK) {
             return true;
         }
         throw new EstateException(ExCode.PERMISSION_COMPANY_ERROR);

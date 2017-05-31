@@ -30,9 +30,13 @@ public enum ExCode {
     EMPLOYEE_NO_SUGAR("找不到Sugar"),
     EMPLOYEE_WRONG_PASSWORD("密码错误"),
     EMPLOYEE_LOGIN_FAIL("登录失败"),
+    EMPLOYEE_MOBILE_EXIST("用户手机号已存在"),
     //company
     COMPANY_LOCKED("公司被冻结"),
     COMPANY_EXPIRED("公司授权已到截止日期"),
+    COMPANY_ABBR_OVER_COUNT("公司简称不可用"),
+    COMPANY_CREATE_PARENT_ERROR("您所在公司无法创建该类型加盟商"),
+    COMPANY_BOSS_NOT_IN("负责人非公司成员"),
     //position
     POSITION_HAS_EMPLOYEE("该岗位下有员工，不能删除"),
     //department

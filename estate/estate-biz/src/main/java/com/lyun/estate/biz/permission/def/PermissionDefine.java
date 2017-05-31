@@ -13,7 +13,10 @@ public class PermissionDefine {
         XIAO_QU("小区"),
         ORGANIZATION("组织架构"),
         COMPANY("公司"),
-        PAGE("模块"),;
+        PAGE("模块"),
+        COMPANY_TYPE("公司类型"),
+        FRANCHISEE("加盟商"),
+        ;
 
         private final String label;
 

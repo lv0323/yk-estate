@@ -38,12 +38,13 @@ public class DepartmentRest {
     }
 
     @GetMapping("query")
-    public PageList<DepartmentDTO> query(@RequestHeader("X-PAGING") PageBounds pageBounds) {
-        return service.listByPageBounds(pageBounds);
+    public PageList<DepartmentDTO> query(@RequestParam(required = false) Long companyId,
+                                         @RequestHeader("X-PAGING") PageBounds pageBounds) {
+        return service.listByCompanyIdPageBounds(companyId, pageBounds);
     }
 
     @GetMapping("query-all")
-    public List<DepartmentDTO> query() {
+    public List<DepartmentDTO> queryAll() {
         return service.listSorted();
     }
 

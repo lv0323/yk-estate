@@ -11,7 +11,7 @@ public class Employee {
 
     private Long id;
     private Long companyId;
-    private Boolean companyIpCheck;
+
     private Long cityId;
     private Long departmentId;
     private String departmentName;
@@ -67,15 +67,6 @@ public class Employee {
 
     public Employee setCompanyId(Long companyId) {
         this.companyId = companyId;
-        return this;
-    }
-
-    public Boolean getCompanyIpCheck() {
-        return companyIpCheck;
-    }
-
-    public Employee setCompanyIpCheck(Boolean companyIpCheck) {
-        this.companyIpCheck = companyIpCheck;
         return this;
     }
 
@@ -346,7 +337,6 @@ public class Employee {
                 .omitNullValues()
                 .add("id", id)
                 .add("companyId", companyId)
-                .add("companyIpCheck", companyIpCheck)
                 .add("cityId", cityId)
                 .add("departmentId", departmentId)
                 .add("departmentName", departmentName)

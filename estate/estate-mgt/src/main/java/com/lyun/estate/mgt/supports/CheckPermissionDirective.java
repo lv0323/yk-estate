@@ -1,6 +1,7 @@
 package com.lyun.estate.mgt.supports;
 
 import com.lyun.estate.biz.permission.def.Permission;
+import com.lyun.estate.biz.permission.def.PermissionDefine;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.mgt.permission.service.PermissionCheckService;
@@ -31,8 +32,16 @@ public class CheckPermissionDirective implements TemplateDirectiveModel {
 
         Set<String> names = StringUtils.commaDelimitedListToSet(valueScalar.getAsString());
 
-        boolean flag = names.stream().allMatch(t ->
-                permissionCheckerService.checkPage(Permission.valueOf(t))
+        boolean flag = names.stream().anyMatch(t -> {
+                    Permission p = Permission.valueOf(t);
+                    if (p.getCategory() == PermissionDefine.Category.PAGE) {
+                        return permissionCheckerService.verifyPage(p);
+                    } else if (p.getCategory() == PermissionDefine.Category.COMPANY_TYPE) {
+                        return permissionCheckerService.verifyCompanyType(p);
+                    } else {
+                        return false;
+                    }
+                }
         );
 
         if (flag) {

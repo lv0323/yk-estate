@@ -242,6 +242,8 @@ require(['main-app',
                   $('#priceUnit').selectpicker('refresh');
                   $('#houseHasElevator').selectpicker('refresh');
                   $('#houseHeatingType').selectpicker('refresh');
+              }).fail(function(res){
+                  SweetAlertHelp.fail({message: res && res.message});
               });
             };
             _this.subTypeRefresh = function(id){
@@ -258,6 +260,8 @@ require(['main-app',
                 FangService.baseChange(info).then(function(response){
                     $('#baseModel').modal('hide');
                     SweetAlertHelp.success();
+                }).fail(function(res){
+                    SweetAlertHelp.fail({message: res && res.message});
                 });
             };
             _this.extInfoInit = function(){
@@ -265,18 +269,18 @@ require(['main-app',
                 $timeout(function(){
                     var info ={};
                     angular.copy(_this.ext, info);
-                    info.level = _this.ext.level.name;
-                    info.certifType = _this.ext.certifType.name;
-                    info.commissionWilling = _this.ext.commissionWilling.name;
-                    info.delegateType = _this.ext.delegateType.name;
-                    info.propertyType = _this.ext.propertyType.name;
-                    info.showing = _this.ext.showing.name;
-                    info.source = _this.ext.source.name;
-                    info.status = _this.ext.status.name;
+                    info.level = _this.ext.level && _this.ext.level.name;
+                    info.certifType = _this.ext.certifType && _this.ext.certifType.name;
+                    info.commissionWilling = _this.ext.commissionWilling && _this.ext.commissionWilling.name;
+                    info.delegateType = _this.ext.delegateType && _this.ext.delegateType.name;
+                    info.propertyType = _this.ext.propertyType && _this.ext.propertyType.name;
+                    info.showing = _this.ext.showing && _this.ext.showing.name;
+                    info.source = _this.ext.source && _this.ext.source.name;
+                    info.status = _this.ext.status && _this.ext.status.name;
                     info.address = _this.ext.certifAddress;
                     info.delegateStart = UtilService.timeStamp2Date(_this.ext.delegateStart);
                     info.delegateEnd = UtilService.timeStamp2Date(_this.ext.delegateEnd);
-                    info.taxesWilling = _this.ext.taxesWilling.name;
+                    info.taxesWilling = _this.ext.taxesWilling && _this.ext.taxesWilling.name;
                     info.isOnly = _this.ext.isOnly === 'Y';
                     $scope.$apply(function(){
                         _this.updateExt = info;
@@ -297,6 +301,8 @@ require(['main-app',
                         $('#extModel').modal('hide');
                         _this.getExt();
                         SweetAlertHelp.success();
+                    }).fail(function(response){
+                        SweetAlertHelp.fail({message:response&&response.message});
                     });
                 };
             };
@@ -492,6 +498,8 @@ require(['main-app',
                             _this.showMap.list = response;
                         });
                     });
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
                 });
             };
             _this.setFirstImage = function(fileId){
@@ -505,6 +513,8 @@ require(['main-app',
                         });
 
                     });
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
                 });
             };
             /*end 图片*/

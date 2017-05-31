@@ -4,6 +4,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.department.service.DepartmentService;
+import com.lyun.estate.biz.employee.domain.EmployeeDTO;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.repo.EmployeeRepo;
 import com.lyun.estate.biz.file.def.CustomType;
@@ -27,11 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import javax.crypto.Mac;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.InputStream;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -56,17 +53,6 @@ public class EmployeeService {
         this.fileService = fileService;
     }
 
-    private static String hmac(String salt, String password) {
-        try {
-            SecretKey secretKey = new SecretKeySpec(salt.getBytes(), "HmacMD5");
-            Mac mac = Mac.getInstance("HmacMD5");
-            mac.init(secretKey);
-            return new BigInteger(1, mac.doFinal(password.getBytes())).toString(16);
-        } catch (Exception e) {
-            throw new EstateException(ExCode.DEFAULT_EXCEPTION);
-        }
-    }
-
     public Employee create(Employee employee) {
         ExceptionUtil.checkNotNull("用户数据", employee);
         ExceptionUtil.checkNotNull("公司编号", employee.getCompanyId());
@@ -76,13 +62,18 @@ public class EmployeeService {
         ExceptionUtil.checkNotNull("状态", employee.getStatus());
         ExceptionUtil.checkIllegal(ValidateUtil.isMobile(employee.getMobile()), "用户手机", employee.getMobile());
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(employee.getName()), "用户名", employee.getName());
+        Employee byMobile = repo.selectByMobile(employee.getMobile());
+        if (byMobile != null) {
+            throw new EstateException(ExCode.EMPLOYEE_MOBILE_EXIST);
+        }
+
         repo.insert(employee);
         return repo.selectById(employee.getId());
     }
 
-    public PageList<Employee> listByCompanyIdDepartmentId(Long companyId,
-                                                          Long departmentId,
-                                                          PageBounds pageBounds) {
+    public PageList<EmployeeDTO> listByCompanyIdDepartmentId(Long companyId,
+                                                             Long departmentId,
+                                                             PageBounds pageBounds) {
         ExceptionUtil.checkNotNull("公司编号", companyId);
         Set<Long> childs = null;
         if (departmentId != null) {
@@ -128,7 +119,7 @@ public class EmployeeService {
             throw new EstateException(ExCode.EMPLOYEE_ACTIVE);
         }
         String salt = UUID.randomUUID().toString().replace("-", "");
-        return repo.active(mobile, hmac(salt, password), salt, secretKey) == 1;
+        return repo.active(mobile, CommonUtil.hmac(salt, password), salt, secretKey) == 1;
     }
 
     public String sugar(String mobile) {
@@ -150,7 +141,7 @@ public class EmployeeService {
         String sugar = cache.get(LOGIN_SUGAR_PREFIX + mobile, String.class);
         if (sugar == null)
             throw new EstateException(ExCode.EMPLOYEE_NO_SUGAR);
-        if (!hmac(sugar, rawPassword).equals(sugaredPassword))
+        if (!CommonUtil.hmac(sugar, rawPassword).equals(sugaredPassword))
             throw new EstateException(ExCode.EMPLOYEE_WRONG_PASSWORD);
         cache.evict(LOGIN_SUGAR_PREFIX + mobile);
         return employee;
@@ -205,7 +196,7 @@ public class EmployeeService {
         String sugar = cache.get(CHANGE_PSWD_SUGAR_PREFIX + id, String.class);
         if (sugar == null)
             throw new EstateException(ExCode.EMPLOYEE_NO_SUGAR);
-        if (!hmac(sugar, employee.getPassword()).equals(sugaredPassword)) {
+        if (!CommonUtil.hmac(sugar, employee.getPassword()).equals(sugaredPassword)) {
             throw new EstateException(ExCode.EMPLOYEE_WRONG_PASSWORD);
         } else {
             cache.evict(CHANGE_PSWD_SUGAR_PREFIX + id);
@@ -222,7 +213,8 @@ public class EmployeeService {
         } else if (Strings.isNullOrEmpty(employee.getPassword())) {
             throw new EstateException(ExCode.EMPLOYEE_NOT_ACTIVE);
         }
-        return repo.updatePassword(new Employee().setId(id).setPassword(hmac(employee.getSalt(), newPassword))) > 0;
+        return repo.updatePassword(new Employee().setId(id)
+                .setPassword(CommonUtil.hmac(employee.getSalt(), newPassword))) > 0;
     }
 
     public Employee updateContact(Long id, String openContact, String weChat) {
@@ -282,7 +274,19 @@ public class EmployeeService {
         }
     }
 
-    public List<Employee> listByCompanyIdAndPositionId(long companyId, long positionId) {
+    public List<EmployeeDTO> listByCompanyIdAndPositionId(long companyId, long positionId) {
         return repo.listByCompanyIdAndPositionId(companyId, positionId);
+    }
+
+    public Integer countForCompany(Long companyId) {
+        return repo.countForCompany(companyId);
+    }
+
+    public EmployeeDTO selectDTOById(Long id) {
+        return repo.selectDTOById(id);
+    }
+
+    public boolean setIsBoss(Long employeeId, boolean isBoss) {
+        return repo.setIsBoss(employeeId, isBoss) > 0;
     }
 }
