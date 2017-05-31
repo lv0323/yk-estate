@@ -13,6 +13,9 @@ public class RawComment {
     private String avatar;
     private String tags;
 
+    private long corpId;
+    private String corpName;
+
     public long getPositiveCount() {
         return positiveCount;
     }
@@ -75,5 +78,21 @@ public class RawComment {
 
     public void setTags(String tags) {
         this.tags = tags;
+    }
+
+    public long getCorpId() {
+        return corpId;
+    }
+
+    public void setCorpId(long corpId) {
+        this.corpId = corpId;
+    }
+
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
     }
 }

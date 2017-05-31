@@ -24,10 +24,10 @@ public interface UserRepo {
     @Update("update t_op_dianping_user set session_key = #{sessionKey} where openid=#{openId}")
     int updateSessionKey(@Param("openId") String openId, @Param("sessionKey") String sessionKey);
 
-    @Update("update t_op_dianping_user set nicky = #{nicky}, avatar=#{avatar} where openid=#{userId}")
+    @Update("update t_op_dianping_user set nicky = #{nicky}, avatar= #{avatar} where id=#{userId}")
     int updateUserInfo(@Param("userId")long userId, @Param("nicky") String nicky, @Param("avatar") String avatar);
 
-    @Select("")
-    int getByOpenId(String openId);
+    @Select("select id from t_op_dianping_user where openid = #{openId}")
+    int getByOpenId(@Param("openId") String openId);
 
 }

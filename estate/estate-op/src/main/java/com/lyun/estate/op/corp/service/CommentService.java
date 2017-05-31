@@ -1,5 +1,6 @@
 package com.lyun.estate.op.corp.service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.google.common.base.Strings;
 import com.lyun.estate.op.corp.entity.*;
 import com.lyun.estate.op.corp.repo.CommentRepo;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,12 +37,42 @@ public class CommentService {
         if(commentRepo.liked(commentId, userId) <= 0){
             commentRepo.like(commentId, userId);
             commentRepo.increaseLike(commentId, userId);
+            return;
         }
+        throw new IllegalArgumentException("comment_like (comment, userId)=("+commentId + ", "+userId +") liked");
     }
 
     public void cancelLike(long commentId, long userId){
-        commentRepo.cancelLike(commentId, userId);
-        commentRepo.descreaseLike(commentId, userId);
+        if(liked(commentId, userId)){
+            commentRepo.cancelLike(commentId, userId);
+            commentRepo.descreaseLike(commentId, userId);
+        }
+    }
+
+    public boolean liked(long commentId, long userId){
+        if(commentRepo.liked(commentId, userId) <= 0){
+            return false;
+        }
+        return true;
+    }
+
+    public List<Comment> myComments(long userId, PageBounds pageBounds){
+        List<RawComment> raws = commentRepo.myComments(userId, pageBounds.getOffset(), pageBounds.getLimit());
+
+        List<Comment> comments = new ArrayList<>();
+
+        for (RawComment tmp : raws){
+            tmp.setUserId(userId);
+            Comment comment = new Comment(tmp);
+
+            String[] tags = tmp.getTags().split("_");
+
+            comment.setTags(Arrays.asList(tags));
+            comments.add(comment);
+
+        }
+
+        return comments;
     }
 
 }

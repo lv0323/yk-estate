@@ -67,10 +67,10 @@ public interface CorpRepo {
     @Update("update t_op_dianping_corp set positive_count = positive_count - 1 where id=#{id}")
     void discreasePositiveCount(long id);
 
-    @Update("update t_op_dianping_corp set netative_count = netative_count + 1 where id=#{id}")
+    @Update("update t_op_dianping_corp set negative_count = negative_count + 1 where id=#{id}")
     void increaseNegativeCount(long id);
 
-    @Update("update t_op_dianping_corp set netative_count = netative_count - 1 where id=#{id}")
+    @Update("update t_op_dianping_corp set negative_count = negative_count - 1 where id=#{id}")
     void discreaseNegativeCount(long id);
 
     @Update("update t_op_dianping_corp set comment_count = comment_count + 1 where id=#{id}")

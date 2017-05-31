@@ -1,12 +1,16 @@
 package com.lyun.estate.op.corp.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by localuser on 2017/5/16.
  */
 public class WxLoginResponse {
 
+    @SerializedName("openid")
     String openId;
-    String session_key;
+    @SerializedName("session_key")
+    String sessionKey;
     String errcode;
     String errmsg;
 
@@ -14,16 +18,16 @@ public class WxLoginResponse {
         return openId;
     }
 
-    public void setOpenId(String openId) {
-        this.openId = openId;
+    public void setOpenId(String openid) {
+        this.openId = openid;
     }
 
-    public String getSession_key() {
-        return session_key;
+    public String getSessionKey() {
+        return sessionKey;
     }
 
-    public void setSession_key(String session_key) {
-        this.session_key = session_key;
+    public void setSessionKey(String session_key) {
+        this.sessionKey = session_key;
     }
 
     public String getErrcode() {
