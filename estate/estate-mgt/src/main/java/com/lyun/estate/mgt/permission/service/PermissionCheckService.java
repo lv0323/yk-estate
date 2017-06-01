@@ -10,7 +10,6 @@ import com.lyun.estate.biz.permission.def.GrantScope;
 import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.permission.def.PermissionDefine;
 import com.lyun.estate.biz.permission.entity.Grant;
-import com.lyun.estate.biz.permission.service.CompanyPermissionService;
 import com.lyun.estate.biz.permission.service.GrantService;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
 import com.lyun.estate.biz.support.def.DomainType;

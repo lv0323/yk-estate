@@ -13,6 +13,7 @@ import com.lyun.estate.biz.position.service.PositionService;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.mgt.context.MgtContext;
+import com.lyun.estate.mgt.permission.service.CompanyPermissionService;
 import com.lyun.estate.mgt.permission.service.PermissionCheckService;
 import com.lyun.estate.mgt.supports.AuditHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Jeffrey on 2017-04-24.
@@ -45,6 +47,9 @@ public class GrantMgtService {
     @Autowired
     private PermissionCheckService permissionCheckService;
 
+    @Autowired
+    private CompanyPermissionService companyPermissionService;
+
     public List<Grant> getGrantsByCategory(Long targetId, DomainType targetType, PermissionDefine.Category category) {
         permissionCheckService.checkExist(Permission.PERMISSION_MANAGEMENT);
 
@@ -57,6 +62,9 @@ public class GrantMgtService {
     public boolean regrant(Long targetId, DomainType targetType, PermissionDefine.Category category,
                            List<Grant> grantList) {
         permissionCheckService.checkExist(Permission.PERMISSION_MANAGEMENT);
+
+        companyPermissionService.checkPermissionGrantableForCompanyType(
+                grantList.stream().map(Grant::getPermission).collect(Collectors.toList()));
 
         String targetName = checkTargetCompany(targetId, targetType);
 

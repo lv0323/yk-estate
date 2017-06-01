@@ -1,8 +1,9 @@
-package com.lyun.estate.biz.company.support;
+package com.lyun.estate.biz.permission.service;
 
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.company.def.CompanyDefine;
 import com.lyun.estate.biz.permission.def.GrantScope;
+import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.permission.def.PermissionDefine;
 import com.lyun.estate.biz.permission.entity.Grant;
 import com.lyun.estate.biz.position.def.PositionType;
@@ -20,7 +21,9 @@ public class PositionPermissionTemplate {
 
     public static Map<PermissionDefine.Category, List<Grant>> defaultPermissions(CompanyDefine.Type companyType,
                                                                                  PositionType positionType) {
+
         Map<PermissionDefine.Category, List<Grant>> categoryGrantsMap = new HashMap<>();
+
         switch (positionType) {
             case REGION_M:
                 categoryGrantsMap.put(PermissionDefine.Category.PAGE, Lists.newArrayList(
@@ -60,6 +63,7 @@ public class PositionPermissionTemplate {
                         new Grant().setPermission(FANG_UN_PUBLISH).setScope(GrantScope.COMPANY),
                         new Grant().setPermission(FANG_RE_PUBLISH).setScope(GrantScope.COMPANY),
                         new Grant().setPermission(FANG_APPLY_PUBLIC).setScope(GrantScope.COMPANY),
+                        new Grant().setPermission(MODIFY_FANG_INFO).setScope(GrantScope.COMPANY),
                         new Grant().setPermission(UPDATE_FANG_BASE).setScope(GrantScope.COMPANY),
                         new Grant().setPermission(UPDATE_FANG_EXT).setScope(GrantScope.COMPANY),
                         new Grant().setPermission(VIEW_FANG_CONTACT).setScope(GrantScope.COMPANY),
@@ -68,8 +72,7 @@ public class PositionPermissionTemplate {
 
                 categoryGrantsMap.put(PermissionDefine.Category.XIAO_QU, Lists.newArrayList(
                         new Grant().setPermission(CREATE_BUILDING),
-                        new Grant().setPermission(MODIFY_BUILDING),
-                        new Grant().setPermission(DEL_BUILDING)
+                        new Grant().setPermission(MODIFY_BUILDING)
                 ));
 
                 categoryGrantsMap.put(PermissionDefine.Category.ORGANIZATION, Lists.newArrayList(
@@ -116,6 +119,7 @@ public class PositionPermissionTemplate {
                         new Grant().setPermission(FANG_UN_PUBLISH).setScope(GrantScope.DEPT),
                         new Grant().setPermission(FANG_RE_PUBLISH).setScope(GrantScope.DEPT),
                         new Grant().setPermission(FANG_APPLY_PUBLIC).setScope(GrantScope.DEPT),
+                        new Grant().setPermission(MODIFY_FANG_INFO).setScope(GrantScope.DEPT),
                         new Grant().setPermission(UPDATE_FANG_BASE).setScope(GrantScope.DEPT),
                         new Grant().setPermission(UPDATE_FANG_EXT).setScope(GrantScope.DEPT),
                         new Grant().setPermission(VIEW_FANG_CONTACT).setScope(GrantScope.DEPT),
@@ -123,8 +127,7 @@ public class PositionPermissionTemplate {
                 ));
                 categoryGrantsMap.put(PermissionDefine.Category.XIAO_QU, Lists.newArrayList(
                         new Grant().setPermission(CREATE_BUILDING),
-                        new Grant().setPermission(MODIFY_BUILDING),
-                        new Grant().setPermission(DEL_BUILDING)
+                        new Grant().setPermission(MODIFY_BUILDING)
                 ));
 
                 categoryGrantsMap.put(PermissionDefine.Category.COMPANY, Lists.newArrayList(
@@ -160,6 +163,7 @@ public class PositionPermissionTemplate {
                         new Grant().setPermission(FANG_UN_PUBLISH).setScope(GrantScope.SELF),
                         new Grant().setPermission(FANG_RE_PUBLISH).setScope(GrantScope.SELF),
                         new Grant().setPermission(FANG_APPLY_PUBLIC).setScope(GrantScope.SELF),
+                        new Grant().setPermission(MODIFY_FANG_INFO).setScope(GrantScope.SELF),
                         new Grant().setPermission(UPDATE_FANG_BASE).setScope(GrantScope.SELF),
                         new Grant().setPermission(UPDATE_FANG_EXT).setScope(GrantScope.SELF),
                         new Grant().setPermission(VIEW_FANG_CONTACT).setScope(GrantScope.SELF),
@@ -168,6 +172,24 @@ public class PositionPermissionTemplate {
                 break;
             default:
                 break;
+        }
+
+        //ra
+        if (companyType == CompanyDefine.Type.REGIONAL_AGENT) {
+            if (positionType == PositionType.REGION_M) {
+                categoryGrantsMap.get(PermissionDefine.Category.PAGE)
+                        .addAll(Lists.newArrayList(new Grant().setPermission(Permission.P_FRANCHISEE),
+                                new Grant().setPermission(Permission.P_FRANCHISEE_C),
+                                new Grant().setPermission(Permission.P_FRANCHISEE_SS),
+                                new Grant().setPermission(Permission.P_FRANCHISEE_RA)
+                        ));
+                categoryGrantsMap.put(PermissionDefine.Category.FRANCHISEE,
+                        Lists.newArrayList(
+                                new Grant().setPermission(Permission.LIST_FRANCHISEE),
+                                new Grant().setPermission(Permission.CREATE_FRANCHISEE),
+                                new Grant().setPermission(Permission.MODIFY_FRANCHISEE)
+                        ));
+            }
         }
         return categoryGrantsMap;
     }
