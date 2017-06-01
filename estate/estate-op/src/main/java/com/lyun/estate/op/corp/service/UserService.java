@@ -62,8 +62,6 @@ public class UserService {
         RestTemplate restTemplate = new RestTemplate();
         String str = restTemplate.getForObject(urlStr, String.class);
 
-        System.out.println("str"+str);
-
         Gson gson = new Gson();
         WxLoginResponse response = gson.fromJson(str, WxLoginResponse.class);
 

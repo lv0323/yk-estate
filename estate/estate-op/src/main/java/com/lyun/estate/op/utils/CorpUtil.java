@@ -1,6 +1,6 @@
 package com.lyun.estate.op.utils;
 
-import com.lyun.estate.op.corp.entity.BizIllegalArgumentException;
+import com.lyun.estate.op.corp.entity.BizRuntimeException;
 import com.lyun.estate.op.corp.entity.TagCount;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -40,11 +40,11 @@ public class CorpUtil {
             Long ret = Long.parseLong(object.toString());
             return ret;
 
-        } catch (SignatureException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        throw new BizIllegalArgumentException("invalid token");
+        throw new BizRuntimeException("invalid token");
     }
 
     public static List<TagCount> countTag(List<String> tagStrs){

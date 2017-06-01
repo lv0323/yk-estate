@@ -87,39 +87,55 @@ public class CorpService {
         return JudgeStatus.valueOf(judgement);
     }
     @Transactional
-    public void good(long corpId, long userId){
+    public ActionResultBean good(long corpId, long userId){
         JudgeStatus status = getMyJudgement(corpId, userId);
+
+        ActionResultBean arb = new ActionResultBean();
 
         if(status == JudgeStatus.NOT_YET){
 
             corpRepo.createJudgement(corpId, userId, JudgeStatus.GOOD_SELECTED.name());
             corpRepo.increasePositiveCount(corpId);
 
+            arb.setSuccess(true);
+
         }else if(status == JudgeStatus.GOOD_SELECTED){
-            //do nothing
+
+            arb.setSuccess(false).setReason("你已经给过好评了，不能重复好评.");
+
         } else if(status == JudgeStatus.BAD_SELECTED){
+
             corpRepo.updateJudgement(corpId, userId, JudgeStatus.GOOD_SELECTED.name());
             corpRepo.increasePositiveCount(corpId);
             corpRepo.discreaseNegativeCount(corpId);
+
+            arb.setSuccess(true);
         }
 
+        return arb;
     }
     @Transactional
-    public void bad(long corpId, long userId){
+    public ActionResultBean bad(long corpId, long userId){
         JudgeStatus status = getMyJudgement(corpId, userId);
+        ActionResultBean arb = new ActionResultBean();
 
         if(status == JudgeStatus.NOT_YET){
 
             corpRepo.createJudgement(corpId, userId, JudgeStatus.BAD_SELECTED.name());
             corpRepo.increaseNegativeCount(corpId);
+            arb.setSuccess(true);
 
         }else if(status == JudgeStatus.BAD_SELECTED){
             //do nothing
+            arb.setSuccess(false).setReason("你已经给过差评了，不能重复差评.");
         } else if(status == JudgeStatus.GOOD_SELECTED){
             corpRepo.updateJudgement(corpId, userId, JudgeStatus.BAD_SELECTED.name());
             corpRepo.increaseNegativeCount(corpId);
             corpRepo.discreasePositiveCount(corpId);
+            arb.setSuccess(true);
         }
+
+        return arb;
 
     }
 
