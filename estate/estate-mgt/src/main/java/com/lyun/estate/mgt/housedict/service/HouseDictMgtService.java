@@ -11,6 +11,8 @@ import com.lyun.estate.biz.housedict.service.HouseDictService;
 import com.lyun.estate.biz.keyword.service.KeywordService;
 import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.biz.support.settings.SettingProvider;
+import com.lyun.estate.biz.support.settings.def.NameSpace;
 import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.permission.service.PermissionCheckService;
 import com.lyun.estate.mgt.supports.AuditHelper;
@@ -18,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +46,16 @@ public class HouseDictMgtService {
     @Autowired
     private PermissionCheckService permissionCheckService;
 
+    @Autowired
+    private SettingProvider settingProvider;
+
+    private Long platformCompanyId;
+
+    @PostConstruct
+    private void init() {
+        platformCompanyId = Long.valueOf(settingProvider.find(NameSpace.CONFIG, "PLATFORM_COMPANY_ID").getValue());
+    }
+
 
     @Transactional
     public Building createBuilding(Long xiaoQuId, String name, Integer floors, Integer stairs, Integer houses,
@@ -55,7 +69,7 @@ public class HouseDictMgtService {
                 houses,
                 description,
                 unitNames,
-                mgtContext.getOperator().getCompanyId(),
+                Optional.ofNullable(platformCompanyId).orElse(mgtContext.getOperator().getCompanyId()),
                 mgtContext.getOperator().getId());
 
         auditService.save(
@@ -68,7 +82,6 @@ public class HouseDictMgtService {
 
     @Transactional
     public Integer createBuildingUnit(Long buildingId, List<String> unitNames) {
-        //todo: check company
 
         permissionCheckService.checkExist(Permission.CREATE_BUILDING);
 
@@ -91,17 +104,16 @@ public class HouseDictMgtService {
     }
 
     public List<Building> findBuildingsByXiaoQuId(Long communityId) {
-        return houseDictService.findBuildingsByXiaoQuId(communityId, mgtContext.getOperator().getCompanyId());
+        return houseDictService.findBuildingsByXiaoQuId(communityId,
+                Optional.ofNullable(platformCompanyId).orElse(mgtContext.getOperator().getCompanyId()));
     }
 
 
     public Building findBuilding(Long buildingId) {
-        //todo: check company
         return houseDictService.findBuildingAndUnits(buildingId);
     }
 
     public List<BuildingUnit> findBuildingUnitsByBuildingId(Long buildingId) {
-        //todo: check company
         return houseDictService.findBuildingUnitsByBuildingId(buildingId);
     }
 
@@ -123,7 +135,6 @@ public class HouseDictMgtService {
     public Building updateBuilding(Long buildingId, String name, Integer floors, Integer stairs, Integer houses,
                                    String description, List<String> unitNames) {
 
-        //todo: check company
         permissionCheckService.checkExist(Permission.MODIFY_BUILDING);
 
         Building building = houseDictService.updateBuilding(buildingId,
@@ -133,7 +144,7 @@ public class HouseDictMgtService {
                 houses,
                 description,
                 unitNames,
-                mgtContext.getOperator().getCompanyId(),
+                Optional.ofNullable(platformCompanyId).orElse(mgtContext.getOperator().getCompanyId()),
                 mgtContext.getOperator().getId());
 
         permissionCheckService.checkCompany(building.getCompanyId());
@@ -147,12 +158,7 @@ public class HouseDictMgtService {
 
     @Transactional
     public boolean deleteBuilding(Long buildingId) {
-        //todo: check company
         permissionCheckService.checkExist(Permission.DEL_BUILDING);
-
-        Building buildingAndUnits = houseDictService.findBuildingAndUnits(buildingId);
-
-        permissionCheckService.checkCompany(buildingAndUnits.getCompanyId());
 
         boolean result = houseDictService.deleteBuilding(buildingId, mgtContext.getOperator().getId());
         auditService.save(
