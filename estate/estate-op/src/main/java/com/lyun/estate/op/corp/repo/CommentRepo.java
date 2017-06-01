@@ -1,6 +1,5 @@
 package com.lyun.estate.op.corp.repo;
 
-import com.lyun.estate.op.corp.entity.Comment;
 import com.lyun.estate.op.corp.entity.RawComment;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -42,7 +41,11 @@ public interface CommentRepo {
             "ORDER BY c.create_time desc " +
             "offset #{offset} limit #{limit}" +
             ";")
-    List<RawComment> getCorpComments(@Param("id")long id, @Param("offset") long offset, @Param("limit") long limit);
+    List<RawComment> getCorpComments(@Param("id") long id, @Param("offset") long offset, @Param("limit") long limit);
+
+    @Select("SELECT  comment_id from t_op_dianping_comment_like_map WHERE user_id = #{userId}")
+    List<Long> getMyLikes(@Param("userId") long userId);
+
 
     @Select("SELECT ct.id, ct.content, ct.positive_count as positiveCount, ct.create_time as createTime, ct.tags,\n" +
             "    corp.id as corpId, corp.name as corpName\n " +
@@ -51,16 +54,16 @@ public interface CommentRepo {
             "WHERE ct.user_id = #{userId} " +
             "ORDER BY ct.create_time desc " +
             "offset #{offset} limit #{limit};")
-    List<RawComment> myComments(@Param("userId")long userId, @Param("offset")long offset, @Param("limit")long limit);
+    List<RawComment> myComments(@Param("userId") long userId, @Param("offset") long offset, @Param("limit") long limit);
 
 
     @Insert("INSERT into t_op_dianping_comment(user_id, corp_id, shopfront, content, tags) " +
             "VALUES (#{userId},#{corpId},#{shopfront},#{content}, #{tags})")
     int create(@Param("userId") long userId,
                @Param("corpId") long corpId,
-               @Param("tags")String tags,
-               @Param("shopfront")String shopfront,
-               @Param("content")String content);
+               @Param("tags") String tags,
+               @Param("shopfront") String shopfront,
+               @Param("content") String content);
 
     @Select("select count(*) from t_op_dianping_comment_like_map where comment_id =#{commentId} and user_id=#{userId}")
     int liked(@Param("commentId") long commentId, @Param("userId") long userId);

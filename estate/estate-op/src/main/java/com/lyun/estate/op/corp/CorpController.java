@@ -45,10 +45,8 @@ public class CorpController {
     }
 
     @GetMapping(value = "/{corpId}/comments")
-    public List<Comment> getCorpComments(@PathVariable long corpId, @RequestHeader("X-PAGING")PageBounds pageBounds) {
-
-        return corpService.getCorpComments(corpId, pageBounds);
-
+    public List<Comment> getCorpComments(@PathVariable long corpId,@RequestHeader(required = false) String token, @RequestHeader("X-PAGING")PageBounds pageBounds) {
+        return corpService.getCorpComments(corpId, token, pageBounds);
     }
 
     @GetMapping(value = "/{corpId}/judgement_my")
