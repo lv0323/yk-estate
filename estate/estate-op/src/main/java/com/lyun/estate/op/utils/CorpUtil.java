@@ -6,12 +6,15 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class CorpUtil {
+    private static final Logger logger = LoggerFactory.getLogger(CorpUtil.class);
 
     private static String secret = "dianpingSecret123456";
 
@@ -35,13 +38,12 @@ public class CorpUtil {
                     .getBody();
             Object object = claims.get("user_id");
 
-            System.out.println(object.toString());
-
             Long ret = Long.parseLong(object.toString());
             return ret;
 
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            logger.error(e.getMessage());
         }
 
         throw new BizRuntimeException("invalid token");

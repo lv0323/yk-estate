@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.lyun.estate.op.corp.entity.*;
 import com.lyun.estate.op.corp.repo.UserRepo;
 import com.lyun.estate.op.utils.CorpUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Service
 public class UserService {
-
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     @Autowired
     UserRepo userRepo;
 
@@ -66,11 +68,12 @@ public class UserService {
         WxLoginResponse response = gson.fromJson(str, WxLoginResponse.class);
 
         if( response == null){
+            logger.error("weixin login failed : response == null url="+urlStr);
             throw new BizRuntimeException("wxLogin no response");
         }
 
         if(response.getErrmsg() != null ){
-
+            logger.error("weixin login failed : url="+urlStr+" errmsg="+response.getErrmsg());
             throw new BizRuntimeException(response.getErrmsg());
         }
 
