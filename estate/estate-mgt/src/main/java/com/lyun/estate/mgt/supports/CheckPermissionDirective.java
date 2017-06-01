@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by MingXing on 2016/5/9.
@@ -30,9 +30,9 @@ public class CheckPermissionDirective implements TemplateDirectiveModel {
             throw new EstateException(ExCode.PERMISSION_EMPTY);
         }
 
-        Set<String> names = StringUtils.commaDelimitedListToSet(valueScalar.getAsString());
+        String[] names = StringUtils.delimitedListToStringArray(valueScalar.getAsString(), "|");
 
-        boolean flag = names.stream().anyMatch(t -> {
+        boolean flag = Arrays.stream(names).anyMatch(t -> {
                     Permission p = Permission.valueOf(t);
                     if (p.getCategory() == PermissionDefine.Category.PAGE) {
                         return permissionCheckerService.verifyPage(p);

@@ -9,7 +9,10 @@ import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
-import com.lyun.estate.biz.fang.def.*;
+import com.lyun.estate.biz.fang.def.FollowType;
+import com.lyun.estate.biz.fang.def.HouseProcess;
+import com.lyun.estate.biz.fang.def.InfoOwnerReason;
+import com.lyun.estate.biz.fang.def.PriceUnit;
 import com.lyun.estate.biz.fang.domian.FangCheckDTO;
 import com.lyun.estate.biz.fang.domian.FangFollowDTO;
 import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
@@ -168,6 +171,9 @@ public class FangMgtService {
 
     public Boolean preCheckLicence(Long xiaoquId, BizType bizType, Long buildingId, Long buildingUnitId,
                                    String houseNo) {
+
+        permissionCheckService.checkExist(Permission.CREATE_FANG);
+
         XiaoQu xiaoQu = mgtXiaoQuService.findOne(xiaoquId);
         HouseLicence licence = houseLicenceService.findActive(xiaoQu.getCommunityId(),
                 bizType,
@@ -253,6 +259,8 @@ public class FangMgtService {
 
     @Transactional
     public FangFollow createFollow(Long fangId, FollowType followType, String content) {
+        permissionCheckService.checkScope(fangId, Permission.MODIFY_FANG_INFO);
+
         Operator operator = mgtContext.getOperator();
 
         Fang fangBase = mgtFangService.getFangBase(fangId);
@@ -270,8 +278,8 @@ public class FangMgtService {
     }
 
     public FangCheck createCheck(Long fangId, String advantage, String disAdvantage) {
+        permissionCheckService.checkScope(fangId, Permission.MODIFY_FANG_INFO);
         Operator operator = mgtContext.getOperator();
-
         return mgtFangService.createCheck(
                 new FangCheck().setFangId(fangId)
                         .setCompanyId(operator.getCompanyId())
@@ -292,6 +300,9 @@ public class FangMgtService {
         ExceptionUtil.checkNotNull("文件业务类型", customType);
         ExceptionUtil.checkNotNull("文件输入流", inputStream);
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(suffix), "文件后缀名", suffix);
+
+        permissionCheckService.checkScope(fangId, Permission.MODIFY_FANG_INFO);
+
         if (customType == CustomType.SHI_JING || customType == CustomType.HU_XING || customType == CustomType.CERTIF
                 || customType == CustomType.OWNER_ID_CARD || customType == CustomType.ATTORNEY) {
             FileDescription fileDescription = new FileDescription()
@@ -315,6 +326,8 @@ public class FangMgtService {
 
     @Transactional
     public FangDescr updateDesc(FangDescr fangDescr) {
+        permissionCheckService.checkScope(fangDescr.getFangId(), Permission.MODIFY_FANG_INFO);
+
         Fang fang = mgtFangService.getFangBase(fangDescr.getFangId());
         FangDescr result = mgtFangService.updateDesc(fangDescr);
         auditService.save(
@@ -451,12 +464,15 @@ public class FangMgtService {
 
     public Boolean setFirstImage(Long fileId) {
         FileDescription fileDescription = fileService.findOne(fileId);
+
         if (fileDescription == null || fileDescription.getDeleted()) {
             throw new EstateException(ExCode.FILE_NOT_EXIST);
         }
         if (fileDescription.getOwnerType() != DomainType.FANG) {
             throw new EstateException("文件归属类型不正确");
         }
+        permissionCheckService.checkScope(fileDescription.getOwnerId(),
+                map2Permission(fileDescription.getCustomType()));
 
         logger.info("员工{} 将图片{}置顶", mgtContext.getOperator().getId(), fileId);
         return fileService.setFirst(fileId);

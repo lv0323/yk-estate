@@ -62,6 +62,8 @@ public class EmployeeService {
         ExceptionUtil.checkNotNull("状态", employee.getStatus());
         ExceptionUtil.checkIllegal(ValidateUtil.isMobile(employee.getMobile()), "用户手机", employee.getMobile());
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(employee.getName()), "用户名", employee.getName());
+        ExceptionUtil.checkIllegal(employee.getIdcardNumber() == null || ValidateUtil.isIdNo(employee.getIdcardNumber()),
+                "身份证号", employee.getIdcardNumber());
         Employee byMobile = repo.selectByMobile(employee.getMobile());
         if (byMobile != null) {
             throw new EstateException(ExCode.EMPLOYEE_MOBILE_EXIST);
@@ -88,6 +90,8 @@ public class EmployeeService {
     public Employee update(Employee employee) {
         ExceptionUtil.checkNotNull("用户数据", employee);
         ExceptionUtil.checkNotNull("用户编号", employee.getId());
+        ExceptionUtil.checkIllegal(employee.getIdcardNumber() == null || ValidateUtil.isIdNo(employee.getIdcardNumber()),
+                "身份证号", employee.getIdcardNumber());
         repo.update(employee);
         return repo.selectById(employee.getId());
     }

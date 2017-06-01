@@ -1,0 +1,1 @@
+INSERT INTO t_setting (name_space, key, value) VALUES ('CONFIG', 'PLATFORM_COMPANY_ID', '1');
