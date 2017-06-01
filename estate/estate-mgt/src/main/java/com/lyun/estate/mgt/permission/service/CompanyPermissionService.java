@@ -43,8 +43,6 @@ public class CompanyPermissionService {
                 Lists.newArrayList(CompanyDefine.Type.YK, CompanyDefine.Type.REGIONAL_AGENT));
         limitCompanyTypes.put(Permission.P_FRANCHISEE_RA,
                 Lists.newArrayList(CompanyDefine.Type.YK, CompanyDefine.Type.REGIONAL_AGENT));
-
-
     }
 
 
@@ -63,7 +61,7 @@ public class CompanyPermissionService {
         }
     }
 
-    public void checkPermssionGrantableForCompanyType(List<Permission> permissions) {
+    public void checkPermissionGrantableForCompanyType(List<Permission> permissions) {
         permissions.forEach(permission -> {
                     List<CompanyDefine.Type> supportsLimits = limitCompanyTypes.get(permission);
                     if (supportsLimits != null && !supportsLimits.contains(mgtContext.getOperator().getCompanyType())) {

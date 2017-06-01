@@ -63,7 +63,7 @@ public class GrantMgtService {
                            List<Grant> grantList) {
         permissionCheckService.checkExist(Permission.PERMISSION_MANAGEMENT);
 
-        companyPermissionService.checkPermssionGrantableForCompanyType(
+        companyPermissionService.checkPermissionGrantableForCompanyType(
                 grantList.stream().map(Grant::getPermission).collect(Collectors.toList()));
 
         String targetName = checkTargetCompany(targetId, targetType);
