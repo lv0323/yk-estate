@@ -18,10 +18,10 @@ public class UserService {
     @Autowired
     UserRepo userRepo;
 
-//    private static String appid = "wx8d47f7b7aa41cec2";
-//    private static String secret = "f03f58cfeb02e523e6255161ceabb353";
-    private static String appid = "wxcd0237790af77445";
-    private static String secret = "71e2ca1050ab66bc280975c648987216";
+    private static String appid = "wx8d47f7b7aa41cec2";
+    private static String secret = "f03f58cfeb02e523e6255161ceabb353";
+//    private static String appid = "wxcd0237790af77445";
+//    private static String secret = "71e2ca1050ab66bc280975c648987216";
     private static String wxLoginUrl = "https://api.weixin.qq.com/sns/jscode2session?" +
             "appid=" +appid +
             "&secret="+secret+
