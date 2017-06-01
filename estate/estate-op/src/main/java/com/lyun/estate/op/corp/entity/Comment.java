@@ -16,6 +16,16 @@ public class Comment {
     private String nicky;
     private String avatar;
 
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+    }
+
+    private boolean liked;
+
     private List<String> tags;
 
     private long corpId;
