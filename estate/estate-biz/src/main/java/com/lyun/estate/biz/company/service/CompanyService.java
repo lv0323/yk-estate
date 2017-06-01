@@ -12,7 +12,7 @@ import com.lyun.estate.biz.company.domain.CreateCompanyInfo;
 import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.entity.CompanySigning;
 import com.lyun.estate.biz.company.repo.CompanyRepository;
-import com.lyun.estate.biz.company.support.PositionPermissionTemplate;
+import com.lyun.estate.biz.permission.service.PositionPermissionTemplate;
 import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.biz.employee.entity.Employee;

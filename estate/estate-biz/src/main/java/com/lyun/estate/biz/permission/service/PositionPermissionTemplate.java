@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.company.support;
+package com.lyun.estate.biz.permission.service;
 
 import com.google.common.collect.Lists;
 import com.lyun.estate.biz.company.def.CompanyDefine;
@@ -60,6 +60,7 @@ public class PositionPermissionTemplate {
                         new Grant().setPermission(FANG_UN_PUBLISH).setScope(GrantScope.COMPANY),
                         new Grant().setPermission(FANG_RE_PUBLISH).setScope(GrantScope.COMPANY),
                         new Grant().setPermission(FANG_APPLY_PUBLIC).setScope(GrantScope.COMPANY),
+                        new Grant().setPermission(MODIFY_FANG_INFO).setScope(GrantScope.COMPANY),
                         new Grant().setPermission(UPDATE_FANG_BASE).setScope(GrantScope.COMPANY),
                         new Grant().setPermission(UPDATE_FANG_EXT).setScope(GrantScope.COMPANY),
                         new Grant().setPermission(VIEW_FANG_CONTACT).setScope(GrantScope.COMPANY),
@@ -116,6 +117,7 @@ public class PositionPermissionTemplate {
                         new Grant().setPermission(FANG_UN_PUBLISH).setScope(GrantScope.DEPT),
                         new Grant().setPermission(FANG_RE_PUBLISH).setScope(GrantScope.DEPT),
                         new Grant().setPermission(FANG_APPLY_PUBLIC).setScope(GrantScope.DEPT),
+                        new Grant().setPermission(MODIFY_FANG_INFO).setScope(GrantScope.DEPT),
                         new Grant().setPermission(UPDATE_FANG_BASE).setScope(GrantScope.DEPT),
                         new Grant().setPermission(UPDATE_FANG_EXT).setScope(GrantScope.DEPT),
                         new Grant().setPermission(VIEW_FANG_CONTACT).setScope(GrantScope.DEPT),
@@ -160,6 +162,7 @@ public class PositionPermissionTemplate {
                         new Grant().setPermission(FANG_UN_PUBLISH).setScope(GrantScope.SELF),
                         new Grant().setPermission(FANG_RE_PUBLISH).setScope(GrantScope.SELF),
                         new Grant().setPermission(FANG_APPLY_PUBLIC).setScope(GrantScope.SELF),
+                        new Grant().setPermission(MODIFY_FANG_INFO).setScope(GrantScope.SELF),
                         new Grant().setPermission(UPDATE_FANG_BASE).setScope(GrantScope.SELF),
                         new Grant().setPermission(UPDATE_FANG_EXT).setScope(GrantScope.SELF),
                         new Grant().setPermission(VIEW_FANG_CONTACT).setScope(GrantScope.SELF),
