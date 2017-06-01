@@ -96,7 +96,6 @@
         <ul class="sidebar-menu">
             <li class="header">主导航</li>
             <!-- Optionally, you can add icons to the links -->
-            <li><a href="/mgt/franchisee/company"><i class="fa fa-users" aria-hidden="true"></i> <span>加盟商管理</span></a>
             <li class="treeview franchisee">
                 <a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i> <span>加盟商管理</span>
                     <span class="pull-right-container">

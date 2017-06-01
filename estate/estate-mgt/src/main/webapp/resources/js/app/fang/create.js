@@ -255,7 +255,9 @@ require(['main-app',
                         if(response.result != 'SUCCEED'){
                             SweetAlertHelp.fail({message:'已存在该房源记录'});
                         }
-                    });
+                    }).fail(function(response){
+                        SweetAlertHelp.fail({message:response&&response.message});
+                    });;
                 }
             };
             _this.chosenChange = function(id, key, value,target){
@@ -312,6 +314,8 @@ require(['main-app',
                             address : response.address
                         };
                     },30);
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
                 });
             };
             _this.addBuildConfirm = function(){
@@ -340,6 +344,8 @@ require(['main-app',
                     SweetAlertHelp.success();
                     $('#addBuildModel').modal('hide');
                     _this.buildingsGet(_this.newBuilding.xiaoQuId);
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
                 });
             };
             _this.addUnitInit = function(){
@@ -352,6 +358,8 @@ require(['main-app',
                     $timeout(function(){
                         _this.newUnit.buildingName= response.name;
                     },30);
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
                 });
             };
             _this.addUnitConfirm = function () {
@@ -362,6 +370,8 @@ require(['main-app',
                 FangService.buildingUnitPost(_this.newUnit).then(function(){
                     $('#addUnitModel').modal('hide');
                     _this.unitsGet(_this.data.buildingId);
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
                 });
             };
             /*楼层检查*/
