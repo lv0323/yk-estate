@@ -34,26 +34,30 @@ public class CommentService {
     }
 
     public void like(long commentId, long userId){
-        if(commentRepo.liked(commentId, userId) <= 0){
-            commentRepo.like(commentId, userId);
-            commentRepo.increaseLike(commentId, userId);
-            return;
+
+        if( liked(commentId, userId) ){
+            throw new IllegalArgumentException("(comment, userId)=("+commentId + ", "+userId +") already exist, maybe you have liked it");
         }
-        throw new IllegalArgumentException("comment_like (comment, userId)=("+commentId + ", "+userId +") liked");
+
+        commentRepo.like(commentId, userId);
+        commentRepo.increaseLike(commentId, userId);
+
     }
 
     public void cancelLike(long commentId, long userId){
-        if(liked(commentId, userId)){
-            commentRepo.cancelLike(commentId, userId);
-            commentRepo.descreaseLike(commentId, userId);
+        if( !liked(commentId, userId) ){
+            throw new IllegalArgumentException("(comment, userId)=("+commentId + ", "+userId +") does not exist, maybe you have not liked");
         }
+        commentRepo.cancelLike(commentId, userId);
+        commentRepo.descreaseLike(commentId, userId);
+
     }
 
     public boolean liked(long commentId, long userId){
-        if(commentRepo.liked(commentId, userId) <= 0){
-            return false;
+        if(commentRepo.liked(commentId, userId) > 0){
+            return true;
         }
-        return true;
+        return false;
     }
 
     public List<Comment> myComments(long userId, PageBounds pageBounds){

@@ -67,17 +67,14 @@ public class CorpController {
 
         long userId = CorpUtil.getUserId(token);
 
-        corpService.good(corpId, userId);
-        return new ActionResultBean().setSuccess(true);
+        return corpService.good(corpId, userId);
 
     }
     @PostMapping(value = "/{corpId}/judge_bad", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public ActionResultBean bad(@RequestHeader String token, @PathVariable long corpId) {
 
         long userId = CorpUtil.getUserId(token);
-        corpService.bad(corpId, userId);
-        return new ActionResultBean().setSuccess(true);
-
+        return corpService.bad(corpId, userId);
     }
 }
 

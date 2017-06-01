@@ -1,10 +1,7 @@
 package com.lyun.estate.op.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lyun.estate.op.corp.entity.ActionResultBean;
-import com.lyun.estate.op.corp.entity.BizIllegalArgumentException;
-import com.lyun.estate.op.corp.entity.BizRuntimeException;
-import com.lyun.estate.op.corp.entity.NoDataFoundException;
+import com.lyun.estate.op.corp.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,11 +31,12 @@ public class ExceptionAdvice {
                 e.printStackTrace();
             }
 
-        } else if(t instanceof BizIllegalArgumentException || t instanceof BizRuntimeException){
+        } else if(t instanceof BizRuntimeException){
 
             ActionResultBean bean = new ActionResultBean().setSuccess(false).setReason(t.getMessage());
             writeResponse(response, bean);
-        }else{
+        }
+        else{
             ActionResultBean bean = new ActionResultBean().setSuccess(false).setReason(t.getMessage());
             writeResponse(response, bean);
         }

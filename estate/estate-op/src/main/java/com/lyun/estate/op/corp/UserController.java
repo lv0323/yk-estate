@@ -42,9 +42,7 @@ public class UserController {
     @PostMapping(value = "/wx_userinfo", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public ActionResultBean userInfo(@RequestHeader String token, @RequestParam String nicky, @RequestParam String avatar){
 
-        System.out.println("token "+token);
         long userId = CorpUtil.getUserId(token);
-        System.out.println("userId "+userId);
 
         userService.userInfo(userId, nicky, avatar);
 
