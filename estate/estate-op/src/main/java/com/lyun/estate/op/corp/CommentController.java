@@ -29,10 +29,14 @@ public class CommentController {
     public ActionResultBean create(@RequestHeader String token,
                                    @RequestParam long corpId,
                                    @RequestParam List<String> tags,
-                                   @RequestParam String shopfront,
+                                   @RequestParam(required = false) String shopfront,
                                    @RequestParam String content
                                  ) {
         long userId = CorpUtil.getUserId(token);
+
+        if(shopfront == null){
+            shopfront = "";
+        }
 
         commentService.create(userId, corpId, tags, shopfront, content);
         return new ActionResultBean().setSuccess(true);
