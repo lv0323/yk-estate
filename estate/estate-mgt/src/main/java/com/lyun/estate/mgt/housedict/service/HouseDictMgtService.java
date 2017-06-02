@@ -53,7 +53,8 @@ public class HouseDictMgtService {
 
     @PostConstruct
     private void init() {
-        platformCompanyId = Long.valueOf(settingProvider.find(NameSpace.CONFIG, "PLATFORM_COMPANY_ID").getValue());
+        platformCompanyId = Optional.ofNullable(settingProvider.find(NameSpace.CONFIG, "PLATFORM_COMPANY_ID"))
+                .map(t -> Long.valueOf(t.getValue())).orElse(null);
     }
 
 
