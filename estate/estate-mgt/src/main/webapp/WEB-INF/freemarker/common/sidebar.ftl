@@ -117,7 +117,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <@checkPermission value='P_FANG_LIST'>
+                    <@checkPermission value='P_FANG_LIST|CT_YK'>
                         <li><a href="/mgt/fangManage/list?target=.fang"><i class="fa fa-circle"></i>房源列表</a></li>
                     </@>
                     <@checkPermission value='P_FANG_NEW'>

@@ -12,7 +12,7 @@ import java.util.Date;
 public class FY01Fang {
     private Long id;
     private String url;
-    private Long thirdPartyId;
+    private String thirdPartyId;
     private HouseSubType houseSubType;
     private String header;
     private BizType bizType;
@@ -58,12 +58,13 @@ public class FY01Fang {
         this.url = url;
     }
 
-    public Long getThirdPartyId() {
+    public String getThirdPartyId() {
         return thirdPartyId;
     }
 
-    public void setThirdPartyId(Long thirdPartyId) {
+    public FY01Fang setThirdPartyId(String thirdPartyId) {
         this.thirdPartyId = thirdPartyId;
+        return this;
     }
 
     public HouseSubType getHouseSubType() {
