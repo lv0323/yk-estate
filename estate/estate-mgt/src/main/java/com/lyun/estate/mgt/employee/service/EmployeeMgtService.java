@@ -4,12 +4,14 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.audit.def.AuditSubject;
 import com.lyun.estate.biz.audit.service.AuditService;
+import com.lyun.estate.biz.company.def.CompanyDefine;
 import com.lyun.estate.biz.employee.domain.EmployeeDTO;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.mgt.auth.def.SaltSugar;
 import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.permission.service.PermissionCheckService;
@@ -38,6 +40,11 @@ public class EmployeeMgtService {
     @Transactional
     public Employee create(Employee employee) {
         permissionCheckService.checkExist(Permission.ORG_MANAGEMENT);
+
+        //close franchisee create employee
+        if (mgtContext.getOperator().getCompanyType() != CompanyDefine.Type.YK) {
+            throw new EstateException("暂不支持该操作");
+        }
 
         employee.setCompanyId(mgtContext.getOperator().getCompanyId());
         Employee result = employeeService.create(employee);
