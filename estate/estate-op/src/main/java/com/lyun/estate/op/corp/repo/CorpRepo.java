@@ -26,6 +26,9 @@ public interface CorpRepo {
             "FROM t_op_dianping_corp WHERE name like '%'||#{name}||'%'")
     List<Corp> search(String name);
 
+    @Select("select * from t_op_dianping_corp where name = #{name}")
+    List<Corp> searchExactSame(String name);
+
 //    @Select("SELECT count(map.tag_id) as count, tag.name\n" +
 //            "  FROM\n" +
 //            "    (t_op_dianping_comment as cmt\n" +

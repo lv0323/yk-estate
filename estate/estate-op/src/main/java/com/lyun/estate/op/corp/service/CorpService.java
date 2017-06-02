@@ -79,7 +79,7 @@ public class CorpService {
 
     public void create(String name, long userId) {
 
-        List<Corp> corps = search(name);
+        List<Corp> corps = corpRepo.searchExactSame(name);
 
         if (corps != null && corps.size() > 0) {
             throw new BizRuntimeException("corp " + name + " already exists");
