@@ -301,11 +301,11 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    <@checkPermission value='CT_YK'>
                                         <div class="item" id="modify-authority">
                                             <div class="tweet-wrapper clearfix">
                                                 <h4>发布管理</h4>
                                                 <div class="form-inline">
-                                                <@checkPermission value='CT_YK'>
                                                     <div class="clearfix m-t-7">
                                                         <label class="pull-left control-label">确认发布外网：</label>
                                                         <div class="col-sm-4">
@@ -339,10 +339,10 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                </@>
                                                 </div>
                                             </div>
                                         </div>
+                                    </@>
                                     </div>
                                 </div>
                             </div>
