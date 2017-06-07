@@ -252,51 +252,18 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <@checkPermission value='CT_YK'>
                                                     <div class="clearfix m-t-7">
-                                                        <label class="pull-left control-label">确认发布外网：</label>
+                                                        <label class="pull-left control-label" style="height: 60px">修改房源信息:(图片、跟进、勘察、外网描述)</label>
                                                         <div class="col-sm-4">
                                                             <select select-picker class="selectpicker show-menu-arrow form-control"
-                                                                    ng-model="ctrl.authorityFang.FANG_CONFIRM_PUBLIC">
+                                                                    ng-model="ctrl.authorityFang.MODIFY_FANG_INFO">
                                                             <#list authorityScope ?if_exists as type>
                                                                 <option value="${type.name()}">${type.getLabel()}</option>
                                                             </#list>
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="clearfix m-t-7">
-                                                        <label class="pull-left control-label">拒绝发布外网：</label>
-                                                        <div class="col-sm-4">
-                                                            <select select-picker class="selectpicker show-menu-arrow form-control"
-                                                                    ng-model="ctrl.authorityFang.FANG_REJECT_PUBLIC">
-                                                            <#list authorityScope ?if_exists as type>
-                                                                <option value="${type.name()}">${type.getLabel()}</option>
-                                                            </#list>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="clearfix m-t-7">
-                                                        <label class="pull-left control-label">撤销发布外网：</label>
-                                                        <div class="col-sm-4">
-                                                            <select select-picker class="selectpicker show-menu-arrow form-control"
-                                                                    ng-model="ctrl.authorityFang.FANG_UNDO_PUBLIC">
-                                                            <#list authorityScope ?if_exists as type>
-                                                                <option value="${type.name()}">${type.getLabel()}</option>
-                                                            </#list>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    </@>
                                                 </div>
-                                                <#--<div class="form-inline">
-                                                    <label class="pull-left control-label">业主信息：</label>
-                                                    <div class="ml90">
-                                                        <div class="checkbox checkbox-nice">
-                                                            <input id="100226" class="" name="map['100226']" value="1" checked="" type="checkbox">
-                                                            <label for="100226">修改业主信息</label>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
                                                 <div class="form-inline">
                                                     <div class="clearfix">
                                                         <label class="pull-left control-label">修改业主信息：</label>
@@ -334,6 +301,48 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="item" id="modify-authority">
+                                            <div class="tweet-wrapper clearfix">
+                                                <h4>发布管理</h4>
+                                                <div class="form-inline">
+                                                <@checkPermission value='CT_YK'>
+                                                    <div class="clearfix m-t-7">
+                                                        <label class="pull-left control-label">确认发布外网：</label>
+                                                        <div class="col-sm-4">
+                                                            <select select-picker class="selectpicker show-menu-arrow form-control"
+                                                                    ng-model="ctrl.authorityFang.FANG_CONFIRM_PUBLIC">
+                                                                <#list authorityScope ?if_exists as type>
+                                                                    <option value="${type.name()}">${type.getLabel()}</option>
+                                                                </#list>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix m-t-7">
+                                                        <label class="pull-left control-label">拒绝发布外网：</label>
+                                                        <div class="col-sm-4">
+                                                            <select select-picker class="selectpicker show-menu-arrow form-control"
+                                                                    ng-model="ctrl.authorityFang.FANG_REJECT_PUBLIC">
+                                                                <#list authorityScope ?if_exists as type>
+                                                                    <option value="${type.name()}">${type.getLabel()}</option>
+                                                                </#list>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix m-t-7">
+                                                        <label class="pull-left control-label">撤销发布外网：</label>
+                                                        <div class="col-sm-4">
+                                                            <select select-picker class="selectpicker show-menu-arrow form-control"
+                                                                    ng-model="ctrl.authorityFang.FANG_UNDO_PUBLIC">
+                                                                <#list authorityScope ?if_exists as type>
+                                                                    <option value="${type.name()}">${type.getLabel()}</option>
+                                                                </#list>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </@>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -353,10 +362,12 @@
                                                 <div class="form-inline">
                                                     <label class="pull-left control-label">新增：</label>
                                                     <div class="ml90">
+                                                        <@checkPermission value='CT_YK'>
                                                         <div class="checkbox checkbox-nice">
                                                             <input id="200101" ng-model="ctrl.authorityXiaoqu.CREATE_XIAO_QU" type="checkbox">
                                                             <label for="200101">小区</label>
                                                         </div>
+                                                        </@>
                                                         <div class="checkbox checkbox-nice">
                                                             <input id="200102" ng-model="ctrl.authorityXiaoqu.CREATE_BUILDING" type="checkbox">
                                                             <label for="200102">栋座/单元</label>
@@ -365,13 +376,13 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    <@checkPermission value='CT_YK'>
                                         <div class="item">
                                             <div class="tweet-wrapper clearfix">
                                                 <h4>删除权限</h4>
                                                 <div class="form-inline">
                                                     <label class="pull-left control-label">删除：</label>
                                                     <div class="ml90">
-                                                    <@checkPermission value='CT_YK'>
                                                         <div class="checkbox checkbox-nice">
                                                             <input id="200201" ng-model="ctrl.authorityXiaoqu.DEL_XIAO_QU" type="checkbox">
                                                             <label for="200201">小区</label>
@@ -380,11 +391,11 @@
                                                             <input id="200202" ng-model="ctrl.authorityXiaoqu.DEL_BUILDING" type="checkbox">
                                                             <label for="200202">栋座/单元</label>
                                                         </div>
-                                                    </@>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </@>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-12">
                                         <div class="item">
@@ -398,11 +409,12 @@
                                                             <input id="200301" ng-model="ctrl.authorityXiaoqu.MODIFY_XIAO_QU" type="checkbox">
                                                             <label for="200301">小区</label>
                                                         </div>
+                                                    </@>
                                                         <div class="checkbox checkbox-nice">
                                                             <input id="200302" ng-model="ctrl.authorityXiaoqu.MODIFY_BUILDING" type="checkbox">
                                                             <label for="200302">栋座/单元</label>
                                                         </div>
-                                                    </@>
+
                                                     </div>
                                                 </div>
                                             </div>
