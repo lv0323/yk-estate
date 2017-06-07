@@ -78,6 +78,8 @@ public enum Permission implements LabelEnum {
     P_FRANCHISEE_C("渠道加盟", PermissionDefine.Category.PAGE),
     P_FRANCHISEE_SS("单店加盟", PermissionDefine.Category.PAGE),
     P_FRANCHISEE_RA("区域代理加盟", PermissionDefine.Category.PAGE),
+    P_FANG_COLLECTION("房源采集", PermissionDefine.Category.PAGE),
+    P_FANG_COLLECTION_POOL("房源池", PermissionDefine.Category.PAGE),
 
     //公司性质
     CT_YK("盈科", PermissionDefine.Category.COMPANY_TYPE),

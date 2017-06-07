@@ -45,6 +45,40 @@
                     <div id="timeline-grid" class="gridalicious">
                         <div style="clear: both; height: 0px; width: 0px; display: block;" id="clearplgSO"></div>
                         <div class="galcolumn" id="item0xhA0N">
+                        <@checkPermission value='CT_YK|CT_RA'>
+                            <div class="item" style="margin-bottom: 10px; opacity: 1;">
+                                <div class="box box-solid backf5 " style="margin-bottom:0">
+                                    <header class="box-header with-border">
+                                        <div class="checkbox checkbox-nice">
+                                            <input id="P_FRANCHISEE" ng-model="ctrl.moduleAuthority.P_FRANCHISEE" type="checkbox" ng-change="ctrl.allPickChange('P_FRANCHISEE')">
+                                            <label for="P_FRANCHISEE"><h3 class="box-title">加盟商管理</h3></label>
+                                        </div>
+                                    </header>
+                                    <div class="box-body">
+                                        <div class="form-group form-inline">
+                                            <div class="col-xs-6">
+                                                <div class="checkbox checkbox-nice">
+                                                    <input id="P_FRANCHISEE_C" ng-model="ctrl.moduleAuthority.P_FRANCHISEE_C" type="checkbox" ng-change="ctrl.dataChange('P_FRANCHISEE', ctrl.moduleAuthority.P_FRANCHISEE_C)">
+                                                    <label for="P_FRANCHISEE_C">渠道加盟</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <div class="checkbox checkbox-nice">
+                                                    <input id="P_FRANCHISEE_SS" ng-model="ctrl.moduleAuthority.P_FRANCHISEE_SS" type="checkbox" ng-change="ctrl.dataChange('P_FRANCHISEE', ctrl.moduleAuthority.P_FRANCHISEE_SS)">
+                                                    <label for="P_FRANCHISEE_SS">单店加盟</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <div class="checkbox checkbox-nice">
+                                                    <input id="P_FRANCHISEE_RA" ng-model="ctrl.moduleAuthority.P_FRANCHISEE_RA" type="checkbox" ng-change="ctrl.dataChange('P_FRANCHISEE', ctrl.moduleAuthority.P_FRANCHISEE_RA)">
+                                                    <label for="P_FRANCHISEE_RA">区域代理加盟</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </@>
                             <div class="item" style="margin-bottom: 10px; opacity: 1;">
                                 <div class="box box-solid backf5 " style="margin-bottom:0">
                                     <header class="box-header with-border">
@@ -84,6 +118,29 @@
                                     </div>
                                 </div>
                             </div>
+                        <@checkPermission value='CT_YK'>
+                            <div class="item" style="margin-bottom: 10px; opacity: 1;">
+                                <div class="box box-solid backf5 " style="margin-bottom:0">
+                                    <header class="box-header with-border">
+                                        <div class="checkbox checkbox-nice">
+                                            <input id="P_FANG_COLLECTION" ng-model="ctrl.moduleAuthority.P_FANG_COLLECTION" type="checkbox" ng-change="ctrl.allPickChange('P_FANG_COLLECTION')">
+                                            <label for="P_FANG_COLLECTION"><h3 class="box-title">房源采集</h3></label>
+                                        </label>
+                                        </div>
+                                    </header>
+                                    <div class="box-body">
+                                        <div class="form-group form-inline">
+                                            <div class="col-xs-6">
+                                                <div class="checkbox checkbox-nice">
+                                                    <input ng-model="ctrl.moduleAuthority.P_FANG_COLLECTION_POOL" id="P_FANG_COLLECTION_POOL" type="checkbox" ng-change="ctrl.dataChange('P_FANG_COLLECTION', ctrl.moduleAuthority.P_FANG_COLLECTION_POOL)">
+                                                    <label for="P_FANG_COLLECTION_POOL">房源池</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </@>
                             <div class="item" style="margin-bottom: 10px; opacity: 1;">
                                 <div class="box box-solid backf5 " style="margin-bottom:0">
                                     <header class="box-header with-border">

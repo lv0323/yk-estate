@@ -96,6 +96,8 @@
         <ul class="sidebar-menu">
             <li class="header">主导航</li>
             <!-- Optionally, you can add icons to the links -->
+            <@checkPermission value='CT_YK|CT_RA'>
+            <@checkPermission value='P_FRANCHISEE'>
             <li class="treeview franchisee">
                 <a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i> <span>加盟商管理</span>
                     <span class="pull-right-container">
@@ -103,12 +105,21 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/mgt/franchisee/channelPartner?target=.franchisee"><i class="fa fa-circle"></i>渠道商管理</a></li>
-                    <li><a href="/mgt/franchisee/storePartner?target=.franchisee"><i class="fa fa-circle"></i>单店加盟管理</a></li>
-                    <li><a href="/mgt/franchisee/regionAgent?target=.franchisee"><i class="fa fa-circle"></i>区域代理管理</a></li>
+                    <@checkPermission value='P_FRANCHISEE_C'>
+                        <li><a href="/mgt/franchisee/channelPartner?target=.franchisee"><i class="fa fa-circle"></i>渠道商管理</a></li>
+                    </@>
+                    <@checkPermission value='P_FRANCHISEE_SS'>
+                        <li><a href="/mgt/franchisee/storePartner?target=.franchisee"><i class="fa fa-circle"></i>单店加盟管理</a></li>
+                    </@>
+                    <@checkPermission value='CT_YK'>
+                    <@checkPermission value='P_FRANCHISEE_RA'>
+                        <li><a href="/mgt/franchisee/regionAgent?target=.franchisee"><i class="fa fa-circle"></i>区域代理管理</a></li>
+                    </@>
+                    </@>
                 </ul>
             </li>
-            </li>
+            </@>
+            </@>
         <@checkPermission value='P_FANG'>
             <li class="treeview fang">
                 <a href="#"><i class="fa fa-home" aria-hidden="true"></i> <span>房源管理</span>
@@ -117,7 +128,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <@checkPermission value='P_FANG_LIST|CT_YK'>
+                    <@checkPermission value='P_FANG_LIST'>
                         <li><a href="/mgt/fangManage/list?target=.fang"><i class="fa fa-circle"></i>房源列表</a></li>
                     </@>
                     <@checkPermission value='P_FANG_NEW'>
@@ -147,6 +158,8 @@
                 </ul>
             </li>
         </@>
+        <@checkPermission value='CT_YK'>
+        <@checkPermission value='P_FANG_COLLECTION'>
             <li class="treeview fangCollection">
                 <a href="#"><i class="fa fa-pie-chart" aria-hidden="true"></i> <span>房源采集</span>
                     <span class="pull-right-container">
@@ -154,9 +167,13 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
+                <@checkPermission value='P_FANG_COLLECTION_POOL'>
                     <li><a href="/mgt/fangCollection/pool?target=.fangCollection"><i class="fa fa-table"></i>房源池</a></li>
+                </@>
                 </ul>
             </li>
+        </@>
+        </@>
         <@checkPermission value='P_CONTRACT'>
             <li class="treeview contract">
                 <a href="#"><i class="fa fa-file-text-o" aria-hidden="true"></i> <span>合同管理</span>
