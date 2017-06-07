@@ -1,11 +1,7 @@
 package com.lyun.estate.biz.fangcollect.domain;
 
 import com.lyun.estate.biz.fang.def.*;
-import com.lyun.estate.biz.spec.fang.rest.def.IntPair;
 import com.lyun.estate.biz.support.def.BizType;
-import com.lyun.estate.core.supports.types.YN;
-
-import java.util.List;
 
 /**
  * Created by robin on 17/5/5.

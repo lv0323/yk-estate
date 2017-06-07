@@ -2,7 +2,6 @@ package com.lyun.estate.biz.fangcollect.repo;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.fang.entity.Fang;
-import com.lyun.estate.biz.fang.repo.provider.MgtFangSqlProvider;
 import com.lyun.estate.biz.fangcollect.entity.FY01Fang;
 import com.lyun.estate.biz.fangcollect.entity.FangPool;
 import com.lyun.estate.biz.fangcollect.entity.FangPoolDistrict;
@@ -28,7 +27,7 @@ public interface FY01Repo {
     List<FY01Fang> selectUnProcessItems();
 
     @Update("UPDATE t_fang_o1fy SET map_process = 'processed' where third_party_id = #{thirdPartyId}")
-    int updateProcess(Long thirdPartId);
+    int updateProcess(String thirdPartId);
 
     @Select("SELECT * FROM t_fang_pool_district where name = #{name}")
     PageList<FangPoolDistrict> getDistrictByName(String name);
