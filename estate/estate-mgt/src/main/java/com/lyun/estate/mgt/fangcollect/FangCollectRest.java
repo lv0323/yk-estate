@@ -1,4 +1,4 @@
-package com.lyun.estate.mgt.fangCollect;
+package com.lyun.estate.mgt.fangcollect;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
@@ -7,7 +7,7 @@ import com.lyun.estate.biz.fangcollect.domain.FangPoolSelector;
 import com.lyun.estate.biz.fangcollect.entity.FangPool;
 import com.lyun.estate.biz.fangcollect.entity.FangPoolOrder;
 import com.lyun.estate.biz.support.def.BizType;
-import com.lyun.estate.mgt.fangCollect.service.FangCollectService;
+import com.lyun.estate.mgt.fangcollect.service.FangCollectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

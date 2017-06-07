@@ -12,7 +12,6 @@ import com.lyun.estate.biz.fangcollect.entity.FangPoolDistrict;
 import com.lyun.estate.biz.fangcollect.entity.FangPoolOrder;
 import com.lyun.estate.biz.fangcollect.repo.FY01Repo;
 import com.lyun.estate.biz.fangcollect.repo.FangPoolRepo;
-import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummaryOrder;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import org.springframework.beans.factory.annotation.Autowired;

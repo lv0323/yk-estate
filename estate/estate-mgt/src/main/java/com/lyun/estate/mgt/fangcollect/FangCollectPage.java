@@ -1,4 +1,4 @@
-package com.lyun.estate.mgt.fangCollect;
+package com.lyun.estate.mgt.fangcollect;
 
 
 import com.lyun.estate.biz.fang.def.*;
