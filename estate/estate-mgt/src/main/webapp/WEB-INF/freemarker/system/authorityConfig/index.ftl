@@ -48,7 +48,7 @@
                 </div>
             </div>
             <!-- end 树 -->
-            <div class="col-lg-9 col-md-9 col-sm-8" id="content"><div class="nav-tabs-custom no-shadow m-t-10">
+            <div class="col-lg-9 col-md-9 col-sm-8 clearfix" id="content"><div class="nav-tabs-custom no-shadow m-t-10">
                 <ul class="nav nav-tabs ui-sortable-handle">
                     <li class="active">
                         <a class="house" href="#house" data-toggle="tab" aria-expanded="true" id="first-nav-tab">房源</a>
@@ -62,6 +62,11 @@
                     <li ng-class="{'active' : ctrl.config.category.COMPANY==ctrl.authorityConfig.category}">
                         <a class="company" href="#company" data-toggle="tab" aria-expanded="false">公司</a>
                     </li>
+                    <@checkPermission value='CT_YK|CT_RA'>
+                        <li ng-class="{'active' : ctrl.config.category.FRANCHISEE==ctrl.authorityConfig.category}">
+                            <a class="franchisee" href="#franchisee" data-toggle="tab" aria-expanded="false">加盟</a>
+                        </li>
+                    </@>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane animated fadeInDown" ng-class="{active : ctrl.config.category.FANG==ctrl.authorityConfig.category}" id="house">
@@ -247,6 +252,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    <@checkPermission value='CT_YK'>
                                                     <div class="clearfix m-t-7">
                                                         <label class="pull-left control-label">确认发布外网：</label>
                                                         <div class="col-sm-4">
@@ -280,6 +286,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    </@>
                                                 </div>
                                                 <#--<div class="form-inline">
                                                     <label class="pull-left control-label">业主信息：</label>
@@ -364,6 +371,7 @@
                                                 <div class="form-inline">
                                                     <label class="pull-left control-label">删除：</label>
                                                     <div class="ml90">
+                                                    <@checkPermission value='CT_YK'>
                                                         <div class="checkbox checkbox-nice">
                                                             <input id="200201" ng-model="ctrl.authorityXiaoqu.DEL_XIAO_QU" type="checkbox">
                                                             <label for="200201">小区</label>
@@ -372,6 +380,7 @@
                                                             <input id="200202" ng-model="ctrl.authorityXiaoqu.DEL_BUILDING" type="checkbox">
                                                             <label for="200202">栋座/单元</label>
                                                         </div>
+                                                    </@>
                                                     </div>
                                                 </div>
                                             </div>
@@ -384,6 +393,7 @@
                                                 <div class="form-inline">
                                                     <label class="pull-left control-label">修改：</label>
                                                     <div class="ml90">
+                                                    <@checkPermission value='CT_YK'>
                                                         <div class="checkbox checkbox-nice">
                                                             <input id="200301" ng-model="ctrl.authorityXiaoqu.MODIFY_XIAO_QU" type="checkbox">
                                                             <label for="200301">小区</label>
@@ -392,6 +402,7 @@
                                                             <input id="200302" ng-model="ctrl.authorityXiaoqu.MODIFY_BUILDING" type="checkbox">
                                                             <label for="200302">栋座/单元</label>
                                                         </div>
+                                                    </@>
                                                     </div>
                                                 </div>
                                             </div>
@@ -472,9 +483,60 @@
                             </div>
                         </form>
                     </div>
+                    <@checkPermission value='CT_YK|CT_RA'>
+                    <div class="tab-pane animated fadeInDown" ng-class="{active : ctrl.config.category.FRANCHISEE==ctrl.authorityConfig.category}" id="franchisee">
+                        <form action="#" method="post" class="form-horizontal" id="kqForm">
+                            <div class="gridbox gridalicious authority-content">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="item">
+                                            <div class="tweet-wrapper clearfix">
+                                                <h4>新增</h4>
+                                                <div class="form-inline">
+                                                    <div class="checkbox checkbox-nice">
+                                                        <input id="pane5_1"  type="checkbox" ng-model="ctrl.authorityFranchisee.CREATE_FRANCHISEE">
+                                                        <label for="pane5_1">新增加盟信息</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="tweet-wrapper clearfix">
+                                                <h4>查看</h4>
+                                                <div class="form-inline">
+                                                    <div class="checkbox checkbox-nice">
+                                                        <input id="pane5_2" type="checkbox" ng-model="ctrl.authorityFranchisee.LIST_FRANCHISEE">
+                                                        <label for="pane5_2">查看加盟信息</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="item">
+                                            <div class="tweet-wrapper clearfix">
+                                                <h4>修改</h4>
+                                                <div class="form-inline">
+                                                    <div class="checkbox checkbox-nice">
+                                                        <input id="pane5_3"  type="checkbox" ng-model="ctrl.authorityFranchisee.MODIFY_FRANCHISEE">
+                                                        <label for="pane5_3">修改加盟信息</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix text-center">
+                                <button type="button" class="btn btn-primary" ng-click="ctrl.updateAuthority('FRANCHISEE')"><i class="fa fa-save"></i> 保存</button>
+                            </div>
+                        </form>
+                    </div>
+                    </@>
                 </div>
-            </div></div>
-            <div class="clearfix"></div>
+            </div>
+            </div>
         </div>
     </section>
 </div>

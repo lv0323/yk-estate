@@ -27,7 +27,9 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                 "P_SHOWING": ['P_SHOWING_LIST'],
                 "P_CONTRACT": ['P_CONTRACT_LIST'],
                 "P_ORG": ['P_ORG_DEPT', 'P_ORG_POSITION', 'P_ORG_EMPLOYEE'],
-                "P_CONFIG": ['P_CONFIG_AUDIT', 'P_CONFIG_HOUSE_DICT', 'P_CONFIG_PAGE', 'P_CONFIG_PERMISSION']
+                "P_CONFIG": ['P_CONFIG_AUDIT', 'P_CONFIG_HOUSE_DICT', 'P_CONFIG_PAGE', 'P_CONFIG_PERMISSION'],
+                "P_FRANCHISEE": ['P_FRANCHISEE_C', 'P_FRANCHISEE_SS', 'P_FRANCHISEE_RA'],
+                "P_FANG_COLLECTION": ['P_FANG_COLLECTION_POOL']
             };
             var initData ={
                 P_FANG: false,
@@ -47,7 +49,13 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                 P_CONFIG_AUDIT: false,
                 P_CONFIG_HOUSE_DICT: false,
                 P_CONFIG_PAGE: false,
-                P_CONFIG_PERMISSION: false
+                P_CONFIG_PERMISSION: false,
+                P_FRANCHISEE: false,
+                P_FRANCHISEE_C: false,
+                P_FRANCHISEE_SS: false,
+                P_FRANCHISEE_RA: false,
+                P_FANG_COLLECTION: false,
+                P_FANG_COLLECTION_POOL: false,
             };
             _this.moduleAuthority = {};
             _this.moduleAuthority =angular.copy(initData);

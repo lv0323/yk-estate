@@ -15,7 +15,7 @@ import java.util.Date;
 public class FangPool {
     private Long id;
     private String url;
-    private Long thirdPartyId;
+    private String thirdPartyId;
     private String header;
     private BizType bizType;
     private Long cityId;
@@ -77,12 +77,13 @@ public class FangPool {
         this.url = url;
     }
 
-    public Long getThirdPartyId() {
+    public String getThirdPartyId() {
         return thirdPartyId;
     }
 
-    public void setThirdPartyId(Long thirdPartyId) {
+    public FangPool setThirdPartyId(String thirdPartyId) {
         this.thirdPartyId = thirdPartyId;
+        return this;
     }
 
     public String getHeader() {

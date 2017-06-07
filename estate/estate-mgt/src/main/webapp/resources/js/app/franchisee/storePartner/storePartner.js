@@ -65,6 +65,8 @@ require(['main-app',
                         id: item.id
                     }
                 });
+            }).fail(function(res){
+                SweetAlertHelp.fail({message: res && res.message})
             });
 
             /*可能的签约公司列表初始化*/
@@ -75,6 +77,8 @@ require(['main-app',
                         id: item.id
                     }
                 });
+            }).fail(function(res){
+                SweetAlertHelp.fail({message: res && res.message})
             });
 
             /*下拉框*/
@@ -144,6 +148,8 @@ require(['main-app',
                         });
                         pagination(res.total);
                     });
+                }).fail(function(res){
+                    SweetAlertHelp.fail({message: res && res.message})
                 });
                 // pagination(1)
             };
