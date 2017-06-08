@@ -246,7 +246,7 @@
                                 </div>
                                 <div id="getHouseCharPage" class="table-responsive clearfix" ng-cloak>
                                     <div class="media clearfix house-item" ng-repeat="house in houseList">
-                                        <img class="flagImg" ng-src="{{house.bizType.name ==='RENT' ? '../img/house/rent.png':'../img/house/sale.png'}}" height="55" width="55">
+                                        <img class="flagImg" ng-src="{{house.bizType.name ==='RENT' ? '/mgt/img/house/rent.png':'/mgt/img/house/sale.png'}}" height="55" width="55">
                                         <a class="pull-left" href="javascript:void(0)">
                                             <img class="media-object" ng-src="{{house.imageURI}}" height="75px" width="100px">
                                         </a>
