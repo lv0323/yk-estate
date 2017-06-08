@@ -21,7 +21,7 @@
                         <div class="box-body">
                             <div class="media-item">
                                 <div class="media media-hover clearfix no-border no-padding">
-                                    <img class="flagtip" ng-src="{{ctrl.summary.bizType.name ==='RENT' ? '../img/house/rent.png':'../img/house/sale.png'}}" height="55" width="55">
+                                    <img class="flagtip" ng-src="{{ctrl.summary.bizType.name ==='RENT' ? '/mgt/img/house/rent.png':'/mgt/img/house/sale.png'}}" height="55" width="55">
                                     <a class="pull-left" href="#">
                                         <img class="media-object housePhoto" ng-src="{{ctrl.summary.imageURI}}" height="75px" width="100px">
                                     </a>

@@ -82,12 +82,12 @@ require(['main-app',
                 para: ''
             };
             _this.imageTypeList = [
-                {key: 'virtualMap', para :'SHI_JING', addText: '新增实景图', defaultMap: '../img/house/kct.jpeg'},
-                {key: 'layoutMap', para :'HU_XING', addText: '新增户型图', defaultMap: '../img/house/hxt.jpeg'}];
+                {key: 'virtualMap', para :'SHI_JING', addText: '新增实景图', defaultMap: '/mgt/img/house/kct.jpeg'},
+                {key: 'layoutMap', para :'HU_XING', addText: '新增户型图', defaultMap: '/mgt/img/house/hxt.jpeg'}];
             _this.imageTypeList2 = [
-                {key: 'certifMap', para :'CERTIF', addText: '新增房产证', defaultMap: '../img/house/fcz.png'},
-                {key: 'attorneyMap', para :'ATTORNEY', addText: '新增委托书', defaultMap: '../img/house/wts.png'},
-                {key: 'idCardMap', para :'OWNER_ID_CARD', addText: '新增身份证', defaultMap: '../img/house/sfz.png'}];
+                {key: 'certifMap', para :'CERTIF', addText: '新增房产证', defaultMap: '/mgt/img/house/fcz.png'},
+                {key: 'attorneyMap', para :'ATTORNEY', addText: '新增委托书', defaultMap: '/mgt/img/house/wts.png'},
+                {key: 'idCardMap', para :'OWNER_ID_CARD', addText: '新增身份证', defaultMap: '/mgt/img/house/sfz.png'}];
             _this.virtualMap ={
                 list:[],
                 count:0,
