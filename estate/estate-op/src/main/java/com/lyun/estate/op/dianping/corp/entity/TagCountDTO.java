@@ -3,7 +3,7 @@ package com.lyun.estate.op.dianping.corp.entity;
 /**
  * Created by localuser on 2017/5/15.
  */
-public class TagCount {
+public class TagCountDTO {
     private String name;
     private int count;
 

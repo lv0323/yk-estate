@@ -1,7 +1,7 @@
 package com.lyun.estate.op.dianping.comment;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.lyun.estate.op.dianping.corp.entity.ActionResultBean;
+import com.lyun.estate.op.dianping.corp.entity.ActionResultDTO;
 import com.lyun.estate.op.dianping.corp.entity.BooleanResponse;
 import com.lyun.estate.op.dianping.comment.domain.Comment;
 import com.lyun.estate.op.dianping.comment.service.CommentService;
@@ -25,11 +25,11 @@ public class CommentController {
 
 
     @PostMapping(value = "/create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public ActionResultBean create(@RequestHeader String token,
-                                   @RequestParam long corpId,
-                                   @RequestParam List<String> tags,
-                                   @RequestParam(required = false) String shopfront,
-                                   @RequestParam String content
+    public ActionResultDTO create(@RequestHeader String token,
+                                  @RequestParam long corpId,
+                                  @RequestParam List<String> tags,
+                                  @RequestParam(required = false) String shopfront,
+                                  @RequestParam String content
                                  ) {
         long userId = CorpUtil.getUserId(token);
 
@@ -38,25 +38,25 @@ public class CommentController {
         }
 
         commentService.create(userId, corpId, tags, shopfront, content);
-        return new ActionResultBean().setSuccess(true);
+        return new ActionResultDTO().setSuccess(true);
     }
 
     @PostMapping(value = "/{commentId}/like", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public ActionResultBean like(@RequestHeader String token, @PathVariable long commentId){
+    public ActionResultDTO like(@RequestHeader String token, @PathVariable long commentId){
 
         long userId = CorpUtil.getUserId(token);
 
         commentService.like(commentId, userId);
 
-        return new ActionResultBean().setSuccess(true);
+        return new ActionResultDTO().setSuccess(true);
     }
     @PostMapping(value = "/{commentId}/cancel_like", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public ActionResultBean cancelLike(@RequestHeader String token, @PathVariable long commentId){
+    public ActionResultDTO cancelLike(@RequestHeader String token, @PathVariable long commentId){
         long userId = CorpUtil.getUserId(token);
 
         commentService.cancelLike(commentId, userId);
 
-        return new ActionResultBean().setSuccess(true);
+        return new ActionResultDTO().setSuccess(true);
     }
 
     @GetMapping(value = "/{commentId}/is_like")

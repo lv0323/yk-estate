@@ -1,7 +1,7 @@
 package com.lyun.estate.op.dianping.utils;
 
 import com.lyun.estate.op.dianping.corp.entity.BizRuntimeException;
-import com.lyun.estate.op.dianping.corp.entity.TagCount;
+import com.lyun.estate.op.dianping.corp.entity.TagCountDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -48,35 +48,32 @@ public class CorpUtil {
         throw new BizRuntimeException("invalid token");
     }
 
-    public static List<TagCount> countTag(List<String> tagStrs){
+    public static List<TagCountDTO> countTag(List<String> tagStrs){
 
-        HashMap<String, Integer> tagCountMap = new HashMap<>();
-        List<TagCount> tagList = new ArrayList<>();
+        List<TagCountDTO> tagList = new ArrayList<>();
         if(tagStrs == null){
             return tagList;
         }
 
-        if(tagStrs != null && tagStrs.size() > 0){
+        HashMap<String, Integer> tagCountMap = new HashMap<>();
+
+        if(tagStrs.size() > 0){
             for(String str : tagStrs){
                 String[] tags = str.split("_");
 
-                if(tags != null){
-                    for (String tag : tags){
-                        if(tagCountMap.containsKey(tag)){
-                            tagCountMap.put(tag, tagCountMap.get(tag)+1);
+                for (String tag : tags){
+                    if(tagCountMap.containsKey(tag)){
+                        tagCountMap.put(tag, tagCountMap.get(tag)+1);
 
-                        }else{
-                            tagCountMap.put(tag, 1);
-                        }
+                    }else{
+                        tagCountMap.put(tag, 1);
                     }
                 }
             }
         }
 
-
-
         tagCountMap.forEach((k,v) -> {
-            TagCount tc = new TagCount();
+            TagCountDTO tc = new TagCountDTO();
             tc.setName(k);
             tc.setCount(v);
             tagList.add(tc);

@@ -1,14 +1,14 @@
 package com.lyun.estate.op.dianping.corp.domain;
 
 import com.lyun.estate.op.dianping.corp.entity.Corp;
-import com.lyun.estate.op.dianping.corp.entity.TagCount;
+import com.lyun.estate.op.dianping.corp.entity.TagCountDTO;
 
 import java.util.List;
 
 /**
  * Created by localuser on 2017/5/15.
  */
-public class CorpDetail {
+public class CorpDetailDTO {
 
 
     private long id;
@@ -17,12 +17,12 @@ public class CorpDetail {
     private long negativeCount;
     private long visitCount;
     private long commentCount;
-    private List<TagCount> tags;
+    private List<TagCountDTO> tags;
 
-    private CorpDetail(){
+    private CorpDetailDTO(){
     }
 
-    public CorpDetail(Corp corp){
+    public CorpDetailDTO(Corp corp){
         this.id = corp.getId();
         this.name = corp.getName();
         this.positiveCount = corp.getPositiveCount();
@@ -81,11 +81,11 @@ public class CorpDetail {
         this.visitCount = visitCount;
     }
 
-    public List<TagCount> getTags() {
+    public List<TagCountDTO> getTags() {
         return tags;
     }
 
-    public void setTags(List<TagCount> tags) {
+    public void setTags(List<TagCountDTO> tags) {
         this.tags = tags;
     }
 }

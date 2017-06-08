@@ -44,7 +44,7 @@ public interface CorpRepo {
 //            "GROUP BY tag.name\n" +
 //            "ORDER BY count desc\n" +
 //            "LIMIT #{id}")
-//    List<TagCount> getTags(long id);
+//    List<TagCountDTO> getTags(long id);
 
     @Select("select tags from t_op_dianping_comment where corp_id=#{id}")
     List<String> getTagStrs(long id);

@@ -1,6 +1,6 @@
 package com.lyun.estate.op.dianping.user;
 
-import com.lyun.estate.op.dianping.corp.entity.ActionResultBean;
+import com.lyun.estate.op.dianping.corp.entity.ActionResultDTO;
 import com.lyun.estate.op.dianping.corp.domain.WxLoginToken;
 import com.lyun.estate.op.dianping.user.service.UserService;
 import com.lyun.estate.op.dianping.utils.CorpUtil;
@@ -40,13 +40,13 @@ public class UserController {
     }
 
     @PostMapping(value = "/wx_userinfo", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public ActionResultBean userInfo(@RequestHeader String token, @RequestParam String nicky, @RequestParam String avatar){
+    public ActionResultDTO userInfo(@RequestHeader String token, @RequestParam String nicky, @RequestParam String avatar){
 
         long userId = CorpUtil.getUserId(token);
 
         userService.userInfo(userId, nicky, avatar);
 
-        return new ActionResultBean().setSuccess(true);
+        return new ActionResultDTO().setSuccess(true);
 
     }
 }

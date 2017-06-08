@@ -3,7 +3,7 @@ package com.lyun.estate.op.dianping.corp.entity;
 /**
  * Created by localuser on 2017/5/31.
  */
-public class JudgeStateResponse {
+public class JudgeStateDTO {
     public String getStatus() {
         return status;
     }

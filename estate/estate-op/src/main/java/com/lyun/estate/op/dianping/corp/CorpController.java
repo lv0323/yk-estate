@@ -2,7 +2,7 @@ package com.lyun.estate.op.dianping.corp;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.lyun.estate.op.dianping.comment.domain.Comment;
-import com.lyun.estate.op.dianping.corp.domain.CorpDetail;
+import com.lyun.estate.op.dianping.corp.domain.CorpDetailDTO;
 import com.lyun.estate.op.dianping.corp.entity.*;
 import com.lyun.estate.op.dianping.corp.service.CorpService;
 import com.lyun.estate.op.dianping.utils.CorpUtil;
@@ -30,19 +30,19 @@ public class CorpController {
     }
 
     @GetMapping(value = "/{corpId}")
-    public CorpDetail getDetail(@PathVariable long corpId) {
+    public CorpDetailDTO getDetail(@PathVariable long corpId) {
 
         return corpService.getDetail(corpId);
 
     }
 
     @PostMapping(value = "/create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public ActionResultBean create(@RequestHeader String token, @RequestParam String name) {
+    public ActionResultDTO create(@RequestHeader String token, @RequestParam String name) {
 
         long userId = CorpUtil.getUserId(token);
         corpService.create(name, userId);
 
-        return new ActionResultBean().setSuccess(true);
+        return new ActionResultDTO().setSuccess(true);
 
     }
 
@@ -52,18 +52,18 @@ public class CorpController {
     }
 
     @GetMapping(value = "/{corpId}/judgement_my")
-    public JudgeStateResponse getJudgementStatus(@RequestHeader String token, @PathVariable long corpId) {
+    public JudgeStateDTO getJudgementStatus(@RequestHeader String token, @PathVariable long corpId) {
 
         long userId = CorpUtil.getUserId(token);
 
-        JudgeStateResponse response = new JudgeStateResponse();
+        JudgeStateDTO response = new JudgeStateDTO();
         response.setStatus(corpService.getMyJudgement(corpId, userId).toString());
 
         return response;
     }
 
     @PostMapping(value = "/{corpId}/judge_good", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public ActionResultBean good(@RequestHeader String token, @PathVariable long corpId) {
+    public ActionResultDTO good(@RequestHeader String token, @PathVariable long corpId) {
 
         long userId = CorpUtil.getUserId(token);
 
@@ -71,7 +71,7 @@ public class CorpController {
 
     }
     @PostMapping(value = "/{corpId}/judge_bad", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public ActionResultBean bad(@RequestHeader String token, @PathVariable long corpId) {
+    public ActionResultDTO bad(@RequestHeader String token, @PathVariable long corpId) {
 
         long userId = CorpUtil.getUserId(token);
         return corpService.bad(corpId, userId);

@@ -4,7 +4,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.google.common.base.Strings;
 import com.lyun.estate.op.dianping.comment.domain.Comment;
 import com.lyun.estate.op.dianping.comment.entity.RawComment;
-import com.lyun.estate.op.dianping.corp.domain.CorpDetail;
+import com.lyun.estate.op.dianping.corp.domain.CorpDetailDTO;
 import com.lyun.estate.op.dianping.corp.entity.*;
 import com.lyun.estate.op.dianping.comment.repo.CommentRepo;
 import com.lyun.estate.op.dianping.corp.repo.CorpRepo;
@@ -40,7 +40,7 @@ public class CorpService {
     }
 
     @Transactional
-    public CorpDetail getDetail(long id) {
+    public CorpDetailDTO getDetail(long id) {
 
         Corp corp = corpRepo.get(id);
         if (corp == null) {
@@ -51,7 +51,7 @@ public class CorpService {
 
         List<String> tagStrs = corpRepo.getTagStrs(id);
 
-        CorpDetail detail = new CorpDetail(corp);
+        CorpDetailDTO detail = new CorpDetailDTO(corp);
 
         detail.setTags(CorpUtil.countTag(tagStrs));
 
@@ -101,10 +101,10 @@ public class CorpService {
     }
 
     @Transactional
-    public ActionResultBean good(long corpId, long userId) {
+    public ActionResultDTO good(long corpId, long userId) {
         JudgeStatus status = getMyJudgement(corpId, userId);
 
-        ActionResultBean arb = new ActionResultBean();
+        ActionResultDTO arb = new ActionResultDTO();
 
         if (status == JudgeStatus.NOT_YET) {
 
@@ -130,9 +130,9 @@ public class CorpService {
     }
 
     @Transactional
-    public ActionResultBean bad(long corpId, long userId) {
+    public ActionResultDTO bad(long corpId, long userId) {
         JudgeStatus status = getMyJudgement(corpId, userId);
-        ActionResultBean arb = new ActionResultBean();
+        ActionResultDTO arb = new ActionResultDTO();
 
         if (status == JudgeStatus.NOT_YET) {
 

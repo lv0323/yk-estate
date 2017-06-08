@@ -33,11 +33,11 @@ public class ExceptionAdvice {
 
         } else if(t instanceof BizRuntimeException){
 
-            ActionResultBean bean = new ActionResultBean().setSuccess(false).setReason(t.getMessage());
+            ActionResultDTO bean = new ActionResultDTO().setSuccess(false).setReason(t.getMessage());
             writeResponse(response, bean);
         }
         else{
-            ActionResultBean bean = new ActionResultBean().setSuccess(false).setReason(t.getMessage());
+            ActionResultDTO bean = new ActionResultDTO().setSuccess(false).setReason(t.getMessage());
             writeResponse(response, bean);
         }
 
