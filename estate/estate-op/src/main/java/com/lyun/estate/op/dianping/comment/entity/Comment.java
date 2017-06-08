@@ -3,7 +3,7 @@ package com.lyun.estate.op.dianping.comment.entity;
 /**
  * Created by localuser on 2017/5/15.
  */
-public class RawComment {
+public class Comment {
     private long id;
     private String content;
     private long positiveCount;

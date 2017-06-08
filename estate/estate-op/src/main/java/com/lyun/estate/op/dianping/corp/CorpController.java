@@ -1,7 +1,7 @@
 package com.lyun.estate.op.dianping.corp;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.lyun.estate.op.dianping.comment.domain.Comment;
+import com.lyun.estate.op.dianping.comment.domain.CommentDTO;
 import com.lyun.estate.op.dianping.corp.domain.CorpDetailDTO;
 import com.lyun.estate.op.dianping.corp.entity.*;
 import com.lyun.estate.op.dianping.corp.service.CorpService;
@@ -47,7 +47,7 @@ public class CorpController {
     }
 
     @GetMapping(value = "/{corpId}/comments")
-    public List<Comment> getCorpComments(@PathVariable long corpId, @RequestHeader(required = false) String token, @RequestHeader("X-PAGING")PageBounds pageBounds) {
+    public List<CommentDTO> getCorpComments(@PathVariable long corpId, @RequestHeader(required = false) String token, @RequestHeader("X-PAGING")PageBounds pageBounds) {
         return corpService.getCorpComments(corpId, token, pageBounds);
     }
 

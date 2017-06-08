@@ -1,8 +1,8 @@
 package com.lyun.estate.op.dianping.comment.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.lyun.estate.op.dianping.comment.domain.Comment;
-import com.lyun.estate.op.dianping.comment.entity.RawComment;
+import com.lyun.estate.op.dianping.comment.domain.CommentDTO;
+import com.lyun.estate.op.dianping.comment.entity.Comment;
 import com.lyun.estate.op.dianping.comment.repo.CommentRepo;
 import com.lyun.estate.op.dianping.corp.repo.CorpRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,23 +58,23 @@ public class CommentService {
         return false;
     }
 
-    public List<Comment> myComments(long userId, PageBounds pageBounds){
-        List<RawComment> raws = commentRepo.myComments(userId, pageBounds.getOffset(), pageBounds.getLimit());
+    public List<CommentDTO> myComments(long userId, PageBounds pageBounds){
+        List<Comment> raws = commentRepo.myComments(userId, pageBounds.getOffset(), pageBounds.getLimit());
 
-        List<Comment> comments = new ArrayList<>();
+        List<CommentDTO> commentDTOS = new ArrayList<>();
 
-        for (RawComment tmp : raws){
+        for (Comment tmp : raws){
             tmp.setUserId(userId);
-            Comment comment = new Comment(tmp);
+            CommentDTO commentDTO = new CommentDTO(tmp);
 
             String[] tags = tmp.getTags().split("_");
 
-            comment.setTags(Arrays.asList(tags));
-            comments.add(comment);
+            commentDTO.setTags(Arrays.asList(tags));
+            commentDTOS.add(commentDTO);
 
         }
 
-        return comments;
+        return commentDTOS;
     }
 
 }

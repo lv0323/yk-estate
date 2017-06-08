@@ -1,6 +1,6 @@
 package com.lyun.estate.op.dianping.comment.repo;
 
-import com.lyun.estate.op.dianping.comment.entity.RawComment;
+import com.lyun.estate.op.dianping.comment.entity.Comment;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -31,7 +31,7 @@ public interface CommentRepo {
 //            "\n" +
 //            "WHERE c.corp_id = #{id}\n" +
 //            "ORDER BY c.create_time desc;")
-//    List<RawComment> getCorpComments(long id);
+//    List<Comment> getCorpComments(long id);
 
     @Select("SELECT c.id, c.content, c.positive_count as positiveCount, c.create_time as createTime, c.tags,\n" +
             "    u.id as userId, u.nicky, u.avatar\n" +
@@ -41,7 +41,7 @@ public interface CommentRepo {
             "ORDER BY c.create_time desc " +
             "offset #{offset} limit #{limit}" +
             ";")
-    List<RawComment> getCorpComments(@Param("id") long id, @Param("offset") long offset, @Param("limit") long limit);
+    List<Comment> getCorpComments(@Param("id") long id, @Param("offset") long offset, @Param("limit") long limit);
 
     @Select("SELECT  comment_id from t_op_dianping_comment_like_map WHERE user_id = #{userId}")
     List<Long> getMyLikes(@Param("userId") long userId);
@@ -54,7 +54,7 @@ public interface CommentRepo {
             "WHERE ct.user_id = #{userId} " +
             "ORDER BY ct.create_time desc " +
             "offset #{offset} limit #{limit};")
-    List<RawComment> myComments(@Param("userId") long userId, @Param("offset") long offset, @Param("limit") long limit);
+    List<Comment> myComments(@Param("userId") long userId, @Param("offset") long offset, @Param("limit") long limit);
 
 
     @Insert("INSERT into t_op_dianping_comment(user_id, corp_id, shopfront, content, tags) " +

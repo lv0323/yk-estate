@@ -2,8 +2,8 @@ package com.lyun.estate.op.dianping.corp.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.google.common.base.Strings;
-import com.lyun.estate.op.dianping.comment.domain.Comment;
-import com.lyun.estate.op.dianping.comment.entity.RawComment;
+import com.lyun.estate.op.dianping.comment.domain.CommentDTO;
+import com.lyun.estate.op.dianping.comment.entity.Comment;
 import com.lyun.estate.op.dianping.corp.domain.CorpDetailDTO;
 import com.lyun.estate.op.dianping.corp.entity.*;
 import com.lyun.estate.op.dianping.comment.repo.CommentRepo;
@@ -58,8 +58,8 @@ public class CorpService {
         return detail;
     }
 
-    public List<Comment> getCorpComments(long id, String token, PageBounds pageBounds) {
-        List<RawComment> raws = commentRepo.getCorpComments(id, pageBounds.getOffset(), pageBounds.getLimit());
+    public List<CommentDTO> getCorpComments(long id, String token, PageBounds pageBounds) {
+        List<Comment> raws = commentRepo.getCorpComments(id, pageBounds.getOffset(), pageBounds.getLimit());
 
         List<Long> likes = new ArrayList<>();
         if (token != null) {
@@ -67,17 +67,17 @@ public class CorpService {
             likes = commentRepo.getMyLikes(userId);
         }
 
-        List<Comment> comments = new ArrayList<>();
-        for (RawComment r : raws) {
+        List<CommentDTO> commentDTOS = new ArrayList<>();
+        for (Comment r : raws) {
             r.setCorpId(id);
-            Comment comment = new Comment(r);
+            CommentDTO commentDTO = new CommentDTO(r);
             String[] tags = r.getTags().split("_");
-            comment.setTags(Arrays.asList(tags));
-            comment.setLiked(likes.contains(r.getId()));
-            comments.add(comment);
+            commentDTO.setTags(Arrays.asList(tags));
+            commentDTO.setLiked(likes.contains(r.getId()));
+            commentDTOS.add(commentDTO);
         }
 
-        return comments;
+        return commentDTOS;
     }
 
     public void create(String name, long userId) {

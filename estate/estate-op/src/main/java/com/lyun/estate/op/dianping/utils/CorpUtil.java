@@ -92,13 +92,13 @@ public class CorpUtil {
         return tagList;
     }
 
-//    public static void collectTags(List<Comment> comments, List<RawComment> raws) {
+//    public static void collectTags(List<CommentDTO> comments, List<Comment> raws) {
 //
-//        for (Comment comment : comments) {
+//        for (CommentDTO comment : comments) {
 //            List<String> tags = new ArrayList<>();
 //
 //
-//            for (RawComment raw : raws) {
+//            for (Comment raw : raws) {
 //                if (!contain(tags, raw.getTags())) {
 //                    tags.add(raw.getTags());
 //                }
@@ -109,13 +109,13 @@ public class CorpUtil {
 //
 //    }
 //
-//    public static List<Comment> distinct(List<RawComment> raw) {
-//        List<Comment> comments = new ArrayList<>();
-//        for (RawComment tmp : raw) {
+//    public static List<CommentDTO> distinct(List<Comment> raw) {
+//        List<CommentDTO> comments = new ArrayList<>();
+//        for (Comment tmp : raw) {
 //            Pair<Integer, Boolean> exist = exist(comments, tmp);
 //
 //            if (!exist.getValue()) {
-//                Comment cmt = new Comment(tmp);
+//                CommentDTO cmt = new CommentDTO(tmp);
 //                comments.add(cmt);
 //            }
 //        }
@@ -123,7 +123,7 @@ public class CorpUtil {
 //        return comments;
 //    }
 //
-//    public static Pair<Integer, Boolean> exist(List<Comment> list, RawComment target) {
+//    public static Pair<Integer, Boolean> exist(List<CommentDTO> list, Comment target) {
 //        for (int i = 0; i < list.size(); i++) {
 //            if (list.get(i).getId() == target.getId()) {
 //                return new Pair<>(i, true);

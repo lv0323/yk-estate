@@ -3,7 +3,7 @@ package com.lyun.estate.op.dianping.corp.entity;
 /**
  * Created by localuser on 2017/5/31.
  */
-public class BooleanResponse {
+public class LikedDTO {
     public boolean isLiked() {
         return liked;
     }

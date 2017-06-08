@@ -1,13 +1,13 @@
 package com.lyun.estate.op.dianping.comment.domain;
 
-import com.lyun.estate.op.dianping.comment.entity.RawComment;
+import com.lyun.estate.op.dianping.comment.entity.Comment;
 
 import java.util.List;
 
 /**
  * Created by localuser on 2017/5/15.
  */
-public class Comment {
+public class CommentDTO {
 
     private long id;
 
@@ -50,7 +50,7 @@ public class Comment {
 
     private String corpName;
 
-    public Comment(RawComment raw){
+    public CommentDTO(Comment raw){
         this.id = raw.getId();
         this.content = raw.getContent();
         this.positiveCount = raw.getPositiveCount();
@@ -62,7 +62,7 @@ public class Comment {
         this.corpName = raw.getCorpName();
     }
 
-    private Comment(){
+    private CommentDTO(){
 
     }
 

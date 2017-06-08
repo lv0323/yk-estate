@@ -2,8 +2,8 @@ package com.lyun.estate.op.dianping.comment;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.lyun.estate.op.dianping.corp.entity.ActionResultDTO;
-import com.lyun.estate.op.dianping.corp.entity.BooleanResponse;
-import com.lyun.estate.op.dianping.comment.domain.Comment;
+import com.lyun.estate.op.dianping.corp.entity.LikedDTO;
+import com.lyun.estate.op.dianping.comment.domain.CommentDTO;
 import com.lyun.estate.op.dianping.comment.service.CommentService;
 import com.lyun.estate.op.dianping.utils.CorpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,15 +60,15 @@ public class CommentController {
     }
 
     @GetMapping(value = "/{commentId}/is_like")
-    public BooleanResponse liked(@RequestHeader String token, @PathVariable long commentId) {
+    public LikedDTO liked(@RequestHeader String token, @PathVariable long commentId) {
 
         long userId = CorpUtil.getUserId(token);
-        BooleanResponse response = new BooleanResponse();
+        LikedDTO response = new LikedDTO();
         response.setLiked(commentService.liked(commentId, userId));
         return response;
     }
     @GetMapping(value = "/my")
-    public List<Comment> my(@RequestHeader String token, @RequestHeader("X-PAGING")PageBounds pageBounds) {
+    public List<CommentDTO> my(@RequestHeader String token, @RequestHeader("X-PAGING")PageBounds pageBounds) {
 
         long userId = CorpUtil.getUserId(token);
         return commentService.myComments(userId, pageBounds);
