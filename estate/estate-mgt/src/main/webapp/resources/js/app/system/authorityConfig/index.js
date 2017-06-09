@@ -275,6 +275,8 @@ require(['main-app', contextPath + '/js/service/department-service.js',
             };
             _this.getPositionAllAuthority = function(position, reset){
                 _this.baseData.currentPosition = position;
+                $('a.position-list-nav[id='+position.id+']').addClass('curSelectedNode');
+                $('a.position-list-nav[id!='+position.id+']').removeClass('curSelectedNode');
                 if(reset){
                     $('#first-nav-tab').click()
                 }

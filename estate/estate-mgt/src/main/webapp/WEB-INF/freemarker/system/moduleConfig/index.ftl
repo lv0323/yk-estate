@@ -12,7 +12,7 @@
                 </a>
             </li>
             <li class="active">
-                权限管理
+                岗位模块
             </li>
         </ol>
     </section>
@@ -29,7 +29,7 @@
                             <ul id="positionList" class="ztree">
                                 <li ng-repeat="position in ctrl.baseData.position"
                                     ng-click="ctrl.getModuleConfig(position)">
-                                    <a href="javascript:;" class="position-list-nav">
+                                    <a href="javascript:;" class="position-list-nav" ng-attr-id="{{position.id}}">
                                         <span class="button ico_docu position_ico"></span>
                                         <span class="treeDemo_1_span" ng-bind="position.name"></span>
                                     </a>

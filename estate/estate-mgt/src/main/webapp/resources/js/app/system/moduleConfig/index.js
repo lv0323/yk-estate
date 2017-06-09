@@ -69,6 +69,8 @@ require(['main-app', contextPath + '/js/service/department-service.js',
             });
             /*end 岗位*/
             _this.getModuleConfig = function(position){
+                $('a.position-list-nav[id='+position.id+']').addClass('curSelectedNode');
+                $('a.position-list-nav[id!='+position.id+']').removeClass('curSelectedNode');
                 if(position &&position.id){
                     _this.moduleConfig.targetId = position.id;
                 }
