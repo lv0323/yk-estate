@@ -306,38 +306,17 @@
                                             <div class="tweet-wrapper clearfix">
                                                 <h4>发布管理</h4>
                                                 <div class="form-inline">
-                                                    <div class="clearfix m-t-7">
-                                                        <label class="pull-left control-label">确认发布外网：</label>
-                                                        <div class="col-sm-4">
-                                                            <select select-picker class="selectpicker show-menu-arrow form-control"
-                                                                    ng-model="ctrl.authorityFang.FANG_CONFIRM_PUBLIC">
-                                                                <#list authorityScope ?if_exists as type>
-                                                                    <option value="${type.name()}">${type.getLabel()}</option>
-                                                                </#list>
-                                                            </select>
-                                                        </div>
+                                                    <div class="clearfix checkbox checkbox-nice">
+                                                        <input id="100501" ng-model="ctrl.authorityFang.FANG_CONFIRM_PUBLIC" type="checkbox">
+                                                        <label for="100501">确认发布外网：</label>
                                                     </div>
-                                                    <div class="clearfix m-t-7">
-                                                        <label class="pull-left control-label">拒绝发布外网：</label>
-                                                        <div class="col-sm-4">
-                                                            <select select-picker class="selectpicker show-menu-arrow form-control"
-                                                                    ng-model="ctrl.authorityFang.FANG_REJECT_PUBLIC">
-                                                                <#list authorityScope ?if_exists as type>
-                                                                    <option value="${type.name()}">${type.getLabel()}</option>
-                                                                </#list>
-                                                            </select>
-                                                        </div>
+                                                    <div class="clearfix checkbox checkbox-nice" >
+                                                        <input id="100502" ng-model="ctrl.authorityFang.FANG_REJECT_PUBLIC" type="checkbox">
+                                                        <label for="100502">拒绝发布外网：</label>
                                                     </div>
-                                                    <div class="clearfix m-t-7">
-                                                        <label class="pull-left control-label">撤销发布外网：</label>
-                                                        <div class="col-sm-4">
-                                                            <select select-picker class="selectpicker show-menu-arrow form-control"
-                                                                    ng-model="ctrl.authorityFang.FANG_UNDO_PUBLIC">
-                                                                <#list authorityScope ?if_exists as type>
-                                                                    <option value="${type.name()}">${type.getLabel()}</option>
-                                                                </#list>
-                                                            </select>
-                                                        </div>
+                                                    <div class="clearfix checkbox checkbox-nice">
+                                                        <input id="100503" ng-model="ctrl.authorityFang.FANG_UNDO_PUBLIC" type="checkbox">
+                                                        <label for="100503">撤销发布外网：</label>
                                                     </div>
                                                 </div>
                                             </div>
