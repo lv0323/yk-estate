@@ -36,7 +36,7 @@
                                 <input id="comnoPost" value="BSnlhD" type="hidden">
                                 <ul id="positionList" class="ztree">
                                     <li ng-repeat="position in ctrl.baseData.position" ng-click="ctrl.getPositionAllAuthority(position, true)">
-                                        <a href="javascript:;" class="position-list-nav">
+                                        <a href="javascript:;" class="position-list-nav" ng-attr-id="{{position.id}}">
                                             <span class="button ico_docu position_ico"></span>
                                             <span class="treeDemo_1_span" ng-bind="position.name"></span>
                                         </a>
