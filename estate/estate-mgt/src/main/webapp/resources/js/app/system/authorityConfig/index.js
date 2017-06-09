@@ -64,17 +64,17 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                     VIEW_FANG_CONTACT:'NONE',
                     MODIFY_FANG_CONTACT :'NONE'
                 },
-                xiaoqu:{
-                    CREATE_XIAO_QU :'NONE',
-                    MODIFY_XIAO_QU:'NONE',
-                    DEL_XIAO_QU:'NONE',
-                    CREATE_BUILDING:'NONE',
-                    MODIFY_BUILDING:'NONE',
-                    DEL_BUILDING:'NONE'
+                xiaoqu: {
+                    CREATE_XIAO_QU: false,
+                    MODIFY_XIAO_QU: false,
+                    DEL_XIAO_QU: false,
+                    CREATE_BUILDING: false,
+                    MODIFY_BUILDING: false,
+                    DEL_BUILDING: false
                 },
-                organization:{
-                    ORG_MANAGEMENT :'NONE',
-                    UNBIND_DEVICE:'NONE'
+                organization: {
+                    ORG_MANAGEMENT: false,
+                    UNBIND_DEVICE: false
                 },
                 company:{
                     PERMISSION_MANAGEMENT:false,
