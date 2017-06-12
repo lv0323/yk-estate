@@ -1,7 +1,6 @@
 package com.lyun.estate.op.dianping.corp.domain;
 
 import com.lyun.estate.op.dianping.corp.entity.Corp;
-import com.lyun.estate.op.dianping.corp.entity.TagCountDTO;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.lyun.estate.op.dianping.comment;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.lyun.estate.op.dianping.corp.entity.ActionResultDTO;
-import com.lyun.estate.op.dianping.corp.entity.LikedDTO;
+import com.lyun.estate.op.dianping.corp.domain.ActionResultDTO;
+import com.lyun.estate.op.dianping.corp.domain.LikedDTO;
 import com.lyun.estate.op.dianping.comment.domain.CommentDTO;
 import com.lyun.estate.op.dianping.comment.service.CommentService;
 import com.lyun.estate.op.dianping.utils.CorpUtil;

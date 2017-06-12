@@ -1,7 +1,7 @@
-package com.lyun.estate.op.dianping.utils;
+package com.lyun.estate.op.dianping.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lyun.estate.op.dianping.corp.entity.*;
+import com.lyun.estate.op.dianping.corp.domain.ActionResultDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;

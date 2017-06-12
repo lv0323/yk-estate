@@ -1,7 +1,7 @@
 package com.lyun.estate.op.dianping.user;
 
-import com.lyun.estate.op.dianping.corp.entity.ActionResultDTO;
-import com.lyun.estate.op.dianping.corp.domain.WxLoginToken;
+import com.lyun.estate.op.dianping.corp.domain.ActionResultDTO;
+import com.lyun.estate.op.dianping.user.domain.TokenDTO;
 import com.lyun.estate.op.dianping.user.service.UserService;
 import com.lyun.estate.op.dianping.utils.CorpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class UserController {
 
 
     @PostMapping(value = "/wx_login", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public WxLoginToken wxLogin(@RequestParam String code){
+    public TokenDTO wxLogin(@RequestParam String code){
 //        return userService.wxLogin(code);
         return userService.wxLogin(code);
     }

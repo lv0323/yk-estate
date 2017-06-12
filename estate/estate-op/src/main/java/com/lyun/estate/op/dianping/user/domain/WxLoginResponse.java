@@ -1,4 +1,4 @@
-package com.lyun.estate.op.dianping.corp.domain;
+package com.lyun.estate.op.dianping.user.domain;
 
 import com.google.gson.annotations.SerializedName;
 

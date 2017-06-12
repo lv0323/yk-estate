@@ -2,7 +2,9 @@ package com.lyun.estate.op.dianping.corp;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.lyun.estate.op.dianping.comment.domain.CommentDTO;
+import com.lyun.estate.op.dianping.corp.domain.ActionResultDTO;
 import com.lyun.estate.op.dianping.corp.domain.CorpDetailDTO;
+import com.lyun.estate.op.dianping.corp.domain.JudgeStateDTO;
 import com.lyun.estate.op.dianping.corp.entity.*;
 import com.lyun.estate.op.dianping.corp.service.CorpService;
 import com.lyun.estate.op.dianping.utils.CorpUtil;

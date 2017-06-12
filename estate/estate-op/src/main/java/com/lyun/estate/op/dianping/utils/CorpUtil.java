@@ -1,12 +1,16 @@
 package com.lyun.estate.op.dianping.utils;
 
-import com.lyun.estate.op.dianping.corp.entity.BizRuntimeException;
-import com.lyun.estate.op.dianping.corp.entity.TagCountDTO;
+import com.google.gson.Gson;
+import com.lyun.estate.op.dianping.common.BizRuntimeException;
+import com.lyun.estate.op.dianping.corp.domain.TagCountDTO;
+import com.lyun.estate.op.dianping.user.domain.WeChatProperty;
+import com.lyun.estate.op.dianping.user.domain.WxLoginResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,6 +95,30 @@ public class CorpUtil {
 
         return tagList;
     }
+
+    public static WxLoginResponse loginToWX(String loginUrl, String jscode){
+
+        String urlStr = String.format(loginUrl, jscode);
+
+        RestTemplate restTemplate = new RestTemplate();
+        String str = restTemplate.getForObject(urlStr, String.class);
+
+        Gson gson = new Gson();
+        WxLoginResponse response = gson.fromJson(str, WxLoginResponse.class);
+
+        if( response == null){
+            logger.error("weixin login failed : response == null url="+urlStr);
+            throw new BizRuntimeException("wxLogin no response");
+        }
+
+        if(response.getErrmsg() != null ){
+            logger.error("weixin login failed : url="+urlStr+" errmsg="+response.getErrmsg());
+            throw new BizRuntimeException(response.getErrmsg());
+        }
+
+        return response;
+    }
+
 
 //    public static void collectTags(List<CommentDTO> comments, List<Comment> raws) {
 //

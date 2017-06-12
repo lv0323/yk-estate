@@ -1,4 +1,4 @@
-package com.lyun.estate.op.dianping.corp.entity;
+package com.lyun.estate.op.dianping.corp.domain;
 
 /**
  * Created by localuser on 2017/5/15.
