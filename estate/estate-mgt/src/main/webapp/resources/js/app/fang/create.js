@@ -294,11 +294,11 @@ require(['main-app',
             };
             /* 添加单元*/
             _this.unitAdd = function(){
-                _this.data.newBuilding.unitList.unshift('');
+                _this.newBuilding.unitList.unshift('');
             };
             /*删除单元*/
             _this.unitRemove = function(item, index){
-                _this.data.newBuilding.unitList.splice(index, 1);
+                _this.newBuilding.unitList.splice(index, 1);
             };
             _this.addBuildInit = function(){
                 XiaoquService.getXiaoquInfo({id: _this.data.xiaoQuId}).then(function(response){
@@ -340,7 +340,11 @@ require(['main-app',
                     }
                     return;
                 }
-                FangService.buildingPost(_this.newBuilding).then(function(){
+                var buildingData = angular.copy(_this.newBuilding);
+                buildingData.unitList.unshift(buildingData.firstUnit);
+                buildingData.unitNames = buildingData.unitList;
+                delete buildingData.unitList;
+                    FangService.buildingPost(buildingData).then(function(){
                     SweetAlertHelp.success();
                     $('#addBuildModel').modal('hide');
                     _this.buildingsGet(_this.newBuilding.xiaoQuId);
@@ -368,6 +372,7 @@ require(['main-app',
                         return;
                     }
                 FangService.buildingUnitPost(_this.newUnit).then(function(){
+                    SweetAlertHelp.success();
                     $('#addUnitModel').modal('hide');
                     _this.unitsGet(_this.data.buildingId);
                 }).fail(function(response){
