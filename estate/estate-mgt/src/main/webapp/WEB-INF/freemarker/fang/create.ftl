@@ -164,7 +164,7 @@
                                                     ㎡
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-2">
-                                                    <input type="text" name="housePartsqm" class="form-control" placeholder="套内面积" ng-model="ctrl.data.realArea" ng-pattern="/^\d{1,5}([.]\d{1,2})*$/" ng-blur="ctrl.checkArea('realArea')"/>
+                                                    <input type="text" name="housePartsqm" class="form-control" placeholder="套内面积" ng-model="ctrl.data.realArea" ng-pattern="/^\d{1,5}([.]\d{1,2})*$/"/>
                                                 </div>
                                                 <div class="pull-left m-t-7 p-l-0">
                                                     ㎡
