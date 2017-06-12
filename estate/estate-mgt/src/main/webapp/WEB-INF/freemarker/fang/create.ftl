@@ -548,7 +548,7 @@
                                 <div class="clearfix">
                                     <div class="col-lg-10 col-md-10 col-sm-10" style="padding:0">
                                         <input type="text" name="firstUnit" reg="^\S+$" class="form-control"
-                                               required ng-model="ctrl.data.modifyBuilding.firstUnit"/>
+                                               required ng-model="ctrl.newBuilding.firstUnit"/>
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 clearfix m-t-7">
                                         <a href="#">
@@ -556,9 +556,9 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div ng-repeat="unit in ctrl.data.modifyBuilding.unitList track by $index" ng-class="{'m-t-7':true }" class="clearfix">
+                                <div ng-repeat="unit in ctrl.newBuilding.unitList track by $index" ng-class="{'m-t-7':true }" class="clearfix">
                                     <div class="col-lg-10 col-md-10 col-sm-10" style="padding:0">
-                                        <input type="text" reg="^\S+$" class="form-control" ng-model="ctrl.data.modifyBuilding.unitList[$index]"/>
+                                        <input type="text" reg="^\S+$" class="form-control" ng-model="ctrl.newBuilding.unitList[$index]"/>
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 m-t-7">
                                         <a href="#">
