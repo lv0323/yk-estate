@@ -55,6 +55,9 @@ public enum Permission implements LabelEnum {
     LIST_FRANCHISEE("查看加盟信息", PermissionDefine.Category.FRANCHISEE),
     MODIFY_FRANCHISEE("修改加盟信息", PermissionDefine.Category.FRANCHISEE),
 
+    //运营管理
+    OP_MANAGE_XY("信誉平台管理", PermissionDefine.Category.OPERATION),
+
     //页面模块
     P_FANG("房源管理", PermissionDefine.Category.PAGE),
     P_FANG_LIST("房源列表", PermissionDefine.Category.PAGE),
@@ -80,6 +83,8 @@ public enum Permission implements LabelEnum {
     P_FRANCHISEE_RA("区域代理加盟", PermissionDefine.Category.PAGE),
     P_FANG_COLLECTION("房源采集", PermissionDefine.Category.PAGE),
     P_FANG_COLLECTION_POOL("房源池", PermissionDefine.Category.PAGE),
+    P_OPERATION("运营管理", PermissionDefine.Category.PAGE),
+    P_OPERATION_XY("信誉平台", PermissionDefine.Category.PAGE),
 
     //公司性质
     CT_YK("盈科", PermissionDefine.Category.COMPANY_TYPE),
