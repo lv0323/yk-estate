@@ -36,7 +36,7 @@ public class DianpingProperties {
 
     @PostConstruct
     public void init() {
-        System.out.println("================== " + weChatLoginUrl + "================== ");
-        System.out.println("================== " + tokenSecret + "================== ");
+//        System.out.println("================== " + weChatLoginUrl + "================== ");
+//        System.out.println("================== " + tokenSecret + "================== ");
     }
 }
