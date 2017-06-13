@@ -25,6 +25,9 @@ public class CorpController {
     @Autowired
     private CorpService corpService;
 
+    @Autowired
+    private CorpUtil util;
+
     @GetMapping("/search")
     public List<Corp> search(@RequestParam String corpName) {
 
@@ -41,7 +44,7 @@ public class CorpController {
     @PostMapping(value = "/create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public ActionResultDTO create(@RequestHeader String token, @RequestParam String name) {
 
-        long userId = CorpUtil.getUserId(token);
+        long userId = util.getUserId(token);
         corpService.create(name, userId);
 
         return new ActionResultDTO().setSuccess(true);
@@ -56,7 +59,7 @@ public class CorpController {
     @GetMapping(value = "/{corpId}/judgement_my")
     public JudgeStateDTO getJudgementStatus(@RequestHeader String token, @PathVariable long corpId) {
 
-        long userId = CorpUtil.getUserId(token);
+        long userId = util.getUserId(token);
 
         JudgeStateDTO response = new JudgeStateDTO();
         response.setStatus(corpService.getMyJudgement(corpId, userId).toString());
@@ -67,7 +70,7 @@ public class CorpController {
     @PostMapping(value = "/{corpId}/judge_good", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public ActionResultDTO good(@RequestHeader String token, @PathVariable long corpId) {
 
-        long userId = CorpUtil.getUserId(token);
+        long userId = util.getUserId(token);
 
         return corpService.good(corpId, userId);
 
@@ -75,7 +78,7 @@ public class CorpController {
     @PostMapping(value = "/{corpId}/judge_bad", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public ActionResultDTO bad(@RequestHeader String token, @PathVariable long corpId) {
 
-        long userId = CorpUtil.getUserId(token);
+        long userId = util.getUserId(token);
         return corpService.bad(corpId, userId);
     }
 }

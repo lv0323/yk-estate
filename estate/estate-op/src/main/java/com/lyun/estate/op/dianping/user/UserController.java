@@ -17,6 +17,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    private CorpUtil util;
 
     /**登录流程
      1 获得code；
@@ -42,7 +44,7 @@ public class UserController {
     @PostMapping(value = "/wx_userinfo", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public ActionResultDTO userInfo(@RequestHeader String token, @RequestParam String nicky, @RequestParam String avatar){
 
-        long userId = CorpUtil.getUserId(token);
+        long userId = util.getUserId(token);
 
         userService.userInfo(userId, nicky, avatar);
 

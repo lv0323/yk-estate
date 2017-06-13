@@ -1,8 +1,6 @@
 package com.lyun.estate.op.dianping.user.service;
 
-import com.google.gson.Gson;
-import com.lyun.estate.op.dianping.common.BizRuntimeException;
-import com.lyun.estate.op.dianping.user.domain.WeChatProperty;
+import com.lyun.estate.op.config.DianpingProperties;
 import com.lyun.estate.op.dianping.user.domain.WxLoginResponse;
 import com.lyun.estate.op.dianping.user.domain.TokenDTO;
 import com.lyun.estate.op.dianping.user.repo.UserRepo;
@@ -12,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Created by localuser on 2017/5/16.
@@ -24,12 +21,15 @@ public class UserService {
     UserRepo userRepo;
 
     @Autowired
-    private WeChatProperty weChatProperty;
+    private DianpingProperties properties;
+
+    @Autowired
+    private CorpUtil util;
 
     @Transactional
     public TokenDTO wxLogin(String jscode){
 
-        WxLoginResponse response = CorpUtil.loginToWX(weChatProperty.getLoginUrl(), jscode);
+        WxLoginResponse response = CorpUtil.loginToWX(properties.getWeChatLoginUrl(), jscode);
 
         if( userRepo.registered(response.getOpenId()) == 0){
 
@@ -47,7 +47,7 @@ public class UserService {
 
         long userId = userRepo.getByOpenId(response.getOpenId());
 
-        String token = CorpUtil.getToken(userId);
+        String token = util.getToken(userId);
 
         return new TokenDTO().setToken(token);
     }

@@ -22,6 +22,8 @@ public class CommentController {
 
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private CorpUtil util;
 
 
     @PostMapping(value = "/create", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
@@ -31,7 +33,7 @@ public class CommentController {
                                   @RequestParam(required = false) String shopfront,
                                   @RequestParam String content
                                  ) {
-        long userId = CorpUtil.getUserId(token);
+        long userId = util.getUserId(token);
 
         if(shopfront == null){
             shopfront = "";
@@ -44,7 +46,7 @@ public class CommentController {
     @PostMapping(value = "/{commentId}/like", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public ActionResultDTO like(@RequestHeader String token, @PathVariable long commentId){
 
-        long userId = CorpUtil.getUserId(token);
+        long userId = util.getUserId(token);
 
         commentService.like(commentId, userId);
 
@@ -52,7 +54,7 @@ public class CommentController {
     }
     @PostMapping(value = "/{commentId}/cancel_like", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public ActionResultDTO cancelLike(@RequestHeader String token, @PathVariable long commentId){
-        long userId = CorpUtil.getUserId(token);
+        long userId = util.getUserId(token);
 
         commentService.cancelLike(commentId, userId);
 
@@ -62,7 +64,7 @@ public class CommentController {
     @GetMapping(value = "/{commentId}/is_like")
     public LikedDTO liked(@RequestHeader String token, @PathVariable long commentId) {
 
-        long userId = CorpUtil.getUserId(token);
+        long userId = util.getUserId(token);
         LikedDTO response = new LikedDTO();
         response.setLiked(commentService.liked(commentId, userId));
         return response;
@@ -70,7 +72,7 @@ public class CommentController {
     @GetMapping(value = "/my")
     public List<CommentDTO> my(@RequestHeader String token, @RequestHeader("X-PAGING")PageBounds pageBounds) {
 
-        long userId = CorpUtil.getUserId(token);
+        long userId = util.getUserId(token);
         return commentService.myComments(userId, pageBounds);
     }
 

@@ -1,42 +1,48 @@
 package com.lyun.estate.op.dianping.utils;
 
 import com.google.gson.Gson;
+import com.lyun.estate.op.config.DianpingProperties;
 import com.lyun.estate.op.dianping.common.BizRuntimeException;
 import com.lyun.estate.op.dianping.corp.domain.TagCountDTO;
-import com.lyun.estate.op.dianping.user.domain.WeChatProperty;
 import com.lyun.estate.op.dianping.user.domain.WxLoginResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+@Component
 public class CorpUtil {
     private static final Logger logger = LoggerFactory.getLogger(CorpUtil.class);
 
-    private static String secret = "dianpingSecret123456";
+    @Autowired
+    DianpingProperties properties;
 
-    public static String getToken(long userId){
+//    private static String secret = "dianpingSecret123456";
+
+    public String getToken(long userId){
         String compactJws = Jwts.builder()
                 .setSubject("corp_dianping")
                 .claim("user_id", ""+userId)
                 .claim("start_time", ""+System.currentTimeMillis())
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS512, properties.getTokenSecret())
                 .compact();
         return compactJws;
     }
 
 
-    public static Long getUserId(String token){
+    public Long getUserId(String token){
 
         try {
             Claims claims = Jwts.parser()
-                    .setSigningKey(secret)
+                    .setSigningKey(properties.getTokenSecret())
                     .parseClaimsJws(token)
                     .getBody();
             Object object = claims.get("user_id");

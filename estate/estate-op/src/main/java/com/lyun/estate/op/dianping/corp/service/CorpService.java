@@ -31,6 +31,9 @@ public class CorpService {
     @Autowired
     private CommentRepo commentRepo;
 
+    @Autowired
+    private CorpUtil util;
+
     public List<Corp> search(String name) {
 
         List<Corp> corps = new ArrayList<>();
@@ -66,7 +69,7 @@ public class CorpService {
 
         List<Long> likes = new ArrayList<>();
         if (token != null) {
-            long userId = CorpUtil.getUserId(token);
+            long userId = util.getUserId(token);
             likes = commentRepo.getMyLikes(userId);
         }
 
