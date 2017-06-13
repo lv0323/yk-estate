@@ -35,6 +35,11 @@ public class CompanyPermissionService {
         limitCompanyTypes.put(Permission.FANG_REJECT_PUBLIC, Lists.newArrayList(CompanyDefine.Type.YK));
         limitCompanyTypes.put(Permission.FANG_UNDO_PUBLIC, Lists.newArrayList(CompanyDefine.Type.YK));
 
+        limitCompanyTypes.put(Permission.OP_MANAGE_XY, Lists.newArrayList(CompanyDefine.Type.YK));
+        limitCompanyTypes.put(Permission.P_OPERATION, Lists.newArrayList(CompanyDefine.Type.YK));
+        limitCompanyTypes.put(Permission.P_OPERATION_XY, Lists.newArrayList(CompanyDefine.Type.YK));
+
+
         limitCompanyTypes.put(Permission.P_FRANCHISEE,
                 Lists.newArrayList(CompanyDefine.Type.YK, CompanyDefine.Type.REGIONAL_AGENT));
         limitCompanyTypes.put(Permission.P_FRANCHISEE_C,
