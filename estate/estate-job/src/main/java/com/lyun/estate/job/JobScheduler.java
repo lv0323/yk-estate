@@ -1,5 +1,8 @@
 package com.lyun.estate.job;
 
+import com.lyun.estate.biz.support.settings.SettingProvider;
+import com.lyun.estate.biz.support.settings.def.NameSpace;
+import com.lyun.estate.biz.support.settings.entity.Setting;
 import com.lyun.estate.job.config.JobConfig;
 import com.lyun.estate.job.context.JobContext;
 import com.lyun.estate.job.fangcollect.Fy01MappingJob;
@@ -27,6 +30,9 @@ public class JobScheduler implements SchedulingConfigurer {
     @Autowired
     private Fy01MappingJob fy01MappingJob;
 
+    @Autowired
+    private SettingProvider settingProvider;
+
     @Bean(destroyMethod = "shutdown")
     public Executor taskExecutor() {
         return Executors.newScheduledThreadPool(100);
@@ -34,7 +40,12 @@ public class JobScheduler implements SchedulingConfigurer {
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+        String cronString = "0 0 6 * * ?";
+        Setting cronSetting = settingProvider.find(NameSpace.JOB_CONFIG, "fy01_mapping_cron");
+        if (cronSetting != null) {
+            cronString = cronSetting.getValue();
+        }
         taskRegistrar.setScheduler(taskExecutor());
-        taskRegistrar.addCronTask(fy01MappingJob, "0 0 1 ? * SUN");
+        taskRegistrar.addCronTask(fy01MappingJob, cronString);
     }
 }

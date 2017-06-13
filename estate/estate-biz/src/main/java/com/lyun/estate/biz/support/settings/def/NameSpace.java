@@ -7,5 +7,6 @@ public enum NameSpace {
     FILE,
     ANDROID_VERSION,
     CONFIG,
-    XIAO_QU
+    XIAO_QU,
+    JOB_CONFIG
 }
