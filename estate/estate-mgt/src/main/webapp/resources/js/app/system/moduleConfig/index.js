@@ -29,7 +29,8 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                 "P_ORG": ['P_ORG_DEPT', 'P_ORG_POSITION', 'P_ORG_EMPLOYEE'],
                 "P_CONFIG": ['P_CONFIG_AUDIT', 'P_CONFIG_HOUSE_DICT', 'P_CONFIG_PAGE', 'P_CONFIG_PERMISSION'],
                 "P_FRANCHISEE": ['P_FRANCHISEE_C', 'P_FRANCHISEE_SS', 'P_FRANCHISEE_RA'],
-                "P_FANG_COLLECTION": ['P_FANG_COLLECTION_POOL']
+                "P_FANG_COLLECTION": ['P_FANG_COLLECTION_POOL'],
+                "P_OPERATION":["P_OPERATION_XY"]
             };
             var initData ={
                 P_FANG: false,
@@ -56,6 +57,8 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                 P_FRANCHISEE_RA: false,
                 P_FANG_COLLECTION: false,
                 P_FANG_COLLECTION_POOL: false,
+                P_OPERATION: false,
+                P_OPERATION_XY: false
             };
             _this.moduleAuthority = {};
             _this.moduleAuthority =angular.copy(initData);

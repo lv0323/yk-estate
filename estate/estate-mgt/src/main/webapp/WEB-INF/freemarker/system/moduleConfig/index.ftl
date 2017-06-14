@@ -215,6 +215,28 @@
                                     </div>
                                 </div>
                             </div>
+                            <@checkPermission value='CT_YK'>
+                            <div class="item" style="margin-bottom: 10px; opacity: 1;">
+                                <div class="box box-solid backf5 " style="margin-bottom:0">
+                                    <header class="box-header with-border">
+                                        <div class="checkbox checkbox-nice">
+                                            <input id="P_OPERATION" ng-model="ctrl.moduleAuthority.P_OPERATION" type="checkbox" ng-change="ctrl.allPickChange('P_OPERATION')">
+                                            <label for="P_OPERATION"><h3 class="box-title">运营管理</h3></label>
+                                        </div>
+                                    </header>
+                                    <div class="box-body">
+                                        <div class="form-group form-inline">
+                                            <div class="col-xs-6">
+                                                <div class="checkbox checkbox-nice">
+                                                    <input id="P_OPERATION_XY" ng-model="ctrl.moduleAuthority.P_OPERATION_XY" type="checkbox" ng-change="ctrl.dataChange('P_OPERATION', ctrl.moduleAuthority.P_OPERATION_XY)">
+                                                    <label for="P_OPERATION_XY">信誉平台</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </@>
                             <div class="item" style="margin-bottom: 10px; opacity: 1;">
                                 <div class="box box-solid backf5 " style="margin-bottom:0">
                                     <header class="box-header with-border">
