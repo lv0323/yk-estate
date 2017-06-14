@@ -67,6 +67,11 @@
                             <a class="franchisee" href="#franchisee" data-toggle="tab" aria-expanded="false">加盟</a>
                         </li>
                     </@>
+                <@checkPermission value='CT_YK'>
+                        <li ng-class="{'active' : ctrl.config.category.OPERATION==ctrl.authorityConfig.category}">
+                            <a class="franchisee" href="#opManager" data-toggle="tab" aria-expanded="false">运营管理</a>
+                        </li>
+                    </@>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane animated fadeInDown" ng-class="{active : ctrl.config.category.FANG==ctrl.authorityConfig.category}" id="house">
@@ -521,6 +526,32 @@
                             </div>
                             <div class="clearfix text-center">
                                 <button type="button" class="btn btn-primary" ng-click="ctrl.updateAuthority('FRANCHISEE')"><i class="fa fa-save"></i> 保存</button>
+                            </div>
+                        </form>
+                    </div>
+                    </@>
+                <@checkPermission value='CT_YK'>
+                    <div class="tab-pane animated fadeInDown" ng-class="{active : ctrl.config.category.OPERATION==ctrl.authorityConfig.category}" id="opManager">
+                        <form action="#" method="post" class="form-horizontal" id="glForm">
+                            <div class="gridbox gridalicious authority-content">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="item">
+                                            <div class="tweet-wrapper clearfix">
+                                                <h4>管理</h4>
+                                                <div class="form-inline">
+                                                    <div class="checkbox checkbox-nice">
+                                                        <input id="pane6_1"  type="checkbox" ng-model="ctrl.authorityOperatioon.OP_MANAGE_XY">
+                                                        <label for="pane6_1">信誉平台</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix text-center">
+                                <button type="button" class="btn btn-primary" ng-click="ctrl.updateAuthority(ctrl.config.category.OPERATION)"><i class="fa fa-save"></i> 保存</button>
                             </div>
                         </form>
                     </div>

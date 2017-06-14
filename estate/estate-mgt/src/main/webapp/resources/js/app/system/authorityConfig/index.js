@@ -22,7 +22,8 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                     XIAOQU: 'XIAO_QU',
                     ORGANIZATION: 'ORGANIZATION',
                     COMPANY: 'COMPANY',
-                    FRANCHISEE:'FRANCHISEE'
+                    FRANCHISEE: 'FRANCHISEE',
+                    OPERATION: 'OPERATION'
                 }
             };
             _this.baseData = {
@@ -84,6 +85,9 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                     CREATE_FRANCHISEE: false,
                     LIST_FRANCHISEE: false,
                     MODIFY_FRANCHISEE:false
+                },
+                operation:{
+                    OP_MANAGE_XY: false,
                 }
             };
             _this.authorityFang = {};
@@ -91,11 +95,13 @@ require(['main-app', contextPath + '/js/service/department-service.js',
             _this.authorityOrganization = {};
             _this.authorityCompany = {};
             _this.authorityFranchisee = {};
+            _this.authorityOperatioon = {};
             angular.copy(initData.fang, _this.authorityFang);
             angular.copy(initData.xiaoqu, _this.authorityXiaoqu);
             angular.copy(initData.organization, _this.authorityOrganization);
             angular.copy(initData.company, _this.authorityCompany);
             angular.copy(initData.franchisee, _this.authorityFranchisee);
+            angular.copy(initData.operation, _this.authorityOperatioon);
 
             /* 部门员工树*/
             DepartmentService.getAllDepartment().done(function(data){
@@ -183,85 +189,63 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                 $timeout(function(){
                     $('select').selectpicker("refresh");
                 });
+            };
+            /*获取权限的通用方法*/
+            function getAuthority(config, callback) {
+                AuthorityService.getGrants(config).then(function(data){
+                    callback && callback(data)
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message: response && response.message});
+                });
             }
 
             _this.getFangAuthority = function(){
                 var config = angular.copy(_this.authorityConfig);
                 config.category = _this.config.category.FANG;
-              AuthorityService.getGrants(config).then(function(data){
-                  angular.copy(initData.fang, _this.authorityFang);
-                  authorityCommonDeal(data, _this.authorityFang);
-              }).fail(function(response){
-                  SweetAlertHelp.fail({message: response && response.message});
-              });
+                getAuthority(config, function(data){
+                    angular.copy(initData.fang, _this.authorityFang);
+                    authorityCommonDeal(data, _this.authorityFang);
+                });
             };
             _this.getXiaoquAuthority = function(){
                 var config = angular.copy(_this.authorityConfig);
                 config.category = _this.config.category.XIAOQU;
-                AuthorityService.getGrants(config).then(function(data){
+                getAuthority(config, function(data){
                     angular.copy(initData.xiaoqu, _this.authorityXiaoqu);
                     authorityCommonDeal(data, _this.authorityXiaoqu);
-                }).fail(function(response){
-                    SweetAlertHelp.fail({message: response && response.message});
                 });
             };
             _this.getOrganizationAuthority = function(){
                 var config = angular.copy(_this.authorityConfig);
                 config.category = _this.config.category.ORGANIZATION;
-                AuthorityService.getGrants(config).then(function(data){
+                getAuthority(config, function(data){
                     angular.copy(initData.organization, _this.authorityOrganization);
                     authorityCommonDeal(data, _this.authorityOrganization);
-                }).fail(function(response){
-                    SweetAlertHelp.fail({message: response && response.message});
                 });
             };
             _this.getCompanyAuthority = function(){
                 var config = angular.copy(_this.authorityConfig);
                 config.category = _this.config.category.COMPANY;
-                AuthorityService.getGrants(config).then(function(data){
+                getAuthority(config, function(data){
                     angular.copy(initData.company, _this.authorityCompany);
                     authorityCommonDeal(data, _this.authorityCompany);
-                    $timeout(function(){
-                        $('select').selectpicker("refresh");
-                    });
-                }).fail(function(response){
-                    SweetAlertHelp.fail({message: response && response.message});
                 });
             };
             _this.getFranchiseeAuthority = function(){
                 var config = angular.copy(_this.authorityConfig);
                 config.category = _this.config.category.FRANCHISEE;
-                AuthorityService.getGrants(config).then(function(data){
+                getAuthority(config, function(data){
                     angular.copy(initData.franchisee, _this.authorityFranchisee);
                     authorityCommonDeal(data, _this.authorityFranchisee);
-                }).fail(function(response){
-                    SweetAlertHelp.fail({message: response && response.message});
                 });
             };
-            _this.getPositionFangAuthority = function(position){
-                _this.authorityConfig.targetId = position.id;
-                _this.authorityConfig.targetType = 'POSITION';
-                _this.getFangAuthority();
-            };
-            _this.getPositionXiaoquAuthority = function(position){
-                _this.authorityConfig.targetId = position.id;
-                _this.authorityConfig.targetType = 'POSITION';
-                _this.getXiaoquAuthority();
-            };
-            _this.getPositionOrganizationAuthority = function(position){
-                _this.authorityConfig.targetId = position.id;
-                _this.authorityConfig.targetType = 'POSITION';
-                _this.getOrganizationAuthority();
-            };
-            _this.getPositionCompanyAuthority = function(position){
-                _this.authorityConfig.targetId = position.id;
-                _this.authorityConfig.targetType = 'POSITION';
-                _this.getCompanyAuthority();
-            };
-            _this.getPositionFranchiseeAuthority = function(position){
-                _this.authorityConfig.targetId = position.id;
-                _this.authorityConfig.targetType = 'POSITION';
-                _this.getFranchiseeAuthority();
+            _this.getOperationAuthority = function(){
+                var config = angular.copy(_this.authorityConfig);
+                config.category = _this.config.category.OPERATION;
+                getAuthority(config, function(data){
+                    angular.copy(initData.operation, _this.authorityOperatioon);
+                    authorityCommonDeal(data, _this.authorityOperatioon);
+                });
             };
             _this.getAllAuthority = function(reset){
                 if(reset){
@@ -272,20 +256,18 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                 _this.getOrganizationAuthority();
                 _this.getCompanyAuthority();
                 _this.getFranchiseeAuthority();
+                _this.getOperationAuthority();
             };
+
             _this.getPositionAllAuthority = function(position, reset){
                 _this.baseData.currentPosition = position;
                 $('a.position-list-nav[id='+position.id+']').addClass('curSelectedNode');
                 $('a.position-list-nav[id!='+position.id+']').removeClass('curSelectedNode');
-                if(reset){
-                    $('#first-nav-tab').click()
-                }
-                _this.getPositionFangAuthority(position);
-                _this.getPositionXiaoquAuthority(position);
-                _this.getPositionOrganizationAuthority(position);
-                _this.getPositionCompanyAuthority(position);
-                _this.getPositionFranchiseeAuthority(position);
+                _this.authorityConfig.targetId = position.id;
+                _this.authorityConfig.targetType = 'POSITION';
+                _this.getAllAuthority(reset)
             };
+
             _this.updateAuthority = function(type){
                 if(!_this.authorityConfig.targetId){
                     SweetAlertHelp.fail({message:'请选择职员或者岗位'});
@@ -312,6 +294,9 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                         break;
                     case _this.config.category.FRANCHISEE:
                         grantsData = angular.copy(_this.authorityFranchisee);
+                        break;
+                    case _this.config.category.OPERATION:
+                        grantsData = angular.copy(_this.authorityOperatioon);
                         break;
                 }
                 angular.forEach(grantsData, function(value,key){
