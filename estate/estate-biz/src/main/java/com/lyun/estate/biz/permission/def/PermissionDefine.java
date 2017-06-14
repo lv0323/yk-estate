@@ -16,7 +16,8 @@ public class PermissionDefine {
         PAGE("页面模块"),
         COMPANY_TYPE("公司性质"),
         FRANCHISEE("加盟商"),
-        OPERATION("运营管理"),;
+        OPERATION("运营管理"),
+        APPROVAL("表单审批"),;
 
         private final String label;
 

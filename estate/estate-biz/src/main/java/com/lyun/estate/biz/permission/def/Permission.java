@@ -58,6 +58,11 @@ public enum Permission implements LabelEnum {
     //运营管理
     OP_MANAGE_XY("信誉平台管理", PermissionDefine.Category.OPERATION),
 
+    //表单审批
+    APPROVAL_CREATE("创建表单", PermissionDefine.Category.APPROVAL),
+    APPROVAL_APPROVE("审批表单", PermissionDefine.Category.APPROVAL),
+    APPROVAL_LIST_EXPORT("查看导出表单", PermissionDefine.Category.APPROVAL),
+
     //页面模块
     P_FANG("房源管理", PermissionDefine.Category.PAGE),
     P_FANG_LIST("房源列表", PermissionDefine.Category.PAGE),
