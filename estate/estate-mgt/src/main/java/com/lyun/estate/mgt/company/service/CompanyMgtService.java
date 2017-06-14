@@ -56,7 +56,6 @@ public class CompanyMgtService {
 
     @Transactional
     public Company createCompany(CreateCompanyInfo info) {
-
         permissionCheckService.checkExist(Permission.CREATE_FRANCHISEE);
 
         Company company = companyService.createCompany(info, mgtContext.getOperator().getId());
@@ -72,8 +71,6 @@ public class CompanyMgtService {
     }
 
     public List<Company> getParents() {
-        permissionCheckService.checkExist(Permission.CREATE_FRANCHISEE);
-
         if (mgtContext.getOperator().getCompanyType() == CompanyDefine.Type.YK) {
             return companyService.findYkRaCompany();
         } else if (mgtContext.getOperator().getCompanyType() == CompanyDefine.Type.REGIONAL_AGENT) {
@@ -84,14 +81,12 @@ public class CompanyMgtService {
     }
 
     public List<DepartmentDTO> findDepartment(Long companyId) {
-        permissionCheckService.checkExist(Permission.CREATE_FRANCHISEE);
         permissionCheckService.checkCompany(companyId);
 
         return departmentService.listSortedByCompanyId(companyId);
     }
 
     public List<EmployeeDTO> findPartAIds(Long companyId, Long departmentId) {
-        permissionCheckService.checkExist(Permission.CREATE_FRANCHISEE);
         permissionCheckService.checkCompany(companyId);
 
         return employeeService.listByCompanyIdDepartmentId(companyId, departmentId, new PageBounds(1, 100));
