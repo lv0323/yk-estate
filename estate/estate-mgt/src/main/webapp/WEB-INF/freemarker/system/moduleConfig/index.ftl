@@ -237,6 +237,40 @@
                                 </div>
                             </div>
                             </@>
+                            <@checkPermission value='CT_YK'>
+                            <div class="item" style="margin-bottom: 10px; opacity: 1;">
+                                <div class="box box-solid backf5 " style="margin-bottom:0">
+                                    <header class="box-header with-border">
+                                        <div class="checkbox checkbox-nice">
+                                            <input id="P_APPROVAL" ng-model="ctrl.moduleAuthority.P_APPROVAL" type="checkbox" ng-change="ctrl.allPickChange('P_APPROVAL')">
+                                            <label for="P_APPROVAL"><h3 class="box-title">表单管理</h3></label>
+                                        </div>
+                                    </header>
+                                    <div class="box-body">
+                                        <div class="form-group form-inline">
+                                            <div class="col-xs-6">
+                                                <div class="checkbox checkbox-nice">
+                                                    <input id="P_APPROVAL_1" ng-model="ctrl.moduleAuthority.P_APPROVAL_1" type="checkbox" ng-change="ctrl.dataChange('P_APPROVAL', ctrl.moduleAuthority.P_APPROVAL_1)">
+                                                    <label for="P_APPROVAL_1">新建表单</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <div class="checkbox checkbox-nice">
+                                                    <input id="P_APPROVAL_2" ng-model="ctrl.moduleAuthority.P_APPROVAL_2" type="checkbox" ng-change="ctrl.dataChange('P_APPROVAL', ctrl.moduleAuthority.P_APPROVAL_2)">
+                                                    <label for="P_APPROVAL_2">表单列表</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <div class="checkbox checkbox-nice">
+                                                    <input id="P_APPROVAL_3" ng-model="ctrl.moduleAuthority.P_APPROVAL_3" type="checkbox" ng-change="ctrl.dataChange('P_APPROVAL', ctrl.moduleAuthority.P_APPROVAL_3)">
+                                                    <label for="P_APPROVAL_3">我的表单</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </@>
                             <div class="item" style="margin-bottom: 10px; opacity: 1;">
                                 <div class="box box-solid backf5 " style="margin-bottom:0">
                                     <header class="box-header with-border">

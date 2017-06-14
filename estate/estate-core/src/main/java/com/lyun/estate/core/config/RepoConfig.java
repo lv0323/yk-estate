@@ -53,6 +53,7 @@ public class RepoConfig {
 
     @Bean
     public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
+        sqlSessionFactory.getConfiguration().setCallSettersOnNulls(true);
         sqlSessionFactory.getConfiguration().setMapUnderscoreToCamelCase(true);
         return new SqlSessionTemplate(sqlSessionFactory);
     }

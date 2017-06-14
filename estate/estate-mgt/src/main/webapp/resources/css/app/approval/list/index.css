@@ -1,0 +1,39 @@
+#approvalDetail .form-horizontal .control-label{
+    padding-top: 0;
+}
+
+#approvalDetail .modal-content{
+    width: 780px;
+}
+#approvalDetail .modal-body{
+    padding: 20px;
+}
+#approvalDetail .table{
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-top: 1px solid #ddd;
+}
+#approvalDetail .table-bordered  tr{
+    height:40px;
+    text-align: center;
+}
+#approvalDetail .table-bordered  tr > td{
+    border-color: #ddd;
+    padding: 5px;
+}
+#approvalDetail .table-bordered  tr > td:nth-child(2n){
+    color: #3c8dbc;
+}
+#approvalDetail .table-bordered  tr.rejected-data > td:nth-child(2n){
+    color: #d9534f;
+}
+#approvalDetail .table-bordered  tr.approval-data > td:nth-child(2n){
+    color: #5cb85c;
+}
+#approvalDetail .table-bordered  tr > td:nth-child(2n-1){
+    color: #666;
+    width: 160px;
+}
+.export-link{
+    font-size: 18px;
+}

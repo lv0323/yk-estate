@@ -24,6 +24,7 @@ public class ApprovalDTO {
     private ApprovalDefine.Type type;
     private ApprovalDefine.Status status;
     private String data;
+    private String comment;
     private Date createTime;
     private Date approvalTime;
     private Date updateTime;
@@ -236,6 +237,15 @@ public class ApprovalDTO {
 
     public ApprovalDTO setSigning(Signing signing) {
         this.signing = signing;
+        return this;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public ApprovalDTO setComment(String comment) {
+        this.comment = comment;
         return this;
     }
 }

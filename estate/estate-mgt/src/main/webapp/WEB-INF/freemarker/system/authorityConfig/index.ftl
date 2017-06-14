@@ -71,6 +71,9 @@
                         <li ng-class="{'active' : ctrl.config.category.OPERATION==ctrl.authorityConfig.category}">
                             <a class="franchisee" href="#opManager" data-toggle="tab" aria-expanded="false">运营管理</a>
                         </li>
+                    <li ng-class="{'active' : ctrl.config.category.APPROVAL==ctrl.authorityConfig.category}">
+                            <a class="approval" href="#approval" data-toggle="tab" aria-expanded="false">表单</a>
+                        </li>
                     </@>
                 </ul>
                 <div class="tab-content">
@@ -556,6 +559,40 @@
                         </form>
                     </div>
                     </@>
+                <@checkPermission value='CT_YK'>
+                    <div class="tab-pane animated fadeInDown" ng-class="{active : ctrl.config.category.APPROVAL==ctrl.authorityConfig.category}" id="approval">
+                        <form action="#" method="post" class="form-horizontal" id="glForm">
+                            <div class="gridbox gridalicious authority-content">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="item">
+                                            <div class="tweet-wrapper clearfix">
+                                                <h4>表单</h4>
+                                                <div class="form-inline">
+                                                    <div class="checkbox checkbox-nice">
+                                                        <input id="pane7_1"  type="checkbox" ng-model="ctrl.authorityApproval.APPROVAL_CREATE">
+                                                        <label for="pane7_1">创建表单</label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-nice">
+                                                        <input id="pane7_2"  type="checkbox" ng-model="ctrl.authorityApproval.APPROVAL_APPROVE">
+                                                        <label for="pane7_2">审批表单</label>
+                                                    </div>
+                                                    <div class="checkbox checkbox-nice">
+                                                        <input id="pane7_3"  type="checkbox" ng-model="ctrl.authorityApproval.APPROVAL_LIST_EXPORT">
+                                                        <label for="pane7_3">导出表单</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix text-center">
+                                <button type="button" class="btn btn-primary" ng-click="ctrl.updateAuthority(ctrl.config.category.APPROVAL)"><i class="fa fa-save"></i> 保存</button>
+                            </div>
+                        </form>
+                    </div>
+                </@>
                 </div>
             </div>
             </div>

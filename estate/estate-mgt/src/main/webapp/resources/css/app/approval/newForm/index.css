@@ -1,0 +1,34 @@
+.form-board{
+
+}
+.form-item{
+    display: block;
+    padding: 1.5em;
+    box-sizing: border-box;
+    background: #ffffff;
+    text-align: center;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+}
+.form-item:hover{
+    color: #0073b7 !important;
+}
+.cold-visit-form.form-horizontal .control-label,
+.biz-trip-form.form-horizontal .control-label,
+.signing-form.form-horizontal .control-label {
+    width: 120px;
+}
+@media (max-width: 768px) {
+    .cold-visit-form  .control-label{
+        float: none!important;
+    }
+    .part-a-select{
+        padding: 0 !important;
+        margin-bottom: 10px;
+    }
+    .part-a-select:last-child{
+        margin-bottom:0;
+    }
+}

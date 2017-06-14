@@ -177,6 +177,7 @@ public class ReportEngine {
 
         String sql = assembleSql(reportInfo.getSql(), param);
         PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(os, "UTF-8"), true);
+        printWriter.write("\uFEFF");
         printWriter.flush();
 
         List<String> headerNameList = getHeaderList(reportName, region);
