@@ -8,77 +8,16 @@ import java.util.List;
 public class Comment {
 
     private long id;
-
     private String content;
     private long positiveCount;
     private String createTime;
     private long userId;
     private String nicky;
     private String avatar;
-
-    public boolean isLiked() {
-        return liked;
-    }
-
-    public void setLiked(boolean liked) {
-        this.liked = liked;
-    }
-
-    private boolean liked;
-
-    private List<String> tags;
+    private String tags;
 
     private long corpId;
-
-    public long getCorpId() {
-        return corpId;
-    }
-
-    public void setCorpId(long corpId) {
-        this.corpId = corpId;
-    }
-
-    public String getCorpName() {
-        return corpName;
-    }
-
-    public void setCorpName(String corpName) {
-        this.corpName = corpName;
-    }
-
     private String corpName;
-
-    public Comment(RawComment raw){
-        this.id = raw.getId();
-        this.content = raw.getContent();
-        this.positiveCount = raw.getPositiveCount();
-        this.createTime = raw.getCreateTime();
-        this.userId = raw.getUserId();
-        this.nicky = raw.getNicky();
-        this.avatar = raw.getAvatar();
-        this.corpId = raw.getCorpId();
-        this.corpName = raw.getCorpName();
-    }
-
-    private Comment(){
-
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 
     public long getPositiveCount() {
         return positiveCount;
@@ -104,6 +43,22 @@ public class Comment {
         this.userId = userId;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getNicky() {
         return nicky;
     }
@@ -120,12 +75,28 @@ public class Comment {
         this.avatar = avatar;
     }
 
-    public List<String> getTags() {
+    public String getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(String tags) {
         this.tags = tags;
+    }
+
+    public long getCorpId() {
+        return corpId;
+    }
+
+    public void setCorpId(long corpId) {
+        this.corpId = corpId;
+    }
+
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
     }
 
 }

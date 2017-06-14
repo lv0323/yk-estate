@@ -6,7 +6,7 @@ package com.lyun.estate.mgt.op.dianping.entity;
 public class Corp {
     private long id;
     private String name;
-//    private String status;
+    private String status;
     private long positiveCount;
     private long negativeCount;
     private long visitCount;
