@@ -28,8 +28,8 @@ require(['main-app',contextPath + '/js/service/department-service.js',
                     return {
                         departName: {attr: {class: 'lookDepartBtn btn'}, data: {id: item.id}, text: item.name},
                         level: item.level,
-                        telephone: item.telephone,
-                        address: item.address,
+                        telephone: item.telephone || '',
+                        address: item.address || '',
                         operation: [
                             {
                                 attr: {class: 'btn editDepartBtn'},
@@ -46,8 +46,8 @@ require(['main-app',contextPath + '/js/service/department-service.js',
                     return {
                         departName: {attr: {class: 'lookDepartBtn btn'}, data: {id: item.id}, text: item.name},
                         level: item.level,
-                        telephone: item.telephone,
-                        address: item.address,
+                        telephone: item.telephone || '',
+                        address: item.address || '',
                         operation: [
                             {
                                 attr: {class: 'btn editDepartBtn'},
