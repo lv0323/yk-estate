@@ -301,6 +301,9 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             };
 
             if(verifyEmployeeInput('add',toAddData)){
+                if(!toAddData.idcardNumber){
+                    delete toAddData.idcardNumber
+                }
                 EmployeeService.addEmployee({data:toAddData},header)
                     .done(function(data){
                         if(positionConfig.positionId != toAddData.positionId){
@@ -409,6 +412,9 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
             };
 
             if(verifyEmployeeInput('edit',toEditData)){
+                if(!toEditData.idcardNumber){
+                    delete toEditData.idcardNumber
+                }
                 EmployeeService.editEmployee({data:toEditData},header)
                     .done(function(){
                         if(positionConfig.positionId != toEditData.positionId){
