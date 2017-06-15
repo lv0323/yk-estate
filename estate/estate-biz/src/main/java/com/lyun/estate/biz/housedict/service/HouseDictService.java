@@ -168,4 +168,9 @@ public class HouseDictService {
     public boolean deleteBuilding(Long buildingId, Long operatorId) {
         return houseDictRepo.deleteBuilding(buildingId, operatorId) > 0;
     }
+
+    public Building findBuildingForUpdate(Long buildingId) {
+        ExceptionUtil.checkNotNull("楼栋编号", buildingId);
+        return houseDictRepo.findBuildingForUpdate(buildingId);
+    }
 }

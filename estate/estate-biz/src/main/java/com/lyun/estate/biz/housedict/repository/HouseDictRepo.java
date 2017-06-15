@@ -32,6 +32,10 @@ public interface HouseDictRepo {
     @Select("SELECT * FROM t_building where id =#{id}")
     Building findBuilding(Long id);
 
+    @Select("SELECT * FROM t_building where id =#{id} FOR UPDATE ")
+    Building findBuildingForUpdate(Long id);
+
+
     @Select("SELECT * FROM t_building_unit where building_id =#{buildingId} AND is_deleted = false")
     List<BuildingUnit> findBuildingUnitByBuildingId(Long buildingId);
 
