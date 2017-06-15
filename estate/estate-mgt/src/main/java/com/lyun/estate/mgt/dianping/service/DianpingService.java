@@ -1,14 +1,14 @@
-package com.lyun.estate.mgt.op.dianping.service;
+package com.lyun.estate.mgt.dianping.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
-import com.lyun.estate.mgt.op.dianping.domain.CorpStatus;
-import com.lyun.estate.mgt.op.dianping.domain.PageableDTO;
-import com.lyun.estate.mgt.op.dianping.entity.Comment;
-import com.lyun.estate.mgt.op.dianping.entity.Corp;
-import com.lyun.estate.mgt.op.dianping.repo.DianpingRepo;
+import com.lyun.estate.biz.dianping.domain.CorpStatus;
+import com.lyun.estate.biz.dianping.domain.PageableDTO;
+import com.lyun.estate.biz.dianping.entity.Comment;
+import com.lyun.estate.biz.dianping.entity.Corp;
+import com.lyun.estate.biz.dianping.repo.DianpingRepo;
 import com.lyun.estate.mgt.permission.service.PermissionCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

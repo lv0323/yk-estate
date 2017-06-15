@@ -1,6 +1,6 @@
-//package com.lyun.estate.mgt.op.dianping.domain;
+//package com.lyun.estate.biz.dianping.domain;
 //
-//import com.lyun.estate.mgt.op.dianping.entity.Comment;
+//import com.lyun.estate.biz.dianping.entity.Comment;
 //
 //import java.util.List;
 //
