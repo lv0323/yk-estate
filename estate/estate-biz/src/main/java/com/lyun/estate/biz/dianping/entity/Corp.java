@@ -1,4 +1,4 @@
-package com.lyun.estate.mgt.op.dianping.entity;
+package com.lyun.estate.biz.dianping.entity;
 
 /**
  * Created by localuser on 2017/5/15.

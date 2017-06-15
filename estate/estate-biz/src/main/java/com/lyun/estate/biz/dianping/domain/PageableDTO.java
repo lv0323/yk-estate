@@ -1,4 +1,4 @@
-package com.lyun.estate.mgt.op.dianping.domain;
+package com.lyun.estate.biz.dianping.domain;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 

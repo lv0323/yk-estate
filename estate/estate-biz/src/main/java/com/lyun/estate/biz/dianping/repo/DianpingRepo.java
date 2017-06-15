@@ -1,7 +1,7 @@
-package com.lyun.estate.mgt.op.dianping.repo;
+package com.lyun.estate.biz.dianping.repo;
 
-import com.lyun.estate.mgt.op.dianping.entity.Comment;
-import com.lyun.estate.mgt.op.dianping.entity.Corp;
+import com.lyun.estate.biz.dianping.entity.Comment;
+import com.lyun.estate.biz.dianping.entity.Corp;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
