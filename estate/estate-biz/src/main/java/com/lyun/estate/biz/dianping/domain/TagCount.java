@@ -1,4 +1,4 @@
-//package com.lyun.estate.mgt.op.dianping.domain;
+//package com.lyun.estate.biz.dianping.domain;
 //
 ///**
 // * Created by localuser on 2017/5/15.

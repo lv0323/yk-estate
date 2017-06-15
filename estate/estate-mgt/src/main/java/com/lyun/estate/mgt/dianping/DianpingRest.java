@@ -1,17 +1,14 @@
-package com.lyun.estate.mgt.op.dianping;
+package com.lyun.estate.mgt.dianping;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.lyun.estate.biz.auth.token.CheckToken;
-import com.lyun.estate.biz.auth.token.JWTToken;
-import com.lyun.estate.biz.auth.token.JWTTokenArgumentResolver;
 import com.lyun.estate.mgt.context.MgtContext;
-import com.lyun.estate.mgt.op.dianping.entity.Comment;
-import com.lyun.estate.mgt.op.dianping.entity.Corp;
-import com.lyun.estate.mgt.op.dianping.service.DianpingService;
+import com.lyun.estate.biz.dianping.entity.Comment;
+import com.lyun.estate.biz.dianping.entity.Corp;
+import com.lyun.estate.mgt.dianping.service.DianpingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.lyun.estate.mgt.op.dianping.domain.*;
+import com.lyun.estate.biz.dianping.domain.*;
 
 import java.util.List;
 
