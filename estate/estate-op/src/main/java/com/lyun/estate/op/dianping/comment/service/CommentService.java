@@ -38,7 +38,7 @@ public class CommentService {
         }
 
         commentRepo.like(commentId, userId);
-        commentRepo.increaseLike(commentId, userId);
+        commentRepo.increaseLike(commentId);
 
     }
 
@@ -47,7 +47,7 @@ public class CommentService {
             throw new IllegalArgumentException("(comment, userId)=("+commentId + ", "+userId +") does not exist, maybe you have not liked");
         }
         commentRepo.cancelLike(commentId, userId);
-        commentRepo.descreaseLike(commentId, userId);
+        commentRepo.descreaseLike(commentId);
 
     }
 
