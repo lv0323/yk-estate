@@ -132,10 +132,6 @@ define(contextPath+'/js/app/org/department/departCommon.js',
         DepartCommon.verifyDepartmentInput = function (toSubmitDepart) {
             var flag = true;
             $('.form-group').find('.invalid-input').removeClass('invalid-input');
-            if (toSubmitDepart.address==="" || typeof(toSubmitDepart.address)==='undefined') {
-                flag = false;
-                $('#departAddress').addClass('invalid-input');
-            }
             if (toSubmitDepart.name==="" || typeof(toSubmitDepart.name)==='undefined') {
                 flag = false;
                 $('#departName').addClass('invalid-input');
@@ -143,10 +139,6 @@ define(contextPath+'/js/app/org/department/departCommon.js',
             if (toSubmitDepart.parentId===""|| typeof(toSubmitDepart.parentId)==='undefined') {
                 flag = false;
                 $('.dropdown-yk').addClass('invalid-input');
-            }
-            if (toSubmitDepart.telephone===""|| typeof(toSubmitDepart.telephone)==='undefined') {
-                flag = false;
-                $('#departTel').addClass('invalid-input');
             }
             if (toSubmitDepart.cityId===""|| typeof(toSubmitDepart.cityId)==='undefined') {
                 flag = false;

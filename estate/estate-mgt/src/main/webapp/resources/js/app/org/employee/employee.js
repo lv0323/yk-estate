@@ -242,10 +242,6 @@ require(['main-app',contextPath + '/js/service/employee-service.js',
                     $('#'+actionType+'EmployeeMobile').addClass('invalid-input');
                 }
             }
-            if (toSubmitEmployee.idcardNumber===""|| typeof(toSubmitEmployee.idcardNumber)==='undefined') {
-                flag = false;
-                $('#'+actionType+'EmployeeID').addClass('invalid-input');
-            }
             if (toSubmitEmployee.entryDate===""|| typeof(toSubmitEmployee.entryDate)==='undefined') {
                 flag = false;
                 $('#'+actionType+'EmployeeEntryDate').addClass('invalid-input');

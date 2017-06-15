@@ -48,7 +48,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">身份证号<span class="required-field">*</span></label>
+                        <label class="control-label">身份证号</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="addEmployeeID" class="form-control" placeholder="身份证号">
                         </div>
@@ -154,7 +154,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">身份证号<span class="required-field">*</span></label>
+                        <label class="control-label">身份证号</label>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <input type="text" id="editEmployeeID" class="form-control" placeholder="身份证号">
                         </div>
