@@ -2,6 +2,7 @@ package com.lyun.estate.biz.houselicence.service;
 
 import com.google.common.base.Strings;
 import com.lyun.estate.biz.housedict.entity.Building;
+import com.lyun.estate.biz.housedict.entity.BuildingUnit;
 import com.lyun.estate.biz.housedict.service.HouseDictService;
 import com.lyun.estate.biz.houselicence.def.LicenceStatus;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
@@ -12,7 +13,9 @@ import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -31,6 +34,7 @@ public class HouseLicenceService {
         this.houseDictService = houseDictService;
     }
 
+    @Transactional
     public HouseLicence register(Long communityId, BizType bizType, Long buildingId, Long buildingUnitId,
                                  String houseNo) {
         houseNo = Optional.ofNullable(houseNo).map(n -> n.replace(" ", "")).orElse(null);
@@ -40,11 +44,12 @@ public class HouseLicenceService {
         ExceptionUtil.checkNotNull("单元号", buildingUnitId);
         ExceptionUtil.checkIllegal(!Strings.isNullOrEmpty(houseNo), "房号", houseNo);
 
-        Building building = houseDictService.findBuildingAndUnits(buildingId);
-        if (!Objects.equals(building.getCommunityId(), communityId)) {
+        Building building = houseDictService.findBuildingForUpdate(buildingId);
+        if (building == null || !Objects.equals(building.getCommunityId(), communityId)) {
             throw new EstateException(ExCode.LICENCE_LOCATION_ERROR);
         }
-        boolean unitExisted = building.getUnits().stream()
+        List<BuildingUnit> buildingUnits = houseDictService.findBuildingUnitsByBuildingId(buildingId);
+        boolean unitExisted = buildingUnits.stream()
                 .anyMatch(t -> Objects.equals(t.getId(), buildingUnitId));
         if (!unitExisted) {
             throw new EstateException(ExCode.LICENCE_LOCATION_ERROR);
