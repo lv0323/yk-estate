@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.approval.def.ApprovalDefine;
+import com.lyun.estate.biz.approval.domain.*;
 import com.lyun.estate.biz.approval.entity.Approval;
 import com.lyun.estate.biz.approval.repo.ApprovalRepo;
 import com.lyun.estate.biz.company.service.CompanyService;
@@ -48,21 +49,55 @@ public class ApprovalService {
     private boolean validate(ApprovalDefine.Type type, String data) {
         switch (type) {
             case LEAVING:
-                ApprovalDefine.Leaving leaving = readFromData(data, ApprovalDefine.Leaving.class);
+                Leaving leaving = readFromData(data, Leaving.class);
                 ExceptionUtil.checkNotNull("外出", leaving);
-                ExceptionUtil.checkNotNull("外出-", leaving);
+                ExceptionUtil.checkNotNull("外出-外出时间", leaving.getStartTime());
+                ExceptionUtil.checkNotNull("外出-返回时间", leaving.getEndTime());
+                ExceptionUtil.checkNotNull("外出-外出地点", leaving.getLocation());
+                ExceptionUtil.checkNotNull("外出-外出事由", leaving.getReason());
+                ExceptionUtil.checkNotNull("外出-未打卡事由", leaving.getNoClockReason());
                 break;
             case BIZ_TRIP:
-                ApprovalDefine.BizTrip bizTrip = readFromData(data, ApprovalDefine.BizTrip.class);
-                ExceptionUtil.checkNotNull("", bizTrip);
+                BizTrip bizTrip = readFromData(data, BizTrip.class);
+                ExceptionUtil.checkNotNull("出差", bizTrip);
+                ExceptionUtil.checkNotNull("出差-出差时间", bizTrip.getStartTime());
+                ExceptionUtil.checkNotNull("出差-返回时间", bizTrip.getEndTime());
+                ExceptionUtil.checkNotNull("出差-出差天数", bizTrip.getDays());
+                ExceptionUtil.checkNotNull("出差-出差事由", bizTrip.getReason());
+                ExceptionUtil.checkNotNull("出差-出差成果", bizTrip.getOutcome());
+                ExceptionUtil.checkNotNull("出差-待解决问题", bizTrip.getProblem());
+                ExceptionUtil.checkNotNull("出差-对接资源信息", bizTrip.getResource());
+                ExceptionUtil.checkNotNull("出差-出差费用", bizTrip.getCosts());
                 break;
             case COLD_VISIT:
-                ApprovalDefine.ColdVisit coldVisit = readFromData(data, ApprovalDefine.ColdVisit.class);
-                ExceptionUtil.checkNotNull("", coldVisit);
+                ColdVisit coldVisit = readFromData(data, ColdVisit.class);
+                ExceptionUtil.checkNotNull("陌拜", coldVisit);
+                ExceptionUtil.checkNotNull("陌拜-客户公司名", coldVisit.getCompanyName());
+                ExceptionUtil.checkNotNull("陌拜-对方负责人", coldVisit.getBossName());
+                ExceptionUtil.checkNotNull("陌拜-负责人身份", coldVisit.getBossType());
+                ExceptionUtil.checkNotNull("陌拜-联系方式", coldVisit.getContactInfo());
+                ExceptionUtil.checkNotNull("陌拜-门店地址", coldVisit.getAddress());
+                ExceptionUtil.checkNotNull("陌拜-去访人员姓名", coldVisit.getFollowers());
                 break;
             case SIGNING:
-                ApprovalDefine.Signing signing = readFromData(data, ApprovalDefine.Signing.class);
-                ExceptionUtil.checkNotNull("", signing);
+                Signing signing = readFromData(data, Signing.class);
+                ExceptionUtil.checkNotNull("签约", signing);
+                ExceptionUtil.checkNotNull("签约-城市", signing.getCityId());
+                ExceptionUtil.checkNotNull("签约-城市名", signing.getCityName());
+                ExceptionUtil.checkNotNull("签约-公司名", signing.getCompanyName());
+                ExceptionUtil.checkNotNull("签约-公司简称", signing.getCompanyAbbr());
+                ExceptionUtil.checkNotNull("签约-签约类型", signing.getCompanyType());
+                ExceptionUtil.checkNotNull("签约-对方负责人", signing.getBossName());
+                ExceptionUtil.checkNotNull("签约-对方负责人手机", signing.getBossMobile());
+                ExceptionUtil.checkNotNull("签约-本公司负责人", signing.getPartAInChargeId());
+                ExceptionUtil.checkNotNull("签约-本公司负责人姓名", signing.getPartAInChargeName());
+                ExceptionUtil.checkNotNull("签约-备注", signing.getNote());
+
+                ExceptionUtil.checkNotNull("签约-签约开始时间", signing.getStartDate());
+                ExceptionUtil.checkNotNull("签约-签约结束时间", signing.getEndDate());
+                ExceptionUtil.checkNotNull("签约-签约年限", signing.getYears());
+                ExceptionUtil.checkNotNull("签约-签约店数", signing.getStoreCount());
+                ExceptionUtil.checkNotNull("签约-签约金额", signing.getPrice());
                 break;
             default:
                 return false;
@@ -81,12 +116,12 @@ public class ApprovalService {
         return null;
     }
 
-    public PageList<Approval> list(ApprovalDefine.Type type,
-                                   ApprovalDefine.Status status,
-                                   Long applyCompanyId,
-                                   Long applyDeptId,
-                                   Long applyId,
-                                   PageBounds pageBounds) {
+    public PageList<ApprovalDTO> list(ApprovalDefine.Type type,
+                                      ApprovalDefine.Status status,
+                                      Long applyCompanyId,
+                                      Long applyDeptId,
+                                      Long applyId,
+                                      PageBounds pageBounds) {
         return approvalRepo.list(type, status, applyCompanyId, applyDeptId, applyId, pageBounds);
     }
 
