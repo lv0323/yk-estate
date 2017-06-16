@@ -12,8 +12,6 @@ import com.lyun.estate.biz.fangcollect.entity.FangPoolDistrict;
 import com.lyun.estate.biz.fangcollect.entity.FangPoolOrder;
 import com.lyun.estate.biz.fangcollect.repo.FY01Repo;
 import com.lyun.estate.biz.fangcollect.repo.FangPoolRepo;
-import com.lyun.estate.core.supports.exceptions.EstateException;
-import com.lyun.estate.core.supports.exceptions.ExCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +33,8 @@ public class MgtFangCollectService {
         return fangPools;
     }
 
-    public FangPoolDistrict getDistrictByName(String name) {
-        return fy01Repo.getDistrictByName(name).stream().findFirst().orElseThrow(() -> new EstateException(ExCode.NOT_FOUND,"district:name", name));
+    public FangPoolDistrict getDistrict(String name, Long cityId) {
+        return fy01Repo.getDistrict(name, cityId).stream().findFirst().orElse(fy01Repo.getDefaultDistrict(cityId));
     }
 
     public int createFangPool(FangPool fangPool) {

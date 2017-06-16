@@ -41,6 +41,7 @@ public class FY01Fang {
     private String overview;
     private String extInfo;
     private String mapProcess;
+    private Long cityId;
 
     public Long getId() {
         return id;
@@ -289,5 +290,14 @@ public class FY01Fang {
 
     public void setXiaoQuName(String xiaoQuName) {
         this.xiaoQuName = xiaoQuName;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public FY01Fang setCityId(Long cityId) {
+        this.cityId = cityId;
+        return this;
     }
 }
