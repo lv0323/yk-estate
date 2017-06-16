@@ -11,8 +11,11 @@ import com.lyun.estate.biz.fangcollect.service.MgtFangCollectService;
 import com.lyun.estate.biz.spec.fang.mgt.service.MgtFangService;
 import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService;
 import com.lyun.estate.job.BaseJob;
+import groovy.transform.Synchronized;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,8 @@ import java.util.*;
  */
 @Service
 public class Fy01MappingJob extends BaseJob {
+
+    private static Logger logger = LoggerFactory.getLogger(Fy01MappingJob.class);
 
     @Autowired
     FY01Repo fy01Repo;
@@ -42,20 +47,27 @@ public class Fy01MappingJob extends BaseJob {
     }
 
     @Override
+    @Synchronized
     public void runJob() {
-        FY01Fang fang;
         FangPool fangPool;
+        Integer successCount = 0;
+        Integer exceptionCount = 0;
         List<FY01Fang> list = fy01Repo.selectUnProcessItems();
 
         for (FY01Fang fy01Fang : list) {
-            fangPool = this.fangMapping(fy01Fang);
-            if (mgtFangCollectService.createFangPool(fangPool) > 0) {
-                System.out.println(fangPool);
+            try{
+                fangPool = this.fangMapping(fy01Fang);
+                if (mgtFangCollectService.createFangPool(fangPool) > 0) {
+                    String id = fy01Fang.getThirdPartyId();
+                    fy01Repo.updateProcess(id);
+                    successCount++;
+                }
+            }catch(Exception e){
+                logger.warn("第一房源网[{}]转换发生错误[{}]", fy01Fang.getUrl(), e.getMessage());
+                exceptionCount++;
             }
-            String id = fy01Fang.getThirdPartyId();
-            fy01Repo.updateProcess(id);
         }
-
+        logger.info("第一房源网转化完成: 成功[{}]条,异常[{}]条", successCount, exceptionCount);
     }
 
     private FangPool fangMapping(FY01Fang fy01Fang) {
@@ -81,35 +93,29 @@ public class Fy01MappingJob extends BaseJob {
         fangPool.setContactName(fy01Fang.getContactName());
         fangPool.setContactMobile(fy01Fang.getContactMobile());
         fangPool.setDescription(fy01Fang.getDescription());
+        fangPool.setCityId(fy01Fang.getCityId());
+        fangPool.setUpdateTime(fy01Fang.getUpdataTime());
         if (fy01Fang.getImagePath() != null && !fy01Fang.getImagePath().equals("")) {
             String[] imgArr = fy01Fang.getImagePath().split(",");
-            List<String> imgList = new ArrayList<String>(Arrays.asList(imgArr));
+            List<String> imgList = new ArrayList<>(Arrays.asList(imgArr));
             JSONArray jsArr = JSONArray.fromObject(imgList);
             fangPool.setImagePath(jsArr.toString());
         }
-        fangPool.setUpdateTime(fy01Fang.getUpdataTime());
-
         if (fy01Fang.getFloor() != null && fy01Fang.getFloorCounts() != null) {
             fangPool.setFloorType(mgtFangService.calculateFloorType(fy01Fang.getFloor(), fy01Fang.getFloorCounts()));
         }
         String xiaoquAddr = fy01Fang.getXiaoQuAddr();
         String districtName = xiaoquAddr.split("-")[1].trim();
-        if (districtName != null && !districtName.equals("")) {
-            FangPoolDistrict district = mgtFangCollectService.getDistrictByName(districtName);
-            if (district != null) {
-                fangPool.setCityId(district.getCityId());
-                fangPool.setDistrictId(district.getId());
-            }
-        }
+        FangPoolDistrict district = mgtFangCollectService.getDistrict(districtName, fy01Fang.getCityId());
+        fangPool.setDistrictId(district.getId());
         if (fy01Fang.getOrientationStr() != null) {
             fangPool.setOrientation(Orientation.parse(fy01Fang.getOrientationStr()));
         }
         if (fy01Fang.getHouseTypeStr() != null) {
             fangPool.setHouseType(HouseType.parse(fy01Fang.getHouseTypeStr()));
         }
-
         fangPool.setAddress(xiaoquAddr);
-        Map extMap = new HashMap<String, String>();
+        Map<String, String> extMap = new HashMap<>();
         if (fy01Fang.getOverview() != null) {
             extMap.put("overview", fy01Fang.getOverview());
         }
