@@ -65,7 +65,8 @@ require(['main-app',
                     title:'提示',
                     content:'请输入完整信息'
                 },
-                layoutString:''
+                layoutString:'',
+                submitting: false
             };
             /*户型选择*/
             _this.layoutList={
@@ -569,6 +570,9 @@ require(['main-app',
                 $window.location ='/mgt/fangManage/list?target=.fang';
             };
             _this.submit = function(){
+                if(_this.page.submitting){
+                    return;
+                }
                 var flag = true;
                 /*if($scope.houseForm.$invalid||!$scope.houseForm.$dirty) {*/
                 if (!_this.data.delegateType) {
@@ -607,10 +611,12 @@ require(['main-app',
                     $('#houseTaxesWilling').siblings('.btn-default').addClass('invalid-input');
                     flag = false;
                 }
-                /*}*/
                 if(!flag){
                     return;
                 }
+
+                _this.page.submitting = true;
+
                 if(_this.data.bizType ===_this.bizTypeConfig.rent){
                     _this.data.priceUnit = _this.data.rentPriceUnit;
                     _this.data.resident = '';
@@ -623,6 +629,10 @@ require(['main-app',
                     SweetAlertHelp.success({message:'新增房源完成'},_this.goList);
                 }).fail(function(response){
                     SweetAlertHelp.fail({message:response&&response.message});
+                }).always(function(){
+                    $scope.$apply(function(){
+                        _this.page.submitting = false;
+                    });
                 });
 
             };
