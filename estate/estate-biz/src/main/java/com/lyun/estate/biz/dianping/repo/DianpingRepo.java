@@ -12,12 +12,14 @@ import java.util.List;
  */
 @Repository
 public interface DianpingRepo {
+    @Options(useGeneratedKeys = true)
     @Insert("insert into t_op_dianping_corp(status, name) values (#{status}, #{name})")
-    int insertCorp(@Param("status")String status, @Param("name")String name);
+    int insertCorp(Corp corp);
 
 
     @Select("SELECT id, " +
             "name, " +
+            "status, " +
             "positive_count as positiveCount, " +
             "negative_count as negativeCount," +
             "visit_count as visitCount, " +

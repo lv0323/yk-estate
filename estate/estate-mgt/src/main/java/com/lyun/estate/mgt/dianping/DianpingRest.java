@@ -1,10 +1,11 @@
 package com.lyun.estate.mgt.dianping;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.biz.dianping.entity.Comment;
 import com.lyun.estate.biz.dianping.entity.Corp;
-import com.lyun.estate.mgt.dianping.service.DianpingService;
+import com.lyun.estate.mgt.dianping.service.DianpingMgtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +17,11 @@ import java.util.List;
 @RequestMapping("api/op/dianping/")
 public class DianpingRest {
 
-    private final DianpingService service;
+    private final DianpingMgtService service;
 
     private MgtContext mgtContext;
 
-    public DianpingRest(DianpingService service, MgtContext mgtContext) {
+    public DianpingRest(DianpingMgtService service, MgtContext mgtContext) {
         this.service = service;
         this.mgtContext = mgtContext;
     }
@@ -29,21 +30,13 @@ public class DianpingRest {
      * 重复创建？
      * */
     @PostMapping("corps")
-    ResponseEntity createCorps(@RequestParam("corp") List<String> corpNames, CorpStatus status) {
-        service.createCorps(corpNames, status);
-
-        return new ResponseEntity(HttpStatus.OK);
+    public List<Corp> createCorps(@RequestParam("corp") List<String> corpNames, CorpStatus status) {
+        return service.createCorps(corpNames, status);
     }
-
-//    /**根据 status 查询公司个数 status = new | activeCorp | suspendCorp */
-//    @GetMapping("corps/count")
-//    public Integer getCorpCount( @RequestParam CorpStatus status) {
-//        return service.getCorpCount(status);
-//    }
 
     /**根据 status 查询公司列表 status = new | active | suspend */
     @GetMapping("corps")
-    public PageableDTO<Corp> getCorps( @RequestParam("status") CorpStatus status, @RequestHeader("X-PAGING")PageBounds pageBounds) {
+    public PageList<Corp> getCorps( @RequestParam("status") CorpStatus status, @RequestHeader("X-PAGING")PageBounds pageBounds) {
 
         return service.getCorps(status, pageBounds);
     }
@@ -87,15 +80,9 @@ public class DianpingRest {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-//    /**查询某个公司的评论的个数*/
-//    @GetMapping(value = "{corpId}/comments/count")
-//    public int getCorpCommentCount(@PathVariable long corpId) {
-//        return service.getCorpCommentCount(corpId);
-//    }
-
     /**查询某个公司的评论列表*/
     @GetMapping(value = "{corpId}/comments")
-    public PageableDTO<Comment> getCorpComments(@PathVariable long corpId, @RequestHeader("X-PAGING")PageBounds pageBounds) {
+    public PageList<Comment> getCorpComments(@PathVariable long corpId, @RequestHeader("X-PAGING")PageBounds pageBounds) {
         return service.getCorpComments(corpId, pageBounds);
     }
 
