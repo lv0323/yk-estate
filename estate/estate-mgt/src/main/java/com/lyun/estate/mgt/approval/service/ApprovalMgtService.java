@@ -1,6 +1,7 @@
 package com.lyun.estate.mgt.approval.service;
 
 import com.lyun.estate.biz.approval.def.ApprovalDefine;
+import com.lyun.estate.biz.approval.domain.Signing;
 import com.lyun.estate.biz.approval.entity.Approval;
 import com.lyun.estate.biz.approval.service.ApprovalService;
 import com.lyun.estate.biz.permission.def.Permission;
@@ -23,9 +24,14 @@ public class ApprovalMgtService {
     @Autowired
     private MgtContext mgtContext;
 
-
     public Approval create(ApprovalDefine.Type type, String data) {
         permissionCheckService.checkExist(Permission.APPROVAL_CREATE);
+
+        if (type == ApprovalDefine.Type.SIGNING) {
+            Signing signing = approvalService.readFromData(data, Signing.class);
+            signing.setParentId(mgtContext.getOperator().getCompanyId());
+            data = approvalService.writeToData(signing);
+        }
 
         Approval approval = new Approval()
                 .setType(type)
@@ -33,5 +39,10 @@ public class ApprovalMgtService {
                 .setApplyId(mgtContext.getOperator().getId());
 
         return approvalService.create(approval);
+    }
+
+    public Approval approve(Long id, ApprovalDefine.Status status) {
+        permissionCheckService.checkExist(Permission.APPROVAL_APPROVE);
+        return approvalService.approve(id, mgtContext.getOperator().getId(), status);
     }
 }

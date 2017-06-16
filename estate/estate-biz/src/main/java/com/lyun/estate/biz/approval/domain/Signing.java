@@ -1,18 +1,16 @@
 package com.lyun.estate.biz.approval.domain;
 
-import com.lyun.estate.biz.company.def.CompanyDefine;
-
 import java.math.BigDecimal;
 
 /**
  * Created by Jeffrey on 2017-06-15.
  */
 public class Signing {
-    private CompanyDefine.Type companyType;
+    private String companyType;
     private String companyName;
     private String companyAbbr;
     private Long cityId;
-    private Long cityName;
+    private String cityName;
     private String address;
     private String bossName;
     private String bossMobile;
@@ -26,11 +24,14 @@ public class Signing {
     private String endDate;
     private BigDecimal price;
 
-    public CompanyDefine.Type getCompanyType() {
+    private Long parentId;
+    private Long companyId;
+
+    public String getCompanyType() {
         return companyType;
     }
 
-    public Signing setCompanyType(CompanyDefine.Type companyType) {
+    public Signing setCompanyType(String companyType) {
         this.companyType = companyType;
         return this;
     }
@@ -62,11 +63,11 @@ public class Signing {
         return this;
     }
 
-    public Long getCityName() {
+    public String getCityName() {
         return cityName;
     }
 
-    public Signing setCityName(Long cityName) {
+    public Signing setCityName(String cityName) {
         this.cityName = cityName;
         return this;
     }
@@ -167,6 +168,24 @@ public class Signing {
 
     public Signing setPrice(BigDecimal price) {
         this.price = price;
+        return this;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public Signing setParentId(Long parentId) {
+        this.parentId = parentId;
+        return this;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public Signing setCompanyId(Long companyId) {
+        this.companyId = companyId;
         return this;
     }
 }
