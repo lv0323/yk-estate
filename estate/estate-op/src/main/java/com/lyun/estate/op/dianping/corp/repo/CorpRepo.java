@@ -25,11 +25,11 @@ public interface CorpRepo {
             "comment_count as commentCount " +
             "FROM t_op_dianping_corp " +
             "WHERE name like '%'||#{name}||'%' "+
-            "and status != 'suspend' and is_deleted != true"
+            "and status != 'SUSPEND' and is_deleted != true"
     )
     List<Corp> search(String name);
 
-    @Select("select * from t_op_dianping_corp where name = #{name} and status != 'suspend' ")
+    @Select("select * from t_op_dianping_corp where name = #{name} and status != 'SUSPEND' and is_deleted != true ")
     List<Corp> searchExactSame(String name);
 
 //    @Select("SELECT count(map.tag_id) as count, tag.name\n" +
