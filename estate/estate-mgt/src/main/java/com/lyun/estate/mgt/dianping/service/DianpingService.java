@@ -33,7 +33,9 @@ public class DianpingService {
     Util util;
 
     /**批量创建公司*/
-    public boolean createCorps(List<String> names){
+    @Transactional
+    public boolean createCorps(List<String> names, final CorpStatus status){
+
 
         permissionChecker.checkExist(Permission.OP_MANAGE_XY);
 
@@ -41,9 +43,10 @@ public class DianpingService {
             throw new EstateException(ExCode.PARAM_NULL, "corps");
         }
 
-        String values = util.getInsertValues( names );
+        names.stream()
+                .filter( it-> it != null && it.length() > 0 )
+                .forEach( t-> repo.insertCorp( status.name(), t ) );
 
-        repo.insertCorps( values );
 
         return true;
     }
@@ -78,9 +81,10 @@ public class DianpingService {
     public boolean rejectCorpReview(long corpId){
         permissionChecker.checkExist(Permission.OP_MANAGE_XY);
 
-        if( !util.existCorp(corpId)) {
-            throw new EstateException(ExCode.NOT_FOUND, ""+corpId, "corp");
-        }
+        Corp corp = repo.getCorp(corpId);
+        util.checkCorpStatus(corpId, corp);
+
+
         return repo.deleteCorp(corpId) > 0;
     }
 
@@ -88,17 +92,21 @@ public class DianpingService {
     @Transactional
     public boolean activeCorp(long corpId){
         permissionChecker.checkExist(Permission.OP_MANAGE_XY);
-        if( !util.existCorp(corpId)) {
-            throw new EstateException(ExCode.NOT_FOUND, ""+corpId, "corp");
-        }
+
+        Corp corp = repo.getCorp(corpId);
+        util.checkCorpStatus(corpId, corp);
+
+
         return repo.activeCorp(corpId) > 0;
     }
     @Transactional
     public boolean suspendCorp(long corpId){
         permissionChecker.checkExist(Permission.OP_MANAGE_XY);
-        if( !util.existCorp(corpId)) {
-            throw new EstateException(ExCode.NOT_FOUND, ""+corpId, "corp");
-        }
+
+        Corp corp = repo.getCorp(corpId);
+        util.checkCorpStatus(corpId, corp);
+
+
         return repo.suspendCorp(corpId) > 0;
     }
 
@@ -106,16 +114,14 @@ public class DianpingService {
     public boolean mergeCorps(long corpIdTo, long corpIdFrom){
         permissionChecker.checkExist(Permission.OP_MANAGE_XY);
 
-        if( !util.existCorp(corpIdTo)) {
-            throw new EstateException(ExCode.NOT_FOUND, ""+corpIdTo, "corp");
-        }
+        Corp corpTo = repo.getCorp(corpIdTo);
+        util.checkCorpStatus(corpIdFrom, corpTo);
 
-        if( !util.existCorp(corpIdFrom)) {
-            throw new EstateException(ExCode.NOT_FOUND, ""+corpIdFrom, "corp");
-        }
+        Corp corpFrom = repo.getCorp(corpIdFrom);
+        util.checkCorpStatus(corpIdFrom, corpFrom);
 
-        Corp corp = repo.getCorp(corpIdFrom);
-        repo.updateCorpCount(corpIdTo, corp.getVisitCount(), corp.getPositiveCount(), corp.getNegativeCount());
+        repo.updateCorpCount(corpIdTo, corpFrom.getCommentCount(), corpFrom.getVisitCount(), corpFrom.getPositiveCount(), corpFrom.getNegativeCount());
+
         repo.deleteCorp(corpIdFrom);
 
         //merge
@@ -132,6 +138,11 @@ public class DianpingService {
 
     @Transactional
     public PageableDTO<Comment> getCorpComments(long corpId, PageBounds page){
+        if(corpId <= 0 ){
+            throw new EstateException(ExCode.PARAM_ILLEGAL, "corpId", ""+corpId);
+        }
+
+
         PageableDTO<Comment> pageableDTO = new PageableDTO<>(page);
 
         pageableDTO.setItems(repo.getCorpComments(corpId, page.getOffset(), page.getLimit()));
@@ -145,12 +156,13 @@ public class DianpingService {
     @Transactional
     public boolean deleteCorpComment(long corpId, long commentId){
         permissionChecker.checkExist(Permission.OP_MANAGE_XY);
-        if( !util.existCorp(corpId)) {
-            throw new EstateException(ExCode.NOT_FOUND, ""+corpId, "corp");
-        }
-        if( !util.existComment(commentId)) {
-            throw new EstateException(ExCode.NOT_FOUND, ""+commentId, "comment");
-        }
+
+        Corp corp = repo.getCorp(corpId);
+        util.checkCorpStatus(corpId, corp);
+
+        util.checkComment(commentId);
+
+
         repo.deleteCorpComment(corpId, commentId);
         repo.decreaseCommentCount(corpId);
 
@@ -171,23 +183,36 @@ public class DianpingService {
          * */
         String getInsertValues(List<String> names){
 
-            final String status = CorpStatus.ACTIVIE.name();
+            final String status = CorpStatus.ACTIVE.name();
             final StringBuilder sb = new StringBuilder();
             names.stream()
                     .filter( it-> it != null && it.length() > 0 )
-                    .forEach(t-> sb.append("("+status +", "+t+"),"));
+                    .forEach(t-> sb.append("('"+status +"', '"+t+"'),"));
+
 
             String values = sb.toString();
 
             return values.substring(0, values.length() - 1);
         }
 
-        boolean existCorp(long corpId){
-            return repo.existCorp(corpId) > 0;
+//        boolean existCorp(long corpId){
+//            return repo.existCorp(corpId) > 0;
+//        }
+
+        void checkComment(long commentId){
+            if( repo.countComment(commentId) <= 0){
+                throw new EstateException(ExCode.NOT_FOUND, ""+commentId, "comment");
+            }
         }
 
-        boolean existComment(long commentId){
-            return repo.countComment(commentId) > 0;
+        void checkCorpStatus(long corpIdNeed, Corp corpFound){
+            if(corpFound == null){
+                throw new EstateException(ExCode.NOT_FOUND, ""+corpIdNeed, "corp");
+            }
+            if(corpFound.isDeleted()){
+                throw new EstateException(ExCode.STATE_ERROR, "410 GONE", "corp " + corpIdNeed + " 已被reject，不能再操作");
+            }
+
         }
     }
 

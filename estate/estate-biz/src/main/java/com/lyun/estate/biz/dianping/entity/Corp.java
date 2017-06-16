@@ -1,12 +1,34 @@
 package com.lyun.estate.biz.dianping.entity;
 
+import com.lyun.estate.biz.dianping.domain.CorpStatus;
+
 /**
  * Created by localuser on 2017/5/15.
  */
 public class Corp {
     private long id;
     private String name;
-    private String status;
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    private boolean deleted;
+
+    public CorpStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CorpStatus status) {
+        this.status = status;
+    }
+
+    private CorpStatus status;
+
     private long positiveCount;
     private long negativeCount;
     private long visitCount;

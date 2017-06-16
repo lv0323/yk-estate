@@ -25,7 +25,7 @@ public interface CorpRepo {
             "comment_count as commentCount " +
             "FROM t_op_dianping_corp " +
             "WHERE name like '%'||#{name}||'%' "+
-            "and status != 'suspend' "
+            "and status != 'suspend' and is_deleted != true"
     )
     List<Corp> search(String name);
 

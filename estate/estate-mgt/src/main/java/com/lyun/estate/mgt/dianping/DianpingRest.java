@@ -29,8 +29,9 @@ public class DianpingRest {
      * 重复创建？
      * */
     @PostMapping("corps")
-    ResponseEntity createCorps(@RequestParam("corps") List<String> corpNames) {
-        service.createCorps(corpNames);
+    ResponseEntity createCorps(@RequestParam("corp") List<String> corpNames, CorpStatus status) {
+        service.createCorps(corpNames, status);
+
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -40,9 +41,10 @@ public class DianpingRest {
 //        return service.getCorpCount(status);
 //    }
 
-    /**根据 status 查询公司列表 status = not | active | suspend */
+    /**根据 status 查询公司列表 status = new | active | suspend */
     @GetMapping("corps")
-    public PageableDTO<Corp> getCorps( @RequestParam CorpStatus status, @RequestHeader("X-PAGING")PageBounds pageBounds) {
+    public PageableDTO<Corp> getCorps( @RequestParam("status") CorpStatus status, @RequestHeader("X-PAGING")PageBounds pageBounds) {
+
         return service.getCorps(status, pageBounds);
     }
 
@@ -78,7 +80,8 @@ public class DianpingRest {
     }
 
     /**合并同名公司*/
-    @PostMapping("{corpIdTo}/{corpIdFrom}")
+    @PutMapping("{corpIdTo}/{corpIdFrom}")
+
     public ResponseEntity mergeCorp(@PathVariable("corpIdTo")long corpIdTo, @PathVariable("corpIdFrom")long corpIdFrom){
         service.mergeCorps(corpIdTo, corpIdFrom);
         return new ResponseEntity(HttpStatus.OK);
@@ -97,9 +100,9 @@ public class DianpingRest {
     }
 
     /**删除某个公司的某个评论*/
-    @DeleteMapping("{corpId}/comments/{comment}")
+    @DeleteMapping("{corpId}/comments/{commentId}")
     public ResponseEntity deleteCorpComment(@PathVariable("corpId")long corpId,
-                                            @PathVariable("comment")long commentId){
+                                            @PathVariable("commentId")long commentId){
 
         service.deleteCorpComment(corpId, commentId);
         return new ResponseEntity(HttpStatus.OK);

@@ -92,7 +92,11 @@ public enum ExCode {
     IP_AND_DEVICE_ERROR("ip及设备校验错误"),
 
     //json
-    JSON_ERROR("JSON对象{},转换错误:{}"),;
+    JSON_ERROR("JSON对象{},转换错误:{}"),
+
+    //op dianping
+    STATE_ERROR("状态错误{}, 原因:{}"),
+    ;
 
     private final String messageTemplate;
 

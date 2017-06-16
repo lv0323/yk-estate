@@ -12,8 +12,9 @@ import java.util.List;
  */
 @Repository
 public interface DianpingRepo {
-    @Insert("insert t_op_dianping_corp(name, status) values #{values}")
-    int insertCorps(@Param("values")String values);
+    @Insert("insert into t_op_dianping_corp(status, name) values (#{status}, #{name})")
+    int insertCorp(@Param("status")String status, @Param("name")String name);
+
 
     @Select("SELECT id, " +
             "name, " +
@@ -34,8 +35,9 @@ public interface DianpingRepo {
             "visit_count as visitCount, " +
             "comment_count as commentCount " +
             "FROM t_op_dianping_corp "+
-            "order by create_time desc " +
             "WHERE status =#{status} "+
+            "order by create_time desc " +
+
             "offset #{offset} limit #{limit}"
     )
     List<Corp> getCorps(@Param("status")String status, @Param("offset")int offset, @Param("limit")int limit);
@@ -53,20 +55,23 @@ public interface DianpingRepo {
             "visit_count as visitCount, " +
             "comment_count as commentCount " +
             "FROM t_op_dianping_corp " +
-            "order by create_time desc " +
-            "WHERE name like '%'||#{name}||'%'")
+            "WHERE name like '%'||#{name}||'%' "+
+            "order by create_time desc "
+    )
     List<Corp> searchCorps(@Param("name")String name);
 
-    @Update("update t_op_dianping_corp set status = 'active' where id = #{corpId} ")
+    @Update("update t_op_dianping_corp set status = 'ACTIVE' where id = #{corpId} ")
     int activeCorp(@Param("corpId")long corpId);
 
-    @Update("update t_op_dianping_corp set status = 'suspend' where id = #{corpId} ")
+    @Update("update t_op_dianping_corp set status = 'SUSPEND' where id = #{corpId} ")
+
     int suspendCorp(@Param("corpId")long corpId);
 
     @Select("select count(id) from t_op_dianping_corp where id = #{corpId}")
     int existCorp(@Param("corpId")long corpId);
 
-    @Update("update from t_op_dianping_corp set is_deleted = true where id = #{corpId} ")
+    @Update("update t_op_dianping_corp set is_deleted = true where id = #{corpId} ")
+
     int deleteCorp(@Param("corpId")long corpId);
 
     @Select("SELECT " +
@@ -98,37 +103,24 @@ public interface DianpingRepo {
     @Select("select count(id) from t_op_dianping_comment where id = #{commentId}")
     int countComment(@Param("commentId")long commentId);
 
-    @Update("update from t_op_dianping_comment set corp_id = #{corpIdTo} where corp_id = #{corpIdFrom} ")
+    @Update("update t_op_dianping_comment set corp_id = #{corpIdTo} where corp_id = #{corpIdFrom} ")
     int moveCorpComment(@Param("corpIdTo")long corpId, @Param("corpIdFrom")long corpIdFrom);
 
-    @Update("update from t_op_dianping_corp_visit set corp_id = #{corpIdTo} where corp_id = #{corpIdFrom} ")
+    @Update("update t_op_dianping_corp_visit set corp_id = #{corpIdTo} where corp_id = #{corpIdFrom} ")
     int moveCorpVisit(@Param("corpIdTo")long corpId, @Param("corpIdFrom")long corpIdFrom);
 
-    @Update("update from t_op_dianping_judgement set corp_id = #{corpIdTo} where corp_id = #{corpIdFrom} ")
+    @Update("update t_op_dianping_judgement set corp_id = #{corpIdTo} where corp_id = #{corpIdFrom} ")
     int moveCorpJudgement(@Param("corpIdTo")long corpId, @Param("corpIdFrom")long corpIdFrom);
 
-    @Update("update from t_op_dianping_corp set corp_id = #{corpIdTo} where corp_id = #{corpIdFrom} ")
-    int updateCorpCount(@Param("corpId")long corpId,
+    @Update("update t_op_dianping_corp set " +
+            "comment_count = comment_count + #{commentCount}, " +
+            "visit_count = visit_count + #{visitCount}, " +
+            "positive_count = visit_count + #{positiveCount}, " +
+            "negative_count = visit_count + #{negativeCount} " +
+            "where id = #{corpIdTo} ")
+    int updateCorpCount(@Param("corpIdTo")long corpIdTo,
+                        @Param("commentCount")long commentCount,
                         @Param("visitCount")long visitCount,
                         @Param("positiveCount")long positiveCount,
                         @Param("negativeCount")long negativeCount);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
