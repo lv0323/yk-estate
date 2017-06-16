@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.approval.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
@@ -7,10 +8,14 @@ import com.lyun.estate.biz.approval.def.ApprovalDefine;
 import com.lyun.estate.biz.approval.domain.*;
 import com.lyun.estate.biz.approval.entity.Approval;
 import com.lyun.estate.biz.approval.repo.ApprovalRepo;
+import com.lyun.estate.biz.company.def.CompanyDefine;
+import com.lyun.estate.biz.company.domain.CreateCompanyInfo;
+import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.service.CompanyService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
+import com.lyun.estate.core.utils.ValidateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +23,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by Jeffrey on 2017-06-14.
@@ -32,6 +42,8 @@ public class ApprovalService {
     private CompanyService companyService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    private String datePattern = "yyyy-MM-dd";
 
     private Logger logger = LoggerFactory.getLogger(ApprovalService.class);
 
@@ -86,18 +98,31 @@ public class ApprovalService {
                 ExceptionUtil.checkNotNull("签约-城市名", signing.getCityName());
                 ExceptionUtil.checkNotNull("签约-公司名", signing.getCompanyName());
                 ExceptionUtil.checkNotNull("签约-公司简称", signing.getCompanyAbbr());
-                ExceptionUtil.checkNotNull("签约-签约类型", signing.getCompanyType());
+                ExceptionUtil.checkIllegal(Arrays.stream(CompanyDefine.Type.values())
+                                .anyMatch(t -> Objects.equals(t.name(), signing.getCompanyType())),
+                        "签约-签约类型",
+                        signing.getCompanyType());
                 ExceptionUtil.checkNotNull("签约-对方负责人", signing.getBossName());
-                ExceptionUtil.checkNotNull("签约-对方负责人手机", signing.getBossMobile());
+                ExceptionUtil.checkIllegal(ValidateUtil.isMobile(signing.getBossMobile()),
+                        "签约-对方负责人手机",
+                        signing.getBossMobile());
                 ExceptionUtil.checkNotNull("签约-本公司负责人", signing.getPartAInChargeId());
                 ExceptionUtil.checkNotNull("签约-本公司负责人姓名", signing.getPartAInChargeName());
                 ExceptionUtil.checkNotNull("签约-备注", signing.getNote());
 
-                ExceptionUtil.checkNotNull("签约-签约开始时间", signing.getStartDate());
-                ExceptionUtil.checkNotNull("签约-签约结束时间", signing.getEndDate());
+                SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
+
+                ExceptionUtil.checkIllegal(parseDateStr(dateFormat, signing.getStartDate()) != null,
+                        "签约-签约开始时间",
+                        signing.getStartDate());
+                ExceptionUtil.checkIllegal(parseDateStr(dateFormat, signing.getEndDate()) != null,
+                        "签约-签约结束时间",
+                        signing.getEndDate());
                 ExceptionUtil.checkNotNull("签约-签约年限", signing.getYears());
                 ExceptionUtil.checkNotNull("签约-签约店数", signing.getStoreCount());
                 ExceptionUtil.checkNotNull("签约-签约金额", signing.getPrice());
+
+                ExceptionUtil.checkNotNull("签约-父公司", signing.getParentId());
                 break;
             default:
                 return false;
@@ -105,7 +130,16 @@ public class ApprovalService {
         return true;
     }
 
-    private <T> T readFromData(String data, Class<T> clazz) {
+    private Date parseDateStr(SimpleDateFormat dateFormat, String dateStr) {
+        try {
+            return dateFormat.parse(dateStr);
+        } catch (ParseException e) {
+            ExceptionUtil.catching(e);
+        }
+        return null;
+    }
+
+    public <T> T readFromData(String data, Class<T> clazz) {
         if (data != null) {
             try {
                 return objectMapper.readValue(data, clazz);
@@ -114,6 +148,15 @@ public class ApprovalService {
             }
         }
         return null;
+    }
+
+    public String writeToData(Object object) {
+        try {
+            return objectMapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            logger.warn("object mapper write value error");
+            throw ExceptionUtil.wrap(e);
+        }
     }
 
     public PageList<ApprovalDTO> list(ApprovalDefine.Type type,
@@ -132,7 +175,7 @@ public class ApprovalService {
                 "审批结果", status);
         Approval oneForUpdate = approvalRepo.findOneForUpdate(approvalId);
         if (!oneForUpdate.getType().isNeedApproval()) {
-            throw new EstateException(ExCode.APPROVAL_APPROVED, oneForUpdate.getStatus());
+            throw new EstateException(ExCode.APPROVAL_NO_NEED_APPROVE);
         }
 
         if (oneForUpdate.getStatus().isEnd()) {
@@ -140,15 +183,34 @@ public class ApprovalService {
         }
 
         if (oneForUpdate.getType() == ApprovalDefine.Type.SIGNING && status == ApprovalDefine.Status.APPROVED) {
+            Signing signing = readFromData(oneForUpdate.getData(), Signing.class);
+            Company company = companyService.createCompany(buildInfo(signing, oneForUpdate.getApplyId()), operatorId);
+            signing.setCompanyId(company.getId());
+            approvalRepo.updateStatusAndData(approvalId, operatorId, writeToData(signing), status);
 
-//            approvalRepo.updateStatusAndData(approvalId, operatorId, status);
         } else {
-//            approvalRepo.updateStatus(approvalId, operatorId, status);
+            approvalRepo.updateStatus(approvalId, operatorId, status);
         }
-
-//        todo::company 增加 inChargeId, 修改list页负责人信息
-
         return approvalRepo.findOne(approvalId);
+    }
+
+    private CreateCompanyInfo buildInfo(Signing signing, Long applyId) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
+        return new CreateCompanyInfo()
+                .setParentId(signing.getParentId())
+                .setCityId(signing.getCityId())
+                .setType(CompanyDefine.Type.valueOf(signing.getCompanyType()))
+                .setName(signing.getCompanyName())
+                .setAbbr(signing.getCompanyAbbr())
+                .setAddress(signing.getAddress())
+                .setPartAId(applyId)
+                .setYears(signing.getYears())
+                .setStoreCount(signing.getStoreCount())
+                .setPrice(signing.getPrice())
+                .setBossName(signing.getBossName())
+                .setMobile(signing.getBossMobile())
+                .setStartDate(parseDateStr(dateFormat, signing.getStartDate()))
+                .setEndDate(parseDateStr(dateFormat, signing.getEndDate()));
     }
 
 

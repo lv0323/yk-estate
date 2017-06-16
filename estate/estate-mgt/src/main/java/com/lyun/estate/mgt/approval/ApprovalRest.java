@@ -6,6 +6,7 @@ import com.lyun.estate.mgt.approval.service.ApprovalMgtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -19,8 +20,15 @@ public class ApprovalRest {
     private ApprovalMgtService approvalMgtService;
 
     @PostMapping("create")
-    public Approval create(ApprovalDefine.Type type, String data) {
+    public Approval create(@RequestParam ApprovalDefine.Type type,
+                           @RequestParam String data) {
         return approvalMgtService.create(type, data);
+    }
+
+    @PostMapping("approve")
+    public Approval approve(@RequestParam Long id,
+                            @RequestParam ApprovalDefine.Status status) {
+        return approvalMgtService.approve(id, status);
     }
 
 }
