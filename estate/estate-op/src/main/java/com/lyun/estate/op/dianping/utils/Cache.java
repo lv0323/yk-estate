@@ -1,36 +1,38 @@
 package com.lyun.estate.op.dianping.utils;
-
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-
-import java.util.concurrent.TimeUnit;
+import com.lyun.estate.op.config.DianpingProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * Created by localuser on 2017/6/16.
  */
+@Component
 public class Cache {
+    @Autowired
+    private DianpingProperties properties;
 
-    private Cache() {
-        if (CacheHolder.INSTANCE != null) {
-            throw new IllegalStateException("Already instantiated");
+    HashMap<String, Long> cache = new HashMap<>();
+
+    synchronized public void put(String key, long time){
+        cache.put(key, time);
+    }
+
+    synchronized public Optional<Long> get(String key){
+        Long putTime = null;
+        putTime = cache.get(key);
+
+        //不存在
+        if(putTime == null){
+            return Optional.empty();
         }
-    }
-    public static LoadingCache<String, String> getInstance() {
-        return CacheHolder.INSTANCE;
-    }
+        //已过期
+        if( System.currentTimeMillis() - putTime > properties.getCacheTimeLimit()){
+            cache.remove(key);
+            return Optional.empty();
+        }
 
-    private static class CacheHolder{
-        private static final LoadingCache<String, String> INSTANCE =
-                CacheBuilder
-                        .newBuilder()
-                        .maximumSize(1000)
-                        .expireAfterAccess(3, TimeUnit.MINUTES)
-                        .build(new CacheLoader<String, String>() {
-                            @Override
-                            public String load(String key) throws Exception {
-                                return null;
-                            }
-                        });
+        return Optional.of(putTime);
     }
 }

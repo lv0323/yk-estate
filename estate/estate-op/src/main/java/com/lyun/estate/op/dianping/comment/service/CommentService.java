@@ -1,6 +1,7 @@
 package com.lyun.estate.op.dianping.comment.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.lyun.estate.op.config.DianpingProperties;
 import com.lyun.estate.op.dianping.comment.domain.CommentDTO;
 import com.lyun.estate.op.dianping.comment.entity.Comment;
 import com.lyun.estate.op.dianping.comment.repo.CommentRepo;
@@ -25,12 +26,20 @@ public class CommentService {
     @Autowired
     private CommentRepo commentRepo;
 
+    @Autowired
+    private DianpingProperties properties;
+
+    @Autowired
+    private Cache cache;
+
     public void create(long userId, long corpId, List<String> tags, String shopfront, String content){
 
         String key = ""+userId+"_"+corpId;
 
-        if( Cache.getInstance().getIfPresent(key) != null){
-            throw new BizRuntimeException("3分钟内不能重复评论同一个公司");
+        if( cache.get(key).isPresent()){
+            long timeLimit = properties.getCacheTimeLimit();
+            long seconds = timeLimit / 1000;
+            throw new BizRuntimeException(""+seconds+"秒内不能重复评论同一个公司");
         }
 
         String tagStr = String.join("_", tags);
@@ -38,7 +47,7 @@ public class CommentService {
 
         corpRepo.increaseCommentCount(corpId);
 
-        Cache.getInstance().put(key, "v");
+        cache.put(key, System.currentTimeMillis());
     }
 
     public void like(long commentId, long userId){

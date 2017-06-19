@@ -82,7 +82,7 @@ public class DianpingService {
         checkCorpStatus(corpId, corp);
 
         if(corp.getStatus() != CorpStatus.NEW){
-            throw new EstateException(ExCode.APPROVAL_APPROVED, ""+corp+" 不能再次审批");
+            throw new EstateException(ExCode.OP_DIANPING_CORP_APPROVED, ""+corpId);
         }
 
         return repo.deleteCorp(corpId) > 0;

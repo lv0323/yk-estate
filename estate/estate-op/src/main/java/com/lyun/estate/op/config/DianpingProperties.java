@@ -9,6 +9,18 @@ import javax.annotation.PostConstruct;
 @Component
 public class DianpingProperties {
 
+    @Value("${dianping.wechat.loginurl}")
+    private String weChatLoginUrl;
+
+    @Value("${dianping.token.secret}")
+    private String tokenSecret;
+
+    @Value("${dianping.cache.timelimit}")
+    private long cacheTimeLimit;
+
+
+    public DianpingProperties() {}
+
     public String getWeChatLoginUrl() {
         return weChatLoginUrl;
     }
@@ -17,11 +29,6 @@ public class DianpingProperties {
         this.weChatLoginUrl = weChatLoginUrl;
     }
 
-    @Value("${dianping.wechat.loginurl}")
-    private String weChatLoginUrl;
-
-    public DianpingProperties() {
-    }
 
     public String getTokenSecret() {
         return tokenSecret;
@@ -31,12 +38,14 @@ public class DianpingProperties {
         this.tokenSecret = tokenSecret;
     }
 
-    @Value("${dianping.token.secret}")
-    private String tokenSecret;
+    public long getCacheTimeLimit() {
+        return cacheTimeLimit;
+    }
+
+    public void setCacheTimeLimit(long cacheTimeLimit) {
+        this.cacheTimeLimit = cacheTimeLimit;
+    }
 
     @PostConstruct
-    public void init() {
-//        System.out.println("================== " + weChatLoginUrl + "================== ");
-//        System.out.println("================== " + tokenSecret + "================== ");
-    }
+    public void init() {}
 }
