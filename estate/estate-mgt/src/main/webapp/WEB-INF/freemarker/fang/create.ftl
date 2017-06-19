@@ -442,7 +442,7 @@
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <div class="btn_nav  pull-right">
                                                         <button type="button" class="prev btn btn-primary" ng-click="ctrl.prevStep()"><i class="fa fa-chevron-left"></i>上一步</button>
-                                                        <button type="button" class="next btn btn-primary" ng-click="ctrl.submit()"><i class="fa fa-save"></i>保存</button>
+                                                        <button type="button" class="next btn btn-primary" ng-click="ctrl.submit()" ng-disabled="ctrl.page.submitting"><i class="fa fa-save"></i>保存</button>
                                                         <button type="button" class="btn btn-default" style="border-color: #aaa"><i class="fa fa-times"></i>取消</button>
                                                     </div>
                                                 </div>

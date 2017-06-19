@@ -24,4 +24,5 @@ public interface FangPoolRepo {
 
     @Select("SELECT * FROM t_fang_pool where id = #{fangPoolId} LIMIT 1")
     FangPool detail(Long fangPoolId);
+
 }
