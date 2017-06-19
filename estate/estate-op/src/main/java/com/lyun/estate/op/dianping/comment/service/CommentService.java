@@ -4,7 +4,9 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.lyun.estate.op.dianping.comment.domain.CommentDTO;
 import com.lyun.estate.op.dianping.comment.entity.Comment;
 import com.lyun.estate.op.dianping.comment.repo.CommentRepo;
+import com.lyun.estate.op.dianping.common.BizRuntimeException;
 import com.lyun.estate.op.dianping.corp.repo.CorpRepo;
+import com.lyun.estate.op.dianping.utils.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +27,18 @@ public class CommentService {
 
     public void create(long userId, long corpId, List<String> tags, String shopfront, String content){
 
+        String key = ""+userId+"_"+corpId;
+
+        if( Cache.getInstance().getIfPresent(key) != null){
+            throw new BizRuntimeException("3分钟内不能重复评论同一个公司");
+        }
+
         String tagStr = String.join("_", tags);
         commentRepo.create(userId, corpId, tagStr, shopfront, content);
 
         corpRepo.increaseCommentCount(corpId);
+
+        Cache.getInstance().put(key, "v");
     }
 
     public void like(long commentId, long userId){

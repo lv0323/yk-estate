@@ -38,7 +38,7 @@ public class AuthRest {
     private CompanyService companyService;
 
 
-    @PostMapping("activeCorp")
+    @PostMapping("active")
     @CheckSmsCode
     public Object active(@RequestHeader(SmsCodeArgumentResolver.SMS_CODE_HEADER) SmsCode smsCode,
                          @RequestParam String password,

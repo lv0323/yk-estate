@@ -12,6 +12,8 @@ import com.lyun.estate.biz.company.def.CompanyDefine;
 import com.lyun.estate.biz.company.domain.CreateCompanyInfo;
 import com.lyun.estate.biz.company.entity.Company;
 import com.lyun.estate.biz.company.service.CompanyService;
+import com.lyun.estate.biz.employee.domain.EmployeeDTO;
+import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
@@ -41,12 +43,14 @@ public class ApprovalService {
     @Autowired
     private CompanyService companyService;
 
+    @Autowired
+    private EmployeeService employeeService;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     private String datePattern = "yyyy-MM-dd";
 
     private Logger logger = LoggerFactory.getLogger(ApprovalService.class);
-
 
     public Approval create(Approval approval) {
         ExceptionUtil.checkNotNull("申请人编号", approval.getApplyId());
@@ -165,7 +169,55 @@ public class ApprovalService {
                                       Long applyDeptId,
                                       Long applyId,
                                       PageBounds pageBounds) {
-        return approvalRepo.list(type, status, applyCompanyId, applyDeptId, applyId, pageBounds);
+        return listApprovalDTO(type, status, applyCompanyId, applyDeptId, applyId, pageBounds);
+    }
+
+    private PageList<ApprovalDTO> listApprovalDTO(ApprovalDefine.Type type, ApprovalDefine.Status status,
+                                                  Long applyCompanyId,
+                                                  Long applyDeptId, Long applyId, PageBounds pageBounds) {
+        PageList<ApprovalDTO> result = approvalRepo.list(type,
+                status,
+                applyCompanyId,
+                applyDeptId,
+                applyId,
+                pageBounds);
+
+        result.forEach(t -> {
+            fillDomain(t);
+            fillApprover(t);
+        });
+
+        return result;
+    }
+
+    private void fillApprover(ApprovalDTO approvalDTO) {
+        if (approvalDTO.getApproverId() != null) {
+            EmployeeDTO employee = employeeService.selectDTOById(approvalDTO.getApproverId());
+            if (employee != null) {
+                approvalDTO.setApproverName(employee.getName());
+                approvalDTO.setApproverDeptId(employee.getDepartmentId());
+                approvalDTO.setApproverDeptName(employee.getDepartmentName());
+                approvalDTO.setApplyCompanyId(employee.getCompanyId());
+                approvalDTO.setApplyCompanyShortName(employee.getCompanyAbbr());
+            }
+        }
+    }
+
+    private void fillDomain(ApprovalDTO approvalDTO) {
+        switch (approvalDTO.getType()) {
+            case LEAVING:
+                approvalDTO.setLeaving(readFromData(approvalDTO.getData(), Leaving.class));
+                break;
+            case BIZ_TRIP:
+                approvalDTO.setBizTrip(readFromData(approvalDTO.getData(), BizTrip.class));
+                break;
+            case COLD_VISIT:
+                approvalDTO.setColdVisit(readFromData(approvalDTO.getData(), ColdVisit.class));
+                break;
+            case SIGNING:
+                approvalDTO.setSigning(readFromData(approvalDTO.getData(), Signing.class));
+                break;
+        }
     }
 
     @Transactional

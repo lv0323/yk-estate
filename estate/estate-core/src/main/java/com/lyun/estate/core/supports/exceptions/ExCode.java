@@ -95,8 +95,7 @@ public enum ExCode {
     JSON_ERROR("JSON对象{},转换错误:{}"),
 
     //op dianping
-    STATE_ERROR("状态错误{}, 原因:{}"),
-    ;
+    OP_DIANPING_CORP_APPROVED("{}已被审批过,不能再次审批"),;
 
     private final String messageTemplate;
 

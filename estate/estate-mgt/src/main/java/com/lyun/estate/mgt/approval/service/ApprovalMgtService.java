@@ -1,6 +1,9 @@
 package com.lyun.estate.mgt.approval.service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.approval.def.ApprovalDefine;
+import com.lyun.estate.biz.approval.domain.ApprovalDTO;
 import com.lyun.estate.biz.approval.domain.Signing;
 import com.lyun.estate.biz.approval.entity.Approval;
 import com.lyun.estate.biz.approval.service.ApprovalService;
@@ -44,5 +47,12 @@ public class ApprovalMgtService {
     public Approval approve(Long id, ApprovalDefine.Status status) {
         permissionCheckService.checkExist(Permission.APPROVAL_APPROVE);
         return approvalService.approve(id, mgtContext.getOperator().getId(), status);
+    }
+
+    public PageList<ApprovalDTO> list(ApprovalDefine.Type type, ApprovalDefine.Status status, Long applyCompanyId,
+                                      Long applyDeptId,
+                                      Long applyId, PageBounds pageBounds) {
+        permissionCheckService.checkExist(Permission.APPROVAL_LIST_EXPORT);
+        return approvalService.list(type, status, applyCompanyId, applyDeptId, applyId, pageBounds);
     }
 }
