@@ -23,10 +23,13 @@ public interface CorpRepo {
             "creater_id as createrId, " +
             "is_deleted as deleted, " +
             "comment_count as commentCount " +
-            "FROM t_op_dianping_corp WHERE name like '%'||#{name}||'%'")
+            "FROM t_op_dianping_corp " +
+            "WHERE name like '%'||#{name}||'%' "+
+            "and status != 'SUSPEND' and is_deleted != true"
+    )
     List<Corp> search(String name);
 
-    @Select("select * from t_op_dianping_corp where name = #{name}")
+    @Select("select * from t_op_dianping_corp where name = #{name} and status != 'SUSPEND' and is_deleted != true ")
     List<Corp> searchExactSame(String name);
 
 //    @Select("SELECT count(map.tag_id) as count, tag.name\n" +
