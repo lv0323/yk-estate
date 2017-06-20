@@ -57,10 +57,20 @@ public class DianpingService {
         int offset = page.getOffset();
         int pageIndex = offset / page.getLimit();
         int limit = page.getLimit();
-        int foundCount = repo.getCorpCount(status.name());
+
+        List<Corp> foundCorps = null;
+        int foundCount = 0;
+
+        if(status == null){
+            foundCorps = repo.getCorpsWhithoutStatus(offset, limit);
+            foundCount = repo.getCorpCountWhithoutStatus();
+
+        }else{
+            foundCorps = repo.getCorps(status.name(), offset, limit);
+            foundCount = repo.getCorpCount(status.name());
+        }
 
         Paginator paginator = new Paginator(pageIndex, limit, foundCount);
-        List<Corp> foundCorps = repo.getCorps(status.name(), offset, limit);
 
         PageList<Corp> pageableDTO = new PageList<>(foundCorps, paginator);
 

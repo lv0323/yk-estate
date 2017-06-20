@@ -36,7 +36,7 @@ public class DianpingRest {
 
     /**根据 status 查询公司列表 status = new | active | suspend */
     @GetMapping("corps")
-    public PageList<Corp> getCorps( @RequestParam("status") CorpStatus status, @RequestHeader("X-PAGING")PageBounds pageBounds) {
+    public PageList<Corp> getCorps( @RequestParam(value = "status", required = false) CorpStatus status, @RequestHeader("X-PAGING")PageBounds pageBounds) {
 
         return service.getCorps(status, pageBounds);
     }
