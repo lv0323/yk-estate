@@ -15,11 +15,9 @@ public class DianpingProperties {
     @Value("${dianping.token.secret}")
     private String tokenSecret;
 
-    @Value("${dianping.cache.timelimit}")
-    private long cacheTimeLimit;
 
-
-    public DianpingProperties() {}
+    public DianpingProperties() {
+    }
 
     public String getWeChatLoginUrl() {
         return weChatLoginUrl;
@@ -38,14 +36,8 @@ public class DianpingProperties {
         this.tokenSecret = tokenSecret;
     }
 
-    public long getCacheTimeLimit() {
-        return cacheTimeLimit;
-    }
-
-    public void setCacheTimeLimit(long cacheTimeLimit) {
-        this.cacheTimeLimit = cacheTimeLimit;
-    }
 
     @PostConstruct
-    public void init() {}
+    public void init() {
+    }
 }
