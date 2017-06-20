@@ -78,7 +78,21 @@ public interface DianpingRepo {
             "WHERE name like '%'||#{name}||'%' and is_deleted != true "+
             "order by create_time desc "
     )
-    List<Corp> searchCorps(@Param("name")String name);
+    List<Corp> searchCorpsWhihtoutStatus(@Param("name")String name);
+
+    @Select("SELECT " +
+            "id, " +
+            "name, " +
+            "status, " +
+            "positive_count as positiveCount, " +
+            "negative_count as negativeCount, " +
+            "visit_count as visitCount, " +
+            "comment_count as commentCount " +
+            "FROM t_op_dianping_corp " +
+            "WHERE name like '%'||#{name}||'%' and is_deleted != true and status = #{status}"+
+            "order by create_time desc "
+    )
+    List<Corp> searchCorps(@Param("name")String name, @Param("status") String status);
 
     @Update("update t_op_dianping_corp set status = 'ACTIVE' where id = #{corpId} ")
     int activeCorp(@Param("corpId")long corpId);
@@ -135,6 +149,16 @@ public interface DianpingRepo {
             "where id = #{corpIdTo} ")
     int updateCorpCount(@Param("corpIdTo")long corpIdTo,
                         @Param("commentCount")long commentCount,
+                        @Param("visitCount")long visitCount,
+                        @Param("positiveCount")long positiveCount,
+                        @Param("negativeCount")long negativeCount);
+
+    @Update("update t_op_dianping_corp set " +
+            "visit_count = #{visitCount}, " +
+            "positive_count = #{positiveCount}, " +
+            "negative_count = #{negativeCount} " +
+            "where id = #{corpId} ")
+    int putCorpCount(@Param("corpId")long corpId,
                         @Param("visitCount")long visitCount,
                         @Param("positiveCount")long positiveCount,
                         @Param("negativeCount")long negativeCount);
