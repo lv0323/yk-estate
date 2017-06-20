@@ -26,7 +26,7 @@ public interface DianpingRepo {
             "creater_id as createrId, " +
             "is_deleted as deleted, " +
             "comment_count as commentCount " +
-            "FROM t_op_dianping_corp where id=#{id}")
+            "FROM t_op_dianping_corp where id=#{id} and is_deleted != true ")
     Corp getCorp(long id);
 
     @Select("SELECT id, " +
@@ -37,7 +37,7 @@ public interface DianpingRepo {
             "visit_count as visitCount, " +
             "comment_count as commentCount " +
             "FROM t_op_dianping_corp "+
-            "WHERE status =#{status} "+
+            "WHERE status =#{status} and is_deleted != true "+
             "order by create_time desc " +
 
             "offset #{offset} limit #{limit}"
@@ -45,8 +45,26 @@ public interface DianpingRepo {
     List<Corp> getCorps(@Param("status")String status, @Param("offset")int offset, @Param("limit")int limit);
 
 
-    @Select("select count(id) from t_op_dianping_corp where status=#{status}")
+    @Select("select count(id) from t_op_dianping_corp where status=#{status} and is_deleted != true ")
     int getCorpCount(@Param("status")String status);
+
+    @Select("SELECT id, " +
+            "name, " +
+            "status, " +
+            "positive_count as positiveCount, " +
+            "negative_count as negativeCount, " +
+            "visit_count as visitCount, " +
+            "comment_count as commentCount " +
+            "FROM t_op_dianping_corp "+
+            "where is_deleted != true "+
+            "order by create_time desc " +
+            "offset #{offset} limit #{limit}"
+    )
+    List<Corp> getCorpsWhithoutStatus(@Param("offset")int offset, @Param("limit")int limit);
+
+
+    @Select("select count(id) from t_op_dianping_corp where is_deleted != true ")
+    int getCorpCountWhithoutStatus();
 
     @Select("SELECT " +
             "id, " +
@@ -57,7 +75,7 @@ public interface DianpingRepo {
             "visit_count as visitCount, " +
             "comment_count as commentCount " +
             "FROM t_op_dianping_corp " +
-            "WHERE name like '%'||#{name}||'%' "+
+            "WHERE name like '%'||#{name}||'%' and is_deleted != true "+
             "order by create_time desc "
     )
     List<Corp> searchCorps(@Param("name")String name);
@@ -66,14 +84,9 @@ public interface DianpingRepo {
     int activeCorp(@Param("corpId")long corpId);
 
     @Update("update t_op_dianping_corp set status = 'SUSPEND' where id = #{corpId} ")
-
     int suspendCorp(@Param("corpId")long corpId);
 
-    @Select("select count(id) from t_op_dianping_corp where id = #{corpId}")
-    int existCorp(@Param("corpId")long corpId);
-
     @Update("update t_op_dianping_corp set is_deleted = true where id = #{corpId} ")
-
     int deleteCorp(@Param("corpId")long corpId);
 
     @Select("SELECT " +
