@@ -4,16 +4,34 @@
         <SQL>
             <![CDATA[
                 select id,title,domain_id,domain_type,status,create_time from t_message
+                where 1=1 and (#{domainType} is null or domain_type=#{domainType})
 			]]>
         </SQL>
         <Header>
-            <Column>编号</Column>
-            <Column>标题</Column>
-            <Column>简介</Column>
-            <Column>关联主键</Column>
-            <Column>关联类型</Column>
-            <Column>状态</Column>
-            <Column>时间</Column>
+            <Column>
+                <name>编号</name>
+                <type>java.lang.Long</type>
+            </Column>
+            <Column>
+                <name>标题</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>关联主键</name>
+                <type>java.lang.Long</type>
+            </Column>
+            <Column>
+                <name>关联类型</name>
+                <type>com.lyun.estate.biz.support.def.DomainType</type>
+            </Column>
+            <Column>
+                <name>状态</name>
+                <type>com.lyun.estate.biz.message.def.MessageStatus</type>
+            </Column>
+            <Column>
+                <name>时间</name>
+                <type>java.util.Date</type>
+            </Column>
         </Header>
     </ReportInfo>
 

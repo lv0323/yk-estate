@@ -10,7 +10,7 @@ public class ReportInfo {
     private String id;
     private String region;
     private String sql;
-    private List<String> reportHeader = new ArrayList<String>();
+    private List<ReportHeader> headerList = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -36,11 +36,11 @@ public class ReportInfo {
         this.sql = sql;
     }
 
-    public List<String> getReportHeader() {
-        return reportHeader;
+    public List<ReportHeader> getHeaderList() {
+        return headerList;
     }
 
-    public void setReportHeader(List<String> reportHeader) {
-        this.reportHeader = reportHeader;
+    public void setHeaderList(List<ReportHeader> headerList) {
+        this.headerList = headerList;
     }
 }

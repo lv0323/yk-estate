@@ -30,7 +30,8 @@ ext {
             jjwt                        : '0.7.0',
             oss                         : "2.4.0",
             hibernate_validator         : "5.2.4.Final",
-            jpinyin                     : "1.1.8"
+            jpinyin                     : "1.1.8",
+            joda_time                   : "2.9.7",
     ]
 
     lib = [
@@ -81,7 +82,8 @@ ext {
             jjwt                        : "io.jsonwebtoken:jjwt:$ver.jjwt",
             oss                         : "com.aliyun.oss:aliyun-sdk-oss:$ver.oss",
             hibernate_validator         : "org.hibernate:hibernate-validator:$ver.hibernate_validator",
-            jpinyin                     : "com.github.stuxuhai:jpinyin:$ver.jpinyin"
+            jpinyin                     : "com.github.stuxuhai:jpinyin:$ver.jpinyin",
+            joda_time                   : "joda-time:joda-time:$ver.joda_time"
     ]
 
 
