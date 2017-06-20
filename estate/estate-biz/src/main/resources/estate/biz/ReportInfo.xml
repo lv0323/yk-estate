@@ -35,4 +35,339 @@
         </Header>
     </ReportInfo>
 
+    <ReportInfo id="approval_LEAVING" region="DEFAULT">
+        <SQL>
+            <![CDATA[
+                SELECT
+                  c.abbr || ' - ' || e.name  AS apply,
+                  a.data ->> 'startTime'     AS start_time,
+                  a.data ->> 'endTime'       AS end_time,
+                  a.data ->> 'location'      AS location,
+                  a.data ->> 'reason'        AS reason,
+                  a.data ->> 'noClockReason' AS no_clock_reason,
+                  a.create_time
+                FROM t_approval a
+                  LEFT JOIN t_employee e ON a.apply_id = e.id
+                  LEFT JOIN t_department d ON e.department_id = d.id
+                  LEFT JOIN t_company c ON e.company_id = c.id
+                WHERE a.type = 'LEAVING'
+                      AND (#{status} is null or a.status = #{status})
+                      AND (#{applyCompanyId} is null or e.company_id = #{applyCompanyId})
+                      AND (#{applyDeptId} is null or e.department_id = #{applyDeptId})
+                      AND (#{applyId} is null or a.apply_id = #{applyId})
+                      AND (#{startTime} is null or a.create_time >= #{startTime})
+                      AND (#{endTime} is null or a.create_time < #{endTime})
+                ORDER BY create_time DESC
+			]]>
+        </SQL>
+        <Header>
+            <Column>
+                <name>提交人</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>外出时间</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>返回时间</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>外出地点</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>外出事由</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>未打卡事由</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>提交时间</name>
+                <type>java.util.Date</type>
+            </Column>
+        </Header>
+    </ReportInfo>
+
+    <ReportInfo id="approval_BIZ_TRIP" region="DEFAULT">
+        <SQL>
+            <![CDATA[
+                SELECT
+                  c.abbr || ' - ' || e.name  AS apply,
+                  a.data ->> 'startTime'     AS start_time,
+                  a.data ->> 'endTime'       AS end_time,
+                  a.data ->> 'days'          AS days,
+                  a.data ->> 'reason'        AS reason,
+                  a.data ->> 'outcome'       AS outcome,
+                  a.data ->> 'problem'       AS problem,
+                  a.data ->> 'resource'      AS resource,
+                  a.data ->> 'costs'         AS costs,
+                  a.create_time
+                FROM t_approval a
+                  LEFT JOIN t_employee e ON a.apply_id = e.id
+                  LEFT JOIN t_department d ON e.department_id = d.id
+                  LEFT JOIN t_company c ON e.company_id = c.id
+                WHERE a.type = 'BIZ_TRIP'
+                      AND (#{status} is null or a.status = #{status})
+                      AND (#{applyCompanyId} is null or e.company_id = #{applyCompanyId})
+                      AND (#{applyDeptId} is null or e.department_id = #{applyDeptId})
+                      AND (#{applyId} is null or a.apply_id = #{applyId})
+                      AND (#{startTime} is null or a.create_time >= #{startTime})
+                      AND (#{endTime} is null or a.create_time < #{endTime})
+                ORDER BY create_time DESC
+			]]>
+        </SQL>
+        <Header>
+            <Column>
+                <name>提交人</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>出差时间</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>返回时间</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>出差天数</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>出差事由</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>出差成果</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>待解决问题</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>对接资源信息</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>出差费用</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>提交时间</name>
+                <type>java.util.Date</type>
+            </Column>
+        </Header>
+    </ReportInfo>
+
+    <ReportInfo id="approval_COLD_VISIT" region="DEFAULT">
+        <SQL>
+            <![CDATA[
+                SELECT
+                  c.abbr || ' - ' || e.name AS apply,
+                  a.data ->> 'companyName'  AS company_name,
+                  a.data ->> 'bossName'     AS boss_name,
+                  a.data ->> 'bossType'     AS boss_type,
+                  a.data ->> 'contactInfo'  AS contact_info,
+                  a.data ->> 'address'      AS address,
+                  a.data ->> 'visitTime1'   AS visit_time1,
+                  a.data ->> 'report1'      AS report1,
+                  a.data ->> 'visitTime2'   AS visit_time2,
+                  a.data ->> 'report2'      AS report2,
+                  a.data ->> 'visitTime3'   AS visit_time3,
+                  a.data ->> 'report3'      AS report3,
+                  a.data ->> 'followers'    AS followers,
+                  a.create_time
+                FROM t_approval a
+                  LEFT JOIN t_employee e ON a.apply_id = e.id
+                  LEFT JOIN t_department d ON e.department_id = d.id
+                  LEFT JOIN t_company c ON e.company_id = c.id
+                WHERE a.type = 'COLD_VISIT'
+                      AND (#{status} IS NULL OR a.status = #{status})
+                      AND (#{applyCompanyId} IS NULL OR e.company_id = #{applyCompanyId})
+                      AND (#{applyDeptId} IS NULL OR e.department_id = #{applyDeptId})
+                      AND (#{applyId} IS NULL OR a.apply_id = #{applyId})
+                      AND (#{startTime} IS NULL OR a.create_time >= #{startTime})
+                      AND (#{endTime} IS NULL OR a.create_time < #{endTime})
+                ORDER BY create_time DESC
+			]]>
+        </SQL>
+        <Header>
+            <Column>
+                <name>提交人</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>客户公司名称</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>对方负责人姓名</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>负责人身份</name>
+                <type>com.lyun.estate.biz.approval.def.ApprovalDefine$BossType</type>
+            </Column>
+            <Column>
+                <name>联系方式</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>门店地址</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>首次拜访时间</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>首次拜访情况说明</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>二次拜访时间</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>二次拜访情况说明</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>三次拜访时间</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>三次拜访情况说明</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>去访人员姓名</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>提交时间</name>
+                <type>java.util.Date</type>
+            </Column>
+        </Header>
+    </ReportInfo>
+
+    <ReportInfo id="approval_SIGNING" region="DEFAULT">
+        <SQL>
+            <![CDATA[
+                SELECT
+                  c.abbr || ' - ' || e.name      AS apply,
+                  a.create_time,
+                  c2.abbr || ' - ' || e2.name    AS approver,
+                  a.approval_time,
+                  a.data ->> 'cityName'          AS city_name,
+                  a.data ->> 'companyType'       AS company_type,
+                  a.data ->> 'companyName'       AS company_name,
+                  a.data ->> 'companyAbbr'       AS company_abbr,
+                  a.data ->> 'address'           AS address,
+                  a.data ->> 'bossName'          AS boss_name,
+                  a.data ->> 'bossMobile'        AS boss_mobile,
+                  a.data ->> 'partAInChargeName' AS in_charge_name,
+                  a.data ->> 'note'              AS note,
+                  a.data ->> 'years'             AS years,
+                  a.data ->> 'storeCount'        AS store_count,
+                  a.data ->> 'startDate'         AS start_date,
+                  a.data ->> 'endDate'           AS end_date,
+                  a.data ->> 'price'             AS price
+                FROM t_approval a
+                  LEFT JOIN t_employee e ON a.apply_id = e.id
+                  LEFT JOIN t_department d ON e.department_id = d.id
+                  LEFT JOIN t_company c ON e.company_id = c.id
+                  LEFT JOIN t_employee e2 ON a.approver_id = e2.id
+                  LEFT JOIN t_company c2 ON e2.company_id = c2.id
+                WHERE a.type = 'SIGNING'
+                      AND (#{status} IS NULL OR a.status = #{status})
+                      AND (#{applyCompanyId} IS NULL OR e.company_id = #{applyCompanyId})
+                      AND (#{applyDeptId} IS NULL OR e.department_id = #{applyDeptId})
+                      AND (#{applyId} IS NULL OR a.apply_id = #{applyId})
+                      AND (#{startTime} IS NULL OR a.create_time >= #{startTime})
+                      AND (#{endTime} IS NULL OR a.create_time < #{endTime})
+                ORDER BY create_time DESC
+			]]>
+        </SQL>
+        <Header>
+            <Column>
+                <name>申请人</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>申请时间</name>
+                <type>java.util.Date</type>
+            </Column>
+            <Column>
+                <name>审批人</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>审批时间</name>
+                <type>java.util.Date</type>
+            </Column>
+            <Column>
+                <name>城市</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>签约类型</name>
+                <type>com.lyun.estate.biz.company.def.CompanyDefine$Type</type>
+            </Column>
+            <Column>
+                <name>公司名称</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>公司简称</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>详细地址</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>对方负责人姓名</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>联系方式</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>本公司负责人员姓名</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>备注</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>签约年限</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>门店数</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>签约开始时间</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>签约结束时间</name>
+                <type>java.lang.String</type>
+            </Column>
+            <Column>
+                <name>签约金额</name>
+                <type>java.lang.String</type>
+            </Column>
+        </Header>
+    </ReportInfo>
+
 </ROOT>

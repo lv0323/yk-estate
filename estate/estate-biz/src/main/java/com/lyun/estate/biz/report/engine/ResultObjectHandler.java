@@ -42,7 +42,7 @@ public class ResultObjectHandler {
                         Method method = typeClass.getMethod("valueOf", String.class);
                         Object enumInstance = method.invoke(null, e.getValue().toString());
                         try {
-                            method = typeClass.getMethod("label");
+                            method = typeClass.getMethod("getLabel");
                             String code = (String) method.invoke(enumInstance);
                             e.setValue(code);
                         } catch (NoSuchMethodException ex) {

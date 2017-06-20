@@ -28,6 +28,7 @@ public class EmployeeProvider {
                 .VALUES_IF("is_agent", "#{isAgent}", employee.getAgent() != null).toString();
     }
 
+    @SuppressWarnings("unchecked")
     public String selectByCompanyIdAndDeptIds(Map<String, Object> params) {
         Collection<Long> deptIds = (Collection<Long>) params.get("deptIds");
         SQL sql = new SQL()

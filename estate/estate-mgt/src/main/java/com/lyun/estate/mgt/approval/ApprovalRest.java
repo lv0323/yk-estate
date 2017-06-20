@@ -8,7 +8,13 @@ import com.lyun.estate.biz.approval.entity.Approval;
 import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver;
 import com.lyun.estate.mgt.approval.service.ApprovalMgtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.time.LocalTime;
+import java.util.Date;
+import java.util.Optional;
 
 /**
  * Created by Jeffrey on 2017-06-14.
@@ -33,13 +39,45 @@ public class ApprovalRest {
     }
 
     @GetMapping("list")
-    public PageList<ApprovalDTO> list(@RequestParam(required = false) ApprovalDefine.Type type,
+    public PageList<ApprovalDTO> list(@RequestParam ApprovalDefine.Type type,
                                       @RequestParam(required = false) ApprovalDefine.Status status,
                                       @RequestParam(required = false) Long applyCompanyId,
                                       @RequestParam(required = false) Long applyDeptId,
                                       @RequestParam(required = false) Long applyId,
+                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startTime,
+                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endTime,
                                       @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
-        return approvalMgtService.list(type, status, applyCompanyId, applyDeptId, applyId, pageBounds);
+        return approvalMgtService.list(type,
+                status,
+                applyCompanyId,
+                applyDeptId,
+                applyId,
+                startTime,
+                Optional.ofNullable(endTime)
+                        .map(t -> Date.from(t.toInstant().plusSeconds(LocalTime.MAX.toSecondOfDay())))
+                        .orElse(null),
+                pageBounds);
+    }
+
+    @GetMapping("report-export")
+    public void reportExportLeaving(@RequestParam ApprovalDefine.Type type,
+                                    @RequestParam(required = false) ApprovalDefine.Status status,
+                                    @RequestParam(required = false) Long applyCompanyId,
+                                    @RequestParam(required = false) Long applyDeptId,
+                                    @RequestParam(required = false) Long applyId,
+                                    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startTime,
+                                    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endTime,
+                                    HttpServletResponse httpResponse) {
+        approvalMgtService.reportExport(type,
+                status,
+                applyCompanyId,
+                applyDeptId,
+                applyId,
+                startTime,
+                Optional.ofNullable(endTime)
+                        .map(t -> Date.from(t.toInstant().plusSeconds(LocalTime.MAX.toSecondOfDay())))
+                        .orElse(null),
+                httpResponse);
     }
 
 }

@@ -9,6 +9,8 @@ import com.lyun.estate.biz.approval.repo.provider.ApprovalSqlProvider;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 /**
  * Created by Jeffrey on 2017-06-14.
  */
@@ -28,6 +30,8 @@ public interface ApprovalRepo {
                                @Param("applyCompanyId") Long applyCompanyId,
                                @Param("applyDeptId") Long applyDeptId,
                                @Param("applyId") Long applyId,
+                               @Param("startTime") Date startTime,
+                               @Param("endTime") Date endTime,
                                PageBounds pageBounds);
 
     @Select("SELECT * FROM t_approval WHERE id = #{id} FOR UPDATE;")

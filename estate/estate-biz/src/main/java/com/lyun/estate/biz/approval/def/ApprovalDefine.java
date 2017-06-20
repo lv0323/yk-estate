@@ -53,11 +53,21 @@ public class ApprovalDefine {
         }
     }
 
-    public enum BossType {
-        DEPT_MANAGER,//店长
-        MANAGER,//总经理
-        AGENT,//经纪人
-        BOSS;//老板
+    public enum BossType implements LabelEnum {
+        DEPT_MANAGER("店长"),
+        MANAGER("总经理"),
+        AGENT("经纪人"),
+        BOSS("老板");
+
+        private final String label;
+
+        BossType(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
     }
 
 }
