@@ -37,16 +37,21 @@ require(['main-app',
 
             $scope.confirmAddAgent = function () {
                 var newAgents = angular.copy($scope.toAddAgentList.newAgentList);
-                newAgents.unshift($scope.toAddAgentList.firstNewAgent);
-                //submit add
-                CreditService.addAgent({corp:newAgents, status: 'NEW'})
-                    .done(function () {
-                        SweetAlertHelp.success();
-                        $scope.list();
-                        $('#addAgentDialog').modal('hide');
-                    }).fail(function (res) {
-                        SweetAlertHelp.fail({message: res && res.message});
-                    });
+                if(!$scope.toAddAgentList.firstNewAgent){
+                    SweetAlertHelp.fail({message: '公司名称不能为空'});
+                }else{
+                    newAgents.unshift($scope.toAddAgentList.firstNewAgent);
+                    //submit add
+                    CreditService.addAgent({corps:newAgents, status: 'NEW'})
+                        .done(function () {
+                            SweetAlertHelp.success();
+                            $scope.list();
+                            $('#addAgentDialog').modal('hide');
+                        }).fail(function (res) {
+                            SweetAlertHelp.fail({message: res && res.message});
+                        });
+                }
+
             };
 
             /*筛选栏隐藏／显示*/
@@ -60,7 +65,8 @@ require(['main-app',
 
             /*设置筛选条件*/
             $scope.filter = {
-                status: ''
+                status: '',
+                corpName: ''
             };
 
             $scope.setFilterType = function (key, value) {
@@ -70,17 +76,38 @@ require(['main-app',
 
             /*激活中介*/
             $scope.activateCorp = function (agentId) {
-
+                CreditService.activateAgent(agentId)
+                    .done(function () {
+                        SweetAlertHelp.success();
+                        $scope.list();
+                    })
+                    .fail(function (res) {
+                        SweetAlertHelp.fail({message: res && res.message});
+                    });
             };
 
             /*拒绝中介*/
             $scope.rejectCorp = function (agentId) {
-
+                CreditService.rejectAgent(agentId)
+                    .done(function () {
+                        SweetAlertHelp.success();
+                        $scope.list();
+                    })
+                    .fail(function (res) {
+                        SweetAlertHelp.fail({message: res && res.message});
+                    });
             };
 
             /*冻结中介*/
             $scope.suspendCorp = function (agentId) {
-
+                CreditService.suspendAgent(agentId)
+                    .done(function () {
+                        SweetAlertHelp.success();
+                        $scope.list();
+                    })
+                    .fail(function (res) {
+                        SweetAlertHelp.fail({message: res && res.message});
+                    });
             };
 
             /*分页*/

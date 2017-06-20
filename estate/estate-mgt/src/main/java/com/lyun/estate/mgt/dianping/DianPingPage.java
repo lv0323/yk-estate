@@ -35,12 +35,4 @@ public class DianPingPage {
         params.put("username", service.getUsername());
         return new ModelAndView("/creditMgt/detail", params);
     }
-
-    @GetMapping("/edit")
-    public ModelAndView editAgent() {
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("avatarUrl", service.getAvatar());
-        params.put("username", service.getUsername());
-        return new ModelAndView("/creditMgt/edit", params);
-    }
 }

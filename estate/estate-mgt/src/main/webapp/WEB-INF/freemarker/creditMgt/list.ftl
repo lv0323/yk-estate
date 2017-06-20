@@ -41,8 +41,17 @@
 
                             <div class="box-body clearfix no-padding default-height">
                                 <form class="form-inline">
-                                    <div id="searchList" ng-cloak class="clearfix" ng-show="page.collapse">
-                                        <div class="collapse-box">
+                                    <div id="searchList" ng-cloak class="clearfix">
+                                        <div class="col-lg-4 col-md-4 col-sm-4">
+                                            <div class="input-group" style="width:100%;">
+                                                <input placeholder="通过公司名查询" class="form-control" ng-model="toSearchAgentName" type="text">
+                                                <span class="input-group-btn">
+                                                <button type="button" class="btn btn-primary btn-sm" ng-click="setFilterType('corpName' ,toSearchAgentName)"><i class="fa fa-search"></i>查询</button>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="collapse-box" ng-show="page.collapse">
                                             <div class="form-group sortlist">
                                                 <div class="form-group sortlist">
                                                     <label class="control-label">审核状态</label>
@@ -73,7 +82,7 @@
                                                     </thead>
                                                     <tbody>
                                                     <tr  ng-repeat="agent in agentList">
-                                                        <td><a ng-href="{{'/mgt/creditMgt/detail?id='+agent.id}}" target="_blank">{{agent.name}}</a></td>
+                                                        <td><a ng-href="{{'/mgt/creditMgt/detail?target=.credit&agentId='+agent.id}}" target="_blank">{{agent.name}}</a></td>
                                                         <td><label class="tip" ng-class="{'tip-success': agent.status && agent.status.name =='ACTIVE',
                                                             'tip-warning': agent.status && agent.status.name =='NEW',
                                                             'tip-danger': agent.status && agent.status.name =='SUSPEND'}">{{agent.status && agent.status.label}}</label></td>

@@ -244,6 +244,7 @@
             </li>
         </@>
 
+        <@checkPermission value='P_OPERATION'>
             <li class="treeview credit">
                 <a href="#"><i class="fa fa-handshake-o" aria-hidden="true"></i> <span>信誉平台管理</span>
                     <span class="pull-right-container">
@@ -251,9 +252,12 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
+            <@checkPermission value='P_OPERATION_XY'>
                     <li><a href="/mgt/creditMgt/list?target=.credit"><i class="fa fa-circle"></i>审核管理</a></li>
+            </@>
                 </ul>
             </li>
+        </@>
 
         </ul>
         <!-- /.sidebar-menu -->
