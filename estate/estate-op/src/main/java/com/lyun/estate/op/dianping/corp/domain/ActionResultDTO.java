@@ -4,6 +4,11 @@ package com.lyun.estate.op.dianping.corp.domain;
  * Created by localuser on 2017/5/17.
  */
 public class ActionResultDTO {
+
+    boolean success;
+
+    String reason;
+
     public boolean isSuccess() {
         return success;
     }
@@ -21,7 +26,4 @@ public class ActionResultDTO {
         this.reason = reason;
         return this;
     }
-
-    boolean success;
-    String reason;
 }

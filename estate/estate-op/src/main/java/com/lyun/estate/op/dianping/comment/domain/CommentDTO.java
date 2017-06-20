@@ -12,43 +12,26 @@ public class CommentDTO {
     private long id;
 
     private String content;
+
     private long positiveCount;
+
     private String createTime;
+
     private long userId;
+
     private String nicky;
+
     private String avatar;
 
-    public boolean isLiked() {
-        return liked;
-    }
+    private long corpId;
 
-    public void setLiked(boolean liked) {
-        this.liked = liked;
-    }
+    private String corpName;
 
     private boolean liked;
 
     private List<String> tags;
 
-    private long corpId;
-
-    public long getCorpId() {
-        return corpId;
-    }
-
-    public void setCorpId(long corpId) {
-        this.corpId = corpId;
-    }
-
-    public String getCorpName() {
-        return corpName;
-    }
-
-    public void setCorpName(String corpName) {
-        this.corpName = corpName;
-    }
-
-    private String corpName;
+    private CommentDTO(){}
 
     public CommentDTO(Comment raw){
         this.id = raw.getId();
@@ -60,10 +43,6 @@ public class CommentDTO {
         this.avatar = raw.getAvatar();
         this.corpId = raw.getCorpId();
         this.corpName = raw.getCorpName();
-    }
-
-    private CommentDTO(){
-
     }
 
     public long getId() {
@@ -122,6 +101,30 @@ public class CommentDTO {
         this.avatar = avatar;
     }
 
+    public long getCorpId() {
+        return corpId;
+    }
+
+    public void setCorpId(long corpId) {
+        this.corpId = corpId;
+    }
+
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
+    }
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+    }
+
     public List<String> getTags() {
         return tags;
     }
@@ -129,5 +132,4 @@ public class CommentDTO {
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
-
 }

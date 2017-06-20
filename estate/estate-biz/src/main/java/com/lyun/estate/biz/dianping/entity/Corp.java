@@ -6,42 +6,22 @@ import com.lyun.estate.biz.dianping.domain.CorpStatus;
  * Created by localuser on 2017/5/15.
  */
 public class Corp {
+
     private long id;
+
     private String name;
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    private boolean deleted;
-
-    public CorpStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(CorpStatus status) {
-        this.status = status;
-    }
 
     private CorpStatus status;
 
+    private long commentCount;
+
     private long positiveCount;
+
     private long negativeCount;
+
     private long visitCount;
 
-    public long getCommentCount() {
-        return commentCount;
-    }
-
-    public void setCommentCount(long commentCount) {
-        this.commentCount = commentCount;
-    }
-
-    private long commentCount;
+    private boolean deleted;
 
     public long getId() {
         return id;
@@ -57,6 +37,22 @@ public class Corp {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public CorpStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CorpStatus status) {
+        this.status = status;
+    }
+
+    public long getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(long commentCount) {
+        this.commentCount = commentCount;
     }
 
     public long getPositiveCount() {
@@ -81,5 +77,13 @@ public class Corp {
 
     public void setVisitCount(long visitCount) {
         this.visitCount = visitCount;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
