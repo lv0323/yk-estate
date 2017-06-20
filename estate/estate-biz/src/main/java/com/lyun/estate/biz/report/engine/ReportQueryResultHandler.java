@@ -2,59 +2,68 @@ package com.lyun.estate.biz.report.engine;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import org.apache.ibatis.session.ResultContext;
 import org.apache.ibatis.session.ResultHandler;
 
-import javax.annotation.PostConstruct;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-/**
- * Created by jesse on 2017/3/13.
- */
 public class ReportQueryResultHandler implements ResultHandler {
-    private PrintWriter printWriter;
-    private ObjectMapper mapper = new ObjectMapper();
-    private List resultList;
-    private boolean isStream = false;
 
-    ReportQueryResultHandler(PrintWriter printWriter) {
-        assert this.printWriter != null;
+    private ObjectMapper mapper = new ObjectMapper();
+    private PrintWriter printWriter;
+    private List<Map<String, Object>> resultList = new ArrayList<>();
+    private List<ReportHeader> headerList;
+    private boolean isStream;
+    private ResultObjectHandler resultObjectHandler;
+
+
+    ReportQueryResultHandler(PrintWriter printWriter, List<ReportHeader> headerList, ResultObjectHandler resultObjectHandler) {
         this.printWriter = printWriter;
+        this.headerList = headerList;
+        this.resultObjectHandler = resultObjectHandler;
         this.isStream = true;
     }
 
-    ReportQueryResultHandler(List resultList) {
-        assert this.resultList != null;
-        this.resultList = resultList;
+    ReportQueryResultHandler(List<ReportHeader> headerList, ResultObjectHandler resultObjectHandler) {
+        this.headerList = headerList;
+        this.resultObjectHandler = resultObjectHandler;
+        this.isStream = false;
     }
 
-    @PostConstruct
-    public void  init() {
-        this.mapper.setDateFormat(new ISO8601DateFormat());
+    public List<Map<String, Object>> getResultList() {
+        return resultList;
     }
 
     @Override
     public void handleResult(ResultContext resultContext) {
-        if (isStream) {
-            streamProcess(resultContext);
-        } else {
-            batchProcess(resultContext);
+        // this link to report mapper 's result type
+        try {
+            Map<String, Object> resultMap = this.resultObjectHandler.handlerResultObject(resultContext, headerList);
+            if (isStream) {
+                streamProcess(resultMap);
+            } else {
+                batchProcess(resultMap);
+            }
+        } catch (ReflectiveOperationException e) {
+            e.printStackTrace();
+            this.resultList = null;
+            this.printWriter = null;
         }
     }
 
-    private void batchProcess(ResultContext resultContext) {
-        resultList.add(resultContext.getResultObject());
+    private void batchProcess(Map<String, Object> resultMap) {
+        resultList.add(resultMap);
     }
 
-    private void streamProcess(ResultContext resultContext) {
+    private void streamProcess(Map<String, Object> resultMap) {
         try {
-            String jsonString = mapper.writeValueAsString(resultContext.getResultObject());
+            String jsonString = mapper.writeValueAsString(resultMap);
             printWriter.write(jsonString);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
     }
-
 }

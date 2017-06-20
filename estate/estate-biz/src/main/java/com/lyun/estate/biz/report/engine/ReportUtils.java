@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.report.engine;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -90,5 +91,13 @@ public class ReportUtils {
     public String format(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
         return dateFormat.format(date);
+    }
+
+    public static String i18nKeyFormat(String reportKey) {
+        if (StringUtils.isEmpty(reportKey)) {
+            return reportKey;
+        }
+        reportKey = reportKey.replace(" ", ".").replace("   ", ".").replace("-", ".");
+        return "report." + reportKey.toLowerCase();
     }
 }

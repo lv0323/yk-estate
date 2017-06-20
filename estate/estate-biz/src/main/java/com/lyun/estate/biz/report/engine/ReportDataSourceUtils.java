@@ -22,11 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by jesse on 2017/1/25.
- */
 @Service
 public class ReportDataSourceUtils {
+
     private final Map<String, ReportInfo> dataSourceMap = new ConcurrentHashMap<String, ReportInfo>();
     private final static String CONNECTOR = ":";
     private final static String DEFAULT_REGION = "DEFAULT";
@@ -38,14 +36,14 @@ public class ReportDataSourceUtils {
     private Environment env;
 
     @PostConstruct
-    public void init() throws IOException, SAXException, ParserConfigurationException {
+    public void init() throws IOException, SAXException, ParserConfigurationException, ClassNotFoundException {
         try (InputStream inputStream = context.getResource(env.getProperty("report.datasource")).getInputStream()) {
             parseDataSourceXml(inputStream);
         }
     }
 
-    private void parseDataSourceXml(InputStream inputStream) throws ParserConfigurationException, IOException, SAXException {
-        Assert.notNull(inputStream, "文件无长度");
+    private void parseDataSourceXml(InputStream inputStream) throws ParserConfigurationException, IOException, SAXException, ClassNotFoundException {
+        Assert.notNull(inputStream, "InputStream is null");
         Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream);
         NodeList nodeList = document.getElementsByTagName("ReportInfo");
         ReportInfo reportInfo = null;
@@ -55,16 +53,16 @@ public class ReportDataSourceUtils {
             Element element = (Element) node;
 
             String id = element.getAttribute("id");
-            Assert.hasLength(id, "ID不能为空");
+            Assert.hasLength(id, "ID is null");
             reportInfo.setId(id);
 
             String region = element.getAttribute("region");
-            Assert.hasLength(region, "ID不能为空");
+            Assert.hasLength(region, "ID is null");
             reportInfo.setRegion(region);
 
             String key = region + CONNECTOR + id;
             if (dataSourceMap.containsKey(key)) {
-                Assert.hasLength(id, key + "重复存在");
+                Assert.hasLength(id, key + "already exist");
             }
 
             for (Node n = node.getFirstChild(); n != null; n = n.getNextSibling()) {
@@ -72,31 +70,51 @@ public class ReportDataSourceUtils {
                     String name = n.getNodeName();
                     if ("SQL".equalsIgnoreCase(name)) {
                         String sql = n.getTextContent();
-                        Assert.hasLength(sql, "SQL不能为空");
+                        Assert.hasLength(sql, "SQL is null");
                         reportInfo.setSql(sql);
                     } else if ("Header".equalsIgnoreCase(name)) {
                         String r = n.getTextContent();
-                        List<String> headerList = new ArrayList<String>();
+                        List<ReportHeader> reportHeaderList = new ArrayList<>();
+                        ReportHeader reportHeader = null;
                         for (Node s = n.getFirstChild(); s != null; s = s.getNextSibling()) {
                             if (n.getNodeType() == Node.ELEMENT_NODE) {
+                                reportHeader = new ReportHeader();
                                 String valueName = s.getNodeName();
                                 if ("Column".equalsIgnoreCase(valueName)) {
-                                    String value = s.getTextContent();
-                                    headerList.add(value);
+                                    boolean hasType = false;
+                                    for (Node sc = s.getFirstChild(); sc != null; sc = sc.getNextSibling()) {
+                                        if (sc.getNodeType() == Node.ELEMENT_NODE) {
+                                            hasType = true;
+                                            String scValueName = sc.getNodeName();
+                                            if ("name".equalsIgnoreCase(scValueName)) {
+                                                String scValue = sc.getTextContent();
+                                                reportHeader.setName(scValue);
+                                            } else if ("type".equalsIgnoreCase(scValueName)) {
+                                                String scValue = sc.getTextContent();
+                                                reportHeader.setType(Class.forName(scValue));
+                                            }
+                                        }
+                                    }
+                                    if (!hasType) {
+                                        String scValue = s.getTextContent();
+                                        reportHeader.setName(scValue);
+                                        reportHeader.setType(String.class);
+                                    }
+                                    reportHeaderList.add(reportHeader);
                                 }
                             }
                         }
-                        reportInfo.setReportHeader(headerList);
+                        reportInfo.setHeaderList(reportHeaderList);
                     }
                 }
             }
-            Assert.hasLength(reportInfo.getSql(), "SQL不能为空");
+            Assert.hasLength(reportInfo.getSql(), "SQL is null");
             dataSourceMap.put(key, reportInfo);
         }
     }
 
     ReportInfo getReportInfo(String id, String region) {
-        Assert.hasLength(id, "未指定要查询的id");
+        Assert.hasLength(id, "id is null");
         String key = null;
         if (StringUtils.isEmpty(region)) {
             key = DEFAULT_REGION + CONNECTOR + id;
@@ -107,7 +125,7 @@ public class ReportDataSourceUtils {
     }
 
     boolean updateReportInfo(String id, String region, ReportInfo reportInfo) {
-        Assert.hasLength(id, "未指定要查询的id");
+        Assert.hasLength(id, "id is null");
         String key = null;
         if (StringUtils.isEmpty(region)) {
             key = DEFAULT_REGION + CONNECTOR + id;

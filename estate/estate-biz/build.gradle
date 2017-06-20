@@ -1,5 +1,7 @@
 dependencies {
     compile lib.oss
+    compileOnly lib.servlet_api
+    compile lib.joda_time
 }
 
 task copyBuildJar(type: Copy) {

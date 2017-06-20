@@ -2,10 +2,8 @@ package com.lyun.estate.biz.report.domain;
 
 import java.util.List;
 
-/**
- * Created by jesse on 2017/3/15.
- */
 public class ReportChartData {
+
     private List<String> legendList;
     private List<String> xAxis;
     private List<ReportChartSeries> seriesList;
