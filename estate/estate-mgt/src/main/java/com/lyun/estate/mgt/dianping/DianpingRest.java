@@ -61,7 +61,7 @@ public class DianpingRest {
     @PostMapping("{corpId}/status/active")
     ResponseEntity activeCorp(@PathVariable("corpId") long corpId) {
         service.activeCorp(corpId);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity("{}",HttpStatus.OK);
     }
 
     /**审核通不过：删除这个记录*/
@@ -70,21 +70,21 @@ public class DianpingRest {
 
         service.rejectCorpReview(corpId);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity("{}",HttpStatus.OK);
     }
 
     /**冻结公司：修改公司的状态为suspend*/
     @PostMapping("{corpId}/status/suspend")
     ResponseEntity suspendCorp(@PathVariable("corpId") long corpId) {
         service.suspendCorp(corpId);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity("{}",HttpStatus.OK);
     }
 
 //    /**合并同名公司*/
 //    @PostMapping("{corpIdTo}/{corpIdFrom}")
 //    public ResponseEntity mergeCorp(@PathVariable("corpIdTo")long corpIdTo, @PathVariable("corpIdFrom")long corpIdFrom){
 //        service.mergeCorps(corpIdTo, corpIdFrom);
-//        return new ResponseEntity(HttpStatus.OK);
+//        return new ResponseEntity("{}",HttpStatus.OK);
 //    }
 
     /**查询某个公司的评论列表*/
@@ -99,7 +99,7 @@ public class DianpingRest {
                                             @PathVariable("commentId")long commentId){
 
         service.deleteCorpComment(corpId, commentId);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity("{}",HttpStatus.OK);
     }
 
     @PostMapping("{corpId}")
@@ -108,6 +108,6 @@ public class DianpingRest {
                                      @RequestParam("positiveCount") long positiveCount,
                                      @RequestParam("negativeCount") long negativeCount){
         service.putCorpCount(corpId, visitCount, positiveCount, negativeCount);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity("{}",HttpStatus.OK);
     }
 }
