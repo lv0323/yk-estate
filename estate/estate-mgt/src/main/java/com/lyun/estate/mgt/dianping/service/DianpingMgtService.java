@@ -36,16 +36,21 @@ public class DianpingMgtService {
 
     /**根据 status 查找公司列表*/
     @Transactional
-    public PageList<Corp> getCorps(CorpStatus status, PageBounds page){
+    public PageList<Corp> getCorps(CorpStatus status, String corpName, PageBounds page){
 
-        return service.getCorps(status, page);
+        return service.getCorps(status, corpName, page);
+    }
+
+    public Corp getCorp(long corpId){
+
+        return service.getCorp(corpId);
     }
 
     /**根据 name 模糊查找公司列表*/
-    public List<Corp> searchCorps(String name){
-
-        return service.searchCorps(name);
-    }
+//    public List<Corp> searchCorps(String name){
+//
+//        return service.searchCorps(name);
+//    }
     @Transactional
     public boolean rejectCorpReview(long corpId){
         permissionChecker.checkExist(Permission.OP_MANAGE_XY);
@@ -83,7 +88,12 @@ public class DianpingMgtService {
     public boolean deleteCorpComment(long corpId, long commentId){
         permissionChecker.checkExist(Permission.OP_MANAGE_XY);
 
-        return deleteCorpComment(corpId, commentId);
+        return service.deleteCorpComment(corpId, commentId);
     }
 
+    public boolean putCorpCount(long corpId, long visitCount, long positiveCount, long negativeCount){
+        permissionChecker.checkExist(Permission.OP_MANAGE_XY);
+
+        return service.putCorpCount(corpId, visitCount, positiveCount, negativeCount);
+    }
 }

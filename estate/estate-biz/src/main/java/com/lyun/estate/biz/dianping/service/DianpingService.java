@@ -10,7 +10,6 @@ import com.lyun.estate.biz.dianping.repo.DianpingRepo;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,41 +49,60 @@ public class DianpingService {
                 .collect(Collectors.toList());
     }
 
+    public Corp getCorp(long corpId){
+        Corp corp = repo.getCorp(corpId);
+        checkCorpStatus(corpId, corp);
+        return corp;
+    }
+
     /**根据 status 查找公司列表*/
     @Transactional
-    public PageList<Corp> getCorps(CorpStatus status, PageBounds page){
+    public PageList<Corp> getCorps(CorpStatus status, String corpName, PageBounds page){
 
         int offset = page.getOffset();
         int pageIndex = offset / page.getLimit();
         int limit = page.getLimit();
 
         List<Corp> foundCorps = null;
-        int foundCount = 0;
+        int totalCount = 0;
 
-        if(status == null){
-            foundCorps = repo.getCorpsWhithoutStatus(offset, limit);
-            foundCount = repo.getCorpCountWhithoutStatus();
+        if(corpName != null && corpName.length() > 0){
+
+            if(status == null){
+                foundCorps = repo.searchCorpsWhihtoutStatus(corpName);
+            }else{
+                foundCorps = repo.searchCorps(corpName, status.name());
+            }
+
+            totalCount = foundCorps.size();
 
         }else{
-            foundCorps = repo.getCorps(status.name(), offset, limit);
-            foundCount = repo.getCorpCount(status.name());
+
+            if(status == null){
+                foundCorps = repo.getCorpsWhithoutStatus(offset, limit);
+                totalCount = repo.getCorpCountWhithoutStatus();
+
+            }else{
+                foundCorps = repo.getCorps(status.name(), offset, limit);
+                totalCount = repo.getCorpCount(status.name());
+            }
         }
 
-        Paginator paginator = new Paginator(pageIndex, limit, foundCount);
+        Paginator paginator = new Paginator(pageIndex, limit, totalCount);
 
         PageList<Corp> pageableDTO = new PageList<>(foundCorps, paginator);
 
         return pageableDTO;
     }
 
-    /**根据 name 模糊查找公司列表*/
-    public List<Corp> searchCorps(String name){
-
-        if(name == null || name.length() == 0){
-            throw new EstateException(ExCode.PARAM_NULL, "name");
-        }
-        return repo.searchCorps(name);
-    }
+//    /**根据 name 模糊查找公司列表*/
+//    public List<Corp> searchCorps(String name){
+//
+//        if(name == null || name.length() == 0){
+//            throw new EstateException(ExCode.PARAM_NULL, "name");
+//        }
+//        return repo.searchCorps(name);
+//    }
     @Transactional
     public boolean rejectCorpReview(long corpId){
 
@@ -174,6 +192,11 @@ public class DianpingService {
         return true;
     }
 
+    public boolean putCorpCount(long corpId, long visitCount, long positiveCount, long negativeCount){
+        repo.putCorpCount(corpId, visitCount, positiveCount, negativeCount);
+
+        return true;
+    }
 
     private void checkComment(long commentId){
         if( repo.countComment(commentId) <= 0){
