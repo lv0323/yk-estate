@@ -168,18 +168,25 @@ public class ApprovalService {
                                       Long applyCompanyId,
                                       Long applyDeptId,
                                       Long applyId,
+                                      Date startTime,
+                                      Date endTime,
                                       PageBounds pageBounds) {
-        return listApprovalDTO(type, status, applyCompanyId, applyDeptId, applyId, pageBounds);
+        return listApprovalDTO(type, status, applyCompanyId, applyDeptId, applyId, startTime, endTime, pageBounds);
     }
 
     private PageList<ApprovalDTO> listApprovalDTO(ApprovalDefine.Type type, ApprovalDefine.Status status,
                                                   Long applyCompanyId,
-                                                  Long applyDeptId, Long applyId, PageBounds pageBounds) {
+                                                  Long applyDeptId, Long applyId,
+                                                  Date startTime,
+                                                  Date endTime,
+                                                  PageBounds pageBounds) {
         PageList<ApprovalDTO> result = approvalRepo.list(type,
                 status,
                 applyCompanyId,
                 applyDeptId,
                 applyId,
+                startTime,
+                endTime,
                 pageBounds);
 
         result.forEach(t -> {
