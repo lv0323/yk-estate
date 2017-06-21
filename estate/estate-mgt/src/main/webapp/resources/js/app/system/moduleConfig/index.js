@@ -72,9 +72,9 @@ require(['main-app', contextPath + '/js/service/department-service.js',
             });
             /*end 岗位*/
             _this.getModuleConfig = function(position){
-                $('a.position-list-nav[id='+position.id+']').addClass('curSelectedNode');
-                $('a.position-list-nav[id!='+position.id+']').removeClass('curSelectedNode');
                 if(position &&position.id){
+                    $('a.position-list-nav[id='+position.id+']').addClass('curSelectedNode');
+                    $('a.position-list-nav[id!='+position.id+']').removeClass('curSelectedNode');
                     _this.moduleConfig.targetId = position.id;
                 }
                 _this.moduleAuthority = angular.copy(initData);
