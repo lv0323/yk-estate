@@ -43,7 +43,7 @@ public class ReportExportResultHandler implements ResultHandler {
         try {
             Map<String, Object> resultMap = this.resultObjectHandler.handlerResultObject(resultContext, headerList);
             List<String> valueList = resultMap.entrySet().stream()
-                    .map(v -> v.getValue() == null ? "" : v.getValue().toString())
+                    .map(v -> v.getValue() == null ? "" : ReportUtils.stringFilter(v.getValue().toString()))
                     .collect(Collectors.toList());
             String values = valueList.stream().collect(Collectors.joining(ReportEngine.COMMA_SPLIT));
             if (isStream) {

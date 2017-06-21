@@ -7,6 +7,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by jesse on 2017/1/25.
@@ -99,5 +101,12 @@ public class ReportUtils {
         }
         reportKey = reportKey.replace(" ", ".").replace("   ", ".").replace("-", ".");
         return "report." + reportKey.toLowerCase();
+    }
+
+    public static String stringFilter(String source) {
+        String regEx = "[`~!@#$%^&*()+=|{}':;',//[//].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(source);
+        return m.replaceAll(" ").trim();
     }
 }
