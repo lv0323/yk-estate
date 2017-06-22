@@ -189,6 +189,8 @@ class FangProcessService {
         return mgtFangRepository.findFang(fangId)
     }
 
+    // todo
+    @Deprecated
     @Transactional
     Fang applyPublic(long fangId) {
         Fang fang = mgtFangRepository.selectForUpdate(fangId)

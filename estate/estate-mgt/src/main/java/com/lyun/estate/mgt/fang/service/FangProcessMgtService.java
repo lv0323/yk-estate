@@ -38,7 +38,7 @@ class FangProcessMgtService {
     private MgtContext mgtContext;
 
     @Transactional
-    Fang publish(long fangId) {
+    public Fang publish(long fangId) {
         Fang fangBase = fangMgtService.getFangBase(fangId);
         if (fangBase.getProcess() == HouseProcess.UN_PUBLISH) {
             permissionCheckService.checkScope(fangId, Permission.FANG_RE_PUBLISH);
@@ -63,7 +63,7 @@ class FangProcessMgtService {
     }
 
     @Transactional
-    Fang unPublish(long fangId) {
+    public Fang unPublish(long fangId) {
         permissionCheckService.checkScope(fangId, Permission.FANG_UN_PUBLISH);
 
         Fang fang = processService.unPublish(fangId);
@@ -77,7 +77,7 @@ class FangProcessMgtService {
     }
 
     @Transactional
-    Fang pause(long fangId) {
+    public Fang pause(long fangId) {
         permissionCheckService.checkScope(fangId, Permission.FANG_PAUSE);
 
         Fang fang = processService.pause(fangId);
@@ -91,7 +91,7 @@ class FangProcessMgtService {
     }
 
     @Transactional
-    Fang deal(long fangId) {
+    public Fang deal(long fangId) {
         Fang fang = processService.deal(fangId);
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,
@@ -102,7 +102,7 @@ class FangProcessMgtService {
     }
 
     @Transactional
-    boolean delete(long fangId) {
+    public boolean delete(long fangId) {
         Fang fang = processService.delete(fangId);
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,
@@ -113,7 +113,7 @@ class FangProcessMgtService {
     }
 
     @Transactional
-    Fang applyPublic(long fangId) {
+    public Fang applyPublic(long fangId) {
         permissionCheckService.checkScope(fangId, Permission.FANG_APPLY_PUBLIC);
 
         Fang fang = processService.applyPublic(fangId);
@@ -127,7 +127,7 @@ class FangProcessMgtService {
     }
 
     @Transactional
-    Fang confirmPublic(long fangId) {
+    public Fang confirmPublic(long fangId) {
         permissionCheckService.checkScope(fangId, Permission.FANG_CONFIRM_PUBLIC);
 
         Fang fang = processService.confirmPublic(fangId);
@@ -141,7 +141,7 @@ class FangProcessMgtService {
     }
 
     @Transactional
-    Fang rejectPublic(long fangId) {
+    public Fang rejectPublic(long fangId) {
         permissionCheckService.checkScope(fangId, Permission.FANG_REJECT_PUBLIC);
 
         Fang fang = processService.rejectPublic(fangId);
@@ -155,7 +155,7 @@ class FangProcessMgtService {
     }
 
     @Transactional
-    Fang undoPublic(long fangId) {
+    public Fang undoPublic(long fangId) {
         permissionCheckService.checkScope(fangId, Permission.FANG_UNDO_PUBLIC);
 
         Fang fang = processService.undoPublic(fangId);

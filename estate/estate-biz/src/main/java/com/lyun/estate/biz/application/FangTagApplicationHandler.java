@@ -1,0 +1,23 @@
+package com.lyun.estate.biz.application;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class FangTagApplicationHandler implements CommonApplicationHandler {
+
+    @Override
+    public void approve(CommonApplicationEntity commonApplicationEntity) {
+        // add tag if needed
+    }
+
+    @Override
+    public void reject(CommonApplicationEntity commonApplicationEntity) {
+        // do things when reject
+    }
+
+    @Override
+    public void close(CommonApplicationEntity commonApplicationEntity) {
+        // do things when close
+    }
+
+}

@@ -6,11 +6,12 @@ import com.lyun.estate.core.supports.labelenum.LabelEnum;
  * Created by Jeffrey on 2017-01-22.
  */
 public enum HouseProcess implements LabelEnum {
-    DELEGATE("待审核"),
-    PUBLISH("上架"),
+    DELEGATE("新增"),// deprecated since 21-06-2017
+    PUBLISH("有效"),
+    UN_PUBLISH("无效"),
     PAUSE("暂缓"),
-    UN_PUBLISH("下架"),
-    SUCCESS("成交"),;
+    SUCCESS("成交");
+
     private final String label;
 
     HouseProcess(String label) {
