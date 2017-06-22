@@ -10,11 +10,11 @@
             <li>
                 <a href="#">
                     <i class="fa fa-home fa-lg" aria-hidden="true"></i>
-                    信誉平台管理
+                    运营管理
                 </a>
             </li>
             <li>
-                审核管理
+                信誉平台
             </li>
             <li class="active">
                 中介详情
@@ -60,6 +60,14 @@
                                             <td ng-bind="agent.detail && agent.detail.visitCount" class="text-left"></td>
                                             <td class="text-muted">评论数</td>
                                             <td ng-bind="agent.detail && agent.detail.commentCount" class="text-left"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-muted">标签统计</td>
+                                            <td colspan="3" class="text-left">
+                                                <span class="badge badge-warning" style="margin-left: 5px;" ng-repeat="tag in agent.detail.tags" >
+                                                    {{tag.name}} {{tag.count}}
+                                                </span>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
