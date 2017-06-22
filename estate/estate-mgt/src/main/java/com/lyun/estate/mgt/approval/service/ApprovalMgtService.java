@@ -62,9 +62,9 @@ public class ApprovalMgtService {
         return approvalService.create(approval);
     }
 
-    public Approval approve(Long id, ApprovalDefine.Status status) {
+    public Approval approve(Long id, ApprovalDefine.Status status, String comment) {
         permissionCheckService.checkExist(Permission.APPROVAL_APPROVE);
-        return approvalService.approve(id, mgtContext.getOperator().getId(), status);
+        return approvalService.approve(id, mgtContext.getOperator().getId(), status, comment);
     }
 
     public PageList<ApprovalDTO> list(ApprovalDefine.Type type,

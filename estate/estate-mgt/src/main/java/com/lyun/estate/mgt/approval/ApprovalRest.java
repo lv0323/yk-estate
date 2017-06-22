@@ -34,8 +34,9 @@ public class ApprovalRest {
 
     @PostMapping("approve")
     public Approval approve(@RequestParam Long id,
-                            @RequestParam ApprovalDefine.Status status) {
-        return approvalMgtService.approve(id, status);
+                            @RequestParam ApprovalDefine.Status status,
+                            @RequestParam(required = false) String comment) {
+        return approvalMgtService.approve(id, status, comment);
     }
 
     @GetMapping("list")

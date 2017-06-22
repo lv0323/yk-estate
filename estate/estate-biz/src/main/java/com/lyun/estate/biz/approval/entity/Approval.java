@@ -14,6 +14,7 @@ public class Approval {
     private ApprovalDefine.Type type;
     private ApprovalDefine.Status status;
     private String data;
+    private String comment;
     private Date createTime;
     private Date approvalTime;
     private Date updateTime;
@@ -106,6 +107,15 @@ public class Approval {
 
     public Approval setDeleted(boolean deleted) {
         isDeleted = deleted;
+        return this;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public Approval setComment(String comment) {
+        this.comment = comment;
         return this;
     }
 }

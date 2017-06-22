@@ -228,7 +228,7 @@ public class ApprovalService {
     }
 
     @Transactional
-    public Approval approve(Long approvalId, Long operatorId, ApprovalDefine.Status status) {
+    public Approval approve(Long approvalId, Long operatorId, ApprovalDefine.Status status, String comment) {
         ExceptionUtil.checkNotNull("审批编号", approvalId);
         ExceptionUtil.checkIllegal(status == ApprovalDefine.Status.APPROVED || status == ApprovalDefine.Status.REJECTED,
                 "审批结果", status);
@@ -245,10 +245,10 @@ public class ApprovalService {
             Signing signing = readFromData(oneForUpdate.getData(), Signing.class);
             Company company = companyService.createCompany(buildInfo(signing, oneForUpdate.getApplyId()), operatorId);
             signing.setCompanyId(company.getId());
-            approvalRepo.updateStatusAndData(approvalId, operatorId, writeToData(signing), status);
+            approvalRepo.updateStatusAndData(approvalId, operatorId, writeToData(signing), status, comment);
 
         } else {
-            approvalRepo.updateStatus(approvalId, operatorId, status);
+            approvalRepo.updateStatus(approvalId, operatorId, status, comment);
         }
         return approvalRepo.findOne(approvalId);
     }

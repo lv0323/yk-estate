@@ -1,0 +1,2 @@
+ALTER TABLE t_approval
+  ADD COLUMN comment VARCHAR(256);
