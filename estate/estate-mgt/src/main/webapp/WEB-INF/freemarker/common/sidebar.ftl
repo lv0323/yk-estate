@@ -188,6 +188,22 @@
                 </ul>
             </li>
         </@>
+
+        <@checkPermission value='P_OPERATION'>
+            <li class="treeview credit">
+                <a href="#"><i class="fa fa-handshake-o" aria-hidden="true"></i> <span>运营管理</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <@checkPermission value='P_OPERATION_XY'>
+                        <li><a href="/mgt/creditMgt/list?target=.credit"><i class="fa fa-circle"></i>信誉平台</a></li>
+                    </@>
+                </ul>
+            </li>
+        </@>
+
             <li class="treeview tool">
                 <a href="#"><i class="fa fa-wrench" aria-hidden="true"></i> <span>实用工具</span>
                     <span class="pull-right-container">
@@ -240,21 +256,6 @@
                     <@checkPermission value='P_CONFIG_PAGE'>
                         <li><a href="/mgt/system/moduleConfig?target=.sys"><i class="fa fa-circle"></i>岗位模块</a></li>
                     </@>
-                </ul>
-            </li>
-        </@>
-
-        <@checkPermission value='P_OPERATION'>
-            <li class="treeview credit">
-                <a href="#"><i class="fa fa-handshake-o" aria-hidden="true"></i> <span>信誉平台管理</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-            <@checkPermission value='P_OPERATION_XY'>
-                    <li><a href="/mgt/creditMgt/list?target=.credit"><i class="fa fa-circle"></i>审核管理</a></li>
-            </@>
                 </ul>
             </li>
         </@>
