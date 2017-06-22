@@ -37,14 +37,16 @@ public interface ApprovalRepo {
     @Select("SELECT * FROM t_approval WHERE id = #{id} FOR UPDATE;")
     Approval findOneForUpdate(Long id);
 
-    @Update("UPDATE t_approval SET approver_id = #{approverId},status = #{status}, approval_time = now(), update_time = now() WHERE id = #{id}")
+    @Update("UPDATE t_approval SET approver_id = #{approverId},status = #{status}, comment = #{comment}, approval_time = now(), update_time = now() WHERE id = #{id}")
     int updateStatus(@Param("id") Long id,
                      @Param("approverId") Long approverId,
-                     @Param("status") ApprovalDefine.Status status);
+                     @Param("status") ApprovalDefine.Status status,
+                     @Param("comment") String comment);
 
-    @Update("UPDATE t_approval SET approver_id = #{approverId},status = #{status},data = #{data}::jsonb, approval_time = now(), update_time = now() WHERE id = #{id}")
+    @Update("UPDATE t_approval SET approver_id = #{approverId},status = #{status}, comment = #{comment}, data = #{data}::jsonb, approval_time = now(), update_time = now() WHERE id = #{id}")
     int updateStatusAndData(@Param("id") Long approvalId,
                             @Param("approverId") Long approverId,
                             @Param("data") String data,
-                            @Param("status") ApprovalDefine.Status status);
+                            @Param("status") ApprovalDefine.Status status,
+                            @Param("comment") String comment);
 }

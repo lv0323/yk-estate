@@ -264,6 +264,11 @@
                   a.create_time,
                   c2.abbr || ' - ' || e2.name    AS approver,
                   a.approval_time,
+                  CASE WHEN a.status = 'CREATED'    THEN '待审核'
+                     WHEN a.status = 'APPROVED'    THEN '审核通过'
+                     WHEN a.status = 'REJECTED'    THEN '被拒绝'
+                     ELSE ''  END,
+                  a.comment,
                   a.data ->> 'cityName'          AS city_name,
                   a.data ->> 'companyType'       AS company_type,
                   a.data ->> 'companyName'       AS company_name,
@@ -310,6 +315,14 @@
             <Column>
                 <name>审批时间</name>
                 <type>java.util.Date</type>
+            </Column>
+            <Column>
+                <name>审批结果</name>
+                <type>java.util.String</type>
+            </Column>
+            <Column>
+                <name>审批评论</name>
+                <type>java.util.String</type>
             </Column>
             <Column>
                 <name>城市</name>
