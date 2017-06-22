@@ -37,7 +37,8 @@ require(['main-app',
                                     commentCount: res.commentCount,
                                     positiveCount: res.positiveCount,
                                     negativeCount: res.negativeCount,
-                                    visitCount: res.visitCount
+                                    visitCount: res.visitCount,
+                                    tags: res.tags
                                 };
                                 $scope.toEditAgent = {
                                     positiveCount:$scope.agent.detail.positiveCount,

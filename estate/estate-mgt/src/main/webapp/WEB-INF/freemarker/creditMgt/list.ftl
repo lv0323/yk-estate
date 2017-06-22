@@ -10,11 +10,11 @@
             <li>
                 <a href="#">
                     <i class="fa fa-home fa-lg" aria-hidden="true"></i>
-                    信誉平台管理
+                    运营管理
                 </a>
             </li>
             <li class="active">
-                审核管理
+                信誉平台
             </li>
         </ol>
     </section>
