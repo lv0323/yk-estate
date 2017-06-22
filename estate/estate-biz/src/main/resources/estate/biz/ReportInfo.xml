@@ -318,11 +318,11 @@
             </Column>
             <Column>
                 <name>审批结果</name>
-                <type>java.util.String</type>
+                <type>java.lang.String</type>
             </Column>
             <Column>
                 <name>审批评论</name>
-                <type>java.util.String</type>
+                <type>java.lang.String</type>
             </Column>
             <Column>
                 <name>城市</name>
