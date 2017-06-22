@@ -34,7 +34,7 @@ public class DianpingRest {
         return service.createCorps(corpNames, status);
     }
     @GetMapping("corp")
-    public Corp getCorp( @RequestParam(value = "corpId") long corpId) {
+    public CorpDetailDTO getCorpDetail( @RequestParam(value = "corpId") long corpId) {
 
         return service.getCorp(corpId);
     }

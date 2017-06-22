@@ -2,6 +2,7 @@ package com.lyun.estate.mgt.dianping.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.dianping.domain.CorpDetailDTO;
 import com.lyun.estate.biz.dianping.service.DianpingService;
 import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.dianping.domain.CorpStatus;
@@ -41,9 +42,9 @@ public class DianpingMgtService {
         return service.getCorps(status, corpName, page);
     }
 
-    public Corp getCorp(long corpId){
+    public CorpDetailDTO getCorp(long corpId){
 
-        return service.getCorp(corpId);
+        return service.getDetail(corpId);
     }
 
     /**根据 name 模糊查找公司列表*/

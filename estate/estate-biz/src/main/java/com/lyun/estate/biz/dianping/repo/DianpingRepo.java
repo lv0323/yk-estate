@@ -162,4 +162,7 @@ public interface DianpingRepo {
                         @Param("visitCount")long visitCount,
                         @Param("positiveCount")long positiveCount,
                         @Param("negativeCount")long negativeCount);
+
+    @Select("select tags from t_op_dianping_comment where corp_id=#{corpId}")
+    List<String> getTags(@Param("corpId")long corpId);
 }

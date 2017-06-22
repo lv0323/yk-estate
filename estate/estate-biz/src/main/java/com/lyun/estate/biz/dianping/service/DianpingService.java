@@ -3,7 +3,9 @@ package com.lyun.estate.biz.dianping.service;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
+import com.lyun.estate.biz.dianping.domain.CorpDetailDTO;
 import com.lyun.estate.biz.dianping.domain.CorpStatus;
+import com.lyun.estate.biz.dianping.domain.TagCountDTO;
 import com.lyun.estate.biz.dianping.entity.Comment;
 import com.lyun.estate.biz.dianping.entity.Corp;
 import com.lyun.estate.biz.dianping.repo.DianpingRepo;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,11 +53,28 @@ public class DianpingService {
                 .collect(Collectors.toList());
     }
 
-    public Corp getCorp(long corpId){
+//    public Corp getCorp(long corpId){
+//        Corp corp = repo.getCorp(corpId);
+//        checkCorpStatus(corpId, corp);
+//        return corp;
+//    }
+    @Transactional
+    public CorpDetailDTO getDetail(long corpId) {
+
         Corp corp = repo.getCorp(corpId);
+
         checkCorpStatus(corpId, corp);
-        return corp;
+
+
+        List<String> tagStrs = repo.getTags(corpId);
+
+        CorpDetailDTO detail = new CorpDetailDTO(corp);
+
+        detail.setTags(countTag(tagStrs));
+
+        return detail;
     }
+
 
     /**根据 status 查找公司列表*/
     @Transactional
@@ -212,6 +233,50 @@ public class DianpingService {
             throw new EstateException(ExCode.APPROVAL_APPROVED, "corp " + corpIdNeed + " 已被reject，不能再操作");
         }
 
+    }
+
+    private List<TagCountDTO> countTag(List<String> tagStrs){
+
+        List<TagCountDTO> tagList = new ArrayList<>();
+        if(tagStrs == null){
+            return tagList;
+        }
+
+        HashMap<String, Integer> tagCountMap = new HashMap<>();
+
+        if(tagStrs.size() > 0){
+            for(String str : tagStrs){
+                String[] tags = str.split("_");
+
+                for (String tag : tags){
+                    if(tagCountMap.containsKey(tag)){
+                        tagCountMap.put(tag, tagCountMap.get(tag)+1);
+
+                    }else{
+                        tagCountMap.put(tag, 1);
+                    }
+                }
+            }
+        }
+
+        tagCountMap.forEach((k,v) -> {
+            TagCountDTO tc = new TagCountDTO();
+            tc.setName(k);
+            tc.setCount(v);
+            tagList.add(tc);
+
+        });
+
+        tagList.sort((o1, o2)->{
+            if(o1.getCount() >= o2.getCount()){
+                return -1;
+            }
+            else {
+                return 1;
+            }
+        });
+
+        return tagList;
     }
 
 }
