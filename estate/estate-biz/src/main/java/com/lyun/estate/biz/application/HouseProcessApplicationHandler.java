@@ -23,6 +23,11 @@ public class HouseProcessApplicationHandler implements CommonApplicationHandler 
     private EmployeeService employeeService;
 
     @Override
+    public CommonApplicationEntity create(CommonApplicationEntity.Type type, long applicantId, String applyReason, long domainId) {
+        return null;
+    }
+
+    @Override
     public void approve(CommonApplicationEntity commonApplicationEntity) {
         long fangId = commonApplicationEntity.getDomainId();
         HouseProcess houseProcessFrom = HouseProcess.valueOf(commonApplicationEntity.getDomainFrom());

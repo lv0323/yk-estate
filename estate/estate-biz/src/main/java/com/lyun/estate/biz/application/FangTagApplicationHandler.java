@@ -6,6 +6,11 @@ import org.springframework.stereotype.Service;
 public class FangTagApplicationHandler implements CommonApplicationHandler {
 
     @Override
+    public CommonApplicationEntity create(CommonApplicationEntity.Type type, long applicantId, String applyReason, long domainId) {
+        return null;
+    }
+
+    @Override
     public void approve(CommonApplicationEntity commonApplicationEntity) {
         // add tag if needed
     }

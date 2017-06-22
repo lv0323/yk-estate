@@ -1,9 +1,12 @@
 package com.lyun.estate.biz.application;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -20,13 +23,18 @@ public class CommonApplicationService {
     @Autowired
     private CommonApplicationRepo commonApplicationRepo;
 
-    public int create(CommonApplicationEntity commonApplicationEntity) {
-        return commonApplicationRepo.create(commonApplicationEntity);
+    public CommonApplicationEntity create(CommonApplicationEntity.Type type, long applicantId, String applyReason, long domainId) {
+        CommonApplicationHandler handler = getApplicationHandler(type).get();
+        CommonApplicationEntity commonApplicationEntity = handler.create(type, applicantId, applyReason, domainId);
+
+        commonApplicationRepo.create(commonApplicationEntity);
+
+        return commonApplicationEntity;
     }
 
     @Transactional
-    public void approve(long applicationId, String reviewerComments, long reviewerId) {
-        CommonApplicationEntity commonApplicationEntity = getApplicationEntity(applicationId, reviewerComments, reviewerId);
+    public void approve(long applicationId, long reviewerId, String reviewerComments) {
+        CommonApplicationEntity commonApplicationEntity = getApplicationEntity(applicationId, reviewerId, reviewerComments);
 
         getApplicationHandler(commonApplicationEntity.getType()).ifPresent(handler -> handler.approve(commonApplicationEntity));
 
@@ -34,8 +42,8 @@ public class CommonApplicationService {
     }
 
     @Transactional
-    public void reject(long applicationId, String reviewerComments, long reviewerId) {
-        CommonApplicationEntity commonApplicationEntity = getApplicationEntity(applicationId, reviewerComments, reviewerId);
+    public void reject(long applicationId, long reviewerId, String reviewerComments) {
+        CommonApplicationEntity commonApplicationEntity = getApplicationEntity(applicationId, reviewerId, reviewerComments);
 
         getApplicationHandler(commonApplicationEntity.getType()).ifPresent(handler -> handler.reject(commonApplicationEntity));
 
@@ -43,15 +51,19 @@ public class CommonApplicationService {
     }
 
     @Transactional
-    public void close(long applicationId, String reviewerComments, long reviewerId) {
-        CommonApplicationEntity commonApplicationEntity = getApplicationEntity(applicationId, reviewerComments, reviewerId);
+    public void close(long applicationId, long reviewerId, String reviewerComments) {
+        CommonApplicationEntity commonApplicationEntity = getApplicationEntity(applicationId, reviewerId, reviewerComments);
 
         getApplicationHandler(commonApplicationEntity.getType()).ifPresent(handler -> handler.close(commonApplicationEntity));
 
         commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.CLOSED_BY_APPLICANT, reviewerId, reviewerComments);
     }
 
-    private CommonApplicationEntity getApplicationEntity(long applicationId, String reviewerComments, long reviewerId) {
+    public List<CommonApplicationEntity> findApplications(CommonApplicationEntity.Type type, long id, long applicantId, CommonApplicationEntity.Status status, Date startTime, Date endTime, PageBounds pageBounds) {
+        return commonApplicationRepo.findApplications(type, id, applicantId, status, startTime, endTime, pageBounds);
+    }
+
+    private CommonApplicationEntity getApplicationEntity(long applicationId, long reviewerId, String reviewerComments) {
         CommonApplicationEntity commonApplicationEntity = commonApplicationRepo.findOneById(applicationId);
 
         commonApplicationEntity
@@ -71,7 +83,9 @@ public class CommonApplicationService {
                 return Optional.of(houseProcessApplicationHandler);
             case SUCCESS_HOUSE:
                 return Optional.of(houseProcessApplicationHandler);
-            case HOUSE_SUB_PROCESS_APPROVAL:
+            case UN_PUBLIC_HOUSE:
+                return Optional.of(houseSubProcessApplicationHandler);
+            case PUBLIC_HOUSE:
                 return Optional.of(houseSubProcessApplicationHandler);
             case FANG_TAG_APPROVAL:
                 return Optional.of(fangTagApplicationHandler);

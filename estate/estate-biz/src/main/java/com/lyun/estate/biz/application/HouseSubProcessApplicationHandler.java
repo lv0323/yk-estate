@@ -17,6 +17,11 @@ public class HouseSubProcessApplicationHandler implements CommonApplicationHandl
     private MgtFangService mgtFangService;
 
     @Override
+    public CommonApplicationEntity create(CommonApplicationEntity.Type type, long applicantId, String applyReason, long domainId) {
+        return null;
+    }
+
+    @Override
     public void approve(CommonApplicationEntity commonApplicationEntity) {
         long fangId = commonApplicationEntity.getDomainId();
         HouseSubProcess houseProcessFrom = HouseSubProcess.valueOf(commonApplicationEntity.getDomainFrom());

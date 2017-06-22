@@ -25,7 +25,10 @@ public class CommonApplicationEntity {
         UN_PUBLISH_HOUSE,
         PAUSE_HOUSE,
         SUCCESS_HOUSE,
-        HOUSE_SUB_PROCESS_APPROVAL,
+
+        UN_PUBLIC_HOUSE,
+        PUBLIC_HOUSE,
+
         FANG_TAG_APPROVAL
     }
 
