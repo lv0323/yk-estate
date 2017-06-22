@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
+import com.lyun.estate.biz.application.repo.CommonApplicationRepo;
 
 @Service
 public class CommonApplicationService {
@@ -94,4 +94,12 @@ public class CommonApplicationService {
         }
     }
 
+    public CommonApplicationRepo getCommonApplicationRepo() {
+        return commonApplicationRepo;
+    }
+
+    public CommonApplicationService setCommonApplicationRepo(CommonApplicationRepo commonApplicationRepo) {
+        this.commonApplicationRepo = commonApplicationRepo;
+        return this;
+    }
 }

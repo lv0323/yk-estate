@@ -1,5 +1,6 @@
 package com.lyun.estate.biz.application;
 
+import com.lyun.estate.biz.fang.def.HouseProcess;
 import com.lyun.estate.biz.fang.def.HouseSubProcess;
 import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.service.FangProcessService;
@@ -18,7 +19,33 @@ public class HouseSubProcessApplicationHandler implements CommonApplicationHandl
 
     @Override
     public CommonApplicationEntity create(CommonApplicationEntity.Type type, long applicantId, String applyReason, long domainId) {
-        return null;
+        long fangId = domainId;
+        Fang fang = mgtFangService.getFangBase(fangId);
+        String domainFrom = fang.getSubProcess().name();
+        String domainTo = "";
+
+        switch (type) {
+            case PUBLIC_HOUSE:
+                domainTo = HouseSubProcess.PUBLIC.name();
+                break;
+            case UN_PUBLISH_HOUSE:
+                domainTo = HouseSubProcess.NONE.name();
+                break;
+            default:
+                throw new RuntimeException("invalid type");
+        }
+
+        String finalDomainTo = domainTo;
+
+        return new CommonApplicationEntity() {{
+            setStatus(Status.NEW);
+            setType(type);
+            setApplicantId(applicantId);
+            setApplyReason(applyReason);
+            setDomainFrom(domainFrom);
+            setDomainTo(finalDomainTo);
+            setDomainId(domainId);
+        }};
     }
 
     @Override

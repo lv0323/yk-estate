@@ -1,6 +1,8 @@
-package com.lyun.estate.biz.application;
+package com.lyun.estate.biz.application.repo;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.lyun.estate.biz.application.CommonApplicationEntity;
+import com.lyun.estate.biz.application.CommonApplicationSqlProvider;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +17,7 @@ public interface CommonApplicationRepo {
     @Options(useGeneratedKeys = true)
     int create(CommonApplicationEntity commonApplicationEntity);
 
-    @Update("UPDATE T_COMMON_APPLICATION SET STATUS = #{status}, REVIEWER_ID = #{reviewerId}, REVIEWER_COMMENTS = #{reviewerComments}, UPDATE_TIME = NOW() WHERE ID = #{} ")
+    @Update("UPDATE T_COMMON_APPLICATION SET STATUS = #{status}, REVIEWER_ID = #{reviewerId}, REVIEWER_COMMENTS = #{reviewerComments}, UPDATE_TIME = NOW() WHERE ID = #{id} ")
     int updateStatusById(@Param("id") long id, @Param("status") CommonApplicationEntity.Status status, @Param("reviewerId") long reviewerId, @Param("reviewerComments") String reviewerComments);
 
     @Select("SELECT * FROM T_COMMON_APPLICATION WHERE ID = #{id}")

@@ -24,7 +24,39 @@ public class HouseProcessApplicationHandler implements CommonApplicationHandler 
 
     @Override
     public CommonApplicationEntity create(CommonApplicationEntity.Type type, long applicantId, String applyReason, long domainId) {
-        return null;
+        long fangId = domainId;
+        Fang fang = mgtFangService.getFangBase(fangId);
+        String domainFrom = fang.getProcess().name();
+        String domainTo = "";
+
+        switch (type) {
+            case PUBLISH_HOUSE:
+                domainTo = HouseProcess.PUBLISH.name();
+                break;
+            case UN_PUBLISH_HOUSE:
+                domainTo = HouseProcess.UN_PUBLISH.name();
+                break;
+            case PAUSE_HOUSE:
+                domainTo = HouseProcess.PAUSE.name();
+                break;
+            case SUCCESS_HOUSE:
+                domainTo = HouseProcess.SUCCESS.name();
+                break;
+            default:
+                throw new RuntimeException("invalid type");
+        }
+
+        String finalDomainTo = domainTo;
+
+        return new CommonApplicationEntity() {{
+            setStatus(Status.NEW);
+            setType(type);
+            setApplicantId(applicantId);
+            setApplyReason(applyReason);
+            setDomainFrom(domainFrom);
+            setDomainTo(finalDomainTo);
+            setDomainId(domainId);
+        }};
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.Applications;
 
+import com.lyun.estate.biz.application.CommonApplicationEntity;
+import com.lyun.estate.biz.application.CommonApplicationService;
 import com.lyun.estate.biz.config.BizConfig;
 import com.lyun.estate.core.config.CoreConfig;
 import org.junit.runner.RunWith;
@@ -12,4 +14,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = {BizConfig.class, CoreConfig.class})
 
 public class Test {
+
+    @Autowired
+    private CommonApplicationService commonApplicationService;
+
+
+    @org.junit.Test
+    public void test() {
+        commonApplicationService.create(CommonApplicationEntity.Type.PAUSE_HOUSE, 49, "xiaoming test only", 5028);
+        commonApplicationService.reject(1, 49, "xiaoming test only");
+    }
 }
