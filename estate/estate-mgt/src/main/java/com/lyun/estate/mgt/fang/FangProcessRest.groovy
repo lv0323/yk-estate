@@ -1,5 +1,6 @@
 package com.lyun.estate.mgt.fang
 
+import com.lyun.estate.biz.application.entity.CommonApplicationEntity
 import com.lyun.estate.biz.fang.entity.Fang
 import com.lyun.estate.mgt.fang.service.FangProcessMgtService
 import com.lyun.estate.mgt.supports.CommonResp
@@ -20,39 +21,51 @@ class FangProcessRest {
     FangProcessMgtService processMgtService
 
     @PostMapping('publish')
-    Fang publish(@RequestParam Long fangId) {
-        processMgtService.publish(fangId)
-    }
-
-    @PostMapping('pause')
-    Fang pause(@RequestParam Long fangId) {
-        processMgtService.pause(fangId)
+    Fang requestPublish(@RequestParam Long fangId,
+                 @RequestParam String applyReason) {
+        processMgtService.requestPublish(fangId, applyReason)
     }
 
     @PostMapping('un-publish')
-    Fang unPublish(@RequestParam Long fangId) {
-        processMgtService.unPublish(fangId)
+    Fang requestUnPublish(@RequestParam Long fangId,
+                          @RequestParam String applyReason) {
+        processMgtService.requestUnPublish(fangId, applyReason)
     }
 
+    @PostMapping('pause')
+    Fang requestPause(@RequestParam Long fangId,
+               @RequestParam String applyReason) {
+        processMgtService.requestPause(fangId, applyReason)
+    }
 
     @PostMapping('apply-public')
-    Fang applyPublic(@RequestParam Long fangId) {
-        processMgtService.applyPublic(fangId)
-    }
-
-    @PostMapping('confirm-public')
-    Fang confirmPublic(@RequestParam Long fangId) {
-        processMgtService.confirmPublic(fangId)
-    }
-
-    @PostMapping('reject-public')
-    Fang rejectPublic(@RequestParam Long fangId) {
-        processMgtService.rejectPublic(fangId)
+    Fang requestApplyPublic(@RequestParam Long fangId,
+                     @RequestParam String applyReason) {
+        processMgtService.requestPublic(fangId, applyReason)
     }
 
     @PostMapping('undo-public')
-    Fang undoPublic(@RequestParam Long fangId) {
-        processMgtService.undoPublic(fangId)
+    Fang requestUndoPublic(@RequestParam Long fangId,
+                           @RequestParam String applyReason) {
+        processMgtService.requestUndoPublic(fangId, applyReason)
+    }
+
+    @PostMapping('approve')
+    CommonApplicationEntity approveApplication(@RequestParam Long applicationId,
+                                               @RequestParam String reviewerComments) {
+        processMgtService.approve(applicationId, reviewerComments)
+    }
+
+    @PostMapping('reject')
+    CommonApplicationEntity rejectApplication(@RequestParam Long applicationId,
+                            @RequestParam String reviewerComments) {
+        processMgtService.reject(applicationId, reviewerComments)
+    }
+
+    @PostMapping('close')
+    CommonApplicationEntity closeApplication(@RequestParam Long applicationId,
+                            @RequestParam String reviewerComments) {
+        processMgtService.close(applicationId, reviewerComments)
     }
 
     @PostMapping('deal')

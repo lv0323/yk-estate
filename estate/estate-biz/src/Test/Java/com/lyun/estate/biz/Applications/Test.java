@@ -21,7 +21,7 @@ public class Test {
 
     @org.junit.Test
     public void test() {
-        commonApplicationService.create(CommonApplicationEntity.Type.UN_PUBLIC_HOUSE, 49, "xiaoming test only", 5028);
-        commonApplicationService.approve(1, 49, "xiaoming test only");
+        CommonApplicationEntity commonApplicationEntity = commonApplicationService.create(CommonApplicationEntity.Type.PUBLIC_HOUSE, 49, "xiaoming test only", 5028);
+        commonApplicationService.approve(commonApplicationEntity.getId(), 49, "xiaoming test only");
     }
 }

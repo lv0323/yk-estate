@@ -1,5 +1,7 @@
 package com.lyun.estate.mgt.fang.service;
 
+import com.lyun.estate.biz.application.CommonApplicationService;
+import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
 import com.lyun.estate.biz.audit.def.AuditSubject;
 import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.biz.fang.def.HouseProcess;
@@ -37,8 +39,11 @@ class FangProcessMgtService {
     @Autowired
     private MgtContext mgtContext;
 
+    @Autowired
+    private CommonApplicationService commonApplicationService;
+
     @Transactional
-    public Fang publish(long fangId) {
+    public Fang requestPublish(long fangId, String applyReason) {
         Fang fangBase = fangMgtService.getFangBase(fangId);
         if (fangBase.getProcess() == HouseProcess.UN_PUBLISH) {
             permissionCheckService.checkScope(fangId, Permission.FANG_RE_PUBLISH);
@@ -52,43 +57,117 @@ class FangProcessMgtService {
                 .setDepartmentId(operator.getDepartmentId())
                 .setEmployeeId(operator.getId());
 
-        Fang fang = processService.publish(fangId, infoOwner);
+        commonApplicationService.create(CommonApplicationEntity.Type.PUBLISH_HOUSE, infoOwner.getId(), applyReason, fangId);
 
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,
                         AuditHelper.operatorName(mgtContext) +
-                                "上架了授权编号为【" + fang.getLicenceId() + "】的房源")
+                                "申请上架授权编号为【" + fangBase.getLicenceId() + "】的房源")
         );
-        return fang;
+        return fangBase;
     }
 
     @Transactional
-    public Fang unPublish(long fangId) {
+    public Fang requestUnPublish(long fangId, String applyReason) {
         permissionCheckService.checkScope(fangId, Permission.FANG_UN_PUBLISH);
 
-        Fang fang = processService.unPublish(fangId);
+        commonApplicationService.create(CommonApplicationEntity.Type.UN_PUBLISH_HOUSE, mgtContext.getOperator().getId(), applyReason, fangId);
+        Fang fang = fangMgtService.getFangBase(fangId);
 
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,
                         AuditHelper.operatorName(mgtContext) +
-                                "下架了授权编号为【" + fang.getLicenceId() + "】的房源")
+                                "申请下架授权编号为【" + fang.getLicenceId() + "】的房源")
         );
         return fang;
     }
 
     @Transactional
-    public Fang pause(long fangId) {
+    public Fang requestPause(long fangId, String applyReason) {
         permissionCheckService.checkScope(fangId, Permission.FANG_PAUSE);
 
-        Fang fang = processService.pause(fangId);
+        commonApplicationService.create(CommonApplicationEntity.Type.PAUSE_HOUSE, mgtContext.getOperator().getId(), applyReason, fangId);
+        Fang fang = fangMgtService.getFangBase(fangId);
 
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,
                         AuditHelper.operatorName(mgtContext) +
-                                "暂缓了授权编号为【" + fang.getLicenceId() + "】的房源")
+                                "申请暂缓授权编号为【" + fang.getLicenceId() + "】的房源")
         );
         return fang;
     }
+
+    @Transactional
+    public Fang requestPublic(long fangId, String applyReason) {
+        permissionCheckService.checkScope(fangId, Permission.FANG_APPLY_PUBLIC);
+
+        processService.publicPreCheck(fangId);
+
+        commonApplicationService.create(CommonApplicationEntity.Type.PUBLIC_HOUSE, mgtContext.getOperator().getId(), applyReason, fangId);
+        Fang fang = fangMgtService.getFangBase(fangId);
+
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,
+                        AuditHelper.operatorName(mgtContext) +
+                                "申请发布授权编号为【" + fang.getLicenceId() + "】的房源")
+        );
+        return fang;
+    }
+
+    @Transactional
+    public Fang requestUndoPublic(long fangId, String applyReason) {
+        permissionCheckService.checkScope(fangId, Permission.FANG_UNDO_PUBLIC);
+
+        commonApplicationService.create(CommonApplicationEntity.Type.UN_PUBLIC_HOUSE, mgtContext.getOperator().getId(), applyReason, fangId);
+        Fang fang = fangMgtService.getFangBase(fangId);
+
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,
+                        AuditHelper.operatorName(mgtContext) +
+                                "申请撤销授权编号为【" + fang.getLicenceId() + "】房源的外网发布")
+        );
+        return fang;
+    }
+
+    @Transactional
+    public void approve(long applicationId, String reviewerComments) {
+        // todo check privilege??
+
+        commonApplicationService.approve(applicationId, mgtContext.getOperator().getId(), reviewerComments);
+
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.FANG_APPLICATION, applicationId, DomainType.FANG,
+                        AuditHelper.operatorName(mgtContext) +
+                                "批准了【" + applicationId + "】")
+        );
+    }
+
+    @Transactional
+    public void reject(long applicationId, String reviewerComments) {
+        // todo check privilege??
+
+        commonApplicationService.reject(applicationId, mgtContext.getOperator().getId(), reviewerComments);
+
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.FANG_APPLICATION, applicationId, DomainType.FANG,
+                        AuditHelper.operatorName(mgtContext) +
+                                "拒绝了【" + applicationId + "】")
+        );
+    }
+
+    @Transactional
+    public void close(long applicationId, String reviewerComments) {
+        // todo check privilege??
+
+        commonApplicationService.close(applicationId, mgtContext.getOperator().getId(), reviewerComments);
+
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.FANG_APPLICATION, applicationId, DomainType.FANG,
+                        AuditHelper.operatorName(mgtContext) +
+                                "关闭了【" + applicationId + "】")
+        );
+    }
+
 
     @Transactional
     public Fang deal(long fangId) {
@@ -112,59 +191,4 @@ class FangProcessMgtService {
         return true;
     }
 
-    @Transactional
-    public Fang applyPublic(long fangId) {
-        permissionCheckService.checkScope(fangId, Permission.FANG_APPLY_PUBLIC);
-
-        Fang fang = processService.applyPublic(fangId);
-
-        auditService.save(
-                AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,
-                        AuditHelper.operatorName(mgtContext) +
-                                "申请发布了授权编号为【" + fang.getLicenceId() + "】的房源")
-        );
-        return fang;
-    }
-
-    @Transactional
-    public Fang confirmPublic(long fangId) {
-        permissionCheckService.checkScope(fangId, Permission.FANG_CONFIRM_PUBLIC);
-
-        Fang fang = processService.confirmPublic(fangId);
-
-        auditService.save(
-                AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,
-                        AuditHelper.operatorName(mgtContext) +
-                                "通过了发布授权编号为【" + fang.getLicenceId() + "】的房源")
-        );
-        return fang;
-    }
-
-    @Transactional
-    public Fang rejectPublic(long fangId) {
-        permissionCheckService.checkScope(fangId, Permission.FANG_REJECT_PUBLIC);
-
-        Fang fang = processService.rejectPublic(fangId);
-
-        auditService.save(
-                AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,
-                        AuditHelper.operatorName(mgtContext) +
-                                "拒绝了发布授权编号为【" + fang.getLicenceId() + "】的房源")
-        );
-        return fang;
-    }
-
-    @Transactional
-    public Fang undoPublic(long fangId) {
-        permissionCheckService.checkScope(fangId, Permission.FANG_UNDO_PUBLIC);
-
-        Fang fang = processService.undoPublic(fangId);
-
-        auditService.save(
-                AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,
-                        AuditHelper.operatorName(mgtContext) +
-                                "撤销了授权编号为【" + fang.getLicenceId() + "】房源的外网发布")
-        );
-        return fang;
-    }
 }

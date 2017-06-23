@@ -21,7 +21,7 @@ public class HouseSubProcessApplicationHandler implements CommonApplicationHandl
     public CommonApplicationEntity create(CommonApplicationEntity.Type type, long applicantId, String applyReason, long domainId) {
         long fangId = domainId;
         Fang fang = mgtFangService.getFangBase(fangId);
-        String domainFrom = fang.getSubProcess().name();
+        String domainFrom = fang.getSubProcess() == null ? HouseSubProcess.NONE.name() : fang.getSubProcess().name();
         String domainTo = "";
 
         switch (type) {
@@ -51,20 +51,22 @@ public class HouseSubProcessApplicationHandler implements CommonApplicationHandl
     @Override
     public void approve(CommonApplicationEntity commonApplicationEntity) {
         long fangId = commonApplicationEntity.getDomainId();
-        HouseSubProcess houseProcessFrom = HouseSubProcess.valueOf(commonApplicationEntity.getDomainFrom());
-        HouseSubProcess houseProcessTo = HouseSubProcess.valueOf(commonApplicationEntity.getDomainTo());
+        HouseSubProcess houseSubProcessFrom = HouseSubProcess.valueOf(commonApplicationEntity.getDomainFrom());
 
         Fang fang = mgtFangService.getFangBase(fangId);
-        if (fang.getSubProcess() != houseProcessFrom) {
+
+        HouseSubProcess currentSubProcess = fang.getSubProcess() == null ? HouseSubProcess.NONE: fang.getSubProcess();
+
+        if (currentSubProcess != houseSubProcessFrom) {
             // todo
             return;
         }
 
-        switch (houseProcessTo) {
-            case PUBLIC:
+        switch (commonApplicationEntity.getType()) {
+            case PUBLIC_HOUSE:
                 fangProcessService.confirmPublic(fangId);
                 break;
-            case NONE:
+            case UN_PUBLIC_HOUSE:
                 fangProcessService.undoPublic(fangId);
                 break;
             default:

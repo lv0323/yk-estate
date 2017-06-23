@@ -6,7 +6,7 @@ import com.lyun.estate.core.supports.labelenum.LabelEnum;
  * Created by Jeffrey on 2017-01-22.
  */
 public enum HouseProcess implements LabelEnum {
-    DELEGATE("新增"),// deprecated since 21-06-2017
+    DELEGATE("新增"),
     PUBLISH("有效"),
     UN_PUBLISH("无效"),
     PAUSE("暂缓"),
