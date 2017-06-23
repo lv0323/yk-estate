@@ -237,7 +237,7 @@ class FangProcessService {
 
     def publicPreCheck(long fangId) {
         Fang fang = mgtFangRepository.selectForUpdate(fangId)
-        if (fang.getProcess() != HouseProcess.PUBLISH || fang.getSubProcess() != HouseSubProcess.PUBLIC) {
+        if (fang.getProcess() != HouseProcess.PUBLISH || fang.getSubProcess() == HouseSubProcess.PUBLIC) {
             throw new EstateException(ExCode.SUB_PROCESS_ILLEGAL, fangId, fang.process, fang.subProcess)
         }
         //check desc core
