@@ -28,7 +28,7 @@ public class HouseSubProcessApplicationHandler implements CommonApplicationHandl
             case PUBLIC_HOUSE:
                 domainTo = HouseSubProcess.PUBLIC.name();
                 break;
-            case UN_PUBLISH_HOUSE:
+            case UN_PUBLIC_HOUSE:
                 domainTo = HouseSubProcess.NONE.name();
                 break;
             default:
