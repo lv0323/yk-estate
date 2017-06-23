@@ -164,7 +164,7 @@ public class FangMgtService {
             publishPrice = fang.getPublishPrice().multiply(new BigDecimal(10000));
         }
 
-        fang.setUnitPrice(publishPrice.divide(fang.getEstateArea(), 2, RoundingMode.HALF_UP));
+        fang.setUnitPrice(publishPrice.divide(fang.getEstateArea(), 0, RoundingMode.HALF_UP));
 
         return fang;
     }
@@ -353,7 +353,6 @@ public class FangMgtService {
 
         Fang result = mgtFangService.updateFangBase(fang);
 
-        Operator operator = mgtContext.getOperator();
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_M, fang.getId(), DomainType.FANG,
                         AuditHelper.operatorName(mgtContext) +
