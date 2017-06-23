@@ -47,7 +47,7 @@ public class FangProcessMgtService {
     private CommonApplicationService commonApplicationService;
 
     @Transactional
-    public Fang requestPublish(long fangId, String applyReason) {
+    public CommonApplicationEntity requestPublish(long fangId, String applyReason) {
         Fang fangBase = fangMgtService.getFangBase(fangId);
         if (fangBase.getProcess() == HouseProcess.UN_PUBLISH) {
             permissionCheckService.checkScope(fangId, Permission.FANG_RE_PUBLISH);
@@ -61,21 +61,21 @@ public class FangProcessMgtService {
                 .setDepartmentId(operator.getDepartmentId())
                 .setEmployeeId(operator.getId());
 
-        commonApplicationService.create(CommonApplicationEntity.Type.PUBLISH_HOUSE, infoOwner.getId(), applyReason, fangId);
+        CommonApplicationEntity commonApplicationEntity = commonApplicationService.create(CommonApplicationEntity.Type.PUBLISH_HOUSE, infoOwner.getId(), applyReason, fangId);
 
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,
                         AuditHelper.operatorName(mgtContext) +
                                 "申请上架授权编号为【" + fangBase.getLicenceId() + "】的房源")
         );
-        return fangBase;
+        return commonApplicationEntity;
     }
 
     @Transactional
-    public Fang requestUnPublish(long fangId, String applyReason) {
+    public CommonApplicationEntity requestUnPublish(long fangId, String applyReason) {
         permissionCheckService.checkScope(fangId, Permission.FANG_UN_PUBLISH);
 
-        commonApplicationService.create(CommonApplicationEntity.Type.UN_PUBLISH_HOUSE, mgtContext.getOperator().getId(), applyReason, fangId);
+        CommonApplicationEntity commonApplicationEntity = commonApplicationService.create(CommonApplicationEntity.Type.UN_PUBLISH_HOUSE, mgtContext.getOperator().getId(), applyReason, fangId);
         Fang fang = fangMgtService.getFangBase(fangId);
 
         auditService.save(
@@ -83,7 +83,7 @@ public class FangProcessMgtService {
                         AuditHelper.operatorName(mgtContext) +
                                 "申请下架授权编号为【" + fang.getLicenceId() + "】的房源")
         );
-        return fang;
+        return commonApplicationEntity;
     }
 
     @Transactional
