@@ -55,13 +55,7 @@ public class FangProcessMgtService {
             permissionCheckService.checkScope(fangId, Permission.FANG_PUBLISH);
         }
 
-        Operator operator = mgtContext.getOperator();
-        FangInfoOwner infoOwner = new FangInfoOwner()
-                .setCompanyId(operator.getCompanyId())
-                .setDepartmentId(operator.getDepartmentId())
-                .setEmployeeId(operator.getId());
-
-        CommonApplicationEntity commonApplicationEntity = commonApplicationService.create(CommonApplicationEntity.Type.PUBLISH_HOUSE, infoOwner.getId(), applyReason, fangId);
+        CommonApplicationEntity commonApplicationEntity = commonApplicationService.create(CommonApplicationEntity.Type.PUBLISH_HOUSE, mgtContext.getOperator().getId(), applyReason, fangId);
 
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,
