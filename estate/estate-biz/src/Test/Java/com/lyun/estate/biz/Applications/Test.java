@@ -22,6 +22,6 @@ public class Test {
     @org.junit.Test
     public void test() {
         commonApplicationService.create(CommonApplicationEntity.Type.PAUSE_HOUSE, 49, "xiaoming test only", 5028);
-        commonApplicationService.reject(1, 49, "xiaoming test only");
+        commonApplicationService.approve(1, 49, "xiaoming test only");
     }
 }
