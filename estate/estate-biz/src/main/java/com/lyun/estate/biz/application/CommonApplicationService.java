@@ -38,30 +38,30 @@ public class CommonApplicationService {
     }
 
     @Transactional
-    public void approve(long applicationId, long reviewerId, String reviewerComments) {
+    public int approve(long applicationId, long reviewerId, String reviewerComments) {
         CommonApplicationEntity commonApplicationEntity = getApplicationEntity(applicationId, reviewerId, reviewerComments);
 
         getApplicationHandler(commonApplicationEntity.getType()).ifPresent(handler -> handler.approve(commonApplicationEntity));
 
-        commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.APPROVED, reviewerId, reviewerComments);
+       return commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.APPROVED, reviewerId, reviewerComments);
     }
 
     @Transactional
-    public void reject(long applicationId, long reviewerId, String reviewerComments) {
+    public int reject(long applicationId, long reviewerId, String reviewerComments) {
         CommonApplicationEntity commonApplicationEntity = getApplicationEntity(applicationId, reviewerId, reviewerComments);
 
         getApplicationHandler(commonApplicationEntity.getType()).ifPresent(handler -> handler.reject(commonApplicationEntity));
 
-        commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.REJECTED, reviewerId, reviewerComments);
+        return commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.REJECTED, reviewerId, reviewerComments);
     }
 
     @Transactional
-    public void close(long applicationId, long reviewerId, String reviewerComments) {
+    public int close(long applicationId, long reviewerId, String reviewerComments) {
         CommonApplicationEntity commonApplicationEntity = getApplicationEntity(applicationId, reviewerId, reviewerComments);
 
         getApplicationHandler(commonApplicationEntity.getType()).ifPresent(handler -> handler.close(commonApplicationEntity));
 
-        commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.CLOSED_BY_APPLICANT, reviewerId, reviewerComments);
+        return commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.CLOSED_BY_APPLICANT, reviewerId, reviewerComments);
     }
 
     public List<CommonApplicationEntity> findApplications(CommonApplicationEntity.Type type, long id, long applicantId, CommonApplicationEntity.Status status, Date startTime, Date endTime, PageBounds pageBounds) {

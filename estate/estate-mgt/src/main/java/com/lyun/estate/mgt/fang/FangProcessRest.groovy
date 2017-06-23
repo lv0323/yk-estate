@@ -26,49 +26,49 @@ class FangProcessRest {
     FangProcessMgtService processMgtService
 
     @PostMapping('publish')
-    Fang requestPublish(@RequestParam Long fangId,
+    CommonApplicationEntity requestPublish(@RequestParam Long fangId,
                  @RequestParam String applyReason) {
-        processMgtService.requestPublish(fangId, applyReason)
+        return processMgtService.requestPublish(fangId, applyReason)
     }
 
     @PostMapping('un-publish')
-    Fang requestUnPublish(@RequestParam Long fangId,
+    CommonApplicationEntity requestUnPublish(@RequestParam Long fangId,
                           @RequestParam String applyReason) {
-        processMgtService.requestUnPublish(fangId, applyReason)
+        return processMgtService.requestUnPublish(fangId, applyReason)
     }
 
     @PostMapping('pause')
-    Fang requestPause(@RequestParam Long fangId,
+    CommonApplicationEntity requestPause(@RequestParam Long fangId,
                @RequestParam String applyReason) {
-        processMgtService.requestPause(fangId, applyReason)
+        return processMgtService.requestPause(fangId, applyReason)
     }
 
     @PostMapping('apply-public')
-    Fang requestApplyPublic(@RequestParam Long fangId,
+    CommonApplicationEntity requestApplyPublic(@RequestParam Long fangId,
                      @RequestParam String applyReason) {
-        processMgtService.requestPublic(fangId, applyReason)
+        return processMgtService.requestPublic(fangId, applyReason)
     }
 
     @PostMapping('undo-public')
-    Fang requestUndoPublic(@RequestParam Long fangId,
+    CommonApplicationEntity requestUndoPublic(@RequestParam Long fangId,
                            @RequestParam String applyReason) {
-        processMgtService.requestUndoPublic(fangId, applyReason)
+        return processMgtService.requestUndoPublic(fangId, applyReason)
     }
 
     @PostMapping('approve')
-    CommonApplicationEntity approveApplication(@RequestParam Long applicationId,
+    int approveApplication(@RequestParam Long applicationId,
                                                @RequestParam String reviewerComments) {
         processMgtService.approve(applicationId, reviewerComments)
     }
 
     @PostMapping('reject')
-    CommonApplicationEntity rejectApplication(@RequestParam Long applicationId,
+    int rejectApplication(@RequestParam Long applicationId,
                             @RequestParam String reviewerComments) {
         processMgtService.reject(applicationId, reviewerComments)
     }
 
     @PostMapping('close')
-    CommonApplicationEntity closeApplication(@RequestParam Long applicationId,
+    int closeApplication(@RequestParam Long applicationId,
                             @RequestParam String reviewerComments) {
         processMgtService.close(applicationId, reviewerComments)
     }

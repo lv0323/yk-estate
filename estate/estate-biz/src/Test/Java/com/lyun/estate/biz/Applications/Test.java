@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.Applications;
+package com.lyun.estate.biz.applications;
 
 import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
 import com.lyun.estate.biz.application.CommonApplicationService;

@@ -26,7 +26,7 @@ import java.util.List;
  * Created by Jeffrey on 2017-03-10.
  */
 @Service
-class FangProcessMgtService {
+public class FangProcessMgtService {
 
     @Autowired
     private FangMgtService fangMgtService;
@@ -87,10 +87,10 @@ class FangProcessMgtService {
     }
 
     @Transactional
-    public Fang requestPause(long fangId, String applyReason) {
+    public CommonApplicationEntity requestPause(long fangId, String applyReason) {
         permissionCheckService.checkScope(fangId, Permission.FANG_PAUSE);
 
-        commonApplicationService.create(CommonApplicationEntity.Type.PAUSE_HOUSE, mgtContext.getOperator().getId(), applyReason, fangId);
+        CommonApplicationEntity commonApplicationEntity = commonApplicationService.create(CommonApplicationEntity.Type.PAUSE_HOUSE, mgtContext.getOperator().getId(), applyReason, fangId);
         Fang fang = fangMgtService.getFangBase(fangId);
 
         auditService.save(
@@ -98,16 +98,16 @@ class FangProcessMgtService {
                         AuditHelper.operatorName(mgtContext) +
                                 "申请暂缓授权编号为【" + fang.getLicenceId() + "】的房源")
         );
-        return fang;
+        return commonApplicationEntity;
     }
 
     @Transactional
-    public Fang requestPublic(long fangId, String applyReason) {
+    public CommonApplicationEntity requestPublic(long fangId, String applyReason) {
         permissionCheckService.checkScope(fangId, Permission.FANG_APPLY_PUBLIC);
 
         processService.publicPreCheck(fangId);
 
-        commonApplicationService.create(CommonApplicationEntity.Type.PUBLIC_HOUSE, mgtContext.getOperator().getId(), applyReason, fangId);
+        CommonApplicationEntity commonApplicationEntity = commonApplicationService.create(CommonApplicationEntity.Type.PUBLIC_HOUSE, mgtContext.getOperator().getId(), applyReason, fangId);
         Fang fang = fangMgtService.getFangBase(fangId);
 
         auditService.save(
@@ -115,14 +115,14 @@ class FangProcessMgtService {
                         AuditHelper.operatorName(mgtContext) +
                                 "申请发布授权编号为【" + fang.getLicenceId() + "】的房源")
         );
-        return fang;
+        return commonApplicationEntity;
     }
 
     @Transactional
-    public Fang requestUndoPublic(long fangId, String applyReason) {
+    public CommonApplicationEntity requestUndoPublic(long fangId, String applyReason) {
         permissionCheckService.checkScope(fangId, Permission.FANG_UNDO_PUBLIC);
 
-        commonApplicationService.create(CommonApplicationEntity.Type.UN_PUBLIC_HOUSE, mgtContext.getOperator().getId(), applyReason, fangId);
+        CommonApplicationEntity commonApplicationEntity = commonApplicationService.create(CommonApplicationEntity.Type.UN_PUBLIC_HOUSE, mgtContext.getOperator().getId(), applyReason, fangId);
         Fang fang = fangMgtService.getFangBase(fangId);
 
         auditService.save(
@@ -130,46 +130,51 @@ class FangProcessMgtService {
                         AuditHelper.operatorName(mgtContext) +
                                 "申请撤销授权编号为【" + fang.getLicenceId() + "】房源的外网发布")
         );
-        return fang;
+        return commonApplicationEntity;
     }
 
     @Transactional
-    public void approve(long applicationId, String reviewerComments) {
+    public int approve(long applicationId, String reviewerComments) {
         // todo check privilege??
 
-        commonApplicationService.approve(applicationId, mgtContext.getOperator().getId(), reviewerComments);
+        int result = commonApplicationService.approve(applicationId, mgtContext.getOperator().getId(), reviewerComments);
 
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_APPLICATION, applicationId, DomainType.FANG,
                         AuditHelper.operatorName(mgtContext) +
                                 "批准了【" + applicationId + "】")
         );
+
+        return result;
     }
 
     @Transactional
-    public void reject(long applicationId, String reviewerComments) {
+    public int reject(long applicationId, String reviewerComments) {
         // todo check privilege??
 
-        commonApplicationService.reject(applicationId, mgtContext.getOperator().getId(), reviewerComments);
+        int result = commonApplicationService.reject(applicationId, mgtContext.getOperator().getId(), reviewerComments);
 
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_APPLICATION, applicationId, DomainType.FANG,
                         AuditHelper.operatorName(mgtContext) +
                                 "拒绝了【" + applicationId + "】")
         );
+        return result;
     }
 
     @Transactional
-    public void close(long applicationId, String reviewerComments) {
+    public int close(long applicationId, String reviewerComments) {
         // todo check privilege??
 
-        commonApplicationService.close(applicationId, mgtContext.getOperator().getId(), reviewerComments);
+        int result = commonApplicationService.close(applicationId, mgtContext.getOperator().getId(), reviewerComments);
 
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_APPLICATION, applicationId, DomainType.FANG,
                         AuditHelper.operatorName(mgtContext) +
                                 "关闭了【" + applicationId + "】")
         );
+
+        return result;
     }
 
     public List<CommonApplicationEntity> findApplications(CommonApplicationEntity.Type type, long id, long applicantId, CommonApplicationEntity.Status status, Date startTime, Date endTime, PageBounds pageBounds) {
