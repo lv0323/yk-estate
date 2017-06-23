@@ -1,6 +1,11 @@
 package com.lyun.estate.biz.application;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
+import com.lyun.estate.biz.application.handler.CommonApplicationHandler;
+import com.lyun.estate.biz.application.handler.FangTagApplicationHandler;
+import com.lyun.estate.biz.application.handler.HouseProcessApplicationHandler;
+import com.lyun.estate.biz.application.handler.HouseSubProcessApplicationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

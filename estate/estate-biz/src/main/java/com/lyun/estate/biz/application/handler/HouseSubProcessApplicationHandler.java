@@ -1,6 +1,6 @@
-package com.lyun.estate.biz.application;
+package com.lyun.estate.biz.application.handler;
 
-import com.lyun.estate.biz.fang.def.HouseProcess;
+import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
 import com.lyun.estate.biz.fang.def.HouseSubProcess;
 import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.service.FangProcessService;

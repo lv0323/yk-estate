@@ -1,7 +1,7 @@
 package com.lyun.estate.mgt.application;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.lyun.estate.biz.application.CommonApplicationEntity;
+import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
 import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver;
 import com.lyun.estate.mgt.context.MgtContext;
 import org.springframework.beans.factory.annotation.Autowired;

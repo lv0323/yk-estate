@@ -1,6 +1,6 @@
 package com.lyun.estate.biz.Applications;
 
-import com.lyun.estate.biz.application.CommonApplicationEntity;
+import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
 import com.lyun.estate.biz.application.CommonApplicationService;
 import com.lyun.estate.biz.config.BizConfig;
 import com.lyun.estate.core.config.CoreConfig;

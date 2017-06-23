@@ -1,8 +1,7 @@
 package com.lyun.estate.biz.application.repo;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.lyun.estate.biz.application.CommonApplicationEntity;
-import com.lyun.estate.biz.application.CommonApplicationSqlProvider;
+import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 

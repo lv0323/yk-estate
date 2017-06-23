@@ -1,5 +1,6 @@
-package com.lyun.estate.biz.application;
+package com.lyun.estate.biz.application.handler;
 
+import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
 import org.springframework.stereotype.Service;
 
 @Service

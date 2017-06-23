@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.application;
+package com.lyun.estate.biz.application.repo;
 
 import com.lyun.estate.core.repo.SQL;
 import org.springframework.util.StringUtils;

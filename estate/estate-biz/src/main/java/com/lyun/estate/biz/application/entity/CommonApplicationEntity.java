@@ -1,4 +1,4 @@
-package com.lyun.estate.biz.application;
+package com.lyun.estate.biz.application.entity;
 
 import java.util.Date;
 
