@@ -493,31 +493,39 @@ require(['main-app',
             $scope.confirmChangeStatus = function(status, id){
                 var deferred = $q.defer();
                 var operation = null;
+                var params = {};
                 switch(status) {
                     case $scope.page.status.PUBLISH:
                         operation = FangService.publish;
+                        params = {'fangId':id, 'applyReason':'todo add reason here'};
                         break;
                     case $scope.page.status.UN_PUBLISH:
                         operation = FangService.unPublish;
+                        params = {'fangId':id, 'applyReason':'todo add reason here'};
                         break;
                     case $scope.page.status.PAUSE:
                         operation =  FangService.pause;
+                        params = {'fangId':id, 'applyReason':'todo add reason here'};
                         break;
                     case $scope.page.status.APPLY_PUBLISH:
                         operation =  FangService.applyPublic;
-                        break;
-                    case $scope.page.status.REJECT_PUBLISH:
-                        operation =  FangService.rejectPublic;
-                        break;
-                    case $scope.page.status.CONFIRM_PUBLISH:
-                        operation =  FangService.confirmPublic;
+                        params = {'fangId':id, 'applyReason':'todo add reason here'};
                         break;
                     case $scope.page.status.UNDO_PUBLISH:
                         operation =  FangService.undoPublic;
+                        params = {'fangId':id, 'applyReason':'todo add reason here'};
+                        break;
+                    case $scope.page.status.REJECT_PUBLISH:
+                        operation =  FangService.rejectPublic;
+                        params = {'fangId':id, 'comments':'todo add comments here'};
+                        break;
+                    case $scope.page.status.CONFIRM_PUBLISH:
+                        operation =  FangService.confirmPublic;
+                        params = {'fangId':id, 'comments':'todo add comments here'};
                         break;
                 }
                 if(operation){
-                    operation({fangId:id}).then(function(response){
+                    operation(params).then(function(response){
                         deferred.resolve(response);
                     }).fail(function(response){
                         deferred.reject(response);
