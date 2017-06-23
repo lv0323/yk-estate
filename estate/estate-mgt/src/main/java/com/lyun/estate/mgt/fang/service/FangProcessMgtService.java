@@ -1,5 +1,6 @@
 package com.lyun.estate.mgt.fang.service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.lyun.estate.biz.application.CommonApplicationService;
 import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
 import com.lyun.estate.biz.audit.def.AuditSubject;
@@ -17,6 +18,9 @@ import com.lyun.estate.mgt.supports.AuditHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Jeffrey on 2017-03-10.
@@ -166,6 +170,10 @@ class FangProcessMgtService {
                         AuditHelper.operatorName(mgtContext) +
                                 "关闭了【" + applicationId + "】")
         );
+    }
+
+    public List<CommonApplicationEntity> findApplications(CommonApplicationEntity.Type type, long id, long applicantId, CommonApplicationEntity.Status status, Date startTime, Date endTime, PageBounds pageBounds) {
+        return commonApplicationService.findApplications(type, id, applicantId, status, startTime, endTime, pageBounds);
     }
 
 
