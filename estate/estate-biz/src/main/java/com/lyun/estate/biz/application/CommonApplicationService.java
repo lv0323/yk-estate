@@ -38,10 +38,10 @@ public class CommonApplicationService {
     }
 
     @Transactional
-    public int approve(long applicationId, long reviewerId, String reviewerComments) {
+    public int approve(long applicationId, long reviewerId, String reviewerComments, boolean isForceApprove) {
         CommonApplicationEntity commonApplicationEntity = getApplicationEntity(applicationId, reviewerId, reviewerComments);
 
-        getApplicationHandler(commonApplicationEntity.getType()).ifPresent(handler -> handler.approve(commonApplicationEntity));
+        getApplicationHandler(commonApplicationEntity.getType()).ifPresent(handler -> handler.approve(commonApplicationEntity, isForceApprove));
 
        return commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.APPROVED, reviewerId, reviewerComments);
     }
@@ -61,7 +61,7 @@ public class CommonApplicationService {
 
         getApplicationHandler(commonApplicationEntity.getType()).ifPresent(handler -> handler.close(commonApplicationEntity));
 
-        return commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.CLOSED_BY_APPLICANT, reviewerId, reviewerComments);
+        return commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.CLOSED, reviewerId, reviewerComments);
     }
 
     public List<CommonApplicationEntity> findApplications(CommonApplicationEntity.Type type, long id, long applicantId, CommonApplicationEntity.Status status, Date startTime, Date endTime, PageBounds pageBounds) {
@@ -99,12 +99,4 @@ public class CommonApplicationService {
         }
     }
 
-    public CommonApplicationRepo getCommonApplicationRepo() {
-        return commonApplicationRepo;
-    }
-
-    public CommonApplicationService setCommonApplicationRepo(CommonApplicationRepo commonApplicationRepo) {
-        this.commonApplicationRepo = commonApplicationRepo;
-        return this;
-    }
 }

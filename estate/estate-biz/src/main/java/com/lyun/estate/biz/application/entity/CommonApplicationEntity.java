@@ -1,5 +1,7 @@
 package com.lyun.estate.biz.application.entity;
 
+import com.lyun.estate.core.supports.labelenum.LabelEnum;
+
 import java.util.Date;
 
 public class CommonApplicationEntity {
@@ -20,20 +22,29 @@ public class CommonApplicationEntity {
     private Date createTime;
     private Date update_time;
 
-    public enum Type {
-        PUBLISH_HOUSE,
-        UN_PUBLISH_HOUSE,
-        PAUSE_HOUSE,
-        SUCCESS_HOUSE,
+    public enum Type implements LabelEnum{
+        PUBLISH_HOUSE("上架"),
+        UN_PUBLISH_HOUSE("下架"),
+        PAUSE_HOUSE("暂缓"),
+        SUCCESS_HOUSE("成交"),
 
-        UN_PUBLIC_HOUSE,
-        PUBLIC_HOUSE,
+        UN_PUBLIC_HOUSE("撤销发布"),
+        PUBLIC_HOUSE("发布外网"),
 
-        FANG_TAG_APPROVAL
+        FANG_TAG_APPROVAL("更改标签");
+        private final String label;
+
+        Type(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
     }
 
     public enum Status {
-        NEW, APPROVED, REJECTED, CLOSED_BY_REVIEWER, CLOSED_BY_APPLICANT
+        NEW, APPROVED, REJECTED, CLOSED;
     }
 
     public long getId() {

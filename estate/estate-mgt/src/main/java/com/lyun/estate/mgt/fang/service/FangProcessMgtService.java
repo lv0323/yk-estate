@@ -128,10 +128,10 @@ public class FangProcessMgtService {
     }
 
     @Transactional
-    public int approve(long applicationId, String reviewerComments) {
+    public int approve(long applicationId, String reviewerComments, boolean isForceApprove) {
         // todo check privilege??
 
-        int result = commonApplicationService.approve(applicationId, mgtContext.getOperator().getId(), reviewerComments);
+        int result = commonApplicationService.approve(applicationId, mgtContext.getOperator().getId(), reviewerComments, isForceApprove);
 
         auditService.save(
                 AuditHelper.build(mgtContext, AuditSubject.FANG_APPLICATION, applicationId, DomainType.FANG,

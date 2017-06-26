@@ -61,25 +61,30 @@ public class HouseProcessApplicationHandler implements CommonApplicationHandler 
     }
 
     @Override
-    public void approve(CommonApplicationEntity commonApplicationEntity) {
+    public void approve(CommonApplicationEntity commonApplicationEntity, boolean isForceApprove) {
         long fangId = commonApplicationEntity.getDomainId();
         HouseProcess houseProcessFrom = HouseProcess.valueOf(commonApplicationEntity.getDomainFrom());
-        HouseProcess houseProcessTo = HouseProcess.valueOf(commonApplicationEntity.getDomainTo());
 
         Fang fang = mgtFangService.getFangBase(fangId);
-        if (fang.getProcess() != houseProcessFrom) {
-            // todo
-            return;
+
+        /**
+         * isForceApprove == true means we will approve the application even when the HouseProcess has been changed.
+         * we need to check the currentHouseProcess when isForceApprove == false
+         */
+        if (!isForceApprove) {
+            if (fang.getProcess() != houseProcessFrom) {
+                throw new RuntimeException("HouseProcess is already changed, cannot approve this application");
+            }
         }
 
-        switch (houseProcessTo) {
-            case UN_PUBLISH:
+        switch (commonApplicationEntity.getType()) {
+            case UN_PUBLISH_HOUSE:
                 fangProcessService.unPublish(fangId);
                 break;
-            case PAUSE:
+            case PAUSE_HOUSE:
                 fangProcessService.pause(fangId);
                 break;
-            case PUBLISH:
+            case PUBLISH_HOUSE:
                 Employee employee = employeeService.findById(commonApplicationEntity.getApplicantId());
                 FangInfoOwner infoOwner = new FangInfoOwner() {{
                     setCompanyId(employee.getCompanyId());
@@ -89,7 +94,7 @@ public class HouseProcessApplicationHandler implements CommonApplicationHandler 
 
                 fangProcessService.publish(fangId, infoOwner);
                 break;
-            case SUCCESS:
+            case SUCCESS_HOUSE:
                 fangProcessService.deal(fangId);
                 break;
             default:

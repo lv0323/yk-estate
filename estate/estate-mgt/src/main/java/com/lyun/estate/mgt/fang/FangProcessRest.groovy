@@ -57,8 +57,9 @@ class FangProcessRest {
 
     @PostMapping('approve')
     int approveApplication(@RequestParam Long applicationId,
-                           @RequestParam String reviewerComments) {
-        processMgtService.approve(applicationId, reviewerComments)
+                           @RequestParam String reviewerComments,
+                           @RequestParam(required = false) boolean isForceApprove) {
+        processMgtService.approve(applicationId, reviewerComments, isForceApprove)
     }
 
     @PostMapping('reject')

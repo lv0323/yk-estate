@@ -49,7 +49,7 @@ public class HouseSubProcessApplicationHandler implements CommonApplicationHandl
     }
 
     @Override
-    public void approve(CommonApplicationEntity commonApplicationEntity) {
+    public void approve(CommonApplicationEntity commonApplicationEntity, boolean isForceApprove) {
         long fangId = commonApplicationEntity.getDomainId();
         HouseSubProcess houseSubProcessFrom = HouseSubProcess.valueOf(commonApplicationEntity.getDomainFrom());
 
@@ -57,9 +57,14 @@ public class HouseSubProcessApplicationHandler implements CommonApplicationHandl
 
         HouseSubProcess currentSubProcess = fang.getSubProcess() == null ? HouseSubProcess.NONE: fang.getSubProcess();
 
-        if (currentSubProcess != houseSubProcessFrom) {
-            // todo
-            return;
+        /**
+         * isForceApprove == true means we will approve the application even when the HouseSubProcess has been changed.
+         * we need to check the currentHouseSubProcess when isForceApprove == false
+         */
+        if (!isForceApprove) {
+            if (houseSubProcessFrom != currentSubProcess) {
+                throw new RuntimeException("HouseSubProcess is already changed, cannot approve this application");
+            }
         }
 
         switch (commonApplicationEntity.getType()) {
@@ -76,14 +81,12 @@ public class HouseSubProcessApplicationHandler implements CommonApplicationHandl
 
     @Override
     public void reject(CommonApplicationEntity commonApplicationEntity) {
-        // do nothing
-        return;
+        // do nothing, no need to change fang's subProcess for now
     }
 
     @Override
     public void close(CommonApplicationEntity commonApplicationEntity) {
-        // do nothing
-        return;
+        // do nothing, no need to change fang's subProcess for now
     }
 
 }

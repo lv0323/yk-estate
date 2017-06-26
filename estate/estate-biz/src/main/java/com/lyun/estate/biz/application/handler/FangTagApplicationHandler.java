@@ -12,7 +12,7 @@ public class FangTagApplicationHandler implements CommonApplicationHandler {
     }
 
     @Override
-    public void approve(CommonApplicationEntity commonApplicationEntity) {
+    public void approve(CommonApplicationEntity commonApplicationEntity, boolean isForceApprove) {
         // add tag if needed
     }
 
