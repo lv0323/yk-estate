@@ -37,7 +37,7 @@
                                     </div>
                                     <div class="clearfix"></div>
                                     <div class="form-group sortlist">
-                                        <label class="control-label">类型</label>
+                                        <label class="control-label">申请类型</label>
                                         <div id="allTypes" class="tj">
                                             <a ng-href="javascript::" ng-class="{'actived': 'ALL' == pageStatus.type}" ng-click="filterType('ALL')">全部</a>
                                         <#list types?if_exists as type>
@@ -48,7 +48,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group sortlist">
-                                        <label class="control-label">状态</label>
+                                        <label class="control-label">申请状态</label>
                                         <div id="allStatus" class="tj">
                                             <a ng-href="javascript::" ng-class="{'actived': 'ALL' == pageStatus.status}" ng-click="filterStatus('ALL')">全部</a>
                                         <#list statusList?if_exists as status>
@@ -67,6 +67,16 @@
                                         </a>
                                         <div class="media-body">
                                             <div class="col-lg-8 col-md-8 col-sm-9" style="padding-right: 0">
+                                                <div class="clearfix m-t-20 text-muted">
+                                                    <span>申请类别:{{applicationDTO.application.type.label}}</span>
+                                                    <span>申请原因:{{applicationDTO.application.applyReason}}</span>
+                                                    <span>审批状态:{{applicationDTO.application.status.label}}</span>
+                                                    <span ng-show="applicationDTO.application.status.name != 'NEW'">
+                                                        审批原因:{{applicationDTO.application.reviewerComments}}
+                                                    </span>
+                                                    <span>申请编号: {{applicationDTO.application.id}}</span>
+                                                </div>
+
                                                 <div class="clearfix">
                                                     <h5 class="media-heading pull-left text-ellipsis" style="width:300px;">
                                                         <a ng-href="{{'/mgt/fangManage/detail?id='+applicationDTO.domain.id}}" target="_blank" class="text-muted" ng-bind="applicationDTO.domain.head"></a>
@@ -80,13 +90,6 @@
                                                     <span ng-class="{true:'text-rent', false:'text-sell'}[applicationDTO.domain.bizType.name == 'RENT']" ng-show="applicationDTO.domain.publishTime">[{{(page.now - applicationDTO.domain.publishTime)/(24*6060*1000)|number:0}}]</span>
                                                     <span class="text-muted">
                                                         {{applicationDTO.domain.infoOwner.departmentName}} ~ {{applicationDTO.domain.infoOwner.employeeName}}
-                                                    </span>
-                                                </div>
-                                                <div class="clearfix m-t-10 text-muted">
-                                                    <span>申请类别:{{applicationDTO.application.type.label}}</span>
-                                                    <span>状态:{{applicationDTO.application.status.label}}</span>
-                                                    <span class="m-l-10">
-                                                        id: {{applicationDTO.application.id}}
                                                     </span>
                                                 </div>
                                                 <div class="clearfix m-t-10 text-muted">
@@ -114,21 +117,21 @@
                                                 </div>
                                                 <div class="pull-left btn-add m-l-20">
                                                     <span class="add-info-operation m-r-20">
-                                                        <a ng-href="javascript:;" ng-class="{'actived': applicationDTO.application.status == 'NEW'}" ng-click="approveApplication(applicationDTO.application.id)">
+                                                        <a ng-href="javascript:;" ng-show="applicationDTO.application.status.name == 'NEW'" ng-click="approveApplication(applicationDTO.application.id)">
                                                             <i class="fa fa-pencil"></i>通过申请
                                                         </a>
                                                     </span>
                                                 </div>
                                                 <div class="pull-left btn-add m-l-20">
                                                     <span class="add-info-operation m-r-20">
-                                                        <a ng-href="javascript:;" ng-class="{'actived': applicationDTO.application.status == 'NEW'}" ng-click="rejectApplication(applicationDTO.application.id)">
+                                                        <a ng-href="javascript:;" ng-show="applicationDTO.application.status.name == 'NEW'" ng-click="rejectApplication(applicationDTO.application.id)">
                                                             <i class="fa fa-pencil"></i>拒绝申请
                                                         </a>
                                                     </span>
                                                 </div>
                                                 <div class="pull-left btn-add m-l-20">
                                                     <span class="add-info-operation m-r-20">
-                                                        <a ng-href="javascript:;" ng-class="{'actived': applicationDTO.application.status == 'NEW'}" ng-click="closeApplication(applicationDTO.application.id)">
+                                                        <a ng-href="javascript:;" ng-show="applicationDTO.application.status.name == 'NEW'" ng-click="closeApplication(applicationDTO.application.id)">
                                                             <i class="fa fa-pencil"></i>关闭申请
                                                         </a>
                                                     </span>

@@ -173,6 +173,8 @@ require(['main-app',
                     SweetAlertHelp.fail({message:response&&response.message});
                 });
             };
+
+
         }]);
 
         angular.element(document).ready(function() {
