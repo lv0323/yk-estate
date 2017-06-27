@@ -9,16 +9,16 @@ define(contextPath+'/js/service/application-service.js',
             return RequestService.get('/api/application/all', params, header);
         };
 
-        ApplicationManagementService.approve = function (params, header) {
-            return RequestService.get('/api/application/approve', params, header);
+        ApplicationManagementService.approve = function (params) {
+            return RequestService.put('/api/application/approve', params);
         };
 
-        ApplicationManagementService.reject = function (params, header) {
-            return RequestService.get('/api/application/reject', params, header);
+        ApplicationManagementService.reject = function (params) {
+            return RequestService.put('/api/application/reject', params);
         };
 
-        ApplicationManagementService.close = function (params, header) {
-            return RequestService.get('/api/application/close', params, header);
+        ApplicationManagementService.close = function (params) {
+            return RequestService.put('/api/application/close', params);
         };
 
         return ApplicationManagementService;

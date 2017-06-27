@@ -24,8 +24,8 @@ public class CommonApplicationRest {
 
     @GetMapping("/all")
     public List<CommonApplicationDTO> getApplications(@RequestParam(required = false) List<CommonApplicationEntity.Type> types,
-                                                  @RequestParam(required = false) long id,
-                                                  @RequestParam(required = false) long applicantId,
+                                                  @RequestParam(required = false) Long id,
+                                                  @RequestParam(required = false) Long applicantId,
                                                   @RequestParam(required = false) List<CommonApplicationEntity.Status> status,
                                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startTime,
                                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endTime,

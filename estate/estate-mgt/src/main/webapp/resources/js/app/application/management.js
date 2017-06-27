@@ -11,7 +11,7 @@ require(['main-app',
         'jqPaginator', 'select', 'chosen', 'datetimepicker.zh-cn', 'sweetalert'],
     function (mainApp, ApplicationManagementService, EmployeeService, FangService, UtilService, Tools, SweetAlertHelp, pagingPlugin) {
         var pageConfig = {
-            limit: 8,
+            limit: 80,
             offset: 0,
             dataTotal:0,
             currentPage:1,
@@ -23,17 +23,38 @@ require(['main-app',
 
             $scope.approveApplication = function(applicationId){
                 // todo
-                ApplicationManagementService.approve()
+                var params ={};
+                params['applicationId'] = applicationId;
+                params['reviewerComments'] = 'xiaoming test';
+                ApplicationManagementService.approve(params).then(function(response){
+                    alert("succeed");
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
+                });
             };
 
             $scope.rejectApplication = function(applicationId){
                 // todo
-                ApplicationManagementService.reject()
+                var params ={};
+                params['applicationId'] = applicationId;
+                params['reviewerComments'] = 'xiaoming test';
+                ApplicationManagementService.reject(params).then(function(response){
+                    alert("succeed");
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
+                });
             };
 
             $scope.closeApplication = function(applicationId){
-                // todo add approve logic here
-                ApplicationManagementService.close()
+                // todo
+                var params ={};
+                params['applicationId'] = applicationId;
+                params['reviewerComments'] = 'xiaoming test';
+                ApplicationManagementService.close(params).then(function(response){
+                    alert("succeed");
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
+                });
             };
 
             /*页面相关内容*/
@@ -56,12 +77,19 @@ require(['main-app',
                 'endTime': ''
             };
 
+            $scope.pageStatus = {
+                'type':'ALL',
+                'status':'ALL'
+            }
+
             $scope.filterType = function(type) {
                 if (type === 'ALL') {
                     $scope.filter.types = ['PUBLISH_HOUSE', 'UN_PUBLISH_HOUSE', 'PAUSE_HOUSE', 'UN_PUBLIC_HOUSE', 'PUBLIC_HOUSE'];
                 } else {
                     $scope.filter.types = [type];
                 }
+
+                $scope.pageStatus.type = type;
 
                 $scope.loadApplications()
             };
@@ -72,6 +100,8 @@ require(['main-app',
                 } else {
                     $scope.filter.status = [status];
                 }
+
+                $scope.pageStatus.status = status;
 
                 $scope.loadApplications()
             };
@@ -138,12 +168,7 @@ require(['main-app',
                     pageConfig.currentPage = 1;
                 }
                 ApplicationManagementService.findApplications(param,{'X-PAGING':'total=true&offset='+(offset||pageConfig.offset)+'&limit='+ pageConfig.limit}).then(function(response){
-                    $scope.applicationList =[];
-                    $scope.$apply(function(){
-                        pagination(response.total);
-                        $scope.applicationList = response.items;
-
-                    });
+                    $scope.applicationList = response;
                 }).fail(function(response){
                     SweetAlertHelp.fail({message:response&&response.message});
                 });
@@ -151,6 +176,6 @@ require(['main-app',
         }]);
 
         angular.element(document).ready(function() {
-            angular.bootstrap(document.getElementById("ApplicationsWrapper"),["ApplicationsController"])
+            angular.bootstrap(document.getElementById("ApplicationsWrapper"),["ApplicationManagementModule"])
         });
     });

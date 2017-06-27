@@ -64,7 +64,7 @@ public class CommonApplicationService {
         return commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.CLOSED, reviewerId, reviewerComments);
     }
 
-    public List<CommonApplicationEntity> findApplications(List<CommonApplicationEntity.Type> types, long id, long applicantId, List<CommonApplicationEntity.Status> status, Date startTime, Date endTime, PageBounds pageBounds) {
+    public List<CommonApplicationEntity> findApplications(List<CommonApplicationEntity.Type> types, Long id, Long applicantId, List<CommonApplicationEntity.Status> status, Date startTime, Date endTime, PageBounds pageBounds) {
         return commonApplicationRepo.findApplications(types, id, applicantId, status, startTime, endTime, pageBounds);
     }
 

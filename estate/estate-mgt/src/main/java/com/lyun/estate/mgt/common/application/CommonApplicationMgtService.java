@@ -11,6 +11,7 @@ import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.fang.service.FangMgtService;
 import com.lyun.estate.mgt.supports.AuditHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class CommonApplicationMgtService {
 
     @Autowired
@@ -34,7 +36,7 @@ public class CommonApplicationMgtService {
     }
 
     @Transactional
-    public int approve(long applicationId, String reviewerComments, boolean isForceApprove, final MgtContext mgtContext) {
+    public int approve(long applicationId, String reviewerComments, Boolean isForceApprove, final MgtContext mgtContext) {
         // todo check privilege??
 
         int result = commonApplicationService.approve(applicationId, mgtContext.getOperator().getId(), reviewerComments, isForceApprove);
@@ -77,7 +79,7 @@ public class CommonApplicationMgtService {
         return result;
     }
 
-    public List<CommonApplicationDTO> findApplications(List<CommonApplicationEntity.Type> types, long id, long applicantId, List<CommonApplicationEntity.Status> status, Date startTime, Date endTime, PageBounds pageBounds) {
+    public List<CommonApplicationDTO> findApplications(List<CommonApplicationEntity.Type> types, Long id, Long applicantId, List<CommonApplicationEntity.Status> status, Date startTime, Date endTime, PageBounds pageBounds) {
 
         return commonApplicationService
                 .findApplications(types, id, applicantId, status, startTime, endTime, pageBounds)
@@ -88,7 +90,7 @@ public class CommonApplicationMgtService {
                 .collect(Collectors.toList());
     }
 
-    private Optional<CommonApplicationDTO> generateDTO(CommonApplicationEntity commonApplicationEntity) {
+    public Optional<CommonApplicationDTO> generateDTO(CommonApplicationEntity commonApplicationEntity) {
 
         switch (commonApplicationEntity.getType()) {
             case UN_PUBLIC_HOUSE:

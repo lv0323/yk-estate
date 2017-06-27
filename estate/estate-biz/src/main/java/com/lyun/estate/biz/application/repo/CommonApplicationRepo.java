@@ -24,8 +24,8 @@ public interface CommonApplicationRepo {
 
     @SelectProvider(type = CommonApplicationSqlProvider.class, method = "findApplications")
     List<CommonApplicationEntity> findApplications(@Param("types") List<CommonApplicationEntity.Type> types,
-                                                   @Param("id") long id,
-                                                   @Param("applicantId") long applicantId,
+                                                   @Param("id") Long id,
+                                                   @Param("applicantId") Long applicantId,
                                                    @Param("status") List<CommonApplicationEntity.Status> status,
                                                    @Param("startTime") Date startTime,
                                                    @Param("endTime") Date endTime,

@@ -19,13 +19,13 @@ public class CommonApplicationSqlProvider {
             WHERE_IF("id = #{id}", !StringUtils.isEmpty(params.get("id")));
 
             if (params.get("status") != null) {
-                List statusList = ((List<CommonApplicationEntity.Status>)params.get("status")).stream().map(status -> status.name()).collect(Collectors.toList());
+                List<String> statusList = ((List<CommonApplicationEntity.Status>)params.get("status")).stream().map(status -> "'" + status.name() + "'").collect(Collectors.toList());
                 WHERE("STATUS IN (" + Joiner.on(",").skipNulls().join(statusList) + ")");
             }
 
             if (params.get("types") != null) {
-                List types = ((List<CommonApplicationEntity.Status>)params.get("types")).stream().map(type -> type.name()).collect(Collectors.toList());
-                WHERE("TYPES IN (" + Joiner.on(",").skipNulls().join(types) + ")");
+                List<String> types = ((List<CommonApplicationEntity.Type>)params.get("types")).stream().map(type -> "'" + type.name() + "'").collect(Collectors.toList());
+                WHERE("TYPE IN (" + Joiner.on(",").skipNulls().join(types) + ")");
             }
 
             WHERE_IF("APPLICANT_ID = #{applicantId}", params.get("applicantId") != null);

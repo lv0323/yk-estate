@@ -39,9 +39,9 @@
                                     <div class="form-group sortlist">
                                         <label class="control-label">类型</label>
                                         <div id="allTypes" class="tj">
-                                            <a ng-href="javascript::" ng-class="{'actived': '' == filter.process}" ng-click="filterType('ALL')">全部</a>
+                                            <a ng-href="javascript::" ng-class="{'actived': 'ALL' == pageStatus.type}" ng-click="filterType('ALL')">全部</a>
                                         <#list types?if_exists as type>
-                                            <a ng-href="javascript::" ng-class="{'actived': '${type.name()}' == filter.process}" ng-click="filterType('${type.name()}')">
+                                            <a ng-href="javascript::" ng-class="{'actived': '${type.name()}' == pageStatus.status}" ng-click="filterType('${type.name()}')">
                                             ${type.getLabel()}
                                             </a>
                                         </#list>
@@ -50,9 +50,9 @@
                                     <div class="form-group sortlist">
                                         <label class="control-label">状态</label>
                                         <div id="allStatus" class="tj">
-                                            <a ng-href="javascript::" ng-class="{'actived': '' == filter.process}" ng-click="filterStatus('ALL')">全部</a>
+                                            <a ng-href="javascript::" ng-class="{'actived': 'ALL' == pageStatus.status}" ng-click="filterStatus('ALL')">全部</a>
                                         <#list statusList?if_exists as status>
-                                            <a ng-href="javascript::" ng-class="{'actived': '${status.name()}' == filter.process}" ng-click="filterStatus('${status.name()}')">
+                                            <a ng-href="javascript::" ng-class="{'actived': '${status.name()}' == pageStatus.status}" ng-click="filterStatus('${status.name()}')">
                                             ${status.getLabel()}
                                             </a>
                                         </#list>
@@ -60,7 +60,7 @@
                                     </div>
                                 </div>
                                 <div id="applicationListPage" class="table-responsive clearfix" ng-cloak>
-                                    <div class="media clearfix house-item" ng-repeat="application in applicationList">
+                                    <div class="media clearfix house-item" ng-repeat="applicationDTO in applicationList">
                                         <img class="flagImg" ng-src="{{applicationDTO.domain.bizType.name ==='RENT' ? '/mgt/img/house/rent.png':'/mgt/img/house/sale.png'}}" height="55" width="55">
                                         <a class="pull-left" href="javascript:void(0)">
                                             <img class="media-object" ng-src="{{applicationDTO.domain.imageURI}}" height="75px" width="100px">
@@ -80,6 +80,13 @@
                                                     <span ng-class="{true:'text-rent', false:'text-sell'}[applicationDTO.domain.bizType.name == 'RENT']" ng-show="applicationDTO.domain.publishTime">[{{(page.now - applicationDTO.domain.publishTime)/(24*6060*1000)|number:0}}]</span>
                                                     <span class="text-muted">
                                                         {{applicationDTO.domain.infoOwner.departmentName}} ~ {{applicationDTO.domain.infoOwner.employeeName}}
+                                                    </span>
+                                                </div>
+                                                <div class="clearfix m-t-10 text-muted">
+                                                    <span>申请类别:{{applicationDTO.application.type.label}}</span>
+                                                    <span>状态:{{applicationDTO.application.status.label}}</span>
+                                                    <span class="m-l-10">
+                                                        id: {{applicationDTO.application.id}}
                                                     </span>
                                                 </div>
                                                 <div class="clearfix m-t-10 text-muted">
@@ -107,21 +114,21 @@
                                                 </div>
                                                 <div class="pull-left btn-add m-l-20">
                                                     <span class="add-info-operation m-r-20">
-                                                        <a ng-href="javascript:;" ng-click="approveApplication(applicationDTO.application.id)">
+                                                        <a ng-href="javascript:;" ng-class="{'actived': applicationDTO.application.status == 'NEW'}" ng-click="approveApplication(applicationDTO.application.id)">
                                                             <i class="fa fa-pencil"></i>通过申请
                                                         </a>
                                                     </span>
                                                 </div>
                                                 <div class="pull-left btn-add m-l-20">
                                                     <span class="add-info-operation m-r-20">
-                                                        <a ng-href="javascript:;" ng-click="rejectApplication(applicationDTO.application.id)">
+                                                        <a ng-href="javascript:;" ng-class="{'actived': applicationDTO.application.status == 'NEW'}" ng-click="rejectApplication(applicationDTO.application.id)">
                                                             <i class="fa fa-pencil"></i>拒绝申请
                                                         </a>
                                                     </span>
                                                 </div>
                                                 <div class="pull-left btn-add m-l-20">
                                                     <span class="add-info-operation m-r-20">
-                                                        <a ng-href="javascript:;" ng-click="closeApplication(applicationDTO.application.id)">
+                                                        <a ng-href="javascript:;" ng-class="{'actived': applicationDTO.application.status == 'NEW'}" ng-click="closeApplication(applicationDTO.application.id)">
                                                             <i class="fa fa-pencil"></i>关闭申请
                                                         </a>
                                                     </span>
@@ -144,4 +151,4 @@
 <!-- /.content-wrapper -->
 
 <#include "/common/footer.ftl" />
-<script src="${contextPath!}/js/application/applicationDTO.js?vn=${bts!}"></script>
+<script src="${contextPath!}/js/app/application/management.js?vn=${bts!}"></script>
