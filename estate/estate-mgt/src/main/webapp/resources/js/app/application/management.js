@@ -28,6 +28,7 @@ require(['main-app',
                 params['reviewerComments'] = 'xiaoming test';
                 ApplicationManagementService.approve(params).then(function(response){
                     alert("succeed");
+                    $scope.loadApplications();
                 }).fail(function(response){
                     SweetAlertHelp.fail({message:response&&response.message});
                 });
@@ -40,6 +41,7 @@ require(['main-app',
                 params['reviewerComments'] = 'xiaoming test';
                 ApplicationManagementService.reject(params).then(function(response){
                     alert("succeed");
+                    $scope.loadApplications();
                 }).fail(function(response){
                     SweetAlertHelp.fail({message:response&&response.message});
                 });
@@ -52,6 +54,7 @@ require(['main-app',
                 params['reviewerComments'] = 'xiaoming test';
                 ApplicationManagementService.close(params).then(function(response){
                     alert("succeed");
+                    $scope.loadApplications();
                 }).fail(function(response){
                     SweetAlertHelp.fail({message:response&&response.message});
                 });
@@ -68,11 +71,20 @@ require(['main-app',
                 userInfo : JSON.parse(localStorage.getItem('userInfo')),
             };
 
+            var allTypes = (function() {
+                return ['PUBLISH_HOUSE', 'UN_PUBLISH_HOUSE', 'PAUSE_HOUSE', 'UN_PUBLIC_HOUSE', 'PUBLIC_HOUSE'];
+            })();
+
+            var allStatus = (function() {
+                return ['NEW', 'APPROVED', 'REJECTED', 'CLOSED'];
+            })();
+
+
             $scope.filter ={
-                'types':[],
+                'types':allTypes,
                 'id':'',
                 'applicantId':'',
-                'status':[],
+                'status':allStatus,
                 'startTime': '',
                 'endTime': ''
             };
@@ -84,26 +96,26 @@ require(['main-app',
 
             $scope.filterType = function(type) {
                 if (type === 'ALL') {
-                    $scope.filter.types = ['PUBLISH_HOUSE', 'UN_PUBLISH_HOUSE', 'PAUSE_HOUSE', 'UN_PUBLIC_HOUSE', 'PUBLIC_HOUSE'];
+                    $scope.filter.types = allTypes;
                 } else {
                     $scope.filter.types = [type];
                 }
 
                 $scope.pageStatus.type = type;
 
-                $scope.loadApplications()
+                $scope.loadApplications();
             };
 
             $scope.filterStatus = function(status) {
                 if (status === 'ALL') {
-                    $scope.filter.status = ['NEW', 'APPROVED', 'REJECTED', 'CLOSED'];
+                    $scope.filter.status = allStatus;
                 } else {
                     $scope.filter.status = [status];
                 }
 
                 $scope.pageStatus.status = status;
 
-                $scope.loadApplications()
+                $scope.loadApplications();
             };
 
             $scope.applicationList = [];
@@ -168,11 +180,15 @@ require(['main-app',
                     pageConfig.currentPage = 1;
                 }
                 ApplicationManagementService.findApplications(param,{'X-PAGING':'total=true&offset='+(offset||pageConfig.offset)+'&limit='+ pageConfig.limit}).then(function(response){
-                    $scope.applicationList = response;
+                    $scope.$apply(function(){
+                        $scope.applicationList = response;
+                    });
                 }).fail(function(response){
                     SweetAlertHelp.fail({message:response&&response.message});
                 });
             };
+
+            $scope.loadApplications();
 
 
         }]);
