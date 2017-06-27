@@ -23,10 +23,10 @@ public interface CommonApplicationRepo {
     CommonApplicationEntity findOneById(@Param("id") long id);
 
     @SelectProvider(type = CommonApplicationSqlProvider.class, method = "findApplications")
-    List<CommonApplicationEntity> findApplications(@Param("type") CommonApplicationEntity.Type type,
+    List<CommonApplicationEntity> findApplications(@Param("types") List<CommonApplicationEntity.Type> types,
                                                    @Param("id") long id,
                                                    @Param("applicantId") long applicantId,
-                                                   @Param("status") CommonApplicationEntity.Status status,
+                                                   @Param("status") List<CommonApplicationEntity.Status> status,
                                                    @Param("startTime") Date startTime,
                                                    @Param("endTime") Date endTime,
                                                    PageBounds pageBounds);

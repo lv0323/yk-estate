@@ -43,8 +43,18 @@ public class CommonApplicationEntity {
         }
     }
 
-    public enum Status {
-        NEW, APPROVED, REJECTED, CLOSED;
+    public enum Status implements LabelEnum{
+        NEW("待审批"), APPROVED("已通过"), REJECTED("已拒绝"), CLOSED("已关闭");
+
+        private final String label;
+
+        Status(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
     }
 
     public long getId() {

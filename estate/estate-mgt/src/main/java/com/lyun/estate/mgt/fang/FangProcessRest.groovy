@@ -55,25 +55,6 @@ class FangProcessRest {
         return processMgtService.requestUndoPublic(fangId, applyReason)
     }
 
-    @PostMapping('approve')
-    int approveApplication(@RequestParam Long applicationId,
-                           @RequestParam String reviewerComments,
-                           @RequestParam(required = false) boolean isForceApprove) {
-        processMgtService.approve(applicationId, reviewerComments, isForceApprove)
-    }
-
-    @PostMapping('reject')
-    int rejectApplication(@RequestParam Long applicationId,
-                          @RequestParam String reviewerComments) {
-        processMgtService.reject(applicationId, reviewerComments)
-    }
-
-    @PostMapping('close')
-    int closeApplication(@RequestParam Long applicationId,
-                         @RequestParam String reviewerComments) {
-        processMgtService.close(applicationId, reviewerComments)
-    }
-
     @PostMapping('deal')
     Fang deal(@RequestParam Long fangId) {
         processMgtService.deal(fangId)
@@ -84,14 +65,4 @@ class FangProcessRest {
         processMgtService.delete(fangId) ? CommonResp.succeed() : CommonResp.failed()
     }
 
-    @GetMapping("/all")
-    List<CommonApplicationEntity> getApplications(@RequestParam(required = false) CommonApplicationEntity.Type type,
-                                                  @RequestParam(required = false) long id,
-                                                  @RequestParam(required = false) long applicantId,
-                                                  @RequestParam(required = false) CommonApplicationEntity.Status status,
-                                                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startTime,
-                                                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endTime,
-                                                  @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
-        return processMgtService.findApplications(type, id, applicantId, status, startTime, endTime, pageBounds);
-    }
 }

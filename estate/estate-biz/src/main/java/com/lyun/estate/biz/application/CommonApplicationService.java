@@ -43,7 +43,7 @@ public class CommonApplicationService {
 
         getApplicationHandler(commonApplicationEntity.getType()).ifPresent(handler -> handler.approve(commonApplicationEntity, isForceApprove));
 
-       return commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.APPROVED, reviewerId, reviewerComments);
+        return commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.APPROVED, reviewerId, reviewerComments);
     }
 
     @Transactional
@@ -64,8 +64,8 @@ public class CommonApplicationService {
         return commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.CLOSED, reviewerId, reviewerComments);
     }
 
-    public List<CommonApplicationEntity> findApplications(CommonApplicationEntity.Type type, long id, long applicantId, CommonApplicationEntity.Status status, Date startTime, Date endTime, PageBounds pageBounds) {
-        return commonApplicationRepo.findApplications(type, id, applicantId, status, startTime, endTime, pageBounds);
+    public List<CommonApplicationEntity> findApplications(List<CommonApplicationEntity.Type> types, long id, long applicantId, List<CommonApplicationEntity.Status> status, Date startTime, Date endTime, PageBounds pageBounds) {
+        return commonApplicationRepo.findApplications(types, id, applicantId, status, startTime, endTime, pageBounds);
     }
 
     private CommonApplicationEntity getApplicationEntity(long applicationId, long reviewerId, String reviewerComments) {

@@ -140,6 +140,9 @@
                     <@checkPermission value='P_FANG_CHECK'>
                         <li><a href="/mgt/fangManage/survey?target=.fang"><i class="fa fa-circle"></i>房源勘察</a></li>
                     </@>
+                    <@checkPermission value='P_FANG_LIST'>
+                        <li><a href="/mgt/application/management"><i class="fa fa-circle"></i>房源审批列表</a></li>
+                    </@>
                 </ul>
             </li>
         </@>
