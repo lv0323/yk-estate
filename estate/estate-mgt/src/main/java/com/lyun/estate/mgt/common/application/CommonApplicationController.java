@@ -20,7 +20,7 @@ public class CommonApplicationController {
     @Autowired
     private EmployeeMgtService employeeMgtService;
 
-    @RequestMapping("/fang/management")
+    @RequestMapping("/fang/management/all")
     public ModelAndView applicationManagement() {
         Map<String, Object> params = new HashMap();
 

@@ -5,9 +5,11 @@ import com.lyun.estate.biz.application.CommonApplicationService;
 import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
 import com.lyun.estate.biz.audit.def.AuditSubject;
 import com.lyun.estate.biz.audit.service.AuditService;
+import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.mgt.context.MgtContext;
+import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
 import com.lyun.estate.mgt.fang.service.FangMgtService;
 import com.lyun.estate.mgt.supports.AuditHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class CommonApplicationMgtService {
 
     @Autowired
     private FangMgtService fangMgtService;
+
+    @Autowired
+    private EmployeeService employeeService;
 
     @Autowired
     private AuditService auditService;
@@ -99,10 +104,16 @@ public class CommonApplicationMgtService {
             case PUBLISH_HOUSE:
             case PAUSE_HOUSE:
             case SUCCESS_HOUSE:
-                return Optional.of(new CommonApplicationDTO<MgtFangSummary>(){{
-                    setDomain(fangMgtService.getFangSummary(commonApplicationEntity.getDomainId()));
-                    setApplication(commonApplicationEntity);
-                }});
+                CommonApplicationDTO<MgtFangSummary> dto =
+                        new CommonApplicationDTO<MgtFangSummary>(){{
+                            setDomain(fangMgtService.getFangSummary(commonApplicationEntity.getDomainId()));
+                            setApplication(commonApplicationEntity);
+                            setApplicant(employeeService.selectDTOById(commonApplicationEntity.getApplicantId()));
+                        }};
+                if (commonApplicationEntity.getReviewerId() > 0) {
+                    dto.setReviewer(employeeService.selectDTOById(commonApplicationEntity.getReviewerId()));
+                }
+                return Optional.of(dto);
             default:
                 return Optional.empty();
 
