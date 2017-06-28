@@ -1,6 +1,7 @@
 package com.lyun.estate.mgt.common.application;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
 import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver;
 import com.lyun.estate.mgt.context.MgtContext;
@@ -23,7 +24,7 @@ public class CommonApplicationRest {
     private MgtContext mgtContext;
 
     @GetMapping("/all")
-    public List<CommonApplicationDTO> getApplications(@RequestParam(required = false) List<CommonApplicationEntity.Type> types,
+    public PageList<CommonApplicationDTO> getApplications(@RequestParam(required = false) List<CommonApplicationEntity.Type> types,
                                                   @RequestParam(required = false) Long id,
                                                   @RequestParam(required = false) Long applicantId,
                                                   @RequestParam(required = false) List<CommonApplicationEntity.Status> status,
@@ -34,12 +35,12 @@ public class CommonApplicationRest {
     }
 
     @GetMapping("/self")
-    public List<CommonApplicationDTO> getMyApplications(@RequestParam(required = false) List<CommonApplicationEntity.Type> types,
-                                                      @RequestParam(required = false) Long id,
-                                                      @RequestParam(required = false) List<CommonApplicationEntity.Status> status,
-                                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startTime,
-                                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endTime,
-                                                      @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
+    public PageList<CommonApplicationDTO> getMyApplications(@RequestParam(required = false) List<CommonApplicationEntity.Type> types,
+                                                            @RequestParam(required = false) Long id,
+                                                            @RequestParam(required = false) List<CommonApplicationEntity.Status> status,
+                                                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startTime,
+                                                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endTime,
+                                                            @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
         return commonApplicationMgtService.findApplications(types, id, mgtContext.getOperator().getId(), status, startTime, endTime, pageBounds);
     }
 

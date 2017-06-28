@@ -64,8 +64,8 @@
                                         <div class="media-body">
                                             <div class="col-lg-8 col-md-8 col-sm-9" style="padding-right: 0">
                                                 <div class="clearfix m-t-20 text-muted">
-                                                    <span>申请类别: {{applicationDTO.application.type.label}} </span>
                                                     <span>审批状态: {{applicationDTO.application.status.label}} </span>
+                                                    <span>申请类别: {{applicationDTO.application.type.label}} </span>
                                                     <span>申请原因: {{applicationDTO.application.applyReason}} </span>
                                                     <span ng-show="applicationDTO.application.status.name != 'NEW'">
                                                         审批人: {{applicationDTO.reviewer.departmentName}} ~ {{applicationDTO.reviewer.name}}

@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.application.repo;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -23,11 +24,11 @@ public interface CommonApplicationRepo {
     CommonApplicationEntity findOneById(@Param("id") long id);
 
     @SelectProvider(type = CommonApplicationSqlProvider.class, method = "findApplications")
-    List<CommonApplicationEntity> findApplications(@Param("types") List<CommonApplicationEntity.Type> types,
-                                                   @Param("id") Long id,
-                                                   @Param("applicantId") Long applicantId,
-                                                   @Param("status") List<CommonApplicationEntity.Status> status,
-                                                   @Param("startTime") Date startTime,
-                                                   @Param("endTime") Date endTime,
-                                                   PageBounds pageBounds);
+    PageList<CommonApplicationEntity> findApplications(@Param("types") List<CommonApplicationEntity.Type> types,
+                                                       @Param("id") Long id,
+                                                       @Param("applicantId") Long applicantId,
+                                                       @Param("status") List<CommonApplicationEntity.Status> status,
+                                                       @Param("startTime") Date startTime,
+                                                       @Param("endTime") Date endTime,
+                                                       PageBounds pageBounds);
 }

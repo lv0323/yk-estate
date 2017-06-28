@@ -11,7 +11,7 @@ require(['main-app',
         'jqPaginator', 'select', 'chosen', 'datetimepicker.zh-cn', 'sweetalert'],
     function (mainApp, ApplicationManagementService, EmployeeService, FangService, UtilService, Tools, SweetAlertHelp, pagingPlugin) {
         var pageConfig = {
-            limit: 80,
+            limit: 10,
             offset: 0,
             dataTotal:0,
             currentPage:1,
@@ -149,9 +149,36 @@ require(['main-app',
 
             };
 
-            /*通过授权编号查找*/
             $scope.searchById = function(){
                 $scope.loadApplications();
+            };
+
+            /*分页*/
+            var pagination = function(dataTotal) {
+                var id = '#pagination';
+                if(pageConfig.init){
+                    pagingPlugin.update(id, {
+                        totalCounts:dataTotal,
+                        currentPage:pageConfig.currentPage
+                    });
+                    return;
+                };
+                pageConfig.init = true;
+                var config = {
+                    pagingId: id,
+                    totalCounts: dataTotal,
+                    visiblePages: 10,
+                    pageSize: pageConfig.limit,
+                    onChange: function (num, type) {
+                        if(type === 'init'){
+                            return;
+                        }
+                        pageConfig.currentPage = num;
+                        $scope.loadApplications((num-1)*pageConfig.limit, num);
+                    }
+                };
+                pagingPlugin.init(config);
+
             };
 
             // application list
@@ -169,7 +196,8 @@ require(['main-app',
                 }
                 ApplicationManagementService.findMyApplications(param,{'X-PAGING':'total=true&offset='+(offset||pageConfig.offset)+'&limit='+ pageConfig.limit}).then(function(response){
                     $scope.$apply(function(){
-                        $scope.applicationList = response;
+                        pagination(response.total);
+                        $scope.applicationList = response.items;
                     });
                 }).fail(function(response){
                     SweetAlertHelp.fail({message:response&&response.message});

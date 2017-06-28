@@ -1,6 +1,7 @@
 package com.lyun.estate.mgt.common.application;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.application.CommonApplicationService;
 import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
 import com.lyun.estate.biz.audit.def.AuditSubject;
@@ -84,15 +85,22 @@ public class CommonApplicationMgtService {
         return result;
     }
 
-    public List<CommonApplicationDTO> findApplications(List<CommonApplicationEntity.Type> types, Long id, Long applicantId, List<CommonApplicationEntity.Status> status, Date startTime, Date endTime, PageBounds pageBounds) {
+    public PageList<CommonApplicationDTO> findApplications(List<CommonApplicationEntity.Type> types, Long id, Long applicantId, List<CommonApplicationEntity.Status> status, Date startTime, Date endTime, PageBounds pageBounds) {
 
-        return commonApplicationService
-                .findApplications(types, id, applicantId, status, startTime, endTime, pageBounds)
-                .stream()
-                .map(this::generateDTO)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
+        PageList<CommonApplicationEntity> originPageList = commonApplicationService
+                .findApplications(types, id, applicantId, status, startTime, endTime, pageBounds);
+
+        PageList<CommonApplicationDTO> dtoPageList = new PageList(originPageList.getPaginator());
+        dtoPageList.addAll(
+                originPageList
+                        .stream()
+                        .map(this::generateDTO)
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .collect(Collectors.toList())
+        );
+
+        return dtoPageList;
     }
 
     public Optional<CommonApplicationDTO> generateDTO(CommonApplicationEntity commonApplicationEntity) {

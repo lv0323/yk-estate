@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.application;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
 import com.lyun.estate.biz.application.handler.CommonApplicationHandler;
 import com.lyun.estate.biz.application.handler.FangTagApplicationHandler;
@@ -79,7 +80,7 @@ public class CommonApplicationService {
         return commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.CLOSED, reviewerId, reviewerComments);
     }
 
-    public List<CommonApplicationEntity> findApplications(List<CommonApplicationEntity.Type> types, Long id, Long applicantId, List<CommonApplicationEntity.Status> status, Date startTime, Date endTime, PageBounds pageBounds) {
+    public PageList<CommonApplicationEntity> findApplications(List<CommonApplicationEntity.Type> types, Long id, Long applicantId, List<CommonApplicationEntity.Status> status, Date startTime, Date endTime, PageBounds pageBounds) {
         return commonApplicationRepo.findApplications(types, id, applicantId, status, startTime, endTime, pageBounds);
     }
 
