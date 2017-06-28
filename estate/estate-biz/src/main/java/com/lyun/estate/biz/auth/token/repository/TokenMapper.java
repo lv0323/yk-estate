@@ -17,10 +17,10 @@ public interface TokenMapper {
     @Update("UPDATE T_TOKEN SET EXPIRED_TIME = NOW(), REFRESH_EXPIRED_TIME = NOW() WHERE TOKEN = #{token}")
     int invalidTokenByToken(String token);
 
-    @Update("UPDATE T_TOKEN SET EXPIRED_TIME = NOW(), REFRESH_EXPIRED_TIME = NOW() WHERE id = #{id}")
+    @Update("UPDATE T_TOKEN SET EXPIRED_TIME = NOW()  + INTERVAL '1 min', REFRESH_EXPIRED_TIME = NOW() WHERE id = #{id}")
     int invalidToken(Long id);
 
-    @Update("UPDATE T_TOKEN SET EXPIRED_TIME = NOW()  + INTERVAL '1 min', REFRESH_EXPIRED_TIME = NOW() WHERE USER_ID = #{userId}")
+    @Update("UPDATE T_TOKEN SET EXPIRED_TIME = NOW() , REFRESH_EXPIRED_TIME = NOW() WHERE USER_ID = #{userId}")
     int invalidAllUserTokens(String userId);
 
     @Select("SELECT * FROM T_TOKEN WHERE REFRESH_TOKEN = #{refreshToken} AND REFRESH_EXPIRED_TIME > NOW() LIMIT 1")
