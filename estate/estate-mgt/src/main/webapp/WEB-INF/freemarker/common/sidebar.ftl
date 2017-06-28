@@ -143,6 +143,9 @@
                     <@checkPermission value='P_FANG_LIST'>
                         <li><a href="/mgt/application/fang/management"><i class="fa fa-circle"></i>房源审批列表</a></li>
                     </@>
+                    <@checkPermission value='P_FANG_LIST'>
+                        <li><a href="/mgt/application/fang/management/self"><i class="fa fa-circle"></i>我的房源申请列表</a></li>
+                    </@>
                 </ul>
             </li>
         </@>

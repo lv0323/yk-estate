@@ -33,4 +33,17 @@ public class CommonApplicationController {
         return new ModelAndView("/application/management", params);
     }
 
+    @RequestMapping("/fang/management/self")
+    public ModelAndView myApplicationManagement() {
+        Map<String, Object> params = new HashMap();
+
+        params.put("types", Arrays.asList(PAUSE_HOUSE, PUBLIC_HOUSE, UN_PUBLIC_HOUSE, PUBLISH_HOUSE, UN_PUBLISH_HOUSE));
+        params.put("statusList", Arrays.asList(NEW, APPROVED, REJECTED, CLOSED));
+
+        params.put("avatarUrl", employeeMgtService.getAvatar());
+        params.put("username", employeeMgtService.getUsername());
+
+        return new ModelAndView("/application/self", params);
+    }
+
 }

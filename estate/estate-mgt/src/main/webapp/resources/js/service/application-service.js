@@ -9,6 +9,10 @@ define(contextPath+'/js/service/application-service.js',
             return RequestService.get('/api/application/all', params, header);
         };
 
+        ApplicationManagementService.findMyApplications = function (params, header) {
+            return RequestService.get('/api/application/self', params, header);
+        };
+
         ApplicationManagementService.approve = function (params) {
             return RequestService.put('/api/application/approve', params);
         };

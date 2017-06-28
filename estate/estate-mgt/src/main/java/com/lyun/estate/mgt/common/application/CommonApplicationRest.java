@@ -33,6 +33,16 @@ public class CommonApplicationRest {
         return commonApplicationMgtService.findApplications(types, id, applicantId, status, startTime, endTime, pageBounds);
     }
 
+    @GetMapping("/self")
+    public List<CommonApplicationDTO> getMyApplications(@RequestParam(required = false) List<CommonApplicationEntity.Type> types,
+                                                      @RequestParam(required = false) Long id,
+                                                      @RequestParam(required = false) List<CommonApplicationEntity.Status> status,
+                                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startTime,
+                                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endTime,
+                                                      @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
+        return commonApplicationMgtService.findApplications(types, id, mgtContext.getOperator().getId(), status, startTime, endTime, pageBounds);
+    }
+
     @PutMapping("/approve")
     public int approveApplication(@RequestParam Long applicationId,
                            @RequestParam String reviewerComments,
