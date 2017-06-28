@@ -81,4 +81,19 @@ public class ApprovalRest {
                 httpResponse);
     }
 
+    @GetMapping("my")
+    public PageList<ApprovalDTO> my(@RequestParam ApprovalDefine.Type type,
+                                    @RequestParam(required = false) ApprovalDefine.Status status,
+                                    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startTime,
+                                    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endTime,
+                                    @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {
+        return approvalMgtService.myApproval(type,
+                status,
+                startTime,
+                Optional.ofNullable(endTime)
+                        .map(t -> Date.from(t.toInstant().plusSeconds(LocalTime.MAX.toSecondOfDay())))
+                        .orElse(null),
+                pageBounds);
+    }
+
 }

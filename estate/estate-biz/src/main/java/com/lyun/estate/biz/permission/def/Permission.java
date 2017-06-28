@@ -90,6 +90,10 @@ public enum Permission implements LabelEnum {
     P_FANG_COLLECTION_POOL("房源池", PermissionDefine.Category.PAGE),
     P_OPERATION("运营管理", PermissionDefine.Category.PAGE),
     P_OPERATION_XY("信誉平台", PermissionDefine.Category.PAGE),
+    P_APPROVAL("表单管理", PermissionDefine.Category.PAGE),
+    P_APPROVAL_1("新建表单", PermissionDefine.Category.PAGE),
+    P_APPROVAL_2("表单列表", PermissionDefine.Category.PAGE),
+    P_APPROVAL_3("我的表单", PermissionDefine.Category.PAGE),
 
     //公司性质
     CT_YK("盈科", PermissionDefine.Category.COMPANY_TYPE),

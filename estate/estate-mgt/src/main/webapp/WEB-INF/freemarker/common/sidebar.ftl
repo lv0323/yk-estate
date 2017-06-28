@@ -158,6 +158,7 @@
                 </ul>
             </li>
         </@>
+
         <@checkPermission value='CT_YK'>
         <@checkPermission value='P_FANG_COLLECTION'>
             <li class="treeview fangCollection">
@@ -168,7 +169,30 @@
                 </a>
                 <ul class="treeview-menu">
                 <@checkPermission value='P_FANG_COLLECTION_POOL'>
-                    <li><a href="/mgt/fangCollection/pool?target=.fangCollection"><i class="fa fa-table"></i>房源池</a></li>
+                    <li><a href="/mgt/fangCollection/pool?target=.fangCollection"><i class="fa fa-circle"></i>房源池</a></li>
+                </@>
+                </ul>
+            </li>
+        </@>
+        </@>
+
+        <@checkPermission value='CT_YK'>
+        <@checkPermission value='P_APPROVAL'>
+            <li class="treeview approval">
+                <a href="#"><i class="fa fa-table" aria-hidden="true"></i> <span>表单管理</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                <@checkPermission value='P_APPROVAL_1'>
+                    <li><a href="/mgt/approval/newForm?target=.approval"><i class="fa fa-circle"></i>新建表单</a></li>
+                </@>
+                <@checkPermission value='P_APPROVAL_2'>
+                    <li><a href="/mgt/approval/list?target=.approval"><i class="fa fa-circle"></i>表单列表</a></li>
+                </@>
+                <@checkPermission value='P_APPROVAL_3'>
+                    <li><a href="/mgt/approval/myList?target=.approval"><i class="fa fa-circle"></i>我的表单</a></li>
                 </@>
                 </ul>
             </li>

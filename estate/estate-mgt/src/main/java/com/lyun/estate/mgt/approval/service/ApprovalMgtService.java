@@ -85,6 +85,20 @@ public class ApprovalMgtService {
         return approvalService.list(type, status, applyCompanyId, applyDeptId, applyId, startTime, endTime, pageBounds);
     }
 
+    public PageList<ApprovalDTO> myApproval(ApprovalDefine.Type type,
+                                            ApprovalDefine.Status status,
+                                            Date startTime,
+                                            Date endTime,
+                                            PageBounds pageBounds) {
+        return approvalService.list(type,
+                status,
+                null,
+                null,
+                mgtContext.getOperator().getId(),
+                startTime,
+                endTime,
+                pageBounds);
+    }
 
     public void reportExport(ApprovalDefine.Type type,
                              ApprovalDefine.Status status,

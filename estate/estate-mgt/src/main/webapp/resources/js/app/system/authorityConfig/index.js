@@ -23,7 +23,8 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                     ORGANIZATION: 'ORGANIZATION',
                     COMPANY: 'COMPANY',
                     FRANCHISEE: 'FRANCHISEE',
-                    OPERATION: 'OPERATION'
+                    OPERATION: 'OPERATION',
+                    APPROVAL:'APPROVAL'
                 }
             };
             _this.baseData = {
@@ -88,6 +89,11 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                 },
                 operation:{
                     OP_MANAGE_XY: false,
+                },
+                approval:{
+                    APPROVAL_CREATE: false,
+                    APPROVAL_APPROVE: false,
+                    APPROVAL_LIST_EXPORT: false,
                 }
             };
             _this.authorityFang = {};
@@ -96,12 +102,14 @@ require(['main-app', contextPath + '/js/service/department-service.js',
             _this.authorityCompany = {};
             _this.authorityFranchisee = {};
             _this.authorityOperatioon = {};
+            _this.authorityApproval = {};
             angular.copy(initData.fang, _this.authorityFang);
             angular.copy(initData.xiaoqu, _this.authorityXiaoqu);
             angular.copy(initData.organization, _this.authorityOrganization);
             angular.copy(initData.company, _this.authorityCompany);
             angular.copy(initData.franchisee, _this.authorityFranchisee);
             angular.copy(initData.operation, _this.authorityOperatioon);
+            angular.copy(initData.approval, _this.authorityApproval);
 
             /* 部门员工树*/
             DepartmentService.getAllDepartment().done(function(data){
@@ -247,6 +255,14 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                     authorityCommonDeal(data, _this.authorityOperatioon);
                 });
             };
+            _this.getApprovalAuthority = function(){
+                var config = angular.copy(_this.authorityConfig);
+                config.category = _this.config.category.APPROVAL;
+                getAuthority(config, function(data){
+                    angular.copy(initData.operation, _this.authorityOperatioon);
+                    authorityCommonDeal(data, _this.authorityApproval);
+                });
+            };
             _this.getAllAuthority = function(reset){
                 if(reset){
                     $('#first-nav-tab').click()
@@ -257,6 +273,7 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                 _this.getCompanyAuthority();
                 _this.getFranchiseeAuthority();
                 _this.getOperationAuthority();
+                _this.getApprovalAuthority();
             };
 
             _this.getPositionAllAuthority = function(position, reset){
@@ -297,6 +314,9 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                         break;
                     case _this.config.category.OPERATION:
                         grantsData = angular.copy(_this.authorityOperatioon);
+                        break;
+                    case _this.config.category.APPROVAL:
+                        grantsData = angular.copy(_this.authorityApproval);
                         break;
                 }
                 angular.forEach(grantsData, function(value,key){

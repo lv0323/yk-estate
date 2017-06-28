@@ -2,14 +2,14 @@
  * Created by robin on 17/3/2.
  */
 (function (angular, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(contextPath+'/js/directive/index.js', [], function () {
+    if (!angular && typeof define === 'function' && define.amd) {
+        define(contextPath+'/js/directive/index.js', ['angular'], function (angular) {
             return factory(angular);
         });
     } else {
         return factory(angular);
     }
-}(angular, function (angular) {
+}(typeof angular === 'undefined' ? null : angular, function (angular) {
     function isValidPhoneNumber(value) {
         var reg = /^(13|15|17|18|14)\d{9}(~)?$/;
         return (reg.test(value));
@@ -34,7 +34,16 @@
                         forceParse: false,
                         language: 'zh-CN'
                     });
-                } else{
+                } else if(attrs.format == 'yyyy-mm-dd hh:ii'){
+                    $(element).datetimepicker({
+                        format: "yyyy-mm-dd hh:ii",
+                        weekStart: 1,
+                        autoclose: true,
+                        todayBtn: true,
+                        minuteStep: 5
+                    });
+                }
+                else{
                     $(element).datetimepicker({
                         format: 'yyyy-mm-dd',
                         weekStart: 1,

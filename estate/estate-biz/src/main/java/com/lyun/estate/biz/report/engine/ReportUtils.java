@@ -104,7 +104,7 @@ public class ReportUtils {
     }
 
     public static String stringFilter(String source) {
-        String regEx = "[`~!@#$%^&*()+=|{}':;',//[//].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+        String regEx = "[`~!@#$%^&*()+=|{}';',//[//].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
         Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(source);
         return m.replaceAll(" ").trim();

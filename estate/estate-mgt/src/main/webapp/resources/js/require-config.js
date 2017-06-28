@@ -4,6 +4,7 @@ requirejs.config({
         'jquery': 'libs/jquery-2.1.4.min',
         'bootstrap': 'libs/bootstrap.min',
         'angular': 'libs/angular.min',
+        'angular-route': 'libs/angular-route.min',
         'cryptojs.core': 'libs/cryptojs/core-min',
         'cryptojs.hmac': 'libs/cryptojs/hmac',
         'cryptojs.md5': 'libs/cryptojs/md5',
@@ -100,6 +101,10 @@ requirejs.config({
         'pagescroller':{
             deps: ['jquery'],
             exports: 'pagescroller'
+        },
+        'angular-route':{
+            deps: ['angular'],
+            exports: 'angular-route'
         }
     },
     waitSeconds: 0,

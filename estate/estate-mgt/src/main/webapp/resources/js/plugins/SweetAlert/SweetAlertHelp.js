@@ -16,9 +16,9 @@ define(contextPath+'/js/plugins/SweetAlert/SweetAlertHelp.js',
                 confirmButtonText: "确定",
                 confirmButtonColor: "#3c8dbc"
             }, option);
-            swal(setting,function(){
+            swal(setting,function(value){
                 $("body").css({"padding-right":''});
-                callback && callback()
+                callback && callback(value)
             });
             var scrollBarWidth = widthDiffs - (window.innerWidth - $("body").eq(0).prop('clientWidth'));
             if (scrollBarWidth > 0) {
@@ -53,6 +53,21 @@ define(contextPath+'/js/plugins/SweetAlert/SweetAlertHelp.js',
             option.closeOnConfirm =  false;
             SweetAlertHelp.sweetAlert(option, callback);
         };
+
+        SweetAlertHelp.input = function(option, callback){
+            option = option || {};
+            option.title = option.title || "输入";
+            option.text = option.text || "请输入内容：";
+            option.type = "input";
+            option.showCancelButton = true;
+            option.cancelButtonText = "取消";
+            option.animation = "slide-from-top";
+            option.inputPlaceholder = "请输入内容";
+            option.confirmButtonText = "确认";
+            option.closeOnConfirm = option.closeOnConfirm || false;
+            SweetAlertHelp.sweetAlert(option, callback);
+        };
+
         SweetAlertHelp.close = function(){
             swal.close();
         };
