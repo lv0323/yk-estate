@@ -33,8 +33,7 @@ public class LabelEnumSerializer extends StdSerializer<Enum> {
             } else {
                 gen.writeString(value.name());
             }
-        } catch (IOException e) {
-            logger.warn("label enum [{}] serializer error.", value, e);
+        } catch (IOException ignored) {
         }
     }
 }
