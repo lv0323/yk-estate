@@ -29,7 +29,7 @@
                                 <div id="searchList" ng-cloak class="clearfix">
                                     <div class="col-lg-4 col-md-4 col-sm-4" id="searchById">
                                         <div class="input-group" style="width:100%;">
-                                            <input placeholder="通过授权编号查询" class="form-control" ng-model="search.id" type="text">
+                                            <input placeholder="通过申请编号查询" class="form-control" ng-model="filter.id" type="text">
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-primary btn-sm" ng-click="searchById()"><i class="fa fa-search"></i>查询</button>
                                             </span>
@@ -41,7 +41,7 @@
                                         <div id="allTypes" class="tj">
                                             <a ng-href="javascript::" ng-class="{'actived': 'ALL' == pageStatus.type}" ng-click="filterType('ALL')">全部</a>
                                         <#list types?if_exists as type>
-                                            <a ng-href="javascript::" ng-class="{'actived': '${type.name()}' == pageStatus.status}" ng-click="filterType('${type.name()}')">
+                                            <a ng-href="javascript::" ng-class="{'actived': '${type.name()}' == pageStatus.type}" ng-click="filterType('${type.name()}')">
                                             ${type.getLabel()}
                                             </a>
                                         </#list>
@@ -61,33 +61,26 @@
                                 </div>
                                 <div id="applicationListPage" class="table-responsive clearfix" ng-cloak>
                                     <div class="media clearfix house-item" ng-repeat="applicationDTO in applicationList">
-                                        <img class="flagImg" ng-src="{{applicationDTO.domain.bizType.name ==='RENT' ? '/mgt/img/house/rent.png':'/mgt/img/house/sale.png'}}" height="55" width="55">
-                                        <a class="pull-left" href="javascript:void(0)">
-                                            <img class="media-object" ng-src="{{applicationDTO.domain.imageURI}}" height="75px" width="100px">
-                                        </a>
                                         <div class="media-body">
                                             <div class="col-lg-8 col-md-8 col-sm-9" style="padding-right: 0">
                                                 <div class="clearfix m-t-20 text-muted">
-                                                    <span>申请类别:{{applicationDTO.application.type.label}}</span>
-                                                    <span>申请原因:{{applicationDTO.application.applyReason}}</span>
-                                                    <span>审批状态:{{applicationDTO.application.status.label}}</span>
+                                                    <span>申请类别: {{applicationDTO.application.type.label}} </span>
+                                                    <span>申请原因: {{applicationDTO.application.applyReason}} </span>
+                                                    <span>审批状态: {{applicationDTO.application.status.label}} </span>
                                                     <span ng-show="applicationDTO.application.status.name != 'NEW'">
-                                                        审批原因:{{applicationDTO.application.reviewerComments}}
+                                                        审批原因: {{applicationDTO.application.reviewerComments}}
                                                     </span>
                                                     <span>申请编号: {{applicationDTO.application.id}}</span>
                                                 </div>
-
                                                 <div class="clearfix">
                                                     <h5 class="media-heading pull-left text-ellipsis" style="width:300px;">
                                                         <a ng-href="{{'/mgt/fangManage/detail?id='+applicationDTO.domain.id}}" target="_blank" class="text-muted" ng-bind="applicationDTO.domain.head"></a>
                                                     </h5>
-                                                    <label class="badge pull-left m-l-20" ng-class="{'badge-success':applicationDTO.domain.process.name == 'SUCCESS',
+                                                    <label class="badge pull-left m-l-10" ng-class="{'badge-success':applicationDTO.domain.process.name == 'SUCCESS',
                                                            'badge-info':applicationDTO.domain.process.name == 'PUBLISH',
                                                            'badge-warning':applicationDTO.domain.process.name == 'UN_PUBLISH',
                                                            'badge-danger':applicationDTO.domain.process.name == 'DELEGATE'}">{{applicationDTO.domain.process.label}}</label>
-                                                    <label ng-if="applicationDTO.domain.subProcess" class="badge pull-left m-l-20 badge-primary" style="margin-left: 8px">{{applicationDTO.domain.subProcess.label}}</label>
-                                                    <i class="fa fa-circle  m-l-20" style="font-size:16px;" ng-class="{true:'text-rent', false:'text-sell'}[applicationDTO.domain.bizType.name == 'RENT']"></i>
-                                                    <span ng-class="{true:'text-rent', false:'text-sell'}[applicationDTO.domain.bizType.name == 'RENT']" ng-show="applicationDTO.domain.publishTime">[{{(page.now - applicationDTO.domain.publishTime)/(24*6060*1000)|number:0}}]</span>
+                                                    <label ng-if="applicationDTO.domain.subProcess" class="badge pull-left m-l-10 badge-primary" style="margin-left: 8px">{{applicationDTO.domain.subProcess.label}}</label>
                                                     <span class="text-muted">
                                                         {{applicationDTO.domain.infoOwner.departmentName}} ~ {{applicationDTO.domain.infoOwner.employeeName}}
                                                     </span>
@@ -103,18 +96,7 @@
                                                     <span class="m-l-10">{{applicationDTO.domain.createTime|date:'yyyy-MM-dd'}}</span>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-2 col-md-2 hidden-sm">
-                                                <p><strong class="f18">{{applicationDTO.domain.estateArea}}</strong>m<sup>2</sup></p>
-                                                <span class="text-muted">{{applicationDTO.domain.realArea}}m<sup>2</sup></span>
-                                            </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-3 text-right">
-                                                <p><strong class="text-danger f18">{{applicationDTO.domain.publishPrice}}</strong>{{applicationDTO.domain.priceUnit.label}}</p>
-                                                <p>{{applicationDTO.domain.unitPrice}}<span ng-if="applicationDTO.domain.priceUnit.name === 'WAN'">元</span><span ng-if="applicationDTO.domain.priceUnit.name !== 'WAN'">{{applicationDTO.domain.priceUnit.label}}</span>/m<sup>2</sup></p>
-                                            </div>
                                             <div class="clearfix col-lg-12 col-md-12 col-sm-12">
-                                                <div class="pull-left">
-                                                    <span class="tip tip-success tag" ng-repeat="tag in applicationDTO.domain.tags" ng-bind="tag.label"></span>
-                                                </div>
                                                 <div class="pull-left btn-add m-l-20">
                                                     <span class="add-info-operation m-r-20">
                                                         <a ng-href="javascript:;" ng-show="applicationDTO.application.status.name == 'NEW'" ng-click="approveApplication(applicationDTO.application.id)">

@@ -151,24 +151,12 @@ require(['main-app',
 
             /*通过授权编号查找*/
             $scope.searchById = function(){
-                if(!$scope.search.id){
-                    $scope.list();
-                    return;
-                }
-                FangService.summaryByLicenceId({'licenceId':$scope.search.id}).then(function(response){
-                    $scope.houseList =[];
-                    $scope.$apply(function() {
-                        $scope.houseList.push(response);
-                        pagination(1);
-                    });
-                }).fail(function(response){
-                    SweetAlertHelp.fail({message:response.message});
-                })
+                $scope.loadApplications();
             };
 
             // application list
             $scope.loadApplications = function(offset, currentpage){
-                var param ={};
+                var param = {};
 
                 for (var key in $scope.filter){
                     if(!!$scope.filter[key]){

@@ -41,6 +41,11 @@ public class CommonApplicationService {
     public int approve(long applicationId, long reviewerId, String reviewerComments, boolean isForceApprove) {
         CommonApplicationEntity commonApplicationEntity = getApplicationEntity(applicationId, reviewerId, reviewerComments);
 
+        // check the status
+        if (CommonApplicationEntity.Status.NEW != commonApplicationEntity.getStatus()) {
+            throw new RuntimeException("cannot approve the application as the it is " + commonApplicationEntity.getStatus().name());
+        }
+
         getApplicationHandler(commonApplicationEntity.getType()).ifPresent(handler -> handler.approve(commonApplicationEntity, isForceApprove));
 
         return commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.APPROVED, reviewerId, reviewerComments);
@@ -50,6 +55,11 @@ public class CommonApplicationService {
     public int reject(long applicationId, long reviewerId, String reviewerComments) {
         CommonApplicationEntity commonApplicationEntity = getApplicationEntity(applicationId, reviewerId, reviewerComments);
 
+        // check the status
+        if (CommonApplicationEntity.Status.NEW != commonApplicationEntity.getStatus()) {
+            throw new RuntimeException("cannot reject the application as the it is " + commonApplicationEntity.getStatus().name());
+        }
+
         getApplicationHandler(commonApplicationEntity.getType()).ifPresent(handler -> handler.reject(commonApplicationEntity));
 
         return commonApplicationRepo.updateStatusById(applicationId, CommonApplicationEntity.Status.REJECTED, reviewerId, reviewerComments);
@@ -58,6 +68,11 @@ public class CommonApplicationService {
     @Transactional
     public int close(long applicationId, long reviewerId, String reviewerComments) {
         CommonApplicationEntity commonApplicationEntity = getApplicationEntity(applicationId, reviewerId, reviewerComments);
+
+        // check the status
+        if (CommonApplicationEntity.Status.NEW != commonApplicationEntity.getStatus()) {
+            throw new RuntimeException("cannot close the application as the it is " + commonApplicationEntity.getStatus().name());
+        }
 
         getApplicationHandler(commonApplicationEntity.getType()).ifPresent(handler -> handler.close(commonApplicationEntity));
 
