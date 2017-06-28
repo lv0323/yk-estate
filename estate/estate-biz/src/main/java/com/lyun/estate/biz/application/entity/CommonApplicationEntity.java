@@ -20,9 +20,9 @@ public class CommonApplicationEntity {
     private String domainTo;
 
     private Date createTime;
-    private Date update_time;
+    private Date updateTime;
 
-    public enum Type implements LabelEnum{
+    public enum Type implements LabelEnum {
         PUBLISH_HOUSE("上架"),
         UN_PUBLISH_HOUSE("下架"),
         PAUSE_HOUSE("暂缓"),
@@ -43,7 +43,7 @@ public class CommonApplicationEntity {
         }
     }
 
-    public enum Status implements LabelEnum{
+    public enum Status implements LabelEnum {
         NEW("待审批"), APPROVED("已通过"), REJECTED("已拒绝"), CLOSED("已关闭");
 
         private final String label;
@@ -156,12 +156,12 @@ public class CommonApplicationEntity {
         return this;
     }
 
-    public Date getUpdate_time() {
-        return update_time;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public CommonApplicationEntity setUpdate_time(Date update_time) {
-        this.update_time = update_time;
+    public CommonApplicationEntity setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
         return this;
     }
 }
