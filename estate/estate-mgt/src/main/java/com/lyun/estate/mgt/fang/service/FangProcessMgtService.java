@@ -8,6 +8,8 @@ import com.lyun.estate.biz.fang.entity.Fang;
 import com.lyun.estate.biz.fang.service.FangProcessService;
 import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.core.supports.exceptions.EstateException;
+import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.mgt.common.application.CommonApplicationMgtService;
 import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.permission.service.PermissionCheckService;
@@ -119,6 +121,24 @@ public class FangProcessMgtService {
                                 "申请撤销授权编号为【" + fang.getLicenceId() + "】房源的外网发布")
         );
         return commonApplicationEntity;
+    }
+
+    @Transactional
+    public Fang pause(long fangId) {
+        permissionCheckService.checkScope(fangId, Permission.FANG_PAUSE);
+
+        if (mgtContext.getOperator().getId() != fangMgtService.getFangSummary(fangId).getInfoOwner().getId()) {
+            throw new EstateException(ExCode.PERMISSION_ERROR);
+        }
+
+        Fang fang = processService.pause(fangId);
+
+        auditService.save(
+                AuditHelper.build(mgtContext, AuditSubject.FANG_P, fangId, DomainType.FANG,
+                        AuditHelper.operatorName(mgtContext) +
+                                "暂缓了授权编号为【" + fang.getLicenceId() + "】的房源")
+        );
+        return fang;
     }
 
 

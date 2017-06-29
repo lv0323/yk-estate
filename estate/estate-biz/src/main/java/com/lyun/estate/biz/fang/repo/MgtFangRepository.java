@@ -58,13 +58,13 @@ public interface MgtFangRepository {
     @Select("SELECT * FROM t_fang WHERE id = #{fangId} FOR UPDATE")
     Fang selectForUpdate(long fangId);
 
-    @Update("UPDATE t_fang SET process = 'SUCCESS', sub_process = NULL, update_time = now() where id = #{fangId}")
+    @Update("UPDATE t_fang SET process = 'SUCCESS', sub_process = 'NONE', update_time = now() where id = #{fangId}")
     int deal(long fangId);
 
     @Update("UPDATE t_fang SET process = 'PUBLISH', update_time = now(), publish_time = now() where id = #{fangId}")
     int publish(long fangId);
 
-    @Update("UPDATE t_fang SET process = 'UN_PUBLISH', sub_process = NULL, update_time = now(), publish_time = NULL where id = #{fangId}")
+    @Update("UPDATE t_fang SET process = 'UN_PUBLISH', sub_process = 'NONE', update_time = now(), publish_time = NULL where id = #{fangId}")
     int unPublish(long fangId);
 
     @Update("UPDATE t_fang SET is_deleted = TRUE, update_time = now() where id = #{fangId}")
@@ -73,19 +73,13 @@ public interface MgtFangRepository {
     @Update("UPDATE t_fang set update_time = CURRENT_TIMESTAMP where id = #{id} and is_deleted = false")
     int updateTime(Long id);
 
-    @Update("UPDATE t_fang SET process = 'PAUSE', sub_process = NULL, update_time = now(), publish_time = NULL where id = #{fangId}")
+    @Update("UPDATE t_fang SET process = 'PAUSE', sub_process = 'NONE', update_time = now(), publish_time = NULL where id = #{fangId}")
     int pause(long fangId);
-
-    @Update("UPDATE t_fang SET sub_process = 'PRE_PUBLIC', update_time = now() where id = #{fangId}")
-    int applyPublic(long fangId);
-
-    @Update("UPDATE t_fang SET sub_process = NULL, update_time = now() where id = #{fangId}")
-    int rejectPublic(long fangId);
 
     @Update("UPDATE t_fang SET sub_process = 'PUBLIC', update_time = now() where id = #{fangId}")
     int confirmPublic(long fangId);
 
-    @Update("UPDATE t_fang SET sub_process = NULL, update_time = now() where id = #{fangId}")
+    @Update("UPDATE t_fang SET sub_process = 'NONE', update_time = now() where id = #{fangId}")
     int undoPublic(long fangId);
 
     @Select("SELECT f.*, c.name as xiao_qu_name FROM t_fang f LEFT JOIN t_xiao_qu xq on f.xiao_qu_id = xq.id LEFT JOIN t_community c on xq.community_id = c.id\n" +

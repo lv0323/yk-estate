@@ -38,9 +38,10 @@ class FangProcessRest {
     }
 
     @PostMapping('pause')
-    CommonApplicationEntity requestPause(@RequestParam Long fangId,
-                                         @RequestParam String applyReason) {
-        return processMgtService.requestPause(fangId, applyReason)
+    Fang requestPause(@RequestParam Long fangId,
+                      @RequestParam String applyReason) {
+        // applyReason has no usage for now, may be used in future when the pause action need approval
+        return processMgtService.pause(fangId)
     }
 
     @PostMapping('apply-public')
