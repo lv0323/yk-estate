@@ -24,7 +24,7 @@ public class CommonApplicationController {
     public ModelAndView applicationManagement() {
         Map<String, Object> params = new HashMap();
 
-        params.put("types", Arrays.asList(PAUSE_HOUSE, PUBLIC_HOUSE, UN_PUBLIC_HOUSE, PUBLISH_HOUSE, UN_PUBLISH_HOUSE));
+        params.put("types", Arrays.asList(PUBLISH_HOUSE, UN_PUBLISH_HOUSE, PUBLIC_HOUSE, UN_PUBLIC_HOUSE));
         params.put("statusList", Arrays.asList(NEW, APPROVED, REJECTED, CLOSED));
 
         params.put("avatarUrl", employeeMgtService.getAvatar());
@@ -37,7 +37,7 @@ public class CommonApplicationController {
     public ModelAndView myApplicationManagement() {
         Map<String, Object> params = new HashMap();
 
-        params.put("types", Arrays.asList(PAUSE_HOUSE, PUBLIC_HOUSE, UN_PUBLIC_HOUSE, PUBLISH_HOUSE, UN_PUBLISH_HOUSE));
+        params.put("types", Arrays.asList(PUBLISH_HOUSE, UN_PUBLISH_HOUSE, PUBLIC_HOUSE, UN_PUBLIC_HOUSE));
         params.put("statusList", Arrays.asList(NEW, APPROVED, REJECTED, CLOSED));
 
         params.put("avatarUrl", employeeMgtService.getAvatar());

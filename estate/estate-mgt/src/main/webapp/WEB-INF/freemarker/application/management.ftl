@@ -64,7 +64,9 @@
                                         <div class="media-body">
                                             <div class="col-lg-8 col-md-8 col-sm-9" style="padding-right: 0">
                                                 <div class="clearfix m-t-20 text-muted">
-                                                    <span>审批状态: {{applicationDTO.application.status.label}} </span>
+                                                    <label class="badge pull-left m-l-10" ng-class="badge-danger">
+                                                        {{applicationDTO.application.status.label}}
+                                                    </label>
                                                     <span>申请类别: {{applicationDTO.application.type.label}} </span>
                                                     <span>申请人: {{applicationDTO.applicant.departmentName}} ~ {{applicationDTO.applicant.name}}</span>
                                                     <span>申请原因: {{applicationDTO.application.applyReason}} </span>
@@ -72,7 +74,7 @@
                                                         审批人: {{applicationDTO.reviewer.departmentName}} ~ {{applicationDTO.reviewer.name}}
                                                     </span>
                                                     <span ng-show="applicationDTO.application.status.name != 'NEW'">
-                                                        审批原因: {{applicationDTO.application.reviewerComments}}
+                                                        审批意见: {{applicationDTO.application.reviewerComments}}
                                                     </span>
                                                     <span>申请编号: {{applicationDTO.application.id}}</span>
                                                 </div>
@@ -80,11 +82,8 @@
                                                     <h5 class="media-heading pull-left text-ellipsis" style="width:300px;">
                                                         <a ng-href="{{'/mgt/fangManage/detail?id='+applicationDTO.domain.id}}" target="_blank" class="text-muted" ng-bind="applicationDTO.domain.head"></a>
                                                     </h5>
-                                                    <label class="badge pull-left m-l-10" ng-class="{'badge-success':applicationDTO.domain.process.name == 'SUCCESS',
-                                                           'badge-info':applicationDTO.domain.process.name == 'PUBLISH',
-                                                           'badge-warning':applicationDTO.domain.process.name == 'UN_PUBLISH',
-                                                           'badge-danger':applicationDTO.domain.process.name == 'DELEGATE'}">{{applicationDTO.domain.process.label}}</label>
-                                                    <label ng-if="applicationDTO.domain.subProcess" class="badge pull-left m-l-10 badge-primary" style="margin-left: 8px">{{applicationDTO.domain.subProcess.label}}</label>
+                                                    <label class="badge pull-left m-l-10">{{applicationDTO.domain.process.label}}</label>
+                                                    <label>{{applicationDTO.domain.subProcess.label}}</label>
                                                     <span class="text-muted">
                                                         {{applicationDTO.domain.infoOwner.departmentName}} ~ {{applicationDTO.domain.infoOwner.employeeName}}
                                                     </span>

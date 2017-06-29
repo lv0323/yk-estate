@@ -72,7 +72,7 @@ require(['main-app',
             };
 
             var allTypes = (function() {
-                return ['PUBLISH_HOUSE', 'UN_PUBLISH_HOUSE', 'PAUSE_HOUSE', 'UN_PUBLIC_HOUSE', 'PUBLIC_HOUSE'];
+                return ['PUBLISH_HOUSE', 'UN_PUBLISH_HOUSE', 'UN_PUBLIC_HOUSE', 'PUBLIC_HOUSE'];
             })();
 
             var allStatus = (function() {
@@ -84,15 +84,15 @@ require(['main-app',
                 'types':allTypes,
                 'id':'',
                 'applicantId':'',
-                'status':allStatus,
+                'status':['NEW'],
                 'startTime': '',
                 'endTime': ''
             };
 
             $scope.pageStatus = {
                 'type':'ALL',
-                'status':'ALL'
-            }
+                'status':'NEW'
+            };
 
             $scope.filterType = function(type) {
                 if (type === 'ALL') {

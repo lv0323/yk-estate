@@ -84,14 +84,14 @@ require(['main-app',
                 'types':allTypes,
                 'id':'',
                 'applicantId':'',
-                'status':allStatus,
+                'status':['NEW'],
                 'startTime': '',
                 'endTime': ''
             };
 
             $scope.pageStatus = {
                 'type':'ALL',
-                'status':'ALL'
+                'status':'NEW'
             }
 
             $scope.filterType = function(type) {
