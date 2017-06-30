@@ -39,6 +39,7 @@
                                                 <span><span id="floor" ng-bind="ctrl.summary.floor"> </span>/<span ng-bind="ctrl.summary.floorCounts"></span>F</span>
                                                 <span class="m-l-10"></span>
                                                 <span class="m-l-10" ng-bind="ctrl.summary.layoutString"></span>
+                                                <span class="m-l-10" ng-bind="'物业地址：'+ (ctrl.licenseInfo && ctrl.licenseInfo.location)"></span>
                                             </div>
                                             <div class="clearfix m-t-10 text-muted">
                                             <span>
