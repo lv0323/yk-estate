@@ -1,0 +1,20 @@
+#ApplicationsWrapper .app-operation,
+#MyApplicationsWrapper .app-operation{
+    width: 200px;
+    height: 70px;
+    position: absolute;
+    top: 0;
+    right: 20px;
+    bottom: 0;
+    margin: auto;
+}
+#ApplicationsWrapper .app-btn,
+#MyApplicationsWrapper .app-btn{
+    padding: 2px 6px;
+}
+
+#ApplicationsWrapper .app-item,
+#MyApplicationsWrapper .app-item{
+    position:relative;
+    padding-right: 220px;
+}

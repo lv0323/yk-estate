@@ -490,40 +490,28 @@ require(['main-app',
                     SweetAlertHelp.fail({message:response&&response.message});
                 });
             };
-            $scope.confirmChangeStatus = function(status, id){
+            $scope.confirmChangeStatus = function(status, id, reason){
                 var deferred = $q.defer();
                 var operation = null;
                 var params = {};
                 switch(status) {
                     case $scope.page.status.PUBLISH:
                         operation = FangService.publish;
-                        params = {'fangId':id, 'applyReason':'todo add reason here'};
                         break;
                     case $scope.page.status.UN_PUBLISH:
                         operation = FangService.unPublish;
-                        params = {'fangId':id, 'applyReason':'todo add reason here'};
                         break;
                     case $scope.page.status.PAUSE:
                         operation =  FangService.pause;
-                        params = {'fangId':id, 'applyReason':'todo add reason here'};
                         break;
                     case $scope.page.status.APPLY_PUBLISH:
                         operation =  FangService.applyPublic;
-                        params = {'fangId':id, 'applyReason':'todo add reason here'};
                         break;
                     case $scope.page.status.UNDO_PUBLISH:
                         operation =  FangService.undoPublic;
-                        params = {'fangId':id, 'applyReason':'todo add reason here'};
-                        break;
-                    case $scope.page.status.REJECT_PUBLISH:
-                        operation =  FangService.rejectPublic;
-                        params = {'fangId':id, 'comments':'todo add comments here'};
-                        break;
-                    case $scope.page.status.CONFIRM_PUBLISH:
-                        operation =  FangService.confirmPublic;
-                        params = {'fangId':id, 'comments':'todo add comments here'};
                         break;
                 }
+                params = {'fangId':id, 'applyReason':reason};
                 if(operation){
                     operation(params).then(function(response){
                         deferred.resolve(response);
@@ -537,10 +525,16 @@ require(['main-app',
                 return deferred.promise;
             };
             $scope.changeStatus = function(status, id){
-                var option = {};
-                option.title = config.confirmText[status];
-                SweetAlertHelp.confirm(option, function () {
-                    $scope.confirmChangeStatus(status, id).then(function(){
+                var option = {
+                    title: config.confirmText[status],
+                    text: ' ',
+                    inputPlaceholder:'请输入原因'
+                };
+                SweetAlertHelp.input(option, function (inputValue) {
+                    if (inputValue === false) {
+                        return false;
+                    }
+                    $scope.confirmChangeStatus(status, id, inputValue).then(function(){
                         SweetAlertHelp.success();
                         if(config.searchById){
                             $scope.searchById();

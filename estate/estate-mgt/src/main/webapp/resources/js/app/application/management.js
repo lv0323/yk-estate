@@ -22,28 +22,40 @@ require(['main-app',
         ApplicationManagementModule.controller("ApplicationsController", ['$scope','$timeout', '$q', '$interval', '$window', '$location', function($scope, $timeout, $q, $interval, $window) {
 
             $scope.approveApplication = function(applicationId){
-                // todo
-                var params ={};
-                params['applicationId'] = applicationId;
-                params['reviewerComments'] = 'xiaoming test';
-                ApplicationManagementService.approve(params).then(function(response){
-                    alert("succeed");
-                    $scope.loadApplications();
-                }).fail(function(response){
-                    SweetAlertHelp.fail({message:response&&response.message});
+                SweetAlertHelp.input({title: '请输入审批意见', text: ' ', inputPlaceholder:'请输入意见'}, function (inputValue) {
+                    if (inputValue === false) {
+                        return false;
+                    }
+                    var params ={};
+                    params['applicationId'] = applicationId;
+                    params['reviewerComments'] = 'inputValue';
+                    ApplicationManagementService.approve(params).then(function(response){
+                        SweetAlertHelp.success();
+                        $scope.loadApplications();
+                    }).fail(function(response){
+                        SweetAlertHelp.fail({message:response&&response.message});
+                    });fangCollect
                 });
             };
 
             $scope.rejectApplication = function(applicationId){
-                // todo
-                var params ={};
-                params['applicationId'] = applicationId;
-                params['reviewerComments'] = 'xiaoming test';
-                ApplicationManagementService.reject(params).then(function(response){
-                    alert("succeed");
-                    $scope.loadApplications();
-                }).fail(function(response){
-                    SweetAlertHelp.fail({message:response&&response.message});
+                SweetAlertHelp.input({title: '请输入审批意见', text: ' ', inputPlaceholder:'请输入意见'}, function (inputValue) {
+                    if (inputValue === false) {
+                        return false;
+                    }
+                    if (inputValue === "") {
+                        swal.showInputError("请输入审批意见！");
+                        return false
+                    }
+                    var params = {};
+                    params['applicationId'] = applicationId;
+                    params['reviewerComments'] = inputValue;
+                    ApplicationManagementService.reject(params).then(function (response) {
+                        SweetAlertHelp.success();
+                        $scope.loadApplications();
+                    }).fail(function (response) {
+                        SweetAlertHelp.fail({message: response && response.message});
+                    });
                 });
             };
 
@@ -53,7 +65,7 @@ require(['main-app',
                 params['applicationId'] = applicationId;
                 params['reviewerComments'] = 'xiaoming test';
                 ApplicationManagementService.close(params).then(function(response){
-                    alert("succeed");
+                    SweetAlertHelp.success();
                     $scope.loadApplications();
                 }).fail(function(response){
                     SweetAlertHelp.fail({message:response&&response.message});
