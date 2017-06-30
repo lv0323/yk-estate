@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {BizConfig.class, CoreConfig.class})
 
@@ -22,7 +24,7 @@ public class XiaoquTest {
     @Ignore
     @Test
     public void test() {
-        mgtXiaoQuService.createXiaoQu("小明测试", "测试", 1, 80);
+        mgtXiaoQuService.createXiaoQu("小明测试", "测试", 1, 80, BigDecimal.ZERO, BigDecimal.ZERO, "");
 
         CommunityEntity communityEntity = new CommunityEntity(){{
             setId(11002);

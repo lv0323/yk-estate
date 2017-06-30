@@ -304,7 +304,7 @@
                             <label class="control-label col-xs-3">楼盘地址:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityAddress" reg="^\S+$" class="form-control"
-                                       ng-model="ctrl.data.modifyCommunityPart_1.address"/>
+                                       ng-model="ctrl.data.modifyCommunityPart_1.address" disabled/>
                             </div>
                         </div>
                         <div class="form-group clearfix">

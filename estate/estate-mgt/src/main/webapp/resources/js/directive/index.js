@@ -143,5 +143,51 @@
             }
         };
     });
-    
+
+    module.directive('hyplayer', ['$sce', function ($sce) {
+        return{
+            restrict: 'E',
+            scope: {
+                vsrc:'='
+            },
+            link: function (scope,element,attrs) {
+                var video = element.find('video')[0];
+                scope.playing = false;
+                scope.fullscreen = false;
+                scope.trustSrc = function () {
+                    return $sce.trustAsResourceUrl(scope.vsrc);
+                };
+                scope.toggle = function () {
+                    if(scope.playing){
+                        video.pause();
+                    }else {
+                        video.play();
+                    }
+                    scope.playing = !scope.playing;
+                };
+                scope.getFullscreen = function () {
+                    if (video.requestFullscreen) {
+                        video.requestFullscreen();
+                    } else if (video.mozRequestFullScreen) {
+                        video.mozRequestFullScreen();
+                    } else if (video.webkitRequestFullscreen) {
+                        video.webkitRequestFullscreen();
+                    }
+                    scope.fullscreen = !scope.fullscreen;
+                };
+            },
+            template: '<video class="video-player">' +
+                            '<source ng-src="{{trustSrc()}}"/>'+
+                      '</video>' +
+                      '<div class="video-control-bar">' +
+                            '<span>'+
+                                '<i class="fa" ng-class="{false:\'fa-play\', true:\'fa-pause\'}[playing]" ng-click="toggle()" aria-hidden="true"></i>'+
+                            '</span>'+
+                            '<span>' +
+                                '<i style="float:right;" class="fa" ng-class="{false:\'fa-expand\', true:\'fa-compress\'}[fullscreen]" ng-click="getFullscreen()" aria-hidden="true"></i>' +
+                            '</span>'+
+                      '</div>'
+        }
+    }]);
+
 }));

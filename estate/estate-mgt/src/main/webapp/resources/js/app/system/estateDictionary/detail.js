@@ -202,6 +202,7 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                     _this.mapConfig.baiduMap.addOverlay(marker);
 
                 }
+                _this.searchMap('公交');
             };
             _this.searchMap =function(str){
                 if(_this.mapConfig.mapSearchStr === str){
@@ -256,6 +257,7 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 }
                 var params = angular.copy(_this.data.modifyCommunityPart_1);
                 params.id = xiaoquId;
+                delete params.address;
 
                 XiaoquService.updateCommunity(params).then(function(response){
                     loadDetail();

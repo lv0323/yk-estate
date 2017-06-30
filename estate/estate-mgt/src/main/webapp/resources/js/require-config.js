@@ -38,7 +38,6 @@ requirejs.config({
         'bootstrap': ['jquery'],
         'angular': {
             deps: ['jquery'],
-
             exports: 'angular'
         },
         'adminLTE': ['jquery', 'bootstrap'],

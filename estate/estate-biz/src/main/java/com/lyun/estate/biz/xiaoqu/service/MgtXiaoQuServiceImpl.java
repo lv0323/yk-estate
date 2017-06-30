@@ -105,7 +105,7 @@ public class MgtXiaoQuServiceImpl implements MgtXiaoQuService {
 
     @Transactional
     @Override
-    public XiaoQuEntity createXiaoQu(String name, String alias, long cityId, long subDistrictId) {
+    public XiaoQuEntity createXiaoQu(String name, String alias, long cityId, long subDistrictId, BigDecimal longitude, BigDecimal latitude, String address) {
 
         String kw = generateKW(name, alias);
 
@@ -117,6 +117,9 @@ public class MgtXiaoQuServiceImpl implements MgtXiaoQuService {
             setStructureType(5);// todo: check this
             setNameKw(kw.toString());
             setIsDeleted(YN.N);
+            setLongitude(longitude);
+            setLatitude(latitude);
+            setAddress(address);
         }};
 
         mgtXiaoQuRepository.createCommunity(communityEntity);
@@ -165,11 +168,12 @@ public class MgtXiaoQuServiceImpl implements MgtXiaoQuService {
             kw.append(";");
             kw.append(PinyinHelper.getShortPinyin(name));
             kw.append(";");
-
-            kw.append(PinyinHelper.convertToPinyinString(alias, "", PinyinFormat.WITHOUT_TONE));
-            kw.append(";");
-            kw.append(PinyinHelper.getShortPinyin(alias));
-            kw.append(";");
+            if(alias != null){
+                kw.append(PinyinHelper.convertToPinyinString(alias, "", PinyinFormat.WITHOUT_TONE));
+                kw.append(";");
+                kw.append(PinyinHelper.getShortPinyin(alias));
+                kw.append(";");
+            }
 
         } catch (PinyinException e) {
             e.printStackTrace();
