@@ -61,7 +61,7 @@ public interface MgtFangRepository {
     @Update("UPDATE t_fang SET process = 'SUCCESS', sub_process = 'NONE', update_time = now() where id = #{fangId}")
     int deal(long fangId);
 
-    @Update("UPDATE t_fang SET process = 'PUBLISH', update_time = now(), publish_time = now() where id = #{fangId}")
+    @Update("UPDATE t_fang SET process = 'PUBLISH', sub_process = 'NONE', update_time = now(), publish_time = now() where id = #{fangId}")
     int publish(long fangId);
 
     @Update("UPDATE t_fang SET process = 'UN_PUBLISH', sub_process = 'NONE', update_time = now(), publish_time = NULL where id = #{fangId}")

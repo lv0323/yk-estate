@@ -260,7 +260,7 @@
                                                            'badge-info':house.process.name == 'PUBLISH',
                                                            'badge-warning':house.process.name == 'UN_PUBLISH',
                                                            'badge-danger':house.process.name == 'DELEGATE'}">{{house.process.label}}</label>
-                                                    <label ng-if="house.subProcess" class="badge pull-left m-l-20 badge-primary" style="margin-left: 8px">{{house.subProcess.label}}</label>
+                                                    <label ng-if="house.process.name == 'PUBLISH'" class="badge pull-left m-l-20 badge-primary" style="margin-left: 8px">{{house.subProcess.label}}</label>
                                                     <i class="fa fa-circle  m-l-20" style="font-size:16px;" ng-class="{true:'text-rent', false:'text-sell'}[house.bizType.name == 'RENT']"></i>
                                                     <span ng-class="{true:'text-rent', false:'text-sell'}[house.bizType.name == 'RENT']" ng-show="house.publishTime">[{{(page.now - house.publishTime)/(24*6060*1000)|number:0}}]</span>
                                                     <span class="text-muted">
@@ -306,11 +306,10 @@
                                                             <i class="fa fa-pencil"></i>申请上架
                                                         </a>
                                                         <a class="m-l-10" href=""
-                                                           ng-click="changeStatus(page.status.UN_PUBLISH, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH || house.process.name == page.status.PAUSE">
+                                                           ng-click="changeStatus(page.status.UN_PUBLISH, house.id)"  ng-show="house.process.name == page.status.DELEGATE || (house.process.name == page.status.PUBLISH && house.subProcess.name == 'NONE') || house.process.name == page.status.PAUSE">
                                                             <i class="fa fa-pencil"></i>申请下架
                                                         </a>
-                                                        <a class="m-l-10" href="" ng-show="house.process.name == page.status.PUBLISH && house.subProcess.name == 'NONE'"
-                                                           ng-click="changeStatus(page.status.PAUSE, house.id)"  ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH">
+                                                        <a class="m-l-10" href="" ng-click="changeStatus(page.status.PAUSE, house.id)"  ng-show="house.process.name == page.status.DELEGATE || (house.process.name == page.status.PUBLISH && house.subProcess.name == 'NONE')">
                                                             <i class="fa fa-pencil"></i>暂缓
                                                         </a>
                                                         <a class="m-l-10" ng-href="{{'/mgt/contract/addDeal?target=.contract&licenceId='+house.licenceId}}"
@@ -319,9 +318,12 @@
                                                         </a>
                                                     </span>
                                                     <span ng-show="house.process.name == page.status.PUBLISH" class="sub-process-opration">
-                                                        <a class="m-l-10" href="" ng-show="house.subProcess == null" ng-click="changeStatus(page.status.APPLY_PUBLISH, house.id)">
+                                                        <a class="m-l-10" href="" ng-show="house.subProcess.name == 'NONE'" ng-click="changeStatus(page.status.APPLY_PUBLISH, house.id)">
                                                             <i class="fa fa-pencil"></i>申请发布
                                                         </a>
+                                                        <a class="m-l-10" ng-href="javascript:;" ng-show="house.subProcess.name == 'PUBLIC' " ng-click="changeStatus(page.status.UNDO_PUBLISH, house.id)">
+-                                                           <i class="fa fa-pencil"></i>撤销发布
+-                                                       </a>
                                                     </span>
                                                 </div>
                                             </div>

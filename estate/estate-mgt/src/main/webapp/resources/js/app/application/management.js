@@ -28,7 +28,7 @@ require(['main-app',
                     }
                     var params ={};
                     params['applicationId'] = applicationId;
-                    params['reviewerComments'] = 'inputValue';
+                    params['reviewerComments'] = inputValue;
                     ApplicationManagementService.approve(params).then(function(response){
                         SweetAlertHelp.success();
                         $scope.loadApplications();
