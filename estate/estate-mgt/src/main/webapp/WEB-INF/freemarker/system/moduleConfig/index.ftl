@@ -118,7 +118,7 @@
                                                 <div class="col-xs-6">
                                                     <div class="checkbox checkbox-nice">
                                                         <input ng-model="ctrl.moduleAuthority.P_FANG_APPLICATION_PAGE" id="P_FANG_APPLICATION_PAGE" type="checkbox" ng-change="ctrl.dataChange('P_FANG', ctrl.moduleAuthority.P_FANG_APPLICATION_PAGE)">
-                                                        <label for="P_FANG_CHECK">房源状态更改审批</label>
+                                                        <label for="P_FANG_APPLICATION_PAGE">房源状态更改审批</label>
                                                     </div>
                                                 </div>
                                             </@>
