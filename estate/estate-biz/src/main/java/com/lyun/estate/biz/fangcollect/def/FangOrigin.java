@@ -6,8 +6,8 @@ import com.lyun.estate.core.supports.labelenum.LabelEnum;
  * Created by robin on 17/5/5.
  */
 public enum  FangOrigin implements LabelEnum {
-    FY01("第一时间网"),;
-
+    FY01("第一时间网"),
+    FYgr("个人房源网");
     private final String label;
     FangOrigin(String label) {
         this.label = label;
