@@ -72,7 +72,7 @@ public enum ExCode {
     PERMISSION_COMPANY_ERROR("无权操作该商户"),
     PERMISSION_COMPANY_TYPE_NOT_SUPPORT("所属商户类型【{}】无权使用该权限【{}】"),
 
-    //application
+    //approval
     APPROVAL_APPROVED("该数据已被审批过，审批结果是：{}"),
     APPROVAL_NO_NEED_APPROVE("该数据无需审批"),
 
