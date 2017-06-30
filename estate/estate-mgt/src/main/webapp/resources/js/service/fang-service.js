@@ -124,5 +124,9 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.summaryByLicenceId = function (params, header) {
             return RequestService.get('/api/fang/summary-by-licence-id', params, header);
         };
+        FangService.getLicense = function(params, header){
+            return RequestService.get('/api/fang/licence', params, header);
+        };
+
         return FangService;
     });

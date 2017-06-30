@@ -11,6 +11,7 @@ import com.lyun.estate.biz.fang.entity.*;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
+import com.lyun.estate.biz.houselicence.entity.HouseLicenceDTO;
 import com.lyun.estate.biz.spec.fang.mgt.def.TimeType;
 import com.lyun.estate.biz.spec.fang.mgt.entity.*;
 import com.lyun.estate.biz.support.def.BizType;
@@ -500,5 +501,11 @@ public class FangRest {
 
 
     }
+
+    @GetMapping("licence")
+    public HouseLicenceDTO getFangLicence(@RequestParam Long fangId) {
+        return fangMgtService.getFangLicence(fangId);
+    }
+
 
 }

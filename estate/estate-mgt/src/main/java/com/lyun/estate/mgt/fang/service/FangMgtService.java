@@ -25,6 +25,7 @@ import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.file.entity.FileExt;
 import com.lyun.estate.biz.file.service.FileService;
 import com.lyun.estate.biz.houselicence.entity.HouseLicence;
+import com.lyun.estate.biz.houselicence.entity.HouseLicenceDTO;
 import com.lyun.estate.biz.houselicence.service.HouseLicenceService;
 import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.permission.entity.Grant;
@@ -54,6 +55,7 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -495,5 +497,10 @@ public class FangMgtService {
 
     public MgtFangSummary summaryByLicenceId(Long licenceId) {
         return mgtFangService.getFangSummaryByLicenceId(licenceId);
+    }
+
+    public HouseLicenceDTO getFangLicence(Long fangId) {
+        Fang fangBase = mgtFangService.getFangBase(fangId);
+        return Optional.ofNullable(fangBase).map(t -> houseLicenceService.findOne(t.getLicenceId())).orElse(null);
     }
 }
