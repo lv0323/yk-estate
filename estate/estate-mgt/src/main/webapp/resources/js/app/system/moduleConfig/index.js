@@ -23,7 +23,7 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                 category:'PAGE'
             };
             var pickConfig ={
-                "P_FANG": ['P_FANG_LIST', 'P_FANG_NEW', 'P_FANG_FOLLOW', 'P_FANG_CHECK'],
+                "P_FANG": ['P_FANG_LIST', 'P_FANG_NEW', 'P_FANG_FOLLOW', 'P_FANG_CHECK', 'P_FANG_APPLICATION_PAGE'],
                 "P_SHOWING": ['P_SHOWING_LIST'],
                 "P_CONTRACT": ['P_CONTRACT_LIST'],
                 "P_ORG": ['P_ORG_DEPT', 'P_ORG_POSITION', 'P_ORG_EMPLOYEE'],
@@ -39,6 +39,7 @@ require(['main-app', contextPath + '/js/service/department-service.js',
                 P_FANG_NEW: false,
                 P_FANG_FOLLOW: false,
                 P_FANG_CHECK: false,
+                P_FANG_APPLICATION_PAGE: false,
                 P_SHOWING: false,
                 P_SHOWING_LIST: false,
                 P_CONTRACT: false,
