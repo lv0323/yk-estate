@@ -7,11 +7,13 @@ import com.lyun.estate.biz.application.entity.CommonApplicationEntity;
 import com.lyun.estate.biz.audit.def.AuditSubject;
 import com.lyun.estate.biz.audit.service.AuditService;
 import com.lyun.estate.biz.employee.service.EmployeeService;
+import com.lyun.estate.biz.permission.def.Permission;
 import com.lyun.estate.biz.spec.fang.mgt.entity.MgtFangSummary;
 import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.mgt.context.MgtContext;
 import com.lyun.estate.mgt.employee.service.EmployeeMgtService;
 import com.lyun.estate.mgt.fang.service.FangMgtService;
+import com.lyun.estate.mgt.permission.service.PermissionCheckService;
 import com.lyun.estate.mgt.supports.AuditHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,13 +39,16 @@ public class CommonApplicationMgtService {
     @Autowired
     private AuditService auditService;
 
+    @Autowired
+    private PermissionCheckService permissionCheckService;
+
     public CommonApplicationEntity request(CommonApplicationEntity.Type type, long applicantId, String applyReason, long domainId) {
         return commonApplicationService.create(type, applicantId, applyReason, domainId);
     }
 
     @Transactional
     public int approve(long applicationId, String reviewerComments, Boolean isForceApprove, final MgtContext mgtContext) {
-        // todo check privilege??
+        permissionCheckService.checkExist(Permission.FANG_APPLICATION);
 
         int result = commonApplicationService.approve(applicationId, mgtContext.getOperator().getId(), reviewerComments, isForceApprove);
 
@@ -58,7 +63,7 @@ public class CommonApplicationMgtService {
 
     @Transactional
     public int reject(long applicationId, String reviewerComments, final MgtContext mgtContext) {
-        // todo check privilege??
+        permissionCheckService.checkExist(Permission.FANG_APPLICATION);
 
         int result = commonApplicationService.reject(applicationId, mgtContext.getOperator().getId(), reviewerComments);
 
@@ -72,7 +77,6 @@ public class CommonApplicationMgtService {
 
     @Transactional
     public int close(long applicationId, String reviewerComments, final MgtContext mgtContext) {
-        // todo check privilege??
 
         int result = commonApplicationService.close(applicationId, mgtContext.getOperator().getId(), reviewerComments);
 

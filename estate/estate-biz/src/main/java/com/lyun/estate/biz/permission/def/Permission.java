@@ -33,6 +33,7 @@ public enum Permission implements LabelEnum {
     MODIFY_FANG_INFO("修改房源信息（图片、跟进、勘察、外网描述）", PermissionDefine.Category.FANG),
     VIEW_FANG_CONTACT("查看业主信息", PermissionDefine.Category.FANG),
     MODIFY_FANG_CONTACT("修改业主信息", PermissionDefine.Category.FANG),
+    FANG_APPLICATION("房源状态更改审批", PermissionDefine.Category.FANG),
 
     //xiaoqu
     CREATE_XIAO_QU("创建小区", PermissionDefine.Category.XIAO_QU),
@@ -94,6 +95,8 @@ public enum Permission implements LabelEnum {
     P_APPROVAL_1("新建表单", PermissionDefine.Category.PAGE),
     P_APPROVAL_2("表单列表", PermissionDefine.Category.PAGE),
     P_APPROVAL_3("我的表单", PermissionDefine.Category.PAGE),
+    P_FANG_APPLICATION_PAGE("房源状态更改审批", PermissionDefine.Category.PAGE),
+
 
     //公司性质
     CT_YK("盈科", PermissionDefine.Category.COMPANY_TYPE),
