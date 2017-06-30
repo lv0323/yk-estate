@@ -3,7 +3,6 @@ dependencies {
     compileOnly lib.servlet_api
     compile lib.joda_time
     testCompile(lib.spring_boot_starter_test)
-    compile(lib.spring_boot_starter_undertow)
 }
 
 task copyBuildJar(type: Copy) {
