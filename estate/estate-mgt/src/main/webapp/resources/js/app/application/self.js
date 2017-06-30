@@ -21,37 +21,11 @@ require(['main-app',
         var MyApplicationManagementModule=angular.module('MyApplicationManagementModule',['directiveYk']);
         MyApplicationManagementModule.controller("MyApplicationsController", ['$scope','$timeout', '$q', '$interval', '$window', '$location', function($scope, $timeout, $q, $interval, $window) {
 
-            $scope.approveApplication = function(applicationId){
-                // todo
-                var params ={};
-                params['applicationId'] = applicationId;
-                params['reviewerComments'] = 'xiaoming test';
-                ApplicationManagementService.approve(params).then(function(response){
-                    alert("succeed");
-                    $scope.loadApplications();
-                }).fail(function(response){
-                    SweetAlertHelp.fail({message:response&&response.message});
-                });
-            };
-
-            $scope.rejectApplication = function(applicationId){
-                // todo
-                var params ={};
-                params['applicationId'] = applicationId;
-                params['reviewerComments'] = 'xiaoming test';
-                ApplicationManagementService.reject(params).then(function(response){
-                    alert("succeed");
-                    $scope.loadApplications();
-                }).fail(function(response){
-                    SweetAlertHelp.fail({message:response&&response.message});
-                });
-            };
-
             $scope.closeApplication = function(applicationId){
                 // todo
                 var params ={};
                 params['applicationId'] = applicationId;
-                params['reviewerComments'] = 'xiaoming test';
+                params['reviewerComments'] = '申请人主动关闭';
                 ApplicationManagementService.close(params).then(function(response){
                     alert("succeed");
                     $scope.loadApplications();

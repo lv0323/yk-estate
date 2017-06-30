@@ -63,7 +63,7 @@ require(['main-app',
                 // todo
                 var params ={};
                 params['applicationId'] = applicationId;
-                params['reviewerComments'] = 'xiaoming test';
+                params['reviewerComments'] = '审核人员关闭';
                 ApplicationManagementService.close(params).then(function(response){
                     SweetAlertHelp.success();
                     $scope.loadApplications();
