@@ -490,9 +490,10 @@ require(['main-app',
                     SweetAlertHelp.fail({message:response&&response.message});
                 });
             };
-            $scope.confirmChangeStatus = function(status, id){
+            $scope.confirmChangeStatus = function(status, id, reason){
                 var deferred = $q.defer();
                 var operation = null;
+                var params = {};
                 switch(status) {
                     case $scope.page.status.PUBLISH:
                         operation = FangService.publish;
@@ -506,18 +507,13 @@ require(['main-app',
                     case $scope.page.status.APPLY_PUBLISH:
                         operation =  FangService.applyPublic;
                         break;
-                    case $scope.page.status.REJECT_PUBLISH:
-                        operation =  FangService.rejectPublic;
-                        break;
-                    case $scope.page.status.CONFIRM_PUBLISH:
-                        operation =  FangService.confirmPublic;
-                        break;
                     case $scope.page.status.UNDO_PUBLISH:
                         operation =  FangService.undoPublic;
                         break;
                 }
+                params = {'fangId':id, 'applyReason':reason};
                 if(operation){
-                    operation({fangId:id}).then(function(response){
+                    operation(params).then(function(response){
                         deferred.resolve(response);
                     }).fail(function(response){
                         deferred.reject(response);
@@ -529,10 +525,16 @@ require(['main-app',
                 return deferred.promise;
             };
             $scope.changeStatus = function(status, id){
-                var option = {};
-                option.title = config.confirmText[status];
-                SweetAlertHelp.confirm(option, function () {
-                    $scope.confirmChangeStatus(status, id).then(function(){
+                var option = {
+                    title: config.confirmText[status],
+                    text: ' ',
+                    inputPlaceholder:'请输入原因'
+                };
+                SweetAlertHelp.input(option, function (inputValue) {
+                    if (inputValue === false) {
+                        return false;
+                    }
+                    $scope.confirmChangeStatus(status, id, inputValue).then(function(){
                         SweetAlertHelp.success();
                         if(config.searchById){
                             $scope.searchById();

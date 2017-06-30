@@ -190,47 +190,13 @@ class FangProcessService {
     }
 
     @Transactional
-    Fang applyPublic(long fangId) {
-        Fang fang = mgtFangRepository.selectForUpdate(fangId)
-        if (fang == null || Objects.equals(fang.getDeleted(), true)) {
-            throw new EstateException(ExCode.NOT_FOUND, fangId, "房源")
-        }
-
-        if (fang.getProcess() == HouseProcess.PUBLISH && fang.getSubProcess() == null) {
-
-            publicPreCheck(fangId)
-
-            mgtFangRepository.applyPublic(fangId)
-            return mgtFangRepository.findFang(fangId)
-        } else {
-            throw new EstateException(ExCode.SUB_PROCESS_ILLEGAL, fangId, fang.process, fang.subProcess)
-        }
-    }
-
-
-    @Transactional
-    Fang rejectPublic(long fangId) {
-        Fang fang = mgtFangRepository.selectForUpdate(fangId)
-        if (fang == null || Objects.equals(fang.getDeleted(), true)) {
-            throw new EstateException(ExCode.NOT_FOUND, fangId, "房源")
-        }
-        if (fang.getProcess() == HouseProcess.PUBLISH
-                && fang.getSubProcess() == HouseSubProcess.PRE_PUBLIC) {
-            mgtFangRepository.rejectPublic(fangId)
-            return mgtFangRepository.findFang(fangId)
-        } else {
-            throw new EstateException(ExCode.SUB_PROCESS_ILLEGAL, fangId, fang.process, fang.subProcess)
-        }
-    }
-
-    @Transactional
     Fang confirmPublic(long fangId) {
         Fang fang = mgtFangRepository.selectForUpdate(fangId)
         if (fang == null || Objects.equals(fang.getDeleted(), true)) {
             throw new EstateException(ExCode.NOT_FOUND, fangId, "房源")
         }
         if (fang.getProcess() == HouseProcess.PUBLISH
-                && fang.getSubProcess() == HouseSubProcess.PRE_PUBLIC) {
+                && fang.getSubProcess() != HouseSubProcess.PUBLIC) {
 
             mgtFangRepository.confirmPublic(fangId)
 
@@ -270,6 +236,10 @@ class FangProcessService {
     }
 
     def publicPreCheck(long fangId) {
+        Fang fang = mgtFangRepository.selectForUpdate(fangId)
+        if (fang.getProcess() != HouseProcess.PUBLISH || fang.getSubProcess() == HouseSubProcess.PUBLIC) {
+            throw new EstateException(ExCode.SUB_PROCESS_ILLEGAL, fangId, fang.process, fang.subProcess)
+        }
         //check desc core
         FangDescr fangDescr = fangDescrRepo.findByFangId(fangId)
         if (Strings.isNullOrEmpty(fangDescr.getCore())) {

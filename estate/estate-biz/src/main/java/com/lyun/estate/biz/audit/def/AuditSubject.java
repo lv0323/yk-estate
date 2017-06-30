@@ -15,7 +15,8 @@ public enum AuditSubject implements LabelEnum {
     XIAO_QU_P("增/删小区"),
     XIAO_QU_M("修改小区信息"),
     BUILDING("楼座信息"),
-    FRANCHISEE("加盟商");
+    FRANCHISEE("加盟商"),
+    FANG_APPLICATION("房源状态审批");
 
     private final String label;
 

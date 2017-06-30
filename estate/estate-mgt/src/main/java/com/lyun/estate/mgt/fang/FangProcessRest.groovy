@@ -1,10 +1,16 @@
 package com.lyun.estate.mgt.fang
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds
+import com.lyun.estate.biz.application.entity.CommonApplicationEntity
 import com.lyun.estate.biz.fang.entity.Fang
+import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver
 import com.lyun.estate.mgt.fang.service.FangProcessMgtService
 import com.lyun.estate.mgt.supports.CommonResp
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -20,39 +26,34 @@ class FangProcessRest {
     FangProcessMgtService processMgtService
 
     @PostMapping('publish')
-    Fang publish(@RequestParam Long fangId) {
-        processMgtService.publish(fangId)
-    }
-
-    @PostMapping('pause')
-    Fang pause(@RequestParam Long fangId) {
-        processMgtService.pause(fangId)
+    CommonApplicationEntity requestPublish(@RequestParam Long fangId,
+                                           @RequestParam String applyReason) {
+        return processMgtService.requestPublish(fangId, applyReason)
     }
 
     @PostMapping('un-publish')
-    Fang unPublish(@RequestParam Long fangId) {
-        processMgtService.unPublish(fangId)
+    CommonApplicationEntity requestUnPublish(@RequestParam Long fangId,
+                                             @RequestParam String applyReason) {
+        return processMgtService.requestUnPublish(fangId, applyReason)
     }
 
+    @PostMapping('pause')
+    Fang requestPause(@RequestParam Long fangId,
+                      @RequestParam String applyReason) {
+        // applyReason has no usage for now, may be used in future when the pause action need approval
+        return processMgtService.pause(fangId)
+    }
 
     @PostMapping('apply-public')
-    Fang applyPublic(@RequestParam Long fangId) {
-        processMgtService.applyPublic(fangId)
-    }
-
-    @PostMapping('confirm-public')
-    Fang confirmPublic(@RequestParam Long fangId) {
-        processMgtService.confirmPublic(fangId)
-    }
-
-    @PostMapping('reject-public')
-    Fang rejectPublic(@RequestParam Long fangId) {
-        processMgtService.rejectPublic(fangId)
+    CommonApplicationEntity requestApplyPublic(@RequestParam Long fangId,
+                                               @RequestParam String applyReason) {
+        return processMgtService.requestPublic(fangId, applyReason)
     }
 
     @PostMapping('undo-public')
-    Fang undoPublic(@RequestParam Long fangId) {
-        processMgtService.undoPublic(fangId)
+    CommonApplicationEntity requestUndoPublic(@RequestParam Long fangId,
+                                              @RequestParam String applyReason) {
+        return processMgtService.requestUndoPublic(fangId, applyReason)
     }
 
     @PostMapping('deal')
@@ -64,4 +65,5 @@ class FangProcessRest {
     CommonResp delete(@RequestParam Long fangId) {
         processMgtService.delete(fangId) ? CommonResp.succeed() : CommonResp.failed()
     }
+
 }

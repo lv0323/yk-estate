@@ -33,7 +33,7 @@ public class FangCollectPage {
         params.put("decorate", Arrays.asList(Decorate.values()));
         params.put("houseStatus", Arrays.asList(HouseStatus.values()));
         params.put("houseProcess", Arrays.asList(HouseProcess.values()));
-        params.put("houseSubProcess", Arrays.asList(HouseSubProcess.values()));
+        params.put("houseSubProcess", Arrays.asList(HouseSubProcess.NONE, HouseSubProcess.PUBLIC));
         params.put("houseTag", Arrays.asList(HouseTag.values()));
         params.put("propertyType", Arrays.asList(PropertyType.values()));
         params.put("certifType", Arrays.asList(CertifType.values()));

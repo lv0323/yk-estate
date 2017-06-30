@@ -49,8 +49,8 @@
                                         <div class="form-group sortlist">
                                             <label class="control-label" style="vertical-align:top;padding-top:5px;">区域</label>
                                             <div class="tj" id="distract">
-                                                <a ng-href="javascript:" ng-class="{'actived': '' == filter.districtId}" ng-click="setDistrict('')">不限</a>
-                                                <a ng-href="javascript:" ng-repeat="district in districtList" ng-class="{'actived': district.id == filter.districtId}" ng-click="setDistrict(district.id)">
+                                                <a href="" ng-class="{'actived': '' == filter.districtId}" ng-click="setDistrict('')">不限</a>
+                                                <a href="" ng-repeat="district in districtList" ng-class="{'actived': district.id == filter.districtId}" ng-click="setDistrict(district.id)">
                                                     {{district.name}}
                                                 </a>
                                             </div>
@@ -58,8 +58,8 @@
                                         <div class="form-group sortlist" ng-show="'' != filter.districtId">
                                             <label class="control-label" style="vertical-align:top;padding-top:5px;">子区域</label>
                                             <div class="tj" id="distract">
-                                                <a ng-href="javascript:" ng-class="{'actived': '' == filter.subDistrictId}" ng-click="setFilterType('subDistrictId', '')">不限</a>
-                                                <a ng-href="javascript:" ng-repeat="subDistrict in subDistrictList" ng-class="{'actived': subDistrict.id == filter.subDistrictId}" ng-click="setFilterType('subDistrictId', subDistrict.id)">
+                                                <a href="" ng-class="{'actived': '' == filter.subDistrictId}" ng-click="setFilterType('subDistrictId', '')">不限</a>
+                                                <a href="" ng-repeat="subDistrict in subDistrictList" ng-class="{'actived': subDistrict.id == filter.subDistrictId}" ng-click="setFilterType('subDistrictId', subDistrict.id)">
                                                     {{subDistrict.name}}
                                                 </a>
                                             </div>
@@ -67,9 +67,9 @@
                                         <div class="form-group sortlist">
                                             <label class="control-label">用途</label>
                                             <div id="usage" class="tj">
-                                                <a ng-href="javascript::" ng-class="{'actived': '' == filter.houseType}" ng-click="setFilterType('houseTypes' ,'')">不限</a>
+                                                <a href="" ng-class="{'actived': '' == filter.houseType}" ng-click="setFilterType('houseTypes' ,'')">不限</a>
                                             <#list houseTypes?if_exists as type>
-                                                <a ng-href="javascript::" ng-class="{'actived': '${type.name()}' == filter.houseType}" ng-click="setFilterType('houseType' ,'${type.name()}')">
+                                                <a href="" ng-class="{'actived': '${type.name()}' == filter.houseType}" ng-click="setFilterType('houseType' ,'${type.name()}')">
                                             ${type.getLabel()}</a>
                                             </#list>
                                             </div>
@@ -77,8 +77,8 @@
                                         <div class="form-group sortlist">
                                             <label class="control-label">面积</label>
                                             <div id="squareMetre" class="tj">
-                                                <a ng-href="javascript:void(0)" ng-class="{'actived':filter.areaType == ''}" ng-click="setFilterType('areaType', '')">不限</a>
-                                                <a ng-href="javascript:void(0)" ng-class="{'actived':filter.areaType == 'custom'}" ng-click="setFilterType('areaType', 'custom')">自定义</a>
+                                                <a href="" ng-class="{'actived':filter.areaType == ''}" ng-click="setFilterType('areaType', '')">不限</a>
+                                                <a href="" ng-class="{'actived':filter.areaType == 'custom'}" ng-click="setFilterType('areaType', 'custom')">自定义</a>
                                                 <input class="form-control" id="minSqure" placeholder="最小面积" name="minSqure" ng-model="filter.minArea" ng-blur="checkArea('minArea')" style="width:100px;">~
                                                 <input class="form-control" id="maxSqure" placeholder="最大面积" name="maxSqure" ng-model="filter.maxArea" ng-blur="checkArea('maxArea')" style="width:100px;">
                                             </div>
@@ -86,7 +86,7 @@
                                         <div class="form-group sortlist">
                                             <label class="control-label">户型</label>
                                             <div id="sCounts" class="tj">
-                                                <a ng-href="javascript::" ng-repeat="sCounts in sCountsList" value="{{sCounts.value}}" ng-class="{'actived': sCounts.value == filter.sCounts}" ng-click="setFilterType('sCounts' ,sCounts.value)">
+                                                <a href="" ng-repeat="sCounts in sCountsList" value="{{sCounts.value}}" ng-class="{'actived': sCounts.value == filter.sCounts}" ng-click="setFilterType('sCounts' ,sCounts.value)">
                                                     {{sCounts.name}}
                                                 </a>
                                             </div>
@@ -201,9 +201,9 @@
                                     <div class="form-group sortlist">
                                         <label class="control-label">成交类型</label>
                                         <div id="fouseTratype" class="pull-left tj">
-                                            <a ng-href="javascript::" ng-class="{'actived': '' == filter.bizType}" ng-click="setFilterType('bizType' ,'')">不限</a>
+                                            <a href="" ng-class="{'actived': '' == filter.bizType}" ng-click="setFilterType('bizType' ,'')">不限</a>
                                         <#list bizType?if_exists as biz>
-                                            <a ng-href="javascript::" ng-class="{'actived': '${biz.name()}' == filter.bizType}" ng-click="setFilterType('bizType' ,'${biz.name()}')">
+                                            <a href="" ng-class="{'actived': '${biz.name()}' == filter.bizType}" ng-click="setFilterType('bizType' ,'${biz.name()}')">
                                             ${biz.getLabel()}</a>
                                         </#list>
                                         </div>
@@ -218,15 +218,15 @@
                                     <div class="form-group sortlist">
                                         <label class="control-label">状态</label>
                                         <div id="houseTradeStatus" class="tj">
-                                            <a ng-href="javascript::" ng-class="{'actived': '' == filter.process}" ng-click="setFilterType('process' ,'')">默认</a>
+                                            <a href="" ng-class="{'actived': '' == filter.process}" ng-click="setFilterType('process' ,'')">默认</a>
                                         <#list houseProcess?if_exists as process>
-                                            <a ng-href="javascript::" ng-class="{'actived': '${process.name()}' == filter.process}" ng-click="setFilterType('process' ,'${process.name()}')">
+                                            <a href="" ng-class="{'actived': '${process.name()}' == filter.process}" ng-click="setFilterType('process' ,'${process.name()}')">
                                                 ${process.getLabel()}
                                             </a>
                                             <#if process.name() =='PUBLISH'>
                                                 <span class="sub-process-container">
                                                     (<#list houseSubProcess ? if_exists as subProcess>
-                                                    <a ng-href="javascript::" class="sub-process-tag" ng-class="{'actived': '${subProcess.name()}' == filter.subProcess}" ng-click="setSubProcess('${subProcess.name()}')">
+                                                    <a href="" class="sub-process-tag" ng-class="{'actived': '${subProcess.name()}' == filter.subProcess}" ng-click="setSubProcess('${subProcess.name()}')">
                                                     ${subProcess.getLabel()}</a>
                                             </#list>)
                                             </span>
@@ -237,7 +237,7 @@
                                     <div class="form-group sortlist">
                                         <label class="control-label">排序</label>
                                         <div class="tj" id="fySortlist">
-                                            <a ng-repeat="sort in fySortlist" ng-href="javascript:;" ng-click="setSort(sort.value)" ng-class="{'actived': sort.value == filter.order}">
+                                            <a ng-repeat="sort in fySortlist" href="" ng-click="setSort(sort.value)" ng-class="{'actived': sort.value == filter.order}">
                                                 {{sort.name}}
                                                 <i ng-if="sort.value == filter.order" class="fa" ng-class="{'fa-arrow-down':filter.orderType == 'DOWN','fa-arrow-up':filter.orderType == 'UP' }"></i>
                                             </a>
@@ -260,7 +260,7 @@
                                                            'badge-info':house.process.name == 'PUBLISH',
                                                            'badge-warning':house.process.name == 'UN_PUBLISH',
                                                            'badge-danger':house.process.name == 'DELEGATE'}">{{house.process.label}}</label>
-                                                    <label ng-if="house.subProcess" class="badge pull-left m-l-20 badge-primary" style="margin-left: 8px">{{house.subProcess.label}}</label>
+                                                    <label ng-if="house.process.name == 'PUBLISH'" class="badge pull-left m-l-20 badge-primary" style="margin-left: 8px">{{house.subProcess.label}}</label>
                                                     <i class="fa fa-circle  m-l-20" style="font-size:16px;" ng-class="{true:'text-rent', false:'text-sell'}[house.bizType.name == 'RENT']"></i>
                                                     <span ng-class="{true:'text-rent', false:'text-sell'}[house.bizType.name == 'RENT']" ng-show="house.publishTime">[{{(page.now - house.publishTime)/(24*6060*1000)|number:0}}]</span>
                                                     <span class="text-muted">
@@ -292,7 +292,7 @@
                                                 </div>
                                                 <div class="pull-left btn-add m-l-20">
                                                     <span class="add-info-operation m-r-20">
-                                                        <a ng-href="javascript:;" ng-click="newFollowInit(house.id, house.licenceId)">
+                                                        <a href="" ng-click="newFollowInit(house.id, house.licenceId)">
                                                             <i class="fa fa-pencil"></i>新增跟进
                                                         </a>
                                                         <a class="m-l-10" ng-href="{{'/mgt/propertyVisit/addPropertyVisit?target=.prtyVisit&licenceId='+house.licenceId}}"
@@ -301,16 +301,15 @@
                                                         </a>
                                                     </span>
                                                     <span class="m-r-20">
-                                                        <a class="m-l-10" ng-href="javascript:;" ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE"
+                                                        <a class="m-l-10" href="" ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE"
                                                            ng-click="changeStatus(page.status.PUBLISH, house.id)">
-                                                            <i class="fa fa-pencil"></i>上架
+                                                            <i class="fa fa-pencil"></i>申请上架
                                                         </a>
-                                                        <a class="m-l-10" ng-href="javascript:;"
-                                                           ng-click="changeStatus(page.status.UN_PUBLISH, house.id)"  ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.PUBLISH || house.process.name == page.status.PAUSE">
-                                                            <i class="fa fa-pencil"></i>下架
+                                                        <a class="m-l-10" href=""
+                                                           ng-click="changeStatus(page.status.UN_PUBLISH, house.id)"  ng-show="house.process.name == page.status.DELEGATE || (house.process.name == page.status.PUBLISH && house.subProcess.name == 'NONE') || house.process.name == page.status.PAUSE">
+                                                            <i class="fa fa-pencil"></i>申请下架
                                                         </a>
-                                                        <a class="m-l-10" ng-href="javascript:;"
-                                                           ng-click="changeStatus(page.status.PAUSE, house.id)"  ng-show="house.process.name == page.status.DELEGATE || house.process.name == page.status.PUBLISH || house.process.name == page.status.UN_PUBLISH">
+                                                        <a class="m-l-10" href="" ng-click="changeStatus(page.status.PAUSE, house.id)"  ng-show="house.process.name == page.status.DELEGATE || (house.process.name == page.status.PUBLISH && house.subProcess.name == 'NONE')">
                                                             <i class="fa fa-pencil"></i>暂缓
                                                         </a>
                                                         <a class="m-l-10" ng-href="{{'/mgt/contract/addDeal?target=.contract&licenceId='+house.licenceId}}"
@@ -319,18 +318,12 @@
                                                         </a>
                                                     </span>
                                                     <span ng-show="house.process.name == page.status.PUBLISH" class="sub-process-opration">
-                                                        <a class="m-l-10" ng-href="javascript:;" ng-show="house.subProcess == null" ng-click="changeStatus(page.status.APPLY_PUBLISH, house.id)">
+                                                        <a class="m-l-10" href="" ng-show="house.subProcess.name == 'NONE'" ng-click="changeStatus(page.status.APPLY_PUBLISH, house.id)">
                                                             <i class="fa fa-pencil"></i>申请发布
                                                         </a>
-                                                        <a class="m-l-10" ng-href="javascript:;" ng-show="house.subProcess && house.subProcess.name == 'PRE_PUBLIC' " ng-click="changeStatus(page.status.REJECT_PUBLISH, house.id)">
-                                                            <i class="fa fa-pencil"></i>拒绝发布
-                                                        </a>
-                                                        <a class="m-l-10" ng-href="javascript:;" ng-show="house.subProcess && house.subProcess.name == 'PRE_PUBLIC' " ng-click="changeStatus(page.status.CONFIRM_PUBLISH, house.id)">
-                                                            <i class="fa fa-pencil"></i>确认发布
-                                                        </a>
-                                                        <a class="m-l-10" ng-href="javascript:;" ng-show="house.subProcess && house.subProcess.name == 'PUBLIC' " ng-click="changeStatus(page.status.UNDO_PUBLISH, house.id)">
-                                                            <i class="fa fa-pencil"></i>撤销发布
-                                                        </a>
+                                                        <a class="m-l-10" ng-href="javascript:;" ng-show="house.subProcess.name == 'PUBLIC' " ng-click="changeStatus(page.status.UNDO_PUBLISH, house.id)">
+-                                                           <i class="fa fa-pencil"></i>撤销发布
+-                                                       </a>
                                                     </span>
                                                 </div>
                                             </div>

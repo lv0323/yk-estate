@@ -44,6 +44,7 @@ ext {
             spring_boot_starter         : "org.springframework.boot:spring-boot-starter:$ver.spring_boot",
             spring_boot_starter_web     : "org.springframework.boot:spring-boot-starter-web:$ver.spring_boot",
             spring_boot_starter_undertow: "org.springframework.boot:spring-boot-starter-undertow:$ver.spring_boot",
+            spring_boot_starter_test    : "org.springframework.boot:spring-boot-starter-test:$ver.spring_boot",
 
             // template engine
             freemarker                  : "org.freemarker:freemarker:$ver.freemarker",
