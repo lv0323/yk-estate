@@ -85,6 +85,8 @@ require(['main-app',
                         return item;
                     });
                     $scope.$apply();
+                }).fail(function(res){
+                    SweetAlertHelp.fail({message: res && res.message})
                 });
             };
             _this.list();
