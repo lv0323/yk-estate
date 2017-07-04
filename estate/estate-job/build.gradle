@@ -23,6 +23,9 @@ bootRun() {
     jvmArgs = ["-Dlogback.level=INFO"]
 }
 
+dependencies {
+    compile(lib.spring_boot_starter_web)
+}
 
 tasks.withType(AbstractCompile) {
     options.encoding = "UTF-8"
