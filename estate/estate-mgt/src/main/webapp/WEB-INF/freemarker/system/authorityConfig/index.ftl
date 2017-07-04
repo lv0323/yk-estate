@@ -206,7 +206,7 @@
                                                 <h4>修改权限</h4>
                                                 <div class="form-inline">
                                                     <div class="clearfix">
-                                                        <label class="pull-left control-label">上架房源：</label>
+                                                        <label class="pull-left control-label">房源有效：</label>
                                                         <div class="col-sm-4">
                                                             <select select-picker class="selectpicker show-menu-arrow form-control"
                                                                     ng-model="ctrl.authorityFang.FANG_PUBLISH">
@@ -217,7 +217,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="clearfix m-t-7">
-                                                        <label class="pull-left control-label">暂缓房源：</label>
+                                                        <label class="pull-left control-label">房源暂缓：</label>
                                                         <div class="col-sm-4">
                                                             <select select-picker class="selectpicker show-menu-arrow form-control"
                                                                     ng-model="ctrl.authorityFang.FANG_PAUSE">
@@ -228,7 +228,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="clearfix m-t-7">
-                                                        <label class="pull-left control-label">下架房源：</label>
+                                                        <label class="pull-left control-label">房源无效：</label>
                                                         <div class="col-sm-4">
                                                             <select select-picker class="selectpicker show-menu-arrow form-control"
                                                                     ng-model="ctrl.authorityFang.FANG_UN_PUBLISH">
@@ -239,7 +239,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="clearfix m-t-7">
-                                                        <label class="pull-left control-label">上架已下架的房源：</label>
+                                                        <label class="pull-left control-label">无效房源重置有效：</label>
                                                         <div class="col-sm-4">
                                                             <select select-picker class="selectpicker show-menu-arrow form-control"
                                                                     ng-model="ctrl.authorityFang.FANG_RE_PUBLISH">
@@ -312,19 +312,11 @@
                                     <@checkPermission value='CT_YK'>
                                         <div class="item" id="modify-authority">
                                             <div class="tweet-wrapper clearfix">
-                                                <h4>发布管理</h4>
+                                                <h4>房源审批</h4>
                                                 <div class="form-inline">
                                                     <div class="clearfix checkbox checkbox-nice">
-                                                        <input id="100501" ng-model="ctrl.authorityFang.FANG_CONFIRM_PUBLIC" type="checkbox">
-                                                        <label for="100501">确认发布外网：</label>
-                                                    </div>
-                                                    <div class="clearfix checkbox checkbox-nice" >
-                                                        <input id="100502" ng-model="ctrl.authorityFang.FANG_REJECT_PUBLIC" type="checkbox">
-                                                        <label for="100502">拒绝发布外网：</label>
-                                                    </div>
-                                                    <div class="clearfix checkbox checkbox-nice">
-                                                        <input id="100503" ng-model="ctrl.authorityFang.FANG_UNDO_PUBLIC" type="checkbox">
-                                                        <label for="100503">撤销发布外网：</label>
+                                                        <input id="100501" ng-model="ctrl.authorityFang.FANG_APPLICATION" type="checkbox">
+                                                        <label for="100501">房源审批：</label>
                                                     </div>
                                                 </div>
                                             </div>

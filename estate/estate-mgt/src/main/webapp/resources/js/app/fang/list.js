@@ -39,13 +39,11 @@ require(['main-app',
                     timer: null
                 },
                 confirmText: {
-                    'PUBLISH': '确认上架?',
-                    'UN_PUBLISH': '确认下架?',
-                    'PAUSE': '确认暂缓?',
-                    'APPLY_PUBLISH': '申请发布?',
-                    'REJECT_PUBLISH': '拒绝发布?',
-                    'CONFIRM_PUBLISH': '确认发布?',
-                    'UNDO_PUBLISH': '撤销发布?'
+                    'PUBLISH': '请输入申请理由?',
+                    'UN_PUBLISH': '请输入申请理由?',
+                    'PAUSE': '请输入理由?',
+                    'APPLY_PUBLISH': '请输入申请理由?',
+                    'UNDO_PUBLISH': '请输入申请理由?'
                 }
             };
             /*页面相关内容*/

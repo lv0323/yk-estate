@@ -303,11 +303,11 @@
                                                     <span class="m-r-20">
                                                         <a class="m-l-10" href="" ng-show="house.process.name == page.status.DELEGATE|| house.process.name == page.status.UN_PUBLISH || house.process.name == page.status.PAUSE"
                                                            ng-click="changeStatus(page.status.PUBLISH, house.id)">
-                                                            <i class="fa fa-pencil"></i>申请上架
+                                                            <i class="fa fa-pencil"></i>申请有效
                                                         </a>
                                                         <a class="m-l-10" href=""
                                                            ng-click="changeStatus(page.status.UN_PUBLISH, house.id)"  ng-show="house.process.name == page.status.DELEGATE || (house.process.name == page.status.PUBLISH && house.subProcess.name == 'NONE') || house.process.name == page.status.PAUSE">
-                                                            <i class="fa fa-pencil"></i>申请下架
+                                                            <i class="fa fa-pencil"></i>申请无效
                                                         </a>
                                                         <a class="m-l-10" href="" ng-click="changeStatus(page.status.PAUSE, house.id)"  ng-show="house.process.name == page.status.DELEGATE || (house.process.name == page.status.PUBLISH && house.subProcess.name == 'NONE')">
                                                             <i class="fa fa-pencil"></i>暂缓

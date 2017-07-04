@@ -23,13 +23,13 @@ public class CommonApplicationEntity {
     private Date updateTime;
 
     public enum Type implements LabelEnum {
-        PUBLISH_HOUSE("上架"),
-        UN_PUBLISH_HOUSE("下架"),
+        PUBLISH_HOUSE("申请有效"),
+        UN_PUBLISH_HOUSE("申请无效"),
         PAUSE_HOUSE("暂缓"),
         SUCCESS_HOUSE("成交"),
 
-        UN_PUBLIC_HOUSE("撤销发布"),
-        PUBLIC_HOUSE("发布外网"),
+        UN_PUBLIC_HOUSE("申请撤销发布"),
+        PUBLIC_HOUSE("申请发布外网"),
 
         FANG_TAG_APPROVAL("更改标签");
         private final String label;

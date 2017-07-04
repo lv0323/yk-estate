@@ -13,7 +13,7 @@
                 </a>
             </li>
             <li class="active">
-                我的房源申请列表
+                我的房源审批申请
             </li>
         </ol>
     </section>
@@ -84,7 +84,7 @@
                                                 </div>
                                                 <div class="clearfix m-t-10 text-muted f16">
                                                     <span>申请编号: <span class="text-blue">{{applicationDTO.application.id}}</span></span>
-                                                    <span class="badge badge-primary m-l-10" ng-bind="'申请'+ applicationDTO.application.type.label"></span>
+                                                    <span class="badge badge-primary m-l-10" ng-bind="applicationDTO.application.type.label"></span>
                                                     <span class="m-l-10">申请人:<span class="text-blue">{{applicationDTO.applicant.departmentName}}</span>~<span class="text-blue">{{applicationDTO.applicant.name}}</span></span>
                                                     <span class="m-l-10">申请原因: <span class="text-blue">{{applicationDTO.application.applyReason}}</span></span>
                                                     <span class="m-l-10" ng-show="applicationDTO.application.status.name != 'NEW'">审批人: <span ng-class="{'text-success':applicationDTO.application.status.name=='APPROVED','text-danger':applicationDTO.application.status.name=='REJECTED'||applicationDTO.application.status.name=='CLOSED'}">{{applicationDTO.reviewer.departmentName}}~{{applicationDTO.reviewer.name}}</span></span>
