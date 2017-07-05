@@ -38,14 +38,16 @@ public class SmsService {
     RestContext restContext;
     @Autowired
     SmsClient smsClient;
-    @Value("${service.sms.check.code.template.id}")
-    Long templateId;
+    @Value("${service.sms.check.code.template.di.chan.id}")
+    Long diChanId;
+    @Value("${service.sms.check.code.template.yin.jia.id}")
+    Long yinJiaId;
 
     private boolean isRandomSend() {
         return YN.Y == YN.valueOf(environment.getProperty("message.sms.code.random.enable"));
     }
 
-    public SmsResponse sendCheckSms(SmsResource smsResource) {
+    public SmsResponse sendCheckSms(SmsResource smsResource, boolean... fromMgt) {
         DataBinder dataBinder = new DataBinder(smsResource, "sms");
         dataBinder.setValidator(new SmsResourceValidator(userMapper));
         dataBinder.validate();
@@ -61,6 +63,7 @@ public class SmsService {
             smsCode = CommonUtil.randomNumberSeq(6);
         }
         try {
+            long templateId = fromMgt.length > 0 && fromMgt[0] ? diChanId : yinJiaId;
             if (!smsId.equals(smsClient.sendSms(smsId, smsResource.getMobile(), templateId, smsCode, serial))) {
                 throw new ValidateException("error.sms.send", "短信发送失败");
             }
