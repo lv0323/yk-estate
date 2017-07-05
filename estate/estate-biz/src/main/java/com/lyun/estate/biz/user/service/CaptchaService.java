@@ -54,10 +54,12 @@ public class CaptchaService {
         return captcha.getImage();
     }
 
-    public boolean isCaptchaCorrect(int clientId, String id, String code) {
+    public boolean isCaptchaCorrect(int clientId, String id, String code, boolean evictAfterSuccess) {
         String captchaStr = clientId + ":" + id + ":" + code.toLowerCase();
         boolean result = cacheManager.getCache(EstateCacheConfig.CAPTCHA_CACHE).get(captchaStr) != null;
-        cacheManager.getCache(EstateCacheConfig.CAPTCHA_CACHE).evict(captchaStr);
+        if (result && evictAfterSuccess) {
+            cacheManager.getCache(EstateCacheConfig.CAPTCHA_CACHE).evict(captchaStr);
+        }
         return result;
     }
 }
