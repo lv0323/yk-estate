@@ -5,9 +5,10 @@ require(['main-app',
         contextPath + '/js/plugins/SweetAlert/SweetAlertHelp.js',
         contextPath + '/js/service/employee-service.js','sweetalert'],
     function (mainApp, IdentityService, ValidationService, UtilService, SweetAlertHelp, EmployeeService) {
-
+        var activeSmsType ='EMPLOYEE_ACTIVE';
         var LoginModule=angular.module('LoginModule',[]);
         LoginModule.controller("LoginCtrl", ['$scope','$timeout', '$interval','$window','$location', function($scope, $timeout, $interval, $window, $location) {
+            var activeSmsType ='EMPLOYEE_ACTIVE';
             /*初始化和重置数据*/
             function resetData(){
                 $scope.state={
@@ -73,7 +74,7 @@ require(['main-app',
                     return;
                 }
                 $scope.activeData.sendSMS = false;
-                IdentityService.sendSMS({clientId:clientId, code:$scope.activeData.captcha,id:$scope.activeCaptchaId, mobile:$scope.activeData.mobile, type: "REGISTER"}).done(function(response){
+                IdentityService.sendSMS({clientId:clientId, code:$scope.activeData.captcha,id:$scope.activeCaptchaId, mobile:$scope.activeData.mobile, type: activeSmsType}).done(function(response){
                     $scope.smsData=response;
                     var second = 60;
                     $scope.activeData.newSmsText = second + 's';
@@ -110,7 +111,8 @@ require(['main-app',
                     +'&id='+ $scope.smsData.sms_id
                     +'&mobile='+$scope.smsData.mobile
                     +'&code=' + $scope.activeData.sms
-                    +'&type=REGISTER&clientId='+clientId}).done(function(){
+                    +'&type=' +activeSmsType
+                    +'&clientId='+clientId}).done(function(){
                     SweetAlertHelp.success({message:'激活成功!'});
                     resetData();
                 }).fail(function(response){

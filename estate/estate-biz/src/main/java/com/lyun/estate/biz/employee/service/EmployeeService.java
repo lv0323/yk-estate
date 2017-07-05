@@ -293,4 +293,15 @@ public class EmployeeService {
     public boolean setIsBoss(Long employeeId, boolean isBoss) {
         return repo.setIsBoss(employeeId, isBoss) > 0;
     }
+
+    public boolean unActivated(String mobile, String secretKey){
+        Objects.requireNonNull(mobile);
+        Employee employee = repo.unActivated(mobile, secretKey);
+        if (employee == null) {
+            throw new EstateException(ExCode.NOT_FOUND, "手机号和授权码", "员工");
+        } else if (!Strings.isNullOrEmpty(employee.getPassword())) {
+            throw new EstateException(ExCode.EMPLOYEE_ACTIVE);
+        }
+        return true;
+    }
 }

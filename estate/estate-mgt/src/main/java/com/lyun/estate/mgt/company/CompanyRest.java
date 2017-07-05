@@ -93,6 +93,9 @@ public class CompanyRest {
         return companyMgtService.findDTO(id);
     }
 
+    @GetMapping("/self")
+    CompanyDTO self() {return companyMgtService.findSelfDTO();}
+
     @GetMapping("list-signing")
     PageList<CompanySigningDTO> listSigning(@RequestParam(required = false) Long companyId,
                                             @RequestHeader(PageBoundsArgumentResolver.PAGE_HEADER) PageBounds pageBounds) {

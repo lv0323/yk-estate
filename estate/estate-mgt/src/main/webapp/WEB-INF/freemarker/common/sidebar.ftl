@@ -287,7 +287,13 @@
                 </ul>
             </li>
         </@>
-
+        <li class="treeview sys">
+            <a href="/mgt/franchisee/self"><i class="fa fa-building" aria-hidden="true"></i> <span>公司信息</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+        </li>
         </ul>
         <!-- /.sidebar-menu -->
     </section>

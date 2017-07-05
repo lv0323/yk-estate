@@ -79,6 +79,9 @@ define(contextPath + '/js/service/identity-service.js',
 
             return requestService.post('/api/auth/active', params, header);
         };
+        IdentityService.unActivated = function (params, header) {
+            return requestService.get('/api/auth/unActivated', params, header);
+        };
 
         return IdentityService;
     });

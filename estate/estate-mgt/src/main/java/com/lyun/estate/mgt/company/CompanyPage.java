@@ -127,4 +127,12 @@ public class CompanyPage {
         params.put("username",service.getUsername());
         return new ModelAndView("/franchisee/editCompanyDetail", params);
     }
+
+    @GetMapping("/self")
+    public ModelAndView self() {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("avatarUrl",service.getAvatar());
+        params.put("username",service.getUsername());
+        return new ModelAndView("/company/index", params);
+    }
 }

@@ -25,18 +25,18 @@
                 <input type="text" class="form-control" ng-model="activeData.secretKey" placeholder="请输入授权码">
             </div>
             <div class="form-group has-feedback">
-                <input type="text" class="form-control" ng-model="activeData.mobile" placeholder="请输入手机号">
+                <input type="text" class="form-control" ng-model="activeData.mobile" ng-pattern="/1\d{10}/" required placeholder="请输入手机号" ng-change="mobileChange()">
             </div>
                 <div class="form-group has-feedback captcha-container">
                     <input type="text" class="form-control" ng-model="activeData.captcha" placeholder="请输入验证码">
                     <img id="captcha-image" alt="验证码" title="验证码" ng-click="loadActiveCaptcha()" ng-src="{{activeCaptcha}}">
                 </div>
-            <button  type="button" class="btn btn-block login-btn" ng-click="nextStep()">下一步</button>
+            <button  type="button" class="btn btn-block login-btn" ng-click="nextStep()" ng-disabled="state.disableNext">下一步</button>
         </div>
         <div ng-show=" state.step === 'step2'">
             <div class="form-group has-feedback sms-container">
                 <input type="text" class="form-control" ng-model="activeData.sms" placeholder="请输入短信验证码">
-                <a class="btn btn-primary get-sms" ng-click="getActiveSMS()" ng-disabled="!activeData.mobile||!activeData.captcha||!activeData.sendSMS">{{activeData.smsText}}</a>
+                <button class="btn btn-primary get-sms" ng-click="getActiveSMS()" ng-disabled="!activeData.mobile||!activeData.captcha||!activeData.sendSMS">{{activeData.smsText}}</button>
             </div>
             <div class="form-group has-feedback">
                 <input type="password" class="form-control" ng-model="activeData.password" placeholder="请输入密码">
@@ -46,7 +46,10 @@
             </div>
             <input type="submit" class="btn btn-block login-btn" value="激活"></input>
         </div>
-        <div class="bottom-content"><a class="to-active" ng-href="{{'/mgt/index'}}">去登录</a></div>
+        <div class="bottom-content">
+            <a ng-clock ng-if="state.step == 'step2'" href="" ng-click="state.step = 'step1';state.disableNext=false">上一步</a>
+            <a class="to-active" ng-href="{{'/mgt/index'}}">去登录</a>
+        </div>
     </form>
 </div>
     <!-- /.login-box-body -->
