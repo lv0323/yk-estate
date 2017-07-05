@@ -29,6 +29,8 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 buildings :[],
                 showBuilding:{},
                 modifyBuilding:{},
+                modifyCommunityPart_1:{},
+                modifyCommunityPart_2:{},
                 config:{
                     showImage: false
                 }
@@ -224,6 +226,77 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 $('#showBuilding').modal({'show':true,backdrop:'static'});
             };
             /*end 查看栋座信息*/
+
+            /*编辑小区信息*/
+            _this.showCommunityModifyPart_1 = function(){
+                $scope.communityModifyFormPart_1.$setPristine();
+
+                _this.data.modifyCommunityPart_1 = {
+                    name: _this.data.detail.name,
+                    alias: _this.data.detail.alias,
+                    structureStr: _this.data.detail.structureStr,
+                    propertyFee: _this.data.detail.propertyFee,
+                    buildedYear : _this.data.detail.buildedYear,
+                    address : _this.data.detail.address,
+                    buildings : _this.data.detail.buildings,
+                    houses:_this.data.detail.houses
+                }
+
+                $('#communityModifyPart_1').modal({'show':true,backdrop:'static'});
+            };
+
+            _this.communityUpdatePart_1 = function(){
+                if($scope.communityModifyFormPart_1.$invalid||!$scope.communityModifyFormPart_1.$dirty){
+                    if (!_this.data.modifyCommunityPart_1.name) {
+                        _this.commonInputWarn('communityName','communityModifyFormPart_1');
+                    }
+                    return;
+                }
+                var params = angular.copy(_this.data.modifyCommunityPart_1);
+                params.id = xiaoquId;
+
+                FangService.updateCommunity(params).then(function(response){
+                    SweetAlertHelp.success();
+                    $('#communityModifyPart_1').modal('hide');
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
+                });
+            };
+
+            _this.showCommunityModifyPart_2 = function(){
+                $scope.communityModifyFormPart_2.$setPristine();
+
+                _this.data.modifyCommunityPart_2 = {
+                    developers: _this.data.detail.developers,
+                    developYear: _this.data.detail.developYear,
+                    parkingSpace: _this.data.detail.parkingSpace,
+                    parkingRate: _this.data.detail.parkingRate,
+                    greenRate : _this.data.detail.greenRate,
+                    propertyCompany : _this.data.detail.propertyCompany,
+                    propertyCompanyPhone : _this.data.detail.propertyCompanyPhone,
+                    parkingFee:_this.data.detail.parkingFee,
+                    containerRate:_this.data.detail.containerRate
+                }
+
+                $('#communityModifyPart_2').modal({'show':true,backdrop:'static'});
+            };
+
+            _this.communityUpdatePart_2 = function(){
+                if($scope.communityModifyFormPart_2.$invalid||!$scope.communityModifyFormPart_2.$dirty){
+                    return;
+                }
+                var params = angular.copy(_this.data.modifyCommunityPart_2);
+                params.id = xiaoquId;
+
+                FangService.updateCommunity(params).then(function(response){
+                    SweetAlertHelp.success();
+                    $('#communityModifyPart_2').modal('hide');
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
+                });
+            };
+
+
             /*编辑栋座信息*/
             _this.buildingModify = function(item){
                 $scope.buildingForm.$setPristine();

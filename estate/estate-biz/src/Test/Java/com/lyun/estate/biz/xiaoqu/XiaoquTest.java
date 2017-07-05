@@ -20,7 +20,7 @@ public class XiaoquTest {
     private MgtXiaoQuService mgtXiaoQuService;
 
 
-//    @Ignore
+    @Ignore
     @Test
     public void test() {
         mgtXiaoQuService.createXiaoQu("小明测试", "测试", 1, 80);

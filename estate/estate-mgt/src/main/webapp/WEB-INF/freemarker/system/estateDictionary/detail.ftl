@@ -26,6 +26,9 @@
                         <div class="box box-solid">
                             <div class="box-header" style="border-bottom: 1px solid #ddd;">
                                 <h3 class="box-title">基本信息</h3>
+                                <div class="box-tools">
+                                    <a href="javascript:void(0);" class="pull-right btn btn-white" ng-click="ctrl.showCommunityModifyPart_1()"><i class="fa fa-plus"></i>编辑</a>
+                                </div>
                                 <#--<div class="box-tools">-->
                                     <#--<a id="uppic" class="btn btn-white"><i class="fa fa-upload"></i> 上传图片</a>-->
                                 <#--</div>-->
@@ -41,33 +44,8 @@
                                                 <span class="pull-right">{{ctrl.virtualMap.count}}张</span>
                                             </div>
                                         </div>
-                                        <#--<div class="jssorSlideWrapper" id="xiaoquSlider">-->
-                                            <#--<div data-u="slides" class="jssorSlideContainer">-->
-                                                <#--<div>-->
-                                                    <#--<img data-u="image" src="../../img/house/fcz.png" />-->
-                                                    <#--<img data-u="thumb" src="../../img/house/fcz.png" />-->
-                                                <#--</div>-->
-                                                <#--<div>-->
-                                                    <#--<img data-u="image" src="../../img/house/rent.png" />-->
-                                                    <#--<img data-u="thumb" src="../../img/house/rent.png" />-->
-                                                <#--</div>-->
-                                            <#--</div>-->
-                                            <#--<div data-u="thumbnavigator" class="thumbnavigator" data-autocenter="1">-->
-                                                <#--<div  class="thumbnavigator-content"></div>-->
-                                                <#--<div data-u="slides" style="cursor: default;">-->
-                                                    <#--<div data-u="prototype" class="p">-->
-                                                        <#--<div class="w">-->
-                                                            <#--<div data-u="thumbnailtemplate" class="t"></div>-->
-                                                        <#--</div>-->
-                                                        <#--<div class="c"></div>-->
-                                                    <#--</div>-->
-                                                <#--</div>-->
-                                            <#--</div>-->
-                                            <#--<span data-u="arrowleft" class="jssora02l" data-autocenter="2"></span>-->
-                                            <#--<span data-u="arrowright" class="jssora02r"  data-autocenter="2"></span>-->
-                                        <#--</div>-->
-
                                     </div>
+
                                     <div class="col-lg-6 col-sm-12 p-l-0" id="xiaoquInfoList">
                                         <dl class="dl-horizontal">
                                             <dt class="direct-chat-timestamp">楼盘名称：</dt>
@@ -179,6 +157,9 @@
                             <div class="box-header" style="border-bottom: 1px solid #ddd;">
                                 <div class="box-title">开发商/物业</div>
                                 <div class="box-tools">
+                                    <a href="javascript:void(0);" class="pull-right btn btn-white" ng-click="ctrl.showCommunityModifyPart_2()"><i class="fa fa-plus"></i>编辑</a>
+                                </div>
+                                <div class="box-tools">
                                 </div>
                             </div>
                             <div class="box-body">
@@ -278,7 +259,156 @@
             </div>
         </div>
     </div>
-    <!-- 编辑 -->
+    <!-- 编辑小区详情 -->
+    <div class="modal fade" id="communityModifyPart_1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form name="communityModifyFormPart_1">
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">楼盘字典:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityName" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_1.name" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">楼盘别名:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityAlias" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_1.alias" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">建筑结构:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityStructureStr" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_1.structureStr" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">物业费:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityPropertyFee" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_1.propertyFee" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">竣工年份:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityBuildedYear" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_1.buildedYear" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">楼盘地址:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityAddress" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_1.address" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">栋数:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityBuildings" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_1.buildings" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">户数:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityHouses" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_1.houses" required/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.communityUpdatePart_1()">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="communityModifyPart_2" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form name="communityModifyFormPart_2">
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">开发商:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityDevelopers" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_2.developers" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">开发年代:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityDevelopYear" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_2.developYear" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">车位数量:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityParkingSpace" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_2.parkingSpace" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">车位使用率:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityParkingRate" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_2.parkingRate" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">车位租金:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityParkingFee" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_2.parkingFee" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">绿化率:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityGreenRate" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_2.greenRate" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">物业公司:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityPropertyCompany" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_2.propertyCompany" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">物业公司电话:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityPropertyCompanyPhone" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_2.propertyCompanyPhone" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">容积率:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityContainerRate" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.modifyCommunityPart_2.containerRate" required/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.communityUpdatePart_2()">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 编辑楼栋 -->
     <div class="modal fade" id="buildingModify" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
