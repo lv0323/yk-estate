@@ -34,7 +34,7 @@ require(['main-app',
                         $scope.loadApplications();
                     }).fail(function(response){
                         SweetAlertHelp.fail({message:response&&response.message});
-                    });fangCollect
+                    });
                 });
             };
 
