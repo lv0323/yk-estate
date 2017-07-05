@@ -2,6 +2,9 @@ package com.lyun.estate.biz.xiaoqu.service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.github.stuxuhai.jpinyin.PinyinException;
+import com.github.stuxuhai.jpinyin.PinyinFormat;
+import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.def.FileProcess;
@@ -15,13 +18,18 @@ import com.lyun.estate.biz.support.def.DomainType;
 import com.lyun.estate.biz.support.settings.SettingProvider;
 import com.lyun.estate.biz.support.settings.def.NameSpace;
 import com.lyun.estate.biz.support.settings.entity.Setting;
+import com.lyun.estate.biz.xiaoqu.entity.CommunityEntity;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQu;
+import com.lyun.estate.biz.xiaoqu.entity.XiaoQuEntity;
 import com.lyun.estate.biz.xiaoqu.repository.MgtXiaoQuRepository;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
+import com.lyun.estate.core.supports.types.YN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 /**
@@ -87,5 +95,55 @@ public class MgtXiaoQuServiceImpl implements MgtXiaoQuService {
                     .orElse(xiaoQuDefaultImg.getFileURI()));
         }
         return result;
+    }
+
+    @Transactional
+    @Override
+    public XiaoQuEntity createXiaoQu(String name, String alias, long cityId, long subDistrictId) {
+        StringBuilder kw = new StringBuilder();
+
+        try {
+            kw.append(PinyinHelper.convertToPinyinString(name, "", PinyinFormat.WITHOUT_TONE));
+            kw.append(";");
+            kw.append(PinyinHelper.getShortPinyin(name));
+            kw.append(";");
+
+            kw.append(PinyinHelper.convertToPinyinString(alias, "", PinyinFormat.WITHOUT_TONE));
+            kw.append(";");
+            kw.append(PinyinHelper.getShortPinyin(alias));
+            kw.append(";");
+
+        } catch (PinyinException e) {
+            e.printStackTrace();
+        }
+
+
+        CommunityEntity communityEntity = new CommunityEntity() {{
+            setName(name);
+            setAlias(alias);
+            setCityId(cityId);
+            setSubDistrictId(subDistrictId);
+            setNameKw(kw.toString());
+            setIsDeleted(YN.N);
+        }};
+
+        mgtXiaoQuRepository.createCommunity(communityEntity);
+
+        XiaoQuEntity xiaoQuEntity = new XiaoQuEntity() {{
+            setAvgPrice(-1);
+            setRentHouseCount(0);
+            setSellHouseCount(0);
+            setCommunityId(communityEntity.getId());
+            setRanking(new BigDecimal(0));
+        }};
+
+        mgtXiaoQuRepository.createXiaoQu(xiaoQuEntity);
+
+        return xiaoQuEntity;
+    }
+
+    @Override
+    public int updateXiaoQu(CommunityEntity communityEntity) {
+        return mgtXiaoQuRepository.updateCommunity(communityEntity);
     }
 }
