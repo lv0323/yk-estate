@@ -19,6 +19,7 @@ public enum DomainType {
     USER("用户"),
     NEWS("新闻"),
     FRANCHISEE("加盟商"),
+    LOU_PAN("楼盘"),
     ;
 
     private final String label;

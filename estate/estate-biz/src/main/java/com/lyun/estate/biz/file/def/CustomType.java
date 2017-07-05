@@ -8,7 +8,8 @@ public enum CustomType {
     OWNER_ID_CARD("房东身份证"),
     AVATAR("头像"),
     APK("APK"),
-    NEWS_IMG("新闻标题"),;
+    NEWS_IMG("新闻标题"),
+    LP_VIDEO("楼盘视频"),;
 
     private String label;
 
