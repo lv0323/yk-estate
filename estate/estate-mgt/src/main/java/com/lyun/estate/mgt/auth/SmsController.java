@@ -17,7 +17,7 @@ public class SmsController {
     @Autowired
     private SmsService smsService;
 
-    @CheckCaptcha
+    @CheckCaptcha(evictAfterSuccess = false)
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public SmsResponse sendMessage(@RequestBody SmsResource smsResource,
                                    @RequestHeader(value = CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {

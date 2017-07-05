@@ -23,6 +23,10 @@ public class CaptchaAspect {
     RestContext restContext;
 
     public void check(Captcha captcha) {
+        check(captcha, true);
+    }
+
+    public void check(Captcha captcha, boolean evictAfterSuccess) {
         if (!ValidateUtil.isClientId(captcha.getClientId())) {
             throw new ValidateException("clientId.not.exists", "客户端编号不存在");
         }
@@ -33,7 +37,7 @@ public class CaptchaAspect {
             throw new ValidateException("code.isNull", "图片验证码不能为空");
         }
 
-        if (!captchaService.isCaptchaCorrect(captcha.getClientId(), captcha.getId(), captcha.getCode())) {
+        if (!captchaService.isCaptchaCorrect(captcha.getClientId(), captcha.getId(), captcha.getCode(), evictAfterSuccess)) {
             throw new ValidateException("code.illegal", "图片验证码不正确");
         }
         restContext.setClientId(captcha.getClientId() + "");
@@ -44,7 +48,7 @@ public class CaptchaAspect {
         Arrays.stream(joinPoint.getArgs())
                 .filter(a -> a != null && Captcha.class.isAssignableFrom(a.getClass()))
                 .findAny()
-                .ifPresent(o -> check((Captcha) o));
+                .ifPresent(o -> check((Captcha) o, checkCaptcha.evictAfterSuccess()));
     }
 
 
