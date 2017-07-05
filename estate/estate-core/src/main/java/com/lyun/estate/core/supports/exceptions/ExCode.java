@@ -61,6 +61,7 @@ public enum ExCode {
     //file
     FILE_NOT_EXIST("该文件不存在"),
     FILE_IMG_SIZE_ERROR("图片尺寸不是{}*{}"),
+    FILE_NOT_VIDEO("该文件不是视频"),
     //permission
     PERMISSION_ERROR("无权限进行该操作"),
     PERMISSION_OWNERSHIP_ERROR("没有操作对象的权限:{}.{}"),
