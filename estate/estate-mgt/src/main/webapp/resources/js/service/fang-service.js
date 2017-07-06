@@ -127,9 +127,6 @@ define(contextPath+'/js/service/fang-service.js',
         FangService.getLicense = function(params, header){
             return RequestService.get('/api/fang/licence', params, header);
         };
-        FangService.updateCommunity = function(params, header){
-            return RequestService.get('api/xiao-qu/update', params, header);
-        };
 
         return FangService;
     });

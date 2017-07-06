@@ -1,7 +1,6 @@
 package com.lyun.estate.biz.xiaoqu;
 
 import com.lyun.estate.biz.config.BizConfig;
-import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.service.MgtXiaoQuService;
 import com.lyun.estate.biz.xiaoqu.entity.CommunityEntity;
 import com.lyun.estate.core.config.CoreConfig;
@@ -30,7 +29,7 @@ public class XiaoquTest {
             setBuildedYear(2017);
             setBuildings(16);
             setHouses(1024);
-            setStructureType(StructureType.OTHER);
+            setStructureType(5);
             setDevelopYear(2016);
             setPropertyFee("很贵");
             setPropertyCompany("你这样我要报警了");

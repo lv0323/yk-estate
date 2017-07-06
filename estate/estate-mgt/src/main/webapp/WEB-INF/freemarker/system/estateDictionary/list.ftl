@@ -38,9 +38,9 @@
                                 <div class="box-header with-border">
                                     <h3 class="box-title">楼盘字典</h3>
                                     <!-- 客户可以自己新增楼盘字典，增加入口 -->
-                                    <#--<div class="box-tools">
-                                        <a class="btn btn-white" href="javascript:void(0);"><i class="fa fa-plus"></i> 新增楼盘</a>
-                                    </div>-->
+                                    <div class="box-tools">
+                                        <a href="javascript:void(0);" class="pull-right btn btn-white" ng-click="ctrl.showCreateNewXiaoquDialog()"><i class="fa fa-plus"></i>新增楼盘</a>
+                                    </div>
                                 </div>
                                 <div class="box-body" ng-cloak>
                                     <div id="searchList">
@@ -92,6 +92,50 @@
             </div>
         </div>
     </section>
+
+    <!-- 新增小区 -->
+    <div class="modal fade" id="createXiaoqu" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form name="createXiaoquForm">
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">楼盘名字:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityName" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.create.communityName" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">楼盘别名:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityAlias" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.create.communityAlias" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">城市:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communityCity" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.create.communityCity" required/>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">地区:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <input type="text" name="communitySubDistrict" reg="^\S+$" class="form-control"
+                                       required ng-model="ctrl.data.create.communitySubDistrict" required/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="ctrl.createXiaoqu()">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 <#include "/common/footer.ftl" />

@@ -43,6 +43,40 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 subDistrictId: null,
                 xiaoQuId :null
             };
+            _this.data = {};
+            _this.data.create = {
+                communityName:'',
+                communityAlias:'',
+                communityCity:'',
+                communitySubDistrict:''
+            };
+            _this.showCreateNewXiaoquDialog = function(){
+                $scope.createXiaoquForm.$setPristine();
+
+                $('#createXiaoqu').modal({'show':true,backdrop:'static'});
+            };
+
+            _this.createXiaoqu = function() {
+                if($scope.createXiaoquForm.$invalid||!$scope.createXiaoquForm.$dirty){
+                    if (!_this.data.addNewXiaoquForm.communityName) {
+                        _this.commonInputWarn('communityName','createXiaoquForm');
+                    }
+                    return;
+                }
+                var params = angular.copy(_this.data.create);
+                params.name = _this.data.create.communityName;
+                params.alias = _this.data.create.communityAlias;
+                params.cityId = _this.data.create.communityCity;
+                params.subDistrictId = _this.data.create.communitySubDistrict;
+
+                XiaoquService.createXiaoqu(params).then(function(response){
+                    SweetAlertHelp.success();
+                    $('#createXiaoqu').modal('hide');
+                }).fail(function(response){
+                    SweetAlertHelp.fail({message:response&&response.message});
+                });
+            };
+
             _this.estateList = [];
 
             /*chosen*/

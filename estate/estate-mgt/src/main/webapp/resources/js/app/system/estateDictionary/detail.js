@@ -155,7 +155,7 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 });
             };
             /*获取详细信息*/
-            (function getDetail(){
+            var loadDetail = function getDetail(){
                 XiaoquService.getXiaoquDetail({id :xiaoquId}).then(function(response){
                     $scope.$apply(function(){
                         _this.data.detail = response;
@@ -175,7 +175,9 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                         _this.mapConfig.baiduMap.addOverlay(marker);
                     }
                 });
-            })();
+            };
+
+            loadDetail();
 
             _this.getBuildings = function(){
                 FangService.buildings({xiaoQuId:xiaoquId}).then(function(response){
@@ -255,7 +257,8 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 var params = angular.copy(_this.data.modifyCommunityPart_1);
                 params.id = xiaoquId;
 
-                FangService.updateCommunity(params).then(function(response){
+                XiaoquService.updateCommunity(params).then(function(response){
+                    loadDetail();
                     SweetAlertHelp.success();
                     $('#communityModifyPart_1').modal('hide');
                 }).fail(function(response){
@@ -288,7 +291,8 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 var params = angular.copy(_this.data.modifyCommunityPart_2);
                 params.id = xiaoquId;
 
-                FangService.updateCommunity(params).then(function(response){
+                XiaoquService.updateCommunity(params).then(function(response){
+                    loadDetail();
                     SweetAlertHelp.success();
                     $('#communityModifyPart_2').modal('hide');
                 }).fail(function(response){

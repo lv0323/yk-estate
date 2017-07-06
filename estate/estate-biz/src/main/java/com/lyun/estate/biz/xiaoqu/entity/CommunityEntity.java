@@ -17,17 +17,17 @@ public class CommunityEntity {
     private BigDecimal latitude;
     private String address;
     private String developers;
-    private StructureType structureType;
-    private int buildedYear;
-    private int developYear;
+    private Integer structureType;
+    private Integer buildedYear;
+    private Integer developYear;
     private String propertyCompany;
     private String propertyCompanyPhone;
     private String propertyFee;
     private String parkingSpace;
     private String parkingFee;
     private String parkingRate;
-    private int buildings;
-    private int houses;
+    private Integer buildings;
+    private Integer houses;
     private String containerRate;
     private String greenRate;
     private String ljId;
@@ -36,7 +36,7 @@ public class CommunityEntity {
     private long updateById;
     private Date updateTime;
     private YN isDeleted;
-    private int version;
+    private Integer version;
     private String nameKw;
     private String aliasKw;
 
@@ -130,29 +130,29 @@ public class CommunityEntity {
         return this;
     }
 
-    public StructureType getStructureType() {
+    public Integer getStructureType() {
         return structureType;
     }
 
-    public CommunityEntity setStructureType(StructureType structureType) {
+    public CommunityEntity setStructureType(Integer structureType) {
         this.structureType = structureType;
         return this;
     }
 
-    public int getBuildedYear() {
+    public Integer getBuildedYear() {
         return buildedYear;
     }
 
-    public CommunityEntity setBuildedYear(int buildedYear) {
+    public CommunityEntity setBuildedYear(Integer buildedYear) {
         this.buildedYear = buildedYear;
         return this;
     }
 
-    public int getDevelopYear() {
+    public Integer getDevelopYear() {
         return developYear;
     }
 
-    public CommunityEntity setDevelopYear(int developYear) {
+    public CommunityEntity setDevelopYear(Integer developYear) {
         this.developYear = developYear;
         return this;
     }
@@ -211,20 +211,20 @@ public class CommunityEntity {
         return this;
     }
 
-    public int getBuildings() {
+    public Integer getBuildings() {
         return buildings;
     }
 
-    public CommunityEntity setBuildings(int buildings) {
+    public CommunityEntity setBuildings(Integer buildings) {
         this.buildings = buildings;
         return this;
     }
 
-    public int getHouses() {
+    public Integer getHouses() {
         return houses;
     }
 
-    public CommunityEntity setHouses(int houses) {
+    public CommunityEntity setHouses(Integer houses) {
         this.houses = houses;
         return this;
     }
@@ -301,11 +301,11 @@ public class CommunityEntity {
         return this;
     }
 
-    public int getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
-    public CommunityEntity setVersion(int version) {
+    public CommunityEntity setVersion(Integer version) {
         this.version = version;
         return this;
     }

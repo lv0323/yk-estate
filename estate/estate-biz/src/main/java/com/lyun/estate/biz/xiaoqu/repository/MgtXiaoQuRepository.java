@@ -40,4 +40,7 @@ public interface MgtXiaoQuRepository {
 
     @UpdateProvider(type = MgtXiaoQuSqlProvider.class, method = "updateCommunity")
     int updateCommunity(CommunityEntity communityEntity);
+
+    @Select("SELECT * FROM T_COMMUNITY WHERE ID = #{id}")
+    CommunityEntity findOneById(Long id);
 }
