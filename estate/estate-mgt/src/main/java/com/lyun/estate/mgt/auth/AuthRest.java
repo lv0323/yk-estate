@@ -105,4 +105,12 @@ public class AuthRest {
         session.invalidate();
         return new RestResponse().add("ret", result).get();
     }
+
+    @CheckCaptcha(evictAfterSuccess = false)
+    @GetMapping("unActivated")
+    public Object unActivated(@RequestParam String mobile, @RequestParam String secretKey,
+                              @RequestHeader(CaptchaArgumentResolver.CAPTCHA_HEADER) Captcha captcha) {
+        Boolean result = authMgtService.unActivated(mobile, secretKey);
+        return new RestResponse().add("ret", result).get();
+    }
 }

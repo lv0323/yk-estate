@@ -89,4 +89,9 @@ public interface EmployeeRepo {
 
     @Update("UPDATE t_employee SET is_boss = #{isBoss} WHERE id = #{id};")
     int setIsBoss(@Param("id") Long id, @Param("isBoss") boolean isBoss);
+
+    @Select("select * from t_employee where mobile = #{0} and quit = false and " +
+            "(select secret_key from t_company where id = " +
+            "(select company_id from t_employee where mobile = #{0} and quit = false)) = #{1}")
+    Employee unActivated(String mobile, String secretKey);
 }

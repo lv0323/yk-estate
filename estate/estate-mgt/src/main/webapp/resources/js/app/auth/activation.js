@@ -10,11 +10,13 @@ require(['main-app',
     function (mainApp, IdentityService, ValidationService, UtilService, SweetAlertHelp, EmployeeService) {
 
         var module=angular.module('ActivationModule',[]);
-        module.controller("ActivationCtrl", ['$scope','$timeout', '$interval','$window','$location', function($scope, $timeout, $interval, $window, $location) {
+        module.controller("ActivationCtrl", ['$scope','$timeout', '$interval','$window','$location', function($scope, $timeout, $interval, $window, $location ) {
             /*初始化和重置数据*/
+            var smsType ='EMPLOYEE_ACTIVE';
             function resetData(){
                 $scope.state={
-                    step:'step1'
+                    step:'step1',
+                    disableNext:false
                 };
                 $scope.activeData={
                     sendSMS :true,
@@ -25,37 +27,60 @@ require(['main-app',
             resetData();
             /*页面切换*/
             $scope.nextStep= function(){
-                $scope.getActiveSMS();
+                $scope.state.disableNext = true;
+                $scope.unActivated();
                 return false;
             };
             /*激活图形验证码*/
             $scope.loadActiveCaptcha =function() {
+                $scope.state.step = 'step1';
                 $scope.activeCaptchaId = UtilService.generateSalt(8);
                 localStorage.setItem("activeCaptchaId", $scope.activeCaptchaId);
                 $scope.activeCaptcha=contextPath + '/captcha?clientId='+clientId+'&id='+$scope.activeCaptchaId+'&width=120&height=30';
                 $scope.activeData.captcha = '';
             };
             $scope.loadActiveCaptcha();
-            /*激活短信验证码*/
-            $scope.getActiveSMS = function(){
+            $scope.mobileChange= function(){
+                $scope.smsTimer && $interval.clear($scope.smsTimer)
+            };
+            $scope.unActivated = function(){
                 if(!$scope.activeData.secretKey || !$scope.activeData.mobile||!$scope.activeData.captcha){
                     SweetAlertHelp.fail({message:'请输入完整信息!'});
                     return;
                 }
                 $scope.activeData.mobile =$scope.activeData.mobile.trim();
+                $scope.activeData.secretKey =$scope.activeData.secretKey.trim();
                 $scope.activeData.captcha =$scope.activeData.captcha.trim();
 
                 if(!ValidationService.isValidPhoneNumber($scope.activeData.mobile)){
                     SweetAlertHelp.fail({message:'手机号格式不正确'});
                     return;
                 }
+                IdentityService.unActivated({mobile:$scope.activeData.mobile, secretKey:$scope.activeData.secretKey},
+                    {'X-CAPTCHA': "id=" + $scope.activeCaptchaId +"&clientId="+ clientId +"&code="+ $scope.activeData.captcha,
+                    'Content-Type':'application/json;charset=utf-8'
+                }).then(function(){
+                    $scope.getActiveSMS();
+                }).fail(function(res){
+                    $scope.$apply(function(){
+                        $scope.state.disableNext = false;
+                    });
+                    SweetAlertHelp.fail({message: res && res.message});
+                });
+            };
+            /*激活短信验证码*/
+            $scope.getActiveSMS = function(){
+                if($scope.smsTimer){
+                    $scope.state.step = 'step2';
+                    return;
+                }
                 $scope.activeData.sendSMS = false;
-                IdentityService.sendSMS({clientId:clientId, code:$scope.activeData.captcha,id:$scope.activeCaptchaId, mobile:$scope.activeData.mobile, type: "REGISTER"}).done(function(response){
+                IdentityService.sendSMS({clientId:clientId, code:$scope.activeData.captcha,id:$scope.activeCaptchaId, mobile:$scope.activeData.mobile, type: smsType}).done(function(response){
                     $scope.smsData=response;
                     $scope.state.step = 'step2';
                     var second = 60;
                     $scope.activeData.newSmsText = second + 's';
-                    $interval(function () {
+                    $scope.smsTimer = $interval(function () {
                         if(second > 1){
                             second--;
                             $scope.activeData.smsText = second + 's';
@@ -64,8 +89,15 @@ require(['main-app',
                             $scope.activeData.smsText = '点击获取';
                         }
                     }, 1000, 60);
+
                 }).fail(function(response){
-                    $scope.activeData.sendSMS = true;
+                    $scope.$apply(function(){
+                        $scope.activeData.sendSMS = true;
+                        $scope.state.disableNext = false;
+                        if(response.message =='图片验证码不正确'){
+                            $scope.loadActiveCaptcha();
+                        }
+                    });
                     SweetAlertHelp.fail({message:response.message});
                 });
             };
@@ -85,15 +117,16 @@ require(['main-app',
                 }
                 IdentityService.activate({password:$scope.activeData.password.trim(), secretKey:$scope.activeData.secretKey},
                     {"X-SMS-CODE":'serial='+$scope.smsData.serial
-                    +'&id='+ $scope.smsData.sms_id
+                    +'&id='+ $scope.smsData.smsId
                     +'&mobile='+$scope.smsData.mobile
                     +'&code=' + $scope.activeData.sms
-                    +'&type=REGISTER&clientId='+clientId}).done(function(){
+                    +'&type='+ smsType
+                    +'&clientId='+clientId}).done(function(){
                     SweetAlertHelp.success({message:'激活成功!'});
                     resetData();
                 }).fail(function(response){
                     SweetAlertHelp.fail({message:response&&response.message});
-                    $scope.loadActiveCaptcha();
+                    //$scope.loadActiveCaptcha();
                 });
             }
         }]);

@@ -35,7 +35,7 @@
         </div>
         <input type="submit" class="btn btn-block login-btn" value="登录"></input>
     </form>
-        <div class="bottom-content"><a class="to-active"  ng-click="changePage('active')">去激活</a></div>
+        <div class="bottom-content"><a class="to-active"  ng-href="/mgt/auth/activation" >去激活</a></div>
     </div>
     <div ng-if="state.page=='active'">
     <form id="activeForm" ng-submit="activate()">

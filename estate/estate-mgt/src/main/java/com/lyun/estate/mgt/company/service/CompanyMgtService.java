@@ -194,4 +194,9 @@ public class CompanyMgtService {
         permissionCheckService.checkCompany(id);
         return companyService.findDTO(id);
     }
+
+    public CompanyDTO findSelfDTO() {
+        long id = mgtContext.getOperator().getCompanyId();
+        return companyService.findDTO(id);
+    }
 }

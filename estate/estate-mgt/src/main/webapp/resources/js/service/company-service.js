@@ -10,6 +10,9 @@ define(contextPath+'/js/service/company-service.js',
         CompanyService.listCompany = function (params,header) {
             return RequestService.get('/api/company/list',params,header);
         };
+        CompanyService.self = function(params,header){
+            return RequestService.get('/api/company/self',params,header);
+        };
 
         return CompanyService;
     });

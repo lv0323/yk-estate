@@ -117,7 +117,9 @@ public class MgtConfig extends WebMvcConfigurerAdapter {
                         "/api/auth/active",
                         "/api/auth/salt",
                         "/api/auth/login",
-                        "/api/auth/logout"
+                        "/api/auth/logout",
+                        "/auth/activation",
+                        "/api/auth/unActivated"
                 );
     }
 }

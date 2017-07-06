@@ -94,4 +94,8 @@ public class AuthMgtService {
         employeeService.updateDeviceId(employeeId, deviceId);
         return deviceId;
     }
+
+    public Boolean unActivated(String mobile, String secretKey){
+        return employeeService.unActivated(mobile, secretKey);
+    }
 }
