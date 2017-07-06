@@ -1,7 +1,6 @@
 package com.lyun.estate.biz.sms.service;
 
 import com.lyun.estate.biz.auth.sms.SmsCode;
-import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
 import com.lyun.estate.biz.sms.resources.SmsResource;
 import com.lyun.estate.biz.sms.resources.SmsResponse;
@@ -9,8 +8,6 @@ import com.lyun.estate.biz.sms.service.validator.SmsResourceValidator;
 import com.lyun.estate.biz.user.repository.UserMapper;
 import com.lyun.estate.core.config.EstateCacheConfig;
 import com.lyun.estate.core.supports.context.RestContext;
-import com.lyun.estate.core.supports.exceptions.EstateException;
-import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ValidateException;
 import com.lyun.estate.core.supports.types.YN;
 import com.lyun.estate.core.utils.CommonUtil;
@@ -27,8 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
-
-import java.util.Objects;
 
 @Service
 public class SmsService {
@@ -55,9 +50,9 @@ public class SmsService {
         return YN.Y == YN.valueOf(environment.getProperty("message.sms.code.random.enable"));
     }
 
-    public SmsResponse sendCheckSms(SmsResource smsResource) {
+    public SmsResponse sendCheckSms(SmsResource smsResource, boolean... fromMgt) {
         DataBinder dataBinder = new DataBinder(smsResource, "sms");
-        dataBinder.setValidator(new SmsResourceValidator(userMapper));
+        dataBinder.setValidator(new SmsResourceValidator(userMapper, employeeService));
         dataBinder.validate();
         BindingResult bindingResult = dataBinder.getBindingResult();
         if (bindingResult.hasErrors()) {
@@ -71,7 +66,7 @@ public class SmsService {
             smsCode = CommonUtil.randomNumberSeq(6);
         }
         try {
-            long templateId = yinJiaId;
+            long templateId = (fromMgt.length > 0 && fromMgt[0]) ? diChanId : yinJiaId;
             if (!smsId.equals(smsClient.sendSms(smsId, smsResource.getMobile(), templateId, smsCode, serial))) {
                 throw new ValidateException("error.sms.send", "短信发送失败");
             }
@@ -109,37 +104,6 @@ public class SmsService {
         boolean result = valueWrapper != null && smsKv.equals(valueWrapper.get());
         cacheManager.getCache(EstateCacheConfig.SMS_CACHE).evict(smsKv);
         return result;
-    }
-
-
-    public SmsResponse sendEmployeeActiveCheckSms(SmsResource smsResource) {
-        String mobile = smsResource.getMobile();
-        Employee employee = employeeService.selectByMobile(mobile);
-        if (employee == null) {
-            throw new EstateException(ExCode.NOT_FOUND, "手机号", "员工");
-        }
-        if (Objects.nonNull(employee.getSalt())) {
-            throw new EstateException(ExCode.EMPLOYEE_ACTIVE);
-        }
-        String smsId = CommonUtil.getUuid();
-        String smsCode = "100000";
-        String serial = "01";
-        if (isRandomSend()) {
-            serial = CommonUtil.randomNumberSeq(2);
-            smsCode = CommonUtil.randomNumberSeq(6);
-        }
-        try {
-            long templateId = diChanId;
-            if (!smsId.equals(smsClient.sendSms(smsId, smsResource.getMobile(), templateId, smsCode, serial))) {
-                throw new ValidateException("error.sms.send", "短信发送失败");
-            }
-        } catch (SmsClientException e) {
-            throw new ValidateException(e.getCode(), e.getMessage(), e);
-        }
-        String smsKv = smsId + ":" + smsResource.getMobile() + ":" + smsCode + ":" + serial + ":" + smsResource.getType() + ":" + restContext
-                .getClientId();
-        cacheManager.getCache(EstateCacheConfig.SMS_CACHE).put(smsKv, smsKv);
-        return new SmsResponse().setMobile(smsResource.getMobile()).setSmsId(smsId).setSerial(serial);
     }
 
 }
