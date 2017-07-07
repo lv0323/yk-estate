@@ -26,10 +26,10 @@ define(contextPath+'/js/service/xiaoqu-service.js',
             return RequestService.post('/api/xiao-qu/set-first-image', params, header);
         };
         XiaoquService.updateCommunity = function(params, header){
-            return RequestService.put('/api/xiao-qu/update', params, header);
+            return RequestService.put('/api/xiao-qu', params, header);
         };
         XiaoquService.createXiaoqu = function(params, header){
-            return RequestService.post('/api/xiao-qu/create', params, header);
+            return RequestService.post('/api/xiao-qu', params, header);
         };
     return XiaoquService;
 });

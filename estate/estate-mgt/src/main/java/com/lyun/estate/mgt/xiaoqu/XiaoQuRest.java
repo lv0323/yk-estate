@@ -115,7 +115,7 @@ public class XiaoQuRest {
                 CommonResp.succeed() : CommonResp.failed();
     }
 
-    @PutMapping("/update")
+    @PutMapping("")
     public int updateXiaoQu(@RequestParam long id,
                                         @RequestParam(required = false) String name,
                                         @RequestParam(required = false) String alias,
@@ -158,7 +158,7 @@ public class XiaoQuRest {
         return xiaoQuMgtService.updateXiaoQu(communityEntity);
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public MgtXiaoQuDetail createNewXiaoQu(@RequestParam String name,
                                          @RequestParam String alias,
                                          @RequestParam long cityId,
