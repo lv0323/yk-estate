@@ -32,7 +32,7 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
         };
         /*小区列表*/
         var module = angular.module('HouseDictModule', ['directiveYk']);
-        function DictCtrl($scope, $timeout){
+        function DictCtrl($scope, $timeout, $window){
             var _this = this;
             _this.config ={
                 cityList: [],
@@ -47,8 +47,9 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
             _this.data.create = {
                 communityName:'',
                 communityAlias:'',
-                communityCity:'',
-                communitySubDistrict:''
+                communityCity:'1',
+                communitySubDistrict:'',
+                communityDistrict:''
             };
             _this.showCreateNewXiaoquDialog = function(){
                 $scope.createXiaoquForm.$setPristine();
@@ -70,8 +71,12 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 params.subDistrictId = _this.data.create.communitySubDistrict;
 
                 XiaoquService.createXiaoqu(params).then(function(response){
-                    SweetAlertHelp.success();
                     $('#createXiaoqu').modal('hide');
+
+                    SweetAlertHelp.success({}, function() {
+                        $window.location.href='/mgt/system/estateDictionary/detail?id='+ response.id;
+                    });
+
                 }).fail(function(response){
                     SweetAlertHelp.fail({message:response&&response.message});
                 });
@@ -194,9 +199,24 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 var zTreeObj = $.fn.zTree.init($("#dictionaryTree"), zTreeSetting, data);
                 /*zTreeObj.expandAll(true);*/
             }
+
+            _this.districtWithSubs = {};
+            _this.districtToSubsMap = {};
+            _this.subDistricts = {};
+
+            _this.districtChanged = function() {
+                _this.subDistricts = _this.districtToSubsMap[_this.data.create.communityDistrict];
+            };
+
+            $scope.$watch('districtSelect', function(newVal) {
+                _this.subDistricts = _this.districtToSubsMap[_this.data.create.communityDistrict];
+            });
+
+
             _this.getDistrictsWithSubs = function(){
                 CityService.districtsWithSubs({cityId: _this.config.cityList[_this.config.currentCity].id}).then(function(response){
-                var districtList = []
+                var districtList = [];
+                _this.districtWithSubs = response;
                 response.map(function(item, index, array){
                     var district = {
                         id : item.id,
@@ -206,6 +226,8 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                         parentId : domainTypeConfig.CITY + item.cityId
                     };
                     districtList.push(district);
+                    _this.districtToSubsMap[district.id] = item.subs;
+
                     item.subs && item.subs.map(function(subItem, index, array){
                         var subDistrict ={
                             id : subItem.id,
@@ -271,7 +293,7 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
             })();
             /*end 获得cityID*/
         }
-        DictCtrl.$inject =['$scope', '$timeout'];
+        DictCtrl.$inject =['$scope', '$timeout','$window'];
         module.controller("DictCtrl", DictCtrl);
 
         angular.element(document).ready(function(){

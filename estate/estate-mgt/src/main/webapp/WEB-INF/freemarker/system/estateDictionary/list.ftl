@@ -116,15 +116,25 @@
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">城市:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
-                                <input type="text" name="communityCity" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.create.communityCity" required/>
+                                <input type="text" name="communityAlias" reg="^\S+$" class="form-control"
+                                       value="北京" disabled required/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label class="control-label col-xs-3">地区:</label>
+                            <label class="control-label col-xs-3">区域:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
-                                <input type="text" name="communitySubDistrict" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.create.communitySubDistrict" required/>
+                                <select id='districtSelect' ng-model="ctrl.data.create.communityDistrict" ng-change="ctrl.districtChanged()">
+                                    <option ng-repeat="district in ctrl.districtWithSubs"  ng-value="district.id">{{district.name}}</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="control-label col-xs-3">子区域:</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5">
+                                <select id='subDistrictSelect' ng-model="ctrl.data.create.communitySubDistrict">
+                                    <option ng-repeat="subDistrict in ctrl.subDistricts" ng-value="subDistrict.id">{{subDistrict.name}}</option>
+                                </select>
                             </div>
                         </div>
                     </form>

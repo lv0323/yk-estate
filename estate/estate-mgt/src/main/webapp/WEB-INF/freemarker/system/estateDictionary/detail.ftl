@@ -283,7 +283,7 @@
                             <label class="control-label col-xs-3">建筑结构:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityStructureStr" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_1.structureStr" required/>
+                                       required ng-model="ctrl.data.modifyCommunityPart_1.structureStr" disabled required/>
                             </div>
                         </div>
                         <div class="form-group clearfix">

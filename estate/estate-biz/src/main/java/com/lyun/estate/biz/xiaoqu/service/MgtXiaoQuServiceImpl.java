@@ -114,6 +114,7 @@ public class MgtXiaoQuServiceImpl implements MgtXiaoQuService {
             setAlias(alias);
             setCityId(cityId);
             setSubDistrictId(subDistrictId);
+            setStructureType(5);// todo: check this
             setNameKw(kw.toString());
             setIsDeleted(YN.N);
         }};
