@@ -2,12 +2,16 @@ package com.lyun.estate.mgt.xiaoqu;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.lyun.estate.biz.fang.def.StructureType;
 import com.lyun.estate.biz.file.def.CustomType;
 import com.lyun.estate.biz.file.entity.FileDescription;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.entity.MgtXiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.entity.MgtXiaoQuFilter;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.entity.MgtXiaoQuSummary;
+import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuSummary;
+import com.lyun.estate.biz.xiaoqu.entity.CommunityEntity;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQu;
+import com.lyun.estate.biz.xiaoqu.entity.XiaoQuEntity;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
 import com.lyun.estate.core.supports.pagebound.PageBoundsArgumentResolver;
 import com.lyun.estate.mgt.supports.CommonResp;
@@ -109,5 +113,56 @@ public class XiaoQuRest {
     public CommonResp setFirstImage(Long fileId) {
         return Objects.equals(true, xiaoQuMgtService.setFirstImage(fileId)) ?
                 CommonResp.succeed() : CommonResp.failed();
+    }
+
+    @PutMapping("")
+    public int updateXiaoQu(@RequestParam long id,
+                                        @RequestParam(required = false) String name,
+                                        @RequestParam(required = false) String alias,
+                                        @RequestParam(required = false) String address,
+                                        @RequestParam(required = false) String developers,
+                                        @RequestParam(required = false) Integer structureType,
+                                        @RequestParam(required = false) Integer buildedYear,
+                                        @RequestParam(required = false) Integer developYear,
+                                        @RequestParam(required = false) String propertyCompany,
+                                        @RequestParam(required = false) String propertyCompanyPhone,
+                                        @RequestParam(required = false) String propertyFee,
+                                        @RequestParam(required = false) String parkingSpace,
+                                        @RequestParam(required = false) String parkingFee,
+                                        @RequestParam(required = false) String parkingRate,
+                                        @RequestParam(required = false) Integer buildings,
+                                        @RequestParam(required = false) Integer houses,
+                                        @RequestParam(required = false) String containerRate,
+                                        @RequestParam(required = false) String greenRate) {
+        CommunityEntity communityEntity = new CommunityEntity(){{
+           setId(id);
+           setName(name);
+           setAlias(alias);
+           setAddress(address);
+           setDevelopers(developers);
+           setStructureType(structureType);
+           setBuildedYear(buildedYear);
+           setDevelopYear(developYear);
+           setPropertyCompany(propertyCompany);
+           setPropertyCompanyPhone(propertyCompanyPhone);
+           setPropertyFee(propertyFee);
+           setParkingSpace(parkingSpace);
+           setParkingFee(parkingFee);
+           setParkingRate(parkingRate);
+           setBuildings(buildings);
+           setHouses(houses);
+           setContainerRate(containerRate);
+           setGreenRate(greenRate);
+        }};
+
+        return xiaoQuMgtService.updateXiaoQu(communityEntity);
+    }
+
+    @PostMapping("")
+    public MgtXiaoQuDetail createNewXiaoQu(@RequestParam String name,
+                                         @RequestParam String alias,
+                                         @RequestParam long cityId,
+                                         @RequestParam long subDistrictId) {
+        return xiaoQuMgtService.createXiaoQu(name, alias, cityId, subDistrictId);
     }
 }

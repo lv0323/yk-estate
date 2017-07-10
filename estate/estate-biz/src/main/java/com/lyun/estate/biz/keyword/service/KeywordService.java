@@ -13,9 +13,13 @@ import com.lyun.estate.biz.keyword.repository.KeywordRepository;
 import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuDetail;
 import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService;
 import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.core.config.EstateCacheConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -44,6 +48,10 @@ public class KeywordService {
 
     @Autowired
     private XiaoQuService xiaoQuService;
+
+    @Autowired
+    @Qualifier(EstateCacheConfig.MANAGER_360_5K)
+    private CacheManager cacheManager;
 
 
     public KeywordService(KeywordRepository keywordRepository) {
@@ -101,6 +109,20 @@ public class KeywordService {
             return keywordRepository.loadXiaoQu(cityId);
         } else {
             return new ArrayList<>();
+        }
+    }
+
+    public void evitCache(Long cityId, DomainType domainType) {
+        if (domainType == DomainType.DISTRICT) {
+            // todo
+        } else if (domainType == DomainType.SUB_DISTRICT) {
+            // todo
+        } else if (domainType == DomainType.LINE) {
+            // todo
+        } else if (domainType == DomainType.STATION) {
+            // todo
+        } else if (domainType == DomainType.XIAO_QU) {
+            cacheManager.getCache(KeywordRepository.XIAOQU).evict(cityId);
         }
     }
 

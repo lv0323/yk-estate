@@ -14,7 +14,9 @@ import com.lyun.estate.biz.spec.xiaoqu.mgt.entity.MgtXiaoQuFilter;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.entity.MgtXiaoQuSummary;
 import com.lyun.estate.biz.spec.xiaoqu.mgt.service.MgtXiaoQuService;
 import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.biz.xiaoqu.entity.CommunityEntity;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQu;
+import com.lyun.estate.biz.xiaoqu.entity.XiaoQuEntity;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
@@ -110,4 +112,14 @@ public class XiaoQuMgtService {
         logger.info("员工{} 将图片{}置顶", mgtContext.getOperator().getId(), fileId);
         return fileService.setFirst(fileId);
     }
+
+    public MgtXiaoQuDetail createXiaoQu(String name, String alias, long cityId, long subDistrictId) {
+        return detail(mgtXiaoQuService.createXiaoQu(name, alias, cityId, subDistrictId).getId());
+    }
+
+    public int updateXiaoQu(CommunityEntity communityEntity) {
+        return mgtXiaoQuService.updateXiaoQu(communityEntity);
+    }
+
+
 }

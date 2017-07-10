@@ -1,6 +1,7 @@
 package com.lyun.estate.biz.keyword.repository;
 
 import com.lyun.estate.biz.keyword.entity.KeywordBean;
+import com.lyun.estate.biz.xiaoqu.entity.XiaoQu;
 import com.lyun.estate.core.config.EstateCacheConfig;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -17,9 +18,11 @@ import java.util.List;
 @CacheConfig(cacheManager = EstateCacheConfig.MANAGER_360_5K)
 public interface KeywordRepository {
 
+    String XIAOQU = "keywords-xiao-qu";
+
     @Select("SELECT  xq.id,  'XIAO_QU' AS domain_type,  c.name,  c.alias,  c.name_kw AS keyword\n" +
             "FROM t_xiao_qu xq LEFT JOIN t_community c ON xq.community_id = c.id WHERE c.city_id = #{cityId} ORDER BY xq.id;")
-    @Cacheable(cacheNames = {"keywords-xiao-qu"})
+    @Cacheable(cacheNames = {XIAOQU})
     List<KeywordBean> loadXiaoQu(@Param("cityId") Long cityId);
 
     @Select("SELECT  id,  'DISTRICT' AS domain_type,  name, name_kw AS keyword FROM t_district WHERE city_id = #{cityId};")
