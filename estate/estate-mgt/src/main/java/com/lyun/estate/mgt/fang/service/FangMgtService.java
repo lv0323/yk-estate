@@ -102,7 +102,7 @@ public class FangMgtService {
 
         fillFang(fang);
 
-        fang.setProcess(HouseProcess.DELEGATE);
+        fang.setProcess(HouseProcess.PUBLISH);
 
         //register houseLicence
         XiaoQu xiaoQu = mgtXiaoQuService.findOne(fang.getXiaoQuId());
