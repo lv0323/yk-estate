@@ -110,7 +110,7 @@
                             <label class="control-label col-xs-3">楼盘别名:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityAlias" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.create.communityAlias" required/>
+                                       ng-model="ctrl.data.create.communityAlias"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">

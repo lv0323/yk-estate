@@ -276,49 +276,49 @@
                             <label class="control-label col-xs-3">楼盘别名:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityAlias" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_1.alias" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_1.alias"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">建筑结构:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityStructureStr" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_1.structureStr" disabled required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_1.structureStr" disabled/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">物业费:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityPropertyFee" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_1.propertyFee" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_1.propertyFee"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">竣工年份:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityBuildedYear" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_1.buildedYear" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_1.buildedYear"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">楼盘地址:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityAddress" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_1.address" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_1.address"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">栋数:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityBuildings" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_1.buildings" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_1.buildings"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">户数:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityHouses" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_1.houses" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_1.houses"/>
                             </div>
                         </div>
                     </form>
@@ -340,63 +340,63 @@
                             <label class="control-label col-xs-3">开发商:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityDevelopers" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_2.developers" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_2.developers"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">开发年代:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityDevelopYear" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_2.developYear" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_2.developYear"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">车位数量:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityParkingSpace" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_2.parkingSpace" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_2.parkingSpace"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">车位使用率:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityParkingRate" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_2.parkingRate" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_2.parkingRate"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">车位租金:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityParkingFee" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_2.parkingFee" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_2.parkingFee"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">绿化率:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityGreenRate" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_2.greenRate" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_2.greenRate"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">物业公司:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityPropertyCompany" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_2.propertyCompany" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_2.propertyCompany"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">物业公司电话:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityPropertyCompanyPhone" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_2.propertyCompanyPhone" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_2.propertyCompanyPhone"/>
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label class="control-label col-xs-3">容积率:</label>
                             <div class="col-lg-5 col-md-5 col-sm-5">
                                 <input type="text" name="communityContainerRate" reg="^\S+$" class="form-control"
-                                       required ng-model="ctrl.data.modifyCommunityPart_2.containerRate" required/>
+                                       ng-model="ctrl.data.modifyCommunityPart_2.containerRate"/>
                             </div>
                         </div>
                     </form>
