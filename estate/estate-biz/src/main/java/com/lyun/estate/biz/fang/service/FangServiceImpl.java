@@ -5,7 +5,6 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.lyun.estate.biz.contract.service.ContractService;
 import com.lyun.estate.biz.fang.def.HouseProcess;
 import com.lyun.estate.biz.fang.def.HouseSubProcess;
 import com.lyun.estate.biz.fang.def.HouseType;
@@ -28,6 +27,9 @@ import com.lyun.estate.biz.spec.xiaoqu.rest.entity.XiaoQuSummary;
 import com.lyun.estate.biz.spec.xiaoqu.rest.service.XiaoQuService;
 import com.lyun.estate.biz.support.def.BizType;
 import com.lyun.estate.biz.support.def.DomainType;
+import com.lyun.estate.biz.support.settings.SettingProvider;
+import com.lyun.estate.biz.support.settings.def.NameSpace;
+import com.lyun.estate.biz.support.settings.entity.Setting;
 import com.lyun.estate.core.supports.exceptions.EstateException;
 import com.lyun.estate.core.supports.exceptions.ExCode;
 import com.lyun.estate.core.supports.exceptions.ExceptionUtil;
@@ -37,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -62,7 +65,16 @@ public class FangServiceImpl implements FangService {
     private XiaoQuService xiaoQuService;
 
     @Autowired
-    private ContractService contractService;
+    private SettingProvider settingProvider;
+
+    private FileDescription xiaoQuDefaultImg;
+
+    @PostConstruct
+    private void init() {
+        Setting defaultImg = settingProvider.find(NameSpace.XIAO_QU, "default_img");
+        xiaoQuDefaultImg = fileService.findOne(Long.valueOf(defaultImg.getValue()));
+    }
+
 
     @Override
     public PageList<FangSummary> findFangSummaryByKeyword(FangFilter filter, FangSummaryOrder order,
@@ -192,7 +204,7 @@ public class FangServiceImpl implements FangService {
                                     DomainType.FANG,
                                     CustomType.SHI_JING,
                                     FileProcess.WATERMARK)).
-                            map(FileDescription::getFileURI).orElse(null));
+                            map(FileDescription::getFileURI).orElse(xiaoQuDefaultImg.getFileURI()));
                 }
         );
         return summaries;
