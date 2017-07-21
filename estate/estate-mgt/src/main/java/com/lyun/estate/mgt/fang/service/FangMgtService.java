@@ -9,10 +9,7 @@ import com.lyun.estate.biz.department.entity.Department;
 import com.lyun.estate.biz.department.service.DepartmentService;
 import com.lyun.estate.biz.employee.entity.Employee;
 import com.lyun.estate.biz.employee.service.EmployeeService;
-import com.lyun.estate.biz.fang.def.FollowType;
-import com.lyun.estate.biz.fang.def.HouseProcess;
-import com.lyun.estate.biz.fang.def.InfoOwnerReason;
-import com.lyun.estate.biz.fang.def.PriceUnit;
+import com.lyun.estate.biz.fang.def.*;
 import com.lyun.estate.biz.fang.domian.FangCheckDTO;
 import com.lyun.estate.biz.fang.domian.FangFollowDTO;
 import com.lyun.estate.biz.fang.domian.FangInfoOwnerDTO;
@@ -103,6 +100,7 @@ public class FangMgtService {
         fillFang(fang);
 
         fang.setProcess(HouseProcess.PUBLISH);
+        fang.setSubProcess(HouseSubProcess.NONE);
 
         //register houseLicence
         XiaoQu xiaoQu = mgtXiaoQuService.findOne(fang.getXiaoQuId());
