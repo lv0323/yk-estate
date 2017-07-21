@@ -41,6 +41,7 @@ public class MgtFangSqlProvider {
                 .VALUES_IF("bottom_price", "#{bottomPrice}", nonNull(fang.getBottomPrice()))
                 .VALUES_IF("resident", "#{resident}", nonNull(fang.getResident()))
                 .VALUES("process", "#{process}")
+                .VALUES_IF("sub_process", "#{subProcess}", nonNull(fang.getSubProcess()))
                 .VALUES("floor", "#{floor}")
                 .VALUES("floor_counts", "#{floorCounts}")
                 .VALUES("floor_type", "#{floorType}")
