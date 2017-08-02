@@ -271,4 +271,17 @@ textarea.noresize{
     overflow: hidden;
     vertical-align: middle;
 }
+.video-player{
+    width: 100%;
+    height: 100%;
+}
+.video-control-bar{
+    position: absolute;
+    bottom: -13px;
+    width: 100%;
+    padding: 11px;
+    color: #e1e1e2;
+    box-sizing: border-box;
+    background: url("../../../img/common/video-control-bar-bg.jpg") 100% 100% repeat;
+}
 

@@ -39,7 +39,8 @@
                                     <h3 class="box-title">楼盘字典</h3>
                                     <!-- 客户可以自己新增楼盘字典，增加入口 -->
                                     <div class="box-tools">
-                                        <a href="javascript:void(0);" class="pull-right btn btn-white" ng-click="ctrl.showCreateNewXiaoquDialog()"><i class="fa fa-plus"></i>新增楼盘</a>
+                                        <#--<a href="javascript:void(0);" class="pull-right btn btn-white" ng-click="ctrl.showCreateNewXiaoquDialog()"><i class="fa fa-plus"></i>新增楼盘</a>-->
+                                            <a href="javascript:void(0);" class="pull-right btn btn-white" ng-href="/mgt/system/estateDictionary/add.ftl?target=.sys"><i class="fa fa-plus"></i>新增楼盘</a>
                                     </div>
                                 </div>
                                 <div class="box-body" ng-cloak>

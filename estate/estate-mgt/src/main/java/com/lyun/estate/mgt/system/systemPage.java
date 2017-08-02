@@ -40,6 +40,15 @@ public class systemPage {
         params.put("username",service.getUsername());
         return new ModelAndView("/system/estateDictionary/list", params);
     }
+    @GetMapping("/estateDictionary/add")
+    public ModelAndView addHouseDictionary() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("houseTypes", Arrays.asList(HouseType.values()));
+        params.put("avatarUrl",service.getAvatar());
+        params.put("username",service.getUsername());
+        params.put("mapKey",settingProvider.find(NameSpace.CONFIG, "BAI_DU_MAP_KEY").getValue());
+        return new ModelAndView("/system/estateDictionary/add", params);
+    }
 
     @GetMapping("/estateDictionary/detail")
     public ModelAndView houseDictionaryItem() {

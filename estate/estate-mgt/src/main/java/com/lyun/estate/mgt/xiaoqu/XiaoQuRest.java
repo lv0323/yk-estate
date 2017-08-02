@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -138,7 +139,7 @@ public class XiaoQuRest {
            setId(id);
            setName(name);
            setAlias(alias);
-           setAddress(address);
+//           setAddress(address); // disabled this for now
            setDevelopers(developers);
            setStructureType(structureType);
            setBuildedYear(buildedYear);
@@ -160,9 +161,12 @@ public class XiaoQuRest {
 
     @PostMapping("")
     public MgtXiaoQuDetail createNewXiaoQu(@RequestParam String name,
-                                         @RequestParam String alias,
+                                         @RequestParam(required = false) String alias,
+                                         @RequestParam String address,
                                          @RequestParam long cityId,
-                                         @RequestParam long subDistrictId) {
-        return xiaoQuMgtService.createXiaoQu(name, alias, cityId, subDistrictId);
+                                         @RequestParam long subDistrictId,
+                                           @RequestParam BigDecimal longitude,
+                                           @RequestParam BigDecimal latitude) {
+        return xiaoQuMgtService.createXiaoQu(name, alias, cityId, subDistrictId, longitude, latitude, address);
     }
 }

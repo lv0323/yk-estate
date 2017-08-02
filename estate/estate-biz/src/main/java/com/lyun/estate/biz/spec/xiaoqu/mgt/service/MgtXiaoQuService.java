@@ -9,6 +9,8 @@ import com.lyun.estate.biz.xiaoqu.entity.CommunityEntity;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQu;
 import com.lyun.estate.biz.xiaoqu.entity.XiaoQuEntity;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Jeffrey on 2017-02-21.
  */
@@ -20,7 +22,7 @@ public interface MgtXiaoQuService {
 
     MgtXiaoQuDetail detail(Long id);
 
-    XiaoQuEntity createXiaoQu(String name, String alias, long cityId, long subDistrictId);
+    XiaoQuEntity createXiaoQu(String name, String alias, long cityId, long subDistrictId, BigDecimal longitude, BigDecimal latitude, String address);
 
     int updateXiaoQu(CommunityEntity communityEntity);
 }

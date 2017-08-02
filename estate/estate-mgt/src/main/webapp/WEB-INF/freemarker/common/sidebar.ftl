@@ -278,6 +278,9 @@
                     <@checkPermission value='P_CONFIG_HOUSE_DICT'>
                         <li><a href="/mgt/system/estateDictionary?target=.sys"><i class="fa fa-circle"></i>楼盘字典</a></li>
                     </@>
+                    <@checkPermission value='P_CONFIG_HOUSE_DICT'>
+                        <li><a href="/mgt/system/estateDictionary/add?target=.sys"><i class="fa fa-circle"></i>创建楼盘</a></li>
+                    </@>
                     <@checkPermission value='P_CONFIG_PERMISSION'>
                         <li><a href="/mgt/system/authorityConfig?target=.sys"><i class="fa fa-circle"></i>权限管理</a></li>
                     </@>
@@ -287,6 +290,7 @@
                 </ul>
             </li>
         </@>
+
         <li class="treeview sys">
             <a href="/mgt/franchisee/self"><i class="fa fa-building" aria-hidden="true"></i> <span>公司信息</span>
                 <span class="pull-right-container">
@@ -294,6 +298,7 @@
                 </span>
             </a>
         </li>
+
         </ul>
         <!-- /.sidebar-menu -->
     </section>

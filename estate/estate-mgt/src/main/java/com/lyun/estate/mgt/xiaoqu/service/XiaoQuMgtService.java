@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -113,8 +114,8 @@ public class XiaoQuMgtService {
         return fileService.setFirst(fileId);
     }
 
-    public MgtXiaoQuDetail createXiaoQu(String name, String alias, long cityId, long subDistrictId) {
-        return detail(mgtXiaoQuService.createXiaoQu(name, alias, cityId, subDistrictId).getId());
+    public MgtXiaoQuDetail createXiaoQu(String name, String alias, long cityId, long subDistrictId, BigDecimal longitude, BigDecimal latitude, String address) {
+        return detail(mgtXiaoQuService.createXiaoQu(name, alias, cityId, subDistrictId, longitude, latitude, address).getId());
     }
 
     public int updateXiaoQu(CommunityEntity communityEntity) {
