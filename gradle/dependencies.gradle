@@ -1,10 +1,10 @@
 ext {
     ver = [
-            spring                      : '4.3.4.RELEASE',
-            spring_rabbit               : '1.6.6.RELEASE',
-            spring_boot                 : '1.4.2.RELEASE',
+            spring                      : '4.3.10.RELEASE',
+            spring_rabbit               : '1.7.3.RELEASE',
+            spring_boot                 : '1.5.6.RELEASE',
 
-            aspectj                     : '1.8.9',
+            aspectj                     : '1.8.10',
 
             swagger                     : '2.6.1',
 
@@ -14,24 +14,24 @@ ext {
             mybatis_spring              : '1.3.0',
             mybatis_paginator           : '1.2.17',
             postgresql                  : '9.4.1212',
-            hikaricp                    : '2.4.7',
+            hikaricp                    : '2.5.1',
 
-            freemarker                  : '2.3.23',
+            freemarker                  : '2.3.26-incubating',
 
-            groovy                      : '2.4.7',
-            dependency_management_plugin: '0.6.1.RELEASE',
+            groovy                      : '2.4.12',
+            dependency_management_plugin: '1.0.3.RELEASE',
 
-            guava                       : '20.0',
-            okhttp                      : '3.5.0',
+            guava                       : '23.0',
+            okhttp                      : '3.9.0',
             jbcrypt                     : '0.4.1',
             simplecaptcha               : '1.2.2',
             user_agent_utils            : '1.20',
-            caffeine                    : '2.3.5',
+            caffeine                    : '2.5.5',
             jjwt                        : '0.7.0',
-            oss                         : "2.4.0",
+            oss                         : "2.8.1",
             hibernate_validator         : "5.2.4.Final",
             jpinyin                     : "1.1.8",
-            joda_time                   : "2.9.7",
+            joda_time                   : "2.9.9",
     ]
 
     lib = [
