@@ -13,7 +13,9 @@ import groovy.transform.builder.SimpleStrategy
 class News {
     long id
     String title
+    String summary
     NewsDefine.Category category
+    NewsDefine.Scope scope
     Long imageId
     String newsUrl
     Boolean isDeleted

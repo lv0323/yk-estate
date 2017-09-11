@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class CommonApplicationSqlProvider {
 
+    @SuppressWarnings("unchecked")
     public String findApplications(Map<String, Object> params) {
         return new SQL() {{
             SELECT("*");

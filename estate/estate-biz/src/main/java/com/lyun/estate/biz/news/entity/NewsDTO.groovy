@@ -13,7 +13,9 @@ import groovy.transform.builder.SimpleStrategy
 class NewsDTO {
     long id
     String title
+    String summary
     NewsDefine.Category category
+    NewsDefine.Scope scope
     Long imageId
     String imageURI
     String newsUrl
