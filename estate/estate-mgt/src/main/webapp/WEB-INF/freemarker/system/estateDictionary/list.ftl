@@ -28,7 +28,15 @@
                                     <h3 class="box-title">所有部门</h3>
                                 </div>
                                 <div class="zTreeDemoBackground left">
-                                    <ul id="dictionaryTree" class="ztree"></ul>
+                                    <ul id="dictionaryTree1" class="ztree tt1">
+                                    </ul>
+                                <#--<ul id="dictionaryTree2" class="ztree tt2">-->
+
+                                <#--</ul>-->
+                                <#--<ul id="dictionaryTree3" class="ztree tt3">-->
+                                <#--</ul>-->
+                                <#--<ul id="dictionaryTree4" class="ztree tt4">-->
+                                <#--</ul>-->
                                 </div>
                             </div>
                         </div>
@@ -39,21 +47,21 @@
                                     <h3 class="box-title">楼盘字典</h3>
                                     <!-- 客户可以自己新增楼盘字典，增加入口 -->
                                     <div class="box-tools">
-                                        <#--<a href="javascript:void(0);" class="pull-right btn btn-white" ng-click="ctrl.showCreateNewXiaoquDialog()"><i class="fa fa-plus"></i>新增楼盘</a>-->
-                                            <a href="javascript:void(0);" class="pull-right btn btn-white" ng-href="/mgt/system/estateDictionary/add.ftl?target=.sys"><i class="fa fa-plus"></i>新增楼盘</a>
+                                    <#--<a href="javascript:void(0);" class="pull-right btn btn-white" ng-click="ctrl.showCreateNewXiaoquDialog()"><i class="fa fa-plus"></i>新增楼盘</a>-->
+                                        <a href="javascript:void(0);" class="pull-right btn btn-white" ng-href="/mgt/system/estateDictionary/add.ftl?target=.sys"><i class="fa fa-plus"></i>新增楼盘</a>
                                     </div>
                                 </div>
                                 <div class="box-body" ng-cloak>
                                     <div id="searchList">
                                         <div class="form-group clearfix">
-                                            <#--<div class="col-lg-3 col-md-3 col-sm-3">
-                                                <select id="houseType" select-picker class="selectpicker show-menu-arrow form-control sel-news"  ng-model="ctrl.data.houseType" ng-change="ctrl.houseTypeChange(e)">
-                                                    <option value="">房源类型</option>
-                                                <#list houseTypes?if_exists as type>
-                                                    <option value="${type.name()}">${type.getLabel()}</option>
-                                                </#list>
-                                                </select>
-                                            </div>-->
+                                        <#--<div class="col-lg-3 col-md-3 col-sm-3">
+                                            <select id="houseType" select-picker class="selectpicker show-menu-arrow form-control sel-news"  ng-model="ctrl.data.houseType" ng-change="ctrl.houseTypeChange(e)">
+                                                <option value="">房源类型</option>
+                                            <#list houseTypes?if_exists as type>
+                                                <option value="${type.name()}">${type.getLabel()}</option>
+                                            </#list>
+                                            </select>
+                                        </div>-->
                                             <div class="col-lg-5 col-md-5 col-sm-5" style="padding-left: 0">
                                                 <select id="houseEstate" data-placeholder="楼盘字典" class="chosen-select" name="houseEstate">
                                                     <option value="">楼盘字典</option>

@@ -1,31 +1,36 @@
+/*
+*  Spring Boot的新Gradle插件
+*
+* */
+
 buildscript {
     repositories {
-        mavenLocal()
+        mavenLocal()       //依赖Maven仓库
         maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
         mavenCentral()
         jcenter()
     }
 
-    dependencies {
+    dependencies {             //
         classpath lib.spring_boot_gradle_plugin
         classpath lib.dependency_management_plugin
     }
 }
 
-apply plugin: 'war'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
+apply plugin: 'war'    /*   指定web项目，项目编译(在项目提示符下执行：gradle build)时生成项目的war包  */
+apply plugin: 'org.springframework.boot'  // Spring Boot的新Gradle插件
+apply plugin: 'io.spring.dependency-management'   //依赖管理
 
 bootRun() {
     jvmArgs = ["-Dlogback.level=INFO"]
 }
 
-configurations {
+configurations {                    //配置
     providedCompile
 }
 
-dependencies {
-    compile(lib.spring_boot_starter_web)
+dependencies {                       //依赖
+    compile(lib.spring_boot_starter_web)    //支持全栈式Web开发，包括Tomcat和spring-webmvc
     providedCompile lib.servlet_api
     compile libGroup.swagger
     compile lib.user_agent_utils
@@ -38,3 +43,15 @@ tasks.withType(AbstractCompile) {
 
 sourceSets.main.java.srcDirs = []
 sourceSets.main.groovy.srcDirs = ['src/main/java']
+
+/*
+servlet_api.jar
+你如果编写过servlet就知道要用到HttpServletRequest和HttpServletResponse等对象，
+这些对象都是要靠这个jar包才能使用的。
+如果你安装了Tomcat,这个jar包一般在tomcat安装目录\lib 文件夹下面有，当你把web项目部署到tomcat，
+会自动加载这个jar包来识别Serlvet一些对象
+
+user_agent_utils.jar
+是一个用来解析 User-Agent 字符串的 Java 类库
+
+*/

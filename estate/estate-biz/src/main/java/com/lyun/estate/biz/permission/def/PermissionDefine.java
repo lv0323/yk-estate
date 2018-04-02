@@ -5,6 +5,10 @@ import com.lyun.estate.core.supports.labelenum.LabelEnum;
 /**
  * Created by Jeffrey on 2017-04-21.
  */
+/*
+*
+*
+* */
 public class PermissionDefine {
 
     public enum Category implements LabelEnum {

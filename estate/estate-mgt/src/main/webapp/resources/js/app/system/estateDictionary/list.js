@@ -37,11 +37,13 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
             _this.config ={
                 cityList: [],
                 currentCity:null,
+                inum:null,
             };
             _this.filterData ={
                 districtId: null,
                 subDistrictId: null,
-                xiaoQuId :null
+                xiaoQuId :null,
+                treeId:null
             };
             _this.data = {};
             _this.data.create = {
@@ -65,7 +67,7 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                     return;
                 }
                 var params = angular.copy(_this.data.create);
-                params.name = _this.data.create.communityName;
+                ms.name = _this.data.create.communityName;para
                 params.alias = _this.data.create.communityAlias;
                 params.cityId = _this.data.create.communityCity;
                 params.subDistrictId = _this.data.create.communitySubDistrict;
@@ -90,6 +92,7 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                     key = 'a';
                 }
                 FangService.xiaoquOption({keyword: key}).done(function (response) {
+                    //console.log(response)
                     $scope.$apply(function(){
                         _this.estateList = response.map(function(item){
                             return {
@@ -140,13 +143,14 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                         return;
                     }
                     _this.estateGet(searchConfig.xiaoQuId.value);
+                    console.log(searchConfig.xiaoQuId.value);
                 },800);
             };
             /*end chosen*/
 
-            _this.list = function(offset, currentPage) {
+            _this.list = function(offset,currentPage) {
                 var params = _this.filterData;
-                params.cityId = _this.config.cityList[_this.config.currentCity].id;
+                params.cityId=_this.config.currentCity;
                 if(!currentPage){
                     pageConfig.currentPage = 1;
                 }
@@ -155,6 +159,7 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                     $scope.$apply(function(){
                         pagination(response.total);
                         _this.xiaoquList = response.items;
+                        //console.log(_this.xiaoquList)
                     });
                 }).fail(function(res){
                     SweetAlertHelp.fail({message: res && res.message});
@@ -164,11 +169,23 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
             function dictionaryTree(data, idKey, pIdKey){
                 function beforeClick(treeId, treeNode, clickFlag) {
                     if(treeNode.domainType === domainTypeConfig.CITY){
-                        return false
+                        // return false
+                        _this.config.currentCity=treeNode.id;
+                        console.log(_this.config.currentCity)
+                        _this.filterData.treeId=treeNode.id
+                        _this.list()
                     }
                 }
                 function onClick(event, treeId, treeNode, clickFlag) {
-                    if(treeNode.domainType === domainTypeConfig.DISTRICT){
+                    console.log(treeId,treeNode)
+                    if(treeNode.domainType === domainTypeConfig.CITY){
+                        // return false
+                        _this.config.currentCity=treeNode.id;
+                        console.log(_this.config.currentCity)
+                        _this.filterData.treeId=treeNode.id
+                        _this.list()
+                    }
+                    else if(treeNode.domainType === domainTypeConfig.DISTRICT){
                         _this.filterData.districtId = treeNode.id;
                         _this.filterData.subDistrictId = null;
                         _this.filterData.xiaoQuId = null;
@@ -196,8 +213,9 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 };
                 idKey && (zTreeSetting.data.simpleData.idKey = idKey);
                 pIdKey && (zTreeSetting.data.simpleData.pIdKey = pIdKey);
-                var zTreeObj = $.fn.zTree.init($("#dictionaryTree"), zTreeSetting, data);
-                /*zTreeObj.expandAll(true);*/
+                var zTreeObj = $.fn.zTree.init($('#dictionaryTree1'), zTreeSetting,data);
+                //data是指 地区 区域 板块  的信息
+                // zTreeObj.expandAll(true)进行一个伸展;
             }
 
             _this.districtWithSubs = {};
@@ -212,43 +230,43 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
                 _this.subDistricts = _this.districtToSubsMap[_this.data.create.communityDistrict];
             });
 
-
-            _this.getDistrictsWithSubs = function(){
-                CityService.districtsWithSubs({cityId: _this.config.cityList[_this.config.currentCity].id}).then(function(response){
-                var districtList = [];
-                _this.districtWithSubs = response;
-                response.map(function(item, index, array){
-                    var district = {
-                        id : item.id,
-                        domainType: item.domainType,
-                        name: item.name,
-                        treeId : item.domainType + item.id,
-                        parentId : domainTypeConfig.CITY + item.cityId
-                    };
-                    districtList.push(district);
-                    _this.districtToSubsMap[district.id] = item.subs;
-
-                    item.subs && item.subs.map(function(subItem, index, array){
-                        var subDistrict ={
-                            id : subItem.id,
-                            domainType: subItem.domainType,
-                            districtId : district.id,
-                            treeId : subItem.domainType + subItem.id,
-                            name: subItem.name,
-                            parentId : district.treeId
+            var districtList = [];
+            _this.getDistrictsWithSubs = function(i){
+                CityService.districtsWithSubs({cityId:i}).then(function(response){
+                    _this.districtWithSubs = response;
+                    response.map(function(item, index, array){
+                        var district = {
+                            id : item.id,
+                            domainType: item.domainType,
+                            name: item.name,
+                            treeId : item.domainType + item.id,
+                            parentId : domainTypeConfig.CITY + item.cityId
                         };
-                        districtList.push(subDistrict);
-                    })
+                        districtList.push(district);
+                        _this.districtToSubsMap[district.id] = item.subs;
+
+                        item.subs && item.subs.map(function(subItem, index, array){
+                            var subDistrict ={
+                                id : subItem.id,
+                                domainType: subItem.domainType,
+                                districtId : district.id,
+                                treeId : subItem.domainType + subItem.id,
+                                name: subItem.name,
+                                parentId : district.treeId
+                            };
+                            districtList.push(subDistrict);
+                        })
+                    });
+
+                    districtList.push({
+                        id:_this.config.currentCity,
+                        treeId : domainTypeConfig.CITY + _this.config.currentCity,
+                        name: "楼盘库",
+                        parentId : null,
+                        domainType: domainTypeConfig.CITY
+                    });
+                    dictionaryTree(districtList, 'treeId', 'parentId')
                 });
-                districtList.unshift({
-                    id : 1,
-                    treeId : domainTypeConfig.CITY + 1,
-                    name: '北京',
-                    parentId : null,
-                    domainType: domainTypeConfig.CITY
-                });
-                dictionaryTree(districtList, 'treeId', 'parentId');
-            });
             };
             /* end树*/
             /*分页*/
@@ -281,23 +299,23 @@ require(['main-app',contextPath + '/js/service/fang-service.js',
             /*end 分页*/
 
             /*获得cityID*/
-            (function(){
-                CityService.getCity().then(function(response){
-                    $scope.$apply(function(){
-                        _this.config.cityList = response;
-                        _this.config.currentCity = 0;
-                    });
-                    _this.list();
-                    _this.getDistrictsWithSubs();
+            CityService.getDistrict().then(function(response){
+                //console.log(response)
+                $scope.$apply(function(){
+                    _this.config.currentCity=response[0].cityId;
+                    //console.log(_this.config.currentCity)
                 });
-            })();
+                _this.list();
+                _this.getDistrictsWithSubs(_this.config.currentCity);
+            });
+
             /*end 获得cityID*/
         }
         DictCtrl.$inject =['$scope', '$timeout','$window'];
         module.controller("DictCtrl", DictCtrl);
 
         angular.element(document).ready(function(){
-           angular.bootstrap(document.getElementById("houseDictionary"), ["HouseDictModule"])
+            angular.bootstrap(document.getElementById("houseDictionary"), ["HouseDictModule"])
         });
 
-    });
+    })

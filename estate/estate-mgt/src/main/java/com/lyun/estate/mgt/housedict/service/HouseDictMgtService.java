@@ -123,9 +123,9 @@ public class HouseDictMgtService {
         if (Strings.isNullOrEmpty(keyword)) {
             return houseDictService.top20XiaoQuOptions(mgtContext.getOperator().getCityId());
         } else {
-            return keywordService.findContain(keyword,
-                    mgtContext.getOperator().getCityId(),
-                    Lists.newArrayList(DomainType.XIAO_QU),
+            return keywordService.findContain(keyword,       /*关键字 */
+                    mgtContext.getOperator().getCityId(),   /* Long cityId  */
+                    Lists.newArrayList(DomainType.XIAO_QU),  /* ArrayList<DomainType> scopes */
                     20)
                     .stream().map(t -> new XiaoQuOption().setXiaoQuId(t.getId()).setXiaoQuName(t.getName())).collect(
                             Collectors.toList());

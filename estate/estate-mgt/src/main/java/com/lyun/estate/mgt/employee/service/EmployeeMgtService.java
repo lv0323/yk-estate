@@ -42,9 +42,9 @@ public class EmployeeMgtService {
         permissionCheckService.checkExist(Permission.ORG_MANAGEMENT);
 
         //close franchisee create employee
-        if (mgtContext.getOperator().getCompanyType() != CompanyDefine.Type.YK) {
+        /*if (mgtContext.getOperator().getCompanyType() != CompanyDefine.Type.YK) {
             throw new EstateException("暂不支持该操作");
-        }
+        }*/
 
         employee.setCompanyId(mgtContext.getOperator().getCompanyId());
         Employee result = employeeService.create(employee);

@@ -5,6 +5,12 @@ import com.lyun.estate.core.supports.labelenum.LabelEnum;
 /**
  * Created by Jeffrey on 2017-04-06.
  */
+
+/**
+ * 所有的枚举都继承自java.lang.Enum类。由于Java 不支持多继承，所以枚举对象不能再继承其他类。
+ *
+ */
+
 public enum Permission implements LabelEnum {
     //fang
     CREATE_FANG("新增房源", PermissionDefine.Category.FANG),
@@ -104,15 +110,15 @@ public enum Permission implements LabelEnum {
     CT_SS("单店", PermissionDefine.Category.COMPANY_TYPE),
     CT_RA("区域加盟", PermissionDefine.Category.COMPANY_TYPE),;
 
-
+    //成员变量
     private final String label;
     private final PermissionDefine.Category category;
-
+    //构造方法
     Permission(String label, PermissionDefine.Category category) {
         this.label = label;
         this.category = category;
     }
-
+    //接口方法
     @Override
     public String getLabel() {
         return label;
